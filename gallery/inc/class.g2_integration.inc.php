@@ -1,19 +1,19 @@
 <?php
 /**
  * eGroupWare Gallery2 integration
- * 
+ *
  * @link http://www.egroupware.org
  * @link http://gallery.sourceforge.net/
  * @package gallery
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @copyright 2006-8 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @copyright 2006-9 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */
 
 /**
  * eGroupWare Gallery2 integration: User syncronisation hooks
- * 
+ *
  * This class gets either called via a hook if a user gets created, changed or deleted in eGroupWare
  * or can be called manualy, eg. from index to create a new user.
  * At the moment we only sync eGW Admins and the membership to g2's site-admins group. No other group memberships!
@@ -34,7 +34,7 @@ class g2_integration
 	var $prefix = 'g2_';
 	/**
 	 * returned data from G2's handleRequest
-	 * 
+	 *
 	 * @var array
 	 */
 	var $data;
@@ -69,7 +69,7 @@ class g2_integration
 				'<p>'.lang('For multiple eGroupWare instances, you have to remove %1, to be able to install the next instance.','<b>gallery/gallery2/config.php</b>').'<br />'.
 				lang('After successful installation of all instances, you have to copy %1 to %2!','<b>gallery/gallery2_config.php</b>','<b>gallery/gallery2/config.php</b>')."</p>\n".
 				'<p>'.lang('All filenames are relative to %1.','<b>'.EGW_SERVER_ROOT.'</b>')."</p>";
-			
+
 			return;
 		}
 		require_once(EGW_INCLUDE_ROOT.'/gallery/gallery2' . '/modules/core/classes/GalleryDataCache.class');
@@ -82,7 +82,7 @@ class g2_integration
 	    	'g2Uri'    => $GLOBALS['egw_info']['server']['webserver_url'].'/gallery/gallery2/',
 	    	'loginRedirect' => $GLOBALS['egw_info']['server']['webserver_url'].'/login.php',
 //				'embedSessionString' => 'sessionid=',	// gets added by egw::link() to embedUri if necessary
-	     	'gallerySessionId' => $_REQUEST['sessionid'],
+	     	'gallerySessionId' => egw_session::get_request('GALLERYSID'),
 			'activeUserId' => $GLOBALS['egw_info']['user']['account_lid'] == 'anonymous' ? null : $GLOBALS['egw_info']['user']['account_id'],
 			'activeLanguage' => g2_integration::g2_lang($GLOBALS['egw_info']['user']['preferences']['common']['lang']),
 //				'apiVersion' => (optional) array int major, int minor (check if your integration is compatible)
@@ -95,8 +95,8 @@ class g2_integration
 				$ret2->getErrorCode() & ERROR_MISSING_OBJECT)
 			{
 				$this->error = $this->addAccount($GLOBALS['egw_info']['user'],$hooked);
-			} 
-			else 
+			}
+			else
 			{
 				// The error we got wasn't due to a missing user, it was a real error
 				$this->error = '<p>'.lang('An error occurred while trying to initialize G2.')."</p>\n";
@@ -114,11 +114,11 @@ class g2_integration
 		// all CreateObject or ExecMethod should use THIS instance!
 		$GLOBALS['g2_integration'] =& $this;
 	}
-	
+
 	/**
 	 * g2 lang-code (de_DE) from eGW lang-code (de, pt-br)
 	 *
-	 * @static 
+	 * @static
 	 * @param string $egw_lang
 	 * @return string
 	 */
@@ -130,7 +130,7 @@ class g2_integration
 
 		return $g2_lang;
 	}
-	
+
 	/**
 	 * create new account
 	 *
@@ -155,7 +155,7 @@ class g2_integration
 		}
 		if (($ret = GalleryEmbed::createUser($data['account_id'],array(
 			'username' => $data['account_lid'],
-			'email'    => $data['account_email'], 
+			'email'    => $data['account_email'],
 			'fullname' => $data['account_fullname'] ? $data['account_fullname'] : $data['account_fristname'].' '.$data['account_lastname'],
 			'language' => $this->g2_lang($lang),
 		))))
@@ -164,7 +164,7 @@ class g2_integration
 			if ($ret->getErrorCode() & ERROR_COLLISION && $GLOBALS['egw_info']['user']['apps']['admin'])
 			{
 				list($ret,$user) = GalleryCoreApi::fetchUserByUserName($GLOBALS['egw_info']['user']['account_lid']);
-				if (!$ret) 
+				if (!$ret)
 				{
 					$ret = GalleryEmbed::addExternalIdMapEntry($GLOBALS['egw_info']['user']['account_id'],$user->getId(),'GalleryUser');
 				}
@@ -179,16 +179,16 @@ class g2_integration
 		if (!$this->error)
 		{
 			$content = $this->checkSetSiteAdmin($data['account_id']);
-			
+
 			if ($hooked) GalleryEmbed::done();
 		}
 		return $content;
 	}
-	
+
 	/**
 	 * Check if user is an eGW admin and make him an g2 site-admin or not
 	 *
-	 * @static 
+	 * @static
 	 * @param int $account_id
 	 * @return string error-message or null
 	 */
@@ -196,17 +196,17 @@ class g2_integration
 	{
 		$apps = $account_id == $GLOBALS['egw_info']['user']['account_id'] ? $GLOBALS['egw_info']['user']['apps'] :
 			$GLOBALS['egw']->acl->get_user_applications($account_id);
-			
+
 		$isAdmin = isset($apps['admin']) && $apps['admin'];
 		list($ret,$g2_user) = GalleryCoreApi::loadEntityByExternalId($account_id, 'GalleryUser');
-		if (!$ret) 
+		if (!$ret)
 		{
 			$g2_user_id = $g2_user->getId();
 		    if ($isAdmin !== GalleryCoreApi::isUserInSiteAdminGroup($g2_user_id))
 		    {
 		    	// (re)set site-admin rights in g2
 				list ($ret, $adminGroupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
-				if (!$ret) 
+				if (!$ret)
 				{
 					$ret = $isAdmin ? GalleryCoreApi::addUserToGroup($g2_user_id, $adminGroupId) :
 						GalleryCoreApi::removeUserFromGroup($g2_user_id, $adminGroupId);
@@ -219,10 +219,10 @@ class g2_integration
 		}
 		return null;
 	}
-	
+
 	/**
 	 * change an account
-	 * 
+	 *
 	 * No error-handling as the hook cant transport it back anyway!
 	 *
 	 * @param array $data account_id, account_lid, account_firstname, account_lastname, account_email
@@ -233,7 +233,7 @@ class g2_integration
 		{
 			$ret = GalleryEmbed::updateUser($data['account_id'],array(
 				'username' => $data['account_lid'],
-				'email'    => $data['account_email'], 
+				'email'    => $data['account_email'],
 				'fullname' => $data['account_fullname'] ? $data['account_fullname'] : $data['account_fristname'].' '.$data['account_lastname'],
 			));
 			if ($ret)
@@ -255,7 +255,7 @@ class g2_integration
 			}
 		}
 	}
-	
+
 	/**
 	 * delete an account
 	 *
@@ -272,7 +272,7 @@ class g2_integration
 			GalleryEmbed::done();
 		}
 	}
-	
+
 	/**
 	 * Terminate the g2 session on eGW logout
 	 *
@@ -288,7 +288,7 @@ class g2_integration
 			die ($GLOBALS['egw']->translation->convert($ret->getAsHtml()));
 		}
 	}
-	
+
 	/**
 	 * Sidebox menu hook: displays g2 menu's as sidebox
 	 *
@@ -299,7 +299,7 @@ class g2_integration
 		if (is_array($location)) $location = $location['location'];
 
 		$blocks = array();
-		
+
 		if (is_array($this->data['sidebarBlocksHtml']))
 		{
 			foreach($this->data['sidebarBlocksHtml'] as $n => $block)
@@ -313,7 +313,7 @@ class g2_integration
 						$title = $matches[2];
 						unset($matches[0]);
 						$block = str_replace(implode('',$matches),'',$block);
-		
+
 						$blocks[$title] = array(array(
 							'text' => $block,
 							'link' => false,
@@ -334,7 +334,7 @@ class g2_integration
 							{
 								$link = trim($link);
 								if (!$link || substr($link,0,4) == '<div' || $link == '</div>') continue;
-								
+
 								$file[] = array(
 									'text'    => $link,
 									'link' => false,
@@ -371,10 +371,10 @@ class g2_integration
 					display_section('gallery',$block);
 					break;
 
-				case 'sidebox_menu': 
+				case 'sidebox_menu':
 					display_sidebox('gallery',$title,$block);
 					break;
-				
+
 				case 'sitemgr':	// G2 sidebar for sitemgr
 					if (!isset($block[0]['icon']) || $block[0]['icon'])
 					{
@@ -407,7 +407,7 @@ class g2_integration
 		}
 		return $content;
 	}
-	
+
 	/**
 	 * Call GalleryEmbed::handleRequest(); and parse and convert the returned content
 	 *
@@ -434,7 +434,7 @@ class g2_integration
 			GalleryCapabilities::set('showSidebarBlocks', $type == 'complete');
 
 			$this->data = GalleryEmbed::handleRequest();
-			
+
 			if ($this->data['isDone'])	// redirect, download, ...
 			{
 				$GLOBALS['egw']->common->egw_exit();
@@ -451,7 +451,7 @@ class g2_integration
 		// G2 sidebar for sitemgr
 		return $this->menus('sitemgr');
 	}
-	
+
 	/**
 	 * get an image block from G2
 	 *
@@ -461,16 +461,16 @@ class g2_integration
 	function imageBlock($params)
 	{
 		list($error,$block,$head) = GalleryEmbed::getImageBlock($params);
-		
+
 		$content = $error ? $error->getAsHtml() : $head.$block;
 
 		return $GLOBALS['egw']->translation->convert($content,'utf-8');
 	}
-	
+
 	/**
 	 * fetch availible frames from G2
-	 * 
-	 * @return array with 2 elements: 0 => array frameId => label pairs, 1 => string with url to sample page) 
+	 *
+	 * @return array with 2 elements: 0 => array frameId => label pairs, 1 => string with url to sample page)
 	 */
 	function frameTypes()
 	{
@@ -478,7 +478,7 @@ class g2_integration
 		if ($ret) die($ret->getAsHtml());
 		list ($ret, $frames) = $imageframe->getImageFrameList();
 		if ($ret) die($ret->getAsHtml());
-		
+
 		//list ($ret, $sample_url) = $imageframe->getSampleUrl();
 		//if ($ret) die($ret->getAsHtml());
 		// the url returned from G2 is wrong, duno ...
@@ -486,10 +486,10 @@ class g2_integration
 
 		return array($GLOBALS['egw']->translation->convert($frames,'utf-8'),$sample_url);
 	}
-	
+
 	/**
 	 * Get translated list of image block types from G2
-	 * 
+	 *
 	 * unfortunally there's no function for that in G2's imageblock ...
 	 *
 	 * @return array
@@ -498,7 +498,7 @@ class g2_integration
 	{
 		list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'imageblock', true);
 		if ($ret) die($ret->getAsHtml());
-	
+
 		return $GLOBALS['egw']->translation->convert(array(
 			'randomImage'  => $module->translate('Random Image'),
 			'recentImage'  => $module->translate('Newest Image'),
