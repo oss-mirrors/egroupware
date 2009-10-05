@@ -15,7 +15,11 @@
 $params = array();
 $params["title"] = lang('eGroupware Chat');
 /* Make the channel list configurable (via an admin interface?). */
-$params["channels"] = array("eGroupware");
+$params["channels"] = array("eGroupware","eGroupware-".$GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_primary_group']));
+if ($GLOBALS['egw_info']['user']['apps']['admin'])
+{
+	$params["isadmin"] = true;
+}
 /* Pre-define some settings for known users (not from website) */
 if ($GLOBALS['egw_info']['user']['account_lid'] != 'anonymous')
 {
@@ -117,17 +121,25 @@ if ($GLOBALS['egw_info']['user']['account_lid'] != 'anonymous')
 	 * A Frozen nick will not allow users to change their nick name
 	 * and will also prohibit joining the chat multiple times (e.g. from
 	 * different offices with the same login).
-	$params["frozen_nick"] = true;
 	*/
+	$params["frozen_nick"] = true;
+
 }
+// if you use NFS you may want to use, since logging is enabled by default
+$params['skip_proxies'] = array('log');
+// if you want logging, consider using a different path than NFS
+//$params['proxies_cfg']['log']['path'] = '/mp/phpfreechat/';
+// params that are not cached:
 $params["dyn_params"] = array(
 	"channels",
 	"nick",
 	'language',
 	"nickmeta",
+	"data_public_path",
+	"isadmin",
 );
 /**
- * phpFreeChat caches these values in $files_dir/phpfreechat/private/cache/default*.php
+ * phpFreeChat caches all params - values (but the dyn_params) in $files_dir/phpfreechat/private/cache/default*.php
  * If you modifiy the config in EGroupware, you need to remove this file!
  */
 $params["data_private_path"] = $GLOBALS['egw_info']['server']['files_dir'].'/phpfreechat/private';
