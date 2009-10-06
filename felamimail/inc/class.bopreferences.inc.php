@@ -94,7 +94,7 @@
 			$accountData = array_shift($accountData);
 			#_debug_array($accountData);
 
-			$icServer =& CreateObject('emailadmin.defaultimap');
+			$icServer = CreateObject('emailadmin.defaultimap');
 			$icServer->encryption	= isset($accountData['ic_encryption']) ? $accountData['ic_encryption'] : 1;
 			$icServer->host		= $accountData['ic_hostname'];
 			$icServer->port 	= isset($accountData['ic_port']) ? $accountData['ic_port'] : 143;
@@ -111,7 +111,7 @@
 			if ($accountData['ic_draftfolder']) $icServer->draftfolder = $accountData['ic_draftfolder'];
 			if ($accountData['ic_templatefolder']) $icServer->templatefolder = $accountData['ic_templatefolder'];
 
-			$ogServer =& CreateObject('emailadmin.defaultsmtp');
+			$ogServer = CreateObject('emailadmin.defaultsmtp');
 			$ogServer->host		= $accountData['og_hostname'];
 			$ogServer->port		= isset($accountData['og_port']) ? $accountData['og_port'] : 25;
 			$ogServer->smtpAuth	= (bool)$accountData['og_smtpauth'];
@@ -120,7 +120,7 @@
 				$ogServer->password 	= $accountData['og_password'];
 			}
 
-			$identity =& CreateObject('emailadmin.ea_identity');
+			$identity = CreateObject('emailadmin.ea_identity');
 			$identity->emailAddress	= $accountData['emailaddress'];
 			$identity->realName	= $accountData['realname'];
 			//$identity->default	= true;
@@ -142,7 +142,7 @@
 			#_debug_array($accountData);
 			foreach ($AllAccountData as $key => $accountData)
 			{
-				$icServer =& CreateObject('emailadmin.defaultimap');
+				$icServer = CreateObject('emailadmin.defaultimap');
 				$icServer->encryption	= isset($accountData['ic_encryption']) ? $accountData['ic_encryption'] : 1;
 				$icServer->host		= $accountData['ic_hostname'];
 				$icServer->port 	= isset($accountData['ic_port']) ? $accountData['ic_port'] : 143;
@@ -159,7 +159,7 @@
 				if ($accountData['ic_draftfolder']) $icServer->draftfolder = $accountData['ic_draftfolder'];
 				if ($accountData['ic_templatefolder']) $icServer->templatefolder = $accountData['ic_templatefolder'];
 
-				$ogServer =& CreateObject('emailadmin.defaultsmtp');
+				$ogServer = CreateObject('emailadmin.defaultsmtp');
 				$ogServer->host		= $accountData['og_hostname'];
 				$ogServer->port		= isset($accountData['og_port']) ? $accountData['og_port'] : 25;
 				$ogServer->smtpAuth	= (bool)$accountData['og_smtpauth'];
@@ -168,7 +168,7 @@
 					$ogServer->password 	= $accountData['og_password'];
 				}
 
-				$identity =& CreateObject('emailadmin.ea_identity');
+				$identity = CreateObject('emailadmin.ea_identity');
 				$identity->emailAddress	= $accountData['emailaddress'];
 				$identity->realName	= $accountData['realname'];
 				//$identity->default	= true;
