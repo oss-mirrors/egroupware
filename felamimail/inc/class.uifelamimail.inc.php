@@ -451,7 +451,7 @@
 			#printf ("this->uifelamimail->viewMainScreen() start: %s<br>",date("H:i:s",mktime()));
 			$bopreferences		=& $this->bopreferences;
 			$bofilter		=& $this->bofilter;
-			$uiwidgets		=& CreateObject('felamimail.uiwidgets');
+			$uiwidgets		= CreateObject('felamimail.uiwidgets');
 
 			$preferences		=& $bopreferences->getPreferences();
 			$urlMailbox		=  urlencode($this->mailbox);

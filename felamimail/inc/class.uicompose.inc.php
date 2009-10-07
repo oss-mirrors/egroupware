@@ -43,7 +43,7 @@
 			if (!isset($_POST['composeid']) && !isset($_GET['composeid']))
 			{
 				// create new compose session
-				$this->bocompose   =& CreateObject('felamimail.bocompose','',$this->displayCharset);
+				$this->bocompose   = CreateObject('felamimail.bocompose','',$this->displayCharset);
 				$this->composeID = $this->bocompose->getComposeID();
 			}
 			else
@@ -53,10 +53,10 @@
 					$this->composeID = $_POST['composeid'];
 				else
 					$this->composeID = $_GET['composeid'];
-				$this->bocompose   =& CreateObject('felamimail.bocompose',$this->composeID,$this->displayCharset);
+				$this->bocompose   = CreateObject('felamimail.bocompose',$this->composeID,$this->displayCharset);
 			}
-			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
-			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$this->t 		= CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$this->mailPreferences  = ExecMethod('felamimail.bopreferences.getPreferences');
 
 			$this->t->set_unknowns('remove');
@@ -119,7 +119,7 @@
 					 print "<script type=\"text/javascript\">alert('".lang("Error: Could not save Message as Draft")."');</script>";
 					return;
 				}
-				$uidisplay   =& CreateObject('felamimail.uidisplay');
+				$uidisplay   = CreateObject('felamimail.uidisplay');
 				$uidisplay->printMessage($messageUid, $formData['printit']);
 				//$GLOBALS['egw']->link('/index.php',array('menuaction' => 'felamimail.uidisplay.printMessage','uid'=>$messageUid));
 				return;
@@ -281,7 +281,7 @@
 
 			// header
 			$allIdentities = $this->mailPreferences->getIdentity();
-			#_debug_array($allIdentities);
+			//_debug_array($allIdentities);
 			$defaultIdentity = 0;
 			foreach($allIdentities as $key => $singleIdentity) {
 				#$identities[$singleIdentity->id] = $singleIdentity->realName.' <'.$singleIdentity->emailAddress.'>';
@@ -465,7 +465,7 @@
 		 */
 		function vfsSelector($composeid,$files)
 		{
-			$this->bocompose   =& CreateObject('felamimail.bocompose',$this->composeID=$composeid,$this->displayCharset);
+			$this->bocompose   = CreateObject('felamimail.bocompose',$this->composeID=$composeid,$this->displayCharset);
 
 			foreach((array) $files as $path)
 			{
@@ -499,7 +499,7 @@
 
 			if(!@is_object($GLOBALS['egw']->js))
 			{
-				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
+				$GLOBALS['egw']->js = CreateObject('phpgwapi.javascript');
 			}
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
@@ -544,7 +544,7 @@
 
 		function getAttachment()
 		{
-			$bocompose  =& CreateObject('felamimail.bocompose', $_GET['_composeID']);
+			$bocompose  = CreateObject('felamimail.bocompose', $_GET['_composeID']);
 			$attachment =  $bocompose->sessionData['attachments'][$_GET['attID']] ;
 			if (parse_url($attachment['file'],PHP_URL_SCHEME) == 'vfs')
 			{
@@ -572,7 +572,7 @@
 			$GLOBALS['egw']->common->egw_header();
 
 			$bofelamimail		=& $this->bofelamimail; //CreateObject('felamimail.bofelamimail',$this->displayCharset);
-			$uiwidgets		=& CreateObject('felamimail.uiwidgets');
+			$uiwidgets		= CreateObject('felamimail.uiwidgets');
 			$connectionStatus	= $bofelamimail->openConnection();
 
 			$folderObjects = $bofelamimail->getFolderObjects(true,false);
