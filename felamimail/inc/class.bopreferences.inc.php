@@ -243,6 +243,7 @@
 					if (is_array($allUserIdentities)) 
 					{
 						$i=count($allUserIdentities);
+						$y=-1;
 						foreach ($allUserIdentities as $tmpkey => $id)
 						{
 							if ($id->id != $rememberID) 
@@ -251,12 +252,14 @@
 								$i++;
 							}
 							else
-							{
+							{	
 								foreach ($rememberIdentities as $adkey => $ident)
 								{
 									$profileData->setIdentity($ident,$i);
 									$profileData->identities[$i]->default = false;
+									$profileData->identities[$i]->id = $y;
 									$i++;
+									$y--;
 								}
 							}
 						}
