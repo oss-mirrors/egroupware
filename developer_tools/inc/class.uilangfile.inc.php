@@ -90,7 +90,7 @@ class uilangfile
 		$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps'][$GLOBALS['egw_info']['flags']['currentapp']]['title'].
 			' - '.lang('Add new phrase');
 
-		$GLOBALS['egw']->common->egw_header();
+		common::egw_header();
 		echo parse_navbar();
 
 		$this->template->set_var('form_action',$GLOBALS['egw']->link('/index.php','menuaction=developer_tools.uilangfile.addphrase'));
@@ -193,7 +193,7 @@ class uilangfile
 				'targetlang' => $targetlang
 			));
 		}
-		$GLOBALS['egw']->common->egw_header();
+		common::egw_header();
 		echo parse_navbar();
 
 		$this->template->set_var('lang_remove',lang('Add phrase'));
@@ -270,7 +270,7 @@ class uilangfile
 			$this->download('target',$targetlang);
 		}
 		$GLOBALS['egw_info']['flags']['css'] .= ".untranslated { background-color: #dab0b0; }\n";
-		$GLOBALS['egw']->common->egw_header();
+		common::egw_header();
 		echo parse_navbar();
 
 		$this->template->set_file(array('langfile' => 'langfile.tpl'));
@@ -513,8 +513,7 @@ class uilangfile
 			default:
 				break;
 		}
-		$browser =& CreateObject('phpgwapi.browser');
-		$browser->content_header(translation::LANGFILE_PREFIX . $userlang . '.lang');
+		html::content_header(translation::LANGFILE_PREFIX . $userlang . '.lang');
 		$to = translation::charset($userlang);
 		$from = translation::charset();
 		while(list($mess_id,$data) = @each($langarray))
@@ -525,7 +524,7 @@ class uilangfile
 				echo $mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $content . "\n";
 			}
 		}
-		$GLOBALS['egw']->common->egw_exit();
+		common::egw_exit();
 	}
 
 	function index()
@@ -538,7 +537,7 @@ class uilangfile
 		$this->bo->save_sessiondata('','');
 		$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps'][$GLOBALS['egw_info']['flags']['currentapp']]['title'].
 			' - '.lang('Installed applications');
-		$GLOBALS['egw']->common->egw_header();
+		common::egw_header();
 		echo parse_navbar();
 
 		$this->template->set_file(array('applications' => 'applications.tpl'));
