@@ -851,6 +851,7 @@ function setSupportedFields($content)
 			{
 				case 'thunderbird':
 				case 'mozilla plugin':
+				case 'mozilla sync client':
 					$supportedFields = $defaultFields[6];
 					break;
 
