@@ -356,7 +356,7 @@ class felamimail_hooks
 	static function preferences($hook_data)
 	{
 		// Only Modify the $file and $title variables.....
-		$title = $appname;
+		$title = $appname = 'felamimail';
 		$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
 
 		$file['Preferences'] = $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=' . $appname);
@@ -393,6 +393,7 @@ class felamimail_hooks
 	 */
 	static function sidebox_menu($hook_data)
 	{
+		$appname = 'felamimail';
 		$menu_title = $GLOBALS['egw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
 		$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
 		$linkData = array(
