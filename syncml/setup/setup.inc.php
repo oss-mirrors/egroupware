@@ -40,8 +40,8 @@ $setup_info['syncml']['tables'][]  = 'egw_syncmlsummary';
 $setup_info['syncml']['tables'][]  = 'egw_syncmldeviceowner';
 
 /* The hooks this app includes, needed for hooks registration */
-$setup_info['syncml']['hooks'][] = 'preferences';
-$setup_info['syncml']['hooks'][] = 'settings';
+$setup_info['syncml']['hooks']['preferences'] = 'syncml_hooks::preferences';
+$setup_info['syncml']['hooks']['settings'] = 'syncml_hooks::settings';
 
 
 /* Dependencies for this app to work */
