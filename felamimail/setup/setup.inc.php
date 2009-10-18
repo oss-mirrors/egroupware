@@ -28,7 +28,7 @@ $setup_info['felamimail']['tables']    = array('egw_felamimail_displayfilter','e
 /* The hooks this app includes, needed for hooks registration */
 $setup_info['felamimail']['hooks'][] = 'preferences';
 #$setup_info['felamimail']['hooks'][] = 'admin';
-$setup_info['felamimail']['hooks'][] = 'settings';
+$setup_info['felamimail']['hooks']['settings'] = 'felamimail_hooks::settings';
 $setup_info['felamimail']['hooks'][] = 'home';
 $setup_info['felamimail']['hooks'][] = 'sidebox_menu';
 $setup_info['felamimail']['hooks'][] = 'notifywindow';
