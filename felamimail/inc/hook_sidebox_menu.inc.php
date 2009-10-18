@@ -9,4 +9,4 @@
  */
 
 ExecMethod('phpgwapi.hooks.register_all_hooks');
-felamimail_hooks::sidebox_menu();
+felamimail_hooks::sidebox_menu(array('location' => 'preferences'));
