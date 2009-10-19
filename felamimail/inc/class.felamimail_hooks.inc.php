@@ -58,12 +58,12 @@ class felamimail_hooks
 			'30' => '30'
 		);
 
-		$prefAskForMove = array(
+		$no_yes = array(
 			'0' => lang('no'),
 			'1' => lang('yes')
 		);
 
-		$prefAllowManageFolders = $prefAskForMove;
+		$prefAllowManageFolders = $no_yes;
 
 		$forwardOptions = array(
 			'asmail' => lang('forward as attachment'),
@@ -153,15 +153,17 @@ class felamimail_hooks
 				'name'   => 'refreshTime',
 				'values' => $refreshTime,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
+				'forced'=> 5,
 			),
 		   'prefaskformove' => array(
 		        'type'   => 'select',
 		        'label'  => 'Do you want to be asked for confirmation before moving selected messages to another folder?',
 		        'name'   => 'prefaskformove',
-		        'values' => $prefAskForMove,
+		        'values' => $no_yes,
 		        'xmlrpc' => True,
-		        'admin'  => False
+		        'admin'  => False,
+		        'forced' => '1',
 		    ),
 		   'prefpreventmanagefolders' => array(
 		        'type'   => 'select',
@@ -169,39 +171,44 @@ class felamimail_hooks
 		        'name'   => 'prefpreventmanagefolders',
 		        'values' => $prefAllowManageFolders,
 		        'xmlrpc' => True,
-		        'admin'  => False
+		        'admin'  => False,
+		        'forced' => '0',
 		    ),
 			'prefpreventforwarding' => array(
 				'type'   => 'select',
 				'label'  => 'Do you want to prevent the editing/setup for forwarding of mails via settings (, even if SIEVE is enabled)?',
 				'name'   => 'prefpreventforwarding',
-				'values' => $prefAskForMove,
+				'values' => $no_yes,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
+				'forced' => '0',
 			),
 			'prefpreventnotificationformailviaemail' => array(
 				'type'   => 'select',
 				'label'  => 'Do you want to prevent the editing/setup of notification by mail to other emailadresses if emails arrive (, even if SIEVE is enabled)?',
 				'name'   => 'prefpreventnotificationformailviaemail',
-				'values' => $prefAskForMove,
+				'values' => $no_yes,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
+				'forced' => '1',
 			),
 			'prefpreventeditfilterrules' => array(
 				'type'   => 'select',
 				'label'  => 'Do you want to prevent the editing/setup of filter rules (, even if SIEVE is enabled)?',
 				'name'   => 'prefpreventeditfilterrules',
-				'values' => $prefAskForMove,
+				'values' => $no_yes,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
+				'forced' => '0',
 			),
 			'prefpreventabsentnotice' => array(
 				'type'   => 'select',
 				'label'  => 'Do you want to prevent the editing/setup of the absent/vacation notice (, even if SIEVE is enabled)?',
 				'name'   => 'prefpreventabsentnotice',
-				'values' => $prefAskForMove,
+				'values' => $no_yes,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
+				'forced' => '0',
 			),
 		    'notavailableautofolders' => array(
 		        'type'   => 'multiselect',
@@ -209,7 +216,8 @@ class felamimail_hooks
 		        'name'   => 'notavailableautofolders',
 		        'values' => $availableAutoFolders,
 		        'xmlrpc' => True,
-		        'admin'  => False
+		        'admin'  => False,
+				'forced' => 'none',
 		    ),
 			'sortOrder' => array(
 				'type'   => 'select',
@@ -217,7 +225,8 @@ class felamimail_hooks
 				'name'   => 'sortOrder',
 				'values' => $sortOrder,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
+				'default'=> '0',	// newest first
 			),
 			'rowOrderStyle' => array(
 				'type'   => 'select',
@@ -225,7 +234,8 @@ class felamimail_hooks
 				'name'   => 'rowOrderStyle',
 				'values' => $rowOrderStyle,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
+				'default'=> 'felamimail',
 			),
 		    'message_forwarding' => array(
 		        'type'   => 'select',
@@ -233,7 +243,8 @@ class felamimail_hooks
 		        'name'   => 'message_forwarding',
 		        'values' => $forwardOptions,
 		        'xmlrpc' => True,
-		        'admin'  => False
+		        'admin'  => False,
+		        'default'=> 'asmail',
 		    ),
 			'mainscreen_showmail' => array(
 				'type'   => 'select',
@@ -241,7 +252,8 @@ class felamimail_hooks
 				'name'   => 'mainscreen_showmail',
 				'values' => $selectOptions,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
+				'default'=> '2',
 			),
 			'mainscreen_showfolders' => array(
 				'type'   => 'multiselect',
@@ -249,7 +261,7 @@ class felamimail_hooks
 				'name'   => 'mainscreen_showfolders',
 				'values' => $folderList,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
 			),
 		    'messages_showassent_0' => array(
 		        'type'   => 'multiselect',
@@ -257,7 +269,8 @@ class felamimail_hooks
 		        'name'   => 'messages_showassent_0',
 		        'values' => $folderList,
 		        'xmlrpc' => True,
-		        'admin'  => False
+		        'admin'  => False,
+		        'forced' => 'none',
 		    ),
 		    'notify_folders' => array(
 				'type'   => 'multiselect',
@@ -265,7 +278,7 @@ class felamimail_hooks
 				'name'   => 'notify_folders',
 				'values' => $folderList,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
 			),
 			'message_newwindow' => array(
 				'type'   => 'select',
@@ -273,7 +286,8 @@ class felamimail_hooks
 				'name'   => 'message_newwindow',
 				'values' => $newWindowOptions,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
+				'forced' => '1',
 			),
 			'deleteOptions' => array(
 				'type'   => 'select',
@@ -281,7 +295,8 @@ class felamimail_hooks
 				'name'   => 'deleteOptions',
 				'values' => $deleteOptions,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
+				'default'=> 'move_to_trash',
 			),
 		    'composeOptions' => array(
 		        'type'   => 'select',
@@ -289,7 +304,8 @@ class felamimail_hooks
 		        'name'   => 'composeOptions',
 		        'values' => $composeOptions,
 		        'xmlrpc' => True,
-		        'admin'  => False
+		        'admin'  => False,
+		        'default'=> 'html',
 		    ),
 			'htmlOptions' => array(
 				'type'   => 'select',
@@ -297,14 +313,16 @@ class felamimail_hooks
 				'name'   => 'htmlOptions',
 				'values' => $htmlOptions,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
+				'forced' => 'only_if_no_text',
 			),
 			'allowExternalIMGs' => array(
 				'type'   => 'check',
 				'label'  => 'allow images from external sources in html emails',
 				'name'   => 'allowExternalIMGs',
 				'xmlrpc' => True,
-				'admin'  => True
+				'admin'  => True,
+				'forced' => true,
 			),
 			'trashFolder' => array(
 				'type'   => 'select',
@@ -312,7 +330,7 @@ class felamimail_hooks
 				'name'   => 'trashFolder',
 				'values' => $trashOptions,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
 			),
 			'sentFolder' => array(
 				'type'   => 'select',
@@ -320,7 +338,7 @@ class felamimail_hooks
 				'name'   => 'sentFolder',
 				'values' => $sentOptions,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
 			),
 			'draftFolder' => array(
 				'type'   => 'select',
@@ -328,7 +346,7 @@ class felamimail_hooks
 				'name'   => 'draftFolder',
 				'values' => $draftOptions,
 				'xmlrpc' => True,
-				'admin'  => False
+				'admin'  => False,
 			),
 		    'templateFolder' => array(
 		        'type'   => 'select',
@@ -336,15 +354,16 @@ class felamimail_hooks
 		        'name'   => 'templateFolder',
 		        'values' => $templateOptions,
 		        'xmlrpc' => True,
-		        'admin'  => False
+		        'admin'  => False,
 		    ),
 			'sieveScriptName' => array(
 				'type'   => 'input',
 				'label'  => 'sieve script name',
 				'name'   => 'sieveScriptName',
 				'xmlrpc' => True,
-				'admin'  => False
-			)
+				'admin'  => False,
+				'forced' => 'felamimail',
+			),
 		);
 	}
 

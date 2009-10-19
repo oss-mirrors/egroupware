@@ -31,10 +31,10 @@ $setup_info['wiki']['tables'][] = 'egw_wiki_sisterwiki';
 $setup_info['wiki']['tables'][] = 'egw_wiki_remote_pages';
 
 /* The hooks this app includes, needed for hooks registration */
-$setup_info['wiki']['hooks'][] = 'admin';
-$setup_info['wiki']['hooks'][] = 'sidebox_menu';
+$setup_info['wiki']['hooks']['admin'] = 'wiki_hooks::admin';
+$setup_info['wiki']['hooks']['sidebox_menu'] = 'wiki_hooks::sidebox_menu';
 $setup_info['wiki']['hooks'][] = 'config_validate';
-$setup_info['wiki']['hooks'][] = 'settings';
+$setup_info['wiki']['hooks']['settings'] = 'wiki_hooks::settings';
 $setup_info['wiki']['hooks']['search_link'] = 'wiki_bo::search_link';
 
 /* Dependencies for this app to work */
