@@ -493,7 +493,7 @@ class syncml_hooks
 	static function preferences($hook_data)
 	{
 		// Only Modify the $file and $title variables.....
-		$title = $appname;
+		$title = $appname = 'syncml';
 		$file = array(
 			'Preferences' => $GLOBALS['egw']->link('/index.php', 'menuaction=preferences.uisettings.index&appname=' . $appname),
 			'Devices' => $GLOBALS['egw']->link('/index.php', 'menuaction=syncml.devices.listDevices'),
