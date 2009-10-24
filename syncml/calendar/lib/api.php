@@ -633,9 +633,8 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 					__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 				// The pseudo exception was propagated to a real exception
-				$ts = $state->getChangeTS($type, 'calendar-' . $eventID);
-				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $eventID, 'modify', $ts);
 				$ts = $state->getServerAnchorLast($type) + 1;
+				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $eventID, 'modify', $ts);
 				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $_id, 'delete', $ts);
 				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', $ts);
 			}
