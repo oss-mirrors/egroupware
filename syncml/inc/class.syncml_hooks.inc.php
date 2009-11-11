@@ -30,7 +30,7 @@ class syncml_hooks
 			5 => lang('Enforce Server'),
 		);
 
-		$selectYesNot = array(
+		$selectYesNo = array(
 			0 => lang('no'),
 			1 => lang('yes')
 		);
@@ -38,6 +38,9 @@ class syncml_hooks
 		$devices_Entries = array();
 		if (!$hook_data['setup'])
 		{
+			$tzs = array(0 => 'Use Event TZ');
+			$tzs += egw_time::getTimezones();
+
 			require_once(EGW_INCLUDE_ROOT.'/syncml/inc/class.devices.inc.php');
 
 			$user = $GLOBALS['egw_info']['user']['account_id'];
@@ -85,7 +88,8 @@ class syncml_hooks
 				$me_name = 'maxEntries-' . $device['owner_deviceid'];
 				$ue_name = 'uidExtension-' . $device['owner_deviceid'];
 				$nba_name = 'nonBlockingAllday-' . $device['owner_deviceid'];
-				$device_Entry[$name] = array(
+				$tz_name = 'tzid-' . $device['owner_deviceid'];
+				$device_Entry[$device['owner_deviceid']] = array(
 					$intro_name => array(
 						'type'  => 'subsection',
 						'title' =>  $label,
@@ -119,9 +123,19 @@ class syncml_hooks
 						'default'	=> 0,
 						'xmlrpc'	=> True,
 						'admin'		=> False,
-					)
+					),
+					$tz_name => array(
+						'type'   => 'select',
+						'label'  => 'Time zone',
+						'name'   => $tz_name,
+						'values' => $tzs,
+						'help'   => 'Please select the timezone of your device.',
+						'xmlrpc' => True,
+						'admin'  => False,
+						'default'=> null,
+					),
 				);
-				$devices_Entries += $device_Entry[$name];
+				$devices_Entries += $device_Entry[$device['owner_deviceid']];
 			}
 		}
 		/* Settings array for SyncML */
@@ -478,7 +492,8 @@ class syncml_hooks
 				'title' => '<h2>' . lang('Device Specific Seetings')  . '</h2>' .
 				lang('For <b>Max Entries</b> = 0 either <i>maxMsgSize</i> will be used or the default value 10.<br/>' .
 					'With <b>Non Blocking Allday Events</b> set allday events will be nonblocking when imported from this device.<br/>' .
-				'The <b>UID Extension</b> enables the preservation of vCalandar UIDs by appending them to <i>Description</i> field for this device.'),
+					'The <b>UID Extension</b> enables the preservation of vCalandar UIDs by appending them to <i>Description</i> field for this device.<br/'.
+					'The selected <b>Time zone</b> is used for calendar event syncronization with the device. If not set, the timezones of the events are used.'),
 				'xmlrpc' => False,
 				'admin'  => False
 			),
