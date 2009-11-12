@@ -77,10 +77,9 @@ class syncml_hooks
 				$show_info_cats[$cat['id']] = $cat['name'];
 			}
 
-			// maxEntries for the user's devices
+			// Device specific settings
 			$devices =& CreateObject('syncml.devices');
 			$user_devices = $devices->getAllUserDevices();
-			$device_Entry = array();
 			foreach ($user_devices as $device)
 			{
 				$label = '<b>'. lang('Settings for') . ' ' . $device['dev_manufacturer'] . ' ' . $device['dev_model'] . ' v' . $device['dev_swversion'] . '&nbsp;</b>';
@@ -89,7 +88,7 @@ class syncml_hooks
 				$ue_name = 'uidExtension-' . $device['owner_deviceid'];
 				$nba_name = 'nonBlockingAllday-' . $device['owner_deviceid'];
 				$tz_name = 'tzid-' . $device['owner_deviceid'];
-				$device_Entry[$device['owner_deviceid']] = array(
+				$device_Entry = array(
 					$intro_name => array(
 						'type'  => 'subsection',
 						'title' =>  $label,
@@ -135,7 +134,7 @@ class syncml_hooks
 						'default'=> null,
 					),
 				);
-				$devices_Entries += $device_Entry[$device['owner_deviceid']];
+				$devices_Entries += $device_Entry;
 			}
 		}
 		/* Settings array for SyncML */
