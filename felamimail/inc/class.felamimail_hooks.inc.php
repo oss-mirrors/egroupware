@@ -114,6 +114,9 @@ class felamimail_hooks
 			'outlook'	=> 'Outlook',
 		);
 
+		// otherwise we get warnings during setup
+		if (!is_array($folderList)) $folderList = array();
+
 		$trashOptions = array_merge(
 			array(
 				'none' => lang("Don't use Trash")
