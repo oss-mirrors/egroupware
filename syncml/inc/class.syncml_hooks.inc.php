@@ -116,7 +116,7 @@ class syncml_hooks
 					),
 					$nba_name => array(
 						'type'		=> 'check',
-						'label'		=> 'Non Blocking Allday Envents',
+						'label'		=> 'Non Blocking Allday Events',
 						'name'		=> $nba_name,
 						'values'    => $selectYesNo,
 						'default'	=> 0,
@@ -545,7 +545,7 @@ class syncml_hooks
 				'title' => '<h2>' . lang('Device Specific Seetings')  . '</h2>' .
 				lang('For <b>Max Entries</b> = 0 either <i>maxMsgSize</i> will be used or the default value 10.<br/>' .
 					'With <b>Non Blocking Allday Events</b> set allday events will be nonblocking when imported from this device.<br/>' .
-					'The <b>UID Extension</b> enables the preservation of vCalandar UIDs by appending them to <i>Description</i> field for this device.<br/'.
+					'The <b>UID Extension</b> enables the preservation of vCalandar UIDs by appending them to <i>Description</i> field for this device.<br/>' .
 					'The selected <b>Time zone</b> is used for calendar event syncronization with the device. If not set, the timezones of the events are used.'),
 				'xmlrpc' => False,
 				'admin'  => False
