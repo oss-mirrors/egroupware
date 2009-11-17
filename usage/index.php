@@ -40,11 +40,12 @@ include('../header.inc.php');
 
 try
 {
+	$usage = new usage_bo();
 	if (isset($_POST['exec']))
 	{
-		echo ExecMethod('usage.usage_bo.receive');
+		echo $usage->receive();
 	}
-	echo "<h2>Usage statistics get currently only collected, there's not yet any statistic to display - come back soon.</h2>\n";
+	echo $usage->statistic();
 }
 catch(Exception $e)
 {

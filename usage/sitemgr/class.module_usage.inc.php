@@ -36,19 +36,21 @@ class module_usage extends Module
 	 * @param array $properties
 	 * @return string
 	 */
-	function get_content(array &$arguments,array $properties)
+	function get_content(array &$arguments,$properties)
 	{
 		try
 		{
+			$usage = new usage_bo();
 			if (isset($_POST['exec']))
 			{
-				echo ExecMethod('usage.usage_bo.receive');
+				$content = $usage->receive();
 			}
-			echo "<h2>Usage statistics get currently only collected, there's not yet any statistic to display - come back soon.</h2>\n";
+			$content .= $usage->statistic();
 		}
 		catch(Exception $e)
 		{
-			echo "<groupbox><legend style='font-size:150%; font-weight: bold;'> ".lang('Error').": </ledgend><h1>".$e->getMessage()."</h1></groupbox>\n";
+			$content .= "<groupbox><legend style='font-size:150%; font-weight: bold;'> ".lang('Error').": </legend><h1>".$e->getMessage()."</h1></groupbox>\n";
 		}
+		return $content;
 	}
 }

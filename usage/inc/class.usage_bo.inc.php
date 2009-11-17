@@ -142,4 +142,15 @@ class usage_bo extends so_sql
 			throw new egw_exception_wrong_userinput(lang("This submit ID already submitted it's monthly report! --> report ignored"));
 		}
 	}
+
+	/**
+	 * Display statistic
+	 *
+	 * @return string
+	 */
+	public function statistic()
+	{
+		return "<h2>Usage statistics get currently only collected, there's not yet any statistic to display.</h2>\n<h2>Come back soon ...</h2>\n".
+			"<h2>".$this->db->select(self::MAIN_TABLE,'COUNT(*)','',__LINE__,__FILE__,false,'',self::APP_NAME)->fetchColumn()." submissions to the statistic so far.</h2>\n";
+	}
 }
