@@ -70,7 +70,7 @@ class usage_bo extends so_sql
 			'usage_os' => $submitted['os'],
 			'usage_php' => $submitted['php'],
 			'usage_install_type' => $submitted['install_type'],
-			'usage_ip_hash' => sha1($_SERVER['REMOTE_ADDR']),
+			'usage_ip_hash' => sha1(egw_session::getuser_ip()),
 			'usage_submit_id' => $submitted['submit_id'] ? $submitted['submit_id'] : null,
 		);
 		if (($err = $this->save()))
@@ -128,11 +128,11 @@ class usage_bo extends so_sql
 		}
 		//_debug_array($submitted);
 		if (($last_submission = $this->db->select(self::MAIN_TABLE,'MAX(usage_submitted)',array(
-			'usage_ip_hash' => sha1($_SERVER['REMOTE_ADDR']),
+			'usage_ip_hash' => sha1($ip=egw_session::getuser_ip()),
 		),__LINE__,__FILE__,false,'',self::APP_NAME)->fetchColumn()) && ($last_submission = strtotime($last_submission)) &&
 			time() - $last_submission < self::MAX_SUBMISSION_RATE_IP)
 		{
-			throw new egw_exception_wrong_userinput(lang("This IP address already submitted a report! --> report ignored"));
+			throw new egw_exception_wrong_userinput(lang("This IP address '$ip' already submitted a report! --> report ignored"));
 		}
 		if (!empty($submitted['submit_id']) && ($last_submission = $this->db->select(self::MAIN_TABLE,'MAX(usage_submitted)',array(
 			'usage_submit_id' => $submitted['submit_id'],
