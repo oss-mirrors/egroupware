@@ -205,6 +205,24 @@ class syncml_hooks
 				'admin'  => False,
 				'default' => 1
 			),
+			'./card' => array(
+				'type'   => 'select',
+				'label'  => './card',
+				'name'   => './card',
+				'values' => $show_entries,
+				'xmlrpc' => True,
+				'admin'  => False,
+				'default' => 1
+			),
+			'card' => array(
+				'type'   => 'select',
+				'label'  => 'card',
+				'name'   => 'card',
+				'values' => $show_entries,
+				'xmlrpc' => True,
+				'admin'  => False,
+				'default' => 1
+			),
 			'./tasks' => array(
 				'type'   => 'select',
 				'label'  => './tasks',
@@ -218,6 +236,24 @@ class syncml_hooks
 				'type'   => 'select',
 				'label'  => 'tasks',
 				'name'   => 'tasks',
+				'values' => $show_entries,
+				'xmlrpc' => True,
+				'admin'  => False,
+				'default' => 1
+			),
+			'./jobs' => array(
+				'type'   => 'select',
+				'label'  => './jobs',
+				'name'   => './jobs',
+				'values' => $show_entries,
+				'xmlrpc' => True,
+				'admin'  => False,
+				'default' => 1
+			),
+			'jobs' => array(
+				'type'   => 'select',
+				'label'  => 'jobs',
+				'name'   => 'jobs',
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
@@ -344,6 +380,24 @@ class syncml_hooks
 				'type'   => 'select',
 				'label'  => 'siftasks',
 				'name'   => 'siftasks',
+				'values' => $show_entries,
+				'xmlrpc' => True,
+				'admin'  => False,
+				'default' => 1
+			),
+			'./stask' => array(
+				'type'   => 'select',
+				'label'  => './stask',
+				'name'   => './stask',
+				'values' => $show_entries,
+				'xmlrpc' => True,
+				'admin'  => False,
+				'default' => 1
+			),
+			'stask' => array(
+				'type'   => 'select',
+				'label'  => 'stask',
+				'name'   => 'stask',
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
