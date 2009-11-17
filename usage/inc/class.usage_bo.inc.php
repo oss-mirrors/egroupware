@@ -32,7 +32,7 @@ class usage_bo extends so_sql
 	/**
 	 * Minimal time in seconds between two submission for the same IP
 	 */
-	const MAX_SUBMISSION_RATE_IP = 86400;	// = 1 day
+	const MAX_SUBMISSION_RATE_IP = 3600;	// = 1 hour
 
 	/**
 	 * Minimal time in seconds between two submission for the same submit ID
