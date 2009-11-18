@@ -102,6 +102,7 @@ wiki menu	wiki	hu	Wiki menü
 wiki startpage	wiki	hu	Wiki kezdőoldal
 writable by	wiki	hu	Írhatja
 yes always	admin	hu	Igen, mindig
+yes with navbar	admin	hu	Igen, a menüben
 you have been denied access to this site.	wiki	hu	A webhely elérése megtagadva.
 you have entered an invalid user name.	wiki	hu	Érvénytelen felhasználónév lett megadva.
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	hu	Túllépte az adott időszakra vonatkozó oldalletöltések számát. Kérjük látogasson vissza később.
