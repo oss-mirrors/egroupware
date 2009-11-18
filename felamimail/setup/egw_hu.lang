@@ -13,7 +13,7 @@ add script	felamimail	hu	Szkript hozzáadása
 add to %1	felamimail	hu	Add hozzá ehhez: %1
 add to address book	felamimail	hu	Címjegyzékhez hozzáad
 add to addressbook	felamimail	hu	címjegyzékhez hozzáad
-adding file to message. please wait!	felamimail	hu	Fájl hozzáadása az üzenethez. Kérem várjon.
+adding file to message. please wait!	felamimail	hu	Fájl hozzáadása az üzenethez. Kérlek várj.
 additional info	felamimail	hu	További információ
 address book	felamimail	hu	Címjegyzék
 address book search	felamimail	hu	Címjegyzékben keresés
@@ -35,7 +35,7 @@ authentication required	felamimail	hu	hitelesítés szükséges
 auto refresh folder list	felamimail	hu	Mappalista automatikus frissítése
 back to folder	felamimail	hu	Vissza a mappába
 bad login name or password.	felamimail	hu	Hibás belépési név vagy jelszó.
-bad or malformed request. server responded: %s	felamimail	hu	Hibás vagy hibás kérés. Szerver válasza: %s
+bad or malformed request. server responded: %s	felamimail	hu	Hibás vagy sérült kérés. Szerver válasza: %s
 bad request: %s	felamimail	hu	Hibás kérés: %s
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	hu	A megadott feltételek alapján a bejövő levelek különböző színű háttérrel jelennek meg a listán. Ez nagyban megkönnyíti a feladók azonosítását, különösen levelezőlista esetén.
 bcc	felamimail	hu	BCC
@@ -50,8 +50,8 @@ change folder	felamimail	hu	Mappa változtatása
 check message against next rule also	felamimail	hu	üzenet ellenőrzése a következő szabály szerint is
 checkbox	felamimail	hu	Jelölőnégyzet
 clear search	felamimail	hu	keresés törlése
-click here to log back in.	felamimail	hu	Kattintson ide a bejelentkezéshez.
-click here to return to %1	felamimail	hu	Kattintson ide hogy %1
+click here to log back in.	felamimail	hu	Kattints ide a bejelentkezéshez.
+click here to return to %1	felamimail	hu	Kattints ide hogy %1
 close all	felamimail	hu	összes bezárása
 close this page	felamimail	hu	lap bezárása
 close window	felamimail	hu	Ablak bezárása
@@ -67,7 +67,7 @@ contact not found!	felamimail	hu	Nem találom a címzettet!
 contains	felamimail	hu	tartalmaz
 could not complete request. reason given: %s	felamimail	hu	Kérést nem lehet teljesíteni. Az ok: %s
 could not import message:	felamimail	hu	Nem lehetséges az üzenet importálása:
-could not open secure connection to the imap server. %s : %s.	felamimail	hu	Nem lehetséges titkos csatornán kapcsolódni az IMAP szerverhez. %s : %s.
+could not open secure connection to the imap server. %s : %s.	felamimail	hu	Nem lehetséges biztonságosan kapcsolódni az IMAP szerverhez. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	felamimail	hu	CRAM-MD5 vagy DIGEST-MD5 használatához az Auth_SASL csomagot telepíteni kell.
 create	felamimail	hu	Létrehoz
 create folder	felamimail	hu	Mappa létrehozása
@@ -111,7 +111,7 @@ do not use trash	felamimail	hu	Ne használd az 'Szemetes' mappát
 do not validate certificate	felamimail	hu	ne ellenőrizze a tanúsítványt
 do you really want to delete the '%1' folder?	felamimail	hu	Valóban törölni kívánja a '%1' mappát?
 do you really want to delete the selected accountsettings and the assosiated identity.	felamimail	hu	Valóban törölni szeretnéd a kijelölt fiókot és a hozzá tartozó beállításokat?
-do you really want to delete the selected signatures?	felamimail	hu	Valóban törölni kívánja a kiválasztott aláírást?
+do you really want to delete the selected signatures?	felamimail	hu	Valóban törölni szeretnéd a kiválasztott aláírást?
 do you really want to move the selected messages to folder:	felamimail	hu	Valóban át szeretnéd mozgatni a kijelölt üzenetet a következő mappába:
 do you want to be asked for confirmation before moving selected messages to another folder?	felamimail	hu	Szeretnél megerősítést a kijelölt üzenetek áthelyezése előtt?
 do you want to prevent the editing/setup for forwarding of mails via settings (, even if sieve is enabled)?	felamimail	hu	Meg szeretnéd akadályozni a továbbított üzenetek módosítását? (engedélyezett SIEVE esetén is)
@@ -125,7 +125,7 @@ does not match	felamimail	hu	nem egyezik
 does not match regexp	felamimail	hu	nem egyezik a reguláris kifejezéssel
 don't use draft folder	felamimail	hu	Ne használd a 'Vázlat' mappát
 don't use sent	felamimail	hu	Ne használja a 'Elküldött' mappát
-don't use template folder	felamimail	hu	Ne használja a ideiglenes mappát
+don't use template folder	felamimail	hu	Ne használja a "Sablonok" mappát
 don't use trash	felamimail	hu	Ne használja a 'Szemetes' mappát
 dont strip any tags	felamimail	hu	Címkék meghagyása
 down	felamimail	hu	Le
@@ -150,10 +150,10 @@ emailaddress	felamimail	hu	E-Mail cím
 empty trash	felamimail	hu	Szemetes ürítése
 enable	felamimail	hu	engedélyez
 encrypted connection	felamimail	hu	titkosított kapcsolat
-enter your default mail domain ( from: user@domain )	admin	hu	Adja meg az alapértelmezett levelező tartományát (a felhasználó@tartomány-ból)
-enter your imap mail server hostname or ip address	admin	hu	Adja meg az IMAP szerver nevét vagy IP címét
-enter your sieve server hostname or ip address	admin	hu	Adja meg a SIEVE szerver nevét vagy IP címét
-enter your sieve server port	admin	hu	Adja meg a SIEVE szerver portcímét
+enter your default mail domain ( from: user@domain )	admin	hu	Add meg az alapértelmezett levelező tartományt (a felhasználó@tartomány-ból)
+enter your imap mail server hostname or ip address	admin	hu	Add meg az IMAP szerver nevét vagy IP címét
+enter your sieve server hostname or ip address	admin	hu	Add meg a SIEVE szerver nevét vagy IP címét
+enter your sieve server port	admin	hu	Add meg a SIEVE szerver portcímét
 enter your smtp server hostname or ip address	admin	hu	Az SMTP-kiszolgáló hosztneve vagy IP-címe
 enter your smtp server port	admin	hu	Az SMTP-kiszolgáló portszáma
 error	felamimail	hu	Hiba
@@ -177,7 +177,7 @@ filter active	felamimail	hu	Szűrő aktív
 filter name	felamimail	hu	Szűrő neve
 filter rules	common	hu	Szűrési szabály
 first name	felamimail	hu	Vezetéknév
-flagged	felamimail	hu	bejelölt
+flagged	felamimail	hu	megjelölt
 flags	felamimail	hu	Címkék
 folder	felamimail	hu	mappa
 folder acl	felamimail	hu	Mappa ACL
@@ -207,7 +207,7 @@ from(a->z)	felamimail	hu	Feladó (A->Z)
 from(z->a)	felamimail	hu	Feladó (Z->A)
 full name	felamimail	hu	Teljes Neve
 greater than	felamimail	hu	nagyobb mint
-have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	hu	Keresse fel a <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> oldalt hogy többet tudjon meg a Squirrelmail-ről.<br>
+have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	hu	Keresd fel a <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> oldalt további információkért a Squirrelmail-ről.<br>
 header lines	felamimail	hu	Email fejléce
 hide header	felamimail	hu	Fejléc elrejtése
 hostname / address	felamimail	hu	gazdagépnév / cím
@@ -225,7 +225,7 @@ if shown, which folders should appear on main screen	felamimail	hu	a főképerny
 if subject contains	felamimail	hu	ha a tárgy tartalmazza
 if to contains	felamimail	hu	ha a címzett tartalmazza
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	hu	SSL vagy TLS használatához a PHP openssl bővítményét telepíteni kell.
-illegal folder name.  please select a different name.	felamimail	hu	Érvénytelen mappanév. Kérem válasszon egy másik nevet.
+illegal folder name.  please select a different name.	felamimail	hu	Érvénytelen mappanév. Kérlek válassz másik nevet.
 imap	felamimail	hu	IMAP
 imap server	felamimail	hu	IMAP szerver
 imap server address	felamimail	hu	IMAP szerver címe
@@ -264,14 +264,14 @@ mail server login type	admin	hu	Mail szerver bejelentkezés típusa
 mail settings	felamimail	hu	Levelezési beállítások
 mainmessage	felamimail	hu	főüzenet
 manage email accounts and identities	common	hu	felhasználói fiókók és azonosítók szerkesztése
-manage emailaccounts	common	hu	EMail azonosítók kezelése
-manage emailfilter / vacation	preferences	hu	Email szűrő/szabadság kezelése
+manage emailaccounts	common	hu	E-mail azonosítók kezelése
+manage emailfilter / vacation	preferences	hu	E-mail szűrő/szabadság kezelése
 manage folders	common	hu	Mappák kezelése
 manage sieve	common	hu	Sieve szkriptek kezelése
 manage signatures	felamimail	hu	Aláírások kezelése
 mark as deleted	felamimail	hu	Törlésre megjelöl
 mark messages as	felamimail	hu	Kiválasztott üzenetek címkézése mint
-mark selected as flagged	felamimail	hu	Kiválasztott üzenetek címkéje mint "Jelölt"
+mark selected as flagged	felamimail	hu	Kiválasztott üzenetek címkéje mint "Megjelölt"
 mark selected as read	felamimail	hu	Kiválasztott üzenetek megjelölése mint "Olvasott"
 mark selected as unflagged	felamimail	hu	Kiválasztott üzenetek címkézése mint "Jelöletlen"
 mark selected as unread	felamimail	hu	Kiválasztott üzenetek megjelölése mint "Olvasatlan"
@@ -296,17 +296,17 @@ new filter	felamimail	hu	Új szűrő
 next	felamimail	hu	Következő
 next message	felamimail	hu	következő üzenet
 no active imap server found!!	felamimail	hu	Atkív IMAP szerver nem található!
-no address to/cc/bcc supplied, and no folder to save message to provided.	felamimail	hu	Nincs címzett illetve mappa az üzenet mentéséhez beállítva.
+no address to/cc/bcc supplied, and no folder to save message to provided.	felamimail	hu	Nincs címzett és mappa az üzenet mentéséhez beállítva.
 no encryption	felamimail	hu	titkosítás  nélkül
 no filter	felamimail	hu	Szűrő nélkül
 no folders	felamimail	hu	nincs mappa
 no folders found	felamimail	hu	Mappa nem található
-no folders were found to subscribe to!	felamimail	hu	Nincs mappa, melyre feliratkozhatna!
-no folders were found to unsubscribe from!	felamimail	hu	Nincs mappa, melyről leíratkozhatna!
+no folders were found to subscribe to!	felamimail	hu	Nincs mappa melyre feliratkozhatna!
+no folders were found to unsubscribe from!	felamimail	hu	Nincs mappa melyről leíratkozhatna!
 no highlighting is defined	felamimail	hu	Színkiemelés nincs definiálva
 no imap server host configured!!	felamimail	hu	IMAP szerver nincs beállítva.
 no message returned.	felamimail	hu	Nincs visszaadott üzenet.
-no messages found...	felamimail	hu	üzenetek nem találhatók...
+no messages found...	felamimail	hu	üzenetek nem találhatóak...
 no messages selected, or lost selection. changing to folder	felamimail	hu	Nincs üzenet kiválasztva, átlépek a következő mappába:
 no messages were selected.	felamimail	hu	Nincsenek kiválasztva üzenetek.
 no plain text part found	felamimail	hu	nem található egyszerű szöveges tartalom
@@ -337,9 +337,9 @@ outgoing mail server(smtp)	felamimail	hu	kimenő levelező szerver
 participants	felamimail	hu	Résztvevők
 personal information	felamimail	hu	Személyes információk
 please ask the administrator to correct the emailadmin imap server settings for you.	felamimail	hu	Kérlek lépj kapcsolatban a rendszergazdával az IMAP szerver beállításaival kapcsolatban.
-please select a address	felamimail	hu	Kérem válasszon egy címet
-please select the number of days to wait between responses	felamimail	hu	Kérem adjon meg egy számot, hogy hány napot várjon a válaszok között
-please supply the message to send with auto-responses	felamimail	hu	Kérem adjon meg egy üzenetet, amit az automata válaszadó fog a beérkező üzenetekre elküldeni
+please select a address	felamimail	hu	Kérlek válassz címet
+please select the number of days to wait between responses	felamimail	hu	Kérlek add hány napot várjon a válaszok között
+please supply the message to send with auto-responses	felamimail	hu	Kérlek add meg az automatikus válaszüzenetet
 port	felamimail	hu	portcím
 posting	felamimail	hu	kézbesítés
 previous	felamimail	hu	előző
@@ -420,12 +420,12 @@ subscribed successfully!	felamimail	hu	Sikeres feliratkozás!
 sun	felamimail	hu	Va
 system signature	felamimail	hu	rendszer aláírás
 table of contents	felamimail	hu	Tartalomjegyzék
-template folder	felamimail	hu	piszkozat mappa
-templates	felamimail	hu	Piszkozatok
+template folder	felamimail	hu	Sablonok mappa
+templates	felamimail	hu	Sablonok
 text only	felamimail	hu	Csak szöveg
 text/plain	felamimail	hu	szöveg
-the connection to the imap server failed!!	felamimail	hu	Sikertelen csatlakozás az IMAP szerverhez!!
-the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	hu	Az IMAP szerver úgy tűnik nem támogatja a kiválasztott hitelesítést. Lépjen kapcsolatba a rendszergazdával.
+the connection to the imap server failed!!	felamimail	hu	Sikertelen csatlakozás az IMAP szerverhez!
+the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	hu	Az IMAP szerver úgy tűnik nem támogatja a kiválasztott hitelesítést. Tovább információért lLépj kapcsolatba a rendszergazdával.
 the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	hu	A feladó kéri tértivevényt küldését amely jelzi, hogy megkaptad az üzenetet. Szeretnéd hogy elküldjem?
 the mimeparser can not parse this message.	felamimail	hu	A MIME feldolgozó nem tudta feldolgozni ezt az üzenetet.
 then	felamimail	hu	AKKOR
@@ -461,7 +461,7 @@ unsubscribed successfully!	felamimail	hu	Sikeres leiratkozás!
 up	felamimail	hu	Fel
 updating message status	felamimail	hu	üzenet állapotok frissítése
 updating view	felamimail	hu	nézet frissítése
-use <a href="%1">emailadmin</a> to create profiles	felamimail	hu	Használja az <a href="%1">Email Adminisztrációt</a> profilkészítésre
+use <a href="%1">emailadmin</a> to create profiles	felamimail	hu	Használd az <a href="%1">Email Adminisztrációt</a> profilkészítésre
 use a signature	felamimail	hu	Aláírás használata
 use a signature?	felamimail	hu	Használjuk az aláírást?
 use addresses	felamimail	hu	Címek használata
