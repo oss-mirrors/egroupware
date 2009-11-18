@@ -22,11 +22,26 @@ function compressFolder() {
 }
 
 function deleteMessages(_messageList) {
+	var Check = true;
+	var cbAllMessages = document.getElementById('selectAllMessagesCheckBox').checked;
 	resetMessageSelect();
 
-	setStatusMessage('<span style="font-weight: bold;">' + lang_deleting_messages + '</span>');
-	document.getElementById('divMessageList').innerHTML = '';
-	xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteMessages",_messageList);
+	if (cbAllMessages == true) Check = confirm(lang_confirm_all_messages);
+	if (cbAllMessages == true && Check == true)
+	{
+		_messageList = 'all';
+	}
+	if (Check == true) {
+		setStatusMessage('<span style="font-weight: bold;">' + lang_deleting_messages + '</span>');
+		document.getElementById('divMessageList').innerHTML = '';
+		xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteMessages",_messageList);
+	} else {
+		for(i=0; i< document.forms.formMessageList.elements.length; i++) {
+			if(document.forms.formMessageList.elements[i].checked) {
+				document.forms.formMessageList.elements[i].checked = false;
+			}
+		}
+	}
 }
 
 function displayMessage(_url,_windowName) {
@@ -104,10 +119,16 @@ function onNodeSelect(_nodeID) {
 	if(tree.getUserData(_nodeID, 'folderName')) {
 		if(document.getElementsByName("folderAction")[0].value == "moveMessage") {
 			if (prefAskForMove == 1) Check = confirm(lang_askformove + tree.getUserData(_nodeID, 'folderName'));
+			if (Check == true && document.getElementById('selectAllMessagesCheckBox').checked == true) Check = confirm(lang_confirm_all_messages);
 			if (Check == true)
 			{
-				resetMessageSelect();
-				formData = xajax.getFormValues('formMessageList');
+				if (document.getElementById('selectAllMessagesCheckBox').checked == true) {
+					resetMessageSelect();
+					formData = 'all';
+				} else {
+					resetMessageSelect();
+					formData = xajax.getFormValues('formMessageList');
+				}
 				setStatusMessage(movingMessages +' <span style="font-weight: bold;">'+ tree.getUserData(_nodeID, 'folderName') +'</span>');
 				document.getElementById('divMessageList').innerHTML = '';
 				xajax_doXMLHTTP("felamimail.ajaxfelamimail.moveMessages", _nodeID, formData);
@@ -135,7 +156,8 @@ function quickSearch() {
 	var status;
 
 	resetMessageSelect();
-
+	//disable select allMessages in Folder Checkbox, as it is not implemented for filters
+	document.getElementById('selectAllMessagesCheckBox').disabled  = true;
 	setStatusMessage('<span style="font-weight: bold;">' + lang_updating_view + '</span>');
 	document.getElementById('divMessageList').innerHTML = '';
 
@@ -144,8 +166,15 @@ function quickSearch() {
 	searchType = document.getElementById('searchType').value;
 	searchString = document.getElementById('quickSearch').value;
 	status 	= document.getElementById('status').value;
+	if (searchString+'grrr###'+status == 'grrr###any') document.getElementById('selectAllMessagesCheckBox').disabled  = false;
 
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.quickSearch', searchType, searchString, status);
+}
+
+function selectFolderContent(inputBox, _refreshTimeOut) {
+	maxMessages = 0;
+
+	selectAll(inputBox, _refreshTimeOut);
 }
 
 function selectAll(inputBox, _refreshTimeOut) {
@@ -197,6 +226,7 @@ function toggleFolderRadio(inputBox, _refreshTimeOut) {
 		fm_startTimerMessageListUpdate(1800000);
 	} else {
 		document.getElementById('messageCheckBox').checked = false;
+		document.getElementById('selectAllMessagesCheckBox').checked = false;
 		while (folderFunctions.hasChildNodes()) {
 		    folderFunctions.removeChild(folderFunctions.lastChild);
 		}
@@ -209,7 +239,8 @@ function toggleFolderRadio(inputBox, _refreshTimeOut) {
 
 function extendedSearch(_selectBox) {
 	resetMessageSelect();
-
+	//disable select allMessages in Folder Checkbox, as it is not implemented for filters
+	document.getElementById('selectAllMessagesCheckBox').disabled  = true;
 	setStatusMessage('<span style="font-weight: bold;">Applying filter '+_selectBox.options[_selectBox.selectedIndex].text+'</span>');
 	document.getElementById('divMessageList').innerHTML = '';
 
@@ -220,22 +251,39 @@ function extendedSearch(_selectBox) {
 
 function flagMessages(_flag)
 {
+	var Check=true;
 	var _messageList;
+	var cbAllMessages = document.getElementById('selectAllMessagesCheckBox').checked;
     resetMessageSelect();
-    _messageList = xajax.getFormValues('formMessageList');
+	if (cbAllMessages == true) Check = confirm(lang_confirm_all_messages);
+	if (cbAllMessages == true && Check == true)
+	{
+		_messageList = 'all';
+	} else {
+	    _messageList = xajax.getFormValues('formMessageList');
+	}
 
 	//alert(_messageList);
 
-	setStatusMessage('<span style="font-weight: bold;">' + lang_updating_message_status + '</span>');
-	document.getElementById('divMessageList').innerHTML = '';
-	xajax_doXMLHTTP("felamimail.ajaxfelamimail.flagMessages", _flag, _messageList);
-	
-	fm_startTimerMessageListUpdate(refreshTimeOut);
+	if (Check == true) 
+	{
+		setStatusMessage('<span style="font-weight: bold;">' + lang_updating_message_status + '</span>');
+		xajax_doXMLHTTP("felamimail.ajaxfelamimail.flagMessages", _flag, _messageList);
+		document.getElementById('divMessageList').innerHTML = '';
+		fm_startTimerMessageListUpdate(refreshTimeOut);
+	} else {
+		for(i=0; i< document.forms.formMessageList.elements.length; i++) {
+			if(document.forms.formMessageList.elements[i].checked) {
+				document.forms.formMessageList.elements[i].checked = false;
+			}
+		}
+	}
 }
 
 function resetMessageSelect()
 {
 	document.getElementById('messageCheckBox').checked = false;
+	document.getElementById('selectAllMessagesCheckBox').checked = false;
 	checkedCounter = 0;
 	folderFunctions = document.getElementById('folderFunction');
 	
@@ -344,6 +392,10 @@ function fm_readMessage(_url, _windowName, _node) {
 
 function fm_clearSearch() {
 	var inputQuickSearch = document.getElementById('quickSearch');
+	var status 	= document.getElementById('status').value;
+
+	//enable select allMessages in Folder Checkbox again
+	if (status == 'any') document.getElementById('selectAllMessagesCheckBox').disabled  = false;
 
 	if(inputQuickSearch.value != '') {
 		inputQuickSearch.value = '';

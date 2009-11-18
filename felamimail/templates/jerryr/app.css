@@ -336,6 +336,9 @@ A.sieveRowInActive
 .dtree .clip {
 	overflow: hidden;
 }
+.dtree table, .dtree tr, .dtree td {
+       border: none;
+}
 
 tr.navbarBackground {
 	background-color:#dddddd;

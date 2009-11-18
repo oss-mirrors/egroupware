@@ -20,6 +20,7 @@ class felamimail_hooks
 	 */
 	static function settings($hook_data)
 	{
+		unset($GLOBALS['egw_info']['user']['preferences']['common']['auto_hide_sidebox']);
 		if (!$hook_data['setup'])	// does not work on setup time
 		{
 			$folderList = array();
@@ -376,6 +377,7 @@ class felamimail_hooks
 	 */
 	static function preferences($hook_data)
 	{
+		unset($GLOBALS['egw_info']['user']['preferences']['common']['auto_hide_sidebox']);
 		// Only Modify the $file and $title variables.....
 		$title = $appname = 'felamimail';
 		$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
@@ -414,19 +416,95 @@ class felamimail_hooks
 	 */
 	static function sidebox_menu($hook_data)
 	{
+		//error_log(__METHOD__);
+		// always show the side bar
+		unset($GLOBALS['egw_info']['user']['preferences']['common']['auto_hide_sidebox']);
 		$appname = 'felamimail';
 		$menu_title = $GLOBALS['egw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
-		$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
-		$linkData = array(
-			'menuaction'    => 'felamimail.uicompose.compose'
-		);
+		$file = array();
+		$bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+		$preferences = $bofelamimail->mailPreferences;
+		$showMainScreenStuff = false;
+		if($_GET['menuaction'] == 'felamimail.uifelamimail.viewMainScreen' ||
+			$_GET['menuaction'] == 'felamimail.uifelamimail.viewMainScreen') {
+			/* seems to be, its not needed here, as viewMainScreen does it anyway
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
+			$GLOBALS['egw']->js->validate_file('jscode','viewMainScreen','felamimail');
+			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
+			$GLOBALS['egw']->common->egw_header();
+			*/
+			$uiwidgets		= CreateObject('felamimail.uiwidgets');
+			$showMainScreenStuff = true;
+		}
+		if (!$showMainScreenStuff)
+		{
+			// action links that are mostly static and dont need any connection and additional classes ...
+			$file += array(
+				'felamimail'		=> $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen'),
+			);
 
-		$file = array(
-			array(
-				'text' => '<a class="textSidebox" href="'. htmlspecialchars($GLOBALS['egw']->link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.$GLOBALS['egw']->link('/index.php', $linkData).'\',\''.lang('compose').'\',700,750); return false;">'.lang('compose'),
-	                        'no_lang' => true,
-			),
-		);
+			// standard compose link
+			$linkData = array(
+				'menuaction'    => 'felamimail.uicompose.compose'
+			);
+			$file += array(
+				array(
+					'text' => '<a class="textSidebox" href="'. htmlspecialchars($GLOBALS['egw']->link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.$GLOBALS['egw']->link('/index.php', $linkData).'\',\''.lang('compose').'\',700,750); return false;">'.lang('compose'),
+		                        'no_lang' => true,
+				),
+			);
+		}
+		// buttons
+		if($showMainScreenStuff) {
+
+			// some buttons
+			$linkData = array (
+				'menuaction'    => 'felamimail.uicompose.compose'
+			);
+			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose', 700, egw_getWindowOuterHeight());";
+
+			$navbarImages = array(
+				'new'			=> array(
+					'action'	=> $urlCompose,
+					'tooltip'	=> lang('compose'),
+				),
+				'read_small'		=> array(
+					'action'	=> "flagMessages('read')",
+					'tooltip'	=> lang('mark selected as read'),
+				),
+				'unread_small'		=> array(
+					'action'	=> "flagMessages('unread')",
+					'tooltip'	=> lang('mark selected as unread'),
+				),
+				'unread_flagged_small'	=> array(
+					'action'	=> "flagMessages('flagged')",
+					'tooltip'	=> lang('mark selected as flagged'),
+				),
+				'read_flagged_small'	=> array(
+					'action'	=> "flagMessages('unflagged')",
+					'tooltip'	=> lang('mark selected as unflagged'),
+				),
+				'delete'		=> array(
+					'action'	=> "deleteMessages(xajax.getFormValues('formMessageList'))",
+					'tooltip'	=> lang('mark as deleted'),
+				),
+			);
+			
+			foreach($navbarImages as $buttonName => $buttonInfo) {
+				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip']);
+			}
+			$file[] = array(
+				'text' => "<TABLE WIDTH=\"100%\" CELLPADDING=\"0\" CELLSPACING=\"0\" style=\"border: solid #aaaaaa 1px; border-right: solid black 1px; \">
+							<tr class=\"navbarBackground\">
+								<td align=\"right\" width=\"100%\">".$navbarButtons."</td></tr></table></div>",
+				'no_lang' => True,
+				'link' => False,
+				'icon' => False,
+			);
+		}
+
+		// empty trash (if available -> move to trash )
 		if($preferences->preferences['deleteOptions'] == 'move_to_trash')
 		{
 			$file += Array(
@@ -441,6 +519,86 @@ class felamimail_hooks
 				'compress folder'	=> "javascript:compressFolder();",
 			);
 		}
+
+		// select account box, treeview
+		if($showMainScreenStuff) {
+			$bofelamimail->restoreSessionData();
+			$mailbox 		= $bofelamimail->sessionData['mailbox'];;
+			//_debug_array($mailbox);
+			$icServerID = 0;
+			$imapServer =& $preferences->getIncomingServer($icServerID);
+			$activeIdentity =& $preferences->getIdentity($icServerID);
+			if ($imapServer->_connected != 1) $connectionStatus = $bofelamimail->openConnection($icServerID);
+			$folderObjects = $bofelamimail->getFolderObjects(true, false);
+			$folderStatus = $bofelamimail->getFolderStatus($mailbox);
+
+			// account select box
+			$selectedID = 0;
+			if($preferences->userDefinedAccounts) $allAccountData = $bofelamimail->bopreferences->getAllAccountData($preferences);
+			if ($allAccountData) {
+				foreach ($allAccountData as $tmpkey => $accountData)
+				{
+					$identity =& $accountData['identity'];
+					$icServer =& $accountData['icServer'];
+					//_debug_array($identity);
+					//_debug_array($icServer);
+					if (empty($icServer->host)) continue;
+					$identities[$identity->id]=$identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+					if (!empty($identity->default)) $selectedID = $identity->id;
+				}
+			}
+
+			// the data needed here are collected at the start of this function
+			if (!isset($activeIdentity->id) && $selectedID == 0) {
+				$identities[0] = $activeIdentity->realName.' '.$activeIdentity->organization.' <'.$activeIdentity->emailAddress.'>';
+			}
+			// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
+			if ($activeIdentity->id) {
+				$boemailadmin = new emailadmin_bo();
+				$defaultProfile = $boemailadmin->getUserProfile() ;
+				#_debug_array($defaultProfile);
+				$identitys =& $defaultProfile->identities;
+				$icServers =& $defaultProfile->ic_server;
+				foreach ($identitys as $tmpkey => $identity)
+				{
+					if (empty($icServers[$tmpkey]->host)) continue;
+					$identities[0] = $identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+				}
+				#$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
+			}
+
+			$selectAccount = html::select('accountSelect', $selectedID, $identities, true, "style='width:100%;' onchange='changeActiveAccount(this);'");
+
+			$file[] = array(
+				'text' => "<div id=\"divAccountSelect\" style=\" width:100%;\">".$selectAccount."</div>",
+				'no_lang' => True,
+				'link' => False,
+				//'icon' => False,
+			);
+			// show foldertree
+			//_debug_array($folderObjects);
+			$folderTree = $uiwidgets->createHTMLFolder
+			(
+				$folderObjects, 
+				$mailbox, 
+				$folderStatus['unseen'],
+				lang('IMAP Server'), 
+				$imapServer->username.'@'.$imapServer->host,
+				'divFolderTree',
+				FALSE
+			);
+			$bofelamimail->closeConnection();
+	        $file[] =  array(
+	            'text' => "<div id=\"divFolderTree\" class=\"dtree\" style=\"overflow:auto; max-width:400px; width:100%; max-height:450px; margin-bottom: 0px;padding-left: 0px; padding-right: 0px; padding-top:0px; z-index:100; \">
+				$folderTree
+				</div>
+				<script language=\"JavaScript1.2\">refreshFolderStatus();</script>",
+	            'no_lang' => True,
+	            'link' => False,
+	            'icon' => False,
+	        );
+		}
+		// display them all
 		display_sidebox($appname,$menu_title,$file);
 
 		if ($GLOBALS['egw_info']['user']['apps']['preferences'])

@@ -45,6 +45,9 @@
 	
 		function uifelamimail()
 		{
+			//error_log(__METHOD__);
+			// no autohide of the sidebox, as we use it for folderlist now.
+			unset($GLOBALS['egw_info']['user']['preferences']['common']['auto_hide_sidebox']);
 			$this->timeCounter = microtime(true);
 
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
@@ -60,7 +63,7 @@
 			$this->startMessage 	= $this->bofelamimail->sessionData['startMessage'];
 			$this->sort 		= $this->bofelamimail->sessionData['sort'];
 			$this->sortReverse 	= $this->bofelamimail->sessionData['sortReverse'];
-	#		$this->filter 		= $this->bofelamimail->sessionData['activeFilter'];
+			#$this->filter 		= $this->bofelamimail->sessionData['activeFilter'];
 
 			$this->t			=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			#$this->grants[$this->account]	= EGW_ACL_READ + EGW_ACL_ADD + EGW_ACL_EDIT + EGW_ACL_DELETE;
@@ -461,8 +464,9 @@
 			$activeIdentity =& $preferences->getIdentity(0);
 			#_debug_array($activeIdentity);
 			$maxMessages		=&  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
-			if (empty($maxMessages)) $maxMessages = 23; // this seems to be the number off messages that fit the height of the folder tree
+			if (empty($maxMessages)) $maxMessages = 30; // this seems to be the number off messages that fit the height of the folder tree
 			$userPreferences	=&  $GLOBALS['egw_info']['user']['preferences']['felamimail'];
+
 			// retrieve data for/from user defined accounts
 			$selectedID = 0;
 			if($this->preferences->userDefinedAccounts) $allAccountData = $this->bopreferences->getAllAccountData($this->preferences);
@@ -478,6 +482,7 @@
 					if (!empty($identity->default)) $selectedID = $identity->id;
 				}
 			}
+
 
 			$this->display_app_header();
 
@@ -542,7 +547,6 @@
 			{
 				$this->t->set_var('vacation_warning','&nbsp;');
 			}
-
 			// ui for the quotas
 			if($this->connectionStatus !== false) {
 				$quota = $this->bofelamimail->getQuotaRoot();
@@ -556,7 +560,7 @@
 			} else {
 				$this->t->set_var('quota_display','&nbsp;');
 			}
-
+			/*
 			$linkData = array (
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
@@ -593,7 +597,7 @@
 				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip']);
 			}
 			$this->t->set_var('navbarButtonsLeft',$navbarButtons);
-
+			*/
 			$navbarImages = array(
 				'last'		=> array(
 					'action'	=> "jumpEnd(); return false;",
@@ -728,7 +732,7 @@
 			);
 			$selectStatus = html::select('status', $defaultSelectStatus, $statusTypes, false, "style='width:100%;' onchange='javascript:quickSearch();' id='status'");
 			$this->t->set_var('select_status', $selectStatus);
-
+			/* moved to sidebar
 			// the data needed here are collected at the start of this function
 			if (!isset($activeIdentity->id) && $selectedID == 0) {
 				$identities[0] = $activeIdentity->realName.' '.$activeIdentity->organization.' <'.$activeIdentity->emailAddress.'>';
@@ -749,7 +753,7 @@
 			}
 			$selectAccount = html::select('accountSelect', $selectedID, $identities, true, "style='width:100%;' onchange='changeActiveAccount(this);'");
 			$this->t->set_var('accountSelect', $selectAccount);
-
+			*/
 
 			if($this->connectionStatus === false) {
 				$this->t->set_var('connection_error_message', lang($this->bofelamimail->getErrorMessage()));
@@ -789,7 +793,7 @@
 				} elseif($this->bofelamimail->isTemplateFolder($this->mailbox)) {
 					$folderType = 3;
 				}
-	
+					
 				$this->t->set_var('header_rows',
 					$uiwidgets->messageTable(
 						$headers,
@@ -799,7 +803,7 @@
 						$userPreferences['rowOrderStyle']
 					)
 				);
-
+				
 				$firstMessage = $headers['info']['first'];
 				$lastMessage = $headers['info']['last'];
 				$totalMessage = $headers['info']['total'];
@@ -839,8 +843,9 @@
 					$this->t->set_var('move_message_checked','');
 				}
 				$this->t->set_var('select_all_link',$selectLink);
-			
-				$this->t->set_var('message',lang("Viewing messages")." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage $langTotal)");
+				$shortName='';
+				if ($folderStatus = $this->bofelamimail->getFolderStatus($this->mailbox)) $shortName =$folderStatus['shortDisplayName'];
+				$this->t->set_var('message','<b>'.$shortName.': </b>'.lang("Viewing messages")." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage $langTotal)");
 				if($firstMessage > 1) {
 					$linkData = array
 					(
@@ -865,7 +870,7 @@
 				}
 				$this->t->parse('status_row','status_row_tpl',True);
 				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
-			
+				/* moved to sidebar
 				$folderObjects = $this->bofelamimail->getFolderObjects(true, false);
 				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 				$folderStatus = $this->bofelamimail->getFolderStatus($this->mailbox);
@@ -881,12 +886,13 @@
 					'divFolderTree',
 					FALSE
 				);
+				*/
 				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 				$this->bofelamimail->closeConnection();
 
 			}
 			$this->t->set_var('current_mailbox',$current_mailbox);
-			$this->t->set_var('folder_tree',$folderTree);
+			//$this->t->set_var('folder_tree',$folderTree);
 
 			$this->t->set_var('options_folder',$options_folder);
 			
@@ -1038,6 +1044,8 @@
 			$this->t->set_var('lang_close_all',lang("close all"));
 			$this->t->set_var('lang_moving_messages_to',lang('moving messages to'));
 			$this->t->set_var('lang_askformove',lang('Do you really want to move the selected messages to folder:'));
+			$this->t->set_var('lang_mark_all_messages',lang('all messages in folder'));
+			$this->t->set_var('lang_confirm_all_messages',lang('The action will be applied to all messages of the current folder.\nDo you want to proceed?'));
 			$this->t->set_var('lang_empty_trash',lang('empty trash'));
 			$this->t->set_var('lang_compress_folder',lang('compress folder'));
 			$this->t->set_var('lang_skipping_forward',lang('skipping forward'));

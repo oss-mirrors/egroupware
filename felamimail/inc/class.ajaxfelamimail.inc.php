@@ -238,11 +238,12 @@
 
         function toggleEditor($_composeID, $_content ,$_mode)
         {
-            if($this->_debug) error_log("ajaxfelamimail::toggleEditor");
-            $bocompose  = CreateObject('felamimail.bocompose', $_composeID);
+			if($this->_debug) error_log("ajaxfelamimail::toggleEditor->".$_mode);
+	        $bocompose  = CreateObject('felamimail.bocompose', $_composeID);
 			if($_mode == 'simple') {
+				if($this->_debug) error_log(__METHOD__.$_content);
 				#if (isset($GLOBALS['egw_info']['server']['enabled_spellcheck'])) $_mode = 'egw_simple_spellcheck';
-        		$this->sessionData['mimeType'] = 'html';
+	    		$this->sessionData['mimeType'] = 'html';
 				// convert emailadresses presentet in angle brackets to emailadress only
 				$bocompose->replaceEmailAdresses($_content);
 			} else {
@@ -256,7 +257,7 @@
 			$response->addScript('FCKeditorAPI_ConfirmCleanup();');
 			$response->addScript('FCKeditorAPI_Cleanup();');
 			$response->addAssign('editorArea', 'innerHTML', $htmlObject);
-            return $response->getXML();
+	        return $response->getXML();
         }
 
 
@@ -298,9 +299,9 @@
 			if($this->_debug) error_log(__METHOD__." called with Messages ".print_r($_messageList,true));
 			$messageCount = 0;
 			if(is_array($_messageList) && count($_messageList['msg']) > 0) $messageCount = count($_messageList['msg']);
-			$this->bofelamimail->deleteMessages($_messageList['msg']);
+			$this->bofelamimail->deleteMessages(($_messageList == 'all'? 'all':$_messageList['msg']));
 
-			return $this->generateMessageList($this->sessionData['mailbox'],(-1*$messageCount));
+			return $this->generateMessageList($this->sessionData['mailbox'],($_messageList=='all'?0:(-1*$messageCount)));
 		}
 
 		function deleteSignatures($_signatures)
@@ -398,9 +399,9 @@
 		function flagMessages($_flag, $_messageList)
 		{
 			if($this->_debug) error_log(__METHOD__."->".$_flag.':'.print_r($_messageList,true));
-			if (!empty($_messageList['msg']))
+			if ($_messageList=='all' || !empty($_messageList['msg']))
 			{
-				$this->bofelamimail->flagMessages($_flag, $_messageList['msg']);
+				$this->bofelamimail->flagMessages($_flag, ($_messageList=='all' ? 'all':$_messageList['msg']));
 			}
 			else
 			{
@@ -472,11 +473,14 @@
 			$firstMessage = (int)$headers['info']['first'];
 			$lastMessage  = (int)$headers['info']['last'];
 			$totalMessage = (int)$headers['info']['total'];
-
+			$shortName = '';
+			if($folderStatus = $this->bofelamimail->getFolderStatus($_folderName)) {
+				$shortName =$folderStatus['shortDisplayName'];
+			}
 			if($totalMessage == 0) {
-				$response->addAssign("messageCounter", "innerHTML", lang('no messages found...'));
+				$response->addAssign("messageCounter", "innerHTML", '<b>'.$shortName.': </b>'.lang('no messages found...'));
 			} else {
-				$response->addAssign("messageCounter", "innerHTML", lang('Viewing messages')." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage ".lang("total").')');
+				$response->addAssign("messageCounter", "innerHTML", '<b>'.$shortName.': </b>'.lang('Viewing messages')." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage ".lang("total").')');
 			}
 
 			if($listMode) {
@@ -638,14 +642,14 @@
 			$messageCount = 0;
 			if(is_array($_selectedMessages) && count($_selectedMessages['msg']) > 0) $messageCount = count($_selectedMessages['msg']);
 			$folderName = $this->_decodeEntityFolderName($_folderName);
-			if (!empty( $_selectedMessages['msg']) && !empty($folderName)) {
+			if ($_selectedMessages == 'all' || !empty( $_selectedMessages['msg']) && !empty($folderName)) {
 				if ($this->sessionData['mailbox'] != $folderName) {
-					$this->bofelamimail->moveMessages($folderName, $_selectedMessages['msg']);
+					$this->bofelamimail->moveMessages($folderName, ($_selectedMessages == 'all'? null:$_selectedMessages['msg']));
 				} else {
 					  if($this->_debug) error_log("ajaxfelamimail::moveMessages-> same folder than current selected");
 				}
 
-				return $this->generateMessageList($this->sessionData['mailbox'],(-1*$messageCount));
+				return $this->generateMessageList($this->sessionData['mailbox'],($_selectedMessages == 'all'?0:(-1*$messageCount)));
 			} else {
 				$response = new xajaxResponse();
 				$response->addScript('resetMessageSelect();');
@@ -710,7 +714,7 @@
 			$GLOBALS['egw']->session->commit_session();
 
 			$response = new xajaxResponse();
-
+			if(!($this->_connectionStatus === true)) $this->_connectionStatus = $this->bofelamimail->openConnection();
 			if($this->_connectionStatus === true) {
 				#error_log("connected");
 				if (is_array($activeFolders)) {

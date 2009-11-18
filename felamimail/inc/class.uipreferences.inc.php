@@ -202,7 +202,7 @@
 			if (!isset($this->bofelamimail)) $this->bofelamimail    = CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
 			if (!isset($this->bopreferences)) $this->bopreferences	= $this->bofelamimail->bopreferences; //CreateObject('felamimail.bopreferences');
 			$preferences =& $this->bopreferences->getPreferences();
-			
+			$referer = '../index.php?menuaction=felamimail.uipreferences.listAccountData';
 			if(!($preferences->userDefinedAccounts || $preferences->userDefinedIdentities)) {
 				die('you are not allowed to be here');
 			}
@@ -259,11 +259,13 @@
 				}
 				
 				if($_POST['save']) {
-					ExecMethod('felamimail.uifelamimail.viewMainScreen');
+					//ExecMethod('felamimail.uifelamimail.viewMainScreen');
+					$GLOBALS['egw']->redirect_link($referer,array('msg' => lang('Entry saved')));
 					return;
 				}
 			} elseif($_POST['cancel']) {
-				ExecMethod('felamimail.uifelamimail.viewMainScreen');
+				//ExecMethod('felamimail.uifelamimail.viewMainScreen');
+				$GLOBALS['egw']->redirect_link($referer,array('msg' => lang('aborted')));
 				return;
 			}
 

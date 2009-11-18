@@ -94,6 +94,9 @@
 			}
 			else
 			{
+				$this->restoreSessionData();
+				$lv_mailbox = $this->sessionData['mailbox'];
+				$this->sessionData = array();
 				$this->forcePrefReload();
 			}
 
@@ -125,7 +128,7 @@
 				// no filter active
 				$this->sessionData['activeFilter']	= "-1";
 				// default mailbox INBOX
-				$this->sessionData['mailbox']		= "INBOX";
+				$this->sessionData['mailbox']		= (($lv_mailbox && self::folderExists($lv_mailbox,true)) ? $lv_mailbox : "INBOX");
 				// default start message
 				$this->sessionData['startMessage']	= 1;
 				// default mailbox for preferences pages
@@ -536,9 +539,17 @@
 			$msglist = '';
 			$oldMailbox = '';
 			if (is_null($_folder) || empty($_folder)) $_folder = $this->sessionData['mailbox'];
-			if(!is_array($_messageUID) || count($_messageUID) === 0) {
-				if (self::$debug) error_log(__METHOD__." no messages Message(s): ".implode(',',$_messageUID));
-				return false;
+			if(!is_array($_messageUID) || count($_messageUID) === 0) 
+			{
+				if ($_messageUID=='all')
+				{
+					$_messageUID= null;
+				}
+				else
+				{
+					if (self::$debug) error_log(__METHOD__." no messages Message(s): ".implode(',',$_messageUID));
+					return false;					
+				}
 			}
 
 			$deleteOptions  = $this->mailPreferences->preferences['deleteOptions'];
@@ -666,7 +677,14 @@
 			#error_log("felamimail::bocompose::flagMessages");
 			if(!is_array($_messageUID)) {
 				#return false;
-				$_messageUID=array($_messageUID);
+				if ($_messageUID=='all')
+				{
+					//all is an allowed value to be passed
+				}
+				else
+				{
+					$_messageUID=array($_messageUID);
+				}
 			}
 
 			$this->icServer->selectMailbox($this->sessionData['mailbox']);
@@ -1028,9 +1046,9 @@
 			return translation::replaceEmailAdresses($text);
 		}
 
-		static function convertHTMLToText($_html,$stripcrl=false)
+		static function convertHTMLToText($_html,$stripcrl=false,$stripalltags=true)
 		{
-			return translation::convertHTMLToText($_html,self::$displayCharset,$stripcrl=false);
+			return translation::convertHTMLToText($_html,self::$displayCharset,$stripcrl,$stripalltags);
 		}
 
 		/**
@@ -1170,6 +1188,7 @@
 		*/
 		function getFolderStatus($_folderName)
 		{
+			if (self::$debug) error_log(__METHOD__." called with:".$_folderName);
 			$retValue = array();
 			$retValue['subscribed'] = false;
 			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
@@ -1705,6 +1724,7 @@
 					'charSet'	=> $this->getMimePartCharset($_structure),
 				);
 			}
+			//_debug_array($bodyPart);
 			return $bodyPart;
 		}
 
@@ -1736,7 +1756,6 @@
 			if(PEAR::isError($folderStatus = $this->icServer->examineMailbox($_folderName))) {
 				return false;
 			}
-
 			if(is_array($this->sessionData['folderStatus'][0][$_folderName]) &&
 				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity']	=== $folderStatus['UIDVALIDITY'] &&
 				$this->sessionData['folderStatus'][0][$_folderName]['messages']	=== $folderStatus['EXISTS'] &&
@@ -1746,6 +1765,7 @@
 			) {
 				if (self::$debug) error_log(__METHOD__." USE CACHE");
 				$sortResult = $this->sessionData['folderStatus'][0][$_folderName]['sortResult'];
+
 			} else {
 				if (self::$debug) error_log(__METHOD__." USE NO CACHE");
 				$filter = $this->createIMAPFilter($_folderName, $_filter);
@@ -1757,6 +1777,18 @@
 					}
 					if (PEAR::isError($sortResult) || empty(self::$displayCharset)) {
 						$sortResult = $this->icServer->sort($sortOrder, 'US-ASCII', $filter, true);
+						// if there is an PEAR Error, we assume that the server is not capable of sorting
+						if (PEAR::isError($sortResult)) {
+							$advFilter = 'CHARSET '. strtoupper(self::$displayCharset) .' '.$filter;
+							if (PEAR::isError($sortResult)) 
+							{
+								$sortResult = $this->icServer->search($filter, false);
+								if (PEAR::isError($sortResult))
+								{
+									$sortResult = $this->sessionData['folderStatus'][0][$_folderName]['sortResult'];
+								}
+							}
+						}
 					}
 					if (self::$debug) error_log(__METHOD__.print_r($sortResult,true));
 				} else {
@@ -1847,7 +1879,6 @@
 			#$this->icServer->setDebug(true);
 
 			$sortResult = $this->getSortedList($_folderName, $_sort, $_reverse, $_filter);
-
 			#$this->icServer->setDebug(false);
 			#print "</pre>";
 			// nothing found
@@ -1876,7 +1907,6 @@
 			}
 
 			$queryString = implode(',', $sortResult);
-
 			// fetch the data for the selected messages
 			$headersNew = $this->icServer->getSummary($queryString, true);
 
@@ -1892,7 +1922,6 @@
 					#if($count == 0) _debug_array($headerObject);
 					if (empty($headerObject['UID'])) continue;
 					$uid = $headerObject['UID'];
-
 					// make dates like "Mon, 23 Apr 2007 10:11:06 UT" working with strtotime
 					if(substr($headerObject['DATE'],-2) === 'UT') {
 						$headerObject['DATE'] .= 'C';
@@ -2390,10 +2419,12 @@
 		{
 			#echo __METHOD__." called; check for $_folder<br>";
 			// does the folder exist???
-			#error_log("bofelamimail::folderExists->Connected?".$this->icServer->_connected.", ".$_folder.", ".$forceCheck);
+			//error_log("bofelamimail::folderExists->Connected?".$this->icServer->_connected.", ".$_folder.", ".$forceCheck);
 			if ((!($this->icServer->_connected == 1)) && $forceCheck) {
 				#error_log("bofelamimail::folderExists->NotConnected and forceCheck");
-				return false;
+				//return false;
+				//try to connect
+				if (!$this->icServer->_connected) $this->openConnection();
 			}
 			$folderInfo = $this->icServer->getMailboxes('', $_folder, true);
 			#error_log(print_r($folderInfo,true));

@@ -19,6 +19,8 @@ var lang_skipping_previous 	= '{lang_skipping_previous}';
 var lang_jumping_to_end 	= '{lang_jumping_to_end}';
 var lang_jumping_to_start 	= '{lang_jumping_to_start}';
 var lang_updating_view 		= '{lang_updating_view}';
+var lang_mark_all_messages 	= '{lang_mark_all_messages}';
+var lang_confirm_all_messages = '{lang_confirm_all_messages}';
 
 var activityImagePath		= '{ajax-loader}';
 
@@ -39,11 +41,11 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 
 </script>
 
-<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" bborder="1" style="border: solid #aaaaaa 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; ">
 	<tr class="navbarBackground">
-		<td align="right" width="180px">
+		<td align="left" width="180px">
 			<div class="parentDIV">
-				{navbarButtonsLeft}
+				<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="selectAllMessagesCheckBox" onclick="selectFolderContent(this, refreshTimeOut)"> {lang_mark_all_messages}
 			</div>
 		</td>
 		<td align="right" width="90px">
@@ -94,24 +96,8 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		</td>
 	</tr>
 	<TR>
-		<td valign="top" class="folderlist" width="180">
-			<!-- StartAccountSelector -->
-			<span id="accountSelect" align="left" style="font-size:11px;">{accountSelect}</span>	
-			<!-- StartFolderTree -->
-			<div id="divFolderTree" style="overflow:auto; width:180px; height:458px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
-			</div>
-			{folder_tree}
-			<script language="JavaScript1.2">refreshFolderStatus();</script>
-		</td>
-		<td width="10" valign="middle">
-			<div id="vr" align="center">
-				::
-			</div>
-		</td>
 		
-		<!-- ToDo: ResizeVerticalRule -->		
-		
-		<TD valign="top" colspan="3">
+		<TD valign="top" colspan="5">
 
 			<!-- Start Header MessageList -->
 
@@ -123,7 +109,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			<!-- Start MessageList -->
 
 			<form name="formMessageList" id="formMessageList">			
-			<div id="divMessageList" style="overflow:auto; height:460px; margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid Silver;">
+			<div id="divMessageList" style="overflow:auto; height:auto; margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid Silver;">
 				<!-- <table BORDER="0" style="width:98%; ppadding-left:2; table-layout: fixed;" cellspacing="100" cellpadding="100"> -->
 					{header_rows}
 				<!-- </table> -->

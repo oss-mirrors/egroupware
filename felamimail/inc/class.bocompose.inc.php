@@ -162,9 +162,12 @@
 			return 1;
 		}
 
-		function convertHTMLToText(&$_html)
+		function convertHTMLToText(&$_html,$sourceishtml = true)
 		{
-			return bofelamimail::convertHTMLToText($_html);
+			$stripalltags = true;
+			// third param is stripalltags, we may not need that, if the source is already in ascii
+			if (!$sourceishtml) $stripalltags=false;
+			return bofelamimail::convertHTMLToText($_html,false,$stripalltags);
 		}
 
 		function convertHTMLToTextTiny($_html)
@@ -803,7 +806,7 @@
 				}
 			} else {
 				$_mailObject->IsHTML(false);
-				$_mailObject->Body = $this->convertHTMLToText($_formData['body']);
+				$_mailObject->Body = $this->convertHTMLToText($_formData['body'],false);
 				#$_mailObject->Body = $_formData['body'];
 				if(!empty($signature)) {
 					$_mailObject->Body .= "\r\n-- \r\n". $this->convertHTMLToText($signature);

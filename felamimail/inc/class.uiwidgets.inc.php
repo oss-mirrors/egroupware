@@ -52,7 +52,7 @@
 		*/
 		function uiwidgets()
 		{
-			$template = CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			$template = CreateObject('phpgwapi.Template',common::get_tpl_dir('felamimail'));
 			$this->template = $template;
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
 			$this->charset = $GLOBALS['egw']->translation->charset();

@@ -142,20 +142,6 @@ A.header_row_S {
 	padding: 0;
 }
 	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 TR.header_row_DS, TR.header_row_ADS
 {
 	FONT-SIZE: 11px;
@@ -306,7 +292,9 @@ A.sieveRowInActive
 .dtree .clip {
 	overflow: hidden;
 }
-
+.dtree table, .dtree tr, .dtree td {
+	border: none;
+}
 tr.navbarBackground {
 	background-color:#dddddd;
 }

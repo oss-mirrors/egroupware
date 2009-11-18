@@ -77,7 +77,7 @@
 			#$atext = '([a-z0-9!#$&%*+/=?^_`{|}~-]|&amp;)';
 			$atext = '([a-zA-Z0-9_\-\.])';
 			$dot_atom = $atext.'+(\.'.$atext.'+)*';
-			$Email_RegExp_Match = $dot_atom.'(%'.$Host_RegExp_Match.')?@'.$Host_RegExp_Match;
+			$Email_RegExp_Match = '~'.$dot_atom.'(%'.$Host_RegExp_Match.')?@'.$Host_RegExp_Match.'~i';
 
 			$this->t 		= CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->displayCharset   = $GLOBALS['egw']->translation->charset();
@@ -127,7 +127,7 @@
 			$addresses = array();
 
 			/* Find all the email addresses in the body */
-			while(eregi($Email_RegExp_Match, $sbody, $regs)) {
+			while(preg_match($Email_RegExp_Match, $sbody, $regs)) {
 				$addresses[$regs[0]] = strtr($regs[0], array('&amp;' => '&'));
 				$start = strpos($sbody, $regs[0]) + strlen($regs[0]);
 				$sbody = substr($sbody, $start);
@@ -162,9 +162,9 @@
 			#$getstring = "(\?([[:alnum:]][-_%[:alnum:]]*=[-_%[:alnum:]]+)
 			#    (&([[:alnum:]][-_%[:alnum:]]*=[-_%[:alnum:]]+))*)?";
 			#$pattern = "^".$domain.$dir.$trailingslash.$page.$getstring."$";
-			$pattern = "\<a href=\"".$domain.".*?\"";
+			$pattern = "~\<a href=\"".$domain.".*?\"~i";
 			$sbody = $body;
-			while(@eregi($pattern, $sbody, $regs)) {
+			while(@preg_match($pattern, $sbody, $regs)) {
 				#_debug_array($regs);
 				$key=$regs[1].$regs[3].$regs[4].$regs[5];
 				$addresses[$key] = $regs[1].$regs[3].$regs[4].$regs[5];
@@ -672,6 +672,8 @@
 						case 'APPLICATION/PDF':
 						case 'TEXT/PLAIN':
 						case 'TEXT/HTML':
+						case 'TEXT/CALENDAR':
+						case 'TEXT/X-VCARD':
 							$linkData = array
 							(
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
@@ -681,7 +683,21 @@
 								'mailbox'   => base64_encode($this->mailbox),
 							);
 							$windowName = 'displayAttachment_'. $this->uid;
-							$linkView = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',800,600);";
+							$reg = '800x600';
+							// handle calendar/vcard
+							if (strtoupper($value['mimeType'])=='TEXT/CALENDAR') 
+							{
+								$windowName = 'displayEvent_'. $this->uid;
+								$reg2 = egw_link::get_registry('calendar','view_popup');
+							}
+							if (strtoupper($value['mimeType'])=='TEXT/X-VCARD')
+							{
+								$windowName = 'displayContact_'. $this->uid;
+								$reg2 = egw_link::get_registry('addressbook','add_popup');
+							}
+							// apply to action
+							list($width,$height) = explode('x',(!empty($reg2) ? $reg2 : $reg));
+							$linkView = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',$width,$height);";
 							break;
 						default:
 							$linkData = array
@@ -1056,7 +1072,44 @@
 			$this->bofelamimail->closeConnection();
 
 			$GLOBALS['egw']->session->commit_session();
-
+			if ($_GET['mode'] != "save")
+			{
+				//error_log(__METHOD__.print_r($attachment,true));
+				if (strtoupper($attachment['type']) == 'TEXT/CALENDAR')
+				{
+					//error_log(__METHOD__."about to call calendar_ical");
+					$calendar_ical = new calendar_ical();
+					$eventid = $calendar_ical->search($attachment['attachment'],-1);
+					if (!$eventid) $eventid = -1;
+					$event = $calendar_ical->importVCal($attachment['attachment'],$eventid,null,true);
+					//error_log(__METHOD__.$event);
+					if ((int)$event > 0)
+					{
+						$vars = array(
+						'menuaction'      => 'calendar.calendar_uiforms.edit',
+						'cal_id'      => $event,
+						'print' => false,
+						);
+						$GLOBALS['egw']->redirect_link('../index.php',$vars);
+					}
+					//Import failed, download content anyway
+				}
+				if (strtoupper($attachment['type']) == 'TEXT/X-VCARD')
+				{
+					$addressbook_vcal = new addressbook_vcal();
+					$contact = $addressbook_vcal->addVCard($attachment['attachment'],null,true);
+					//error_log(__METHOD__.$contact);
+					if ((int)$contact > 0) 
+					{
+						$vars = array(
+							'menuaction'	=> 'addressbook.addressbook_ui.edit',
+							'contact_id'	=> $contact,
+						);
+						$GLOBALS['egw']->redirect_link('../index.php',$vars);
+					}
+					//Import failed, download content anyway
+				}
+			}
 			header ("Content-Type: ".$attachment['type']."; name=\"". $attachment['filename'] ."\"");
 			if($_GET['mode'] == "save") {
 				// ask for download
