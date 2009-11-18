@@ -63,15 +63,26 @@ function _egwtaskssync_list($filter='')
 	$guids = array();
 	$boInfolog = new infolog_bo();
 
-	$searchFilter = array
-	(
+	if (array_key_exists('infolog_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+	{
+		$infolog_filter = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_filter'];
+		// Horde::logMessage('SymcML: egwtaskssync filter=' . $filter,
+		// __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	}
+	else
+	{
+		$infolog_filter = 'my';
+	}
+
+
+	$searchFilter = array(
 		'order'		=> 'info_datemodified',
 		'sort'		=> 'DESC',
-		'filter'    => 'my',	// filter my: entries user is responsible for,
-								// filter own: entries the user own or is responsible for
+		'filter'    => $infolog_filter,	// filter my: entries user is responsible for,
+										// filter own: entries the user own or is responsible for
 
 		// todo add a filter to limit how far back entries from the past get synced
-		'col_filter'	=> Array (
+		'col_filter'	=> array(
 			'info_type'	=> 'task',
 		),
 	);
@@ -107,18 +118,35 @@ function &_egwtaskssync_listBy($action, $timestamp, $type, $filter='')
 	$boInfolog = new infolog_bo();
 	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
 
-	if($action == 'delete') {
-		$deletedItems = $allChangedItems;
-	    // Add all changed items for which I'm no longer responsible
-	    $allChangedItems = $state->getHistory('infolog_task', 'modify', $timestamp);
-	    foreach($allChangedItems as $guid) {
-		    $uid = $state->get_egwId($guid);
+	if (array_key_exists('infolog_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+	{
+		$infolog_filter = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_filter'];
+		// Horde::logMessage('SymcML: egwtaskssync filter=' . $filter,
+		// __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	}
+	else
+	{
+		$infolog_filter = 'my';
+	}
+	$searchFilter = array(
+			'order'			=> 'info_datemodified',
+			'sort'			=> 'DESC',
+			'filter'    	=> $infolog_filter,
+			'col_filter'	=> array(
+				'info_type'	=> 'task',
+			),
+		);
+	$tasks =& $boInfolog->search($searchFilter);
 
-		    // check whether I am no longer responsible for a task
-		    if (($info =& $boInfolog->read($uid))
-				    && !$boInfolog->is_responsible($info)
-				    || !count($info['info_responsible'])
-				    	&& $user != $info['info_owner'])
+	if ($action == 'delete') {
+		$deletedItems = $allChangedItems;
+	    // Add all changed items which no longer match the filter criteria
+	    $allChangedItems = $state->getHistory('infolog_task', 'modify', $timestamp);
+
+	    foreach ($allChangedItems as $guid) {
+		    $uid = $state->get_egwId($guid);
+		    // check whether the task does no longer match the criteria
+		    if (!isset($tasks[$uid]))
 			{
 			    $deletedItems[] = $guid;
 		    }
@@ -130,13 +158,8 @@ function &_egwtaskssync_listBy($action, $timestamp, $type, $filter='')
 
 	foreach ($allChangedItems as $guid) {
 		$uid = $state->get_egwId($guid);
-
-		// check READ rights too and return false if none
-		// for filter my = all items the user is responsible for:
-		if (($info =& $boInfolog->read($uid))
-			&& ($user == $info['info_owner']
-			&& !count($info['info_responsible']))
-			|| $boInfolog->is_responsible($info))
+		// check whether the task does match the criteria
+		if (isset($tasks[$uid]))
 		{
 			$readableItems[] = $guid;
 		}
@@ -211,7 +234,7 @@ function _egwtaskssync_import($content, $contentType, $guid = null)
 		return $taskID;
 	}
 
-	if(!$taskID || $taskID == -1) {
+	if (!$taskID || $taskID == -1) {
   		return false;
 	}
 
@@ -271,9 +294,7 @@ function _egwtaskssync_search($content, $contentType, $contentid, $relax=false)
 		return 'infolog_task-' . $taskID;
 	}
 
-	if(!$taskID) {
-		return false;
-	}
+	if (!$taskID) return false;
 
 	return 'infolog_task-' . $taskID;
 }
@@ -424,7 +445,7 @@ function _egwtaskssync_getSyncProfile()
 
 	Horde::logMessage("SymcML: egwtaskssync remote device: ". $deviceInfo['model'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	switch($deviceInfo['model']) {
+	switch ($deviceInfo['model']) {
 		case 'SySync Client PalmOS PRO':
 			$syncProfile = 1;
 			break;

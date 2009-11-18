@@ -51,6 +51,11 @@ class syncml_hooks
 			$show_addr_lists = $addressbook_bo->get_lists($perms,array('' => lang('none')));
 			$show_addr_addr = $addressbook_bo->get_addressbooks($perms,lang('All'));
 			unset($show_addr_addr[0]); // No Acounts
+
+			// list the InfoLog filters
+			$infolog_bo = new infolog_bo();
+			$show_infolog_filters = $infolog_bo->filters;
+
 			// list the calendar categories of this user
 			$categories = new categories($user, 'calendar');
 			$calendar_categories = $categories->return_array('app', 0, false, '', 'ASC', 'cat_name', true);
@@ -70,7 +75,7 @@ class syncml_hooks
 
 			// list the infolog categories of this user
 			$categories = new categories($user, 'infolog');
-			$infolog_categories = $categories->return_array('app', 0, false, '', 'ASC', 'cat_name', truee);
+			$infolog_categories = $categories->return_array('app', 0, false, '', 'ASC', 'cat_name', true);
 			$show_info_cats = array();
 			foreach ($infolog_categories as $cat)
 			{
@@ -462,23 +467,23 @@ class syncml_hooks
 				'admin'  => False
 			),
 			'filter_list' => array(
-		                'type'   => 'select',
-		                'label'  => 'Syncronize this list',
-		                'name'   => 'filter_list',
-		                'help'   => lang('This addressbook list of contacts will be synchronized.'),
-		                'values' => $show_addr_lists,
-		                'xmlrpc' => True,
-		                'admin'  => False,
-		        ),
+				'type'   => 'select',
+				'label'  => 'Synchronize this list',
+				'name'   => 'filter_list',
+				'help'   => lang('This addressbook list of contacts will be synchronized.'),
+				'values' => $show_addr_lists,
+				'xmlrpc' => True,
+				'admin'  => False,
+			),
 			'filter_addressbook' => array(
-		                'type'   => 'select',
-		                'label'  => 'Synchronize this addressbook',
-		                'name'   => 'filter_addressbook',
-		                'help'   => lang('Only this addressbook will synchronized.'),
-		                'values' => $show_addr_addr,
-		                'xmlrpc' => True,
-		                'admin'  => False,
-		        ),
+				'type'   => 'select',
+				'label'  => 'Synchronize this addressbook',
+				'name'   => 'filter_addressbook',
+				'help'   => lang('Only this addressbook will synchronized.'),
+				'values' => $show_addr_addr,
+				'xmlrpc' => True,
+				'admin'  => False,
+			),
 			'calendarhistoryintro' => array(
 				'type'  => 'subsection',
 				'title' => '<h3>' . lang('Calendar Synchronization Period') . '</h3>',
@@ -506,6 +511,21 @@ class syncml_hooks
 				'default'	=> 65000000,
 				'xmlrpc'	=> True,
 				'admin'		=> False,
+			),
+			'taskoptionintro' => array(
+				'type'  => 'subsection',
+				'title' => '<h3>' . lang('Task Synchronization Options') . '</h3>',
+				'xmlrpc' => False,
+				'admin'  => False
+			),
+			'infolog_filter' => array(
+				'type'   => 'select',
+				'label'  => 'Synchronize this selection',
+				'name'   => 'infolog_filter',
+				'help'   => lang('Only Tasks matching this filter criteria will be synchronized.'),
+				'values' => $show_infolog_filters,
+				'xmlrpc' => True,
+				'admin'  => False,
 			),
 			'catintro' => array(
 				'type'  => 'subsection',
@@ -546,7 +566,7 @@ class syncml_hooks
 				lang('For <b>Max Entries</b> = 0 either <i>maxMsgSize</i> will be used or the default value 10.<br/>' .
 					'With <b>Non Blocking Allday Events</b> set allday events will be nonblocking when imported from this device.<br/>' .
 					'The <b>UID Extension</b> enables the preservation of vCalandar UIDs by appending them to <i>Description</i> field for this device.<br/>' .
-					'The selected <b>Time zone</b> is used for calendar event syncronization with the device. If not set, the timezones of the events are used.'),
+				'The selected <b>Time zone</b> is used for calendar event syncronization with the device. If not set, the timezones of the events are used.'),
 				'xmlrpc' => False,
 				'admin'  => False
 			),

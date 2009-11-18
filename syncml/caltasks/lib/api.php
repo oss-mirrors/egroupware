@@ -102,7 +102,7 @@ function _egwcaltaskssync_list($filter='')
 
 	Horde::logMessage('SymcML: egwcaltaskssync list found: '. count($events) .' events', __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	foreach((array)$events as $event) {
+	foreach ((array)$events as $event) {
 		$guids[] = $guid = 'calendar-' . $event['id'];
 		if ($event['recur_type'] != MCAL_RECUR_NONE)
 		{
@@ -116,15 +116,24 @@ function _egwcaltaskssync_list($filter='')
 		}
 	}
 
+	if (array_key_exists('infolog_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+	{
+		$infolog_filter = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_filter'];
+		// Horde::logMessage('SymcML: egwcaltaskssync filter=' . $filter,
+		// __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	}
+	else
+	{
+		$infolog_filter = 'my';
+	}
+
 
 	#2 search for tasks(infolog)
-	$searchFilter = array (
-		'order'		=> 'info_datemodified',
-		'sort'		=> 'DESC',
-		// filter my: entries user is responsible for, filter own: entries the user own or is responsible for
-		'filter'	=> 'my',
-		// todo add a filter to limit how far back entries from the past get synced
-		'col_filter'	=> Array (
+	$searchFilter = array(
+		'order'			=> 'info_datemodified',
+		'sort'			=> 'DESC',
+		'filter'		=> $infolog_filter,
+		'col_filter'	=> array(
 			'info_type'	=> 'task',
 		),
 	);
@@ -133,7 +142,7 @@ function _egwcaltaskssync_list($filter='')
 
 	Horde::logMessage('SymcML: egwcaltaskssync list found: '. count($tasks) .' tasks', __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	foreach((array)$tasks as $task) {
+	foreach ((array)$tasks as $task) {
 		$guids[] = 'infolog_task-' . $task['info_id'];
 	}
 
@@ -196,8 +205,28 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 	Horde::logMessage("SymcML: egwcaltasksync listBy startDate=$startDate, endDate=$endDate",
     	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
+    if (array_key_exists('infolog_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+	{
+		$infolog_filter = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_filter'];
+		// Horde::logMessage('SymcML: egwtaskssync filter=' . $filter,
+		// __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	}
+	else
+	{
+		$infolog_filter = 'my';
+	}
+	$searchFilter = array(
+			'order'			=> 'info_datemodified',
+			'sort'			=> 'DESC',
+			'filter'    	=> $infolog_filter,
+			'col_filter'	=> array(
+				'info_type'	=> 'task',
+			),
+		);
+	$tasks =& $boInfolog->search($searchFilter);
+
 	// query the calendar, to check if we are a participants in these changed events
-	if($action == 'delete')
+	if ($action == 'delete')
 	{
 		$guids = $allChangedCalendarItems;
 
@@ -209,12 +238,12 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 
 		$allChangedCalendarItems = $state->getHistory('calendar', 'modify', $timestamp);
 		$allChangedCalendarItems =  array_unique($allChangedCalendarItems + $guids);
-		foreach($allChangedCalendarItems as $guid) {
+		foreach ($allChangedCalendarItems as $guid) {
 			$ids[] = $state->get_egwId($guid);
 		}
 		// read all events in one go, and check if the user participats
 		if (count($ids) && ($events =& $boCalendar->read($ids))) {
-			foreach((array)$events as $event) {
+			foreach ((array)$events as $event) {
 				//Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]",
 				//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 				if ((!$endDate || $event['end'] <= $endDate)
@@ -243,14 +272,10 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 		$deletedTasksItems = $allChangedTasksItems;
 	    // Add all changed items for which I'm no longer responsible
 	    $allChangedTasksItems = $state->getHistory('infolog_task', 'modify', $timestamp);
-	    foreach($allChangedTasksItems as $guid) {
+	    foreach ($allChangedTasksItems as $guid) {
 		    $uid = $state->get_egwId($guid);
-
-		    // check whether I am no longer responsible for a task
-		    if (($info =& $boInfolog->read($uid))
-				    && !$boInfolog->is_responsible($info)
-				    || !count($info['info_responsible'])
-				    	&& $user != $info['info_owner'])
+		    // check whether the task does no longer match the criteria
+		    if (!isset($tasks[$uid]))
 			{
 			    $deletedTasksItems[] = $guid;
 		    }
@@ -260,13 +285,13 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 
 
 	// get the calendar id's for all these items
-	foreach($allChangedCalendarItems as $guid) {
+	foreach ($allChangedCalendarItems as $guid) {
 		$ids[] = $state->get_egwId($guid);
 	}
 
 	// read all events in one go, and check if the user participats
 	if (count($ids) && ($events =& $boCalendar->read($ids))) {
-		foreach((array)$events as $event) {
+		foreach ((array)$events as $event) {
 			//Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]",
 			//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 			$boCalendar->enum_groups($event);
@@ -294,13 +319,8 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 
 	foreach ($allChangedTasksItems as $guid) {
 		$uid = $state->get_egwId($guid);
-
-		// check READ rights too and return false if none
-		// for filter my = all items the user is responsible for:
-		if (($info =& $boInfolog->read($uid))
-			&& ($user == $info['info_owner']
-			&& !count($info['info_responsible']))
-			|| $boInfolog->is_responsible($info))
+		// check whether the task does match the criteria
+		if (isset($tasks[$uid]))
 		{
 			$guids[] = $guid;
 		}
@@ -405,13 +425,9 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
-	if (is_a($taskID, 'PEAR_Error')) {
-		return $taskID;
-	}
+	if (is_a($taskID, 'PEAR_Error')) return $taskID;
 
-	if(!$taskID || $taskID == -1) {
- 	 	return false;
-	}
+	if(!$taskID || $taskID == -1) return false;
 
 	$guid = $type .'-' . $taskID;
 	Horde::logMessage("SymcML: egwcaltaskssync imported: $guid",
@@ -442,7 +458,7 @@ function _egwcaltaskssync_search($content, $contentType, $contentid)
 		case 'text/x-vcalendar':
 		case 'text/vcalendar':
 		case 'text/calendar':
-			if(strrpos($content, 'BEGIN:VTODO')) {
+			if (strrpos($content, 'BEGIN:VTODO')) {
 				$infolog_ical = new infolog_ical();
 				$infolog_ical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 				$id =  $infolog_ical->searchVTODO($content,$state->get_egwID($contentid));
@@ -462,7 +478,7 @@ function _egwcaltaskssync_search($content, $contentType, $contentid)
 
 	if (is_a($id, 'PEAR_Error')) return $id;
 
-	if(!$id) {
+	if (!$id) {
 		Horde::logMessage('SymcML: egwcaltaskssync search nothing found',
 			__FILE__, __LINE__, PEAR_LOG_DEBUG);
 		return false;
@@ -515,7 +531,7 @@ function _egwcaltaskssync_export($guid, $contentType)
 	Horde::logMessage("SymcML: egwcaltaskssync export guid: $guid contenttype: ".$contentType,
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	if(strrpos($guid, 'infolog_task') !== false) {
+	if (strrpos($guid, 'infolog_task') !== false) {
 		Horde::logMessage("SymcML: egwcaltaskssync export exporting tasks",
 			__FILE__, __LINE__, PEAR_LOG_DEBUG);
         $infolog_ical    = new infolog_ical($clientProperties);
@@ -579,7 +595,7 @@ function _egwcaltaskssync_delete($guid)
 	Horde::logMessage("SymcML: egwcaltaskssync delete id: ".$state->get_egwId($guid),
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	if(strrpos($guid, 'infolog_task') !== false) {
+	if (strrpos($guid, 'infolog_task') !== false) {
 		Horde::logMessage("SymcML: egwcaltaskssync delete deleting task",
 			__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
