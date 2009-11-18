@@ -16,6 +16,7 @@ bookmark not readable	bookmarks	hu	A könyvjelző nem olvasható
 bookmarks	common	hu	Könyvjelzők
 bookmarks settings	bookmarks	hu	Könyvjelző beállítások
 change bookmark	bookmarks	hu	Könyvjelző változás
+choose the categories to display	bookmarks	hu	Válaszd ki a megjelenítendő kategóriákat
 close this window to return	bookmarks	hu	zárd be ezt az ablakot a visszatéréshez
 create bookmark	bookmarks	hu	Könyvjelző létrehozás
 create new bookmark	bookmarks	hu	Új könyvjelző létrehozása
@@ -60,6 +61,7 @@ search for:	bookmarks	hu	Keresem ezt:
 select the format you would like to export to	bookmarks	hu	Válassza ki az exportálás formátumát
 send bookmark	bookmarks	hu	Könyvjelző küldése
 sub category	bookmarks	hu	Alkategória
+this module displays bookmarks in a javascript based tree	bookmarks	hu	Ez a modul javascript alapú fában jeleníti meg a könyvjelzőket
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	hu	A %1 cím érvénytelen. <strong>user@domain</strong> formátumú kell lenni és a tartománynak létezni kell!
 to e-mail addresses	bookmarks	hu	E-Mail címekhez
 to which category should the imported folder hierarchy be attached	bookmarks	hu	Melyik kategóriához lehet csatolni az importált gyűjtő hierarhiát
