@@ -1084,10 +1084,19 @@ class Net_IMAPProtocol {
         $request = implode(' ', $request);
 
         $ret = $this->_genericCommand('STATUS', $mailbox_name.' ('.$request.')');
+
         if (isset($ret['PARSED'])) {
-            $ret['PARSED']=$ret['PARSED'][count($ret['PARSED'])-1]['EXT'];
+			foreach ($ret['PARSED'] as &$parsed)
+			{
+				if (!empty($parsed['EXT']))
+				{
+					if(empty($ret['RESPONSE']['CODE'])) $ret['RESPONSE']['CODE'] ='OK';
+					$ret['PARSED'] =  $parsed['EXT'];
+					break;
+				}
+			}
         }
-        return $ret;
+		return $ret;
     }
 
 
