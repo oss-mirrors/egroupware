@@ -3,6 +3,7 @@
 (only cc/bcc)	felamimail	en	(only Cc/Bcc)
 (separate multiple addresses by comma)	felamimail	en	(separate multiple addresses by comma)
 (unknown sender)	felamimail	en	(unknown sender)
+aborted	felamimail	en	aborted
 activate	felamimail	en	Activate
 activate script	felamimail	en	activate script
 activating by date requires a start- and end-date!	felamimail	en	Activating by date requires a start- AND end-date!
@@ -20,6 +21,7 @@ address book search	felamimail	en	Address Book Search
 after message body	felamimail	en	After message body
 all address books	felamimail	en	All address books
 all folders	felamimail	en	All Folders
+all messages in folder	felamimail	en	all messages in folder
 all of	felamimail	en	all of
 allow images from external sources in html emails	felamimail	en	Allow images from external sources in HTML emails
 allways a new window	felamimail	en	allways a new window
@@ -156,6 +158,7 @@ enter your sieve server hostname or ip address	admin	en	Enter your SIEVE server 
 enter your sieve server port	admin	en	Enter your SIEVE server port
 enter your smtp server hostname or ip address	admin	en	Enter your SMTP server hostname or IP address
 enter your smtp server port	admin	en	Enter your SMTP server port
+entry saved	felamimail	en	Entry saved
 error	felamimail	en	ERROR
 error connecting to imap serv	felamimail	en	Error connecting to IMAP serv
 error connecting to imap server. %s : %s.	felamimail	en	Error connecting to IMAP server. %s : %s.
@@ -313,11 +316,13 @@ no plain text part found	felamimail	en	no plain text part found
 no previous message	felamimail	en	no previous Message
 no recipient address given!	felamimail	en	No recipient address given!
 no signature	felamimail	en	no signature
+no stationery	felamimail	en	no stationery
 no subject given!	felamimail	en	No subject given!
 no supported imap authentication method could be found.	felamimail	en	No supported IMAP authentication method could be found.
 no valid emailprofile selected!!	felamimail	en	No Valid Email Profile Selected!!
 none	felamimail	en	none
 none, create all	felamimail	en	none, create all
+not allowed	felamimail	en	not allowed
 notify when new mails arrive on these folders	felamimail	en	notify when new mails arrive on these folders
 on	felamimail	en	on
 on behalf of	felamimail	en	on behalf of
@@ -410,6 +415,7 @@ skipping previous	felamimail	en	skipping previous
 small view	felamimail	en	small view
 smtp settings	admin	en	SMTP settings
 start new messages with mime type plain/text or html?	felamimail	en	start new messages with mime type plain/text or html?
+stationery	felamimail	en	stationery
 subject	felamimail	en	Subject
 subject(a->z)	felamimail	en	Subject (A->Z)
 subject(z->a)	felamimail	en	Subject (Z->A)

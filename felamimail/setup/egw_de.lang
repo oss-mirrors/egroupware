@@ -3,6 +3,7 @@
 (only cc/bcc)	felamimail	de	(kein Kopie/Blindkopie)
 (separate multiple addresses by comma)	felamimail	de	(mehrere Adressen durch Komma trennen)
 (unknown sender)	felamimail	de	(unbekannter Absender)
+aborted	felamimail	de	abgebrochen
 activate	felamimail	de	aktivieren
 activate script	felamimail	de	Script aktivieren
 activating by date requires a start- and end-date!	felamimail	de	Aktivieren nach Datum benötigt ein Start- UND Endedatum!
@@ -20,6 +21,7 @@ address book search	felamimail	de	Adressbuch durchsuchen
 after message body	felamimail	de	nach dem Editorfenster
 all address books	felamimail	de	Alle Adressbücher
 all folders	felamimail	de	Alle Ordner
+all messages in folder	felamimail	de	Alle Nachrichten im Ordner
 all of	felamimail	de	mit allen
 allow images from external sources in html emails	felamimail	de	Erlaube Bilder von externen Quellen in HTML emails
 allways a new window	felamimail	de	jede E-Mail in einem neuen Fenster
@@ -156,6 +158,7 @@ enter your sieve server hostname or ip address	admin	de	Sieve-Server Hostname od
 enter your sieve server port	admin	de	Port Adresse des Sieve Servers
 enter your smtp server hostname or ip address	admin	de	SMTP-Server Hostname oder IP-Adresse
 enter your smtp server port	admin	de	Port Adresse des SMTP Servers
+entry saved	felamimail	de	Eintrag gespeichert
 error	felamimail	de	FEHLER
 error connecting to imap serv	felamimail	de	Konnte den IMAP Server (Mailserver) nicht erreichen
 error connecting to imap server. %s : %s.	felamimail	de	Fehler beim Verbinden mit dem IMAP Server. %s : %s.
@@ -313,11 +316,13 @@ no plain text part found	felamimail	de	Kein Text Teil gefunden.
 no previous message	felamimail	de	Keine vorherige Nachricht vorhanden
 no recipient address given!	felamimail	de	Keine Empfängeradresse angegeben!
 no signature	felamimail	de	keine Signatur
+no stationery	felamimail	de	Kein Briefkopf
 no subject given!	felamimail	de	Kein Betreff angegeben!
 no supported imap authentication method could be found.	felamimail	de	Keine unterstützte IMAP Authentifizierungsmethode gefunden.
 no valid emailprofile selected!!	felamimail	de	Sie haben kein gültiges E-Mail-Profil ausgewählt!
 none	felamimail	de	kein
 none, create all	felamimail	de	keine, erstellt alle
+not allowed	felamimail	de	nicht erlaubt
 notify when new mails arrive on these folders	felamimail	de	Benachrichtigung, wenn neue eMails in diesen Ordnern ankommen
 on	felamimail	de	am
 on behalf of	felamimail	de	im Auftrag von
@@ -410,6 +415,7 @@ skipping previous	felamimail	de	blättere zurück
 small view	felamimail	de	schmale Ansicht
 smtp settings	admin	de	SMTP Einstellungen
 start new messages with mime type plain/text or html?	felamimail	de	Sollen neue eMails als plain/text oder HTML Nachrichten verfasst werden?
+stationery	felamimail	de	Briefkopf
 subject	felamimail	de	Betreff
 subject(a->z)	felamimail	de	Betreff(A->Z)
 subject(z->a)	felamimail	de	Betreff(Z->A)

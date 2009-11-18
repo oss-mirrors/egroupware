@@ -45,7 +45,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 	<tr class="navbarBackground">
 		<td align="left" width="180px">
 			<div class="parentDIV">
-				<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="selectAllMessagesCheckBox" onclick="selectFolderContent(this, refreshTimeOut)"> {lang_mark_all_messages}
+				<label><input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="selectAllMessagesCheckBox" onclick="selectFolderContent(this, refreshTimeOut)"> {lang_mark_all_messages}</label>
 			</div>
 		</td>
 		<td align="right" width="90px">
@@ -80,12 +80,9 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 	<tr style="height: 20px;">
 		<td>
 
-			<span id="folderFunction" align="left" style="font-size:11px;">&nbsp;</span>	
+			<span id="folderFunction" align="left" style="font-size:11px;"></span>
 		</td>
-		<td>
-			&nbsp;
-		</td>
-		<td align="left" style="font-size:11px; width:auto;">
+		<td align="left" style="font-size:11px; width:auto;" colspan="2">
 			<span id="messageCounter">{message}</span>
 		</td>
 		<td align="center" style="font-size:11px; color:red; width:180px;">
@@ -96,19 +93,19 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		</td>
 	</tr>
 	<TR>
-		
+
 		<TD valign="top" colspan="5">
 
 			<!-- Start Header MessageList -->
 
 			{messageListTableHeader}
 
-			<!-- End Header MessageList -->			
+			<!-- End Header MessageList -->
 
 
 			<!-- Start MessageList -->
 
-			<form name="formMessageList" id="formMessageList">			
+			<form name="formMessageList" id="formMessageList">
 			<div id="divMessageList" style="overflow:auto; height:auto; margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid Silver;">
 				<!-- <table BORDER="0" style="width:98%; ppadding-left:2; table-layout: fixed;" cellspacing="100" cellpadding="100"> -->
 					{header_rows}
@@ -137,7 +134,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 						{link_previous}
 					</td>
 					<td width="10%">&nbsp;
-						
+
 					</td>
 					<TD align="center" width="36%">
 						{message}
@@ -157,7 +154,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 <!-- BEGIN header_row_felamimail -->
 	<tr id="row_{message_uid}" class="{row_css_class}" onMouseOver="style.backgroundColor='#dddddd';" onMouseOut="javascript:style.backgroundColor='#FFFFFF';">
 		<td class="mainscreenRow" width="20px" align="left" valign="top">
-			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
+			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}"
 			onclick="toggleFolderRadio(this, refreshTimeOut)" {row_selected}>
 		</td>
 		<td class="mainscreenRow" width="20px" align="center">
@@ -178,14 +175,14 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<td colspan=2 align="right" class="mainscreenRow" width="40px">
 			<span style="font-size:10px">{size}</span>
 		</td>
-				
+
 </tr>
 <!-- END header_row_felamimail -->
 
 <!-- BEGIN header_row_outlook -->
 	<tr id="row_{message_uid}" class="{row_css_class}" onMouseOver="style.backgroundColor='#dddddd';" onMouseOut="javascript:style.backgroundColor='#FFFFFF';" >
 		<td class="mainscreenRow" width="20px" align="left" valign="top">
-			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
+			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}"
 			onclick="toggleFolderRadio(this, refreshTimeOut)" {row_selected}>
 		</td>
 		<td class="mainscreenRow" width="20px" align="center">
@@ -208,7 +205,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<td colspan=2 align="right" class="mainscreenRow" width="40px">
 			<span style="font-size:10px">{size}</span>
 		</td>
-				
+
 </tr>
 <!-- END header_row_outlook -->
 
