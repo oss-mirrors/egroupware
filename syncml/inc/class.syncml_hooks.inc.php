@@ -479,7 +479,7 @@ class syncml_hooks
 				'type'   => 'select',
 				'label'  => 'Synchronize this addressbook',
 				'name'   => 'filter_addressbook',
-				'help'   => lang('Only this addressbook will synchronized.'),
+				'help'   => lang('Only this addressbook will be synchronized.'),
 				'values' => $show_addr_addr,
 				'xmlrpc' => True,
 				'admin'  => False,
