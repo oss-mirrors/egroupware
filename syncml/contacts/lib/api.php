@@ -64,7 +64,7 @@ function _egwcontactssync_list($filter='')
 
 	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	// hardcode your search creteria here
+	// hardcode your search criteria here
 	$criteria = array();
 
 	$filter = array();
@@ -88,12 +88,12 @@ function _egwcontactssync_list($filter='')
 	$allContacts = $soAddressbook->search($criteria,true,'','','',false,'AND',false,$filter);
 
 	$guids = array();
-	foreach((array)$allContacts as $contact)
+	foreach ((array)$allContacts as $contact)
 	{
-    #Horde::logMessage("SymcML: egwcontactssync list generate id for: ". $contact['id'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
-    #Horde::logMessage("SymcML: egwcontactssync list generate id for: ". print_r($contact, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		#Horde::logMessage("SymcML: egwcontactssync list generate id for: ". $contact['id'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		#Horde::logMessage("SymcML: egwcontactssync list generate id for: ". print_r($contact, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	  $guids[] = "contacts-".$contact['id'];
+		$guids[] = "contacts-".$contact['id'];
 
 	}
 
@@ -127,7 +127,7 @@ function &_egwcontactssync_listBy($action, $timestamp, $type, $filter='') {
 	switch ($action) {
 		case 'delete' :
 			// filters may have changed, so we need to calculate which
-			// items are to delete from client cause they are not longer is list.
+			// items are to delete from client because they are not longer in the list.
 			return $allChangedItems + array_diff($allClientItems, $allReadAbleItems);
 
 		case 'add' :
