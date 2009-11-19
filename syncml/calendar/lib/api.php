@@ -110,6 +110,15 @@ function _egwcalendarsync_list($filter='')
 		'enum_groups' => true,
 	);
 
+	$state = &$_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
+	if (isset($deviceInfo['tzid']) &&
+			$deviceInfo['tzid'])
+	{
+		$tz_id = $deviceInfo['tzid'];
+	}
+	else $tz_id = null;
+
 	$events =& $boCalendar->search($searchFilter);
 
 	foreach((array)$events as $event)
@@ -118,7 +127,7 @@ function _egwcalendarsync_list($filter='')
 		if ($event['recur_type'] != MCAL_RECUR_NONE)
 		{
 			// Check if the stati for all participants are identical for all recurrences
-			$days = $boCalendar->so->get_recurrence_exceptions(&$event);
+			$days = $boCalendar->so->get_recurrence_exceptions(&$event, $tz_id);
 
 			foreach ($days as $recur_date)
 			{
@@ -145,6 +154,13 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 	Horde::logMessage("SymcML: egwcalendarsync listBy action: $action timestamp: $timestamp filter: $filter",
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state	= &$_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
+	if (isset($deviceInfo['tzid']) &&
+			$deviceInfo['tzid'])
+	{
+		$tz_id = $deviceInfo['tzid'];
+	}
+	else $tz_id = null;
 	$allChangedItems = $state->getHistory('calendar', $action, $timestamp);
 	//Horde::logMessage("SymcML: egwcalendarsync getHistory('calendar', $action, $timestamp)=".print_r($allChangedItems, true),
 	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -184,7 +200,7 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
 	$ids = $guids = array();
 
-	if($action == 'delete')
+	if ($action == 'delete')
 	{
 		$guids = $allChangedItems;
 
@@ -216,7 +232,7 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 						$recur_exceptions = $state->getGUIDExceptions($type, $guid);
 						foreach ($recur_exceptions as $rexception) {
 							$parts = preg_split('/:/', $rexception);
-  							$recur_dates = $boCalendar->so->get_recurrence_exceptions($event);
+  							$recur_dates = $boCalendar->so->get_recurrence_exceptions($event, $tz_id);
   							if (!in_array($parts[1], $recur_dates))
   							{
   								// "status only" exception does no longer exist
@@ -253,7 +269,7 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 				if ($event['recur_type'] != MCAL_RECUR_NONE)
 				{
 					// Check if the stati for all participants are identical for all recurrences
-					$days = $boCalendar->so->get_recurrence_exceptions(&$event);
+					$days = $boCalendar->so->get_recurrence_exceptions($event, $tz_id);
 
 					foreach ($days as $recur_date)
 					{
