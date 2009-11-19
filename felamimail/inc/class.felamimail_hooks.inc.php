@@ -426,7 +426,7 @@ class felamimail_hooks
 		$preferences = $bofelamimail->mailPreferences;
 		$showMainScreenStuff = false;
 		if($_GET['menuaction'] == 'felamimail.uifelamimail.viewMainScreen' ||
-			$_GET['menuaction'] == 'felamimail.uifelamimail.viewMainScreen') {
+			$_GET['menuaction'] == 'felamimail.uifelamimail.changeFolder') {
 			/* seems to be, its not needed here, as viewMainScreen does it anyway
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
@@ -434,6 +434,14 @@ class felamimail_hooks
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			$GLOBALS['egw']->common->egw_header();
 			*/
+			if (isset($_GET["mailbox"]))
+			{
+				$bofelamimail->sessionData['mailbox'] = urldecode($_GET["mailbox"]);
+				$bofelamimail->sessionData['startMessage']= 1;
+				$bofelamimail->sessionData['sort']    = $preferences->preferences['sortOrder'];
+				$bofelamimail->sessionData['activeFilter']= -1;
+				$bofelamimail->saveSessionData();
+			}
 			$uiwidgets		= CreateObject('felamimail.uiwidgets');
 			$showMainScreenStuff = true;
 		}
