@@ -1097,7 +1097,9 @@
 				if (strtoupper($attachment['type']) == 'TEXT/X-VCARD')
 				{
 					$addressbook_vcal = new addressbook_vcal();
-					$contact = $addressbook_vcal->addVCard($attachment['attachment'],null,true);
+					$contact = $addressbook_vcal->search($attachment['attachment']);
+					if (!$contact) $contact = null;
+					$contact = $addressbook_vcal->addVCard($attachment['attachment'],$contact,true);
 					//error_log(__METHOD__.$contact);
 					if ((int)$contact > 0) 
 					{
