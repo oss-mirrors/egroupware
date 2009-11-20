@@ -518,11 +518,26 @@ class syncml_hooks
 				'xmlrpc' => False,
 				'admin'  => False
 			),
-			'infolog_filter' => array(
+			'task_filter' => array(
 				'type'   => 'select',
 				'label'  => 'Synchronize this selection',
-				'name'   => 'infolog_filter',
+				'name'   => 'task_filter',
 				'help'   => lang('Only Tasks matching this filter criteria will be synchronized.'),
+				'values' => $show_infolog_filters,
+				'xmlrpc' => True,
+				'admin'  => False,
+			),
+			'noteoptionintro' => array(
+				'type'  => 'subsection',
+				'title' => '<h3>' . lang('Note Synchronization Options') . '</h3>',
+				'xmlrpc' => False,
+				'admin'  => False
+			),
+			'note_filter' => array(
+				'type'   => 'select',
+				'label'  => 'Synchronize this selection',
+				'name'   => 'note_filter',
+				'help'   => lang('Only Notes matching this filter criteria will be synchronized.'),
 				'values' => $show_infolog_filters,
 				'xmlrpc' => True,
 				'admin'  => False,

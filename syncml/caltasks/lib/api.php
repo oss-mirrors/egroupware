@@ -60,93 +60,10 @@ $_services['replace'] = array(
  */
 function _egwcaltaskssync_list($filter='')
 {
-	$guids = array();
-	$boCalendar = new calendar_bo();
-	$boInfolog = new infolog_bo();
+	$calendar_items = _egwcalendarsync_list($filter);
+	$task_items = _egwtaskssync_list($filter);
 
-	$now = time();
-
-	if (preg_match('/SINCE.*;([0-9TZ]*).*AND;BEFORE.*;([0-9TZ]*)/i', $filter, $matches)) {
-		$cstartDate	= $vcal->_parseDateTime($matches[1]);
-		$cendDate	= $vcal->_parseDateTime($matches[2]);
-	} else {
-		$cstartDate	= 0;
-		$cendDate = 0;
-	}
-	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_past'])) {
-		$period = (int)$GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_past'];
-		$startDate	= $now - $period;
-		$startDate = ($startDate > $cstartDate ? $startDate : $cstartDate);
-	} else {
-		$startDate	= ($cstartDate ? $cstartDate : ($now - 2678400));
-	}
-	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_future'])) {
-		$period = (int)$GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_future'];
-		$endDate	= $now + $period;
-		$endDate	= ($cendDate && $cendDate < $endDate ? $cendDate : $endDate);
-	} else {
-		$endDate	= ($cendDate ? $cendDate : ($now + 65000000));
-	}
-
-	#1 search through the calendar
-	$searchFilter = array (
-		'start'   => date('Ymd', $startDate),
-		'end'     => date('Ymd', $endDate),
-		'filter'  => 'all',
-		'daywise' => false,
-		'enum_recuring' => false,
-		'enum_groups' => true,
-	);
-
-	$events =& $boCalendar->search($searchFilter);
-
-	Horde::logMessage('SymcML: egwcaltaskssync list found: '. count($events) .' events', __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	foreach ((array)$events as $event) {
-		$guids[] = $guid = 'calendar-' . $event['id'];
-		if ($event['recur_type'] != MCAL_RECUR_NONE)
-		{
-			// Check if the stati for all participants are identical for all recurrences
-			$days = $boCalendar->so->get_recurrence_exceptions(&$event);
-
-			foreach ($days as $recur_date)
-			{
-				if ($recur_date) $guids[] = $guid . ':' . $recur_date;
-			}
-		}
-	}
-
-	if (array_key_exists('infolog_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
-	{
-		$infolog_filter = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_filter'];
-		// Horde::logMessage('SymcML: egwcaltaskssync filter=' . $filter,
-		// __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	}
-	else
-	{
-		$infolog_filter = 'my';
-	}
-
-
-	#2 search for tasks(infolog)
-	$searchFilter = array(
-		'order'			=> 'info_datemodified',
-		'sort'			=> 'DESC',
-		'filter'		=> $infolog_filter,
-		'col_filter'	=> array(
-			'info_type'	=> 'task',
-		),
-	);
-
-	$tasks =& $boInfolog->search($searchFilter);
-
-	Horde::logMessage('SymcML: egwcaltaskssync list found: '. count($tasks) .' tasks', __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	foreach ((array)$tasks as $task) {
-		$guids[] = 'infolog_task-' . $task['info_id'];
-	}
-
-	return $guids;
+	return $calendar_items + $task_items;
 }
 
 /**
@@ -162,171 +79,16 @@ function _egwcaltaskssync_list($filter='')
  */
 function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 {
-	Horde::logMessage("SymcML: egwcaltaskssync listBy action: $action timestamp: $timestamp filter: $filter",
-		__FILE__, __LINE__, PEAR_LOG_DEBUG);
-	$state = &$_SESSION['SyncML.state'];
-	$allChangedCalendarItems = $state->getHistory('calendar', $action, $timestamp);
-	$allChangedTasksItems	= $state->getHistory('infolog_task', $action, $timestamp);
-	Horde::logMessage("SymcML: egwcaltaskssync getHistory('calendar and infolog_task', $action, $timestamp)",
-		__FILE__, __LINE__, PEAR_LOG_DEBUG);
+	// Horde::logMessage("SymcML: egwcaltaskssync listBy action: $action timestamp: $timestamp filter: $filter",
+	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$vcal = new Horde_iCalendar;
-	$boCalendar = new calendar_bo();
-	$boInfolog = new infolog_bo();
-	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
+	$calendar_items = _egwcalendarsync_listBy($action, $timestamp, $type, $filter);
+	if (is_a($calendar_items, 'PEAR_Error')) return $calendar_items;
 
-	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
-	$ids = $guids = array();
+	$task_items = _egwtaskssync_listBy($action, $timestamp, $type, $filter);
+	if (is_a($task_items, 'PEAR_Error')) return $task_items;
 
-	$now = time();
-
-	if (preg_match('/SINCE.*;([0-9TZ]*).*AND;BEFORE.*;([0-9TZ]*)/i', $filter, $matches)) {
-		$cstartDate	= $vcal->_parseDateTime($matches[1]);
-		$cendDate	= $vcal->_parseDateTime($matches[2]);
-	} else {
-		$cstartDate	= 0;
-		$cendDate = 0;
-	}
-	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_past'])) {
-		$period = (int)$GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_past'];
-		$startDate	= $now - $period;
-		$startDate = ($startDate > $cstartDate ? $startDate : $cstartDate);
-	} else {
-		$startDate	= $cstartDate;
-	}
-	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_future'])) {
-		$period = (int)$GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_future'];
-		$endDate	= $now + $period;
-		$endDate	= ($cendDate && $cendDate < $endDate ? $cendDate : $endDate);
-	} else {
-		$endDate	= $cendDate;
-	}
-
-	Horde::logMessage("SymcML: egwcaltasksync listBy startDate=$startDate, endDate=$endDate",
-    	__FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-    if (array_key_exists('infolog_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
-	{
-		$infolog_filter = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_filter'];
-		// Horde::logMessage('SymcML: egwtaskssync filter=' . $filter,
-		// __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	}
-	else
-	{
-		$infolog_filter = 'my';
-	}
-	$searchFilter = array(
-			'order'			=> 'info_datemodified',
-			'sort'			=> 'DESC',
-			'filter'    	=> $infolog_filter,
-			'col_filter'	=> array(
-				'info_type'	=> 'task',
-			),
-		);
-	$tasks =& $boInfolog->search($searchFilter);
-
-	// query the calendar, to check if we are a participants in these changed events
-	if ($action == 'delete')
-	{
-		$guids = $allChangedCalendarItems;
-
-		// Delete all exceptions of deleted series events
-		foreach($allChangedCalendarItems as $guid) {
-			$recur_exceptions = $state->getGUIDExceptions($type, $guid);
-			$guids = array_merge($guids, $recur_exceptions);
-		}
-
-		$allChangedCalendarItems = $state->getHistory('calendar', 'modify', $timestamp);
-		$allChangedCalendarItems =  array_unique($allChangedCalendarItems + $guids);
-		foreach ($allChangedCalendarItems as $guid) {
-			$ids[] = $state->get_egwId($guid);
-		}
-		// read all events in one go, and check if the user participats
-		if (count($ids) && ($events =& $boCalendar->read($ids))) {
-			foreach ((array)$events as $event) {
-				//Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]",
-				//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
-				if ((!$endDate || $event['end'] <= $endDate)
-							&& $startDate <= $event['start']
-						&& isset($event['participants'][$user])
-						&& ($show_rejected || $event['participants'][$user] != 'R'))
-				{
-					if ($event['recur_type'] != MCAL_RECUR_NONE)
-					{
-						$guid = 'calendar-' . $event['id'];
-						$recur_exceptions = $state->getGUIDExceptions($type, $guid);
-						foreach ($recur_exceptions as $rexception) {
-							$parts = preg_split('/:/', $rexception);
-  							$recur_dates = $boCalendar->so->get_recurrence_exceptions($event);
-  							if (!in_array($parts[1], $recur_dates))
-  							{
-  								// "status only" exception does no longer exist
-  								$guids[] = $rexception;
-  							}
-  						}
-					}
-				}
-			}
-		}
-
-		$deletedTasksItems = $allChangedTasksItems;
-	    // Add all changed items for which I'm no longer responsible
-	    $allChangedTasksItems = $state->getHistory('infolog_task', 'modify', $timestamp);
-	    foreach ($allChangedTasksItems as $guid) {
-		    $uid = $state->get_egwId($guid);
-		    // check whether the task does no longer match the criteria
-		    if (!isset($tasks[$uid]))
-			{
-			    $deletedTasksItems[] = $guid;
-		    }
-	    }
-		return $guids + $deletedTasksItems;
-	}
-
-
-	// get the calendar id's for all these items
-	foreach ($allChangedCalendarItems as $guid) {
-		$ids[] = $state->get_egwId($guid);
-	}
-
-	// read all events in one go, and check if the user participats
-	if (count($ids) && ($events =& $boCalendar->read($ids))) {
-		foreach ((array)$events as $event) {
-			//Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]",
-			//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
-			$boCalendar->enum_groups($event);
-			if ((!$startDate || $startDate <= $event['start']
-						&& $event['end'] <= $endDate)
-					&& isset($event['participants'][$user])
-					&& ($show_rejected || $event['participants'][$user] != 'R'))
-			{
-				$guids[] = $guid = 'calendar-' . $event['id'];
-				if ($event['recur_type'] != MCAL_RECUR_NONE)
-				{
-					// Check if the stati for all participants are identical for all recurrences
-					$days = $boCalendar->so->get_recurrence_exceptions(&$event);
-
-					foreach ($days as $recur_date)
-					{
-						if ($recur_date) $guids[] = $guid . ':' . $recur_date;
-					}
-				}
-				//Horde::logMessage("SymcML: egwcalendarsync added id $event[id] ($guid) / $event[title]",
-				//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
-			}
-		}
-	}
-
-	foreach ($allChangedTasksItems as $guid) {
-		$uid = $state->get_egwId($guid);
-		// check whether the task does match the criteria
-		if (isset($tasks[$uid]))
-		{
-			$guids[] = $guid;
-		}
-	}
-
-	return $guids;
+	return $calendar_items + $task_items;
 }
 
 /**

@@ -78,10 +78,7 @@ function _egwtaskssync_list($filter='')
 	$searchFilter = array(
 		'order'		=> 'info_datemodified',
 		'sort'		=> 'DESC',
-		'filter'    => $infolog_filter,	// filter my: entries user is responsible for,
-										// filter own: entries the user own or is responsible for
-
-		// todo add a filter to limit how far back entries from the past get synced
+		'filter'    => $infolog_filter,
 		'col_filter'	=> array(
 			'info_type'	=> 'task',
 		),
@@ -89,9 +86,10 @@ function _egwtaskssync_list($filter='')
 
 	$tasks =& $boInfolog->search($searchFilter);
 
-	Horde::logMessage("SymcML: egwtaskssync list found: " . count($tasks), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwtaskssync list found: " . count($tasks),
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	foreach((array)$tasks as $task) {
+	foreach ((array)$tasks as $task) {
 		$guids[] = 'infolog_task-' . $task['info_id'];
 	}
 
@@ -111,61 +109,37 @@ function _egwtaskssync_list($filter='')
  */
 function &_egwtaskssync_listBy($action, $timestamp, $type, $filter='')
 {
-	#Horde::logMessage("SymcML: egwtaskssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	// Horde::logMessage("SymcML: egwtaskssync listBy action: $action timestamp: $timestamp filter: $filter",
+	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$state	=& $_SESSION['SyncML.state'];
 
-	$state = &$_SESSION['SyncML.state'];
 	$allChangedItems = $state->getHistory('infolog_task', $action, $timestamp);
-	$boInfolog = new infolog_bo();
-	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
+	#Horde::logMessage('SymcML: egwtaskssync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$allReadAbleItems = (array)_egwtaskssync_list($filter);
+	#Horde::logMessage('SymcML: egwtaskssync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$allClientItems = (array)$state->getClientItems();
+	#Horde::logMessage('SymcML: egwtaskssync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	switch ($action) {
+		case 'delete' :
+			// filters may have changed, so we need to calculate which
+			// items are to delete from client because they are not longer in the list.
+			return $allChangedItems + array_diff($allClientItems, $allReadAbleItems);
 
-	if (array_key_exists('infolog_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
-	{
-		$infolog_filter = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_filter'];
-		// Horde::logMessage('SymcML: egwtaskssync filter=' . $filter,
-		// __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		case 'add' :
+			// - added items may not need to be added, cause they are filtered out.
+			// - filters or entries may have changed, so that more entries
+			//   pass the filter and need to be added on the client.
+			return array_unique(array_intersect($allChangedItems, $allReadAbleItems)+ array_diff($allReadAbleItems, $allClientItems));
+
+		case 'modify' :
+			// - modified entries, which not (longer) pass filters must not be send.
+			// - modified entries which are not at the client must not be send, cause
+			//   the 'add' run will send them!
+			return array_intersect($allChangedItems, $allReadAbleItems, $allClientItems);
+
+		default:
+			return new PEAR_Error("$action is not defined!");
 	}
-	else
-	{
-		$infolog_filter = 'my';
-	}
-	$searchFilter = array(
-			'order'			=> 'info_datemodified',
-			'sort'			=> 'DESC',
-			'filter'    	=> $infolog_filter,
-			'col_filter'	=> array(
-				'info_type'	=> 'task',
-			),
-		);
-	$tasks =& $boInfolog->search($searchFilter);
-
-	if ($action == 'delete') {
-		$deletedItems = $allChangedItems;
-	    // Add all changed items which no longer match the filter criteria
-	    $allChangedItems = $state->getHistory('infolog_task', 'modify', $timestamp);
-
-	    foreach ($allChangedItems as $guid) {
-		    $uid = $state->get_egwId($guid);
-		    // check whether the task does no longer match the criteria
-		    if (!isset($tasks[$uid]))
-			{
-			    $deletedItems[] = $guid;
-		    }
-	    }
-		return $deletedItems;
-	}
-
-	$readableItems = array();
-
-	foreach ($allChangedItems as $guid) {
-		$uid = $state->get_egwId($guid);
-		// check whether the task does match the criteria
-		if (isset($tasks[$uid]))
-		{
-			$readableItems[] = $guid;
-		}
-	}
-
-	return $readableItems;
 }
 
 /**

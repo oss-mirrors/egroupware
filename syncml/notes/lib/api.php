@@ -63,22 +63,32 @@ function _egwnotessync_list($filter='')
 	$guids = array();
 	$boInfolog = new infolog_bo();
 
-	#Horde::logMessage("SymcML: egwnotessync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	if (array_key_exists('note_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+	{
+		$infolog_filter = $GLOBALS['egw_info']['user']['preferences']['syncml']['note_filter'];
+		// Horde::logMessage('SymcML: egwtaskssync filter=' . $filter,
+		// __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	}
+	else
+	{
+		$infolog_filter = 'my';
+	}
 
-	$searchFilter = array
-	(
+	$searchFilter = array(
 		'order'		=> 'info_datemodified',
 		'sort'		=> 'DESC',
-		'filter'    => 'own',
-		'col_filter'	=> Array
-		(
+		'filter'    => $infolog_filter,
+		'col_filter'	=> array(
 			'info_type'	=> 'note',
 		),
 	);
 
 	$notes =& $boInfolog->search($searchFilter);
 
-	foreach((array)$notes as $note)
+	Horde::logMessage("SymcML: egwnotessync list found: " . count($notes),
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+	foreach ((array)$notes as $note)
 	{
 		$guids[] = 'infolog_note-'.$note['info_id'];
 	}
@@ -98,34 +108,37 @@ function _egwnotessync_list($filter='')
  */
 function &_egwnotessync_listBy($action, $timestamp, $type, $filter)
 {
-	#Horde::logMessage("SymcML: egwnotessync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	$state = $_SESSION['SyncML.state'];
+	// Horde::logMessage("SymcML: egwtaskssync listBy action: $action timestamp: $timestamp filter: $filter",
+	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$state	=& $_SESSION['SyncML.state'];
 
 	$allChangedItems = $state->getHistory('infolog_note', $action, $timestamp);
+	#Horde::logMessage('SymcML: egwnotessync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$allReadAbleItems = (array)_egwnotessync_list($filter);
+	#Horde::logMessage('SymcML: egwnotessync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$allClientItems = (array)$state->getClientItems();
+	#Horde::logMessage('SymcML: egwnotessync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	switch ($action) {
+		case 'delete' :
+			// filters may have changed, so we need to calculate which
+			// items are to delete from client because they are not longer in the list.
+			return $allChangedItems + array_diff($allClientItems, $allReadAbleItems);
 
-	if($action == 'delete')
-	{
-		return $allChangedItems;	// InfoLog has no further info about deleted entries
+		case 'add' :
+			// - added items may not need to be added, cause they are filtered out.
+			// - filters or entries may have changed, so that more entries
+			//   pass the filter and need to be added on the client.
+			return array_unique(array_intersect($allChangedItems, $allReadAbleItems)+ array_diff($allReadAbleItems, $allClientItems));
+
+		case 'modify' :
+			// - modified entries, which not (longer) pass filters must not be send.
+			// - modified entries which are not at the client must not be send, cause
+			//   the 'add' run will send them!
+			return array_intersect($allChangedItems, $allReadAbleItems, $allClientItems);
+
+		default:
+			return new PEAR_Error("$action is not defined!");
 	}
-
-	$boInfolog = new infolog_bo();
-	$user = $GLOBALS['egw_info']['user']['account_id'];
-
-	$readAbleItems = array();
-	foreach($allChangedItems as $guid) {
-		$uid = $state->get_egwId($guid);
-
-		if(($info =& $boInfolog->read($uid)) &&		// checks READ rights too and returns false if none
-			// for filter my = all items the user is responsible for:
-			//($user == $info['info_owner'] && !count($info['info_responsible']) || in_array($user,$info['info_responsible'])))
-			// for filter own = all items the user own or is responsible for:
-			($user == $info['info_owner']
-				|| in_array($user,$info['info_responsible']))) {
-			$readAbleItems[] = $guid;
-		}
-	}
-	return $readAbleItems;
 }
 
 /**

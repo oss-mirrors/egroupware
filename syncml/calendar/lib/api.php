@@ -69,6 +69,7 @@ function _egwcalendarsync_list($filter='')
 
 	$vcal = new Horde_iCalendar;
 	$boCalendar = new calendar_bo();
+	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
 
 	$now = time();
 
@@ -84,18 +85,15 @@ function _egwcalendarsync_list($filter='')
 		$startDate	= $now - $period;
 		$startDate = ($startDate > $cstartDate ? $startDate : $cstartDate);
 	} else {
-		$startDate	= ($cstartDate ? $cstartDate : ($now - 2678400));
+		$startDate	= ($cstartDate ? $cstartDate : ($now - 2678400)); // 31 days back
 	}
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_future'])) {
 		$period = (int)$GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_future'];
 		$endDate	= $now + $period;
 		$endDate	= ($cendDate && $cendDate < $endDate ? $cendDate : $endDate);
 	} else {
-		$endDate	= ($cendDate ? $cendDate : ($now + 65000000));
+		$endDate	= ($cendDate ? $cendDate : ($now + 65000000)); // 2 years from now
 	}
-
-
-
 
     Horde::logMessage("SymcML: egwcalendarsync list startDate=$startDate, endDate=$endDate",
     	__FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -104,7 +102,7 @@ function _egwcalendarsync_list($filter='')
 	(
 		'start'   => date('Ymd', $startDate),
 		'end'     => date('Ymd', $endDate),
-		'filter'  => 'all',
+		'filter'  => $show_rejected ? 'all' : '',
 		'daywise' => false,
 		'enum_recuring' => false,
 		'enum_groups' => true,
@@ -121,7 +119,7 @@ function _egwcalendarsync_list($filter='')
 
 	$events =& $boCalendar->search($searchFilter);
 
-	foreach((array)$events as $event)
+	foreach ((array)$events as $event)
 	{
 		$guids[] = $guid = 'calendar-' . $event['id'];
 		if ($event['recur_type'] != MCAL_RECUR_NONE)
@@ -151,138 +149,37 @@ function _egwcalendarsync_list($filter='')
  */
 function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 {
-	Horde::logMessage("SymcML: egwcalendarsync listBy action: $action timestamp: $timestamp filter: $filter",
-		__FILE__, __LINE__, PEAR_LOG_DEBUG);
-	$state	= &$_SESSION['SyncML.state'];
-	$deviceInfo = $state->getClientDeviceInfo();
-	if (isset($deviceInfo['tzid']) &&
-			$deviceInfo['tzid'])
-	{
-		$tz_id = $deviceInfo['tzid'];
-	}
-	else $tz_id = null;
-	$allChangedItems = $state->getHistory('calendar', $action, $timestamp);
-	//Horde::logMessage("SymcML: egwcalendarsync getHistory('calendar', $action, $timestamp)=".print_r($allChangedItems, true),
+	// Horde::logMessage("SymcML: egwcalendarsync listBy action: $action timestamp: $timestamp filter: $filter",
 	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$state	=& $_SESSION['SyncML.state'];
 
-	$vcal = new Horde_iCalendar;
-	$boCalendar = new calendar_bo();
+	$allChangedItems = $state->getHistory('calendar', $action, $timestamp);
+	#Horde::logMessage('SymcML: egwcalendarsync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$allReadAbleItems = (array)_egwcalendarsync_list($filter);
+	#Horde::logMessage('SymcML: egwcalendarsync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$allClientItems = (array)$state->getClientItems();
+	#Horde::logMessage('SymcML: egwcalendarsync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	switch ($action) {
+		case 'delete' :
+			// filters may have changed, so we need to calculate which
+			// items are to delete from client because they are not longer in the list.
+			return $allChangedItems + array_diff($allClientItems, $allReadAbleItems);
 
-	$now = time();
+		case 'add' :
+			// - added items may not need to be added, cause they are filtered out.
+			// - filters or entries may have changed, so that more entries
+			//   pass the filter and need to be added on the client.
+			return array_unique(array_intersect($allChangedItems, $allReadAbleItems)+ array_diff($allReadAbleItems, $allClientItems));
 
-	if (preg_match('/SINCE.*;([0-9TZ]*).*AND;BEFORE.*;([0-9TZ]*)/i', $filter, $matches)) {
-		$cstartDate	= $vcal->_parseDateTime($matches[1]);
-		$cendDate	= $vcal->_parseDateTime($matches[2]);
-	} else {
-		$cstartDate	= 0;
-		$cendDate = 0;
+		case 'modify' :
+			// - modified entries, which not (longer) pass filters must not be send.
+			// - modified entries which are not at the client must not be send, cause
+			//   the 'add' run will send them!
+			return array_intersect($allChangedItems, $allReadAbleItems, $allClientItems);
+
+		default:
+			return new PEAR_Error("$action is not defined!");
 	}
-	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_past'])) {
-		$period = (int)$GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_past'];
-		$startDate	= $now - $period;
-		$startDate = ($startDate > $cstartDate ? $startDate : $cstartDate);
-	} else {
-		$startDate	= $cstartDate;
-	}
-	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_future'])) {
-		$period = (int)$GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_future'];
-		$endDate	= $now + $period;
-		$endDate	= ($cendDate && $cendDate < $endDate ? $cendDate : $endDate);
-	} else {
-		$endDate	= $cendDate;
-	}
-
- 	Horde::logMessage("SymcML: egwcalendarsync listBy startDate=$startDate, endDate=$endDate",
-    	__FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	// query the calendar, to check if we are a participants in these changed events
-	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
-	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
-	$ids = $guids = array();
-
-	if ($action == 'delete')
-	{
-		$guids = $allChangedItems;
-
-		// Delete all exceptions of deleted series events
-		foreach($allChangedItems as $guid) {
-			$recur_exceptions = $state->getGUIDExceptions($type, $guid);
-			$guids = array_merge($guids, $recur_exceptions);
-		}
-
-		$allChangedItems = $state->getHistory('calendar', 'modify', $timestamp);
-		$allChangedItems =  array_unique($allChangedItems + $guids);
-		foreach($allChangedItems as $guid) {
-			$ids[] = $state->get_egwId($guid);
-		}
-		// read all events in one go, and check if the user participats
-		if (count($ids) && ($events =& $boCalendar->read($ids))) {
-			foreach((array)$events as $event) {
-				//Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]",
-				//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
-				$boCalendar->enum_groups($event);
-				if ((!$endDate || $event['end'] <= $endDate)
-							&& $startDate <= $event['start']
-						&& isset($event['participants'][$user])
-						&& ($show_rejected || $event['participants'][$user] != 'R'))
-				{
-					if ($event['recur_type'] != MCAL_RECUR_NONE)
-					{
-						$guid = 'calendar-' . $event['id'];
-						$recur_exceptions = $state->getGUIDExceptions($type, $guid);
-						foreach ($recur_exceptions as $rexception) {
-							$parts = preg_split('/:/', $rexception);
-  							$recur_dates = $boCalendar->so->get_recurrence_exceptions($event, $tz_id);
-  							if (!in_array($parts[1], $recur_dates))
-  							{
-  								// "status only" exception does no longer exist
-  								$guids[] = $rexception;
-  							}
-  						}
-  					}
-				}
-			}
-		}
-		return $guids;	// we cant query the calendar for deleted events
-	}
-
-
-
-
-	// get the calendar id's for all these items
-	foreach($allChangedItems as $guid) {
-		$ids[] = $state->get_egwId($guid);
-	}
-
-	// read all events in one go, and check if the user participats
-	if (count($ids) && ($events =& $boCalendar->read($ids))) {
-		foreach((array)$events as $event) {
-			//Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]",
-			//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
-			$boCalendar->enum_groups($event);
-			if ((!$startDate || $startDate <= $event['start']
-						&& $event['end'] <= $endDate)
-					&& isset($event['participants'][$user])
-					&& ($show_rejected || $event['participants'][$user] != 'R'))
-			{
-				$guids[] = $guid = 'calendar-' . $event['id'];
-				if ($event['recur_type'] != MCAL_RECUR_NONE)
-				{
-					// Check if the stati for all participants are identical for all recurrences
-					$days = $boCalendar->so->get_recurrence_exceptions($event, $tz_id);
-
-					foreach ($days as $recur_date)
-					{
-						if ($recur_date) $guids[] = $guid . ':' . $recur_date;
-					}
-				}
-				//Horde::logMessage("SymcML: egwcalendarsync added id $event[id] ($guid) / $event[title]",
-				//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
-			}
-		}
-	}
-
-	return $guids;
 }
 
 /**
