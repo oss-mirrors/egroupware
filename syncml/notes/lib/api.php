@@ -63,7 +63,8 @@ function _egwnotessync_list($filter='')
 	$guids = array();
 	$boInfolog = new infolog_bo();
 
-	if (array_key_exists('note_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+	if (is_array($GLOBALS['egw_info']['user']['preferences']['syncml']) &&
+		array_key_exists('note_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
 	{
 		$infolog_filter = $GLOBALS['egw_info']['user']['preferences']['syncml']['note_filter'];
 		// Horde::logMessage('SymcML: egwtaskssync filter=' . $filter,

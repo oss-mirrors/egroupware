@@ -73,17 +73,20 @@ function _egwcontactssync_list($filter='')
 		$filter['account_id'] = null;
 	}
 
-	if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+	if (is_array($GLOBALS['egw_info']['user']['preferences']['syncml']))
 	{
-  		$filter['list'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list'];
-  		// Horde::logMessage('SymcML: egwcontactssync list() list='. $filter['list'] , __FILE__, __LINE__, PEAR_LOG_DEBUG);
-    }
+		if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+		{
+			$filter['list'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list'];
+			// Horde::logMessage('SymcML: egwcontactssync list() list='. $filter['list'] , __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		}
 
-    if (array_key_exists('filter_addressbook', $GLOBALS['egw_info']['user']['preferences']['syncml']))
-    {
-    	$filter['owner'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_addressbook'];
-    	// Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'] , __FILE__, __LINE__, PEAR_LOG_DEBUG);
-    }
+		if (array_key_exists('filter_addressbook', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+		{
+			$filter['owner'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_addressbook'];
+			// Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'] , __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		}
+	}
 
 	$allContacts = $soAddressbook->search($criteria,true,'','','',false,'AND',false,$filter);
 
@@ -114,7 +117,6 @@ function _egwcontactssync_list($filter='')
  * @return array  An array of GUIDs matching the action and time criteria.
  */
 function &_egwcontactssync_listBy($action, $timestamp, $type, $filter='') {
-
 	// Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp filter: $filter",
 	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state =& $_SESSION['SyncML.state'];
