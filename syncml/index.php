@@ -8,7 +8,7 @@
  * @subpackage preferences
  * @author Joerg Lehrke <jlehrke@noc.de>
  * @copyright (c) 2009 by Joerg Lehrke <jlehrke@noc.de>
- * @version $Id$
+ * @version $Id: index.php 28450 2009-11-22 16:47:37Z jlehrke $
  */
 
 $GLOBALS['egw_info'] = array(
@@ -72,6 +72,7 @@ print("
 <table border='1'>
 <tr><th>&nbsp;EGroupware application&nbsp;</th><th>&nbsp;datastore name&nbsp;</th><th>&nbsp;content type&nbsp;</th></tr>
 <tr><td><b>Addressbook</b></td><td>./contacts</td><td>text/vCard</td></tr>
+<tr><td></td><td>./card</td><td>text/vCard</td></tr>
 <tr><td></td><td>./sifcontacts</td><td>text/x-s4j-sifc</td></tr>
 <tr><td></td><td>./scard</td><td>text/x-s4j-sifc</td></tr>
 <tr><td><b>Calendar</b></td><td>./calendar</td><td>text/calendar</td></tr>
@@ -79,6 +80,7 @@ print("
 <tr><td></td><td>./sifcalendar</td><td>text/x-s4j-sife</td></tr>
 <tr><td></td><td>./scal</td><td>text/x-s4j-sife</td></tr>
 <tr><td><b>Task (InfoLog)</b></td><td>./tasks</td><td>text/calendar</td></tr>
+<tr><td></td><td>./jobs</td><td>text/calendar</td></tr>
 <tr><td></td><td>./siftasks</td><td>text/x-s4j-sift</td></tr>
 <tr><td></td><td>./stask</td><td>text/x-s4j-sift</td></tr>
 <tr><td><b>Notes (InfoLog)</b></td><td>./notes</td><td>text/x-vnote</td></tr>
