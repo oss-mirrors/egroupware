@@ -42,8 +42,8 @@ If you like, enclose it in brackets to create a numbered reference and avoid clu
 
 Or you can have a description instead of a numbered reference; {{```[http://www.php.net/manual/en/ PHP Manual]```}} becomes [http://www.php.net/manual/en/ PHP Manual]
 ----
-You can put a picture in a page by typing the URL to the picture (it must end in gif, jpg, or png).  For example, {{```http://www.egroupware.org/egroupware/phpgwapi/templates/idots/images/logo.png```}} becomes
-http://www.egroupware.org/egroupware/phpgwapi/templates/idots/images/logo.png
+You can put a picture in a page by typing the URL to the picture (it must end in gif, jpg, or png).  For example, {{```http://www.egroupware.org/egroupware/phpgwapi/templates/default/images/logo.png```}} becomes
+http://www.egroupware.org/egroupware/phpgwapi/templates/default/images/logo.png
 ----
 There are 2 possibilities for '''code formatting''':
 {{'''{{\$is_admin = \$GLOBALS['egw_info']['user']['apps']['admin'];}}'''}}
