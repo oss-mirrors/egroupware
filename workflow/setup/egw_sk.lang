@@ -129,7 +129,7 @@ close printer friendly mode	workflow	sk	Zavrieť režim pre tlač
 code	workflow	sk	Kód
 column activity status in instance lists	workflow	sk	Stĺpec stavu aktivity v zoznamoch inštancií
 column category in instance lists	workflow	sk	Stĺpec kategórie v zoznamoch inštancií
-column instance id in instance lists	workflow	sk	Stĺpec ID sedenia v zoznamoch inštancií
+column instance id in instance lists	workflow	sk	Stĺpec ID inštancie v zoznamoch inštancií
 column instance name in instance lists	workflow	sk	Stĺpec názvu inštancie v zoznamoch inštancií
 column instance status in instance lists	workflow	sk	Stĺpec stavu inštancie v zoznamoch inštancií
 column owner in instance lists	workflow	sk	Stĺpec vlastníka v zoznamoch inštancií
@@ -187,7 +187,7 @@ error: removing was not done	workflow	sk	Chyba: odstraňovanie sa neuskutočnilo
 error: trying to send an instance to an activity but it was impossible to get this activity	workflow	sk	Chyba: pokus o odoslanie inštancie k aktivite, ale nedá sa dostať k tejto aktivite
 error: trying to send an instance to an activity but no transition found	workflow	sk	Chyba: pokus o odoslanie inštancie k aktivite, ale nenašiel sa žiadny prechod
 exception	workflow	sk	Výnimka
-exception instance	workflow	sk	Sedenie výnimky
+exception instance	workflow	sk	Výnimka inštancie
 exception raised by %1 %2: %3	workflow	sk	Výnimka zvýšená o %1 %2: %3
 exception resumed by %1 %2: %3	workflow	sk	Výnimka ponížená o %1 %2: %3
 exception this instance	workflow	sk	Prideliť výnimku tejto inštancii
@@ -200,14 +200,14 @@ failed to obtain lock on %1 table	workflow	sk	Nepodarilo sa získať zámok na t
 failed to obtain lock on instances table	workflow	sk	Nepodarilo sa získať zámok na tabuľke inštancií
 failed to obtain lock on instances_activities table	workflow	sk	Nepodarilo sa získať zámok na tabuľke aktivít_inštancií
 failed to record instance properties	workflow	sk	Nepodarilo sa zaznamenať vlastnosti inštancie
-failed to synchronize instance data with the database	workflow	sk	Neporadilo sa synchronizovať dáta sedenia s databázou
+failed to synchronize instance data with the database	workflow	sk	Neporadilo sa synchronizovať dáta inštancie s databázou
 failure	workflow	sk	zlyhanie
 fatal error: nextactivity does not match any candidate in autorouting switch activity	workflow	sk	Závažná chyba: ďalšiaAktivita (nextActivity) sa nezhoduje so žiadnym kandidátom  v automaticky smerovanom prepínaní aktivity
 fatal error: non-deterministic decision for autorouting activity	workflow	sk	Závažná chyba: nepredvídateľné rozhodnutie pre automaticky smerovanú aktivitu
 fatal error: setting next activity to an unexisting activity	workflow	sk	Závažná chyba: nastavujeme ďalšiu aktivitu na neexistujúcu aktivitu
 fatal error: trying to send an instance to an activity but no transition found	workflow	sk	Závažná chyba: pokus o odoslanie inštancie k aktivite, ale nenašiel sa žiadny prechod
 filter	workflow	sk	Filter
-filter instance by id	workflow	sk	Filtrovať sedenie pomocou ID
+filter instance by id	workflow	sk	Filtrovať inštanciu pomocou ID
 finally you have links with <strong>%link_xx|yy%</strong> syntax, xx is the address part, yy the text part.	workflow	sk	Napokon máte odkazy so syntaxou <strong>%link_XX|YY%</strong>, XX je časť adresy, YY je časť textu.
 fix	workflow	sk	Opraviť
 fix concistency for selected rows	workflow	sk	Opraviť konzistenciu pre vybrané riadky

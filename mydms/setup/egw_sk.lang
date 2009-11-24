@@ -7,11 +7,13 @@ access_mode_readwrite	mydms	sk	Čítanie+Zápis
 acl get inherited	mydms	sk	ACL sa kumuluje
 add acl	mydms	sk	Pridať acl
 add document	mydms	sk	Pridať dokument
+add link	mydms	sk	Pridať odkaz
 add notification	mydms	sk	Pridať upozornenie
 add subfolder	mydms	sk	Pridať podpriečinok
 adding subfolder "%1" to folder "%2"...	mydms	sk	Pridávam podpriečinok "%1" do priečinka "%2"...
 admin-tools	mydms	sk	Nástroje pre správu
 all versions	mydms	sk	Všetky verzie
+choose document	mydms	sk	Vyberte dokument
 comment	mydms	sk	Poznámka
 comment for current version	mydms	sk	Poznámka k súčasnej verzii
 copy acl	mydms	sk	Skopírovať acl
@@ -21,6 +23,7 @@ copy options	mydms	sk	Možnosti kopírovania
 copy subfolders	mydms	sk	Skopírovať podpriečinok
 create empty acl	mydms	sk	Vytvoriť prázdne acl
 creation date	mydms	sk	Dátum vytvorenia
+crop comment	mydms	sk	Orezať poznámku
 current acl	mydms	sk	Súčasné acl
 current version	mydms	sk	Súčasná verzia
 default access	mydms	sk	Predvolený prístup
@@ -28,6 +31,7 @@ delete folder	mydms	sk	Odstrániť priečinok
 delete this notification	mydms	sk	Odstrániť toto upozornenie
 do you really want to delete this acl?	mydms	sk	Naozaj chcete odstrániť toto acl?
 do you really want to delete this document?	mydms	sk	Naozaj chcete odstrániť tento dokument?
+do you really want to delete this link for document?	mydms	sk	naozaj chcete odstrániť tento odkaz na dokument?
 do you really want to delete this version of the document?	mydms	sk	Naozaj chcete odstrániť túto verziu dokumentu?
 do you really want to remove the folder "%1" and its content?<br>be careful: this action cannot be undone.	mydms	sk	Ste si istí, že chcete odstrániť "%1" a jeho obsah?<br>Budte opatrní: Táto akcia sa nedá vrátiť späť.
 does not expire	mydms	sk	Nevyprší
@@ -43,12 +47,15 @@ information about last update	mydms	sk	Informácie o poslednej aktualizácii
 informations	mydms	sk	Informácie
 inherit acl again	mydms	sk	Znovu kumulovať ACL
 last update	mydms	sk	Posledná aktualizácia
+linked by	mydms	sk	Odkaz pridal
 linked documents	mydms	sk	Pripojené dokumenty
 lock status	mydms	sk	Stav zámky
 mime type	mydms	sk	MIME typ
 move document	mydms	sk	Presunúť dokument
 move folder	mydms	sk	Presunúť priečinok
 mydms	common	sk	MyDMS
+no related documents	mydms	sk	Žiadne súvisiace dokumenty
+not selected document!	mydms	sk	Neboli označené žiadne dokumenty!
 notifications	mydms	sk	Upozornenia
 permission	mydms	sk	Oprávnenie
 select folder	mydms	sk	Vybrať priečinok
@@ -58,6 +65,7 @@ this document gets locked by you!	mydms	sk	Tento dokument ste zamkli!
 this document gets unlocked by you.	mydms	sk	Tento dokument ste odomkli.
 this document is currently not locked.	mydms	sk	Tento dokument teraz nie je zamknutý.
 this document is locked by <a href="mailto:%1">%2</a>.	mydms	sk	Tento dokument zamkol používateľ: <a href="mailto:%1">%2</a>.
+to save space do not show the full comment to the file	mydms	sk	Aby sa ušetrilo miesto, nezobrazovať celú poznámku k súboru
 update document	mydms	sk	Aktualizovať dokument
 upload date	mydms	sk	Dátum odoslania
 uploaded by	mydms	sk	Odoslal
