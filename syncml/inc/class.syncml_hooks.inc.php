@@ -35,6 +35,13 @@ class syncml_hooks
 			1 => lang('yes')
 		);
 
+		$select_CalendarFilter = array(
+			'default'     => lang('Not rejected'),
+			'accepted'    => lang('Accepted'),
+			'owner'       => lang('Owner too'),
+			'all'         => lang('All incl. rejected'),
+		);
+
 		$devices_Entries = array();
 		if (!$hook_data['setup'])
 		{
@@ -55,6 +62,14 @@ class syncml_hooks
 			// list the InfoLog filters
 			$infolog_bo = new infolog_bo();
 			$show_infolog_filters = $infolog_bo->filters;
+
+			// list the calendars this user has access to
+			$calendar_bo = new calendar_bo();
+			$show_calendars = array();
+			foreach($calendar_bo->list_cals() as $grant)
+			{
+				$show_calendars[$grant['grantor']] = $grant['name'];
+			}
 
 			// list the calendar categories of this user
 			$categories = new categories($user, 'calendar');
@@ -486,11 +501,11 @@ class syncml_hooks
 			),
 			'calendarhistoryintro' => array(
 				'type'  => 'subsection',
-				'title' => '<h3>' . lang('Calendar Synchronization Period') . '</h3>',
+				'title' => '<h3>' . lang('Calendar Synchronization Options') . '</h3>',
 				'xmlrpc' => False,
 				'admin'  => False
 			),
-			'calendar_past' => array (
+			'calendar_past' => array(
 				'type'		=> 'input',
 				'label'		=> lang('Calendar History Period'),
 				'name'		=> 'calendar_past',
@@ -511,6 +526,26 @@ class syncml_hooks
 				'default'	=> 65000000,
 				'xmlrpc'	=> True,
 				'admin'		=> False,
+			),
+			'calendar_filter' => array(
+				'type'		=> 'select',
+				'label' 	=> 'Calendar Filter',
+				'name'		=> 'calendar_filter',
+				'help'		=> lang('Only Events matching this filter criteria will be synchronized.'),
+				'values'	=> $select_CalendarFilter,
+				'default'	=> 'all',
+				'xmlrpc'	 => True,
+				'admin'  	=> False,
+			),
+			'calendar_owner' => array(
+				'type'		=> 'select',
+				'label' 	=> 'Syncronization Calendars',
+				'name'		=> 'calendar_owner',
+				'help'		=> lang('Events from all selected Calendars will be synchronized.'),
+				'values'	=> $show_calendars,
+				'default'	=> 'none',
+				'xmlrpc'	 => True,
+				'admin'  	=> False,
 			),
 			'taskoptionintro' => array(
 				'type'  => 'subsection',

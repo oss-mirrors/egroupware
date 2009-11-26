@@ -69,7 +69,24 @@ function _egwcalendarsync_list($filter='')
 
 	$vcal = new Horde_iCalendar;
 	$boCalendar = new calendar_bo();
-	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
+	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_filter']))
+	{
+		$syncCriteria = $GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_filter'];
+	} else {
+		$syncCriteria = 'all';
+	}
+
+	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_owner']))
+	{
+		$calendarOwner = $GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_owner'];
+		$currentCalendars = $boCalendar->list_cals();
+		if (!in_array($calendarOwner, $currentCalendars))
+		{
+			$calendarOwner = $GLOBALS['egw_info']['user']['account_id'];
+		}
+	} else {
+		$calendarOwner = $GLOBALS['egw_info']['user']['account_id'];
+	}
 
 	$now = time();
 
@@ -102,7 +119,8 @@ function _egwcalendarsync_list($filter='')
 	(
 		'start'   => date('Ymd', $startDate),
 		'end'     => date('Ymd', $endDate),
-		'filter'  => $show_rejected ? 'all' : '',
+		'filter'  => $syncCriteria,
+		'owner'   => $calendarOwner,
 		'daywise' => false,
 		'enum_recuring' => false,
 		'enum_groups' => true,
