@@ -81,7 +81,7 @@
 
 			$this->t 		= CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->displayCharset   = $GLOBALS['egw']->translation->charset();
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$this->bofelamimail		= CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$this->bopreferences	= $this->bofelamimail->bopreferences; //CreateObject('felamimail.bopreferences');
 
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
@@ -244,9 +244,9 @@
 			$partID		= $_GET['part'];
 			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
 
-			$transformdate	=& CreateObject('felamimail.transformdate');
-			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
-			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
+			//$transformdate	=& CreateObject('felamimail.transformdate');
+			//$htmlFilter	=& CreateObject('felamimail.htmlfilter');
+			$uiWidgets	= CreateObject('felamimail.uiwidgets');
 			// (regis) seems to be necessary to reopen...
 			$this->bofelamimail->reopen($this->mailbox);
 			// retrieve the flags of the message, before touching it.
@@ -278,7 +278,6 @@
 			if (!empty($this->uid) && strpos( array2string($flags),'Seen')===false) $this->bofelamimail->flagMessages('read', $this->uid);
 
 			$nextMessage	= $this->bofelamimail->getNextMessage($this->mailbox, $this->uid);
-
 			$webserverURL	= $GLOBALS['egw_info']['server']['webserver_url'];
 
 			$nonDisplayAbleCharacters = array('[\016]','[\017]',
@@ -819,9 +818,9 @@
 			$partID		= $_GET['part'];
 			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
 
-			$transformdate	=& CreateObject('felamimail.transformdate');
-			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
-			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
+			//$transformdate	=& CreateObject('felamimail.transformdate');
+			//$htmlFilter	=& CreateObject('felamimail.htmlfilter');
+			//$uiWidgets	=& CreateObject('felamimail.uiwidgets');
 			// (regis) seems to be necessary to reopen...
 			$this->bofelamimail->reopen($this->mailbox);
 			#$headers	= $this->bofelamimail->getMessageHeader($this->mailbox, $this->uid, $partID);
@@ -1097,9 +1096,12 @@
 				if (strtoupper($attachment['type']) == 'TEXT/X-VCARD')
 				{
 					$addressbook_vcal = new addressbook_vcal();
-					$contact = $addressbook_vcal->search($attachment['attachment']);
+					$vcard = $addressbook_vcal->vcardtoegw($attachment['attachment']);
+					//error_log(print_r($vcard,true));
+					if ($vcard['uid']) $contact = $addressbook_vcal->find_contact($vcard,false);
 					if (!$contact) $contact = null;
-					$contact = $addressbook_vcal->addVCard($attachment['attachment'],$contact,true);
+					// if there are not enough fields in the vcard (or the parser was unable to correctly parse the vcard (as of VERSION:3.0 created by MSO))
+					if ($contact || count($vcard)>2) $contact = $addressbook_vcal->addVCard($attachment['attachment'],$contact,true);
 					//error_log(__METHOD__.$contact);
 					if ((int)$contact > 0) 
 					{
@@ -1274,9 +1276,9 @@
 			$partID		= $_GET['part'];
 			if (!empty($_GET['folder'])) $this->mailbox  = base64_decode($_GET['folder']);
 
-			$transformdate	=& CreateObject('felamimail.transformdate');
-			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
-			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
+			//$transformdate	=& CreateObject('felamimail.transformdate');
+			//$htmlFilter	=& CreateObject('felamimail.htmlfilter');
+			//$uiWidgets	=& CreateObject('felamimail.uiwidgets');
 			// (regis) seems to be necessary to reopen...
 			$folder = $this->mailbox;
 			// the folder for callfromcompose is hardcoded, because the message to be printed from the compose window is saved as draft, and can be
