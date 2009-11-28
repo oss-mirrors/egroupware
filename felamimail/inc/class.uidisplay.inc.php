@@ -1087,9 +1087,8 @@
 					if ((int)$event > 0)
 					{
 						$vars = array(
-						'menuaction'      => 'calendar.calendar_uiforms.edit',
-						'cal_id'      => $event,
-						'print' => false,
+							'menuaction'      => 'calendar.calendar_uiforms.edit',
+							'cal_id'      => $event,
 						);
 						$GLOBALS['egw']->redirect_link('../index.php',$vars);
 					}
