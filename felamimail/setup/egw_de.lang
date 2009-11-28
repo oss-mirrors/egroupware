@@ -149,7 +149,7 @@ email forwarding address	felamimail	de	Zieladresse
 email notification update failed	felamimail	de	Die Benachrichtigung über den Gelesen-Status der eMail ist fehlgeschlagen.
 email signature	felamimail	de	E-Mail-Signatur
 emailaddress	felamimail	de	E-Mail-Adresse
-empty trash	felamimail	de	Trash-Ordner leeren
+empty trash	felamimail	de	Papierkorb leeren
 enable	felamimail	de	Aktivieren
 encrypted connection	felamimail	de	verschlüsselte Verbindung
 enter your default mail domain ( from: user@domain )	admin	de	Geben sie eine Vorgabewert für die Maildomain ein (Von: benutzer@domain)
@@ -290,7 +290,7 @@ move	felamimail	de	verschieben
 move folder	felamimail	de	Ordner verschieben
 move messages	felamimail	de	Nachrichten verschieben
 move selected to	felamimail	de	verschieben nach
-move to trash	felamimail	de	in den Trash-Ordner verschieben
+move to trash	felamimail	de	in den Papierkorb verschieben
 moving messages to	felamimail	de	verschiebe Nachrichten nach
 name	felamimail	de	Name
 never display html emails	felamimail	de	niemals anzeigen
