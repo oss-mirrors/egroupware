@@ -3,6 +3,7 @@
 (only cc/bcc)	felamimail	es-es	(sólo Cc/Cco)
 (separate multiple addresses by comma)	felamimail	es-es	(separar múltiples direcciones con comas)
 (unknown sender)	felamimail	es-es	(remitente desconocido)
+aborted	felamimail	es-es	abortado
 activate	felamimail	es-es	Activar
 activate script	felamimail	es-es	activar script
 activating by date requires a start- and end-date!	felamimail	es-es	Activar por fecha requiere una fecha de inicio y otra de final
