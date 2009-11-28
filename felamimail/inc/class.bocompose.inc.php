@@ -1068,11 +1068,17 @@
 			}
 			if ($bofelamimail) $bofelamimail->closeConnection();
 			//error_log("performing Infolog Stuff");
-			// attension: we dont return from infolog. cleanups will be done there.
+			//error_log(print_r($this->sessionData['to'],true));
+			//error_log(print_r($this->sessionData['cc'],true));
+			//error_log(print_r($this->sessionData['bcc'],true));
+			$mailaddresses = $this->sessionData['to'];
+			if (is_array($this->sessionData['cc'])) $mailaddresses = array_merge($mailaddresses,$this->sessionData['cc']);
+			if (is_array($this->sessionData['bcc'])) $mailaddresses = array_merge($mailaddresses,$this->sessionData['bcc']);
+			// attention: we dont return from infolog. cleanups will be done there.
 			if ($_formData['to_infolog'] == 'on') {
 				$uiinfolog =& CreateObject('infolog.infolog_ui');
 				$uiinfolog->import_mail(
-					$this->sessionData['to'],
+					$mailaddresses,
 					$this->sessionData['subject'],
 					$this->convertHTMLToText($this->sessionData['body']),
 					$this->sessionData['attachments']
