@@ -887,15 +887,17 @@
 
 		function display_app_header($printing = NULL)
 		{
-			if($_GET['menuaction'] != 'felamimail.uidisplay.printMessage' &&
-				$_GET['menuaction'] != 'felamimail.uidisplay.displayBody') {
+			if ($_GET['menuaction'] != 'felamimail.uidisplay.printMessage' &&
+				$_GET['menuaction'] != 'felamimail.uidisplay.displayBody' && 
+				empty($printing)) 
+			{
 				$GLOBALS['egw']->js->validate_file('tabs','tabs');
 				$GLOBALS['egw']->js->validate_file('jscode','view_message','felamimail');
 				$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			}
 
 			if(($_GET['menuaction'] == 'felamimail.uidisplay.printMessage') || (!empty($printing) && $printing == 1)) {
-				$GLOBALS['egw']->js->set_onload('javascript:updateTitle();javascript:window.print()');
+				$GLOBALS['egw']->js->set_onload('javascript:updateTitle();javascript:window.print();');
 			}
 
 			if($_GET['menuaction'] == 'felamimail.uidisplay.printMessage' || (!empty($printing) && $printing == 1) ||
