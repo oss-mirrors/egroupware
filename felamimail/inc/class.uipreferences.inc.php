@@ -525,12 +525,6 @@
 			
 			switch($_GET['display'])
 			{
-				#case 'acl':
-				#	$uiBaseClass =& CreateObject('felamimail.uibaseclass');
-				#	#$uiBaseClass->accounts_popup('calendar');
-				#	$this->t->parse('settings_view','folder_acl',True);
-				#	break;
-					
 				case 'settings':
 				default:
 					// selected folder data

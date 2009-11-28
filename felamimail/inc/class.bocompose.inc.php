@@ -564,9 +564,9 @@
 				$this->sessionData['subject'] = "Re: " . $bofelamimail->decode_header($headers['SUBJECT']);
 			}
 
-			#_debug_array($headers);
+			//_debug_array($headers);
 			$bodyParts = $bofelamimail->getMessageBody($_uid, $this->preferencesArray['always_display'], $_partID);
-			#_debug_array($bodyParts);
+			//_debug_array($bodyParts);
 
 			$fromAddress = ($headers['FROM'][0]['PERSONAL_NAME'] != 'NIL') ? $headers['FROM'][0]['RFC822_EMAIL'] : $headers['FROM'][0]['EMAIL'];
 			$toAddressA = array();

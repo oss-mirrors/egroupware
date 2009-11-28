@@ -104,7 +104,7 @@
 			//$this->foldername	= $this->sessionData['mailbox'];
 			$this->accountid	= $GLOBALS['egw_info']['user']['account_id'];
 
-			$this->bopreferences	=& CreateObject('felamimail.bopreferences',$_restoreSession);
+			$this->bopreferences	= CreateObject('felamimail.bopreferences',$_restoreSession);
 			//$this->sofelamimail	=& new sofelamimail;
 
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
@@ -122,7 +122,8 @@
 			}
 
 			// set some defaults
-			if(empty($this->sessionData)) {
+			if(empty($this->sessionData)) 
+			{
 				// this should be under user preferences
 				// sessionData empty
 				// no filter active
@@ -796,245 +797,265 @@
 
 		static function getCleanHTML(&$_html)
 		{
-/*
-			// using the new purifier, as it is easier to handle
-			// add htmlpurifiers library to include_path
-			require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.path.php');
-			// include most of the required files, for best performance with bytecode caches
-			require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.includes.php');
-			// installs an autoloader for other files
-			require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.autoload.php');
-            $config = HTMLPurifier_Config::createDefault();
-            $config->set('Core', 'Encoding', self::$displayCharset);
-            $config->set('Cache', 'SerializerPath', $GLOBALS['egw_info']['server']['temp_dir']);
-			$config->set('URI','DisableExternalResources', ($GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs']?false:true));
-			$config->set('HTML', 'DefinitionID', 'felamimail_custom.html internal');
-			$config->set('HTML', 'DefinitionRev', 1);
-			$config->set('Cache', 'DefinitionImpl', null); // remove this later!
-			$def = $config->getHTMLDefinition(true);
-			$def->addAttribute('a', 'href', 'URI');
-			$def->addAttribute('a', 'target', 'Enum#_blank,_self,_target,_top');
-			$def->addAttribute('img', 'src', 'CDATA');
-			$def->addAttribute('img', 'alt', 'CDATA');
-			#_debug_array($def);
+			$usepurify = false;
+			if ($usepurify)
+			{
+				// we may need a customized config, as we may allow external images, $GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs']
 
-			$_html = html::purify($_html, $config);
-			// no scripts allowed
-			// clean out comments
-			$search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
-				'@<!--[\s\S]*?[ \t\n\r]*-->@'         // Strip multi-line comments including CDATA
-			);
-			$_html = preg_replace($search,"",$_html);
-			// clean out empty or pagewide style definitions / left over tags
-			self::replaceTagsCompletley($_html,'style');
-			// remove non printable chars
-			$_html = preg_replace('/([\000-\012])/','',$_html);
-			return $_html;
-*/
-			#echo $_html;exit;
-			$kses = new kses();
-			$kses->AddProtocol('cid');
-			// since check protocoll is called for every value associated to an attribute we have to add color and background-color to the valid protocolls
-			$kses->AddProtocol('color');
-			$kses->AddProtocol('font-size');
-			$kses->AddProtocol('background-color');
-			#$kses->AddHTML('html', array(
-			#		'xmlns' => array(),
-			#		'lang' => array(),
-			#	)
-			#);
-			#$kses->AddHTML('head');
-			#$kses->AddHTML('body', array(
-			#		'class' => array(),
-			#		'id' => array(),
-			#	)
-			#);
-			#$kses->AddHTML('meta', array(
-			#		'http-equiv' => array(),
-			#		'content' => array(),
-			#	)
-			#);
-			#$kses->AddHTML('link',array(
-			#		'rel' => array(), // ="stylesheet"
-			#		'type' => array(), //="text/css"
-			#		'href' => array(),
-			#		'media' => array(),
-			#	)
-			#);
-			$kses->AddHTML(
-				'p', array(
-					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
-				)
-			);
-			$kses->AddHTML("tbody");
-			$kses->AddHTML("thead");
-			$kses->AddHTML("tt");
-			$kses->AddHTML("br");
-			$kses->AddHTML("b");
-			$kses->AddHTML("u");
-			$kses->AddHTML("s");
-			$kses->AddHTML("i");
-			$kses->AddHTML('em');
-			$kses->AddHTML("strong");
-			$kses->AddHTML("strike");
-			$kses->AddHTML("center");
-			$kses->AddHTML(
-				"font",array(
-					"color"	=> array('maxlen' => 20),
-					"size"=>array('maxlen'=>2)
-				)
-			);
-			$kses->AddHTML(
-				"hr",array(
-					"class"		=> array('maxlen' => 20),
-					"style"		=> array('minlen' => 1),
-				)
-			);
-			$kses->AddHTML(
-				"div",array(
-			#		'class' => array(),
-					'align' => array('maxlen' => 10)
-				)
-			);
-			$kses->AddHTML("ul");
-			$kses->AddHTML(
-				"ol",array(
-					"type"	=> array('maxlen' => 20)
-				)
-			);
-			$kses->AddHTML("li");
-			$kses->AddHTML("h1");
-			$kses->AddHTML("h2");
-			$kses->AddHTML("h3");
-			$kses->AddHTML(
-				"style",array(
-					"type"	=> array('maxlen' => 20),
-					"color"	=> array('maxlen' => 20),
-					"background-color" => array('maxlen' => 20),
-					"background" => array('maxlen' => 5),
-				)
-			);
+				// add htmlpurifiers library to include_path
+				require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.path.php');
+				// include most of the required files, for best performance with bytecode caches
+				require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.includes.php');
+				// installs an autoloader for other files
+				require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.autoload.php');
+				// testcase to test the processing of purify
+				//$html = "<h1 onclick=\"alert('hallo');\"> h1 </h1>".$html;
+					$config = HTMLPurifier_Config::createDefault();
+					$config->set('Core.Encoding', (self::$displayCharset?self::$displayCharset:'UTF-8'));
+					// maybe the two following lines are useful for caching???
+					$config->set('HTML.DefinitionID', 'felamimail');
+					$config->set('HTML.DefinitionRev', 1);
+					// doctype and tidylevel
+	 				$config->set('HTML.Doctype', 'XHTML 1.0 Transitional');
+					$config->set('HTML.TidyLevel', 'light');
+					// EnableID is needed for anchor tags
+					$config->set('Attr.EnableID',true);
+					// actual allowed tags and attributes
+					$config->set('HTML.Allowed', 'br,p[align],b,i,u,s,em,pre,tt,strong,strike,center,div[align],hr[class|style],'.
+								'font[size|color],'.
+								'ul[type],ol[type|start],li,'.
+								'h1,h2,h3,'.
+								'span[class|style],'.
+								'table[class|border|cellpadding|cellspacing|width|style|align|bgcolor|align],'.
+								'tbody,thead,tfoot,colgroup,'.
+								'col[width|span],'.
+								'blockquote[class|cite|dir],'.
+								'tr[class|style|align|bgcolor|align|valign],'.
+								'td[class|colspan|rowspan|width|style|align|bgcolor|align|valign|nowrap],'.
+								'th[class|colspan|rowspan|width|style|align|bgcolor|align|valign|nowrap],'.
+								'a[href|target|name|title],'.
+								'img[src|alt|title]');
+					$config->set('Cache.SerializerPath', ($GLOBALS['egw_info']['server']['temp_dir']?$GLOBALS['egw_info']['server']['temp_dir']:sys_get_temp_dir()));
 
-			$kses->AddHTML("select");
-			$kses->AddHTML(
-				"option",array(
-					"value" => array('maxlen' => 45),
-					"selected" => array()
-				)
-			);
+				$_html = html::purify($_html,$config);
+	            // no scripts allowed
+	            // clean out comments
+	            $search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
+	                '@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA
+	                '@<head[^>]*?>.*?</head>@si',  // Strip out javascript
+	                '@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
+	            );
+	            $_html = preg_replace($search,"",$_html);
+	            // clean out empty or pagewide style definitions / left over tags
+	            self::replaceTagsCompletley($_html,'style');
+	            // remove non printable chars
+	            $_html = preg_replace('/([\000-\012])/','',$_html);
+			}
+			else
+			{
+				#echo $_html;exit;
+				$kses = new kses();
+				$kses->AddProtocol('cid');
+				// since check protocoll is called for every value associated to an attribute we have to add color and background-color to the valid protocolls
+				$kses->AddProtocol('color');
+				$kses->AddProtocol('font-size');
+				$kses->AddProtocol('background-color');
+				#$kses->AddHTML('html', array(
+				#		'xmlns' => array(),
+				#		'lang' => array(),
+				#	)
+				#);
+				#$kses->AddHTML('head');
+				#$kses->AddHTML('body', array(
+				#		'class' => array(),
+				#		'id' => array(),
+				#	)
+				#);
+				#$kses->AddHTML('meta', array(
+				#		'http-equiv' => array(),
+				#		'content' => array(),
+				#	)
+				#);
+				#$kses->AddHTML('link',array(
+				#		'rel' => array(), // ="stylesheet"
+				#		'type' => array(), //="text/css"
+				#		'href' => array(),
+				#		'media' => array(),
+				#	)
+				#);
+				$kses->AddHTML(
+					'p', array(
+						'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
+					)
+				);
+				$kses->AddHTML("tbody");
+				$kses->AddHTML("thead");
+				$kses->AddHTML("tt");
+				$kses->AddHTML("br");
+				$kses->AddHTML("b");
+				$kses->AddHTML("u");
+				$kses->AddHTML("s");
+				$kses->AddHTML("i");
+				$kses->AddHTML('em');
+				$kses->AddHTML("strong");
+				$kses->AddHTML("strike");
+				$kses->AddHTML("center");
+				$kses->AddHTML(
+					"font",array(
+						"color"	=> array('maxlen' => 20),
+						"size"=>array('maxlen'=>2)
+					)
+				);
+				$kses->AddHTML(
+					"hr",array(
+						"class"		=> array('maxlen' => 20),
+						"style"		=> array('minlen' => 1),
+					)
+				);
+				$kses->AddHTML(
+					"div",array(
+				#		'class' => array(),
+						'align' => array('maxlen' => 10)
+					)
+				);
+				$kses->AddHTML("ul");
+				$kses->AddHTML(
+					"ol",array(
+						"type"	=> array('maxlen' => 20)
+					)
+				);
+				$kses->AddHTML("li");
+				$kses->AddHTML("h1");
+				$kses->AddHTML("h2");
+				$kses->AddHTML("h3");
+				$kses->AddHTML(
+					"style",array(
+						"type"	=> array('maxlen' => 20),
+						"color"	=> array('maxlen' => 20),
+						"background-color" => array('maxlen' => 20),
+						"background" => array('maxlen' => 5),
+					)
+				);
 
-			$kses->AddHTML(
-				"a", array(
-					"href" 		=> array('maxlen' => 348, 'minlen' => 10),
-					"name" 		=> array('minlen' => 2),
-					'target'	=> array('maxlen' => 10)
-				)
-			);
+				$kses->AddHTML("select");
+				$kses->AddHTML(
+					"option",array(
+						"value" => array('maxlen' => 45),
+						"selected" => array()
+					)
+				);
 
-			$kses->AddHTML(
-				"pre", array(
-					"wrap" => array('maxlen' => 10)
-				)
-			);
+				$kses->AddHTML(
+					"a", array(
+						"href" 		=> array('maxlen' => 348, 'minlen' => 10),
+						"name" 		=> array('minlen' => 2),
+						'target'	=> array('maxlen' => 10)
+					)
+				);
 
-			//      Allows 'td' tag with colspan|rowspan|class|style|width|nowrap attributes,
-			//              colspan has minval of   2       and maxval of 5
-			//              rowspan has minval of   3       and maxval of 6
-			//              class   has minlen of   1 char  and maxlen of   10 chars
-			//              style   has minlen of  10 chars and maxlen of 100 chars
-			//              width   has maxval of 100
-			//              nowrap  is valueless
-			$kses->AddHTML(
-				"table",array(
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"border"   => array("minlen" =>   1, 'maxlen' =>  10),
-					"cellpadding"   => array("minlen" =>   0, 'maxlen' =>  10),
-					"cellspacing"   => array("minlen" =>   0, 'maxlen' =>  10),
-					"width"   => array("maxlen" => 5),
-					"style"   => array('minlen' =>  10, 'maxlen' => 100),
-					"bgcolor"   => array('maxlen' =>  10),
-					"align"   => array('maxlen' =>  10),
-					"valign"   => array('maxlen' =>  10),
-					"bordercolor"   => array('maxlen' =>  10)
-				)
-			);
-			$kses->AddHTML(
-				"tr",array(
-					"colspan"	=> array('minval' =>   2, 'maxval' =>   5),
-					"rowspan"	=> array('minval' =>   3, 'maxval' =>   6),
-					"class"		=> array("minlen" =>   1, 'maxlen' =>  20),
-					"width"		=> array("maxlen" => 5),
-					"style"		=> array('minlen' =>  10, 'maxlen' => 100),
-					"align"		=> array('maxlen' =>  10),
-					'bgcolor'	=> array('maxlen' => 10),
-					"valign"	=> array('maxlen' =>  10),
-					"nowrap"	=> array('valueless' => 'y')
-				)
-			);
-			$kses->AddHTML(
-				"td",array(
-					"colspan" => array('minval' =>   2, 'maxval' =>   5),
-					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"width"   => array("maxlen" => 5),
-					"style"   => array('minlen' =>  10, 'maxlen' => 100),
-					"align"   => array('maxlen' =>  10),
-					'bgcolor' => array('maxlen' => 10),
-					"valign"   => array('maxlen' =>  10),
-					"nowrap"  => array('valueless' => 'y')
-				)
-			);
-			$kses->AddHTML(
-				"th",array(
-					"colspan" => array('minval' =>   2, 'maxval' =>   5),
-					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"width"   => array("maxlen" => 5),
-					"style"   => array('minlen' =>  10, 'maxlen' => 100),
-					"align"   => array('maxlen' =>  10),
-					"valign"   => array('maxlen' =>  10),
-					"nowrap"  => array('valueless' => 'y')
-				)
-			);
-			$kses->AddHTML(
-				"span",array(
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"style"	  => array('minlen' =>  5, 'maxlen' => 100)
-				)
-			);
-			$kses->AddHTML(
-				"blockquote",array(
-					"class"	=> array("minlen" =>   1, 'maxlen' =>  20),
-					"style"	=> array("minlen" =>   1),
-					"cite"	=> array('maxlen' => 30),
-					"type"	=> array('maxlen' => 10),
-					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
-				)
-			);
+				$kses->AddHTML(
+					"pre", array(
+						"wrap" => array('maxlen' => 10)
+					)
+				);
 
-			$kses->AddHTML(
-				'img',array(
-					"src"		=> array("minlen" =>   4, 'maxlen' =>  384, $GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs'] ? '' : 'match' => '/^cid:.*/'),
-					"align"		=> array("minlen" =>   1),
-					"border"	=> array('maxlen' => 30),
-				)
-			);
+				//      Allows 'td' tag with colspan|rowspan|class|style|width|nowrap attributes,
+				//              colspan has minval of   2       and maxval of 5
+				//              rowspan has minval of   3       and maxval of 6
+				//              class   has minlen of   1 char  and maxlen of   10 chars
+				//              style   has minlen of  10 chars and maxlen of 100 chars
+				//              width   has maxval of 100
+				//              nowrap  is valueless
+				$kses->AddHTML(
+					"table",array(
+						"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+						"border"   => array("minlen" =>   1, 'maxlen' =>  10),
+						"cellpadding"   => array("minlen" =>   0, 'maxlen' =>  10),
+						"cellspacing"   => array("minlen" =>   0, 'maxlen' =>  10),
+						"width"   => array("maxlen" => 5),
+						"style"   => array('minlen' =>  10, 'maxlen' => 100),
+						"bgcolor"   => array('maxlen' =>  10),
+						"align"   => array('maxlen' =>  10),
+						"valign"   => array('maxlen' =>  10),
+						"bordercolor"   => array('maxlen' =>  10)
+					)
+				);
+				$kses->AddHTML(
+					"tr",array(
+						"colspan"	=> array('minval' =>   2, 'maxval' =>   5),
+						"rowspan"	=> array('minval' =>   3, 'maxval' =>   6),
+						"class"		=> array("minlen" =>   1, 'maxlen' =>  20),
+						"width"		=> array("maxlen" => 5),
+						"style"		=> array('minlen' =>  10, 'maxlen' => 100),
+						"align"		=> array('maxlen' =>  10),
+						'bgcolor'	=> array('maxlen' => 10),
+						"valign"	=> array('maxlen' =>  10),
+						"nowrap"	=> array('valueless' => 'y')
+					)
+				);
+				$kses->AddHTML(
+					"td",array(
+						"colspan" => array('minval' =>   2, 'maxval' =>   5),
+						"rowspan" => array('minval' =>   3, 'maxval' =>   6),
+						"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+						"width"   => array("maxlen" => 5),
+						"style"   => array('minlen' =>  10, 'maxlen' => 100),
+						"align"   => array('maxlen' =>  10),
+						'bgcolor' => array('maxlen' => 10),
+						"valign"   => array('maxlen' =>  10),
+						"nowrap"  => array('valueless' => 'y')
+					)
+				);
+				$kses->AddHTML(
+					"th",array(
+						"colspan" => array('minval' =>   2, 'maxval' =>   5),
+						"rowspan" => array('minval' =>   3, 'maxval' =>   6),
+						"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+						"width"   => array("maxlen" => 5),
+						"style"   => array('minlen' =>  10, 'maxlen' => 100),
+						"align"   => array('maxlen' =>  10),
+						"valign"   => array('maxlen' =>  10),
+						"nowrap"  => array('valueless' => 'y')
+					)
+				);
+				$kses->AddHTML(
+					"span",array(
+						"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+						"style"	  => array('minlen' =>  5, 'maxlen' => 100)
+					)
+				);
+				$kses->AddHTML(
+					"blockquote",array(
+						"class"	=> array("minlen" =>   1, 'maxlen' =>  20),
+						"style"	=> array("minlen" =>   1),
+						"cite"	=> array('maxlen' => 30),
+						"type"	=> array('maxlen' => 10),
+						"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
+					)
+				);
+				$kses->AddHTML(
+					'img',array(
+						"src"		=> array("minlen" =>   4, 'maxlen' =>  384, $GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs'] ? '' : 'match' => '/^cid:.*/'),
+						"align"		=> array("minlen" =>   1),
+						"border"	=> array('maxlen' => 30),
+					)
+				);
 
-
-			// no scripts allowed
-			// clean out comments
-			$search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
-				'@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA
-				'@<head[^>]*?>.*?</head>@si',  // Strip out javascript
-				'@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
-			);
-			$_html = preg_replace($search,"",$_html);
-			// do the kses clean out first, to avoid general problems with content later on
-			$_html = $kses->Parse($_html);
-			// clean out empty or pagewide style definitions / left over tags
-			self::replaceTagsCompletley($_html,'style');
-			// remove non printable chars
-			$_html = preg_replace('/([\000-\012])/','',$_html);
+				// no scripts allowed
+				// clean out comments
+				$search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
+					'@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA
+					'@<head[^>]*?>.*?</head>@si',  // Strip out javascript
+					'@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
+				);
+				$_html = preg_replace($search,"",$_html);
+				// do the kses clean out first, to avoid general problems with content later on
+				$_html = $kses->Parse($_html);
+				// clean out empty or pagewide style definitions / left over tags
+				self::replaceTagsCompletley($_html,'style');
+				// remove non printable chars
+				$_html = preg_replace('/([\000-\012])/','',$_html);
+			}
 		}
 
 		/**
@@ -1159,7 +1180,7 @@
 
 		function getEMailProfile()
 		{
-			$config =& CreateObject('phpgwapi.config','felamimail');
+			$config = CreateObject('phpgwapi.config','felamimail');
 			$config->read_repository();
 			$felamimailConfig = $config->config_data;
 
@@ -1761,7 +1782,8 @@
 				$this->sessionData['folderStatus'][0][$_folderName]['messages']	=== $folderStatus['EXISTS'] &&
 				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	=== $folderStatus['UIDNEXT'] &&
 				$this->sessionData['folderStatus'][0][$_folderName]['filter']	=== $_filter &&
-				$this->sessionData['folderStatus'][0][$_folderName]['sort']	=== $_sort
+				$this->sessionData['folderStatus'][0][$_folderName]['sort']	=== $_sort &&
+				!empty($this->sessionData['folderStatus'][0][$_folderName]['sortResult'])
 			) {
 				if (self::$debug) error_log(__METHOD__." USE CACHE");
 				$sortResult = $this->sessionData['folderStatus'][0][$_folderName]['sortResult'];
@@ -2459,7 +2481,12 @@
 
 		function openConnection($_icServerID=0, $_adminConnection=false)
 		{
-			#if (!is_object($this->mailPreferences)) echo function_backtrace();
+			if (!is_object($this->mailPreferences)) 
+			{
+				error_log(__METHOD__." No Object for MailPreferences found.". function_backtrace());
+				$this->errorMessage .= lang('No valid data to create MailProfile!!');
+				return false;
+			}
 			if(!$this->icServer = $this->mailPreferences->getIncomingServer((int)$_icServerID)) {
 				$this->errorMessage .= lang('No active IMAP server found!!');
 				return false;
@@ -2562,7 +2589,7 @@
 
 		function setEMailProfile($_profileID)
 		{
-			$config =& CreateObject('phpgwapi.config','felamimail');
+			$config = CreateObject('phpgwapi.config','felamimail');
 			$config->read_repository();
 			$config->value('profileID',$_profileID);
 			$config->save_repository();
@@ -2717,7 +2744,7 @@
 		function sendMDN($uid) {
 			$identities = $this->mailPreferences->getIdentity();
 			$headers = $this->getMessageHeader($uid);
-			$send = & CreateObject('phpgwapi.send');
+			$send = CreateObject('phpgwapi.send');
 			$send->ClearAddresses();
 			$send->ClearAttachments();
 			$send->IsHTML(False);

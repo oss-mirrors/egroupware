@@ -534,8 +534,8 @@ class felamimail_hooks
 			$mailbox 		= $bofelamimail->sessionData['mailbox'];;
 			//_debug_array($mailbox);
 			$icServerID = 0;
-			$imapServer =& $preferences->getIncomingServer($icServerID);
-			$activeIdentity =& $preferences->getIdentity($icServerID);
+			if (is_object($preferences)) $imapServer =& $preferences->getIncomingServer($icServerID);
+			if (is_object($preferences)) $activeIdentity =& $preferences->getIdentity($icServerID);
 			if ($imapServer->_connected != 1) $connectionStatus = $bofelamimail->openConnection($icServerID);
 			$folderObjects = $bofelamimail->getFolderObjects(true, false);
 			$folderStatus = $bofelamimail->getFolderStatus($mailbox);
@@ -636,7 +636,7 @@ class felamimail_hooks
 				$file['Manage Folders']	= $GLOBALS['egw']->link('/index.php',array('menuaction'=>'felamimail.uipreferences.listFolder'));
 			}
 
-			$icServer = $preferences->getIncomingServer(0);
+			if (is_object($preferences)) $icServer = $preferences->getIncomingServer(0);
 			if(is_a($icServer, 'defaultimap')) {
 				if($icServer->enableSieve)
 				{
@@ -665,7 +665,7 @@ class felamimail_hooks
 				}
 			}
 
-			$ogServer = $preferences->getOutgoingServer(0);
+			if (is_object($preferences)) $ogServer = $preferences->getOutgoingServer(0);
 			if(is_a($ogServer, 'defaultsmtp')) {
 				if($ogServer->editForwardingAddress)
 				{

@@ -51,9 +51,9 @@
 			$this->timeCounter = microtime(true);
 
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
-			$this->bofelamimail     =& CreateObject('felamimail.bofelamimail',$this->displayCharset,false);
+			$this->bofelamimail     = CreateObject('felamimail.bofelamimail',$this->displayCharset,false);
 
-			$this->bofilter		=& CreateObject('felamimail.bofilter',false);
+			$this->bofilter		= CreateObject('felamimail.bofilter',false);
 			$this->bopreferences	=& $this->bofelamimail->bopreferences; //CreateObject('felamimail.bopreferences');
 			$this->preferences	= $this->bopreferences->getPreferences();
 
@@ -65,7 +65,7 @@
 			$this->sortReverse 	= $this->bofelamimail->sessionData['sortReverse'];
 			#$this->filter 		= $this->bofelamimail->sessionData['activeFilter'];
 
-			$this->t			=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			$this->t			= CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			#$this->grants[$this->account]	= EGW_ACL_READ + EGW_ACL_ADD + EGW_ACL_EDIT + EGW_ACL_DELETE;
 			// this need to fixed
 			// this does not belong to here
@@ -85,6 +85,7 @@
 
 		function addVcard()
 		{
+			error_log(__METHOD__." called from:".function_backtrace());
 			$messageID 	= $_GET['messageID'];
 			$partID 	= $_GET['partID'];
 			$attachment = $this->bofelamimail->getAttachment($messageID,$partID);
@@ -94,7 +95,7 @@
 			fwrite($fp, $attachment['attachment']);
 			fclose($fp);
 			
-			$vcard =& CreateObject('phpgwapi.vcard');
+			$vcard = CreateObject('phpgwapi.vcard');
 			$entry = $vcard->in_file($tmpfname);
 			$entry['owner'] = $GLOBALS['egw_info']['user']['account_id'];
 			$entry['access'] = 'private';
@@ -109,6 +110,7 @@
 		
 		function changeFilter()
 		{
+			error_log(__METHOD__." called from:".function_backtrace());
 			if(isset($_POST["filter"]))
 			{
 				$data['quickSearch']	= $_POST["quickSearch"];
@@ -144,6 +146,7 @@
 
 		function changeSorting()
 		{
+			error_log(__METHOD__." called from:".function_backtrace());
 			// change sorting
 			if(isset($_GET["sort"]))
 			{
@@ -156,15 +159,9 @@
 			$this->viewMainScreen();
 		}
 
-/*		function compressFolder()
-		{
-			$this->bofelamimail->compressFolder();
-			$this->viewMainScreen();
-		} */
-
-
 		function importMessage()
 		{
+			error_log(__METHOD__." called from:".function_backtrace());
 			if(is_array($_FILES["addFileName"])) {
 				#phpinfo();
 				#error_log(print_r($_FILES,true));
@@ -191,7 +188,7 @@
 			}
 			if(!@is_object($GLOBALS['egw']->js))
 			{
-				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
+				$GLOBALS['egw']->js = CreateObject('phpgwapi.javascript');
 			}
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
@@ -301,6 +298,7 @@
 
 		function deleteMessage()
 		{
+			//error_log(__METHOD__." called from:".function_backtrace());
 			$preferences		= ExecMethod('felamimail.bopreferences.getPreferences');
 
 			$message[] = $_GET["message"];
@@ -336,6 +334,7 @@
 	
 		function handleButtons()
 		{
+			error_log(__METHOD__." called from:".function_backtrace());
 			if($this->moveNeeded == "1")
 			{
 				$this->bofelamimail->moveMessages($_POST["mailbox"],
@@ -451,19 +450,24 @@
 
 		function viewMainScreen()
 		{
+			// get passed messages
+			if (!empty($_GET["msg"])) $message[] = $_GET["msg"];
+			if (!empty($_GET["message"])) $message[] = $_GET["message"];
+			unset($_GET["msg"]);
+			unset($_GET["message"]);
 			#printf ("this->uifelamimail->viewMainScreen() start: %s<br>",date("H:i:s",mktime()));
-			$bopreferences		=& $this->bopreferences;
+			$bopreferences	=& $this->bopreferences;
 			$bofilter		=& $this->bofilter;
 			$uiwidgets		= CreateObject('felamimail.uiwidgets');
 
-			$preferences		=& $bopreferences->getPreferences();
+			$preferences	=& $bopreferences->getPreferences();
 			$urlMailbox		=  urlencode($this->mailbox);
 
-			$imapServer =& $preferences->getIncomingServer(0);
+			if (is_object($preferences)) $imapServer 	=& $preferences->getIncomingServer(0);
 			#_debug_array($imapServer);
-			$activeIdentity =& $preferences->getIdentity(0);
+			if (is_object($preferences)) $activeIdentity =& $preferences->getIdentity(0);
 			#_debug_array($activeIdentity);
-			$maxMessages		=&  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
+			$maxMessages	=&  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
 			if (empty($maxMessages)) $maxMessages = 30; // this seems to be the number off messages that fit the height of the folder tree
 			$userPreferences	=&  $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 
@@ -529,7 +533,7 @@
 			$this->t->set_var('reloadView',$refreshURL);
 			// display a warning if vacation notice is active
 			if(is_a($imapServer,'defaultimap') && $imapServer->enableSieve) {
-				$this->bosieve		=& CreateObject('felamimail.bosieve',$imapServer);
+				$this->bosieve		= CreateObject('felamimail.bosieve',$imapServer);
 				$this->bosieve->retrieveRules($this->bosieve->scriptName);
 				$vacation = $this->bosieve->getVacation($this->bosieve->scriptName);
 				//_debug_array($vacation);
@@ -845,7 +849,9 @@
 				$this->t->set_var('select_all_link',$selectLink);
 				$shortName='';
 				if ($folderStatus = $this->bofelamimail->getFolderStatus($this->mailbox)) $shortName =$folderStatus['shortDisplayName'];
-				$this->t->set_var('message','<b>'.$shortName.': </b>'.lang("Viewing messages")." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage $langTotal)");
+				$addmessage = '';
+				if ($message)  $addmessage = ' <font color="red">'.implode('; ',$message).'</font> ';
+				$this->t->set_var('message','<b>'.$shortName.': </b>'.lang("Viewing messages")." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage $langTotal)".$addmessage);
 				if($firstMessage > 1) {
 					$linkData = array
 					(
@@ -999,6 +1005,7 @@
 		
 		function toggleFilter()
 		{
+			error_log(__METHOD__." called from:".function_backtrace());
 			$this->bofelamimail->toggleFilter();
 			$this->viewMainScreen();
 		}
