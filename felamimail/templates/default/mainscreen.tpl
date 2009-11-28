@@ -78,11 +78,11 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<INPUT TYPE=hidden NAME="mailbox">
 
 	<tr style="height: 20px;">
-		<td>
+		<td nowrap>
 
 			<span id="folderFunction" align="left" style="font-size:11px;"></span>
 		</td>
-		<td align="left" style="font-size:11px; width:auto;" colspan="2">
+		<td nowrap align="left" style="font-size:11px; width:auto;" colspan="2">
 			<span id="messageCounter">{message}</span>
 		</td>
 		<td align="center" style="font-size:11px; color:red; width:180px;">
