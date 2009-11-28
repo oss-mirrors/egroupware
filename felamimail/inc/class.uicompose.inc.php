@@ -547,18 +547,36 @@
 		{
 			$bocompose  = CreateObject('felamimail.bocompose', $_GET['_composeID']);
 			$attachment =  $bocompose->sessionData['attachments'][$_GET['attID']] ;
+			if (!empty($attachment['folder']))
+			{
+				$is_winmail = $_GET['is_winmail'] ? $_GET['is_winmail'] : 0;
+				$this->mailbox  = $attachment['folder'];
+				$this->bofelamimail->reopen($this->mailbox);
+				#$attachment 	= $this->bofelamimail->getAttachment($this->uid,$part);
+				$attachmentData = $this->bofelamimail->getAttachment($attachment['uid'],$attachment['partID'],$is_winmail);
+				$this->bofelamimail->closeConnection();
+			}
+
 			if (parse_url($attachment['file'],PHP_URL_SCHEME) == 'vfs')
 			{
 				egw_vfs::load_wrapper('vfs');
 			}
+			//error_log(print_r($attachmentData,true));
 			header ("Content-Type: ".$attachment['type']."; name=\"". $this->bofelamimail->decode_header($attachment['name']) ."\"");
 			header ("Content-Disposition: inline; filename=\"". $this->bofelamimail->decode_header($attachment['name']) ."\"");
 			header("Expires: 0");
 			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 			header("Pragma: public");
-			$fp = fopen($attachment['file'], 'rb');
-			fpassthru($fp);
-			fclose($fp);
+			if (!empty($attachment['file']))
+			{
+				$fp = fopen($attachment['file'], 'rb');
+				fpassthru($fp);
+				fclose($fp);
+			}
+			else
+			{
+				echo $attachmentData['attachment'];
+			}
 			$GLOBALS['egw']->common->egw_exit();
 			exit;
 
