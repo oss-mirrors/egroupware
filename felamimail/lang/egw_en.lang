@@ -24,7 +24,7 @@ all folders	felamimail	en	All Folders
 all messages in folder	felamimail	en	all messages in folder
 all of	felamimail	en	all of
 allow images from external sources in html emails	felamimail	en	Allow images from external sources in HTML emails
-allways a new window	felamimail	en	allways a new window
+allways a new window	felamimail	en	always a new window
 always show html emails	felamimail	en	Always show HTML emails
 and	felamimail	en	and
 any of	felamimail	en	any of
@@ -112,15 +112,15 @@ do not use sent	felamimail	en	Do not use Sent
 do not use trash	felamimail	en	Do not use Trash
 do not validate certificate	felamimail	en	do not validate certificate
 do you really want to delete the '%1' folder?	felamimail	en	Do you really want to delete the '%1' folder?
-do you really want to delete the selected accountsettings and the assosiated identity.	felamimail	en	Do you really want to delete the selected Accountsettings and the assosiated Identity.
+do you really want to delete the selected accountsettings and the assosiated identity.	felamimail	en	Do you really want to delete the selected Account settings and the associated Identity.
 do you really want to delete the selected signatures?	felamimail	en	Do you really want to delete the selected signatures?
 do you really want to move the selected messages to folder:	felamimail	en	Do you really want to move the selected messages to folder:
 do you want to be asked for confirmation before moving selected messages to another folder?	felamimail	en	Do you want to be asked for confirmation before moving selected messages to another folder?
 do you want to prevent the editing/setup for forwarding of mails via settings (, even if sieve is enabled)?	felamimail	en	Do you want to prevent the editing/setup for forwarding of mails via settings (, even if SIEVE is enabled)?
 do you want to prevent the editing/setup of filter rules (, even if sieve is enabled)?	felamimail	en	Do you want to prevent the editing/setup of filter rules (, even if SIEVE is enabled)?
-do you want to prevent the editing/setup of notification by mail to other emailadresses if emails arrive (, even if sieve is enabled)?	felamimail	en	Do you want to prevent the editing/setup of notification by mail to other emailadresses if emails arrive (, even if SIEVE is enabled)?
+do you want to prevent the editing/setup of notification by mail to other emailadresses if emails arrive (, even if sieve is enabled)?	felamimail	en	Do you want to prevent the editing/setup of notification by mail to other email addresses if emails arrive (, even if SIEVE is enabled)?
 do you want to prevent the editing/setup of the absent/vacation notice (, even if sieve is enabled)?	felamimail	en	Do you want to prevent the editing/setup of the absent/vacation notice (, even if SIEVE is enabled)?
-do you want to prevent the managing of folders (creation, accessrights and subscribtion)?	felamimail	en	Do you want to prevent the managing of folders (creation, accessrights AND subscribtion)?
+do you want to prevent the managing of folders (creation, accessrights and subscribtion)?	felamimail	en	Do you want to prevent the managing of folders (creation, access rights AND subscription)?
 does not contain	felamimail	en	does not contain
 does not exist on imap server.	felamimail	en	does not exist on IMAP Server.
 does not match	felamimail	en	does not match
@@ -224,7 +224,7 @@ if	felamimail	en	IF
 if from contains	felamimail	en	if from contains
 if mail header	felamimail	en	if mail header
 if message size	felamimail	en	if message size
-if shown, which folders should appear on main screen	felamimail	en	if shown, which folders should appear on main screen
+if shown, which folders should appear on main screen	felamimail	en	If shown, which folders should appear on main screen
 if subject contains	felamimail	en	if subject contains
 if to contains	felamimail	en	if to contains
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	en	If using SSL or TLS, you must have the PHP openssl extension loaded.
@@ -375,7 +375,7 @@ respond to mail sent to	felamimail	en	respond to mail sent to
 return	felamimail	en	Return
 return to options page	felamimail	en	Return to options page
 right	felamimail	en	Right
-row order style	felamimail	en	row order style
+row order style	felamimail	en	Row order style
 rule	felamimail	en	Rule
 sat	felamimail	en	Sat
 save	felamimail	en	Save
@@ -397,7 +397,7 @@ send	felamimail	en	Send
 send a reject message	felamimail	en	send a reject message
 sent	felamimail	en	Sent
 sent folder	felamimail	en	Sent Folder
-server supports mailfilter(sieve)	felamimail	en	server supports mailfilter(sieve)
+server supports mailfilter(sieve)	felamimail	en	server supports mailfilter (sieve)
 set as default	felamimail	en	Set as default
 show header	felamimail	en	show header
 show new messages on main screen	felamimail	en	Show new messages on main screen
@@ -414,7 +414,7 @@ skipping forward	felamimail	en	skipping forward
 skipping previous	felamimail	en	skipping previous
 small view	felamimail	en	small view
 smtp settings	admin	en	SMTP settings
-start new messages with mime type plain/text or html?	felamimail	en	start new messages with mime type plain/text or html?
+start new messages with mime type plain/text or html?	felamimail	en	Start new messages with mime type plain/text or html?
 stationery	felamimail	en	stationery
 subject	felamimail	en	Subject
 subject(a->z)	felamimail	en	Subject (A->Z)
@@ -488,8 +488,8 @@ viewing message	felamimail	en	Viewing message
 viewing messages	felamimail	en	Viewing messages
 wed	felamimail	en	Wed
 when deleting messages	felamimail	en	When deleting messages
-which folders (additional to the sent folder) should be displayed using the sent folder view schema	felamimail	en	which folders (additional to the Sent Folder) should be displayed using the Sent Folder View Schema
-which folders - in general - should not be automatically created, if not existing	felamimail	en	which folders - in general - should NOT be automatically created, if not existing
+which folders (additional to the sent folder) should be displayed using the sent folder view schema	felamimail	en	Which folders (additional to the Sent Folder) should be displayed using the Sent Folder View Schema
+which folders - in general - should not be automatically created, if not existing	felamimail	en	Which folders - in general - should NOT be automatically created, if not existing
 with message	felamimail	en	with message
 with message "%1"	felamimail	en	with message "%1"
 wrap incoming text at	felamimail	en	Wrap incoming text at
