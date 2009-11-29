@@ -8,7 +8,7 @@
  * @subpackage preferences
  * @author Joerg Lehrke <jlehrke@noc.de>
  * @copyright (c) 2009 by Joerg Lehrke <jlehrke@noc.de>
- * @version $Id$
+ * @version $Id: class.ajaxsyncml.inc.php 28325 2009-11-16 08:04:18Z jlehrke $
  */
 
 	require_once(EGW_INCLUDE_ROOT.'/syncml/inc/class.devices.inc.php');

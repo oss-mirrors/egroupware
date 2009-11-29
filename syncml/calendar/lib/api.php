@@ -69,6 +69,7 @@ function _egwcalendarsync_list($filter='')
 
 	$vcal = new Horde_iCalendar;
 	$boCalendar = new calendar_bo();
+
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_filter']))
 	{
 		$syncCriteria = $GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_filter'];
@@ -76,17 +77,23 @@ function _egwcalendarsync_list($filter='')
 		$syncCriteria = 'all';
 	}
 
+	$calendarOwner = $GLOBALS['egw_info']['user']['account_id'];
+
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_owner']))
 	{
-		$calendarOwner = $GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_owner'];
-		$currentCalendars = $boCalendar->list_cals();
-		if (!in_array($calendarOwner, $currentCalendars))
+		$owner = $GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_owner'];
+		foreach($boCalendar->list_cals() as $grant)
 		{
-			$calendarOwner = $GLOBALS['egw_info']['user']['account_id'];
+				if ($grant['grantor'] == $owner)
+				{
+					$calendarOwner = $owner;
+					break;
+				}
 		}
-	} else {
-		$calendarOwner = $GLOBALS['egw_info']['user']['account_id'];
 	}
+
+	Horde::logMessage("SymcML: egwcalendarsync calendar owner: $calendarOwner",
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$now = time();
 
@@ -120,10 +127,11 @@ function _egwcalendarsync_list($filter='')
 		'start'   => date('Ymd', $startDate),
 		'end'     => date('Ymd', $endDate),
 		'filter'  => $syncCriteria,
-		'owner'   => $calendarOwner,
+		'users'   => $calendarOwner,
 		'daywise' => false,
 		'enum_recuring' => false,
 		'enum_groups' => true,
+		'cols'		=> array('egw_cal.cal_id', 'cal_start', 'recur_type'),
 	);
 
 	$state = &$_SESSION['SyncML.state'];
@@ -137,13 +145,15 @@ function _egwcalendarsync_list($filter='')
 
 	$events =& $boCalendar->search($searchFilter);
 
-	foreach ((array)$events as $event)
+	foreach ($events as $event)
 	{
-		$guids[] = $guid = 'calendar-' . $event['id'];
+		$guids[] = $guid = 'calendar-' . $event['cal_id'];
 		if ($event['recur_type'] != MCAL_RECUR_NONE)
 		{
+			$event['id'] = $event['cal_id'];
+			$event['start'] = $event['cal_start'];
 			// Check if the stati for all participants are identical for all recurrences
-			$days = $boCalendar->so->get_recurrence_exceptions(&$event, $tz_id);
+			$days = $boCalendar->so->get_recurrence_exceptions(&$event, $tz_id, $startDate, $endDate);
 
 			foreach ($days as $recur_date)
 			{
@@ -181,7 +191,7 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 		case 'delete' :
 			// filters may have changed, so we need to calculate which
 			// items are to delete from client because they are not longer in the list.
-			return $allChangedItems + array_diff($allClientItems, $allReadAbleItems);
+			return array_unique($allChangedItems + array_diff($allClientItems, $allReadAbleItems));
 
 		case 'add' :
 			// - added items may not need to be added, cause they are filtered out.

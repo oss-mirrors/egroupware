@@ -82,6 +82,7 @@ function _egwnotessync_list($filter='')
 		'col_filter'	=> array(
 			'info_type'	=> 'note',
 		),
+		'col'		=> array('info_id'),
 	);
 
 	$notes =& $boInfolog->search($searchFilter);
@@ -123,7 +124,7 @@ function &_egwnotessync_listBy($action, $timestamp, $type, $filter)
 		case 'delete' :
 			// filters may have changed, so we need to calculate which
 			// items are to delete from client because they are not longer in the list.
-			return $allChangedItems + array_diff($allClientItems, $allReadAbleItems);
+			return array_unique($allChangedItems + array_diff($allClientItems, $allReadAbleItems));
 
 		case 'add' :
 			// - added items may not need to be added, cause they are filtered out.

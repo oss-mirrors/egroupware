@@ -31,8 +31,8 @@ class syncml_hooks
 		);
 
 		$selectYesNo = array(
-			0 => lang('no'),
-			1 => lang('yes')
+			1 => lang('Yes'),
+			0 => lang('No')
 		);
 
 		$select_CalendarFilter = array(
