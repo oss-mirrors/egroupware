@@ -1,4 +1,5 @@
 account '%1' not found !!!	emailadmin	es-es	¡No se encontró la cuenta '%1'!
+active templates	emailadmin	es-es	Plantillas activas
 add new email address:	emailadmin	es-es	Añadir nueva dirección de correo
 add profile	emailadmin	es-es	Añadir perfil
 admin dn	emailadmin	es-es	dn del administrador
@@ -71,6 +72,7 @@ ldap server hostname or ip address	emailadmin	es-es	Nombre del servidor LDAP o d
 ldap settings	emailadmin	es-es	Configuración LDAP
 leave empty for no quota	emailadmin	es-es	Dejar en blanco para no poner cuota
 mail settings	admin	es-es	Configuración del correo.
+manage stationery templates	emailadmin	es-es	Gestionar plantillas preimpresas
 name of organisation	emailadmin	es-es	Nombre de la organización
 no alternate email address	emailadmin	es-es	Sin dirección de correo alternativa
 no encryption	emailadmin	es-es	Sin cifrar
@@ -99,6 +101,7 @@ reset filter	emailadmin	es-es	restablecer filtro
 select type of imap server	emailadmin	es-es	Seleccione el tipo de servidor IMAP
 select type of imap/pop3 server	emailadmin	es-es	Seleccione el tipo de servidor IMAP/POP3
 select type of smtp server	emailadmin	es-es	Seleccione el tipo de servidor SMTP
+send using this email-address	emailadmin	es-es	enviar usando esta dirección de correo electrónico
 server settings	emailadmin	es-es	configuración del servidor
 sieve server hostname or ip address	emailadmin	es-es	Nombre del servidor Sieve o dirección IP
 sieve server port	emailadmin	es-es	Puerto del servidor Sieve
@@ -113,6 +116,7 @@ standard	emailadmin	es-es	Estándar
 standard imap server	emailadmin	es-es	Servidor IMAP estándar
 standard pop3 server	emailadmin	es-es	Servidor POP3 estándar
 standard smtp-server	emailadmin	es-es	Servidor SMTP estándar
+stationery	emailadmin	es-es	material preimpreso
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	es-es	El servidor IMAP no parece soportar el método de identificación seleccionado. Por favor, póngase en contacto el administrador de su sistema.
 this php has no imap support compiled in!!	emailadmin	es-es	¡¡Esta instalación de PHP no tiene soporte IMAP!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	es-es	Para usar una conexión TLS, debe ejecutar una versión de PHP 5.1.0 o superior.
@@ -134,5 +138,6 @@ username@domainname (virtual mail manager)	emailadmin	es-es	usuario@dominio (Ges
 users can define their own emailaccounts	emailadmin	es-es	Los usuarios pueden definir sus propias cuentas de correo
 users can define their own identities	emailadmin	es-es	Los usuarios pueden definir sus propias identidades
 users can define their own signatures	emailadmin	es-es	Los usuarios pueden definir sus propias firmas
+users can utilize these stationery templates	emailadmin	es-es	Los usuarios pueden utilizar estas plantillas preimpresas
 vaction messages with start- and end-date require an admin account to be set!	emailadmin	es-es	Los mensajes con fecha de inicio y fin requieren establecer una cuenta de administrador
 virtual mail manager	emailadmin	es-es	Gestor de correo virtual
