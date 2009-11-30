@@ -87,7 +87,7 @@ function _egwnotessync_list($filter='')
 
 	$notes =& $boInfolog->search($searchFilter);
 
-	Horde::logMessage("SymcML: egwnotessync list found: " . count($notes),
+	Horde::logMessage('SymcML: egwnotessync list found: ' . count($notes),
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	foreach ((array)$notes as $note)

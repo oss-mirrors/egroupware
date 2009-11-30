@@ -88,7 +88,7 @@ function _egwtaskssync_list($filter='')
 
 	$tasks =& $boInfolog->search($searchFilter);
 
-	Horde::logMessage("SymcML: egwtaskssync list found: " . count($tasks),
+	Horde::logMessage('SymcML: egwtaskssync list found: ' . count($tasks),
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	foreach ((array)$tasks as $task) {

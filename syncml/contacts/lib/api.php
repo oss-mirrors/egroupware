@@ -100,7 +100,8 @@ function _egwcontactssync_list($filter='')
 
 	}
 
-	#Horde::logMessage("SymcML: egwcontactssync list found ids: ". print_r($guids, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage('SymcML: egwcontactssync list found: '. count($guids),
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	return $guids;
 }

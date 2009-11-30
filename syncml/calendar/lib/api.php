@@ -119,8 +119,8 @@ function _egwcalendarsync_list($filter='')
 		$endDate	= ($cendDate ? $cendDate : ($now + 65000000)); // 2 years from now
 	}
 
-    Horde::logMessage("SymcML: egwcalendarsync list startDate=$startDate, endDate=$endDate",
-    	__FILE__, __LINE__, PEAR_LOG_DEBUG);
+    Horde::logMessage('SymcML: egwcalendarsync list startDate: ' . date('r', $startDate) .
+    	', endDate: ' . date('r', $endDate), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$searchFilter = array
 	(
@@ -152,7 +152,7 @@ function _egwcalendarsync_list($filter='')
 		$guids[] = $guid = 'calendar-' . $event['cal_id'];
 		if ($event['recur_type'] != MCAL_RECUR_NONE)
 		{
-			$event['id'] = $id = $event['cal_id'];
+			$event['id'] = $event['cal_id'];
 			$event['start'] = $event['cal_start'];
 			// Check if the stati for all participants are identical for all recurrences
 			$days = $boCalendar->so->get_recurrence_exceptions(&$event, $tz_id, $startDate, $endDate);
@@ -163,6 +163,8 @@ function _egwcalendarsync_list($filter='')
 			}
 		}
 	}
+	Horde::logMessage('SymcML: egwcalendarsync list found: ' . count($guids),
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 	return $guids;
 }
 
