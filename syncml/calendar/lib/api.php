@@ -144,13 +144,15 @@ function _egwcalendarsync_list($filter='')
 	else $tz_id = null;
 
 	$events =& $boCalendar->search($searchFilter);
-
+	$id = false;
 	foreach ($events as $event)
 	{
+		if ($id === $event['cal_id']) continue;
+		$id = $event['cal_id'];
 		$guids[] = $guid = 'calendar-' . $event['cal_id'];
 		if ($event['recur_type'] != MCAL_RECUR_NONE)
 		{
-			$event['id'] = $event['cal_id'];
+			$event['id'] = $id = $event['cal_id'];
 			$event['start'] = $event['cal_start'];
 			// Check if the stati for all participants are identical for all recurrences
 			$days = $boCalendar->so->get_recurrence_exceptions(&$event, $tz_id, $startDate, $endDate);
