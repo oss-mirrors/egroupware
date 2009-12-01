@@ -118,7 +118,7 @@ function &_egwnotessync_listBy($action, $timestamp, $type, $filter)
 	#Horde::logMessage('SymcML: egwnotessync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allReadAbleItems = (array)_egwnotessync_list($filter);
 	#Horde::logMessage('SymcML: egwnotessync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	$allClientItems = (array)$state->getClientItems();
+	$allClientItems = (array)$state->getClientItems($type);
 	#Horde::logMessage('SymcML: egwnotessync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	switch ($action) {
 		case 'delete' :

@@ -93,7 +93,7 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 	$allReadAbleItems = array_merge($allReadableCalendarItems, $allReadableTaskItems);
 	unset($allReadableCalendarItems);
 	unset($allReadableTaskItems);
-	$allClientItems = (array)$state->getClientItems();
+	$allClientItems = (array)$state->getClientItems($type);
 
 	switch ($action) {
 		case 'delete' :

@@ -119,7 +119,7 @@ function &_egwtaskssync_listBy($action, $timestamp, $type, $filter='')
 	#Horde::logMessage('SymcML: egwtaskssync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allReadAbleItems = (array)_egwtaskssync_list($filter);
 	#Horde::logMessage('SymcML: egwtaskssync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	$allClientItems = (array)$state->getClientItems();
+	$allClientItems = (array)$state->getClientItems($type);
 	#Horde::logMessage('SymcML: egwtaskssync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	switch ($action) {
 		case 'delete' :

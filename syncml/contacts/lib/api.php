@@ -126,7 +126,7 @@ function &_egwcontactssync_listBy($action, $timestamp, $type, $filter='') {
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allReadAbleItems = (array)_egwcontactssync_list($filter);
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	$allClientItems = (array)$state->getClientItems();
+	$allClientItems = (array)$state->getClientItems($type);
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	switch ($action) {
 		case 'delete' :

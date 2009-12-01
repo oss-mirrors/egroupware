@@ -119,20 +119,8 @@ function _egwcalendarsync_list($filter='')
 		$endDate	= ($cendDate ? $cendDate : ($now + 65000000)); // 2 years from now
 	}
 
-    Horde::logMessage('SymcML: egwcalendarsync list startDate: ' . date('r', $startDate) .
-    	', endDate: ' . date('r', $endDate), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	$searchFilter = array
-	(
-		'start'   => date('Ymd', $startDate),
-		'end'     => date('Ymd', $endDate),
-		'filter'  => $syncCriteria,
-		'users'   => $calendarOwner,
-		'daywise' => false,
-		'enum_recuring' => false,
-		'enum_groups' => true,
-		'cols'		=> array('egw_cal.cal_id', 'cal_start', 'recur_type'),
-	);
+	Horde::logMessage('SymcML: egwcalendarsync list startDate: ' . date('r', $startDate) .
+		', endDate: ' . date('r', $endDate), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state = &$_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
@@ -143,11 +131,25 @@ function _egwcalendarsync_list($filter='')
 	}
 	else $tz_id = null;
 
+	$searchFilter = array
+	(
+		'start'		=> date('Ymd', $startDate),
+		'end'		=> date('Ymd', $endDate),
+		'filter'	=> $syncCriteria,
+		'users'		=> $calendarOwner,
+		'daywise'	=> false,
+		'enum_recuring' => false,
+		'enum_groups' => true,
+		'cols'		=> array('egw_cal.cal_id', 'cal_start', 'recur_type'),
+		'order'     => 'cal_id,cal_start ASC'
+	);
+
 	$events =& $boCalendar->search($searchFilter);
+
 	$id = false;
 	foreach ($events as $event)
 	{
-		if ($id === $event['cal_id']) continue;
+		if ($id == $event['cal_id']) continue;
 		$id = $event['cal_id'];
 		$guids[] = $guid = 'calendar-' . $event['cal_id'];
 		if ($event['recur_type'] != MCAL_RECUR_NONE)
@@ -156,7 +158,6 @@ function _egwcalendarsync_list($filter='')
 			$event['start'] = $event['cal_start'];
 			// Check if the stati for all participants are identical for all recurrences
 			$days = $boCalendar->so->get_recurrence_exceptions(&$event, $tz_id, $startDate, $endDate);
-
 			foreach ($days as $recur_date)
 			{
 				if ($recur_date) $guids[] = $guid . ':' . $recur_date;
@@ -189,7 +190,7 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 	#Horde::logMessage('SymcML: egwcalendarsync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allReadAbleItems = (array)_egwcalendarsync_list($filter);
 	#Horde::logMessage('SymcML: egwcalendarsync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	$allClientItems = (array)$state->getClientItems();
+	$allClientItems = (array)$state->getClientItems($type);
 	#Horde::logMessage('SymcML: egwcalendarsync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	switch ($action) {
 		case 'delete' :
