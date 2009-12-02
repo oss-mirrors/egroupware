@@ -1,0 +1,47 @@
+are you sure you want to delete this news site ?	headlines	no	Er du sikker på at du vil slette dette nyhetsstedet?
+base url	headlines	no	Basis URL
+basic	headlines	no	Basis
+choose layout	headlines	no	Velg utseende
+color	headlines	no	Farve
+create new headline	headlines	no	Opprett ny overskrift
+current headlines in cache	headlines	no	Gjeldende overskrifter i lager
+display	headlines	no	Vis
+edit headline sites	headlines	no	Endre overskriftssteder
+edit headlines shown by default	headlines	no	Endre overskrifter vist som standard
+grab new news sites	common	no	Hente nye overskriftsnettsteder
+gray	headlines	no	Grå
+headline preferences	common	no	Preferanser for overskrifter
+headline site management	common	no	Adm. nettstedets overskrifter
+headline sites	headlines	no	Overskriftsteder
+headlines	common	no	Overskriftene
+headlines administration	headlines	no	Administrere overskriftene
+headlines administration - delete headline	headlines	no	Administrere overskriftene - Slette overskrift
+headlines layout	headlines	no	Utseende for overskriftene
+listings displayed	headlines	no	Lister vist
+minutes between refresh	headlines	no	Minutter mellom oppfriskning
+minutes between reloads	headlines	no	Minutter mellom lasting
+monitor	common	no	Overvåk
+news file	headlines	no	Nyhets Fil
+news headlines	common	no	Nyhets headlines
+news type	headlines	no	Nyhets Type
+no headlines found	headlines	no	Ingen overskrifter funnet
+other preferences	preferences	no	Andre preferanser
+reload news sites	headlines	no	Last nye nettsteder på nytt
+reset	headlines	no	Tilbakestill
+sample	headlines	no	Eksempel
+select headline news sites	headlines	no	Velg steder for overskrifter
+select headlines to display	common	no	Velg overskrifter for visning
+select layout	common	no	Velg utseende
+show headlines on homepage	headlines	no	Vis overskrifter på hjemmesiden
+site	headlines	no	Sted
+that site has already been entered	headlines	no	Dette stedet er allerede registrert
+unable to retrieve links	headlines	no	Ikke i stand til å hente lenkene
+update headline	headlines	no	Oppdater overskrift
+view headline	headlines	no	Vis overskrift
+you can only enter numbers for listings display	headlines	no	Du kan kun registrere antall for listens visning
+you can only enter numbers minutes between refresh	headlines	no	Du kan kun registrere antall minutter mellom oppfriskningene
+you must enter a base url	headlines	no	Du må skrive inn en base url
+you must enter a display	headlines	no	Du må skrive inn et display
+you must enter a news url	headlines	no	Du må skrive inn en nyhets url
+you must enter the number of listings display	headlines	no	Du må skrive inn antallet visninger
+you must enter the number of minutes between reload	headlines	no	Du må skrive inn antallet minutter mellom reload

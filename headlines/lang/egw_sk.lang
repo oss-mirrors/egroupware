@@ -1,0 +1,55 @@
+add a single entry by passing the fields.	headlines	sk	Pridať položku pomocou zadania polí.
+are you sure you want to delete this news site ?	headlines	sk	Ste si istí, že chcete odstrániť túto sieť novinek (news site) ?
+base url	headlines	sk	Základná adresa URL
+basic	headlines	sk	Základné
+choose layout	headlines	sk	Vyberte usporiadanie
+color	headlines	sk	Farba
+create new headline	headlines	sk	Vytvoriť aktualitu
+current headlines in cache	headlines	sk	Súčasné aktuality vo vyrovnávacej pamäti
+delete a single entry by passing the id.	headlines	sk	Odstrániť položku podľa zadaného ID.
+display	headlines	sk	Zobraziť
+edit a single entry by passing the fields including the id.	headlines	sk	Upraviť záznam podľa zadaných polí vrátane ID.
+edit headline sites	headlines	sk	Upraviť siete aktualít
+edit headlines shown by default	headlines	sk	Upraviť aktuality ktoré sa bežne zobrazujú
+grab new news sites	common	sk	Získať nové siete noviniek
+gray	headlines	sk	Šedá
+headline preferences	common	sk	Predvoľby Aktualít
+headline site management	common	sk	Správa siete Aktualít
+headline sites	headlines	sk	Siete Aktualít
+headlines	common	sk	Aktuality
+headlines administration	headlines	sk	Správa Aktualít
+headlines administration - delete headline	headlines	sk	Správa Aktualít - Odstrániž aktualitu
+headlines layout	headlines	sk	Usporiadanie Aktualít
+listings displayed	headlines	sk	Zobrazené zoznamy
+minutes between refresh	headlines	sk	Minút medzi obnovami
+minutes between reloads	headlines	sk	Minút medzi opakovanými načítaniami
+monitor	common	sk	Sledovanie
+news file	headlines	sk	Súbor noviniek (news)
+news from x	headlines	sk	Novinky od x
+news headlines	common	sk	Novinky - aktuality
+news type	headlines	sk	Druh noviniek
+no headlines found	headlines	sk	Žiadne aktuality
+other preferences	preferences	sk	Iné predvoľby
+purge headline cache	common	sk	Vyprázdniť vyrovnávaciu pamäť Aktualít
+read a list / search for entries.	headlines	sk	Načítať zoznam / vyhľadať záznamy.
+read cached site data for a single site by passing the id.	headlines	sk	Načítať z vyrovnávacej pamäte dáta jednotlivej stránky podľa zadaného ID.
+read site data for a single site by passing the id.	headlines	sk	Načítať dáta jednotlivej stránky podľa zadaného ID.
+reload news sites	headlines	sk	Znovunačítať sieť noviniek
+reset	headlines	sk	Vynulovať
+sample	headlines	sk	Vzorka
+select headline news sites	headlines	sk	Vybrať siete aktualít
+select headlines to display	common	sk	Vyberte, ktoré aktuality zobraziť
+select layout	common	sk	Vyberte usporiadanie
+show headlines on homepage	headlines	sk	Zobrazovať aktuality na domovskej stránke
+site	headlines	sk	Sieť
+that site has already been entered	headlines	sk	Táto sieť už bola zadaná
+unable to retrieve links	headlines	sk	Odkazy sa nepodarilo načítať
+update headline	headlines	sk	Aktualizovať
+view headline	headlines	sk	Zobraziť aktualitu
+you can only enter numbers for listings display	headlines	sk	Môžete zadať iba čísla pre zobrazenie zoznamov
+you can only enter numbers minutes between refresh	headlines	sk	Môžete zadať iba počet minút medzi obnoveniami
+you must enter a base url	headlines	sk	Musíte zadať základnú URL adresu
+you must enter a display	headlines	sk	Musíte zadať obrazovku
+you must enter a news url	headlines	sk	Musíte zadať URL adresu news
+you must enter the number of listings display	headlines	sk	Musíte zadať počet zobrazených záznamov
+you must enter the number of minutes between reload	headlines	sk	Musíte zadať počet minút medzi znovunačítaním

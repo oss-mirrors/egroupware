@@ -1,0 +1,54 @@
+add a single entry by passing the fields.	headlines	it	Aggiungi una singola voce compilando i campi
+are you sure you want to delete this news site ?	headlines	it	Sei sicuro di voler cancellare questo sito di news ?
+base url	headlines	it	URL Base
+basic	headlines	it	Base
+choose layout	headlines	it	Scegli layout
+color	headlines	it	Colore
+create new headline	headlines	it	Crea Nuova Testata
+current headlines in cache	headlines	it	Testate correnti in cache
+delete a single entry by passing the id.	headlines	it	Cancella una singola voce inserendo l'ID
+display	headlines	it	Visualizza
+edit a single entry by passing the fields including the id.	headlines	it	Modifica una singola voce inserendo i campi compreso l'ID.
+edit headline sites	headlines	it	Modifica siti testate
+edit headlines shown by default	headlines	it	Modifica testate mostrate per default
+grab new news sites	common	it	Ottieni nuovi siti di notizie
+gray	headlines	it	Grigio
+headline preferences	common	it	Preferenze Titoli
+headline site management	common	it	Gestione Sito Titoli
+headline sites	headlines	it	Siti Titoli
+headlines	common	it	Titoli
+headlines administration	headlines	it	Amministrazione Titoli
+headlines administration - delete headline	headlines	it	Amministrazione Titoli - Cancella titolo
+headlines layout	headlines	it	Layout Titoli
+listings displayed	headlines	it	Elenchi Visualizzati
+minutes between refresh	headlines	it	Minuti tra gli aggiornamenti
+minutes between reloads	headlines	it	Minuti fra gli aggiornamenti
+monitor	common	it	Monitor
+news file	headlines	it	Archivio Notizie
+news from x	headlines	it	Notizie da x
+news headlines	common	it	Titoli Notizie
+news type	headlines	it	Tipo di Notizie
+no headlines found	headlines	it	Nessun Titolo trovato
+other preferences	preferences	it	Altre Preferenze
+read a list / search for entries.	headlines	it	Leggi un elenco / cerca delle voci.
+read cached site data for a single site by passing the id.	headlines	it	Leggi i dati memorizzati per un singolo sito passando l'ID.
+read site data for a single site by passing the id.	headlines	it	Leggi i dati per un singolo sito passando l'ID.
+reload news sites	headlines	it	Ricarica siti notizie
+reset	headlines	it	Reset
+sample	headlines	it	Campione
+select headline news sites	headlines	it	Seleziona siti Titoli Notizie
+select headlines to display	common	it	Seleziona Titoli da visualizzare
+select layout	common	it	Scegli layout
+show headlines on homepage	headlines	it	Seleziona Titoli in pagina principale
+site	headlines	it	Sito
+that site has already been entered	headlines	it	Quel sito è già stato inserito
+unable to retrieve links	headlines	it	Impossibile recuperare i collegamenti
+update headline	headlines	it	Aggiorna titolo
+view headline	headlines	it	Visualizza titolo
+you can only enter numbers for listings display	headlines	it	Puoi inserire solo numeri per visualizzazione elenchi
+you can only enter numbers minutes between refresh	headlines	it	Puoi inserire solo il numero di minuti tra gli aggiornamenti
+you must enter a base url	headlines	it	Devi inserire un url di base
+you must enter a display	headlines	it	Dedi inserire un display
+you must enter a news url	headlines	it	Devi inserire un url per le news
+you must enter the number of listings display	headlines	it	Devi inserire il numero di righe da visualizzare
+you must enter the number of minutes between reload	headlines	it	Devi inserire il numero di minuti fra i caricamenti

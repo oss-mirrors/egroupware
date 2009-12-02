@@ -1,0 +1,55 @@
+add a single entry by passing the fields.	headlines	fi	Lisää yksittäinen merkintä kenttiin.
+are you sure you want to delete this news site ?	headlines	fi	Haluatko poistaa tämän uutispalvelun?
+base url	headlines	fi	Pohja-URL
+basic	headlines	fi	Perus
+choose layout	headlines	fi	Valitse ulkoasu
+color	headlines	fi	Väri
+create new headline	headlines	fi	Luo uusi uutisotsikko
+current headlines in cache	headlines	fi	Nykyiset uutisotsikot välimuistissa
+delete a single entry by passing the id.	headlines	fi	Poista yksittäinen merkintä antamalla sen tunniste
+display	headlines	fi	Näytä
+edit a single entry by passing the fields including the id.	headlines	fi	Muokkaa yksittäistä merkintää valitsemalla kentät jotka sisältävät tunnisteen.
+edit headline sites	headlines	fi	Muokkaa uutisotsikkojen sivustoja
+edit headlines shown by default	headlines	fi	Näytä muokatut uutisotsikot oletuksena
+grab new news sites	common	fi	Hae uudet uutispalvelut
+gray	headlines	fi	Harmaa
+headline preferences	common	fi	Uutisotsikkojen asetukset
+headline site management	common	fi	Uutisotsikon sivuston hallinta
+headline sites	headlines	fi	Uutisotsikkopalvelut
+headlines	common	fi	Uutisotsikot
+headlines administration	headlines	fi	Uutisotsikkojen hallinto
+headlines administration - delete headline	headlines	fi	Uutisotsikkojen hallinto - poista otsikko
+headlines layout	headlines	fi	Uutisotsikon ulkoasu
+listings displayed	headlines	fi	Näytetyt listaukset
+minutes between refresh	headlines	fi	Päivitysten väli (min)
+minutes between reloads	headlines	fi	Latausten väli (min)
+monitor	common	fi	Tarkkaile
+news file	headlines	fi	Uutistiedosto
+news from x	headlines	fi	Uutiset jostakin
+news headlines	common	fi	Uutisotsikot
+news type	headlines	fi	Uutisten tyyppi
+no headlines found	headlines	fi	Otsikkoa ei löytynyt
+other preferences	preferences	fi	Muut asetukset
+purge headline cache	common	fi	Tyhjennä uutisotsikoiden välimuisti
+read a list / search for entries.	headlines	fi	Luettu lista / hae merkintöjä.
+read cached site data for a single site by passing the id.	headlines	fi	Lue välimuistin tiedot yksittäisiltä sivuilta antamalla tunniste.
+read site data for a single site by passing the id.	headlines	fi	Lue tiedot yksittäisiltä sivuilta antamalla tunniste.
+reload news sites	headlines	fi	Päivitä uutisten sivustoa
+reset	headlines	fi	Nollaa
+sample	headlines	fi	Malli
+select headline news sites	headlines	fi	Valitse Uutisotsikkopalvelut
+select headlines to display	common	fi	Valitse otsikot näytölle
+select layout	common	fi	Valitse ulkoasu
+show headlines on homepage	headlines	fi	Näytä otsikot kotisivulla
+site	headlines	fi	Sivusto
+that site has already been entered	headlines	fi	Palvelu on jo lisätty
+unable to retrieve links	headlines	fi	Linkkejä ei voitu palauttaa
+update headline	headlines	fi	Päivitä otsikot
+view headline	headlines	fi	Näytä otsikko
+you can only enter numbers for listings display	headlines	fi	Voit antaa vain numeroarvon näytön asetuksiin
+you can only enter numbers minutes between refresh	headlines	fi	Voit antaa vain numeroarvon (minuutteja) päivitysvälille
+you must enter a base url	headlines	fi	Anna pohja-URL
+you must enter a display	headlines	fi	Anna näyttö
+you must enter a news url	headlines	fi	Anna uutis-URL
+you must enter the number of listings display	headlines	fi	Anna näytettyjen listausten määrä
+you must enter the number of minutes between reload	headlines	fi	Anna latausten välinen aika
