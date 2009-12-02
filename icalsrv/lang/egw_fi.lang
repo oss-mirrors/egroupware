@@ -1,0 +1,8 @@
+addressbook test	icalsrv	fi	Osoitekirjan testi
+app	icalsrv	fi	Sovellus
+apps	icalsrv	fi	Sovellukset
+assigned sessionid	icalsrv	fi	Osoitettu istuntotunniste
+bogus request	icalsrv	fi	Tekaistu pyyntö
+calendar test	icalsrv	fi	Kalenterin testi
+icalsrv	common	fi	iCalSrv
+system	icalsrv	fi	Järjestelmä
