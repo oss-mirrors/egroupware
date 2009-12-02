@@ -1,0 +1,40 @@
+%1 by %2	comic	zh-tw	%1 自 %2
+%1 by %2 (%3)	comic	zh-tw	%1 自 %2 (%3)
+are you sure you want to reset all comic dates and resolved image urls?	comic	zh-tw	您確定要重設所有漫畫日期並且處理圖片網址？
+censorship level	comic	zh-tw	檢查層次
+censorship override enabled	comic	zh-tw	超載檢查啟用
+comic	common	zh-tw	漫畫
+comic preferences updated	comic	zh-tw	漫畫設定更新
+comics	common	zh-tw	漫畫
+comics per page	comic	zh-tw	每頁顯示漫畫數
+comics scaled	comic	zh-tw	漫畫已測量
+daily comic	common	zh-tw	每日漫畫
+daily comic preferences	comic	zh-tw	每日漫畫設定
+daily comics	admin	zh-tw	每日漫畫
+daily comics - global options	comic	zh-tw	每日漫畫 - 全域設定
+daily comics data	comic	zh-tw	每日漫畫資料
+daily comics global options	comic	zh-tw	每日漫畫全域選項
+display layout	comic	zh-tw	顯示排版
+display options	comic	zh-tw	顯示選項
+egroupware daily comics	comic	zh-tw	eGroupWare每日漫畫
+front page comic	comic	zh-tw	首頁漫畫
+front page comic scaled	comic	zh-tw	首頁漫畫測量
+genre	comic	zh-tw	產生
+global comics	comic	zh-tw	全域漫畫
+global options	comic	zh-tw	全域選項
+global options updated	comic	zh-tw	全域選項更新
+image source	comic	zh-tw	圖片來源
+max file size	comic	zh-tw	最大檔案大小
+my comics	comic	zh-tw	我的漫畫
+no_entries	comic	zh-tw	沒有資料
+parser	comic	zh-tw	語法
+performed %1 of element	comic	zh-tw	執行元素的 %1
+random	comic	zh-tw	隨機
+rated	comic	zh-tw	評分
+remote (parse/snarf) enabled	comic	zh-tw	遠端(parse/snarf)
+reset	comic	zh-tw	重設
+reset comic data	admin	zh-tw	重設漫畫資料
+resolve	comic	zh-tw	處理
+showing %1 (%2 - %3 of %4)	comic	zh-tw	顯示 %1 (%2 - %3 總數 %4)
+template	comic	zh-tw	樣板
+visit %1	comic	zh-tw	瀏覽 %1

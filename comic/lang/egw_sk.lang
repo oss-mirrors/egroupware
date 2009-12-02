@@ -1,0 +1,40 @@
+%1 by %2	comic	sk	%1 cez %2
+%1 by %2 (%3)	comic	sk	%1 cez %2 (%3)
+are you sure you want to reset all comic dates and resolved image urls?	comic	sk	Naozaj chcete vynulovať všetky komixové dáta a získané URL adresy obrázkov?
+censorship level	comic	sk	Úroveň cenzúry
+censorship override enabled	comic	sk	Cenzúra bola vyradená
+comic	common	sk	Komix
+comic preferences updated	comic	sk	Nastavenia Komixu boli upravené
+comics	common	sk	Komix
+comics per page	comic	sk	Komixov na stránku
+comics scaled	comic	sk	Komix bol prispôsobený
+daily comic	common	sk	Denný komix
+daily comic preferences	comic	sk	Nastavenia denného komixu
+daily comics	admin	sk	Denný komix
+daily comics - global options	comic	sk	Denný komix - globálne nastavenia
+daily comics data	comic	sk	Údaje denného komixu
+daily comics global options	comic	sk	Denný komix - globálne nastavenia
+display layout	comic	sk	Vzhľad
+display options	comic	sk	Možnosti vzhľadu
+egroupware daily comics	comic	sk	Denný komix eGroupWare
+front page comic	comic	sk	Komix pre hlavnú stránku
+front page comic scaled	comic	sk	Prispôsobený komix pre hlavnú stránku
+genre	comic	sk	Žáner
+global comics	common	sk	Globálny komix
+global options	common	sk	Globálne nastavenia
+global options updated	comic	sk	Globálne nastavenia boli upravené
+image source	comic	sk	Zdroj obrázku
+max file size	comic	sk	Maximálna veľkosť súboru
+my comics	comic	sk	Môj komix
+no_entries	comic	sk	0 záznamov
+parser	comic	sk	Analyzátor
+performed %1 of element	comic	sk	Vykonalo sa %1 elementu
+random	comic	sk	Náhodný
+rated	comic	sk	Hodnotenie
+remote (parse/snarf) enabled	comic	sk	Vzdialene (parse/snarf)
+reset	comic	sk	Vynulovanie
+reset comic data	admin	sk	Vynulovať údaje komixu
+resolve	comic	sk	Získať
+showing %1 (%2 - %3 of %4)	comic	sk	ukazujem %1 (%2 - %3 z %4)
+template	comic	sk	Šablóna
+visit %1	comic	sk	Navštíviť %1

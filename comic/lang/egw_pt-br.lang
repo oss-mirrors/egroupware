@@ -1,0 +1,41 @@
+%1 by %2	comic	pt-br	%1 por %2
+%1 by %2 (%3)	comic	pt-br	%1 por %2 (%3)
+are you sure you want to reset all	comic	pt-br	Você tem certeza que deseja reiniciar tudo?
+are you sure you want to reset all comic dates and resolved image urls?	comic	pt-br	Você tem certeza que quer reiniciar todas as datas dos quadrinhos e URLs das imagens?
+censorship level	comic	pt-br	Nível de censura
+censorship override enabled	comic	pt-br	Ativação de censura habilitada
+comic	common	pt-br	Charges
+comic preferences updated	comic	pt-br	Preferências das charges atualizada
+comics	common	pt-br	Charges
+comics per page	comic	pt-br	Charges por página
+comics scaled	comic	pt-br	Charges programados
+daily comic	common	pt-br	Charge do dia
+daily comic preferences	comic	pt-br	Preferências das Charges diárias
+daily comics	admin	pt-br	Charges diárias
+daily comics - global options	comic	pt-br	Charges diárias - Opções Globais
+daily comics data	comic	pt-br	Dados de charges diárias
+daily comics global options	comic	pt-br	Opções globais para charges diárias
+display layout	comic	pt-br	Modo de exibição
+display options	comic	pt-br	Opções de exibição
+egroupware daily comics	comic	pt-br	Charges diárias do eGroupWare
+front page comic	comic	pt-br	Charge de início
+front page comic scaled	comic	pt-br	Charge definida para início
+genre	comic	pt-br	Gênero
+global comics	comic	pt-br	Charges globais
+global options	comic	pt-br	Opções globais
+global options updated	comic	pt-br	Opções globais atualizadas
+image source	comic	pt-br	Fonte da imagem
+max file size	comic	pt-br	Tamanho máximo do arquivo
+my comics	comic	pt-br	Minhas Charges
+no_entries	comic	pt-br	sem_entradas
+parser	comic	pt-br	Analisador
+performed %1 of element	comic	pt-br	Executada %1 do elemento
+random	comic	pt-br	Aleatório
+rated	comic	pt-br	Classificado
+remote (parse/snarf) enabled	comic	pt-br	Remoto
+reset	comic	pt-br	Reiniciar
+reset comic data	admin	pt-br	Reiniciar dados das charges
+resolve	comic	pt-br	Resolver
+showing %1 (%2 - %3 of %4)	comic	pt-br	mostrando %1 (%2 - %3 de %4)
+template	comic	pt-br	Modelo
+visit %1	comic	pt-br	Visitar %1
