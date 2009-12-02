@@ -1,0 +1,36 @@
+compose	messenger	lv	Sastādīt
+compose global message	common	lv	Sastādīt globālu ziņu
+compose message	messenger	lv	Sastādīt ziņu
+delete a message.	messenger	lv	Izdzēst ziņu.
+delete selected	messenger	lv	Dzēst izvēlētās ziņas
+forward	messenger	lv	Pārsūtīt
+forward a message	messenger	lv	Pārsūtīt ziņu
+forward a message to another user.	messenger	lv	Pārsūtīt ziņu citam lietotājam.
+forwarded	messenger	lv	Pārsūtīta
+from	messenger	lv	No
+global message	messenger	lv	Globāla ziņa
+i can't find the username %1 on the system	messenger	lv	Sistēmā nav iespējams atrast šo lietotājvārdu
+inbox	messenger	lv	Iesūtne
+message from	messenger	lv	Ziņa no
+messenger	common	lv	Ziņnesis
+new	messenger	lv	Jauna
+read a list of messages.	messenger	lv	Izlasīt vairāku ziņu listi
+read a single message.	messenger	lv	Lasīt vienu ziņu.
+read message	messenger	lv	Lasīt ziņu
+replied	messenger	lv	Atbildēja
+reply	messenger	lv	Atbildēt
+reply to a message	messenger	lv	Atbildēt ziņai
+reply to a received message.	messenger	lv	Atbildēt saņemtai ziņai
+send	messenger	lv	Sūtīt
+send a global message.	messenger	lv	Nosūtīt globālu ziņu
+send a message to a single recipient.	messenger	lv	Sūtīt ziņu vienam saņēmējam.
+send message to	messenger	lv	Kam sūtīt
+sorry, %1's account is not currently active	messenger	lv	Atvainojiet %1's konts šobrīd nav aktīvs
+update a message status	messenger	lv	Atjaunināt ziņas statusu
+use select box for user list in compose	common	lv	Lietot atzībēšanas laukus priekš saņēmēja saraksta sastādot ziņu
+you didn't enter anything for the message	messenger	lv	Tu neievadīji ziņas tekstu
+you have %1 new message	common	lv	Tev ir %1 jauna ziņneša ziņa! Klikšķini, lai izlasītu!
+you have %1 new messages	common	lv	Tev ir %1 jaunas ziņneša ziņas! Klikšķini, lai izlasītu!
+you have no messages	messenger	lv	Tev nav jaunu ziņneša ziņu
+you must enter a subject	messenger	lv	Tev ir jāievada temats
+you must enter the username this message is for	messenger	lv	Tev ir jāievada lietotājvārds, kam ziņa ir adresēta

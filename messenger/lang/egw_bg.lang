@@ -1,0 +1,38 @@
+compose	messenger	bg	Създай
+compose global message	common	bg	Създай ново глобално съобщение
+compose message	messenger	bg	Ново съобщение
+compose to multi-users	messenger	bg	Ново,  към няколко получатели
+compose to single-user	messenger	bg	Ново, към един получател
+delete a message.	messenger	bg	Изтрий съобщение
+delete selected	messenger	bg	Изтрий маркираните
+forward	messenger	bg	Препрати
+forward a message	messenger	bg	Препрати съобщението
+forward a message to another user.	messenger	bg	Препрати съобщението към потребител
+forwarded	messenger	bg	Препратено
+from	messenger	bg	От
+global message	messenger	bg	Глобално съобщение
+i can't find the username %1 on the system	messenger	bg	Няма такъв потребител
+inbox	messenger	bg	Входяща кутия
+message from	messenger	bg	Съобщение от
+messenger	common	bg	Съобщения
+new	messenger	bg	Нов
+read a list of messages.	messenger	bg	Списък от съобщения
+read a single message.	messenger	bg	Прочети едно съобщение
+read message	messenger	bg	Прочети съобщение
+replied	messenger	bg	Огговорено
+reply	messenger	bg	Отговор
+reply to a message	messenger	bg	Отговори
+reply to a received message.	messenger	bg	Отговори
+send	messenger	bg	Изпрати
+send a global message.	messenger	bg	Изпрати глобално съобщение
+send a message to a single recipient.	messenger	bg	Изпрати съобщение към даден потребител
+send message to	messenger	bg	Изпрати на
+sorry, %1's account is not currently active	messenger	bg	Този акаунт не е активен в момента
+update a message status	messenger	bg	Обнови статус на съобщение
+use select box for user list in compose	common	bg	Избор на няколко получатели
+you didn't enter anything for the message	messenger	bg	Не сте въвели съобщение
+you have %1 new message	common	bg	Имате %1 нови съобщение (я)
+you have %1 new messages	common	bg	Имате %1 нови съобщение (я)
+you have no messages	messenger	bg	Нямате нови съобщения
+you must enter a subject	messenger	bg	Трябва да въведете тема
+you must enter the username this message is for	messenger	bg	Моля, въведете получател
