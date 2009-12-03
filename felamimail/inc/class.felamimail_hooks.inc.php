@@ -534,77 +534,80 @@ class felamimail_hooks
 			$mailbox 		= $bofelamimail->sessionData['mailbox'];;
 			//_debug_array($mailbox);
 			$icServerID = 0;
-			if (is_object($preferences)) $imapServer =& $preferences->getIncomingServer($icServerID);
-			if (is_object($preferences)) $activeIdentity =& $preferences->getIdentity($icServerID);
-			if ($imapServer->_connected != 1) $connectionStatus = $bofelamimail->openConnection($icServerID);
-			$folderObjects = $bofelamimail->getFolderObjects(true, false);
-			$folderStatus = $bofelamimail->getFolderStatus($mailbox);
+			if (is_object($preferences)) 
+			{
+				$imapServer =& $preferences->getIncomingServer($icServerID);
+				$activeIdentity =& $preferences->getIdentity($icServerID);
+				if ($imapServer->_connected != 1) $connectionStatus = $bofelamimail->openConnection($icServerID);
+				$folderObjects = $bofelamimail->getFolderObjects(true, false);
+				$folderStatus = $bofelamimail->getFolderStatus($mailbox);
 
-			// account select box
-			$selectedID = 0;
-			if($preferences->userDefinedAccounts) $allAccountData = $bofelamimail->bopreferences->getAllAccountData($preferences);
-			if ($allAccountData) {
-				foreach ($allAccountData as $tmpkey => $accountData)
-				{
-					$identity =& $accountData['identity'];
-					$icServer =& $accountData['icServer'];
-					//_debug_array($identity);
-					//_debug_array($icServer);
-					if (empty($icServer->host)) continue;
-					$identities[$identity->id]=$identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
-					if (!empty($identity->default)) $selectedID = $identity->id;
+				// account select box
+				$selectedID = 0;
+				if($preferences->userDefinedAccounts) $allAccountData = $bofelamimail->bopreferences->getAllAccountData($preferences);
+				if ($allAccountData) {
+					foreach ($allAccountData as $tmpkey => $accountData)
+					{
+						$identity =& $accountData['identity'];
+						$icServer =& $accountData['icServer'];
+						//_debug_array($identity);
+						//_debug_array($icServer);
+						if (empty($icServer->host)) continue;
+						$identities[$identity->id]=$identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+						if (!empty($identity->default)) $selectedID = $identity->id;
+					}
 				}
-			}
-
-			// the data needed here are collected at the start of this function
-			if (!isset($activeIdentity->id) && $selectedID == 0) {
-				$identities[0] = $activeIdentity->realName.' '.$activeIdentity->organization.' <'.$activeIdentity->emailAddress.'>';
-			}
-			// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
-			if ($activeIdentity->id) {
-				$boemailadmin = new emailadmin_bo();
-				$defaultProfile = $boemailadmin->getUserProfile() ;
-				#_debug_array($defaultProfile);
-				$identitys =& $defaultProfile->identities;
-				$icServers =& $defaultProfile->ic_server;
-				foreach ($identitys as $tmpkey => $identity)
-				{
-					if (empty($icServers[$tmpkey]->host)) continue;
-					$identities[0] = $identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+	
+				// the data needed here are collected at the start of this function
+				if (!isset($activeIdentity->id) && $selectedID == 0) {
+					$identities[0] = $activeIdentity->realName.' '.$activeIdentity->organization.' <'.$activeIdentity->emailAddress.'>';
 				}
-				#$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
+				// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
+				if ($activeIdentity->id) {
+					$boemailadmin = new emailadmin_bo();
+					$defaultProfile = $boemailadmin->getUserProfile() ;
+					#_debug_array($defaultProfile);
+					$identitys =& $defaultProfile->identities;
+					$icServers =& $defaultProfile->ic_server;
+					foreach ($identitys as $tmpkey => $identity)
+					{
+						if (empty($icServers[$tmpkey]->host)) continue;
+						$identities[0] = $identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+					}
+					#$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
+				}
+
+				$selectAccount = html::select('accountSelect', $selectedID, $identities, true, "style='width:100%;' onchange='changeActiveAccount(this);'");
+
+				$file[] = array(
+					'text' => "<div id=\"divAccountSelect\" style=\" width:100%;\">".$selectAccount."</div>",
+					'no_lang' => True,
+					'link' => False,
+					//'icon' => False,
+				);
+				// show foldertree
+				//_debug_array($folderObjects);
+				$folderTree = $uiwidgets->createHTMLFolder
+				(
+					$folderObjects, 
+					$mailbox, 
+					$folderStatus['unseen'],
+					lang('IMAP Server'), 
+					$imapServer->username.'@'.$imapServer->host,
+					'divFolderTree',
+					FALSE
+				);
+				$bofelamimail->closeConnection();
+		        $file[] =  array(
+	        	    'text' => "<div id=\"divFolderTree\" class=\"dtree\" style=\"overflow:auto; max-width:400px; width:100%; max-height:450px; margin-bottom: 0px;padding-left: 0px; padding-right: 0px; padding-top:0px; z-index:100; \">
+					$folderTree
+					</div>
+					<script language=\"JavaScript1.2\">refreshFolderStatus();</script>",
+					'no_lang' => True,
+					'link' => False,
+					'icon' => False,
+				);
 			}
-
-			$selectAccount = html::select('accountSelect', $selectedID, $identities, true, "style='width:100%;' onchange='changeActiveAccount(this);'");
-
-			$file[] = array(
-				'text' => "<div id=\"divAccountSelect\" style=\" width:100%;\">".$selectAccount."</div>",
-				'no_lang' => True,
-				'link' => False,
-				//'icon' => False,
-			);
-			// show foldertree
-			//_debug_array($folderObjects);
-			$folderTree = $uiwidgets->createHTMLFolder
-			(
-				$folderObjects, 
-				$mailbox, 
-				$folderStatus['unseen'],
-				lang('IMAP Server'), 
-				$imapServer->username.'@'.$imapServer->host,
-				'divFolderTree',
-				FALSE
-			);
-			$bofelamimail->closeConnection();
-	        $file[] =  array(
-	            'text' => "<div id=\"divFolderTree\" class=\"dtree\" style=\"overflow:auto; max-width:400px; width:100%; max-height:450px; margin-bottom: 0px;padding-left: 0px; padding-right: 0px; padding-top:0px; z-index:100; \">
-				$folderTree
-				</div>
-				<script language=\"JavaScript1.2\">refreshFolderStatus();</script>",
-	            'no_lang' => True,
-	            'link' => False,
-	            'icon' => False,
-	        );
 		}
 		// display them all
 		display_sidebox($appname,$menu_title,$file);
