@@ -1756,8 +1756,12 @@
 
 		function getHierarchyDelimiter()
 		{
-			$HierarchyDelimiter = $this->icServer->getHierarchyDelimiter();
-			if (PEAR::isError($HierarchyDelimiter)) $HierarchyDelimiter = '/';
+			$HierarchyDelimiter = '/';
+			if(is_a($this->icServer,'defaultimap')) 
+			{
+				$HierarchyDelimiter = $this->icServer->getHierarchyDelimiter();
+				if (PEAR::isError($HierarchyDelimiter)) $HierarchyDelimiter = '/';
+			}
 			return $HierarchyDelimiter;
 		}
 
@@ -2448,7 +2452,7 @@
 				//try to connect
 				if (!$this->icServer->_connected) $this->openConnection();
 			}
-			$folderInfo = $this->icServer->getMailboxes('', $_folder, true);
+			if(is_a($this->icServer,'defaultimap')) $folderInfo = $this->icServer->getMailboxes('', $_folder, true);
 			#error_log(print_r($folderInfo,true));
 			if(is_a($folderInfo, 'PEAR_Error') || !is_array($folderInfo[0])) {
 				return false;
@@ -2625,12 +2629,12 @@
 
 		function updateAccount($_hookValues)
 		{
-			$icServer = $this->mailPreferences->getIncomingServer(0);
+			if (is_object($this->mailPreferences)) $icServer = $this->mailPreferences->getIncomingServer(0);
 			if(is_a($icServer,'defaultimap')) {
 				$icServer->updateAccount($_hookValues);
 			}
 
-			$ogServer = $this->mailPreferences->getOutgoingServer(0);
+			if (is_object($this->mailPreferences)) $ogServer = $this->mailPreferences->getOutgoingServer(0);
 			if(is_a($ogServer,'defaultsmtp')) {
 				$ogServer->updateAccount($_hookValues);
 			}
