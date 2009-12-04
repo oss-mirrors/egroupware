@@ -1219,7 +1219,10 @@
 					$newBody	= $singleBodyPart['body'];
 					$newBody	= $this->highlightQuotes($newBody);
 					#error_log(print_r($newBody,true));
-					bofelamimail::getCleanHTML($newBody);
+
+					// do the cleanup, set for the use of purifier
+					$usepurifier = true;
+					bofelamimail::getCleanHTML($newBody,$usepurifier);
 					// removes stuff between http and ?http
 					$Protocol = '(http:\/\/|(ftp:\/\/|https:\/\/))';    // only http:// gets removed, other protocolls are shown
 					$newBody = preg_replace('~'.$Protocol.'[^>]*\?'.$Protocol.'~sim','$1',$newBody); // removes stuff between http:// and ?http://
@@ -1237,11 +1240,11 @@
 					);
 					$imageURL = $GLOBALS['egw']->link('/index.php', $linkData);
 					if ($this->partID) {
-						$newBody = preg_replace("/(\"|\')cid:(.*)(\"|\')/iUe",
-							"'\"$imageURL&cid='.base64_encode('$2').'&partID='.urlencode($this->partID).'\"'", $newBody);
+						$newBody = preg_replace("/src=(\"|\')cid:(.*)(\"|\')/iUe",
+							"'src=\"$imageURL&cid='.base64_encode('$2').'&partID='.urlencode($this->partID).'\"'", $newBody);
 					} else {
-						$newBody = preg_replace("/(\"|\')cid:(.*)(\"|\')/iUe",
-							"'\"$imageURL&cid='.base64_encode('$2').'&partID='.'\"'", $newBody);
+						$newBody = preg_replace("/src=(\"|\')cid:(.*)(\"|\')/iUe",
+							"'src=\"$imageURL&cid='.base64_encode('$2').'&partID='.'\"'", $newBody);
 					}
 
 					// create links for email addresses

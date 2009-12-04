@@ -413,7 +413,7 @@
 		function decodeMimePart($_mimeMessage, $_encoding, $_charset = '')
 		{
 			// decode the part
-			if (self::$debug) error_log("bofelamimail::decodeMimePart: ".print_r($_mimeMessage,true));
+			if (self::$debug) error_log("bofelamimail::decodeMimePart with $_encoding and $_charset:".print_r($_mimeMessage,true));
 			switch ($_encoding)
 			{
 				case 'BASE64':
@@ -790,66 +790,80 @@
 		*            without the enclosing brackets
 		* param $endtag can be different from tag  but should be used only, if begin and endtag are known to be different e.g.: <!-- -->
 		*/
-		static function replaceTagsCompletley(&$_body,$tag,$endtag='')
+		static function replaceTagsCompletley(&$_body,$tag,$endtag='',$addbracesforendtag=true)
 		{
-			translation::replaceTagsCompletley($_body,$tag,$endtag='');
+			translation::replaceTagsCompletley($_body,$tag,$endtag,$addbracesforendtag);
 		}
 
-		static function getCleanHTML(&$_html)
+		static function getCleanHTML(&$_html, $usepurify = false)
 		{
+			// remove CRLF and TAB as it is of no use in HTML.
+			$_html = str_replace("\r\n",' ',$_html);
+			$_html = str_replace("\t",' ',$_html);
+
+			self::replaceTagsCompletley($_html,'style'); // clean out empty or pagewide style definitions / left over tags
+			self::replaceTagsCompletley($_html,'head'); // Strip out stuff in head	
+			self::replaceTagsCompletley($_html,'!\[if','<!\[endif\]>',false); // Strip out stuff in ifs	
+			self::replaceTagsCompletley($_html,'!--\[if','<!\[endif\]-->',false); // Strip out stuff in ifs	
+			//error_log($_html);
+			// force the use of kses, as it is still have the edge over purifier with some stuff
 			$usepurify = false;
 			if ($usepurify)
 			{
 				// we may need a customized config, as we may allow external images, $GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs']
 
-				// add htmlpurifiers library to include_path
-				require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.path.php');
-				// include most of the required files, for best performance with bytecode caches
-				require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.includes.php');
-				// installs an autoloader for other files
-				require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.autoload.php');
-				// testcase to test the processing of purify
-				//$html = "<h1 onclick=\"alert('hallo');\"> h1 </h1>".$html;
-					$config = HTMLPurifier_Config::createDefault();
-					$config->set('Core.Encoding', (self::$displayCharset?self::$displayCharset:'UTF-8'));
-					// maybe the two following lines are useful for caching???
-					$config->set('HTML.DefinitionID', 'felamimail');
-					$config->set('HTML.DefinitionRev', 1);
-					// doctype and tidylevel
-	 				$config->set('HTML.Doctype', 'XHTML 1.0 Transitional');
-					$config->set('HTML.TidyLevel', 'light');
-					// EnableID is needed for anchor tags
-					$config->set('Attr.EnableID',true);
-					// actual allowed tags and attributes
-					$config->set('HTML.Allowed', 'br,p[align],b,i,u,s,em,pre,tt,strong,strike,center,div[align],hr[class|style],'.
-								'font[size|color],'.
-								'ul[type],ol[type|start],li,'.
-								'h1,h2,h3,'.
-								'span[class|style],'.
-								'table[class|border|cellpadding|cellspacing|width|style|align|bgcolor|align],'.
-								'tbody,thead,tfoot,colgroup,'.
-								'col[width|span],'.
-								'blockquote[class|cite|dir],'.
-								'tr[class|style|align|bgcolor|align|valign],'.
-								'td[class|colspan|rowspan|width|style|align|bgcolor|align|valign|nowrap],'.
-								'th[class|colspan|rowspan|width|style|align|bgcolor|align|valign|nowrap],'.
-								'a[href|target|name|title],'.
-								'img[src|alt|title]');
-					$config->set('Cache.SerializerPath', ($GLOBALS['egw_info']['server']['temp_dir']?$GLOBALS['egw_info']['server']['temp_dir']:sys_get_temp_dir()));
+				$config = html::purifyCreateDefaultConfig();
+				
+				$config->set('Core.Encoding', (self::$displayCharset?self::$displayCharset:'UTF-8'));
+				// maybe the two following lines are useful for caching???
+				$config->set('HTML.DefinitionID', 'felamimail');
+				$config->set('HTML.DefinitionRev', 1);
+				// doctype and tidylevel
+	 			$config->set('HTML.Doctype', 'XHTML 1.0 Transitional');
+				$config->set('HTML.TidyLevel', 'light');
+				// EnableID is needed for anchor tags
+				$config->set('Attr.EnableID',true);
+				// actual allowed tags and attributes
+				$config->set('URI.AllowedSchemes', array('http'=>true, 'https'=>true, 'ftp'=>true, 'file'=>true, 'mailto' => true, 'cid'=>true));
+				$config->set('AutoFormat.RemoveEmpty', true);
+				$config->set('HTML.Allowed', 'br,p[align],b,i,u,s,em,pre,tt,strong,strike,center,div[align],hr[class|style],'.
+							'font[size|color],'.
+							'ul[type],ol[type|start],li,'.
+							'h1,h2,h3,'.
+							'span[class|style],'.
+							'table[class|border|cellpadding|cellspacing|width|style|align|bgcolor|align],'.
+							'tbody,thead,tfoot,colgroup,'.
+							'col[width|span],'.
+							'blockquote[class|cite|dir],'.
+							'tr[class|style|align|bgcolor|align|valign],'.
+							'td[class|colspan|rowspan|width|style|align|bgcolor|align|valign|nowrap],'.
+							'th[class|colspan|rowspan|width|style|align|bgcolor|align|valign|nowrap],'.
+							'a[href|target|name|title],'.
+							'img[src|alt|title]');
+				$DisableExternalResources = true;
+				if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs']) $DisableExternalResources = false;
+				$config->set('URI.DisableExternalResources',$DisableExternalResources);
+				$config->set('Core.RemoveInvalidImg', false);
+				//$config->set('Attr.DefaultInvalidImage', 'Image removed by htmlpurify');
+				$config->set('Core.HiddenElements', array('script','style','head')); // strips script, style, head copletely
 
+				$config->set('Cache.SerializerPath', ($GLOBALS['egw_info']['server']['temp_dir']?$GLOBALS['egw_info']['server']['temp_dir']:sys_get_temp_dir()));
+				//$config->set('HTML.MaxImgLength',null);
+				$config->set('Cache.DefinitionImpl', null); // remove this later!
+				//$purifier = new HTMLPurifier($config);
+				//$_html = $purifier->purify( $_html );
+				if (get_magic_quotes_gpc() === 1) $_html = stripslashes($_html);
 				$_html = html::purify($_html,$config);
 	            // no scripts allowed
-	            // clean out comments
-	            $search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
-	                '@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA
-	                '@<head[^>]*?>.*?</head>@si',  // Strip out javascript
-	                '@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
+	            // clean out comments , should not be needed as purify should do the job.
+				$search = array(
+					'@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
+					'@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA 
 	            );
-	            $_html = preg_replace($search,"",$_html);
-	            // clean out empty or pagewide style definitions / left over tags
-	            self::replaceTagsCompletley($_html,'style');
+	            //$_html = preg_replace($search,"",$_html);
 	            // remove non printable chars
 	            $_html = preg_replace('/([\000-\012])/','',$_html);
+				//error_log($_html);
 			}
 			else
 			{
@@ -1043,18 +1057,17 @@
 
 				// no scripts allowed
 				// clean out comments
-				$search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
-					'@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA
-					'@<head[^>]*?>.*?</head>@si',  // Strip out javascript
+				$search = array(
+					'@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA 
 					'@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
 				);
+				//error_log(__METHOD__.$_html);
 				$_html = preg_replace($search,"",$_html);
 				// do the kses clean out first, to avoid general problems with content later on
 				$_html = $kses->Parse($_html);
-				// clean out empty or pagewide style definitions / left over tags
-				self::replaceTagsCompletley($_html,'style');
 				// remove non printable chars
 				$_html = preg_replace('/([\000-\012])/','',$_html);
+				//error_log($_html);
 			}
 		}
 
@@ -1605,7 +1618,7 @@
 
 			$partText = false;
 			$partHTML = false;
-
+			if (self::$debug) _debug_array($_structure);
 			foreach($_structure as $mimePart) {
 				if($mimePart->type == 'TEXT' && $mimePart->subType == 'PLAIN' && $mimePart->bytes > 0) {
 					$partText = $mimePart;
