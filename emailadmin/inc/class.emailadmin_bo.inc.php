@@ -13,22 +13,22 @@
 	/* $Id$ */
 
 	class emailadmin_bo
-	{		
+	{
 		var $sessionData;
 		#var $userSessionData;
 		var $LDAPData;
-		
+
 		var $SMTPServerType = array();		// holds a list of config options
 		var $IMAPServerType = array();		// holds a list of config options
-		
+
 		var $imapClass;				// holds the imap/pop3 class
 		var $smtpClass;				// holds the smtp class
-		
+
 
 		function __construct($_profileID=-1,$_restoreSesssion=true)
 		{
 			$this->soemailadmin = new emailadmin_so();
-			
+
 			$this->SMTPServerType = array(
 				'1' 	=> array(
 					'fieldNames'	=> array(
@@ -100,8 +100,8 @@
 						'smtpLDAPBaseDN',
 						'smtpLDAPUseDefault'
 					),
-					'description'	=> 'Postfix (dbmail Schema)',
-					'classname'	=> 'postfixdbmailuser'
+					'description'   => 'Postfix (dbmail Schema)',
+					'classname'     => 'postfixdbmailuser'
 				),
 			);
 
@@ -212,9 +212,9 @@
 					'protocol'	=> 'imap',
 					'classname'	=> 'dbmaildbmailuser'
 				),
-			); 
-			
-			if ($_restoreSesssion &&  !(is_array($this->sessionData) && (count($this->sessionData)>0))  ) 
+			);
+
+			if ($_restoreSesssion &&  !(is_array($this->sessionData) && (count($this->sessionData)>0))  )
 			{
 				$this->restoreSessionData();
 			}
@@ -224,18 +224,28 @@
 				$this->sessionData = array();
 				self::saveSessionData();
 			}
-			#_debug_array($this->sessionData);	
+			#_debug_array($this->sessionData);
 			if($_profileID >= 0)
 			{
 				$this->profileID	= $_profileID;
-			
+
 				$this->profileData	= $this->getProfile($_profileID);
-			
-				$this->imapClass	= CreateObject('emailadmin.'.$this->IMAPServerType[$this->profileData['imapType']]['classname']);
-				$this->smtpClass	= CreateObject('emailadmin.'.$this->SMTPServerType[$this->profileData['smtpType']]['classname']);
+
+				// try autoloading class, if that fails include it from emailadmin
+				if (!class_exists($class = $this->IMAPServerType[$this->profileData['imapType']]['classname']))
+				{
+					include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$class.'.inc.php');
+				}
+				$this->imapClass	= new $class;
+
+				if (!class_exists($class = $this->SMTPServerType[$this->profileData['smtpType']]['classname']))
+				{
+					include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$class.'.inc.php');
+				}
+				$this->smtpClass	= new $class;
 			}
 		}
-		
+
 		function addAccount($_hookValues)
 		{
 			if (is_object($this->imapClass))
@@ -243,7 +253,7 @@
 				#ExecMethod("emailadmin.".$this->imapClass.".addAccount",$_hookValues,3,$this->profileData);
 				$this->imapClass->addAccount($_hookValues);
 			}
-			
+
 			if (is_object($this->smtpClass))
 			{
 				#ExecMethod("emailadmin.".$this->smtpClass.".addAccount",$_hookValues,3,$this->profileData);
@@ -252,7 +262,7 @@
 			$this->sessionData =array();
 			$this->saveSessionData();
 		}
-		
+
 		function deleteAccount($_hookValues)
 		{
 			if (is_object($this->imapClass))
@@ -269,14 +279,14 @@
 			$this->sessionData = array();
 			$this->saveSessionData();
 		}
-		
+
 		function deleteProfile($_profileID)
 		{
 			$this->soemailadmin->deleteProfile($_profileID);
 			$this->sessionData['profile'][$_profileID] = array();
 			$this->saveSessionData();
 		}
-		
+
 		function encodeHeader($_string, $_encoding='q')
 		{
 			switch($_encoding)
@@ -287,7 +297,7 @@
 						// nothing to quote, only 7 bit ascii
 						return $_string;
 					}
-					
+
 					$string = imap_8bit($_string);
 					$stringParts = explode("=\r\n",$string);
 					while(list($key,$value) = each($stringParts))
@@ -310,14 +320,14 @@
 		function getAccountEmailAddress($_accountName, $_profileID)
 		{
 			$profileData	= $this->getProfile($_profileID);
-			
+
 			#$smtpClass	= $this->SMTPServerType[$profileData['smtpType']]['classname'];
 			$smtpClass	= CreateObject('emailadmin.'.$this->SMTPServerType[$profileData['smtpType']]['classname']);
 
 			#return empty($smtpClass) ? False : ExecMethod("emailadmin.$smtpClass.getAccountEmailAddress",$_accountName,3,$profileData);
 			return is_object($smtpClass) ?  $smtpClass->getAccountEmailAddress($_accountName) : False;
 		}
-		
+
 		function getFieldNames($_serverTypeID, $_class)
 		{
 			switch($_class)
@@ -330,7 +340,7 @@
 					break;
 			}
 		}
-		
+
 #		function getIMAPClass($_profileID)
 #		{
 #			if(!is_object($this->imapClass))
@@ -338,10 +348,10 @@
 #				$profileData		= $this->getProfile($_profileID);
 #				$this->imapClass	= CreateObject('emailadmin.cyrusimap',$profileData);
 #			}
-#			
+#
 #			return $this->imapClass;
 #		}
-		
+
 		function getIMAPServerTypes() {
 			foreach($this->IMAPServerType as $key => $value) {
 				$retData[$key]['description']	= $value['description'];
@@ -350,13 +360,13 @@
 
 			return $retData;
 		}
-		
+
 		function getLDAPStorageData($_serverid)
 		{
 			$storageData = $this->soemailadmin->getLDAPStorageData($_serverid);
 			return $storageData;
 		}
-		
+
 		function getMailboxString($_folderName)
 		{
 			if (is_object($this->imapClass))
@@ -375,8 +385,8 @@
 			if (!(is_array($this->sessionData) && (count($this->sessionData)>0))) $this->restoreSessionData();
 			if (is_array($this->sessionData) && (count($this->sessionData)>0) && $this->sessionData['profile'][$_profileID]) {
 				#error_log("sessionData Restored for Profile $_profileID <br>");
-				return $this->sessionData['profile'][$_profileID]; 
-			} 
+				return $this->sessionData['profile'][$_profileID];
+			}
 			$profileData = $this->soemailadmin->getProfileList($_profileID);
 			$found = false;
 			if (is_array($profileData) && count($profileData))
@@ -409,15 +419,15 @@
 						'smtpAuth' => '',
 						'smtpType' => '1',
 					),array(
-						'imapServer' => $GLOBALS['egw_info']['server']['mail_server'] ? 
+						'imapServer' => $GLOBALS['egw_info']['server']['mail_server'] ?
 							$GLOBALS['egw_info']['server']['mail_server'] : $GLOBALS['egw_info']['server']['smtp_server'],
 						'imapPort' => '143',
 						'imapType' => '2',	// imap
-						'imapLoginType' => $GLOBALS['egw_info']['server']['mail_login_type'] ? 
+						'imapLoginType' => $GLOBALS['egw_info']['server']['mail_login_type'] ?
 							$GLOBALS['egw_info']['server']['mail_login_type'] : 'standard',
 						'imapTLSEncryption' => '0',
 						'imapTLSAuthentication' => '',
-						'imapoldcclient' => '',						
+						'imapoldcclient' => '',
 					));
 					$profileData[$found = 0] = array(
 						'smtpType' => '1',
@@ -444,7 +454,7 @@
 			$fieldNames[] = 'ea_user_defined_signatures';
 			$fieldNames[] = 'ea_default_signature';
 			$fieldNames[] = 'ea_stationery_active_templates';
-			
+
 			$profileData = $this->soemailadmin->getProfile($_profileID, $fieldNames);
 			$profileData['imapTLSEncryption'] = ($profileData['imapTLSEncryption'] == 'yes' ? 1 : (int)$profileData['imapTLSEncryption']);
 			if(strlen($profileData['ea_stationery_active_templates']) > 0)
@@ -455,7 +465,7 @@
 			$this->saveSessionData();
 			return $profileData;
 		}
-		
+
 		function getProfileList($_profileID='',$_appName=false,$_groupID=false,$_accountID=false)
 		{
 			if ($_appName!==false ||$_groupID!==false ||$_accountID!==false) {
@@ -464,7 +474,7 @@
 				return $this->soemailadmin->getProfileList($_profileID);
 			}
 		}
-		
+
 		function getSMTPServerTypes()
 		{
 			foreach($this->SMTPServerType as $key => $value)
@@ -473,13 +483,13 @@
 			}
 			return $retData;
 		}
-		
+
 		function getUserProfile($_appName='', $_groups='')
 		{
 			if (!(is_array($this->sessionData) && (count($this->sessionData)>0))) $this->restoreSessionData();
 			if (is_array($this->sessionData) && count($this->sessionData)>0 && $this->sessionData['ea_preferences']) {
 				#error_log("sessionData Restored for UserProfile<br>");
-				return $this->sessionData['ea_preferences']; 
+				return $this->sessionData['ea_preferences'];
 			}
 			$appName	= ($_appName != '' ? $_appName : $GLOBALS['egw_info']['flags']['currentapp']);
 			if(!is_array($_groups)) {
@@ -530,7 +540,12 @@
 
 				// fetch the SMTP / outgoing server data
 				$ogClass = isset($this->SMTPServerType[$data['smtpType']]) ? $this->SMTPServerType[$data['smtpType']]['classname'] : 'defaultsmtp';
-				$ogServer = CreateObject('emailadmin.'.$ogClass,$icServer->domainName);
+
+				if (!class_exists($obClass))
+				{
+					include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$ogClass.'.inc.php');
+				}
+				$ogServer = new $ogClass($icServer->domainName);
 				$ogServer->host		= $data['smtpServer'];
 				$ogServer->port		= $data['smtpPort'];
 				$ogServer->editForwardingAddress = ($data['editforwardingaddress'] == 'yes');
@@ -544,7 +559,7 @@
 							$ogServer->username     = $GLOBALS['egw_info']['user']['account_email'];
 						} elseif ($icServer->loginType == 'vmailmgr') {
 							$ogServer->username     = $GLOBALS['egw_info']['user']['account_lid'].'@'.$icServer->domainName;
-						} else {						
+						} else {
 							$ogServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
 						}
 					}
@@ -564,10 +579,10 @@
 					$identity->realName	= $emailAddresses['name'];
 					$identity->default	= ($emailAddresses['type'] == 'default');
 					$identity->organization	= $data['organisationName'];
-					
+
 					$eaPreferences->setIdentity($identity);
 				}
-				
+
 				$eaPreferences->userDefinedAccounts		= ($data['userDefinedAccounts'] == 'yes');
 				$eaPreferences->userDefinedIdentities     = ($data['userDefinedIdentities'] == 'yes');
 				$eaPreferences->ea_user_defined_signatures	= ($data['ea_user_defined_signatures'] == 'yes');
@@ -580,10 +595,10 @@
 				$this->saveSessionData();
 				return $eaPreferences;
 			}
-			
+
 			return false;
 		}
-		
+
 		function getUserData($_accountID)
 		{
 
@@ -597,18 +612,18 @@
 				if(is_a($ogServer, 'defaultsmtp')) {
 					$ogUserData = $ogServer->getUserData($_accountID);
 				}
-				
+
 				return $icUserData + $ogUserData;
-				
+
 			}
-			
+
 			return false;
 		}
 
 		function restoreSessionData()
 		{
 			$GLOBALS['egw_info']['flags']['autoload'] = array(__CLASS__,'autoload');
-			
+
 			//echo function_backtrace()."<br>";
 			//unserializing the sessiondata, since they are serialized for objects sake
 			$this->sessionData = (array) unserialize($GLOBALS['egw']->session->appsession('session_data','emailadmin'));
@@ -635,13 +650,13 @@
 				#$smtpClass->saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy);
 				$this->smtpClass->saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy);
 			}
-			
+
 		}
-		
+
 		/**
 		 * called by the validation hook in setup
 		 *
-		 * @param array $settings following keys: mail_server, mail_server_type {IMAP|IMAPS|POP-3|POP-3S}, 
+		 * @param array $settings following keys: mail_server, mail_server_type {IMAP|IMAPS|POP-3|POP-3S},
 		 *	mail_login_type {standard|vmailmgr}, mail_suffix (domain), smtp_server, smpt_port, smtp_auth_user, smtp_auth_passwd
 		 */
 		function setDefaultProfile($settings)
@@ -660,7 +675,7 @@
 					'ea_user' => 0,
 					'ea_active' => 1,
 				);
-				
+
                 if (empty($settings['mail_server'])) $profile['userDefinedAccounts'] = 'yes';
 				if (empty($settings['mail_server'])) $profile['userDefinedIdentities'] == 'yes';
                 if (empty($settings['mail_server'])) $profile['ea_user_defined_signatures'] == 'yes';
@@ -713,7 +728,7 @@
 							{
 								if ($var != 'imapType' || $val != 2 || $profile[$var] < 3)	// dont kill special imap server types
 								{
-									$profile[$var] = $val;		
+									$profile[$var] = $val;
 								}
 							}
 							break;
@@ -735,7 +750,7 @@
 			if(!isset($_imapSettings['imapTLSAuthentication'])) {
 				$_imapSettings['imapTLSAuthentication'] = true;
 			}
-			
+
 			if(is_array($_globalSettings['ea_stationery_active_templates']) && count($_globalSettings['ea_stationery_active_templates']) > 0)
 			{
 				$_globalSettings['ea_stationery_active_templates'] = serialize($_globalSettings['ea_stationery_active_templates']);
@@ -793,21 +808,21 @@
 			$this->sessionData = array();
 			$this->saveSessionData();
 		}
-		
+
 		function saveSessionData()
 		{
 			// serializing the session data, for the sake of objects
 			$GLOBALS['egw']->session->appsession('session_data','emailadmin',serialize($this->sessionData));
 			#$GLOBALS['egw']->session->appsession('user_session_data','',$this->userSessionData);
 		}
-		
+
 		function saveUserData($_accountID, $_formData) {
 
 			if($userProfile = $this->getUserProfile('felamimail')) {
 				$ogServer = $userProfile->getOutgoingServer(0);
 				if(is_a($ogServer, 'defaultsmtp')) {
-					$ogServer->setUserData($_accountID, 
-						(array)$_formData['mailAlternateAddress'], 
+					$ogServer->setUserData($_accountID,
+						(array)$_formData['mailAlternateAddress'],
 						(array)$_formData['mailForwardingAddress'],
 						$_formData['deliveryMode'],
 						$_formData['accountStatus'],
@@ -824,15 +839,15 @@
 				$_formData['account_id'] = $_accountID;
 				$_formData['location'] = 'editaccountemail';
 				$GLOBALS['egw']->hooks->process($_formData);
-				
+
 				return true;
 				$this->sessionData = array();
 				$this->saveSessionData();
 			}
-			
+
 			return false;
 		}
-		
+
 		function setOrder($_order) {
 			if(is_array($_order)) {
 				$this->soemailadmin->setOrder($_order);
@@ -855,4 +870,3 @@
 			$this->saveSessionData();
 		}
 	}
-?>
