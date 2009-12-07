@@ -541,7 +541,7 @@
 				// fetch the SMTP / outgoing server data
 				$ogClass = isset($this->SMTPServerType[$data['smtpType']]) ? $this->SMTPServerType[$data['smtpType']]['classname'] : 'defaultsmtp';
 
-				if (!class_exists($obClass))
+				if (!class_exists($ogClass))
 				{
 					include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$ogClass.'.inc.php');
 				}
