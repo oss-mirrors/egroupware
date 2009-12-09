@@ -64,22 +64,21 @@ function _egwtaskssync_list($filter='')
 	$boInfolog = new infolog_bo();
 
 	if (is_array($GLOBALS['egw_info']['user']['preferences']['syncml']) &&
-		array_key_exists('infolog_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+		array_key_exists('task_filter', $GLOBALS['egw_info']['user']['preferences']['syncml']))
 	{
-		$infolog_filter = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_filter'];
+		$task_filter = $GLOBALS['egw_info']['user']['preferences']['syncml']['task_filter'];
 		// Horde::logMessage('SymcML: egwtaskssync filter=' . $filter,
 		// __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	}
 	else
 	{
-		$infolog_filter = 'my';
+		$task_filter = 'my';
 	}
-
 
 	$searchFilter = array(
 		'order'		=> 'info_datemodified',
 		'sort'		=> 'DESC',
-		'filter'    => $infolog_filter,
+		'filter'    => $task_filter,
 		'col_filter'	=> array(
 			'info_type'	=> 'task',
 		),
