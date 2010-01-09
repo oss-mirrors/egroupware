@@ -190,7 +190,7 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
 		}
 	}
 
-	$state = &$_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 
 	switch ($contentType) {
@@ -198,7 +198,7 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
 		case 'text/vcalendar':
 		case 'text/calendar':
 			if(strrpos($content, 'BEGIN:VTODO')) {
-				$infolog_ical	= new infolog_ical();
+				$infolog_ical = new infolog_ical();
 				$infolog_ical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 				$taskID = $infolog_ical->importVTODO($content, $taskID);
 				$type = 'infolog_task';
@@ -240,7 +240,7 @@ function _egwcaltaskssync_search($content, $contentType, $contentid)
 {
 	Horde::logMessage("SymcML: egwcaltaskssync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$state = &$_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 
 	switch ($contentType) {
@@ -298,7 +298,7 @@ function _egwcaltaskssync_search($content, $contentType, $contentid)
  */
 function _egwcaltaskssync_export($guid, $contentType)
 {
-	$state	= &$_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
   	$deviceInfo = $state->getClientDeviceInfo();
   	$_id = $state->get_egwId($guid);
   	$parts = preg_split('/:/', $_id);
@@ -323,7 +323,7 @@ function _egwcaltaskssync_export($guid, $contentType)
 	if (strrpos($guid, 'infolog_task') !== false) {
 		Horde::logMessage("SymcML: egwcaltaskssync export exporting tasks",
 			__FILE__, __LINE__, PEAR_LOG_DEBUG);
-        $infolog_ical    = new infolog_ical($clientProperties);
+        $infolog_ical = new infolog_ical($clientProperties);
 		$infolog_ical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 		switch ($contentType) {
@@ -467,7 +467,7 @@ function _egwcaltaskssync_replace($guid, $content, $contentType, $type, $merge=f
 		$contentType = $contentType['ContentType'];
 	}
 
-	$state = &$_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 	$_id = $state->get_egwId($guid);
   	$parts = preg_split('/:/', $_id);
@@ -481,7 +481,7 @@ function _egwcaltaskssync_replace($guid, $content, $contentType, $type, $merge=f
 			if(strrpos($guid, 'infolog_task') !== false) {
 				Horde::logMessage("SymcML: egwcaltaskssync replace replacing task",
 					__FILE__, __LINE__, PEAR_LOG_DEBUG);
-				$infolog_ical	= new infolog_ical();
+				$infolog_ical = new infolog_ical();
 				$infolog_ical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 				return $infolog_ical->importVTODO($content, $taskID, $merge);

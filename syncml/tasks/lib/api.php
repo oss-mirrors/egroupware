@@ -180,14 +180,14 @@ function _egwtaskssync_import($content, $contentType, $guid = null)
 		}
 	}
 
-	$state                  = &$_SESSION['SyncML.state'];
-	$deviceInfo             = $state->getClientDeviceInfo();
+	$state =& $_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':
 		case 'text/calendar':
 			$infolog_ical = new infolog_ical();
-			$infolog_ical->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
+			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
 			$taskID = $infolog_ical->importVTODO($content, $taskID);
 			break;
 
@@ -240,14 +240,14 @@ function _egwtaskssync_search($content, $contentType, $contentid, $relax=false)
 
 	Horde::logMessage("SymcML: egwtaskssync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$state		= &$_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':
 		case 'text/calendar':
 			$infolog_ical = new infolog_ical();
-			$infolog_ical->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
+			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
 			$taskID	= $infolog_ical->searchVTODO($content, $state->get_egwID($contentid), $relax);
 			break;
 
@@ -305,20 +305,20 @@ function _egwtaskssync_export($guid, $contentType)
 
 	Horde::logMessage("SymcML: egwtaskssync export guid: $guid contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$state		= &$_SESSION['SyncML.state'];
+	$state		=& $_SESSION['SyncML.state'];
 	$taskID		= $state->get_egwId($guid);
 	$deviceInfo	= $state->getClientDeviceInfo();
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':
 			$infolog_ical = new infolog_ical($clientProperties);
-			$infolog_ical->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
+			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
 			return $infolog_ical->exportVTODO($taskID, '1.0');
 
 		case 'text/calendar':
 		case 'text/vcalendar':
 			$infolog_ical = new infolog_ical($clientProperties);
-			$infolog_ical->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
+			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
 			return $infolog_ical->exportVTODO($taskID, '2.0');
 
 		case 'text/x-s4j-sifc':
@@ -385,7 +385,7 @@ function _egwtaskssync_replace($guid, $content, $contentType, $type, $merge=fals
 
 	Horde::logMessage("SymcML: egwtaskssync replace content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$state		= &$_SESSION['SyncML.state'];
+	$state		=& $_SESSION['SyncML.state'];
 	$taskID		= $state->get_egwId($guid);
 	$deviceInfo	= $state->getClientDeviceInfo();
 
@@ -393,7 +393,7 @@ function _egwtaskssync_replace($guid, $content, $contentType, $type, $merge=fals
 		case 'text/calendar':
 		case 'text/x-vcalendar':
 			$infolog_ical = new infolog_ical();
-			$infolog_ical->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
+			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
 			return $infolog_ical->importVTODO($content, $taskID, $merge);
 
 		case 'text/x-s4j-sifc':
@@ -415,7 +415,7 @@ function _egwtaskssync_getSyncProfile()
 {
 	$syncProfile = 0;
 
-	$state = &$_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 
 	Horde::logMessage("SymcML: egwtaskssync remote device: ". $deviceInfo['model'], __FILE__, __LINE__, PEAR_LOG_DEBUG);

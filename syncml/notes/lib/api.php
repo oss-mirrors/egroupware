@@ -182,11 +182,15 @@ function _egwnotessync_import($content, $contentType, $guid = null)
 		}
 	}
 
+	$state =& $_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
+
 	switch ($contentType)
 	{
 		case 'text/plain':
 		case 'text/x-vnote':
 			$infolog_ical = new infolog_ical();
+			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
 			$noteId = $infolog_ical->importVNOTE($content, $contentType, $noteId);
 			break;
 
@@ -196,8 +200,8 @@ function _egwnotessync_import($content, $contentType, $guid = null)
 			Horde::logMessage("SyncML: egwnotessync import treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
 			$infolog_sif	= new infolog_sif();
+			$infolog_sif->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
 			$noteId = $infolog_sif->addSIF($content, $noteId, 'note');
-			error_log("Done add note: noteId=$noteId");
 			break;
 
 		default:
@@ -234,7 +238,7 @@ function _egwnotessync_import($content, $contentType, $guid = null)
 function _egwnotessync_search($content, $contentType, $contentid)
 {
 
-	$state			= $_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 
 	if (is_array($contentType))
 	{
@@ -247,11 +251,14 @@ function _egwnotessync_search($content, $contentType, $contentid)
 		$options = array();
 	}
 
+	$deviceInfo = $state->getClientDeviceInfo();
+
 	switch ($contentType)
 	{
 		case 'text/x-vnote':
 		case 'text/plain':
 			$infolog_ical = new infolog_ical();
+			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
 			$noteId	= $infolog_ical->searchVNOTE($content, $contentType, $state->get_egwID($contentid));
 			break;
 
@@ -261,6 +268,7 @@ function _egwnotessync_search($content, $contentType, $contentid)
 			Horde::logMessage("SyncML: egwnotessync search treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
 			$infolog_sif	= new infolog_sif();
+			$infolog_sif->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
 			$noteId = $infolog_sif->searchSIF($content,'note', $state->get_egwID($contentid));
 			break;
 
@@ -303,11 +311,12 @@ function _egwnotessync_export($guid, $contentType)
 {
 	Horde::logMessage("SymcML: egwnotessync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$state = $_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
 
 	if (is_array($contentType)) {
 		if (is_array($contentType['Properties'])) {
-			$clientProperties = &$contentType['Properties'];
+			$clientProperties =& $contentType['Properties'];
 		} else {
 			$clientProperties = array();
 		}
@@ -322,6 +331,7 @@ function _egwnotessync_export($guid, $contentType)
 		case 'text/x-vnote':
 		case 'text/plain':
 			$infolog_ical = new infolog_ical($clientProperties);
+			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
 			return $infolog_ical->exportVNOTE($noteId, $contentType);
 
 		case 'text/x-s4j-sifc':
@@ -329,7 +339,8 @@ function _egwnotessync_export($guid, $contentType)
 		case 'text/x-s4j-sift':
 			Horde::logMessage("SyncML: egwnotessync export treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
-			$infolog_sif	= new infolog_sif();
+			$infolog_sif = new infolog_sif();
+			$infolog_sif->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
 			if($note = $infolog_sif->getSIF($noteId, 'note')) return $note;
 
 			return PEAR::raiseError(_("Access Denied"));
@@ -349,7 +360,7 @@ function _egwnotessync_export($guid, $contentType)
  */
 function _egwnotessync_delete($guid)
 {
-	$state = $_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 	// Handle an arrray of GUIDs for convenience of deleting multiple
 	// notes at once.
 	if (is_array($guid)) {
@@ -385,18 +396,20 @@ function _egwnotessync_replace($guid, $content, $contentType, $type, $merge=fals
 {
 	Horde::logMessage("SymcML: egwtaskssync replace content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$state = $_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 
 	if (is_array($contentType)) {
 		$contentType = $contentType['ContentType'];
 	}
 
 	$noteId = $state->get_egwId($guid);
+	$deviceInfo = $state->getClientDeviceInfo();
 
 	switch ($contentType) {
 		case 'text/plain':
 		case 'text/x-vnote':
 			$infolog_ical = new infolog_ical();
+			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
 			return $infolog_ical->importVNOTE($content, $contentType, $noteId, $merge);
 
 		case 'text/x-s4j-sifc':
@@ -404,7 +417,8 @@ function _egwnotessync_replace($guid, $content, $contentType, $type, $merge=fals
 		case 'text/x-s4j-sift':
 			Horde::logMessage("SyncML: egwnotessync replace treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
-			$infolog_sif	= new infolog_sif();
+			$infolog_sif = new infolog_sif();
+			$infolog_sif->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
 			return $infolog_sif->addSIF($content, $noteId, 'note', $merge);
 
 		default:

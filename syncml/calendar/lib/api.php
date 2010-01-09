@@ -276,7 +276,7 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 		}
 	}
 
-	$state = &$_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 
 	switch ($contentType)
@@ -301,7 +301,7 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 			Horde::logMessage("SyncML: egwcalendarsync import treating bad calendar content-type '$contentType' as if is was 'text/x-s4j-sife'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sife':
 			$sifcalendar = new calendar_sif();
-			$sifcalendar->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
+			$sifcalendar->setSupportedFields($deviceInfo['model'],$deviceInfo['softwareVersion']);
 			$calendarId = $sifcalendar->addSIF($content, $calendarId);
 			break;
 
@@ -340,7 +340,7 @@ function _egwcalendarsync_search($content, $contentType, $contentid)
 {
 	Horde::logMessage("SymcML: egwcalendarsync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$state	= &$_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 
 	if (is_array($contentType))
@@ -364,7 +364,7 @@ function _egwcalendarsync_search($content, $contentType, $contentid)
 			Horde::logMessage("SyncML: egwcalendarsync treating bad calendar content-type '$contentType' as if is was 'text/x-s4j-sife'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sife':
 			$sifcalendar = new calendar_sif();
-			$sifcalendar->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
+			$sifcalendar->setSupportedFields($deviceInfo['model'],$deviceInfo['softwareVersion']);
 			$eventId = $sifcalendar->search($content,$state->get_egwID($contentid));
 			break;
 
@@ -404,7 +404,7 @@ function _egwcalendarsync_search($content, $contentType, $contentid)
  */
 function _egwcalendarsync_export($guid, $contentType)
 {
-  	$state	= &$_SESSION['SyncML.state'];
+  	$state =& $_SESSION['SyncML.state'];
   	$deviceInfo = $state->getClientDeviceInfo();
   	$_id = $state->get_egwId($guid);
   	$parts = preg_split('/:/', $_id);
@@ -442,7 +442,7 @@ function _egwcalendarsync_export($guid, $contentType)
 			Horde::logMessage("SyncML: egwcalendarsync export treating bad calendar content-type '$contentType' as if is was 'text/x-s4j-sife'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sife':
 			$sifcalendar = new calendar_sif();
-			$sifcalendar->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
+			$sifcalendar->setSupportedFields($deviceInfo['model'],$deviceInfo['softwareVersion']);
 			if($sifevent = $sifcalendar->getSIF($eventID))
 			{
 				return $sifevent;
@@ -470,7 +470,7 @@ function _egwcalendarsync_delete($guid)
 {
 	// Handle an arrray of GUIDs for convenience of deleting multiple
 	// events at once.
-	$state = &$_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 	if (is_array($guid))
 	{
 		foreach ($guid as $g) {
@@ -559,7 +559,7 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 		$contentType = $contentType['ContentType'];
 	}
 
-	$state = &$_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 	$_id = $state->get_egwId($guid);
   	$parts = preg_split('/:/', $_id);
@@ -592,7 +592,7 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 			error_log("[_egwsifcalendarsync_replace] Treating bad calendar content-type '".$contentType."' as if is was 'text/x-s4j-sife'");
 		case 'text/x-s4j-sife':
 			$sifcalendar = new calendar_sif();
-			$sifcalendar->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
+			$sifcalendar->setSupportedFields($deviceInfo['model'],$deviceInfo['softwareVersion']);
 			return $sifcalendar->addSIF($content, $eventID, $merge);
 
 		default:
