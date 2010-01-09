@@ -714,15 +714,16 @@ function setSupportedFields($content)
 				'UID'       => array('uid'),
 	);
 
-	$defaultFields[11] = array(	// funambol: iphone, blackberry, wm pocket pc
+	$defaultFields[11] = array(	// funambol: wm pocket pc
 				'ADR;WORK'      => array('','','adr_one_street','adr_one_locality','adr_one_region',
 											'adr_one_postalcode','adr_one_countryname'),
 				'ADR;HOME'      => array('','','adr_two_street','adr_two_locality','adr_two_region',
 											'adr_two_postalcode','adr_two_countryname'),
 				'BDAY'		=> array('bday'),
 				'CATEGORIES'	=> array('cat_id'),
-				'EMAIL;INTERNET;WORK'         => array('email'),
-				'EMAIL;INTERNET;HOME'    => array('email_home'),
+				'EMAIL;INTERNET'		=> array('email'),
+				'EMAIL;INTERNET;HOME'	=> array('email_home'),
+				// EMAIL;INTERNET;WORK is used by Funambol for the third email address
 				'N'		=> array('n_family','n_given','n_middle','n_prefix','n_suffix'),
 				'FN'		=> array('n_fn'),
 				'NOTE'          => array('note'),
@@ -738,7 +739,6 @@ function setSupportedFields($content)
 				'URL;WORK'      => array('url'),
 				'URL;HOME'	=> array('url_home'),
 				'PHOTO'		=> array('jpegphoto'),
-				'UID'       => array('uid'),
 	);
 
 	$defaultFields[12] = array(	// Synthesis 4 iPhone
@@ -847,6 +847,32 @@ function setSupportedFields($content)
 				'UID'       			=> array('uid'),
 	);
 
+	$defaultFields[16] = array(	// funambol: iphone, blackberry
+				'ADR;WORK'      => array('','','adr_one_street','adr_one_locality','adr_one_region',
+											'adr_one_postalcode','adr_one_countryname'),
+				'ADR;HOME'      => array('','','adr_two_street','adr_two_locality','adr_two_region',
+											'adr_two_postalcode','adr_two_countryname'),
+				'BDAY'		=> array('bday'),
+				'CATEGORIES'	=> array('cat_id'),
+				'EMAIL;INTERNET;WORK'	=> array('email'),
+				'EMAIL;INTERNET;HOME'	=> array('email_home'),
+				'N'		=> array('n_family','n_given','n_middle','n_prefix','n_suffix'),
+				'FN'		=> array('n_fn'),
+				'NOTE'          => array('note'),
+				'ORG'           => array('org_name','org_unit'),
+				'TEL;CELL'      => array('tel_cell'),
+				'TEL;FAX;HOME'  => array('tel_fax_home'),
+				'TEL;FAX;WORK'  => array('tel_fax'),
+				'TEL;VOICE;HOME' => array('tel_home'),
+				'TEL;VOICE;WORK' => array('tel_work'),
+				'TEL;PAGER'     => array('tel_pager'),
+				'TEL;CAR'	=> array('tel_car'),
+				'TITLE'         => array('title'),
+				'URL;WORK'      => array('url'),
+				'URL;HOME'	=> array('url_home'),
+				'PHOTO'		=> array('jpegphoto'),
+	);
+
 	switch ($productManufacturer)
 	{
 		case 'funambol':
@@ -861,9 +887,11 @@ function setSupportedFields($content)
 
 				case 'pocket pc sync client':
 				case 'pocket pc plug-in':
-				case 'blackberry plug-in':
-				case 'iphone':
 					$supportedFields = $defaultFields[11];
+					break;
+				case 'blackberry plug-in':
+				case 'iphone plug-in':
+					$supportedFields = $defaultFields[16];
 					break;
 
 				case 'outlook sync client v.':
