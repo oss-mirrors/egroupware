@@ -628,7 +628,9 @@ function setSupportedFields($content)
 				'TEL;WORK;VOICE' => array('tel_work'),
 				'TITLE'         => array('title'),
 				'URL;WORK'      => array('url'),
-				'URL'           => array('url_home'),
+				'URL;HOME'		=> array('url_home'),
+				'BDAY'			=> array('bday'),
+				'NICKNAME'		=> array('label'),
 	);
 
 	$defaultFields[7] = array(	// SyncEvolution
@@ -767,7 +769,6 @@ function setSupportedFields($content)
 				'ROLE'		=> array('role'),
 				'URL;HOME'	=> array('url_home'),
 				'PHOTO'		=> array('jpegphoto'),
-				'UID'       => array('uid'),
 	);
 
 	$defaultFields[13] = array(	// sonyericsson
@@ -818,7 +819,6 @@ function setSupportedFields($content)
 				'TITLE'         => array('title'),
 				'URL'      		=> array('url'),
 				'URL;HOME'		=> array('url_home'),
-				'PHOTO'			=> array('jpegphoto'),
 	);
 
 	$defaultFields[15] = array(     // motorola U9
