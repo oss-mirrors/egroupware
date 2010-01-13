@@ -122,7 +122,7 @@ function _egwcalendarsync_list($filter='')
 	Horde::logMessage('SymcML: egwcalendarsync list startDate: ' . date('r', $startDate) .
 		', endDate: ' . date('r', $endDate), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$state = &$_SESSION['SyncML.state'];
+	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 	if (isset($deviceInfo['tzid']) &&
 			$deviceInfo['tzid'])
