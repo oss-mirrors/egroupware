@@ -634,7 +634,7 @@ class syncml_hooks
 		$title = $appname = 'syncml';
 		$file = array(
 			'Preferences' => $GLOBALS['egw']->link('/index.php', 'menuaction=preferences.uisettings.index&appname=' . $appname),
-			'Devices' => $GLOBALS['egw']->link('/index.php', 'menuaction=syncml.devices.listDevices'),
+			'Device History' => $GLOBALS['egw']->link('/index.php', 'menuaction=syncml.devices.listDevices'),
 			'Documentation' => $GLOBALS['egw']->link('/'. $appname . '/index.php')
 		);
 		// Don't modify below this line
