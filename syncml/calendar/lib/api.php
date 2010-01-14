@@ -157,7 +157,7 @@ function _egwcalendarsync_list($filter='')
 			$event['id'] = $event['cal_id'];
 			$event['start'] = $event['cal_start'];
 			// Check if the stati for all participants are identical for all recurrences
-			$days = $boCalendar->so->get_recurrence_exceptions(&$event, $tz_id, $startDate, $endDate);
+			$days = $boCalendar->so->get_recurrence_exceptions(&$event, $tz_id, $startDate, $endDate, $syncCriteria);
 			foreach ($days as $recur_date)
 			{
 				if ($recur_date) $guids[] = $guid . ':' . $recur_date;
@@ -443,7 +443,7 @@ function _egwcalendarsync_export($guid, $contentType)
 		case 'text/x-s4j-sife':
 			$sifcalendar = new calendar_sif();
 			$sifcalendar->setSupportedFields($deviceInfo['model'],$deviceInfo['softwareVersion']);
-			if($sifevent = $sifcalendar->getSIF($eventID))
+			if($sifevent = $sifcalendar->getSIF($eventID, $recur_date))
 			{
 				return $sifevent;
 			}
@@ -593,7 +593,7 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 		case 'text/x-s4j-sife':
 			$sifcalendar = new calendar_sif();
 			$sifcalendar->setSupportedFields($deviceInfo['model'],$deviceInfo['softwareVersion']);
-			return $sifcalendar->addSIF($content, $eventID, $merge);
+			return $sifcalendar->addSIF($content, $eventID, $merge, $recur_date);
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
