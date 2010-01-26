@@ -540,9 +540,9 @@
 
 			foreach($bm_list as $bookmark) {
 				$t->set_var(array(
-					'url' => $bookmark['url'],
-					'name' => $this->translation->convert($bookmark['name'],$this->charset,'utf-8'),
-					'desc' => $this->translation->convert($bookmark['desc'],$this->charset,'utf-8')
+					'url' => $bookmark['stripped_url'],
+					'name' => $this->translation->convert($bookmark['stripped_name'],$this->charset,'utf-8'),
+					'desc' => $this->translation->convert($bookmark['stripped_desc'],$this->charset,'utf-8')
 				));
 				$t->fp('urls','urllist',True);
 			}
