@@ -16,7 +16,7 @@
 	/* Basic information about this app */
 	$setup_info['bookmarks']['name']      = 'bookmarks';
 	$setup_info['bookmarks']['title']     = 'Bookmarks';
-	$setup_info['bookmarks']['version']   = '1.2';
+	$setup_info['bookmarks']['version']   = '1.7.001';
 	$setup_info['bookmarks']['app_order'] = '12';
 	$setup_info['bookmarks']['enable']    = 1;
 
@@ -31,14 +31,19 @@
 
 	/* The tables this app creates */
 	$setup_info['bookmarks']['tables'][] = 'egw_bookmarks';
+	$setup_info['bookmarks']['tables'][] = 'egw_bookmarks_extra';
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['bookmarks']['hooks'][] = 'admin';
-	$setup_info['bookmarks']['hooks'][] = 'preferences';
-	$setup_info['bookmarks']['hooks'][] = 'sidebox_menu';
+	$setup_info['bookmarks']['hooks']['preferences'] = 'bookmarks_hooks::all_hooks';
+	$setup_info['bookmarks']['hooks']['settings'] = 'bookmarks_hooks::settings';
+	$setup_info['bookmarks']['hooks']['admin'] = 'bookmarks_hooks::all_hooks';
+	$setup_info['bookmarks']['hooks']['sidebox_menu'] = 'bookmarks_hooks::all_hooks';
+	$setup_info['bookmarks']['hooks']['search_link'] = 'bookmarks_hooks::search_link';
+
 
 	/* Dependencies for this app to work */
 	$setup_info['bookmarks']['depends'][] = array(
 		'appname'  => 'phpgwapi',
 		'versions' => Array('1.2','1.3','1.4','1.5','1.6','1.7')
 	);
+

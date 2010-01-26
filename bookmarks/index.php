@@ -22,6 +22,5 @@
 	);
 	include('../header.inc.php');
 
-	$obj =& CreateObject('bookmarks.ui');
-	$obj->init();
-	$GLOBALS['egw']->common->egw_footer();
+	ExecMethod('bookmarks.bookmarks_ui.init');
+?>

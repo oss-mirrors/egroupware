@@ -68,7 +68,7 @@ class module_bookmarks extends Module
 		{
 			$expandedcats = Array();
 		}
-		$bo = createobject('bookmarks.bo');
+		$bo = createobject('bookmarks.bookmarks_bo');
 		return $bo->export($arguments['category'],'xbel',$expandedcats);
 	}
 }

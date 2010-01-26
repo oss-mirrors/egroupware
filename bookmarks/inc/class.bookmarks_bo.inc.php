@@ -15,7 +15,7 @@
 
 	/* $Id$ */
 
-	class bo
+	class bookmarks_bo extends bo_tracking
 	{
 		var $so;
 		var $grants;
@@ -28,9 +28,34 @@
 		var $error_msg;
 		var $msg;
 
-		function bo()
+		// History logging from bo_tracking
+		public $app = 'bookmarks';
+		public $id_field = 'bm_id';
+		public $creator_field = 'bm_owner';
+		public $field2history = array(
+			'name'	=>	'bm_name',
+			'desc'	=>	'bm_desc',
+			'url'	=>	'bm_url',
+			'keywords'	=>	'bm_keywords',
+			'category'	=>	'bm_category',
+			'rating'	=>	'bm_rating',
+			'access'	=>	'bm_access',
+			'custom'	=>	'custom',
+		);
+		public $field2label = array(
+			'bm_name'	=>	'Name',
+			'bm_desc'	=>	'Description',
+			'bm_url'	=>	'URL',
+			'bm_keywords'	=>	'Keywords',
+			'bm_category'	=>	'Category',
+			'bm_rating'	=>	'Rating',
+			'bm_access'	=>	'Access',
+			'custom'	=>	'custom fields',
+		);
+
+		function bookmarks_bo()
 		{
-			$this->so =& CreateObject('bookmarks.so');
+			$this->so =& CreateObject('bookmarks.bookmarks_so');
 			$this->grants      = $GLOBALS['egw']->acl->get_grants('bookmarks');
 			$this->categories = $GLOBALS['egw']->categories;
 			$this->config = config::read('bookmarks');
@@ -39,8 +64,15 @@
 
 			$this->translation = $GLOBALS['egw']->translation;
 			$this->charset = $this->translation->charset();
+
+			// History logging from bo_tracking
+			parent::__construct();
 		}
 
+		/**
+		* Preserve data from a half finished form so it doesn't get 
+		* lost if the user has to leave and come back.
+		*/
 		function grab_form_values($returnto,$returnto2,$bookmark)
 		{
 			$location_info = array(
@@ -59,30 +91,35 @@
 			$this->save_session_data($location_info);
 		}
 
-		function date_information(&$tpl, $raw_string)
-		{
-			$ts = explode(',',$raw_string);
+		public function get_rows(&$query, &$rows, &$readonlys = array()) {
+			// Pass grant list for permission filtering
+			$query['grants'] = array();
+			foreach($this->grants as $id => $perms) {
+				if($perms & EGW_ACL_READ) {
+					$query['grants'][] = $id;
+				}
+			}
 
-			$tpl->set_var('added_value',$GLOBALS['egw']->common->show_date($ts[0]));
-			$tpl->set_var('visited_value',($ts[1]?$GLOBALS['egw']->common->show_date($ts[1]):lang('Never')));
-			$tpl->set_var('updated_value',($ts[2]?$GLOBALS['egw']->common->show_date($ts[2]):lang('Never')));
+			$count = $this->so->get_rows($query, $rows, $readonlys);
+			
+			// Add in permissions
+			foreach($rows as $key => $row) {
+				foreach(array(EGW_ACL_EDIT => 'edit', EGW_ACL_DELETE => 'delete') as $required => $field) {
+					$readonlys[$field."[{$row['id']}]"] = !$this->check_perms2($row['owner'], $row['access'], $required);
+				}
+			}
+
+			return $count;
 		}
 
-		function _list($cat_id,$start=False,$where_clause=False,$subcatsalso=True)
+		function read($id)
 		{
-			$cat_list = $cat_id ?
-				($subcatsalso ? $this->getcatnested($cat_id,True,True) : array($cat_id)):
-				False;
-			return $this->so->_list($cat_list,$this->get_user_grant_list(),$start,$where_clause);
-		}
-
-		function read($id,$do_htmlspecialchars=True)
-		{
-			$bookmark = $this->so->read($id,$do_htmlspecialchars);
+			$bookmark = $this->so->read($id);
 			foreach(array(EGW_ACL_READ,EGW_ACL_EDIT,EGW_ACL_DELETE) as $required)
 			{
 				$bookmark[$required] = $this->check_perms2($bookmark['owner'],$bookmark['access'],$required);
 			}
+
 			return $bookmark;
 		}
 
@@ -121,44 +158,15 @@
 			}
 		}
 
-		function categories_list($selected_id,$multiple=False)
-		{
-			$option_list = $this->getcatnested(0);
-			$s = '';
-			foreach($option_list as $option)
-			{
-				$s .= '<option value="' . $option['value'] . '"' .
-				(($option['value']==$selected_id) ? ' selected' : '') .
-				'>' . $option['display'] . '</option>' . "\n";
-			}
-			return '<select name="bookmark[category]' .
-				($multiple ? '[]" multiple="multiple" ' : '" ') .
-				'size="5">' . $s . '</select>';
-		}
-
-		function getcatnested($cat_id,$idsonly=False,$parentalso=False)
-		{
-			$retval = $parentalso ? array($cat_id) : array();
-			$root_list = $this->categories->return_array($cat_id ? 'all' : 'mains',0,False,'','cat_name','',True,$cat_id,-1,$idsonly ? 'id' : '');
-
-			if (is_array($root_list))
-			{
-				foreach($root_list as $cat)
-				{
-					$padding = str_pad('',12*$cat['level'],'&nbsp;');
-					$retval[] = $idsonly ? $cat['id'] : array('value'=>$cat['id'], 'display'=>$padding.$cat['name']);
-					$sublist = $this->getcatnested($cat['id'],$idsonly);
-					if (is_array($sublist) && count($sublist)>0)
-					{
-						$retval = array_merge($retval,$sublist);
-					}
-				}
-			}
-			return $retval;
-		}
-
 		function add($values)
 		{
+			$values['owner'] = (int) $GLOBALS['egw_info']['user']['account_id'];
+			$values['added'] = time();
+                        $values['visits'] = 0;
+			if(!$values['favicon']) {
+				// Import may provide favicon, so don't get it if it's there
+				$values['favicon'] = $this->get_favicon($values['url']);
+			}
 			if ($this->validate($values))
 			{
 				if ($this->so->exists($values['url']))
@@ -179,12 +187,16 @@
 			}
 		}
 
-		function update($id, $values)
+		function save($id, $values)
 		{
-			#echo "bo::update<pre>".htmlspecialchars(print_r($values,True))."</pre>\n";
 			if ($this->validate($values) && $this->check_perms($id,EGW_ACL_EDIT))
 			{
-				if ($this->so->update($id,$values))
+				// Update favicon
+				$values['favicon'] = $this->get_favicon($values['url']);
+
+				// Log history
+				$this->track($values, $this->read($id));
+				if ($this->so->save($id,$values))
 				{
 					$this->msg .= lang('Bookmark changed sucessfully');
 					return True;
@@ -196,7 +208,7 @@
 			}
 		}
 
-		function updatetimestamp($id,$timestamp)
+		function updatetimestamp($id,$timestamp = null)
 		{
 			$this->so->updatetimestamp($id,$timestamp);
 		}
@@ -261,6 +273,61 @@
 			return $GLOBALS['egw']->session->appsession('session_data','bookmarks');
 		}
 
+		/**
+		 * Save changes to the history log
+		 *
+		 * Reimplemented to store all customfields in a single field, as the history-log has only 2-char field-ids
+		 *
+		 * @param array $data current entry
+		 * @param array $old=null old/last state of the entry or null for a new entry
+		 * @param int number of log-entries made
+		 */
+		function save_history($data,$old)
+		{
+			$data_custom = $old_custom = array();
+			foreach($this->so->customfields as $name => $custom)
+			{
+				if (isset($data['#'.$name]) && (string)$data['#'.$name]!=='') $data_custom[] = $custom['label'].': '.$data['#'.$name];
+				if (isset($old['#'.$name]) && (string)$old['#'.$name]!=='') $old_custom[] = $custom['label'].': '.$old['#'.$name];
+			}
+			$data['custom'] = implode("\n",$data_custom);
+			$old['custom'] = implode("\n",$old_custom);
+
+			return parent::save_history($data,$old);
+		}
+
+		/**
+		*	Participate in eGW linking system
+		*	This function gets a string name for a bookmark
+		*/
+		public function link_title($id) {
+			$bookmark = $this->read($id);
+			return $bookmark['name'];
+		}
+
+		/**
+		*	Participate in eGW linking system
+		*	This function gets a list of matching bookmarks
+		*/
+		public function link_query($pattern, Array &$options = array()) {
+			$query = array(
+				'search' => $pattern,
+				'start'  => $options['start'],
+				'num_rows'      =>      $options['num_rows'],
+			);
+			$ids = $this->so->search($query, true);
+			$options['total'] = $query['total'];
+			$content = array();
+			if (is_array($ids))
+			{
+				foreach($ids as $id => $info )
+				{
+					$content[$info['id']] = $this->link_title($info['id']);
+				}
+			}
+			return $content;
+		}
+
 		function get_category($catname,$parent)
 		{
 			$this->_debug('<br>Testing for category: ' . $catname . ' with parent: \'' . $parent . '\'');
@@ -276,7 +343,7 @@
 					'name'   => $catname,
 					'descr'  => '',
 					'parent' => $parent,
-					'access' => '',
+					'access' => 'private',
 					'data'   => ''
 				));
 				$this->_debug(' - ' . $Catname . ' does not exist - new id: ' . $catid);
@@ -352,14 +419,18 @@
 									array('&','<','>','"',"'"),$this->translation->convert($match[2],$from_charset));
 								$values['rating']   = $default_rating;
 
-								eregi('ADD_DATE="([^"]*)"',$line,$add_info);
-								eregi('LAST_VISIT="([^"]*)"',$line,$vist_info);
-								eregi('LAST_MODIFIED="([^"]*)"',$line,$change_info);
+								preg_match('/ADD_DATE="([^"]*)"/i',$line,$add_info);
+								preg_match('/LAST_VISIT="([^"]*)"/i',$line,$vist_info);
+								preg_match('/LAST_MODIFIED="([^"]*)"/i',$line,$change_info);
+								preg_match('/ICON_URI="([^"]*)"/i',$line,$favicon_info);
 
-								$values['timestamps'] = sprintf('%s,%s,%s',$add_info[1],$vist_info[1],$change_info[1]);
+								$values['added'] = $add_info[1];
+								$values['visited'] = $visit_info[1];
+								$values['updated'] = $change_info[1];
+								$values['favicon'] = $favicon_info[1];
 
 								unset($keywords);
-								eregi('SHORTCUTURL="([^"]*)"',$line,$keywords);
+								preg_match('/SHORTCUTURL="([^"]*)"/i',$line,$keywords);
 								$values['keywords']=$keywords[1];
 
 								$this->_debug(sprintf("<tr><td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>",$cid,$scid,$match[2],$match[1],$add_info[1],$change_info[1],$vist_info[1]));
@@ -462,10 +533,12 @@
 				'folded' => (in_array($catid,$this->expanded) ? 'no' : 'yes')
 			));
 
-			$bm_list = $this->_list($catid,False,False,False);
+			$query = array(
+				'cat_id'	=>	$catid
+			);
+			$this->get_rows($query, $bm_list);
 
-			while(list($bm_id,$bookmark) = @each($bm_list))
-			{
+			foreach($bm_list as $bookmark) {
 				$t->set_var(array(
 					'url' => $bookmark['url'],
 					'name' => $this->translation->convert($bookmark['name'],$this->charset,'utf-8'),
@@ -476,9 +549,80 @@
 			return $t->fp('out','categ');
 		}
 
+		/**
+		* Find the URL of the favicon for the given site
+		*
+		* @param site_url Address of the site to pull the favicon from
+		*/
+		public function get_favicon($site_url) {
+
+			// Preset favicon to a fallback
+			$favicon = $GLOBALS['egw']->common->image('bookmarks', 'bad_url');
+
+			$headers = @get_headers($site_url, true);
+			if($headers == false || strpos('404', $headers[0])) return $favicon;
+
+			// Check what the page says first
+			$timeout = 2;
+			$options = array(
+				parse_url($site_url, PHP_URL_SCHEME) => array(
+					'method' => 'GET',
+					'timeout' => $timeout
+				)
+			);
+			$context = stream_context_create($options);
+			if(($site = @file_get_contents($site_url, null, $context, -1)) === false) {
+				return $favicon;
+			}
+			
+			// Check for w3c recommended: <link rel="icon" type="image/png" href="http://example.com/image.png">
+			$pattern = '|<link rel.?=.?[\'"]icon[\'"].+href=[\'"](.*)[\'"].*>|i';
+			preg_match($pattern, $site, $matches);
+			if($matches[1]) {
+				if(!parse_url($matches[1], PHP_URL_HOST)) {
+					// Local URL
+					$matches[1] = parse_url($site_url, PHP_URL_SCHEME) . '://' . parse_url($site_url, PHP_URL_HOST) . '/' . $matches[1];
+				}
+				$headers = @get_headers($matches[1], true);
+				if($headers != false && !strpos($headers[0], 404)) {
+					return $matches[1];
+				}
+				return $matches[1];
+			}
+
+			// Check for MS style: <link rel="shortcut icon" href="http://example.com/image.png">
+			$pattern = '|<link rel.?=.?[\'"]shortcut icon[\'"].+href=[\'"](.*)[\'"] ?/?>|i';
+			preg_match($pattern, $site, $matches);
+			if($matches[1]) {
+				if(!parse_url($matches[1], PHP_URL_HOST)) {
+					// Local URL
+					$matches[1] = parse_url($site_url, PHP_URL_SCHEME) . '://' . parse_url($site_url, PHP_URL_HOST) . '/' . $matches[1];
+				}
+				$headers = @get_headers($matches[1], true);
+				if($headers != false && !strpos($headers[0], 404)) {
+					return $matches[1];
+				}
+			}
+			
+			// Check for .ico in site root
+			$parsed_url = parse_url($site_url);
+			$ico_url = $parsed_url['scheme'].'://'.$parsed_url['host'].'/favicon.ico';
+			$headers = @get_headers($ico_url, true);
+			if($headers != false && !strpos($headers[0], 404)) {
+				return $ico_url;
+			}
+
+			
+			$favicon = $GLOBALS['egw']->common->image('bookmarks', 'no_favicon');
+			return $favicon;
+
+			// You could also fallback on getFavicon by Jason Cartwright
+			//return 'http://getfavicon.appspot.com/' . $site_url;
+		}
+
 		function _debug($s)
 		{
-			//echo $s;
+			echo $s;
 		}
 	}
 ?>

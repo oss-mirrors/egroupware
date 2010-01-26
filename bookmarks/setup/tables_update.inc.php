@@ -77,3 +77,41 @@
 
 		return $setup_info['bookmarks']['currentver'] = '1.2';
 	}
+
+function bookmarks_upgrade1_2()
+{
+	$GLOBALS['egw_setup']->oProc->CreateTable('egw_bookmarks_extra',array(
+		'fd' => array(
+			'bm_id' => array('type' => 'int','precision' => '4'),
+			'name' => array('type' => 'varchar','precision' => '64'),
+			'value' => array('type' => 'text')
+		),
+		'pk' => array('bm_id','name'),
+		'fk' => array('bm_id' => 'egw_bookmarks.bm_id'),
+		'ix' => array(),
+		'uc' => array()
+	));
+
+	$GLOBALS['egw_setup']->oProc->RenameColumn('egw_bookmarks_extra','name','bm_name');
+	$GLOBALS['egw_setup']->oProc->RenameColumn('egw_bookmarks_extra','value','bm_value');
+	$GLOBALS['egw_setup']->oProc->RefreshTable('egw_bookmarks_extra',array(
+		'fd' => array(
+			'bm_id' => array('type' => 'int','precision' => '4'),
+			'bm_name' => array('type' => 'varchar','precision' => '64'),
+			'bm_value' => array('type' => 'text')
+		),
+		'pk' => array('bm_id','bm_name'),
+		'fk' => array('bm_id' => 'egw_bookmarks.bm_id'),
+		'ix' => array(),
+		'uc' => array()
+	));
+
+
+	$GLOBALS['egw_setup']->oProc->AddColumn('egw_bookmarks','bm_favicon',array(
+		'type' => 'varchar',
+		'precision' => '255'
+	));
+
+	return $GLOBALS['setup_info']['bookmarks']['currentver'] = '1.7.001';
+}
+
