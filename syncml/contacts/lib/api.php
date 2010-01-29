@@ -30,7 +30,7 @@ $_services['import'] = array(
 );
 
 $_services['search'] = array(
-    'args' => array('content', 'contentType','id'),
+    'args' => array('content', 'contentType', 'id' , 'type'),
     'type' => 'integer'
 );
 
@@ -177,7 +177,7 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['addressbook_conflict_category'])) {
 		if (!$guid) {
-			$guid = _egwcontactssync_search($content, $contentType, null, true);
+			$guid = _egwcontactssync_search($content, $contentType, null, null);
 		}
 		if (preg_match('/contacts-(\d+)/', $guid, $matches)) {
 			Horde::logMessage("SymcML: egwcontactssync import conflict found for " . $matches[1], __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -248,17 +248,18 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
  *                               text/plain
  *                               text/x-vnote
  * @param string  $contentid    the contentid read from contentmap we are expecting the content to be
- * @param boolean $relax=false  relaxed matching (lesser fields)
+ * @param string  $type         The type of the content.
  *
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcontactssync_search($content, $contentType, $contentid, $relax=false)
+function _egwcontactssync_search($content, $contentType, $contentid, $type=null)
 {
 	#Horde::logMessage("SymcML: egwcontactssync search content: $content contentid: $contentid contenttype:\n" . print_r($contentType, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state			= &$_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
+	$relax = !$type;
 
 	if (is_array($contentType)) {
                 $contentType = $contentType['ContentType'];

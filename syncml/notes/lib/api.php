@@ -167,7 +167,7 @@ function _egwnotessync_import($content, $contentType, $guid = null)
 
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'])) {
 		if (!$guid) {
-			$guid = _egwnotessync_search($content, $contentType, null);
+			$guid = _egwnotessync_search($content, $contentType, null, null);
 		}
 		if (preg_match('/infolog_note-(\d+)/', $guid, $matches)) {
 			Horde::logMessage("SymcML: egwnotessync import conflict found for " . $matches[1], __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -232,10 +232,11 @@ function _egwnotessync_import($content, $contentType, $guid = null)
  *                             text/plain
  *                             text/x-vnote
  * @param string $contentid    the contentid read from contentmap we are expecting the content to be
+ * @param string $type         The type of the content.
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwnotessync_search($content, $contentType, $contentid)
+function _egwnotessync_search($content, $contentType, $contentid, $type=null)
 {
 
 	$state =& $_SESSION['SyncML.state'];

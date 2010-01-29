@@ -30,7 +30,7 @@ $_services['import'] = array(
 );
 
 $_services['search'] = array(
-    'args' => array('content', 'contentType','id'),
+    'args' => array('content', 'contentType', 'id', 'type'),
     'type' => 'integer'
 );
 
@@ -145,7 +145,7 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
 
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'])) {
 		if (!$guid) {
-			$guid = _egwcaltaskssync_search($content, $contentType, null);
+			$guid = _egwcaltaskssync_search($content, $contentType, null, null);
 		}
 		if (preg_match('/infolog_task-(\d+)/', $guid, $matches)) {
 			Horde::logMessage("SymcML: egwcaltaskssync import conflict found for " . $matches[1],
@@ -233,10 +233,11 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
  *                             text/plain
  *                             text/x-vnote
  * @param string $contentid    the contentid read from contentmap we are expecting the content to be
+ * @param string $type         The type of the content.
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcaltaskssync_search($content, $contentType, $contentid)
+function _egwcaltaskssync_search($content, $contentType, $contentid, $type=null)
 {
 	Horde::logMessage("SymcML: egwcaltaskssync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 

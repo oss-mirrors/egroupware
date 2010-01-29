@@ -228,11 +228,11 @@ function _egwtaskssync_import($content, $contentType, $guid = null)
  *                             text/plain
  *                             text/x-vnote
  * @param string $contentid    the contentid read from contentmap we are expecting the content to be
- * @param boolean $relax=false relaxed matching (lesser fields)
+ * @param string $type         The type of the content.
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwtaskssync_search($content, $contentType, $contentid, $relax=false)
+function _egwtaskssync_search($content, $contentType, $contentid, $type=null)
 {
 	if (is_array($contentType)) {
 		$contentType = $contentType['ContentType'];
@@ -242,6 +242,7 @@ function _egwtaskssync_search($content, $contentType, $contentid, $relax=false)
 
 	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
+	$relax = !$type;
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':

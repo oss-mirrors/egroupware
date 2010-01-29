@@ -30,7 +30,7 @@ $_services['import'] = array(
 );
 
 $_services['search'] = array(
-    'args' => array('content', 'contentType', 'id'),
+    'args' => array('content', 'contentType', 'id', 'type'),
     'type' => 'integer'
 );
 
@@ -140,7 +140,7 @@ function _egwcalendarsync_list($filter='')
 		'daywise'	=> false,
 		'enum_recuring' => false,
 		'enum_groups' => true,
-		'cols'		=> array('egw_cal.cal_id', 'cal_start', 'recur_type'),
+		'cols'		=> array('egw_cal.cal_id', 'cal_start',	'recur_type'),
 		'order'     => 'cal_id,cal_start ASC'
 	);
 
@@ -154,10 +154,10 @@ function _egwcalendarsync_list($filter='')
 		$guids[] = $guid = 'calendar-' . $event['cal_id'];
 		if ($event['recur_type'] != MCAL_RECUR_NONE)
 		{
-			$event['id'] = $event['cal_id'];
-			$event['start'] = $event['cal_start'];
 			// Check if the stati for all participants are identical for all recurrences
-			$days = $boCalendar->so->get_recurrence_exceptions(&$event, $tz_id, $startDate, $endDate, $syncCriteria);
+			$event = $boCalendar->read($id, 0, true, 'server');
+			$days = $boCalendar->so->get_recurrence_exceptions($event, $tz_id, $startDate, $endDate, $syncCriteria);
+			unset($event);
 			foreach ($days as $recur_date)
 			{
 				if ($recur_date) $guids[] = $guid . ':' . $recur_date;
@@ -169,6 +169,36 @@ function _egwcalendarsync_list($filter='')
 	return $guids;
 }
 
+/**
+ * Returns an array of related pseudo exception GUIDs for given events
+ * since $timestamp.
+ *
+ * @param array of GUIDs
+ *
+ * @return array	An array of related pseudo exception GUIDs
+ */
+function &_egwcalendarsync_listPseudoExceptions($eventGUIDs, $tzid=null)
+{
+	$pseudoGUIDs = array();
+
+	$boCalendar = new calendar_bo();
+
+	// We may have changed timezone pseudo exceptions
+	foreach ($eventGUIDs as $guid) {
+		if (preg_match('/calendar-(\d+)$/', $guid, $matches) &&
+				($event = $boCalendar->read($matches[1], 0, true, 'server')) &&
+				$event['recur_type'] != MCAL_RECUR_NONE)  {
+			// we check only series masters
+			$pseudoExceptions = $boCalendar->so->get_recurrence_exceptions($event, $tzid);
+			unset($event);
+			foreach ($pseudoExceptions as $recur_date)
+			{
+				if ($recur_date) $pseudoGUIDs[] = $guid . ':' . $recur_date;
+			}
+		}
+	}
+	return $pseudoGUIDs;
+}
 /**
  * Returns an array of GUIDs for events that have had $action happen
  * since $timestamp.
@@ -186,7 +216,17 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state	=& $_SESSION['SyncML.state'];
 
+	$deviceInfo = $state->getClientDeviceInfo();
+	if (isset($deviceInfo['tzid']) &&
+			$deviceInfo['tzid']) {
+		$tzid = $deviceInfo['tzid'];
+	} else {
+		$tzid = null;
+	}
+
 	$allChangedItems = $state->getHistory('calendar', $action, $timestamp);
+	$allChangedPseudoExceptions =& _egwcalendarsync_listPseudoExceptions($allChangedItems, $tzid);
+	$allChangedItems = array_merge($allChangedItems, $allChangedPseudoExceptions);
 	#Horde::logMessage('SymcML: egwcalendarsync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allReadAbleItems = (array)_egwcalendarsync_list($filter);
 	#Horde::logMessage('SymcML: egwcalendarsync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -241,7 +281,7 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_conflict_category'])) {
 		if (!$guid) {
-			$guid = _egwcalendarsync_search($content, $contentType, null);
+			$guid = _egwcalendarsync_search($content, $contentType, null, null);
 		}
 		if (preg_match('/calendar-(\d+)(:(\d+))?/', $guid, $matches))
 		{
@@ -261,9 +301,14 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 						$conflict['category'] = implode(",", $cat_ids);
 
 					}
-					if (!empty($conflict['uid'])) {
+					/*
+					// Changing the UID would destroy the relationship to exceptions
+					if ($conflict['recur_type'] == MCAL_RECUR_NONE &&
+						empty($conflict['recurrence']) &&
+						!empty($conflict['uid'])) {
 						$conflict['uid'] = 'DUP-' . $conflict['uid'];
 					}
+					*/
 					$boCalendar->save($conflict);
 				}
 			}
@@ -287,12 +332,6 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$calendarId = $boical->importVCal($content, $calendarId);
-			if (preg_match('/(\d+):(\d+)/', $calendarId, $matches)) {
-				// We have created a pseudo exception; date it back to this session
-				$guid = 'calendar-' . $matches[1];
-				$ts = $state->getSyncTSforAction($guid, 'modify');
-				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', $ts);
-			}
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -309,8 +348,15 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
-	if (is_a($calendarId, 'PEAR_Error')) {
-		return $calendarId;
+	if (preg_match('/(\d+):(\d+)/', $calendarId, $matches)) {
+		// We have created a pseudo exception; date it back to this session
+		$guid = 'calendar-' . $matches[1];
+		$ts = $state->getSyncTSforAction($guid, 'modify');
+		if (!$ts)
+		{
+			$ts = $state->getSyncTSforAction($guid, 'add');
+		}
+		$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', $ts);
 	}
 
 	if(!$calendarId) {
@@ -333,21 +379,26 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
  *                             text/x-vcalendar
  *                             text/x-s4j-sife
  * @param string $contentid    the contentid read from contentmap we are expecting the content to be
+ * @param string $type         The type of the content.
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcalendarsync_search($content, $contentType, $contentid)
+function _egwcalendarsync_search($content, $contentType, $contentid, $type=null)
 {
 	Horde::logMessage("SymcML: egwcalendarsync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
+	$eventId = false;
+	$relax = !$type;
 
 	if (is_array($contentType))
 	{
 		$contentType = $contentType['ContentType'];
 	}
 
+	// We want to break the slow-sync duplicates generation. If you have two identical entries
+	// on your device before a slow-sync, we match them one after the other.
 	switch ($contentType)
 	{
 		case 'text/x-vcalendar':
@@ -355,7 +406,12 @@ function _egwcalendarsync_search($content, $contentType, $contentid)
 		case 'text/calendar':
 			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-			$eventId = $boical->search($content,$state->get_egwID($contentid));
+			foreach ($boical->search($content, $state->get_egwID($contentid), $relax) as $eventId)
+			{
+				$eventId = 'calendar-' . $eventId;
+				if (!$type) break; // we use the first match
+				if (!$state->getLocID($type, $eventId)) break;
+			}
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -365,24 +421,24 @@ function _egwcalendarsync_search($content, $contentType, $contentid)
 		case 'text/x-s4j-sife':
 			$sifcalendar = new calendar_sif();
 			$sifcalendar->setSupportedFields($deviceInfo['model'],$deviceInfo['softwareVersion']);
-			$eventId = $sifcalendar->search($content,$state->get_egwID($contentid));
+			foreach ($sifcalendar->search($content, $state->get_egwID($contentid), $relax) as $eventId)
+			{
+				$eventId = 'calendar-' . $eventId;
+				if (!$type) break; // we use the first match
+				if (!$state->getLocID($type, $eventId)) break;
+			}
 			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
-	if (is_a($eventId, 'PEAR_Error')) {
-		return $eventId;
+	if ($eventId)
+	{
+		Horde::logMessage('SymcML: egwcalendarsync search found: ' .
+			$eventId, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	}
-
-	if(!$eventId) {
-		return false;
-	} else {
-		$eventId = 'calendar-' . $eventId;
-		Horde::logMessage('SymcML: egwcalendarsync search found: '. $eventId, __FILE__, __LINE__, PEAR_LOG_DEBUG);
-		return $eventId;
-	}
+	return $eventId;
 }
 
 /**
@@ -433,7 +489,7 @@ function _egwcalendarsync_export($guid, $contentType)
 			$boical	= new calendar_ical($clientProperties);
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$vcal_version = ($contentType == 'text/x-vcalendar') ? '1.0' : '2.0';
-			return $boical->exportVCal($eventID, $vcal_version, 'PUBLISH', $recur_date);
+			$retval = $boical->exportVCal($eventID, $vcal_version, 'PUBLISH', $recur_date);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -443,19 +499,14 @@ function _egwcalendarsync_export($guid, $contentType)
 		case 'text/x-s4j-sife':
 			$sifcalendar = new calendar_sif();
 			$sifcalendar->setSupportedFields($deviceInfo['model'],$deviceInfo['softwareVersion']);
-			if($sifevent = $sifcalendar->getSIF($eventID, $recur_date))
-			{
-				return $sifevent;
-			}
-			else
-			{
-				return PEAR::raiseError(_("Access Denied"));
-			}
+			$retval = $sifcalendar->getSIF($eventID, $recur_date);
 			break;
 
 		default:
-			return PEAR::raiseError(_("Unsupported Content-Type."));
+			$retval = PEAR::raiseError(_("Unsupported Content-Type."));
 	}
+	if ($retval === -1) $retval = PEAR::raiseError(_("Access denied!"));
+	return $retval;
 }
 
 /**
@@ -509,6 +560,11 @@ function _egwcalendarsync_delete($guid)
 
 	if ($recur_date && $event['recur_type'] != MCAL_RECUR_NONE)
 	{
+		// Delete the pseudo exception by propagation
+		$event['recur_exception'] = array_unique(array_merge($event['recur_exception'], array($recur_date)));
+		$boCalendar->update($event, true);
+		return true;
+
 		// Delete a "status only" exception of a recurring event
 		$participants = $boCalendar->so->get_participants($event['id'], 0);
 		foreach ($participants as &$participant)
@@ -561,10 +617,23 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 
 	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
+	if (isset($deviceInfo['tzid']) &&
+			$deviceInfo['tzid']) {
+		$tzid = $deviceInfo['tzid'];
+	} else {
+		$tzid = null;
+	}
 	$_id = $state->get_egwId($guid);
   	$parts = preg_split('/:/', $_id);
   	$eventID = $parts[0];
   	$recur_date = (isset($parts[1]) ? $parts[1] : 0);
+
+  	if ($eventID) {
+  		// Make sure that we can at least read this entry
+  		$boCalendar = new calendar_bo();
+  		if (!$boCalendar->check_perms(EGW_ACL_READ, $eventID))
+  			return PEAR::raiseError(_("Entry does not exist."));;
+  	}
 
 	switch ($contentType)
 	{
@@ -574,17 +643,7 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$calendarId = $boical->importVCal($content, $eventID, null, $merge, $recur_date);
-			if ($recur_date && $_id != $calendarId) {
-				Horde::logMessage("SymcML: egwcalendarsync replace propagated guid: $guid to calendar-$calendarId",
-					__FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-				// The pseudo exception was propagated to a real exception
-				$ts = $state->getServerAnchorLast($type) + 1;
-				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $eventID, 'modify', $ts);
-				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $_id, 'delete', $ts);
-				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', $ts);
-			}
-			return $calendarId;
+			break;
 
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sift':
@@ -593,9 +652,48 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 		case 'text/x-s4j-sife':
 			$sifcalendar = new calendar_sif();
 			$sifcalendar->setSupportedFields($deviceInfo['model'],$deviceInfo['softwareVersion']);
-			return $sifcalendar->addSIF($content, $eventID, $merge, $recur_date);
+			$calendarId = $sifcalendar->addSIF($content, $eventID, $merge, $recur_date);
+			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
+
+	$pseudoExceptions =& _egwcalendarsync_listPseudoExceptions(array($guid), $tzid);
+	$state->mergeChangedItems($type, $pseudoExceptions);
+
+	foreach ($pseudoExceptions as $pseudoGUID)
+	{
+		//Horde::logMessage("SymcML: egwcalendarsync touch $guid related GUID $pseudoGUID",
+		//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
+		$pseudoID = $state->get_egwId($pseudoGUID);
+		// all pseudo exceptions are affected, to
+		//$ts = $state->getSyncTSforAction($guid, 'modify');
+		if (!$state->getSyncTSforAction($guid, 'modify'))
+		{
+			// Touch all new pseudo entries
+			$ts = $state->getServerAnchorLast($type) + 1;
+			$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $pseudoID, 'modify', $ts);
+		}
+		//$ts = $state->getSyncTSforAction($guid, 'modify');
+		//$state->setUID($type, $state->getLocID($type, $pseudoGUID), $pseudoGUID, $ts);
+	}
+	if ($recur_date && $_id != $calendarId) {
+		Horde::logMessage("SymcML: egwcalendarsync replace propagated guid: $guid to calendar-$calendarId",
+			__FILE__, __LINE__, PEAR_LOG_DEBUG);
+		// The pseudo exception was propagated to a real exception;
+		// we mirror the changes back to the client within the same session this way
+		$locid = $state->getLocID($type, $guid);
+		$state->addConflictItem($type, $locid);
+		$ts = $state->getServerAnchorLast($type) + 1;
+		$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $eventID, 'modify', $ts);
+		$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $_id, 'delete', $ts);
+		$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', $ts);
+	}
+	if (strstr($calendarId, ':')) {
+		// We have modified a pseudo exception; touch timestamp
+		$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', time());
+	}
+	return $calendarId;
+
 }
