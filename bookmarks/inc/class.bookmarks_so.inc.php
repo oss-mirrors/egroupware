@@ -85,7 +85,7 @@
 			{
 				$values['access'] = 'public';
 			}
-			return parent::save($values);
+			return parent::save($values) === 0;
 		}
 
 		function delete($id) {

@@ -185,14 +185,16 @@
 				$this->bo->grab_form_values($this->location_info['returnto'],'edit',$content);
 				$GLOBALS['egw']->redirect($GLOBALS['egw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&cats_level=True&global_cats=True'));
 			}
-			//save bookmark and go to view interface
-			if ($content['save'])
+			//save bookmark and go to list interface
+			if ($content['save'] || $content['apply'])
 			{
 				if ($this->bo->save($bm_id,$content))
 				{
-					$this->location_info['bm_id'] = $bm_id;
-					$this->view();
-					return;
+					if($content['save']) {
+						unset($this->location_info['returnto2']);
+						$this->init();
+						return;
+					}
 				}
 			}
 
@@ -245,6 +247,7 @@
 
 			$readonlys['edit'] = True; // Already here
 			$readonlys['save'] = !$bookmark[EGW_ACL_EDIT];
+			$readonlys['apply'] = !$bookmark[EGW_ACL_EDIT];
 			$readonlys['delete'] = !$bookmark[EGW_ACL_DELETE];
 
 			$persist['bm_id'] = $bm_id;
@@ -542,6 +545,7 @@
 			$readonlys['link_to'] = true;
 			$readonlys['edit'] = !$bookmark[EGW_ACL_EDIT];
 			$readonlys['save'] = true;
+			$readonlys['apply'] = true;
 			$readonlys['delete'] = !$bookmark[EGW_ACL_DELETE];
 			$bookmark['msg'] = $this->app_messages($this->t);
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Bookmark - %1', $bookmark['stripped_name']);
