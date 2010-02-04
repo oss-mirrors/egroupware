@@ -70,7 +70,7 @@
 		}
 
 		/**
-		* Preserve data from a half finished form so it doesn't get 
+		* Preserve data from a half finished form so it doesn't get
 		* lost if the user has to leave and come back.
 		*/
 		function grab_form_values($returnto,$returnto2,$bookmark)
@@ -101,7 +101,7 @@
 			}
 
 			$count = $this->so->get_rows($query, $rows, $readonlys);
-			
+
 			// Add in permissions
 			foreach($rows as $key => $row) {
 				foreach(array(EGW_ACL_EDIT => 'edit', EGW_ACL_DELETE => 'delete') as $required => $field) {
@@ -574,7 +574,7 @@
 			if(($site = @file_get_contents($site_url, null, $context, -1)) === false) {
 				return $favicon;
 			}
-			
+
 			// Check for w3c recommended: <link rel="icon" type="image/png" href="http://example.com/image.png">
 			$pattern = '|<link rel.?=.?[\'"]icon[\'"].+href=[\'"](.*)[\'"].*>|i';
 			preg_match($pattern, $site, $matches);
@@ -603,7 +603,7 @@
 					return $matches[1];
 				}
 			}
-			
+
 			// Check for .ico in site root
 			$parsed_url = parse_url($site_url);
 			$ico_url = $parsed_url['scheme'].'://'.$parsed_url['host'].'/favicon.ico';
@@ -612,7 +612,7 @@
 				return $ico_url;
 			}
 
-			
+
 			$favicon = $GLOBALS['egw']->common->image('bookmarks', 'no_favicon');
 			return $favicon;
 
@@ -625,4 +625,3 @@
 			echo $s;
 		}
 	}
-?>
