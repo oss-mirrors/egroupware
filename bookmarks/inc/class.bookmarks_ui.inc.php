@@ -396,6 +396,9 @@
 				$parent = $cat['parent'];
 				while ( $parent != 0) {
 					$categories[$key]['tree'] = $parent. '/'. $categories[$key]['tree'];
+					if($this->bo->categories->read($parent) && $this->bo->categories->check_perms(EGW_ACL_READ, $parent)) {
+						$categories[$key]['tree'] = $parent. '/'. $categories[$key]['tree'];
+					}
 					// Select a nonexisting key, in case the referenced cat doesn't exist.
 					$parcatkey = count($categories) + 1;
 					foreach ( $categories as $ikey => $icat ) {
