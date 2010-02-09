@@ -45,7 +45,8 @@ class syncml_hooks
 		$devices_Entries = array();
 		if (!$hook_data['setup'])
 		{
-			$tzs = array(0 => 'Use Event TZ');
+			$tzs = array(1	=> 'Use Event TZ',
+						 2	=> 'Use my current TZ for import, UTC for export');
 			$tzs += egw_time::getTimezones();
 
 			require_once(EGW_INCLUDE_ROOT.'/syncml/inc/class.devices.inc.php');
@@ -56,7 +57,8 @@ class syncml_hooks
 			$addressbook_bo = new addressbook_bo();
 			$perms = EGW_ACL_READ | EGW_ACL_ADD | EGW_ACL_EDIT | EGW_ACL_DELETE;
 			$show_addr_lists = $addressbook_bo->get_lists($perms,array('' => lang('none')));
-			$show_addr_addr = $addressbook_bo->get_addressbooks($perms,lang('All'));
+			$show_addr_addr = array(-1 => lang('Primary Group'));
+			$show_addr_addr += $addressbook_bo->get_addressbooks($perms,lang('All'));
 			unset($show_addr_addr[0]); // No Acounts
 
 			// list the InfoLog filters
@@ -65,7 +67,7 @@ class syncml_hooks
 
 			// list the calendars this user has access to
 			$calendar_bo = new calendar_bo();
-			$show_calendars = array();
+			$show_calendars = array(0 => lang('Primary Group'));
 			foreach($calendar_bo->list_cals() as $grant)
 			{
 				$show_calendars[$grant['grantor']] = $grant['name'];
@@ -164,6 +166,16 @@ class syncml_hooks
 				'title' => lang('Preferences for the SyncML'),
 				'xmlrpc' => False,
 				'admin'  => False
+			),
+			'slowsync'	=> array(
+				'type'		=> 'check',
+				'label'		=> lang('SlowSync ignore map'),
+				'name'		=> 'slowsync_ignore_map',
+				'help'		=> lang('If enabled, EGroupware will ignore the mapping information of fromer sync-sessions during SlowSyncs.'),
+				'values'    => $selectYesNo,
+				'default'	=> 0,
+				'xmlrpc'	=> True,
+				'admin'		=> False,
 			),
 			'prefintro' => array(
 				'type'  => 'subsection',
@@ -485,7 +497,8 @@ class syncml_hooks
 				'type'   => 'select',
 				'label'  => 'Synchronize this list',
 				'name'   => 'filter_list',
-				'help'   => lang('This addressbook list of contacts will be synchronized.'),
+				'help'   => lang('This address list of contacts will be synchronized. ' .
+								'If used together with the addressbook option, this list will appended.'),
 				'values' => $show_addr_lists,
 				'xmlrpc' => True,
 				'admin'  => False,
@@ -494,7 +507,7 @@ class syncml_hooks
 				'type'   => 'select',
 				'label'  => 'Synchronize this addressbook',
 				'name'   => 'filter_addressbook',
-				'help'   => lang('Only this addressbook will be synchronized.'),
+				'help'   => lang('Only entries from this addressbook (and the above list) will be synchronized.'),
 				'values' => $show_addr_addr,
 				'xmlrpc' => True,
 				'admin'  => False,

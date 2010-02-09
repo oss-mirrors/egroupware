@@ -30,7 +30,7 @@ $_services['import'] = array(
 );
 
 $_services['search'] = array(
-    'args' => array('content', 'contentType','id'),
+    'args' => array('content', 'contentType', 'id' , 'type'),
     'type' => 'integer'
 );
 
@@ -165,7 +165,7 @@ function _egwtaskssync_import($content, $contentType, $guid = null)
 
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'])) {
 		if (!$guid) {
-			$guid = _egwtaskssync_search($content, $contentType, null, true);
+			$guid = _egwtaskssync_search($content, $contentType, null, null);
 		}
 		if (preg_match('/infolog_task-(\d+)/', $guid, $matches)) {
 			Horde::logMessage("SymcML: egwtaskssync import conflict found for " . $matches[1], __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -238,18 +238,20 @@ function _egwtaskssync_search($content, $contentType, $contentid, $type=null)
 		$contentType = $contentType['ContentType'];
 	}
 
-	Horde::logMessage("SymcML: egwtaskssync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwtaskssync search content: $content contenttype: $contentType contentid: $contentid",
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 	$relax = !$type;
+	$taskId = false;
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':
 		case 'text/calendar':
 			$infolog_ical = new infolog_ical();
 			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
-			$taskID	= $infolog_ical->searchVTODO($content, $state->get_egwID($contentid), $relax);
+			$foundEntries = $infolog_ical->searchVTODO($content, $state->get_egwID($contentid), $relax);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -259,20 +261,28 @@ function _egwtaskssync_search($content, $contentType, $contentid, $type=null)
 		case 'text/x-s4j-sift':
 			$infolog_sif	= new infolog_sif();
 			$infolog_sif->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
-			$taskID = $infolog_sif->searchSIF($content,'task', $state->get_egwID($contentid), $relax);
+			$foundEntries = $infolog_sif->searchSIF($content,'task', $state->get_egwID($contentid), $relax);
 			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
-	if (is_a($taskID, 'PEAR_Error')) {
-		return 'infolog_task-' . $taskID;
+	foreach ($foundEntries as $taskId)
+	{
+		$taskId = 'infolog_task-' . $taskId;
+		if ($contentid == $taskId) break;
+		if (!$type) break; // we use the first match
+		if (!$state->getLocID($type, $taskId)) break;
+		$taskId = false;
 	}
 
-	if (!$taskID) return false;
-
-	return 'infolog_task-' . $taskID;
+	if ($taskId)
+	{
+		Horde::logMessage('SymcML: egwtaskssync search found: ' .
+			$taskId, __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	}
+	return $taskId;
 }
 
 /**

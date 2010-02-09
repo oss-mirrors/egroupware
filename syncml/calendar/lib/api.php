@@ -82,13 +82,20 @@ function _egwcalendarsync_list($filter='')
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_owner']))
 	{
 		$owner = $GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_owner'];
-		foreach($boCalendar->list_cals() as $grant)
+		if ($owner == 0)
 		{
+			$calendarOwner = $GLOBALS['egw_info']['user']['account_primary_group'];
+		}
+		else
+		{
+			foreach($boCalendar->list_cals() as $grant)
+			{
 				if ($grant['grantor'] == $owner)
 				{
 					$calendarOwner = $owner;
 					break;
 				}
+			}
 		}
 	}
 
@@ -123,13 +130,20 @@ function _egwcalendarsync_list($filter='')
 		', endDate: ' . date('r', $endDate), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state =& $_SESSION['SyncML.state'];
+	$tzid = null;
 	$deviceInfo = $state->getClientDeviceInfo();
 	if (isset($deviceInfo['tzid']) &&
-			$deviceInfo['tzid'])
-	{
-		$tz_id = $deviceInfo['tzid'];
+			$deviceInfo['tzid']) {
+		switch ($deviceInfo['tzid'])
+		{
+			case 1:
+			case 2:
+				$tzid = null;
+				break;
+			default:
+				$tzid = $deviceInfo['tzid'];
+		}
 	}
-	else $tz_id = null;
 
 	$searchFilter = array
 	(
@@ -156,7 +170,7 @@ function _egwcalendarsync_list($filter='')
 		{
 			// Check if the stati for all participants are identical for all recurrences
 			$event = $boCalendar->read($id, 0, true, 'server');
-			$days = $boCalendar->so->get_recurrence_exceptions($event, $tz_id, $startDate, $endDate, $syncCriteria);
+			$days = $boCalendar->so->get_recurrence_exceptions($event, $tzid, $startDate, $endDate, $syncCriteria);
 			unset($event);
 			foreach ($days as $recur_date)
 			{
@@ -215,13 +229,19 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 	// Horde::logMessage("SymcML: egwcalendarsync listBy action: $action timestamp: $timestamp filter: $filter",
 	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state	=& $_SESSION['SyncML.state'];
-
+	$tzid = null;
 	$deviceInfo = $state->getClientDeviceInfo();
 	if (isset($deviceInfo['tzid']) &&
 			$deviceInfo['tzid']) {
-		$tzid = $deviceInfo['tzid'];
-	} else {
-		$tzid = null;
+		switch ($deviceInfo['tzid'])
+		{
+			case 1:
+			case 2:
+				$tzid = null;
+				break;
+			default:
+				$tzid = $deviceInfo['tzid'];
+		}
 	}
 
 	$allChangedItems = $state->getHistory('calendar', $action, $timestamp);
@@ -406,12 +426,7 @@ function _egwcalendarsync_search($content, $contentType, $contentid, $type=null)
 		case 'text/calendar':
 			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-			foreach ($boical->search($content, $state->get_egwID($contentid), $relax) as $eventId)
-			{
-				$eventId = 'calendar-' . $eventId;
-				if (!$type) break; // we use the first match
-				if (!$state->getLocID($type, $eventId)) break;
-			}
+			$foundEntries = $boical->search($content, $state->get_egwID($contentid), $relax);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -421,16 +436,20 @@ function _egwcalendarsync_search($content, $contentType, $contentid, $type=null)
 		case 'text/x-s4j-sife':
 			$sifcalendar = new calendar_sif();
 			$sifcalendar->setSupportedFields($deviceInfo['model'],$deviceInfo['softwareVersion']);
-			foreach ($sifcalendar->search($content, $state->get_egwID($contentid), $relax) as $eventId)
-			{
-				$eventId = 'calendar-' . $eventId;
-				if (!$type) break; // we use the first match
-				if (!$state->getLocID($type, $eventId)) break;
-			}
+			$foundEntries = $sifcalendar->search($content, $state->get_egwID($contentid), $relax);
 			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
+	}
+
+	foreach ($foundEntries as $eventId)
+	{
+		$eventId = 'calendar-' . $eventId;
+		if ($contentid == $eventId) break;
+		if (!$type) break; // we use the first match
+		if (!$state->getLocID($type, $eventId)) break;
+		$eventId = false;
 	}
 
 	if ($eventId)
@@ -616,12 +635,19 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 	}
 
 	$state =& $_SESSION['SyncML.state'];
+	$tzid = null;
 	$deviceInfo = $state->getClientDeviceInfo();
 	if (isset($deviceInfo['tzid']) &&
 			$deviceInfo['tzid']) {
-		$tzid = $deviceInfo['tzid'];
-	} else {
-		$tzid = null;
+		switch ($deviceInfo['tzid'])
+		{
+			case 1:
+			case 2:
+				$tzid = null;
+				break;
+			default:
+				$tzid = $deviceInfo['tzid'];
+		}
 	}
 	$_id = $state->get_egwId($guid);
   	$parts = preg_split('/:/', $_id);

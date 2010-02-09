@@ -66,6 +66,7 @@ function _egwcontactssync_list($filter='')
 
 	// hardcode your search criteria here
 	$criteria = array();
+	$allOnList = array();
 
 	$filter = array();
 	if ($GLOBALS['egw_info']['user']['preferences']['addressbook']['hide_accounts'])
@@ -78,17 +79,24 @@ function _egwcontactssync_list($filter='')
 		if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml']))
 		{
 			$filter['list'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list'];
-			// Horde::logMessage('SymcML: egwcontactssync list() list='. $filter['list'] , __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			$allOnList = $soAddressbook->search($criteria,true,'','','',false,'AND',false,$filter);
+			// Horde::logMessage('SymcML: egwcontactssync list() list='. $filter['list'] . ', ' . count($allOnList), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		}
 
 		if (array_key_exists('filter_addressbook', $GLOBALS['egw_info']['user']['preferences']['syncml']))
 		{
 			$filter['owner'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_addressbook'];
-			// Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'] , __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			if ($filter['owner'] == -1)
+			{
+				$filter['owner'] = $GLOBALS['egw_info']['user']['account_primary_group'];
+			}
+			unset($filter['list']);
+			// Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		}
 	}
 
 	$allContacts = $soAddressbook->search($criteria,true,'','','',false,'AND',false,$filter);
+	$allContacts = array_merge($allContacts, $allOnList);
 
 	$guids = array();
 	foreach ((array)$allContacts as $contact)
@@ -99,6 +107,8 @@ function _egwcontactssync_list($filter='')
 		$guids[] = "contacts-".$contact['id'];
 
 	}
+
+	$guids = array_unique($guids);
 
 	Horde::logMessage('SymcML: egwcontactssync list found: '. count($guids),
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -202,11 +212,7 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 		case 'text/vcard':
 			$vcaladdressbook = new addressbook_vcal();
 			setSupportedFields($vcaladdressbook);
-
 			$contactId = $vcaladdressbook->addVCard($content, $contactId);
-			if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml'])) {
-				$vcaladdressbook->add2list($contactId, $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list']);
-			}
 			break;
 
 		case 'text/x-s4j-sife':
@@ -216,17 +222,15 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 		case 'text/x-s4j-sifc':
 			$sifaddressbook	= new addressbook_sif();
 			$contactId = $sifaddressbook->addSIF($content, $contactId);
-			if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml'])) {
-				$sifaddressbook->add2list($contactId, $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list']);
-			}
 			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
-	if (is_a($contactId, 'PEAR_Error')) {
-		return $contactId;
+	if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+	{
+		$vcaladdressbook->add2list($contactId, $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list']);
 	}
 
 	if(!$contactId) {
@@ -270,8 +274,7 @@ function _egwcontactssync_search($content, $contentType, $contentid, $type=null)
 		case 'text/vcard':
 			$vcaladdressbook = new addressbook_vcal();
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-
-			$contactId = $vcaladdressbook->search($content, $state->get_egwID($contentid), $relax);
+			$foundEntries = $vcaladdressbook->search($content, $state->get_egwID($contentid), $relax);
 			break;
 
 		case 'text/x-s4j-sife':
@@ -280,25 +283,28 @@ function _egwcontactssync_search($content, $contentType, $contentid, $type=null)
 			#Horde::logMessage("SymcML: egwcontactssync search content: Treating bad contact content-type '$contentType' as if it was 'text/x-s4j-sifc'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifc':
 			$sifaddressbook	= new addressbook_sif();
-			$contactId = $sifaddressbook->search($content, $state->get_egwID($contentid), $relax);
+			$foundEntries = $sifaddressbook->search($content, $state->get_egwID($contentid), $relax);
 			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
-	if (is_a($contactId, 'PEAR_Error')) {
-		return 'contacts-' .$contactId;
+	foreach ($foundEntries as $contactId)
+	{
+		$contactId = 'contacts-' . $contactId;
+		if ($contentid == $contactId) break;
+		if (!$type) break; // we use the first match
+		if (!$state->getLocID($type, $contactId)) break;
+		$contactId = false;
 	}
 
-	#error_log("SymcML: egwcontactssync search found: $contactId");
-	if(!$contactId) {
-		return false;
-	} else {
-		Horde::logMessage("SymcML: egwcontactssync search found: contacts-".$contactId,
-			__FILE__, __LINE__, PEAR_LOG_DEBUG);
-		return 'contacts-' . $contactId;
+	if ($contactId)
+	{
+		Horde::logMessage('SymcML: egwcontactssync search found: ' .
+			$contactId, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	}
+	return $contactId;
 }
 
 /**

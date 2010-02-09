@@ -30,7 +30,7 @@ $_services['import'] = array(
 );
 
 $_services['search'] = array(
-    'args' => array('content', 'contentType','id'),
+    'args' => array('content', 'contentType', 'id' , 'type'),
     'type' => 'integer'
 );
 
@@ -238,21 +238,17 @@ function _egwnotessync_import($content, $contentType, $guid = null)
  */
 function _egwnotessync_search($content, $contentType, $contentid, $type=null)
 {
+	if (is_array($contentType)) {
+		$contentType = $contentType['ContentType'];
+	}
+
+	Horde::logMessage("SymcML: egwnotessync search content: $content contenttype: $contentType contentid: $contentid",
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state =& $_SESSION['SyncML.state'];
-
-	if (is_array($contentType))
-	{
-		$options = $contentType;
-		$contentType = $options['ContentType'];
-		unset($options['ContentType']);
-	}
-	else
-	{
-		$options = array();
-	}
-
 	$deviceInfo = $state->getClientDeviceInfo();
+	$relax = !$type;
+	$noteId = false;
 
 	switch ($contentType)
 	{
@@ -260,36 +256,39 @@ function _egwnotessync_search($content, $contentType, $contentid, $type=null)
 		case 'text/plain':
 			$infolog_ical = new infolog_ical();
 			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
-			$noteId	= $infolog_ical->searchVNOTE($content, $contentType, $state->get_egwID($contentid));
+			$foundEntries	= $infolog_ical->searchVNOTE($content, $contentType, $state->get_egwID($contentid), $relax);
 			break;
 
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sife':
 		case 'text/x-s4j-sift':
-			Horde::logMessage("SyncML: egwnotessync search treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			Horde::logMessage("SyncML: egwnotessync search treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'",
+				__FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
 			$infolog_sif	= new infolog_sif();
 			$infolog_sif->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
-			$noteId = $infolog_sif->searchSIF($content,'note', $state->get_egwID($contentid));
+			$foundEntries = $infolog_sif->searchSIF($content,'note', $state->get_egwID($contentid), $relax);
 			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
-	if (is_a($noteId, 'PEAR_Error'))
+	foreach ($foundEntries as $noteId)
 	{
-		return 'infolog_note-' . $noteId;
+		$noteId = 'infolog_note-' . $noteId;
+		if ($contentid == $noteId) break;
+		if (!$type) break; // we use the first match
+		if (!$state->getLocID($type, $noteId)) break;
+		$noteId = false;
 	}
 
-	#Horde::logMessage("SymcML: egwsifnotessync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog_note',$noteId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	if(!$noteId)
+	if ($noteId)
 	{
-		return false;
+		Horde::logMessage('SymcML: egwnotessync search found: ' .
+			$noteId, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	}
-
-	return 'infolog_note-' . $noteId;
+	return $noteId;
 }
 
 /**
