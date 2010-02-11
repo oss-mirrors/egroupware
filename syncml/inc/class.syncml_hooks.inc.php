@@ -85,7 +85,7 @@ class syncml_hooks
 			$categories = new categories($user, 'addressbook');
 			$addressbook_categories = $categories->return_array('app', 0, false, '', 'ASC', 'cat_name', true);
 			$show_addr = array();
-			foreach ($addressbook_categories as $cat)
+			foreach ((array)$addressbook_categories as $cat)
 			{
 				$show_addr_cats[$cat['id']] = $cat['name'];
 			}
