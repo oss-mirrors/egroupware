@@ -757,6 +757,7 @@ class HTTP_WebDAV_Server
                                 . gmdate("D, d M Y H:i:s ", $prop['val'])
                                 . "GMT</D:getlastmodified>\n";
                             break;
+/*
                         case "resourcetype":
                         	if (!is_array($prop['val'])) {
                             	echo "     <D:resourcetype><D:$prop[val]/></D:resourcetype>\n";
@@ -787,6 +788,7 @@ class HTTP_WebDAV_Server
 								//error_log("resourcetype: <D:resourcetype$extra_ns>$vals</D:resourcetype>");
                         	}
                             break;
+*/
                         case "supportedlock":
                             echo "     <D:supportedlock>$prop[val]</D:supportedlock>\n";
                             break;
@@ -796,11 +798,18 @@ class HTTP_WebDAV_Server
                             echo "     </D:lockdiscovery>\n";
                             break;
                         default:
+//                            echo "     <D:$prop[name]>".
+//                            	(is_array($prop['val']) ?
+//	                                $this->_hierarchical_prop_encode($prop['val']) : 
+//	                                $this->_prop_encode(htmlspecialchars($prop['val']))).
+//	                            "</D:$prop[name]>\n";
                             echo "     <D:$prop[name]>".
-                            	(is_array($prop['val']) ?
-	                                $this->_hierarchical_prop_encode($prop['val']) : 
-	                                $this->_prop_encode(htmlspecialchars($prop['val']))).
-	                            "</D:$prop[name]>\n";
+                                (is_array($prop['val']) ?
+                                    $this->_hierarchical_prop_encode($prop['val']) :
+                                    ($prop['name']=='resourcetype'&&$prop['val']=='collection'?'<D:':'').
+                                        $this->_prop_encode(htmlspecialchars($prop['val']))
+                                    .($prop['name']=='resourcetype'&&$prop['val']=='collection'?'/>':'')
+                                )."</D:$prop[name]>\n";
                             break;
                         }
                     } else {
