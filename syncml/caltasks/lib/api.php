@@ -243,6 +243,8 @@ function _egwcaltaskssync_search($content, $contentType, $contentid, $type=null)
 
 	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
+	$taskId = false;
+	$relax = !$type;
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':
@@ -251,34 +253,36 @@ function _egwcaltaskssync_search($content, $contentType, $contentid, $type=null)
 			if (strrpos($content, 'BEGIN:VTODO')) {
 				$infolog_ical = new infolog_ical();
 				$infolog_ical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-				$id =  $infolog_ical->searchVTODO($content,$state->get_egwID($contentid));
-				$type =  'infolog_task';
+				$foundEntries =  $infolog_ical->searchVTODO($content, $state->get_egwID($contentid), $relax);
+				$prefix =  'infolog_task';
 			} else {
 				$boical	= new calendar_ical();
 				$boical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
-				$id	=  $boical->search($content,$state->get_egwID($contentid));
-				$type =  'calendar';
+				$foundEntries	=  $boical->search($content, $state->get_egwID($contentid), $relax);
+				$prefix =  'calendar';
 			}
-			Horde::logMessage('SymcML: egwcaltaskssync search searched for type: '. $type, __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			Horde::logMessage('SymcML: egwcaltaskssync search searched for type: '. $prefix, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
-	if (is_a($id, 'PEAR_Error')) return $id;
-
-	if (!$id) {
-		Horde::logMessage('SymcML: egwcaltaskssync search nothing found',
-			__FILE__, __LINE__, PEAR_LOG_DEBUG);
-		return false;
-	} else {
-		$id = $type . '-' . $id;
-
-		Horde::logMessage('SymcML: egwcaltaskssync search found: '. $id,
-			__FILE__, __LINE__, PEAR_LOG_DEBUG);
-		return $id;
+	foreach ($foundEntries as $taskId)
+	{
+		$taskId = $prefix . '-' . $taskId;
+		if ($contentid == $taskId) break;
+		if (!$type) break; // we use the first match
+		if (!$state->getLocID($type, $taskId)) break;
+		$taskId = false;
 	}
+
+	if ($taskId)
+	{
+		Horde::logMessage('SymcML: egwcaltaskssync search found: ' .
+			$taskId, __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	}
+	return $taskId;
 }
 
 /**
