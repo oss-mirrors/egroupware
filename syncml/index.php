@@ -28,7 +28,7 @@ This EGroupware version does support SyncML 1.0, 1.1 and 1.2.<br/>
 You can synchronize your
 <ul>
 <li>Addressbook</li>
-<li>Calendar<li>
+<li>Calendar</li>
 <li>Task (InfoLog)</li>
 <li>Notes (InfoLog)</li></ul>
 The SyncML module provides some customization parameters for conflict handling which you can find in your ".html::a_href('SyncML preferences',array('menuaction'=>'preferences.uisettings.index','appname'=>'syncml')).".
