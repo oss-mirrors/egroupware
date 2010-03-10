@@ -94,6 +94,8 @@ class usage_bo extends so_sql
 				'usage_app_name' => $app,
 			),__LINE__,__FILE__,self::APP_NAME);
 		}
+		// update statistics data in cache
+		$stats = egw_cache::setInstance('usage','stats',$this->calc_statistic());
 
 		return $this->acknowledge();
 	}
@@ -142,28 +144,13 @@ class usage_bo extends so_sql
 			throw new egw_exception_wrong_userinput(lang("This submit ID already submitted it's monthly report! --> report ignored"));
 		}
 	}
-	
-	/**
-	 * Time how often statistic get's calculated
-	 */
-	const CACHING_TIME = 600;
 
 	/**
-	 * Return statistic: either calculate it or use cached version
+	 * Render statistic using cached version of data
 	 *
 	 * @return string
 	 */
 	public function statistic()
-	{
-		return egw_cache::getInstance('usage','statistic-'.$GLOBALS['egw_info']['user']['preferences']['common']['lang'],array($this,'calc_statistic'),array(),self::CACHING_TIME);
-	}
-	
-	/**
-	 * Calculate statistic
-	 *
-	 * @return string
-	 */
-	public function calc_statistic()
 	{
 		translation::add_app('admin');	// contains translations of our labels
 
@@ -181,11 +168,11 @@ class usage_bo extends so_sql
 			'svn'     => lang('Subversion checkout'),
 			'other'   => lang('Other'),
 		);
-		$all_time_total = $this->db->select(self::MAIN_TABLE,'COUNT(*)','',__LINE__,__FILE__,false,'',self::APP_NAME)->fetchColumn();
+		// get statistics data from cache (if set)
+		$stats = egw_cache::getInstance('usage','stats',array($this,'calc_statistic'));
 
-		$stat_limit = time() - 30*24*60*60;	// 30 days back
-		$stat_limit_sql = 'usage_submitted >= '.$this->db->quote($stat_limit,'timestamp');
-		$total_30d = $this->db->select(self::MAIN_TABLE ,'COUNT(*)',$stat_limit_sql,__LINE__,__FILE__,false,'',self::APP_NAME)->fetchColumn();
+		$all_time_total = $stats['all_time_total']; unset($stats['all_time_total']);
+		$total_30d = $stats['total_30d']; unset($stats['total_30d']);
 
 		$content .= "<h1>Evaluation of $total_30d submissions of last 30 days:</h1>\n";
 
@@ -208,7 +195,7 @@ class usage_bo extends so_sql
 		$content .= "\t\t<th>".lang('Category')."</th>\n";
 		$content .= "\t\t<th>".lang('Answers')."</th>\n";
 		$content .= "\t</tr>\n</thead>\n";*/
-		$contetn .= "<tbody\n";
+		$content .= "<tbody\n";
 		foreach(array(
 			'usage_country' => 'Country',
 			'usage_type' => 'Usage',
@@ -218,9 +205,71 @@ class usage_bo extends so_sql
 			'usage_os' => 'Operating System',
 			'usage_php' => 'PHP Version',
 			'usage_install_type' => 'Installation Type',
-		) as $col => $label)
+		) as $name => $label)
 		{
-			$group_by = $col;
+			$colspan = !isset($stats[$name.'2']) ? 'colspan="2"' : ' width="200"';
+			$content .= "\t<tr valign='top'>\n\t\t<td><b>".lang($label)."</b></td>\n\t\t<td $colspan>\n\t\t\t<ol class='usageList'>\n";
+			foreach($stats[$name] as $row)
+			{
+				switch($name)
+				{
+					case 'usage_country':
+						if (!isset($country)) $country = new country();
+						$row['value'] = empty($row['value']) ? lang('International use') : $country->get_full_name($row['value']);
+						break;
+					case 'usage_type':
+					case 'usage_install_type':
+						$row['value'] = $sel_options[$name][$row['value']];
+						break;
+				}
+				$content .= "\t\t\t\t<li>"./*$row['count'].' = '.*/number_format(100.0*$row['count']/$total_30d,1).'% &nbsp; '.$row['value']."</li>\n";
+			}
+			$content .= "\t\t\t</ol>\n\t\t</td>\n";
+
+			if (isset($stats[$name.'2']))
+			{
+				$content .= "\t\t<td>\n\t\t\t<ol class='usageList'>\n";
+				foreach($stats[$name.'2'] as $row)
+				{
+					$content .= "\t\t\t\t<li>"./*$row['count'].' = '.*/number_format(100.0*$row['count']/$total_30d,1).'%&nbsp; '.$row['value']."</li>\n";
+				}
+				$content .= "\t\t\t</ol>\n\t\t</td>\n";
+			}
+			$content .= "\t</tr>\n";
+		}
+		$content .= "</tbody>\n</table>\n";
+
+		$content .= "<h2>$all_time_total submissions to the statistic since it's start.</h2>\n";
+
+		return $content;
+	}
+
+	/**
+	 * Calculate statistic
+	 *
+	 * @return array
+	 */
+	public function calc_statistic()
+	{
+		$stats = array();
+		$stats['all_time_total'] = $this->db->select(self::MAIN_TABLE,'COUNT(*)','',__LINE__,__FILE__,false,'',self::APP_NAME)->fetchColumn();
+
+		$stat_limit = time() - 30*24*60*60;	// 30 days back
+		$stat_limit_sql = 'usage_submitted >= '.$this->db->quote($stat_limit,'timestamp');
+		$stats['total_30d'] = $this->db->select(self::MAIN_TABLE ,'COUNT(*)',$stat_limit_sql,__LINE__,__FILE__,false,'',self::APP_NAME)->fetchColumn();
+
+		foreach(array(
+			'usage_country',
+			'usage_type',
+			'usage_users',
+			'usage_sessions',
+			'usage_version',
+			'usage_os',
+			'usage_php',
+			'usage_install_type',
+		) as $name)
+		{
+			$group_by = $col = $name;
 			$group_by2 = $col2 = '';
 			if ($col == 'usage_users' || $col == 'usage_sessions')
 			{
@@ -243,40 +292,19 @@ class usage_bo extends so_sql
 			{
 				$group_by = $col = "CASE WHEN RIGHT($col,3)='EPL' THEN CONCAT('EPL ',SUBSTR($col,LOCATE(' ',$col),4)) ELSE $col END";
 			}
-			$colspan = empty($col2) ? 'colspan="2"' : ' width="200"';
-			$content .= "\t<tr valign='top'>\n\t\t<td><b>".lang($label)."</b></td>\n\t\t<td $colspan>\n\t\t\t<ol class='usageList'>\n";
 			foreach($this->db->select(self::MAIN_TABLE,$col.' AS value,COUNT(*) AS count',$stat_limit_sql,__LINE__,__FILE__,false,'GROUP BY '.$group_by.' ORDER BY COUNT(*) DESC',self::APP_NAME) as $row)
 			{
-				switch($col)
-				{
-					case 'usage_country':
-						if (!isset($country)) $country = new country();
-						$row['value'] = empty($row['value']) ? lang('International use') : $country->get_full_name($row['value']);
-						break;
-					case 'usage_type':
-					case 'usage_install_type':
-						$row['value'] = $sel_options[$col][$row['value']];
-						break;
-				}
-				$content .= "\t\t\t\t<li>".$row['count'].' = '.number_format(100.0*$row['count']/$total_30d,1).'% &nbsp; '.$row['value']."</li>\n";
+				$stats[$name][] = $row;
 			}
-			$content .= "\t\t\t</ol>\n\t\t</td>\n";
-			
+
 			if (!empty($col2))
 			{
-				$content .= "\t\t<td>\n\t\t\t<ol class='usageList'>\n";
 				foreach($this->db->select(self::MAIN_TABLE,$col2.' AS value,COUNT(*) AS count',$stat_limit_sql,__LINE__,__FILE__,false,'GROUP BY '.$group_by2.' ORDER BY COUNT(*) DESC',self::APP_NAME) as $row)
 				{
-					$content .= "\t\t\t\t<li>".$row['count'].' = '.number_format(100.0*$row['count']/$total_30d,1).'%&nbsp; '.$row['value']."</li>\n";
+					$stats[$name.'2'][] = $row;
 				}
-				$content .= "\t\t\t</ol>\n\t\t</td>\n";
 			}
-			$content .= "\t</tr>\n";
 		}
-		$content .= "</tbody>\n</table>\n";
-		
-		$content .= "<h2>$all_time_total submissions to the statistic since it's start.</h2>\n";
-
-		return $content;
+		return $stats;
 	}
 }
