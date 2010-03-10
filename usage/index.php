@@ -32,7 +32,6 @@ function check_anon_access(&$anon_account)
 
 $GLOBALS['egw_info']['flags'] = array(
 	'disable_Template_class' => True,
-	'nonavbar'  => True,
 	'currentapp' => 'usage',
 	'autocreate_session_callback' => isset($_POST['exec']) ? 'check_anon_access' : null,
 );
