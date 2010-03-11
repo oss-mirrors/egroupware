@@ -68,7 +68,7 @@ class syncml_hooks
 			// list the calendars this user has access to
 			$calendar_bo = new calendar_bo();
 			$show_calendars = array(0 => lang('Primary Group'));
-			foreach($calendar_bo->list_cals() as $grant)
+			foreach((array)$calendar_bo->list_cals() as $grant)
 			{
 				$show_calendars[$grant['grantor']] = $grant['name'];
 			}
@@ -77,7 +77,7 @@ class syncml_hooks
 			$categories = new categories($user, 'calendar');
 			$calendar_categories = $categories->return_array('app', 0, false, '', 'ASC', 'cat_name', true);
 			$show_cal_cats = array();
-			foreach ($calendar_categories as $cat)
+			foreach ((array)$calendar_categories as $cat)
 			{
 				$show_cal_cats[$cat['id']] = $cat['name'];
 			}
@@ -94,7 +94,7 @@ class syncml_hooks
 			$categories = new categories($user, 'infolog');
 			$infolog_categories = $categories->return_array('app', 0, false, '', 'ASC', 'cat_name', true);
 			$show_info_cats = array();
-			foreach ($infolog_categories as $cat)
+			foreach ((array)$infolog_categories as $cat)
 			{
 				$show_info_cats[$cat['id']] = $cat['name'];
 			}
@@ -102,7 +102,7 @@ class syncml_hooks
 			// Device specific settings
 			$devices =& CreateObject('syncml.devices');
 			$user_devices = $devices->getAllUserDevices();
-			foreach ($user_devices as $device)
+			foreach ((array)$user_devices as $device)
 			{
 				$label = '<b>'. lang('Settings for') . ' ' . $device['dev_manufacturer'] . ' ' . $device['dev_model'] . ' v' . $device['dev_swversion'] . '&nbsp;</b>';
 				$intro_name = 'deviceExtension-' . $device['owner_deviceid'];
