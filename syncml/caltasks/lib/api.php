@@ -175,9 +175,14 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
 						$cat_ids[] = $conflict_cat;
 						$conflict['category'] = implode(",", $cat_ids);
 					}
-					if (!empty($conflict['uid'])) {
+					/*
+					// Changing the UID would destroy the relationship to exceptions
+					if ($conflict['recur_type'] == MCAL_RECUR_NONE &&
+						empty($conflict['recurrence']) &&
+						!empty($conflict['uid'])) {
 						$conflict['uid'] = 'DUP-' . $conflict['uid'];
 					}
+					*/
 					$boCalendar->save($conflict);
 				}
 			}
@@ -473,7 +478,20 @@ function _egwcaltaskssync_replace($guid, $content, $contentType, $type, $merge=f
 	}
 
 	$state =& $_SESSION['SyncML.state'];
+	$tzid = null;
 	$deviceInfo = $state->getClientDeviceInfo();
+	if (isset($deviceInfo['tzid']) &&
+			$deviceInfo['tzid']) {
+		switch ($deviceInfo['tzid'])
+		{
+			case 1:
+			case 2:
+				$tzid = null;
+				break;
+			default:
+				$tzid = $deviceInfo['tzid'];
+		}
+	}
 	$_id = $state->get_egwId($guid);
   	$parts = preg_split('/:/', $_id);
   	$taskID = $parts[0];
@@ -493,19 +511,49 @@ function _egwcaltaskssync_replace($guid, $content, $contentType, $type, $merge=f
 			} else {
 				Horde::logMessage("SymcML: egwcaltaskssync replace replacing event",
 					__FILE__, __LINE__, PEAR_LOG_DEBUG);
+				if ($taskID) {
+					// Make sure that we can at least read this entry
+					$boCalendar = new calendar_bo();
+					if (!$boCalendar->check_perms(EGW_ACL_READ, $taskID))
+						return PEAR::raiseError(_("Entry does not exist."));;
+				}
 				$boical	= new calendar_ical();
 				$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 				$calendarId = $boical->importVCal($content, $taskID, null, $merge, $recur_date);
-				if ($recur_date && $_id != $calendarId) {
-					Horde::logMessage("SymcML: egwcalendarsync replace propagated guid: $guid to calendar-$calendarId",
-						__FILE__, __LINE__, PEAR_LOG_DEBUG);
+				$pseudoExceptions =& _egwcalendarsync_listPseudoExceptions(array($guid), $tzid);
+				$state->mergeChangedItems($type, $pseudoExceptions);
 
-					// The pseudo exception was propagated to a real exception
-					$ts = $state->getChangeTS($type, 'calendar-' . $taskID);
-					$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $taskID, 'modify', $ts);
+				foreach ($pseudoExceptions as $pseudoGUID)
+				{
+					//Horde::logMessage("SymcML: egwcaltaskssync touch $guid related GUID $pseudoGUID",
+					//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
+					$pseudoID = $state->get_egwId($pseudoGUID);
+					// all pseudo exceptions are affected, to
+					//$ts = $state->getSyncTSforAction($guid, 'modify');
+					if (!$state->getSyncTSforAction($guid, 'modify'))
+					{
+						// Touch all new pseudo entries
+						$ts = $state->getServerAnchorLast($type) + 1;
+						$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $pseudoID, 'modify', $ts);
+					}
+					//$ts = $state->getSyncTSforAction($guid, 'modify');
+					//$state->setUID($type, $state->getLocID($type, $pseudoGUID), $pseudoGUID, $ts);
+				}
+				if ($recur_date && $_id != $calendarId) {
+					Horde::logMessage("SymcML: egwcaltaskssync replace propagated guid: $guid to calendar-$calendarId",
+						__FILE__, __LINE__, PEAR_LOG_DEBUG);
+					// The pseudo exception was propagated to a real exception;
+					// we mirror the changes back to the client within the same session this way
+					$locid = $state->getLocID($type, $guid);
+					$state->addConflictItem($type, $locid);
 					$ts = $state->getServerAnchorLast($type) + 1;
+					$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $taskID, 'modify', $ts);
 					$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $_id, 'delete', $ts);
 					$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', $ts);
+				}
+				if (strstr($calendarId, ':')) {
+					// We have modified a pseudo exception; touch timestamp
+					$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', time());
 				}
 				return $calendarId;
 			}
