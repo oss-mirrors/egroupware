@@ -625,7 +625,7 @@ class syncml_hooks
 			),
 			'max_entries' => array(
 				'type'  => 'subsection',
-				'title' => '<h2>' . lang('Device Specific Seetings')  . '</h2>' .
+				'title' => '<h2>' . lang('Device Specific Settings')  . '</h2>' .
 				lang('For <b>Max Entries</b> = 0 either <i>maxMsgSize</i> will be used or the default value 10.<br/>' .
 					'With <b>Non Blocking Allday Events</b> set allday events will be nonblocking when imported from this device.<br/>' .
 					'The <b>UID Extension</b> enables the preservation of vCalandar UIDs by appending them to <i>Description</i> field for this device.<br/>' .
