@@ -198,6 +198,13 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
 	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	switch ($contentType) {
 		case 'text/x-vcalendar':
 		case 'text/vcalendar':
@@ -205,12 +212,12 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
 			if(strrpos($content, 'BEGIN:VTODO')) {
 				$infolog_ical = new infolog_ical();
 				$infolog_ical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-				$taskID = $infolog_ical->importVTODO($content, $taskID);
+				$taskID = $infolog_ical->importVTODO($content, $taskID, null, $charset);
 				$type = 'infolog_task';
 			} else {
 				$boical	= new calendar_ical();
 				$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-				$taskID = $boical->importVCal($content, $taskID);
+				$taskID = $boical->importVCal($content, $taskID, null, false, 0, '', null, $charset);
 				$type = 'calendar';
 			}
 			break;
@@ -248,6 +255,14 @@ function _egwcaltaskssync_search($content, $contentType, $contentid, $type=null)
 
 	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
+
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	$taskId = false;
 	$relax = !$type;
 
@@ -258,12 +273,12 @@ function _egwcaltaskssync_search($content, $contentType, $contentid, $type=null)
 			if (strrpos($content, 'BEGIN:VTODO')) {
 				$infolog_ical = new infolog_ical();
 				$infolog_ical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-				$foundEntries =  $infolog_ical->searchVTODO($content, $state->get_egwID($contentid), $relax);
+				$foundEntries =  $infolog_ical->searchVTODO($content, $state->get_egwID($contentid), $relax, $charset);
 				$prefix =  'infolog_task';
 			} else {
 				$boical	= new calendar_ical();
 				$boical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
-				$foundEntries	=  $boical->search($content, $state->get_egwID($contentid), $relax);
+				$foundEntries	=  $boical->search($content, $state->get_egwID($contentid), $relax, $charset);
 				$prefix =  'calendar';
 			}
 			Horde::logMessage('SymcML: egwcaltaskssync search searched for type: '. $prefix, __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -310,6 +325,14 @@ function _egwcaltaskssync_export($guid, $contentType)
 {
 	$state =& $_SESSION['SyncML.state'];
   	$deviceInfo = $state->getClientDeviceInfo();
+
+  	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
   	$_id = $state->get_egwId($guid);
   	$parts = preg_split('/:/', $_id);
   	$taskID = $parts[0];
@@ -338,11 +361,11 @@ function _egwcaltaskssync_export($guid, $contentType)
 
 		switch ($contentType) {
 			case 'text/x-vcalendar':
-				return $infolog_ical->exportVTODO($taskID, '1.0');
+				return $infolog_ical->exportVTODO($taskID, '1.0', 'PUBLISH', $charset);
 
 			case 'text/vcalendar':
 			case 'text/calendar':
-				return $infolog_ical->exportVTODO($taskID, '2.0');
+				return $infolog_ical->exportVTODO($taskID, '2.0', 'PUBLISH', $charset);
 
 			default:
 				return PEAR::raiseError(_("Unsupported Content-Type."));
@@ -355,11 +378,11 @@ function _egwcaltaskssync_export($guid, $contentType)
 
 		switch ($contentType) {
 			case 'text/x-vcalendar':
-				return $boical->exportVCal($taskID,'1.0', 'PUBLISH', $recur_date);
+				return $boical->exportVCal($taskID,'1.0', 'PUBLISH', $recur_date, '', null, $charset);
 
 			case 'text/vcalendar':
 			case 'text/calendar':
-				return $boical->exportVCal($taskID,'2.0', 'PUBLISH', $recur_date);
+				return $boical->exportVCal($taskID,'2.0', 'PUBLISH', $recur_date, '', null, $charset);
 
 			default:
 				return PEAR::raiseError(_("Unsupported Content-Type."));
@@ -484,14 +507,21 @@ function _egwcaltaskssync_replace($guid, $content, $contentType, $type, $merge=f
 			$deviceInfo['tzid']) {
 		switch ($deviceInfo['tzid'])
 		{
-			case 1:
-			case 2:
+			case -1:
+			case -2:
 				$tzid = null;
 				break;
 			default:
 				$tzid = $deviceInfo['tzid'];
 		}
 	}
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	$_id = $state->get_egwId($guid);
   	$parts = preg_split('/:/', $_id);
   	$taskID = $parts[0];
@@ -507,7 +537,7 @@ function _egwcaltaskssync_replace($guid, $content, $contentType, $type, $merge=f
 				$infolog_ical = new infolog_ical();
 				$infolog_ical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
-				return $infolog_ical->importVTODO($content, $taskID, $merge);
+				return $infolog_ical->importVTODO($content, $taskID, $merge, null, $charset);
 			} else {
 				Horde::logMessage("SymcML: egwcaltaskssync replace replacing event",
 					__FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -519,7 +549,7 @@ function _egwcaltaskssync_replace($guid, $content, $contentType, $type, $merge=f
 				}
 				$boical	= new calendar_ical();
 				$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-				$calendarId = $boical->importVCal($content, $taskID, null, $merge, $recur_date);
+				$calendarId = $boical->importVCal($content, $taskID, null, $merge, $recur_date, '', null, $charset);
 				$pseudoExceptions =& _egwcalendarsync_listPseudoExceptions(array($guid), $tzid);
 				$state->mergeChangedItems($type, $pseudoExceptions);
 

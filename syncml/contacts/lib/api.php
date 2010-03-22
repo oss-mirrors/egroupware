@@ -76,30 +76,32 @@ function _egwcontactssync_list($filter='')
 
 	if (is_array($GLOBALS['egw_info']['user']['preferences']['syncml']))
 	{
-		if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+		$preferences = $GLOBALS['egw_info']['user']['preferences']['syncml'];
+		if (isset($preferences['filter_list']) && (int)$preferences['filter_list'])
 		{
-			$filter['list'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list'];
+			$filter['list'] = (int)$preferences['filter_list'];
 			$allOnList = $soAddressbook->search($criteria,true,'','','',false,'AND',false,$filter);
-			// Horde::logMessage('SymcML: egwcontactssync list() list='. $filter['list'] . ', ' . count($allOnList), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			//Horde::logMessage('SymcML: egwcontactssync list() list='. $filter['list'] . ', ' . count($allOnList), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			unset($filter['list']);
 		}
 
-		if (array_key_exists('filter_addressbook', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+		if (isset($preferences['filter_addressbook']) && (int)$preferences['filter_addressbook'])
 		{
-			$filter['owner'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_addressbook'];
+			$filter['owner'] = (int)$preferences['filter_addressbook'];
 			if ($filter['owner'] == -1)
 			{
 				$filter['owner'] = $GLOBALS['egw_info']['user']['account_primary_group'];
 			}
-			unset($filter['list']);
-			// Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			//Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		}
 	}
 
 	$allContacts = $soAddressbook->search($criteria,true,'','','',false,'AND',false,$filter);
-	$allContacts = array_merge($allContacts, $allOnList);
+	if (!is_array($allContacts)) $allContacts = array();
+	if (!empty($allOnList))	$allContacts = array_merge($allContacts, $allOnList);
 
 	$guids = array();
-	foreach ((array)$allContacts as $contact)
+	foreach ($allContacts as $contact)
 	{
 		#Horde::logMessage("SymcML: egwcontactssync list generate id for: ". $contact['id'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		#Horde::logMessage("SymcML: egwcontactssync list generate id for: ". print_r($contact, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -182,6 +184,16 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
                 $contentType = $contentType['ContentType'];
 	}
 
+	$state		= &$_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
+
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	$contactId = null; //default for new entry
 	$boAddressbook = new addressbook_bo();
 
@@ -212,7 +224,7 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 		case 'text/vcard':
 			$vcaladdressbook = new addressbook_vcal();
 			setSupportedFields($vcaladdressbook);
-			$contactId = $vcaladdressbook->addVCard($content, $contactId);
+			$contactId = $vcaladdressbook->addVCard($content, $contactId, $charset);
 			break;
 
 		case 'text/x-s4j-sife':
@@ -262,7 +274,14 @@ function _egwcontactssync_search($content, $contentType, $contentid, $type=null)
 	#Horde::logMessage("SymcML: egwcontactssync search content: $content contentid: $contentid contenttype:\n" . print_r($contentType, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state			= &$_SESSION['SyncML.state'];
-	$deviceInfo		= $state->getClientDeviceInfo();
+	$deviceInfo = $state->getClientDeviceInfo();
+
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
 	$relax = !$type;
 
 	if (is_array($contentType)) {
@@ -274,7 +293,7 @@ function _egwcontactssync_search($content, $contentType, $contentid, $type=null)
 		case 'text/vcard':
 			$vcaladdressbook = new addressbook_vcal();
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-			$foundEntries = $vcaladdressbook->search($content, $state->get_egwID($contentid), $relax);
+			$foundEntries = $vcaladdressbook->search($content, $state->get_egwID($contentid), $relax, $charset);
 			break;
 
 		case 'text/x-s4j-sife':
@@ -339,6 +358,15 @@ function _egwcontactssync_export($guid, $contentType)
 	}
 
 	$state		= &$_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
+
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	$contactID	= $state->get_egwId($guid);
 
 	switch ($contentType)
@@ -348,7 +376,7 @@ function _egwcontactssync_export($guid, $contentType)
 			$vcaladdressbook = new addressbook_vcal('addressbook', $contentType, $clientProperties);
 			setSupportedFields($vcaladdressbook);
 
-			if($vcard = $vcaladdressbook->getVCard($contactID))	return $vcard;
+			if($vcard = $vcaladdressbook->getVCard($contactID, $charset))	return $vcard;
 
 			return PEAR::raiseError(_("Access Denied"));
 
@@ -427,6 +455,14 @@ function _egwcontactssync_replace($guid, $content, $contentType, $type, $merge=f
 	#}
 
 	$state		= &$_SESSION['SyncML.state'];
+
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	$contactID	= $state->get_egwId($guid);
 
 	if (is_array($contentType)) {
@@ -438,7 +474,7 @@ function _egwcontactssync_replace($guid, $content, $contentType, $type, $merge=f
 		case 'text/vcard':
 			$vcaladdressbook = new addressbook_vcal();
 			setSupportedFields($vcaladdressbook);
-			$result = $vcaladdressbook->addVCard($content, $contactID, $merge);
+			$result = $vcaladdressbook->addVCard($content, $contactID, $merge, $charset);
 			return $result;
 
 		case 'text/x-s4j-sife':
@@ -463,7 +499,7 @@ function _egwcontactssync_replace($guid, $content, $contentType, $type, $merge=f
 /**
  * Adjust the supported fields of the device for a memo.
  *
- * @param object  $content      The content of the memo.
+ * @param object  $content    The content of the memo.
  *
  */
 function setSupportedFields($content)
@@ -826,6 +862,7 @@ function setSupportedFields($content)
 				'TITLE'         => array('title'),
 				'URL'      		=> array('url'),
 				'URL;HOME'		=> array('url_home'),
+				'PHOTO'			=> array('jpegphoto'),
 	);
 
 	$defaultFields[15] = array(     // motorola U9

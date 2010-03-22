@@ -183,12 +183,19 @@ function _egwtaskssync_import($content, $contentType, $guid = null)
 	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	switch ($contentType) {
 		case 'text/x-vcalendar':
 		case 'text/calendar':
 			$infolog_ical = new infolog_ical();
 			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
-			$taskID = $infolog_ical->importVTODO($content, $taskID);
+			$taskID = $infolog_ical->importVTODO($content, $taskID, false, null, $charset);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -243,6 +250,14 @@ function _egwtaskssync_search($content, $contentType, $contentid, $type=null)
 
 	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
+
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	$relax = !$type;
 	$taskId = false;
 
@@ -251,7 +266,7 @@ function _egwtaskssync_search($content, $contentType, $contentid, $type=null)
 		case 'text/calendar':
 			$infolog_ical = new infolog_ical();
 			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
-			$foundEntries = $infolog_ical->searchVTODO($content, $state->get_egwID($contentid), $relax);
+			$foundEntries = $infolog_ical->searchVTODO($content, $state->get_egwID($contentid), $relax, $charset);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -320,17 +335,24 @@ function _egwtaskssync_export($guid, $contentType)
 	$taskID		= $state->get_egwId($guid);
 	$deviceInfo	= $state->getClientDeviceInfo();
 
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	switch ($contentType) {
 		case 'text/x-vcalendar':
 			$infolog_ical = new infolog_ical($clientProperties);
 			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
-			return $infolog_ical->exportVTODO($taskID, '1.0');
+			return $infolog_ical->exportVTODO($taskID, '1.0', 'PUBLISH', $charset);
 
 		case 'text/calendar':
 		case 'text/vcalendar':
 			$infolog_ical = new infolog_ical($clientProperties);
 			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
-			return $infolog_ical->exportVTODO($taskID, '2.0');
+			return $infolog_ical->exportVTODO($taskID, '2.0', 'PUBLISH', $charset);
 
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sife':
@@ -400,12 +422,19 @@ function _egwtaskssync_replace($guid, $content, $contentType, $type, $merge=fals
 	$taskID		= $state->get_egwId($guid);
 	$deviceInfo	= $state->getClientDeviceInfo();
 
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	switch ($contentType) {
 		case 'text/calendar':
 		case 'text/x-vcalendar':
 			$infolog_ical = new infolog_ical();
 			$infolog_ical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
-			return $infolog_ical->importVTODO($content, $taskID, $merge);
+			return $infolog_ical->importVTODO($content, $taskID, $merge, null, $charset);
 
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sife':

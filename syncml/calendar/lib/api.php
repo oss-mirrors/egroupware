@@ -344,6 +344,13 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	switch ($contentType)
 	{
 		case 'text/x-vcalendar':
@@ -351,7 +358,7 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 		case 'text/calendar':
 			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-			$calendarId = $boical->importVCal($content, $calendarId);
+			$calendarId = $boical->importVCal($content, $calendarId, null, false, 0, '', null, $charset);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -409,6 +416,14 @@ function _egwcalendarsync_search($content, $contentType, $contentid, $type=null)
 
 	$state =& $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
+
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	$eventId = false;
 	$relax = !$type;
 
@@ -426,7 +441,7 @@ function _egwcalendarsync_search($content, $contentType, $contentid, $type=null)
 		case 'text/calendar':
 			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-			$foundEntries = $boical->search($content, $state->get_egwID($contentid), $relax);
+			$foundEntries = $boical->search($content, $state->get_egwID($contentid), $relax, $charset);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -481,6 +496,14 @@ function _egwcalendarsync_export($guid, $contentType)
 {
   	$state =& $_SESSION['SyncML.state'];
   	$deviceInfo = $state->getClientDeviceInfo();
+
+  	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
   	$_id = $state->get_egwId($guid);
   	$parts = preg_split('/:/', $_id);
   	$eventID = $parts[0];
@@ -508,7 +531,7 @@ function _egwcalendarsync_export($guid, $contentType)
 			$boical	= new calendar_ical($clientProperties);
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$vcal_version = ($contentType == 'text/x-vcalendar') ? '1.0' : '2.0';
-			$retval = $boical->exportVCal($eventID, $vcal_version, 'PUBLISH', $recur_date);
+			$retval = $boical->exportVCal($eventID, $vcal_version, 'PUBLISH', $recur_date, '', $charset);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -641,14 +664,21 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 			$deviceInfo['tzid']) {
 		switch ($deviceInfo['tzid'])
 		{
-			case 1:
-			case 2:
+			case -1:
+			case -2:
 				$tzid = null;
 				break;
 			default:
 				$tzid = $deviceInfo['tzid'];
 		}
 	}
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = null;
+	}
+
 	$_id = $state->get_egwId($guid);
   	$parts = preg_split('/:/', $_id);
   	$eventID = $parts[0];
@@ -668,7 +698,7 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 		case 'text/calendar':
 			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-			$calendarId = $boical->importVCal($content, $eventID, null, $merge, $recur_date);
+			$calendarId = $boical->importVCal($content, $eventID, null, $merge, $recur_date, '', null, $charset);
 			break;
 
 		case 'text/x-s4j-sifc':

@@ -42,11 +42,17 @@ class syncml_hooks
 			'all'         => lang('All incl. rejected'),
 		);
 
+		$selectCharSet = array(
+			null			=> lang('auto'),
+			'utf-8'			=> 'UTF-8',
+			'iso-8859-1'	=> 'ISO-8859-1',
+		);
+
 		$devices_Entries = array();
 		if (!$hook_data['setup'])
 		{
-			$tzs = array(1	=> 'Use Event TZ',
-						 2	=> 'Use my current TZ for import, UTC for export');
+			$tzs = array(-1	=> 'Use Event TZ',
+						 -2	=> 'Use my current TZ for import, UTC for export');
 			$tzs += egw_time::getTimezones();
 
 			require_once(EGW_INCLUDE_ROOT.'/syncml/inc/class.devices.inc.php');
@@ -56,11 +62,11 @@ class syncml_hooks
 			// list the distribution lists of this user
 			$addressbook_bo = new addressbook_bo();
 			$perms = EGW_ACL_READ | EGW_ACL_ADD | EGW_ACL_EDIT | EGW_ACL_DELETE;
-			$show_addr_lists = $addressbook_bo->get_lists($perms,array('' => lang('none')));
-			$show_addr_addr = array(-1 => lang('Primary Group'));
-			$show_addr_addr += $addressbook_bo->get_addressbooks($perms,lang('All'));
+			$show_addr_lists = $addressbook_bo->get_lists($perms,array(0 => lang('None')));
+			$show_addr_addr = $addressbook_bo->get_addressbooks($perms);
 			unset($show_addr_addr[0]); // No Acounts
-
+			$show_addr_addr = array(-1 => lang('Primary Group'),
+								0 => lang('All')) + $show_addr_addr;
 			// list the InfoLog filters
 			$infolog_bo = new infolog_bo();
 			$show_infolog_filters = $infolog_bo->filters;
@@ -110,6 +116,7 @@ class syncml_hooks
 				$ue_name = 'uidExtension-' . $device['owner_deviceid'];
 				$nba_name = 'nonBlockingAllday-' . $device['owner_deviceid'];
 				$tz_name = 'tzid-' . $device['owner_deviceid'];
+				$charset_name = 'charset-' . $device['owner_deviceid'];
 				$device_Entry = array(
 					$intro_name => array(
 						'type'  => 'subsection',
@@ -151,6 +158,16 @@ class syncml_hooks
 						'name'   => $tz_name,
 						'values' => $tzs,
 						'help'   => 'Please select the timezone of your device.',
+						'xmlrpc' => True,
+						'admin'  => False,
+						'default'=> null,
+					),
+					$charset_name => array(
+						'type'   => 'select',
+						'label'  => 'Character Set',
+						'name'   => $charset_name,
+						'values' => $selectCharSet,
+						'help'   => 'Please select the character set of your device.',
 						'xmlrpc' => True,
 						'admin'  => False,
 						'default'=> null,
@@ -493,24 +510,26 @@ class syncml_hooks
 				'xmlrpc' => False,
 				'admin'  => False
 			),
-			'filter_list' => array(
-				'type'   => 'select',
-				'label'  => 'Synchronize this list',
-				'name'   => 'filter_list',
-				'help'   => lang('This address list of contacts will be synchronized. ' .
+			'filter_list'	=> array(
+				'type'		=> 'select',
+				'label'		=> 'Synchronize this list',
+				'name'		=> 'filter_list',
+				'help'		=> lang('This address list of contacts will be synchronized. ' .
 								'If used together with the addressbook option, this list will appended.'),
-				'values' => $show_addr_lists,
-				'xmlrpc' => True,
-				'admin'  => False,
+				'values'	=> $show_addr_lists,
+				'xmlrpc'	=> True,
+				'default'	=> 0,
+				'admin'		=> False,
 			),
 			'filter_addressbook' => array(
-				'type'   => 'select',
-				'label'  => 'Synchronize this addressbook',
-				'name'   => 'filter_addressbook',
-				'help'   => lang('Only entries from this addressbook (and the above list) will be synchronized.'),
-				'values' => $show_addr_addr,
-				'xmlrpc' => True,
-				'admin'  => False,
+				'type'   	=> 'select',
+				'label'		=> 'Synchronize this addressbook',
+				'name'		=> 'filter_addressbook',
+				'help'		=> lang('Only entries from this addressbook (and the above list) will be synchronized.'),
+				'values'	=> $show_addr_addr,
+				'default'	=> 0,
+				'xmlrpc'	=> True,
+				'admin'		=> False,
 			),
 			'calendarhistoryintro' => array(
 				'type'  => 'subsection',
@@ -554,7 +573,7 @@ class syncml_hooks
 				'type'		=> 'select',
 				'label' 	=> 'Syncronization Calendars',
 				'name'		=> 'calendar_owner',
-				'help'		=> lang('Events from all selected Calendars will be synchronized.'),
+				'help'		=> lang('Events from selected Calendars will be synchronized.'),
 				'values'	=> $show_calendars,
 				'default'	=> 'none',
 				'xmlrpc'	 => True,
