@@ -178,7 +178,7 @@ class emailadmin_smtp_ldap extends defaultsmtp
 
 					$emailAddresses[] = array (
 						'name'		=> $realName,
-						'address'	=> $allValues[0]['mail'][0],
+						'address'	=> $value,
 						'type'		=> !$key ? 'default' : 'alternate',
 					);
 				}
