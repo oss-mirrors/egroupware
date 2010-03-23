@@ -12,9 +12,46 @@
 	\***************************************************************************/
 	/* $Id$ */
 
-	class emailadmin_bo
+	class emailadmin_bo extends so_sql
 	{
-		var $sessionData;
+		/**
+		 * Name of our table
+		 */
+		const TABLE = 'egw_emailadmin';
+		/**
+		 * Name of app the table is registered
+		 */
+		const APP = 'emailadmin';
+		/**
+		 * Fields that are numeric
+		 */
+		static $numericfields = array(
+			'ea_profile_id',
+			'ea_smtp_type',
+			'ea_smtp_port',
+			'ea_smtp_auth',
+			'ea_editforwardingaddress',
+			'ea_smtp_ldap_use_default',
+			'ea_imap_type',
+			'ea_imap_port',
+			'ea_imap_login_type',
+			'ea_imap_tsl_auth',
+			'ea_imap_tsl_encryption',
+			'ea_imap_enable_cyrus',
+			'ea_imap_enable_sieve',
+			'ea_imap_sieve_port',
+			'ea_user_defined_identities',
+			'ea_user_defined_accounts',
+			'ea_imapoldcclient',
+			'ea_order',
+			'ea_active',
+			'ea_group',
+			'ea_user',
+			'ea_appname',
+			'ea_user_defined_signatures',
+			);
+
+		static $sessionData = array();
 		#var $userSessionData;
 		var $LDAPData;
 
@@ -27,6 +64,13 @@
 
 		function __construct($_profileID=-1,$_restoreSesssion=true)
 		{
+
+			parent::__construct(self::APP,self::TABLE,null,'',true);
+
+			if (!is_object($GLOBALS['emailadmin_bo']))
+			{
+				$GLOBALS['emailadmin_bo'] = $this;
+			}
 			$this->soemailadmin = new emailadmin_so();
 
 			$this->SMTPServerType = array(
@@ -212,19 +256,18 @@
 					'protocol'	=> 'imap',
 					'classname'	=> 'dbmaildbmailuser'
 				),
-			);
-
-			if ($_restoreSesssion &&  !(is_array($this->sessionData) && (count($this->sessionData)>0))  )
+			); 
+			if ($_restoreSesssion) // &&  !(is_array(self::$sessionData) && (count(self::$sessionData)>0))  ) 
 			{
 				$this->restoreSessionData();
 			}
-			if ($_restoreSesssion===false && (is_array($this->sessionData) && (count($this->sessionData)>0))  )
+			if ($_restoreSesssion===false) // && (is_array(self::$sessionData) && (count(self::$sessionData)>0))  )
 			{
 				// make sure session data will be created new
-				$this->sessionData = array();
+				self::$sessionData = array();
 				self::saveSessionData();
 			}
-			#_debug_array($this->sessionData);
+			#_debug_array(self::$sessionData);	
 			if($_profileID >= 0)
 			{
 				$this->profileID	= $_profileID;
@@ -259,7 +302,7 @@
 				#ExecMethod("emailadmin.".$this->smtpClass.".addAccount",$_hookValues,3,$this->profileData);
 				$this->smtpClass->addAccount($_hookValues);
 			}
-			$this->sessionData =array();
+			self::$sessionData =array();
 			$this->saveSessionData();
 		}
 
@@ -276,45 +319,8 @@
 				#ExecMethod("emailadmin.".$this->smtpClass.".deleteAccount",$_hookValues,3,$this->profileData);
 				$this->smtpClass->deleteAccount($_hookValues);
 			}
-			$this->sessionData = array();
+			self::$sessionData = array();
 			$this->saveSessionData();
-		}
-
-		function deleteProfile($_profileID)
-		{
-			$this->soemailadmin->deleteProfile($_profileID);
-			$this->sessionData['profile'][$_profileID] = array();
-			$this->saveSessionData();
-		}
-
-		function encodeHeader($_string, $_encoding='q')
-		{
-			switch($_encoding)
-			{
-				case "q":
-					if(!preg_match("/[\x80-\xFF]/",$_string))
-					{
-						// nothing to quote, only 7 bit ascii
-						return $_string;
-					}
-
-					$string = imap_8bit($_string);
-					$stringParts = explode("=\r\n",$string);
-					while(list($key,$value) = each($stringParts))
-					{
-						if(!empty($retString)) $retString .= " ";
-						$value = str_replace(" ","_",$value);
-						// imap_8bit does not convert "?"
-						// it does not need, but it should
-						$value = str_replace("?","=3F",$value);
-						$retString .= "=?".strtoupper($this->displayCharset)."?Q?" . $value. "?=";
-					}
-					#exit;
-					return $retString;
-					break;
-				default:
-					return $_string;
-			}
 		}
 
 		function getAccountEmailAddress($_accountName, $_profileID)
@@ -341,21 +347,18 @@
 			}
 		}
 
-#		function getIMAPClass($_profileID)
-#		{
-#			if(!is_object($this->imapClass))
-#			{
-#				$profileData		= $this->getProfile($_profileID);
-#				$this->imapClass	= CreateObject('emailadmin.cyrusimap',$profileData);
-#			}
-#
-#			return $this->imapClass;
-#		}
-
-		function getIMAPServerTypes() {
+		function getIMAPServerTypes($extended=true) 
+		{
 			foreach($this->IMAPServerType as $key => $value) {
-				$retData[$key]['description']	= $value['description'];
-				$retData[$key]['protocol']	= $value['protocol'];
+				if ($extended)
+				{
+					$retData[$key]['description']	= $value['description'];
+					$retData[$key]['protocol']	= $value['protocol'];
+				}
+				else
+				{
+					$retData[$key]	= $value['description'];
+				}
 			}
 
 			return $retData;
@@ -382,11 +385,11 @@
 
 		function getProfile($_profileID)
 		{
-			if (!(is_array($this->sessionData) && (count($this->sessionData)>0))) $this->restoreSessionData();
-			if (is_array($this->sessionData) && (count($this->sessionData)>0) && $this->sessionData['profile'][$_profileID]) {
+			if (!(is_array(self::$sessionData) && (count(self::$sessionData)>0))) $this->restoreSessionData();
+			if (is_array(self::$sessionData) && (count(self::$sessionData)>0) && self::$sessionData['profile'][$_profileID]) {
 				#error_log("sessionData Restored for Profile $_profileID <br>");
-				return $this->sessionData['profile'][$_profileID];
-			}
+				return self::$sessionData['profile'][$_profileID]; 
+			} 
 			$profileData = $this->soemailadmin->getProfileList($_profileID);
 			$found = false;
 			if (is_array($profileData) && count($profileData))
@@ -461,7 +464,7 @@
 			{
 				$profileData['ea_stationery_active_templates'] = unserialize($profileData['ea_stationery_active_templates']);
 			}
-			$this->sessionData['profile'][$_profileID] = $profileData;
+			self::$sessionData['profile'][$_profileID] = $profileData;
 			$this->saveSessionData();
 			return $profileData;
 		}
@@ -486,10 +489,11 @@
 
 		function getUserProfile($_appName='', $_groups='')
 		{
-			if (!(is_array($this->sessionData) && (count($this->sessionData)>0))) $this->restoreSessionData();
-			if (is_array($this->sessionData) && count($this->sessionData)>0 && $this->sessionData['ea_preferences']) {
-				#error_log("sessionData Restored for UserProfile<br>");
-				return $this->sessionData['ea_preferences'];
+			if (!(is_array(self::$sessionData) && (count(self::$sessionData)>0))) $this->restoreSessionData();
+			if (is_array(self::$sessionData) && count(self::$sessionData)>0 && self::$sessionData['ea_preferences']) 
+			{
+				//error_log("sessionData Restored for UserProfile<br>");
+				return self::$sessionData['ea_preferences']; 
 			}
 			$appName	= ($_appName != '' ? $_appName : $GLOBALS['egw_info']['flags']['currentapp']);
 			if(!is_array($_groups)) {
@@ -540,7 +544,6 @@
 
 				// fetch the SMTP / outgoing server data
 				$ogClass = isset($this->SMTPServerType[$data['smtpType']]) ? $this->SMTPServerType[$data['smtpType']]['classname'] : 'defaultsmtp';
-
 				if (!class_exists($ogClass))
 				{
 					include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$ogClass.'.inc.php');
@@ -591,7 +594,7 @@
 				{
 					$eaPreferences->ea_stationery_active_templates = unserialize($data['ea_stationery_active_templates']);
 				}
-				$this->sessionData['ea_preferences'] = $eaPreferences;
+				self::$sessionData['ea_preferences'] = $eaPreferences;
 				$this->saveSessionData();
 				return $eaPreferences;
 			}
@@ -626,7 +629,7 @@
 
 			//echo function_backtrace()."<br>";
 			//unserializing the sessiondata, since they are serialized for objects sake
-			$this->sessionData = (array) unserialize($GLOBALS['egw']->session->appsession('session_data','emailadmin'));
+			self::$sessionData = (array) unserialize($GLOBALS['egw']->session->appsession('session_data','emailadmin'));
 		}
 
 		/**
@@ -740,7 +743,7 @@
 			$profile = array_merge($profile,array_diff_assoc($settings,$to_parse));
 
 			$this->soemailadmin->updateProfile($profile);
-			$this->sessionData['profile'] = array();
+			self::$sessionData['profile'] = array();
 			$this->saveSessionData();
 			//echo "<p>EMailAdmin profile update: ".print_r($profile,true)."</p>\n"; exit;
 		}
@@ -805,14 +808,14 @@
 					//echo "<p>eGW configuration update: ".print_r($new_config,true)."</p>\n";
 				}
 			}
-			$this->sessionData = array();
+			self::$sessionData = array();
 			$this->saveSessionData();
 		}
 
 		function saveSessionData()
 		{
 			// serializing the session data, for the sake of objects
-			$GLOBALS['egw']->session->appsession('session_data','emailadmin',serialize($this->sessionData));
+			$GLOBALS['egw']->session->appsession('session_data','emailadmin',serialize(self::$sessionData));
 			#$GLOBALS['egw']->session->appsession('user_session_data','',$this->userSessionData);
 		}
 
@@ -841,7 +844,7 @@
 				$GLOBALS['egw']->hooks->process($_formData);
 
 				return true;
-				$this->sessionData = array();
+				self::$sessionData = array();
 				$this->saveSessionData();
 			}
 
@@ -852,7 +855,7 @@
 			if(is_array($_order)) {
 				$this->soemailadmin->setOrder($_order);
 			}
-			$this->sessionData = array();
+			self::$sessionData = array();
 			$this->saveSessionData();
 		}
 
@@ -866,7 +869,7 @@
 				#ExecMethod("emailadmin.".$this->smtpClass.".updateAccount",$_hookValues,3,$this->profileData);
 				$this->smtpClass->updateAccount($_hookValues);
 			}
-			$this->sessionData = array();
+			self::$sessionData = array();
 			$this->saveSessionData();
 		}
 	}

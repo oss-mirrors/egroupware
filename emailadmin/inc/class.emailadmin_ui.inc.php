@@ -1,75 +1,221 @@
 <?php
 	/***************************************************************************\
-	* EGroupWare - EMailAdmin                                                   *
-	* http://www.egroupware.org                                                 *
-	* Written by : Lars Kneschke [lkneschke@egroupware.org]                     *
-	* -------------------------------------------------                         *
-	* This program is free software; you can redistribute it and/or modify it   *
-	* under the terms of the GNU General Public License as published by the     *
-	* Free Software Foundation; either version 2 of the License, or (at your    *
-	* option) any later version.                                                *
+	* EGroupWare - EMailAdmin 
+	* @link http://www.egroupware.org
+	* @package emailadmin
+	* @author Klaus Leithoff <kl-AT-stylite.de>
+	* @copyright (c) 2009-10 by Klaus Leithoff <kl-AT-stylite.de>
+	* @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
 	\***************************************************************************/
 	/* $Id$ */
 
-	class emailadmin_ui
+	class emailadmin_ui extends emailadmin_bo
 	{	
 		var $public_functions = array
 		(
-			'addProfile'	=> True,
-			'deleteProfile'	=> True,
-			'editProfile'	=> True,
+			'index'			=> True,
+			'add'			=> True,
+			'delete'		=> True,
+			'edit'			=> True,
+			'save'			=> True,
 			'listProfiles'	=> True,
-			'saveProfile'	=> True
 		);
 		
-		var $cats;
-		var $nextmatchs;
-		var $t;
-		var $boqmailldap;
-
 		function __construct()
 		{
-			$this->nextmatchs   =& CreateObject('phpgwapi.nextmatchs');
-			$this->t            =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
-			#$this->boemailadmin =& CreateObject('emailadmin.bo');
-			$this->boemailadmin = new emailadmin_bo();
-			$this->css();
+			parent::__construct();
 		}
-		
-		static function getAllGroups()
+
+		/**
+	 	 * Main emailadmin page
+		 *
+		 * @param array $content=null
+		 * @param string $msg=null
+		 */
+		function index(array $content=null,$msg=null)
 		{
-			$allGroups = $GLOBALS['egw']->accounts->get_list('groups');
-			foreach($allGroups as $groupInfo)
+			$accountID = false;
+			$groupID = false;
+			$filter = '';
+			$rowsfound = 0;
+			if(is_int(intval($_GET['account_id'])) && !empty($_GET['account_id']))
 			{
-				$groups[$groupInfo['account_id']] = $groupInfo['account_lid'];
+				if ( intval($_GET['account_id']) < 0 ) {
+					$groupID =  intval($_GET['account_id']);
+					$filter['ea_group'] = intval($_GET['account_id']);
+				} else {
+					$accountID = intval($_GET['account_id']);
+					$filter['ea_user'] = intval($_GET['account_id']);
+				}
+				$r = parent::search($filter);
+				$rowsfound = count($r);
 			}
-			asort($groups);
+			if ($rowsfound)
+			{
+				if (($accountID || !empty($groupID)) && $rowsfound == 1) 
+				{
+					$linkData = array
+					(
+						'menuaction'    => 'emailadmin.emailadmin_ui.edit',
+						'profileid' => $r[0]['ea_profile_id']
+					);
+					$addJavaScript = "<script type=\"text/javascript\">".'egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600);</script>';
+				}
+			} else {
+				if ($accountID || !empty($groupID)) {
+					$linkData = array
+					(
+						'menuaction'    => 'emailadmin.emailadmin_ui.edit',
+						'account_id' => ($accountID ? $accountID : $groupID)
+					);
+					$addJavaScript = "<script type=\"text/javascript\">".'egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_addProfile\',700,600);</script>';
+				}
+			}
+			if ($accountID || !empty($groupID)) {
+				$linkData = array
+				(
+					'menuaction'    => 'emailadmin.emailadmin_ui.index',
+				);
+				$listLink = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).
+					'" onClick="return confirm(\''.lang('Do you really want to reset the filter for the Profile listing').'?\')">'.
+					lang('reset filter').'</a>';
 
-			$allGroups = array('' => lang('any group'));
-			foreach($groups as $groupID => $groupName)
-			{
-				$allGroups[$groupID] = $groupName;
+				if ($GLOBALS['egw_info']['user']['apps']['admin']) {
+					$linkData = array
+					(
+						'menuaction'    => 'admin.uiaccounts.list_'.($accountID ? 'users' : 'groups'),
+					);
+					$listLink2 = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).'">'.($accountID ? lang('Back to Admin/Userlist'): lang('Back to Admin/Grouplist')).'</a>';
+				}
+				unset($r);
+				$subtitle = ($accountID || !empty($groupID) ? ' '.($accountID ? lang('filtered by Account') :  lang('filtered by Group')).' ['.$listLink.']'.' ['.$listLink2.']': '');
 			}
-			return $allGroups;
+			//_debug_array($content);
+			$tpl = new etemplate('emailadmin.index');
+			if (!is_array($content))
+			{
+				$content = array(
+					'nm' => $GLOBALS['egw']->session->appsession('index',parent::APP),
+				);
+				if (!is_array($content['nm']))
+				{
+					$content['nm'] = array(
+						'get_rows'       => 'emailadmin.emailadmin_ui.get_rows',  // I  method/callback to request the data for the rows
+						'no_filter'      => True,    // nofilter
+						'no_filter2'     => True,   // I  disable the 2. filter (params are the same as for filter)
+						'no_cat'         => True,   // I  disable the cat-selectbox
+						'lettersearch'   => True,   // I  show a lettersearch
+						'searchletter'   => false,  // I0 active letter of the lettersearch or false for [all]
+						'start'          => 0,      // IO position in list
+						'order'          => 'ea_order, ea_profile_id', // IO name of the column to sort after (optional for the sortheaders)
+						'sort'           => 'ASC',  // IO direction of the sort: 'ASC' or 'DESC'
+						//'default_cols'   => '!comment,ctime',   // I  columns to use if there's no user or default pref (! as first char uses all but the columns listed)
+						'csv_fields'     => false, // I  false=disable csv export, true or unset=enable it with auto-detected fieldnames,
+							//or array with name=>label or name=>array('label'=>label,'type'=>type) pairs (type is a eT widget-type)
+					);
+				}
+			}
+			elseif(isset($content['nm']['rows']['delete']))
+			{
+				list($profileids) = each($content['nm']['rows']['delete']);
+				unset($content['nm']['rows']['delete']);
+				if ($profileids && self::delete($profileids))
+				{
+				    $content['msg'] = lang('%1 entries deleted.',1);
+				}
+				else
+				{
+				    $content['msg'] = lang('Error deleting entry!');
+				}
+			}
+			elseif(isset($content['delete']))
+			{
+				unset($content['delete']);
+				if (($deleted = self::delete($content['nm']['rows']['selected'])))
+				{
+					$content['msg'] = lang('%1 entries deleted.',$deleted);
+				}
+				else
+				{
+					$content['msg'] = lang('Error deleting entry!');
+				}
+			}
+
+			if (isset($_GET['msg'])) $msg = $_GET['msg'];
+			$content['msg'] .= $msg;
+			/*
+			if ($content['action'] || $content['nm']['rows'])
+			{
+				if ($content['action'])
+				{
+					// SOME ACTION AS EDIT, DELETE, ...
+					$content['msg'] = self::action($content['action'],$content['nm']['rows']['checked']);
+					unset($content['action']);
+				}
+				elseif($content['nm']['rows']['delete'])
+				{
+					$content['msg'] = self::action('delete',array_keys($content['nm']['rows']['delete']));
+				}
+				unset($content['nm']['rows']);
+			}
+			*/
+			if ($content['AddProfile'])
+			{
+				unset($content['AddProfile']);
+			}
+			if ($content['button'])
+			{
+				if ($content['button'])
+				{
+					list($button) = each($content['button']);
+					unset($content['button']);
+				}
+				switch($button)
+				{
+					default:
+						break;
+				}
+			}
+			$sel_options['ea_smtp_type']=parent::getSMTPServerTypes();
+			$sel_options['ea_imap_type']=parent::getIMAPServerTypes(false);
+			$sel_options['ea_appname']	=self::getAllowedApps();
+			// setting for the top of the app, etc.
+			$content['addJavaScript'] = $addJavaScript;
+			$content['subtitle'] = $subtitle;
+			if (!empty($filter)) foreach ($filter as $fk => $fv) $content['nm']['col_filter'][$fk] = $fv;
+			// seTting the Title of the app
+			$GLOBALS['egw_info']['flags']['app_header'] = lang('emailadmin');
+			$tpl->exec('emailadmin.emailadmin_ui.index',$content,$sel_options,$readonlys,array('nm' => $content['nm']));		
 		}
 
-		static function getAllUsers()
+		/**
+		 * query the table
+		 *
+		 * reimplemented from so_sql to disable action-buttons based on the acl and make some modification on the data
+		 *
+		 * @param array &$query
+		 * @param array &$rows returned rows/cups
+		 * @param array &$readonlys eg. to disable buttons based on acl
+		 * @param boolean $id_only=false if true only return (via $rows) an array of ids, dont save state to session
+		 * @return int total number of rows matching the selection
+		 */
+		function get_rows(&$query_in,&$rows,&$readonlys,$id_only=false)
 		{
-			$allUsers = $GLOBALS['egw']->accounts->get_list('accounts');
-			foreach($allUsers as $userInfo)
+			$query = $query_in;
+			$filteredby = '';
+			if ($query['searchletter']) // only show rows if the order-criteria starts with the given letter
 			{
-				$users[$userInfo['account_id']] = $userInfo['account_lid'];
+				$query['col_filter'][] = (in_array($query['order'],parent::$numericfields) ? 'ea_description' : $query['order']).' '.
+					$GLOBALS['egw']->db->capabilities['case_insensitive_like'].' '.$GLOBALS['egw']->db->quote($query['searchletter'].'%');
+				if (in_array($query['order'],parent::$numericfields)) $query_in['order'] = $query['order'] = 'ea_description';
+				$filteredby = $query['order'].' '.lang('starts with').' '.$query['searchletter'];
 			}
-			asort($users);
-			$allUsers = array('' => lang('any user'));
-			foreach($users as $userID => $userName)
-			{
-				$allUsers[$userID] = $userName;
-			}
-			return $allUsers;
+			$GLOBALS['egw_info']['flags']['app_header'] = lang('emailadmin').($filteredby? ' - '.$filteredby:'');
+			$total = parent::get_rows($query,$rows,$readonlys);
+			return $total;
 		}
-
-		static function getAllApps()
+	
+		static function getAllowedApps()
 		{
 			$applications = array(
 				'calendar'	=> $GLOBALS['egw_info']['apps']['calendar']['title'],
@@ -79,141 +225,186 @@
 			return $applications = array_merge(array('' => lang('any application')),$applications);
 		}
 
-		function addProfile()
+		static function getIMAPLoginTypes()
 		{
-			if(is_int(intval($_GET['account_id'])) && !empty($_GET['account_id']))
+			return array(
+					'standard'	=>lang('username (standard)'),
+					'vmailmgr'	=>lang('username@domainname (Virtual MAIL ManaGeR)'),
+					'admin'		=>lang('Username/Password defined by admin'),
+					'email'		=>lang('use Users eMail-Address (as seen in Useraccount)'),
+			);					
+		}
+
+		function edit($content=null)
+		{
+			//$this->editProfile($profileid);
+			$etpl = new etemplate(parent::APP.'.edit');
+			if(!is_array($content))
 			{
-				if ( intval($_GET['account_id']) < 0 ) {
-					$groupID =  intval($_GET['account_id']);
-				} else {
-					$accountID = intval($_GET['account_id']);
+				$rowfound = false;
+				$filter = array();
+				if(is_int(intval($_GET['account_id'])) && !empty($_GET['account_id']))
+				{
+					if ( intval($_GET['account_id']) < 0 ) {
+						$groupID =  intval($_GET['account_id']);
+						$content['ea_group'] = $filter['ea_group'] = $groupID;
+						
+					} else {
+						$accountID = intval($_GET['account_id']);
+						$content['ea_user'] = $filter['ea_user'] = $accountID;
+					}
+				}
+				if (!empty($_GET['profileid']))
+				{
+					$profileID = intval($_GET['profileid']);
+					$filter['ea_profile_id'] = $profileID;
+					$rowfound = parent::read($filter);
 				}
 			}
-			$allGroups = self:: getAllGroups();
-			$allUsers = self::getAllUsers();
-			$applications = self::getAllApps();	
-			$this->display_app_header();
-			
-			$this->t->set_file(array("body" => "editprofile.tpl"));
-			$this->t->set_block('body','main');
-			
-			$this->translate();
-			
-			#$this->t->set_var('profile_name',$profileList[0]['description']);
-			$this->t->set_var('smtpActiveTab','1');
-			$this->t->set_var('imapActiveTab','2');	// IMAP
-			$this->t->set_var('application_select_box', html::select('globalsettings[ea_appname]','',$applications, true, "style='width: 250px;'"));
-			$this->t->set_var('group_select_box', html::select('globalsettings[ea_group]',($groupID ? $groupID :''),$allGroups, true, "style='width: 250px;'"));
-			$this->t->set_var('user_select_box', html::select('globalsettings[ea_user]',($accountID ? $accountID :''),$allUsers, true, "style='width: 250px;'"));
-			$this->t->set_var('selected_ea_active','checked="1"');
-			$this->t->set_var('value_description',($accountID ? $allUsers[$accountID]: ($groupID ? $allGroups[$groupID]: '')));
-			if ($accountID) 
+			else
 			{
-				// some useful presets, if you want to create a user dedicated profile
-				$this->t->set_var('selected_smtpAuth','checked="1"');
-				$this->t->set_var('value_ea_smtp_auth_username',$allUsers[$accountID]);
-				$this->t->set_var('selected_imapLoginType_admin','selected="selected"');
-				$this->t->set_var('value_imapAuthUsername',$allUsers[$accountID]);
+				$rowfound = true;
+				// handle action/submit buttons
+				if (isset($content['delete']))
+				{
+					unset($content['delete']);
+					$button = 'delete';
+				}
+				if (isset($content['cancel']))
+				{
+					unset($content['cancel']);
+					$button = 'cancel';
+				}
+				if (isset($content['apply']))
+				{
+					unset($content['apply']);
+					$button = 'apply';
+				}
+				if (isset($content['save']))
+				{
+					unset($content['save']);
+					$button = 'save';
+				}
+				unset($content['manage_stationery_templates']);
+				//unset($content['tabs']);
+				if (!empty($content['smtp_senders_email']))
+				{
+					$content['ea_smtp_auth_username'] = $content['ea_smtp_auth_username'].';'.$content['smtp_senders_email'];
+					unset($content['smtp_senders_email']);
+				}
+				$this->data = $content;
+				switch ($button)
+				{
+					case 'delete':
+						if (($deleted = self::delete($content['ea_profile_id'])))
+						{
+							$msg = lang('%1 entries deleted.',$deleted);
+						}
+						else
+						{
+							$msg = lang('Error deleting entry!');
+						}
+						$js = "opener.location.href='".$GLOBALS['egw']->link('/index.php',array(
+							'menuaction' => parent::APP.'.emailadmin_ui.index',
+							'msg'        => $msg,
+						))."';";
+						$js .= 'window.close();';
+						echo "<html>\n<body>\n<script>\n$js\n</script>\n</body>\n</html>\n";
+						$GLOBALS['egw']->common->egw_exit();
+						break;				
+					case 'cancel':
+						$js .= 'window.close();';
+						echo "<html>\n<body>\n<script>\n$js\n</script>\n</body>\n</html>\n";
+						$GLOBALS['egw']->common->egw_exit();
+						break;
+					case 'apply':
+					case 'save':
+						if ($etpl->validation_errors()) break;  // the user need to fix the error, before we can save the entry
+						//_debug_array($this->data);
+						if (parent::save() != 0)
+						{
+							$msg = lang('Error saving the entry!!!');
+							$button = '';
+						}
+						else
+						{
+							$msg = lang('Entry saved');
+						}
+						$js = "opener.location.href='".$GLOBALS['egw']->link('/index.php',array(
+							'menuaction' => parent::APP.'.emailadmin_ui.index',
+							'msg'        => $msg,
+						))."';";
+						if ($button == 'save')
+						{
+							$js .= 'window.close();';
+							echo "<html>\n<body>\n<script>\n$js\n</script>\n</body>\n</html>\n";
+							$GLOBALS['egw']->common->egw_exit();
+							break;
+						}
+						$row;
+				}
 			}
-			$linkData = array
-			(
-				'menuaction'	=> 'emailadmin.emailadmin_ui.saveProfile'
-			);
-			$this->t->set_var('action_url',$GLOBALS['egw']->link('/index.php',$linkData));
-			
-			$linkData = array
-			(
-				'menuaction'	=> 'emailadmin.emailadmin_ui.listProfiles'
-			);
-			$this->t->set_var('back_url',$GLOBALS['egw']->link('/index.php',$linkData));
-
-			$this->t->set_var('smtptype',html::select(
-				'smtpsettings[smtpType]',
-				$profileData['smtpType'], 
-				$this->boemailadmin->getSMTPServerTypes(),
-				true,
-				'style="width: 250px;" id="smtpselector" onchange="smtp.display(this.value);"'
-			));
-						
-			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value) {
-				$imapServerTypes[$key] = $value['description'];
-			};
-			$selectFrom = html::select(
-				'imapsettings[imapType]', 
-				'', 
-				$imapServerTypes, 
-				false, 
-				// stupid tabs javascript assumes value=position in selectbox, here's a littel workaround ;-)
-				"style='width: 250px;' id='imapselector' onchange='var v=this.value; imap.display(this.value); this.value=v; ea_setIMAPDefaults(this.value);'"
-			);
-			$this->t->set_var('imaptype', $selectFrom);
-
-			$this->t->set_var('value_smtpPort', '25');
-			$this->t->set_var('value_imapPort', '110');
-			$this->t->set_var('value_imapSievePort', '2000');
-			
+			if ($rowfound) $content = array_merge($this->data,array());
+			if (!empty($msg)) $content['msg'] = $msg;
+			list($content['ea_smtp_auth_username'],$content['smtp_senders_email']) = explode(';',$content['ea_smtp_auth_username']);
+			$preserv['ea_profile_id'] = $content['ea_profile_id'];
+			//$preserv['ea_stationery_active_templates'] = $content['ea_stationery_active_templates'];
+			$sel_options['ea_smtp_type']=parent::getSMTPServerTypes();
+			$sel_options['ea_imap_type']=parent::getIMAPServerTypes(false);
+			$sel_options['ea_appname']	=self::getAllowedApps();
+			$sel_options['ea_imap_login_type'] = self::getIMAPLoginTypes();
 			// Stationery settings
 			$bostationery = new felamimail_bostationery();
-			$this->t->set_var('stored_templates', html::checkbox_multiselect(
-				'globalsettings[ea_stationery_active_templates]',0
-				,$bostationery->get_stored_templates(),true,'',3,true,'width: 100%;'));
-			$this->t->set_var(
-				'link_manage_templates',
+			$sel_options['ea_stationery_active_templates'] = $bostationery->get_stored_templates();
+			/*			
+			$content['stored_templates'] = html::checkbox_multiselect(
+				'ea_stationery_active_templates',$content['ea_stationery_active_templates']
+				,$bostationery->get_stored_templates(),true,'',3,true,'width: 100%;');
+
+			$content['manage_stationery_templates'] =
 				html::a_href(
 					lang('manage stationery templates'),
 					'/index.php?menuaction=etemplate.editor.edit',
 					array('name' => 'felamimail.stationery'),
 					'target="_blank"'
-				)
-			);
-						
-			$this->t->parse("out","main");
-			print $this->t->get('out','main');
+				);
+			*/
+			//_debug_array($this->data);
+			return $etpl->exec(parent::APP.'.emailadmin_ui.edit',$content,$sel_options,$readonlys,$preserv,2);
 		}
-	
-		function css()
+
+		function add()
 		{
-			#$appCSS =
-			$GLOBALS['egw_info']['flags']['css'] .= 
-			'th.activetab
-			{
-				color:#000000;
-				background-color:#D3DCE3;
-				border-top-width : 1px;
-				border-top-style : solid;
-				border-top-color : Black;
-				border-left-width : 1px;
-				border-left-style : solid;
-				border-left-color : Black;
-				border-right-width : 1px;
-				border-right-style : solid;
-				border-right-color : Black;
-			}
-			
-			th.inactivetab
-			{
-				color:#000000;
-				background-color:#E8F0F0;
-				border-bottom-width : 1px;
-				border-bottom-style : solid;
-				border-bottom-color : Black;
-			}
-			
-			.td_left { border-left : 1px solid Gray; border-top : 1px solid Gray; }
-			.td_right { border-right : 1px solid Gray; border-top : 1px solid Gray; }
-			
-			div.activetab{ display:inline; }
-			div.inactivetab{ display:none; }';
-			
-			#return $appCSS;
+			$this->edit();
 		}
-		
+
+		function delete($profileid=null)
+		{
+			$_profileID = ($profileid ? $profileid : (int)$_GET['profileid']);
+			if (empty($_profileID)) return 0;
+			$deleted = parent::delete(array('ea_profile_id' => $_profileID));
+			if (!is_array($_profileID)) $_profileID = (array)$_profileID;
+			foreach ($_profileID as $tk => $pid)
+			{
+				parent::$sessionData['profile'][$pid] = array();
+			}
+			parent::saveSessionData();
+			return $deleted;
+		}
+
+		function listProfiles()
+		{
+			$GLOBALS['egw']->hooks->register_all_hooks();
+			self::index();
+		}
+
+/*
 		function deleteProfile()
 		{
-			$this->boemailadmin->deleteProfile($_GET['profileid']);
+			$deleted = self::delete((int)$_GET['profileid']);
 			$this->listProfiles();
 		}
-		
+
 		function display_app_header()
 		{
 			$GLOBALS['egw']->js->validate_file('tabs','tabs');
@@ -221,6 +412,9 @@
 
 			switch($_GET['menuaction'])
 			{
+				case 'emailadmin.emailadmin_ui.add':
+				case 'emailadmin.emailadmin_ui.edit':
+				case 'emailadmin.emailadmin_ui.AddOrEdit':
 				case 'emailadmin.emailadmin_ui.addProfile':
 				case 'emailadmin.emailadmin_ui.editProfile':
 					$GLOBALS['egw_info']['nofooter'] = true;
@@ -259,8 +453,8 @@
 				return false;
 			}
 
-			$profileList = $this->boemailadmin->getProfileList($profileID);
-			$profileData = $this->boemailadmin->getProfile($profileID);
+			$profileList = parent::getProfileList($profileID);
+			$profileData = parent::getProfile($profileID);
 			$this->display_app_header();
 			
 			$this->t->set_file(array("body" => "editprofile.tpl"));
@@ -340,17 +534,14 @@
 			$this->t->set_var('smtptype',html::select(
 				'smtpsettings[smtpType]',
 				$profileData['smtpType'], 
-				$this->boemailadmin->getSMTPServerTypes(),
+				parent::getSMTPServerTypes(),
 				true,
 				'style="width: 250px;" id="smtpselector" onchange="smtp.display(this.value);"'
 			));
-			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value) {
-				$imapServerTypes[$key] = $value['description'];
-			};
 			$selectFrom = html::select(
 				'imapsettings[imapType]', 
 				$profileData['imapType'], 
-				$imapServerTypes, 
+				parent::getIMAPServerTypes(false), 
 				true, 
 				// stupid tabs javascript assumes value=position in selectbox, here's a littel workaround ;-)
 				"style='width: 250px;' id='imapselector' onchange='var v = this.value; imap.display(this.value); this.value=v;'"
@@ -405,7 +596,7 @@
 			
 			$this->translate();
 
-			$profileList = $this->boemailadmin->getProfileList($profileID,$appName,$groupID,$accountID);
+			$profileList = parent::getProfileList($profileID,$appName,$groupID,$accountID);
 			
 			// create the data array
 			if ($profileList)
@@ -640,7 +831,7 @@
 
 			// get the settings for the smtp server
 			$smtpType = $_POST['smtpsettings']['smtpType'];
-			foreach($this->boemailadmin->getFieldNames($smtpType,'smtp') as $key) {
+			foreach(parent::getFieldNames($smtpType,'smtp') as $key) {
 				$smtpSettings[$key] = $_POST['smtpsettings'][$smtpType][$key];
 			}
 			// append the email to be used as sender adress(, if set)
@@ -653,7 +844,7 @@
 			
 			// get the settings for the imap/pop3 server
 			$imapType = $_POST['imapsettings']['imapType'];
-			foreach($this->boemailadmin->getFieldNames($imapType,'imap') as $key) {
+			foreach(parent::getFieldNames($imapType,'imap') as $key) {
 				switch($key) {
 					case 'imapTLSAuthentication':
 						$imapSettings[$key] = !isset($_POST['imapsettings'][$imapType][$key]);
@@ -667,7 +858,7 @@
 
 			#_debug_array($imapSettings);
 			
-			$this->boemailadmin->saveProfile($globalSettings, $smtpSettings, $imapSettings);
+			parent::saveProfile($globalSettings, $smtpSettings, $imapSettings);
 
 			print "<script type=\"text/javascript\">opener.location.reload(); window.close();</script>";
 			$GLOBALS['egw']->common->egw_exit();
@@ -757,5 +948,6 @@
 			# $this->t->set_var('',lang(''));
 			
 		}
+		*/
 	}
 ?>

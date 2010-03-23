@@ -3,7 +3,6 @@
  * eGroupware EMailAdmin - Setup
  *
  * @link http://www.egroupware.org
- * @author Lars Kneschke
  * @author Klaus Leithoff <kl@stylite.de>
  * @package emailadmin
  * @subpackage setup
@@ -18,10 +17,10 @@ $setup_info['emailadmin']['app_order'] = 10;
 $setup_info['emailadmin']['enable']    = 2;
 $setup_info['emailadmin']['index']     = 'emailadmin.emailadmin_ui.listProfiles';
 
-$setup_info['emailadmin']['author'] = 'Lars Kneschke';
+$setup_info['emailadmin']['author'] = 'Klaus Leithoff';
 $setup_info['emailadmin']['license']  = 'GPL';
 $setup_info['emailadmin']['description'] =
-	'A central Mailserver management application for EGroupWare.';
+	'A central Mailserver management application for EGroupWare. Completely rewritten by K.Leithoff in 10-2009';
 $setup_info['emailadmin']['note'] =
 	'';
 $setup_info['emailadmin']['maintainer'] = array(
@@ -43,7 +42,7 @@ $setup_info['emailadmin']['hooks']['deletegroup'] = 'emailadmin_hooks::deletegro
 /* Dependencies for this app to work */
 $setup_info['emailadmin']['depends'][] = array(
 	'appname'  => 'phpgwapi',
-	'versions' => Array('1.3','1.4','1.5','1.6','1.7')
+	'versions' => Array('1.6','1.7')
 );
 $setup_info['emailadmin']['depends'][] = array(
 	'appname'  => 'egw-pear',

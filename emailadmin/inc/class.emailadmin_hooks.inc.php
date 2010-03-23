@@ -21,7 +21,7 @@ class emailadmin_hooks
 		// Only Modify the $file and $title variables.....
 		$title = $appname = 'emailadmin';
 		$file = Array(
-			'Site Configuration'	=> $GLOBALS['egw']->link('/index.php','menuaction=emailadmin.emailadmin_ui.listProfiles')
+			'Site Configuration'	=> $GLOBALS['egw']->link('/index.php','menuaction=emailadmin.emailadmin_ui.index')
 		);
 
 		//Do not modify below this line
@@ -36,8 +36,8 @@ class emailadmin_hooks
      */
 	static function edit_user($data)
 	{
-		#echo "called hook and function<br>";
-		#_debug_array($data);
+		//echo "called hook and function<br>".function_backtrace()."<br>";
+		//_debug_array($data);
 
 		if ($data['account_id'] && // can't set it on add
 			$GLOBALS['egw_info']['user']['apps']['emailadmin'])
@@ -45,7 +45,7 @@ class emailadmin_hooks
 			$GLOBALS['menuData'][] = array(
 				'description' => 'eMailAdmin: User assigned Profile',
 				'url' => '/index.php',
-				'extradata' => 'menuaction=emailadmin.emailadmin_ui.listProfiles'
+				'extradata' => 'menuaction=emailadmin.emailadmin_ui.index'
 			);
 		}
 	}
@@ -67,7 +67,7 @@ class emailadmin_hooks
             $GLOBALS['menuData'][] = array(
                 'description' => 'eMailAdmin: Group assigned Profile',
                 'url' => '/index.php',
-                'extradata' => 'menuaction=emailadmin.emailadmin_ui.listProfiles'
+                'extradata' => 'menuaction=emailadmin.emailadmin_ui.index'
             );
         }
     }

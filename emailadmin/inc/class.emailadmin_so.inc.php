@@ -457,18 +457,6 @@
 				);
 			}
 			return true;
-		}
-		
-		function setOrder($_order)
-		{
-			foreach($_order as $order => $profileID)
-			{
-				$this->db->update($this->table,array(
-					'ea_order'  => $order,
-				),array(
-					'ea_profile_id' => $profileID,
-				),__LINE__, __FILE__);
-			}
-		}
+		}		
 	}
 ?>

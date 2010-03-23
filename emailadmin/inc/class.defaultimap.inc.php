@@ -493,14 +493,21 @@
 			$this->setStreamContextOptions($this->_getTransportOptions());
 			$this->setTimeout(20);
 			if( PEAR::isError($status = parent::connect($this->_getTransportString(), $this->port, $this->encryption == 1)) ) {
-				error_log(__METHOD__."Could not connect");
-				error_log(__METHOD__.$status->message);
+				error_log(__METHOD__."Could not connect with ".$this->_getTransportString()." on Port ".$this->port." Encryption==1?".$this->encryption);
+				error_log(__METHOD__."Status connect:".$status->message);
 				$this->_connectionErrorObject = $status;
 				return false;
 			}
+			if(empty($username))
+			{
+				error_log(__METHOD__."No username supplied.".function_backtrace());
+				return false;
+			}
 			if( PEAR::isError($status = parent::login($username, $password, TRUE, !$this->isAdminConnection)) ) {
-				error_log(__METHOD__."Could not log in");
-				error_log(__METHOD__.$status->message);
+				error_log(__METHOD__."Could not log in with ->".$username.":".$password."<-");
+				error_log(__METHOD__."Status login:".array2string($status->message));
+				//error_log(__METHOD__.'Called from:'.function_backtrace());
+				$this->disconnect();
 				$this->_connectionErrorObject = $status;
 				return false;
 			}

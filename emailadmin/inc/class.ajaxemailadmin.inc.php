@@ -17,34 +17,6 @@
 		function ajaxemailadmin()
 		{
 			$this->bo		= new emailadmin_bo();
-/*			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
-			$this->uiwidgets	=& CreateObject('felamimail.uiwidgets');
-			$this->bofelamimail->openConnection();
-
-			$this->sessionDataAjax	= $GLOBALS['egw']->session->appsession('ajax_session_data');
-			$this->sessionData	= $GLOBALS['egw']->session->appsession('session_data');
-
-			if(!isset($this->sessionDataAjax['folderName']))
-				$this->sessionDataAjax['folderName'] = 'INBOX';
-
-			$this->bofelamimail->openConnection($this->sessionDataAjax['folderName']);*/
-		}
-		
-		function setOrder($_order)
-		{
-			$i = 0;
-			
-			$order = explode(',',$_order);
-
-			foreach($order as $profileIDString)
-			{
-				// remove profile_ and just use the number
-				$profileID = (int)substr($profileIDString,8);
-				if($profileID > 0)
-					$newOrder[$i++] = $profileID;
-			}
-
-			$this->bo->setOrder($newOrder);
 		}
 		
 		function addACL($_accountName, $_aclData)
