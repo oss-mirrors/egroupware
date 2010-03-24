@@ -35,6 +35,12 @@ class syncml_hooks
 			0 => lang('No')
 		);
 
+		$selectAllowed = array(
+			-1	=> lang('Deny unkown devices'),
+			0	=> lang('Disabled'),
+			1	=> lang('Deny explicitly disabled devices'),
+		);
+
 		$select_CalendarFilter = array(
 			'default'     => lang('Not rejected'),
 			'accepted'    => lang('Accepted'),
@@ -113,13 +119,14 @@ class syncml_hooks
 			$user_devices = $devices->getAllUserDevices();
 			foreach ((array)$user_devices as $device)
 			{
-				$label = '<b>'. lang('Settings for') . ' ' . $device['dev_manufacturer'] . ' ' . $device['dev_model'] . ' v' . $device['dev_swversion'] . '&nbsp;</b>';
-				$intro_name = 'deviceExtension-' . $device['owner_deviceid'];
-				$me_name = 'maxEntries-' . $device['owner_deviceid'];
-				$ue_name = 'uidExtension-' . $device['owner_deviceid'];
-				$nba_name = 'nonBlockingAllday-' . $device['owner_deviceid'];
-				$tz_name = 'tzid-' . $device['owner_deviceid'];
-				$charset_name = 'charset-' . $device['owner_deviceid'];
+				$label = '<b>'. lang('Settings for') . ' ' . $device['dev_manufacturer'] . ' ' . $device['dev_model'] . ' v' . $device['dev_swversion'] . '&nbsp;</b><br/>(' . $device['owner_deviceid'] . ')';
+				$intro_name = 'deviceExtension-' . $device['dev_id'];
+				$me_name = 'maxEntries-' . $device['dev_id'];
+				$ue_name = 'uidExtension-' . $device['dev_id'];
+				$nba_name = 'nonBlockingAllday-' . $device['dev_id'];
+				$tz_name = 'tzid-' . $device['dev_id'];
+				$charset_name = 'charset-' . $device['dev_id'];
+				$allowed_name = 'allowed-' . $device['dev_id'];
 				$device_Entry = array(
 					$intro_name => array(
 						'type'  => 'subsection',
@@ -175,6 +182,17 @@ class syncml_hooks
 						'admin'  => False,
 						'default'=> null,
 					),
+
+					$allowed_name => array(
+						'type'   => 'select',
+						'label'  => 'Allowed Devices',
+						'name'   => $allowed_name,
+						'values' => $selectYesNo,
+						'help'   => 'Is this device allowed to synchronize?',
+						'default' => -1,
+						'xmlrpc' => True,
+						'admin'  => True,
+					),
 				);
 				$devices_Entries += $device_Entry;
 			}
@@ -186,6 +204,16 @@ class syncml_hooks
 				'title' => lang('Preferences for the SyncML'),
 				'xmlrpc' => False,
 				'admin'  => False
+			),
+			'denyunknown'	=> array(
+				'type'		=> 'select',
+				'label'		=> lang('Deny unkown devices'),
+				'name'		=> 'deny_unknown_devices',
+				'help'		=> lang('If enabled, EGroupware will allow only devices which are allowed by the administrator.'),
+				'values'    => $selectAllowed,
+				'default'	=> 0,
+				'xmlrpc'	=> True,
+				'admin'		=> True,
 			),
 			'slowsync'	=> array(
 				'type'		=> 'check',
