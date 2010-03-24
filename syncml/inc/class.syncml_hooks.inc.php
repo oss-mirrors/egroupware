@@ -65,15 +65,18 @@ class syncml_hooks
 			$show_addr_lists = $addressbook_bo->get_lists($perms,array(0 => lang('None')));
 			$show_addr_addr = $addressbook_bo->get_addressbooks($perms);
 			unset($show_addr_addr[0]); // No Acounts
-			$show_addr_addr = array(-1 => lang('Primary Group'),
-								0 => lang('All')) + $show_addr_addr;
+			$show_addr_addr = array('G'	=> lang('Primary Group'),
+									'P'	=> lang('Personal'),
+								 	 0	=> lang('All')) +  $show_addr_addr;
 			// list the InfoLog filters
 			$infolog_bo = new infolog_bo();
 			$show_infolog_filters = $infolog_bo->filters;
 
 			// list the calendars this user has access to
 			$calendar_bo = new calendar_bo();
-			$show_calendars = array(0 => lang('Primary Group'));
+			$show_calendars = array('G'	=> lang('Primary Group'),
+									'P'	=> lang('Personal'),
+								 	 0	=> lang('All'));
 			foreach((array)$calendar_bo->list_cals() as $grant)
 			{
 				$show_calendars[$grant['grantor']] = $grant['name'];
@@ -575,7 +578,7 @@ class syncml_hooks
 				'name'		=> 'calendar_owner',
 				'help'		=> lang('Events from selected Calendars will be synchronized.'),
 				'values'	=> $show_calendars,
-				'default'	=> 'none',
+				'default'	=> 'P',
 				'xmlrpc'	 => True,
 				'admin'  	=> False,
 			),

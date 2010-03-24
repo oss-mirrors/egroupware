@@ -87,10 +87,16 @@ function _egwcontactssync_list($filter='')
 
 		if (isset($preferences['filter_addressbook']) && (int)$preferences['filter_addressbook'])
 		{
-			$filter['owner'] = (int)$preferences['filter_addressbook'];
-			if ($filter['owner'] == -1)
+			switch ($preferences['filter_addressbook'])
 			{
-				$filter['owner'] = $GLOBALS['egw_info']['user']['account_primary_group'];
+				case 'G':
+					$filter['owner'] = $GLOBALS['egw_info']['user']['account_primary_group'];
+					break;
+				case 'P':
+					$filter['owner'] = $GLOBALS['egw_info']['user']['account_id'];
+					break;
+				default:
+					$filter['owner'] = (int)$preferences['filter_addressbook'];
 			}
 			//Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		}

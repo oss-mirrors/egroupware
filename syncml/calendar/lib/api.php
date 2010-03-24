@@ -82,24 +82,27 @@ function _egwcalendarsync_list($filter='')
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_owner']))
 	{
 		$owner = $GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_owner'];
-		if ($owner == 0)
+		switch ($owner)
 		{
-			$calendarOwner = $GLOBALS['egw_info']['user']['account_primary_group'];
-		}
-		else
-		{
-			foreach($boCalendar->list_cals() as $grant)
-			{
-				if ($grant['grantor'] == $owner)
+			case 'G':
+				$calendarOwner = $GLOBALS['egw_info']['user']['account_primary_group'];
+			break;
+			case 'P':
+				$calendarOwner = $GLOBALS['egw_info']['user']['account_id'];
+			break;
+			default:
+				foreach ($boCalendar->list_cals() as $grant)
 				{
-					$calendarOwner = $owner;
-					break;
+					if (!$owner || $grant['grantor'] == $owner)
+					{
+						$calendarOwner[] = $grant['grantor'];
+						break;
+					}
 				}
-			}
 		}
 	}
 
-	Horde::logMessage("SymcML: egwcalendarsync calendar owner: $calendarOwner",
+	Horde::logMessage("SymcML: egwcalendarsync calendar owner:" . array2string($calendarOwner),
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$now = time();
