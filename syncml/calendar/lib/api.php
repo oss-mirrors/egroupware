@@ -91,6 +91,7 @@ function _egwcalendarsync_list($filter='')
 				$calendarOwner = $GLOBALS['egw_info']['user']['account_id'];
 			break;
 			default:
+				$calendarOwner = array();
 				foreach ($boCalendar->list_cals() as $grant)
 				{
 					if (!$owner || $grant['grantor'] == $owner)
