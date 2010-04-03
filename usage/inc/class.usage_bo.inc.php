@@ -170,6 +170,7 @@ class usage_bo extends so_sql
 		);
 		// get statistics data from cache (if set)
 		$stats = egw_cache::getInstance('usage','stats',array($this,'calc_statistic'));
+		//$stats = $this->calc_statistic();
 
 		$all_time_total = $stats['all_time_total']; unset($stats['all_time_total']);
 		$total_30d = $stats['total_30d']; unset($stats['total_30d']);
@@ -228,12 +229,21 @@ class usage_bo extends so_sql
 
 			if (isset($stats[$name.'2']))
 			{
-				$content .= "\t\t<td>\n\t\t\t<ol class='usageList'>\n";
-				foreach($stats[$name.'2'] as $row)
+				$content .= "\t\t<td>\n";
+				if (is_array($stats[$name.'2']))
 				{
-					$content .= "\t\t\t\t<li>"./*$row['count'].' = '.*/number_format(100.0*$row['count']/$total_30d,1).'%&nbsp; '.$row['value']."</li>\n";
+					$content .= "\t\t\t<ol class='usageList'>\n";
+					foreach($stats[$name.'2'] as $row)
+					{
+						$content .= "\t\t\t\t<li>"./*$row['count'].' = '.*/number_format(100.0*$row['count']/$total_30d,1).'%&nbsp; '.$row['value']."</li>\n";
+					}
+					$content .= "\t\t\t</ol>\n";
 				}
-				$content .= "\t\t\t</ol>\n\t\t</td>\n";
+				else
+				{
+					$content .= lang('Total sum').': '.$stats[$name.'2'];
+				}
+				$content .= "\t\t</td>\n";
 			}
 			$content .= "\t</tr>\n";
 		}
@@ -273,6 +283,7 @@ class usage_bo extends so_sql
 			$group_by2 = $col2 = '';
 			if ($col == 'usage_users' || $col == 'usage_sessions')
 			{
+				$col2 = 'SUM('.$col.')';
 				$max = $this->db->select(self::MAIN_TABLE ,"MAX($col)",$stat_limit_sql,__LINE__,__FILE__,false,'',self::APP_NAME)->fetchColumn();
 				$max_fraction = ceil($max / 20);
 				$group_by = "TRUNCATE($col/$max_fraction,0)";
@@ -297,7 +308,11 @@ class usage_bo extends so_sql
 				$stats[$name][] = $row;
 			}
 
-			if (!empty($col2))
+			if (substr($col2,0,4) == 'SUM(')
+			{
+				$stats[$name.'2'] = $this->db->select(self::MAIN_TABLE,$col2,$stat_limit_sql,__LINE__,__FILE__)->fetchColumn();
+			}
+			elseif (!empty($col2))
 			{
 				foreach($this->db->select(self::MAIN_TABLE,$col2.' AS value,COUNT(*) AS count',$stat_limit_sql,__LINE__,__FILE__,false,'GROUP BY '.$group_by2.' ORDER BY COUNT(*) DESC',self::APP_NAME) as $row)
 				{
