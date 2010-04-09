@@ -29,7 +29,7 @@ echo('<h2>'.lang('Conflict handling and server R/O options').'</h2>');
 echo(lang('items are changed on both &mdash; server and client side &mdash; before the next synchronization, this is called a conflict situation. You can configure the conflict handling of EGroupware for every target individually. There are three different ways to handle colliding client changes:<br>'));
 echo('<ol>'.lang('<li>The client wins and overwrites the server data.</li><li>The server wins and overwrites the client data (default). </li><li>Duplicate entries are created from both versions.</li>').'</ol>');
 echo(lang('The next two options will put the server in read only mode. If the client sends changes to the server, you can choose between:'));
-echo("<ol start='4'>.<li>".lang('The client and server data is unchanged (split brain).').'</li><li>'.lang('The server reverts all client changes.').'</li></ol>');
+echo("<ol start='4'><li>".lang('The client and server data is unchanged (split brain).').'</li><li>'.lang('The server reverts all client changes.').'</li></ol>');
 echo(lang("The second option relies on the client's cooperation, though. If it gets a change, the server will send its own version of the data back to the client. The client is supposed to roll back the changes this way."));
 echo('<h2>'.lang('Conflict categories for EGroupware data types').'</h2>');
 echo(lang('If you select <b>duplicates</b> as conflict resolution, you may want to assign a certain <b>category</b> for these data items. If EGroupware detects a collision, it will assign the old server item to the selected <i>conflict category</i> and replace the original item with the clients content.'));
@@ -73,7 +73,8 @@ echo("<table border='1'>
 <tr><td><b>".lang('Notes (InfoLog)')."</b></td><td>./notes</td><td>text/x-vnote</td></tr>
 <tr><td></td><td>./sifnotes</td><td>text/x-s4j-sifn</td></tr>
 <tr><td></td><td>./snote</td><td>text/x-s4j-sifn</td></tr>
-</table>
-");
+</table>");
+echo('<br>'.lang('Vcard is the new format for sync and we recomment to use vcard instead of SIF.').'<br>');
+
 
 $GLOBALS['egw']->common->egw_footer();
