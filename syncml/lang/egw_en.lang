@@ -1,0 +1,87 @@
+./calendar	syncml	en	./calendar
+./caltasks	syncml	en	./caltasks
+./card	syncml	en	./card
+./contacts	syncml	en	./contacts
+./events	syncml	en	./events
+./jobs	syncml	en	./jobs
+./notes	syncml	en	./notes
+./scal	syncml	en	./scal
+./scard	syncml	en	./scard
+./sifcalendar	syncml	en	./sifcalendar
+./sifcontacts	syncml	en	./sifcontacts
+./sifnotes	syncml	en	./sifnotes
+./siftasks	syncml	en	./siftasks
+./snote	syncml	en	./snote
+./stask	syncml	en	./stask
+./tasks	syncml	en	./tasks
+a duplicate infolog entry from a synchronization conflict will be assigned to this category.	syncml	en	A duplicate infolog entry from a synchronization conflict will be assigned to this category.
+accepted	syncml	en	Accepted
+addressbook conflict category	syncml	en	Addressbook Conflict Category
+addressbook synchronization options	syncml	en	Addressbook Synchronization Options
+all incl. rejected	syncml	en	All incl. rejected
+auto	syncml	en	auto
+calendar	syncml	en	calendar
+calendar conflict category	syncml	en	Calendar Conflict Category
+calendar filter	syncml	en	Calendar Filter
+calendar future period	syncml	en	Calendar Future Period
+calendar history period	syncml	en	Calendar History Period
+calendar synchronization options	syncml	en	Calendar Synchronization Options
+caltasks	syncml	en	caltasks
+card	syncml	en	card
+categories for conflict duplicates	syncml	en	Categories for Conflict Duplicates
+client wins	syncml	en	Client Wins
+contacts	syncml	en	contacts
+deny explicitly disabled devices	syncml	en	Deny explicitly disabled devices
+deny unkown devices	syncml	en	Deny unkown devices
+device history	common	en	Device History
+device specific settings	syncml	en	Device Specific Settings
+do you really want to delete the synchonization history of the selected datastores?	syncml	en	Do you really want to delete the synchonization history of the selected datastores?
+do you really want to delete the synchonization history of the selected devices?	syncml	en	Do you really want to delete the synchonization history of the selected devices?
+documentation	common	en	Documentation
+enforce server	syncml	en	Enforce Server
+events	syncml	en	events
+events from selected calendars will be synchronized.	syncml	en	Events from selected Calendars will be synchronized.
+for <b>max entries</b> = 0 either <i>maxmsgsize</i> will be used or the default value 10.<br/>	syncml	en	For <b>Max Entries</b> = 0 either <i>maxMsgSize</i> will be used or the default value 10.<br/>
+if enabled, egroupware will allow only devices which are allowed by the administrator.	syncml	en	If enabled, EGroupware will allow only devices which are allowed by the administrator.
+if enabled, egroupware will ignore the mapping information of fromer sync-sessions during slowsyncs.	syncml	en	If enabled, EGroupware will ignore the mapping information of fromer sync-sessions during SlowSyncs.
+ignore client	syncml	en	Ignore Client
+infolog conflict category	syncml	en	InfoLog Conflict Category
+jobs	syncml	en	jobs
+merge data	syncml	en	Merge Data
+minimum accepted uid length	syncml	en	Minimum Accepted UID Length
+minimum uid length	syncml	en	Minimum UID Length
+not rejected	syncml	en	Not rejected
+note synchronization options	syncml	en	Note Synchronization Options
+notes	syncml	en	notes
+only entries from this addressbook (and the above list) will be synchronized.	syncml	en	Only entries from this addressbook (and the above list) will be synchronized.
+only events matching this filter criteria will be synchronized.	syncml	en	Only Events matching this filter criteria will be synchronized.
+only events up to this number of seconds in the future will be synchonized (65000000 seconds > 2 years).	syncml	en	Only events up to this number of seconds in the future will be synchonized (65000000 seconds > 2 years).
+only notes matching this filter criteria will be synchronized.	syncml	en	Only Notes matching this filter criteria will be synchronized.
+only tasks matching this filter criteria will be synchronized.	syncml	en	Only Tasks matching this filter criteria will be synchronized.
+owner too	syncml	en	Owner too
+preferences for the syncml	syncml	en	Preferences for the SyncML
+preferences for the syncml conflict handling<br/>and server r/o options	syncml	en	Preferences for the SyncML Conflict Handling<br/>and Server R/O Options
+primary group	syncml	en	Primary Group
+resolv with duplicates	syncml	en	Resolv with Duplicates
+scal	syncml	en	scal
+scard	syncml	en	scard
+server wins	syncml	en	Server Wins
+settings for	syncml	en	Settings for
+sifcalendar	syncml	en	sifcalendar
+sifcontacts	syncml	en	sifcontacts
+sifnotes	syncml	en	sifnotes
+siftasks	syncml	en	siftasks
+slowsync ignore map	syncml	en	SlowSync ignore map
+snote	syncml	en	snote
+stask	syncml	en	stask
+synchronize this addressbook	syncml	en	Synchronize this addressbook
+synchronize this list	syncml	en	Synchronize this list
+synchronize this selection	syncml	en	Synchronize this selection
+syncronization calendars	syncml	en	Syncronization Calendars
+task synchronization options	syncml	en	Task Synchronization Options
+tasks	syncml	en	tasks
+this address list of contacts will be synchronized.	syncml	en	This address list of contacts will be synchronized.
+this address list of contacts will be synchronized. if used together with the addressbook option, this list will appended.	syncml	en	This address list of contacts will be synchronized. If used together with the addressbook option, this list will appended.
+to this addressbook category a conflict duplicate will be added.	syncml	en	To this Addressbook category a conflict duplicate will be added.
+to this calendar category a conflict duplicate will be added.	syncml	en	To this Calendar category a conflict duplicate will be added.
+your calendar will be synchronized up to this number of seconds in the past (2678400 seconds = 31 days).	syncml	en	Your calendar will be synchronized up to this number of seconds in the past (2678400 seconds = 31 days).

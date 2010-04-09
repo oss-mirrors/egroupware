@@ -1,0 +1,87 @@
+./calendar	syncml	de	./calendar
+./caltasks	syncml	de	./caltasks
+./card	syncml	de	./card
+./contacts	syncml	de	./contacts
+./events	syncml	de	./events
+./jobs	syncml	de	./jobs
+./notes	syncml	de	./notes
+./scal	syncml	de	./scal
+./scard	syncml	de	./scal
+./sifcalendar	syncml	de	./sifcalendar
+./sifcontacts	syncml	de	./sifcontacts
+./sifnotes	syncml	de	./sifnotes
+./siftasks	syncml	de	./siftasks
+./snote	syncml	de	./snote
+./stask	syncml	de	./stask
+./tasks	syncml	de	./tasks
+a duplicate infolog entry from a synchronization conflict will be assigned to this category.	syncml	de	Das auf dem Server erzeugte Duplikat erhält folgende Infolog Kategorie:
+accepted	syncml	de	akzeptiert
+addressbook conflict category	syncml	de	Adressbuch Konflikt Kategorie
+addressbook synchronization options	syncml	de	Adressbuch Synchronisations Einstellungen
+all incl. rejected	syncml	de	Alle inkl. abgesagter
+auto	syncml	de	auto
+calendar	syncml	de	calendar
+calendar conflict category	syncml	de	Kalender Konflikt Kategorie
+calendar filter	syncml	de	Kalender Filter
+calendar future period	syncml	de	Kalender zukünftige Zeitspanne
+calendar history period	syncml	de	Kalender zurückliegende Zeitspanne
+calendar synchronization options	syncml	de	Kalender Synchronisations Einstellungen
+caltasks	syncml	de	caltasks
+card	syncml	de	card
+categories for conflict duplicates	syncml	de	Kategorien für Konflikt Dubletten
+client wins	syncml	de	Endgerät gewinnt
+contacts	syncml	de	contacts
+deny explicitly disabled devices	syncml	de	Verweigere explizit unerlaubte Geräte
+deny unkown devices	syncml	de	Verweigere unbekannte Geräte
+device history	common	de	Geräte Historie
+device specific settings	syncml	de	gerätespezifische Einstellungen
+do you really want to delete the synchonization history of the selected datastores?	syncml	de	Wollen Sie wirklich die Synchronisationshistorie dieses Datenstores löschen?
+do you really want to delete the synchonization history of the selected devices?	syncml	de	Wollen Sie wirklich die Synchronisationshistorie dieses Gerätes löschen?
+documentation	common	de	Dokumentation
+enforce server	syncml	de	setzt Endgerät zurück
+events	syncml	de	events
+events from selected calendars will be synchronized.	syncml	de	Termine des ausgewählten Kalenders werden synchronisiert
+for <b>max entries</b> = 0 either <i>maxmsgsize</i> will be used or the default value 10.<br/>	syncml	de	Für <b>Max Einträge</b> oder <i>max Nachrichtengröße</i> wird ein Vorgabewert von 10 gesetzt.<br>
+if enabled, egroupware will allow only devices which are allowed by the administrator.	syncml	de	Wenn diese Option aktiviert ist, wird EGroupware nur Geräte erlauben, die der Administrator freigeschaltet hat.
+if enabled, egroupware will ignore the mapping information of fromer sync-sessions during slowsyncs.	syncml	de	Wenn diese Option aktiviert ist, werden die Informationen von einer vorherigen Sync-Session während des SlowSyncs ignoriert.
+ignore client	syncml	de	Endgerät ignorieren
+infolog conflict category	syncml	de	Infolog Konflikt Kategorie
+jobs	syncml	de	jobs
+merge data	syncml	de	Daten zusammenführen
+minimum accepted uid length	syncml	de	Minimale akzeptierte UID Länge
+minimum uid length	syncml	de	Minimale UID Länge
+not rejected	syncml	de	nicht abgesagte
+note synchronization options	syncml	de	Einstellungen für die Synchronisation von Notizen
+notes	syncml	de	notes
+only entries from this addressbook (and the above list) will be synchronized.	syncml	de	Nur Einträge dieses Adressbuchs werden synchronisiert
+only events matching this filter criteria will be synchronized.	syncml	de	Nur Termine mit diesem Filter Kriterium werden synchronisiert
+only events up to this number of seconds in the future will be synchonized (65000000 seconds > 2 years).	syncml	de	Kalendereinträge bis zu dieser Zeit in die Zukunft werden synchronisiert (Angabe in Sekunden, 65000000 Sekunden > 2 Jahre).
+only notes matching this filter criteria will be synchronized.	syncml	de	Nur Notizen mit diesem Filter Kriterium werden synchronisiert.
+only tasks matching this filter criteria will be synchronized.	syncml	de	Nur Aufgaben mit diesem Filter Kriterium werden synchronisiert.
+owner too	syncml	de	auch Besitzer
+preferences for the syncml	syncml	de	Einstellungen für SyncML
+preferences for the syncml conflict handling<br/>and server r/o options	syncml	de	Einstellungen der SyncML Konflikt Behandlung
+primary group	syncml	de	Primäre Gruppe
+resolv with duplicates	syncml	de	Konflikte mit Dubletten lösen
+scal	syncml	de	scal
+scard	syncml	de	scard
+server wins	syncml	de	Server gewinnt
+settings for	syncml	de	Einstellungen für
+sifcalendar	syncml	de	sifcalendar
+sifcontacts	syncml	de	sifcontacts
+sifnotes	syncml	de	sifnotes
+siftasks	syncml	de	siftasks
+slowsync ignore map	syncml	de	SlowSync ignoriere bestehende map
+snote	syncml	de	snote
+stask	syncml	de	stask
+synchronize this addressbook	syncml	de	Dieses Adressbuch synchronisieren
+synchronize this list	syncml	de	Diese Verteilerliste synchronisieren
+synchronize this selection	syncml	de	Diese Auswahl synchronisieren
+syncronization calendars	syncml	de	Kalender Synchronisation
+task synchronization options	syncml	de	Einstellungen für die Aufgaben Synchronisation
+tasks	syncml	de	tasks
+this address list of contacts will be synchronized.	syncml	de	Diese Adressliste von Kontakten wird synchronisiert
+this address list of contacts will be synchronized. if used together with the addressbook option, this list will appended.	syncml	de	Diese Verteilerliste wird synchronisiert. Wenn dies zusammen mit einem Adressbuch ausgewählt wird, dann wird beides synchronisiert.
+to this addressbook category a conflict duplicate will be added.	syncml	de	Das auf dem Server erzeugte Duplikat erhält folgende Adressbuch Kategorie:
+to this calendar category a conflict duplicate will be added.	syncml	de	Das auf dem Server erzeugte Duplikat erhält folgende Kalender Kategorie:
+your calendar will be synchronized up to this number of seconds in the past (2678400 seconds = 31 days).	syncml	de	Kalender Einträge bis zu dieser Zeit in die Vergangenheit werden synchronisiert (Angabe in Sekunden, 2678400 Sekunden = 31 Tage).
