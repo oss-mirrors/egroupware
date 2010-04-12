@@ -1,18 +1,23 @@
 account '%1' not found !!!	emailadmin	fi	Tiliä '%1' ei löytynyt !!!
+active templates	emailadmin	fi	Aktiiviset mallipohjat (templates)
 add new email address:	emailadmin	fi	Lisää uusi sähköpostiosoite
 add profile	emailadmin	fi	Lisää profiili
-admin dn	emailadmin	fi	admin dn
-admin password	emailadmin	fi	admin salasana
-admin username	emailadmin	fi	admin käyttäjätunnus
-advanced options	emailadmin	fi	lisäasetukset
-alternate email address	emailadmin	fi	vaihtoehtoinen sähköpostiosoite
-any application	emailadmin	fi	Mikä vain sovellus
-any group	emailadmin	fi	Mikä vain ryhmä
+admin dn	emailadmin	fi	Admin dn
+admin password	emailadmin	fi	Admin salasana
+admin username	emailadmin	fi	Admin käyttäjätunnus
+advanced options	emailadmin	fi	Lisäasetukset
+alternate email address	emailadmin	fi	Vaihtoehtoinen sähköpostiosoite
+any application	emailadmin	fi	Mikä tahansa sovellus
+any group	emailadmin	fi	Mikä tahansa ryhmä
+any user	emailadmin	fi	Kuka tahansa käyttäjä
+back to admin/grouplist	emailadmin	fi	Takaisin Admin/Ryhmälistoihin
+back to admin/userlist	emailadmin	fi	Takaisin Admin/Käyttäjälistoihin
 bad login name or password.	emailadmin	fi	Väärä käyttäjätunnus tai salasana
 bad or malformed request. server responded: %s	emailadmin	fi	Väärä tai viallinen pyyntö. Serveri palauttaa: %s
 bad request: %s	emailadmin	fi	Väärä pyyntö: %s
-can be used by application	emailadmin	fi	Voidaan käyttää sovelluksessa
-can be used by group	emailadmin	fi	Voidaan käyttää ryhmällä
+can be used by application	emailadmin	fi	Sovellukselle
+can be used by group	emailadmin	fi	Ryhmälle
+can be used by user	emailadmin	fi	Käyttäjälle
 connection dropped by imap server.	emailadmin	fi	Yhteys IMAP palvelimeen katkesi.
 could not complete request. reason given: %s	emailadmin	fi	Pyyntöä ei voitu toteuttaa. Syynä oli: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	fi	Turvattua yhteyttä IMAP palvelimeen ei voitu avata. %s : %s.
@@ -27,14 +32,19 @@ edit email settings	emailadmin	fi	muokkaa sähköpostin asetuksia
 email account active	emailadmin	fi	Sähköpostitunnus käytössä
 email address	emailadmin	fi	Sähköpostiosoite
 email settings	common	fi	Sähköpostin asetukset
-emailadmin	emailadmin	fi	Sähköpostin ylläpitäjä
-enable cyrus imap server administration	emailadmin	fi	ota Cyrus IMAP -palvelimen hallinta käyttöön
-enable sieve	emailadmin	fi	ota Sieve käyttöön
-encryption settings	emailadmin	fi	Encryptaus asetukset
+emailadmin	emailadmin	fi	Sähköpostin ylläpitäjä (EmailAdmin)
+emailadmin: group assigned profile	common	fi	EmailAdmin: Ryhmälle suunnattu profiili
+emailadmin: user assigned profile	common	fi	EmailAdmin: Käyttäjälle suunnattu profiili
+enable cyrus imap server administration	emailadmin	fi	Ota Cyrus IMAP -palvelimen hallinta käyttöön
+enable sieve	emailadmin	fi	Ota Sieve käyttöön
+encrypted connection	emailadmin	fi	Salattu yhteys
+encryption settings	emailadmin	fi	Enkryptaus asetukset
 enter your default mail domain (from: user@domain)	emailadmin	fi	Anna oletusverkkotunnus (lähettäjä: käyttäjä@verkkotunnus)
 error connecting to imap server. %s : %s.	emailadmin	fi	Virhe yhdistettäessä IMAP palvelimeen. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	fi	Virhe yhdistettäessä IMAP palvelimeen. [%s] %s.
-forward also to	emailadmin	fi	lähetä kopio myös osoitteeseen
+filtered by account	emailadmin	fi	Suodatin käyttäjätilien mukaan
+filtered by group	emailadmin	fi	Suodatin ryhmän mukaan
+forward also to	emailadmin	fi	lähetä edelleen myös osoitteeseen
 forward email's to	emailadmin	fi	lähetä edelleen osoitteeseen
 forward only	emailadmin	fi	lähetä edelleen vain
 global options	emailadmin	fi	Yleiset asetukset
@@ -46,25 +56,27 @@ imap server closed the connection.	emailadmin	fi	IMAP palvelin katkaisi yhteyden
 imap server closed the connection. server responded: %s	emailadmin	fi	IMAP palvelin katkaisi yhteyden. Palvelin vastaa: %s
 imap server hostname or ip address	emailadmin	fi	IMAP -palvelimen nimi tai IP-osoite
 imap server logintyp	emailadmin	fi	IMAP -palvelimen käyttäjätunnistus
+imap server name	emailadmin	fi	IMAP -palvelimen nimi
 imap server port	emailadmin	fi	IMAP -palvelimen portti
 imap/pop3 server name	emailadmin	fi	IMAP / POP3 -palvelimen nimi
 in mbyte	emailadmin	fi	megatavua
+inactive	emailadmin	fi	ei-aktiivinen
 ldap basedn	emailadmin	fi	LDAP basedn
 ldap server	emailadmin	fi	LDAP -palvelin
-ldap server accounts dn	emailadmin	fi	LDAP tunnusten DN
-ldap server admin dn	emailadmin	fi	LDAP ylläpidon DN
-ldap server admin password	emailadmin	fi	LDAP hallinnan salasana
+ldap server accounts dn	emailadmin	fi	LDAP -tunnusten DN
+ldap server admin dn	emailadmin	fi	LDAP -ylläpidon DN
+ldap server admin password	emailadmin	fi	LDAP -hallinnan salasana
 ldap server hostname or ip address	emailadmin	fi	LDAP -palvelimen nimi tai IP-osoite
 ldap settings	emailadmin	fi	LDAP -asetukset
 leave empty for no quota	emailadmin	fi	jätä tyhjäksi, jos ei rajoiteta
 mail settings	admin	fi	Sähköpostin asetukset
-name of organisation	emailadmin	fi	Yrityksen nimi
+name of organisation	emailadmin	fi	Organisaation nimi
 no alternate email address	emailadmin	fi	ei vahtoehtoista osoitetta
 no encryption	emailadmin	fi	Ei enkryptausta
 no forwarding email address	emailadmin	fi	ei edelleenlähetyksen osoitetta
 no message returned.	emailadmin	fi	Viestiä ei palautettu
 no supported imap authentication method could be found.	emailadmin	fi	Tuettua IMAP tunnistustapaa ei löydetty.
-order	emailadmin	fi	Tilaa
+order	emailadmin	fi	Järjestys
 organisation	emailadmin	fi	Organisaatio
 plesk can't rename users --> request ignored	emailadmin	fi	Plesk ei voi nimetä käyttäjiä --> pyyntö hylätty
 plesk imap server (courier)	emailadmin	fi	Plesk IMAP palvelin (Courier)
@@ -75,22 +87,26 @@ pop3 server hostname or ip address	emailadmin	fi	POP3 -palvelimen nimi tai IP-os
 pop3 server port	emailadmin	fi	POP3 -palvelimen portti
 postfix with ldap	emailadmin	fi	Postfix ja LDAP
 profile access rights	emailadmin	fi	profiilin pääsy oikeudet
+profile is active	emailadmin	fi	profiili on aktiivinen
 profile list	emailadmin	fi	Lista profiileista
 profile name	emailadmin	fi	Profiilin nimi
 qmaildotmode	emailadmin	fi	qmaildotmode
 qouta size in mbyte	emailadmin	fi	tallennuskiintiö Mt
-quota settings	emailadmin	fi	tallennuskiintiö
-remove	emailadmin	fi	poista
+quota settings	emailadmin	fi	tallennuskiintiön asetukset
+remove	emailadmin	fi	Poista
+reset filter	emailadmin	fi	jälleenaseta suodatin
+select type of imap server	emailadmin	fi	Valitse IMAP -palvelimen tyyppi
 select type of imap/pop3 server	emailadmin	fi	Valitse IMAP / POP3 -palvelimen tyyppi
 select type of smtp server	emailadmin	fi	Valitse SMTP -palvelimen tyyppi
+send using this email-address	emailadmin	fi	lähetä käyttäen tätä sähköpostiosoitetta
 server settings	emailadmin	fi	Palvelimen asetukset
 sieve server hostname or ip address	emailadmin	fi	Sieve -palvelimen nimi tai IP-osoite
 sieve server port	emailadmin	fi	Sieve -palvelimen portti
 sieve settings	emailadmin	fi	Sieven asetukset
-smtp authentication	emailadmin	fi	SMTP tunnistus
-smtp options	emailadmin	fi	SMTP asetukset
+smtp authentication	emailadmin	fi	SMTP -tunnistus
+smtp options	emailadmin	fi	SMTP -asetukset
 smtp server name	emailadmin	fi	SMTP -palvelimen nimi
-smtp settings	emailadmin	fi	SMTP asetukset
+smtp settings	emailadmin	fi	SMTP -asetukset
 smtp-server hostname or ip address	emailadmin	fi	SMTP -palvelimen nimi tai IP-osoite
 smtp-server port	emailadmin	fi	SMTP -palvelimen portti
 standard	emailadmin	fi	Vakio
@@ -111,7 +127,10 @@ use smtp auth	emailadmin	fi	Käytä SMTP -käyttäjäntunnistusta
 use tls authentication	emailadmin	fi	Käytä TLS -käyttäjäntunnistusta
 use tls encryption	emailadmin	fi	Käytä TLS -salausta
 user can edit forwarding address	emailadmin	fi	Käyttäjä voi muokata eteenpäinlähetyksen osoitetta
-username (standard)	emailadmin	fi	käyttäjätunnus (standardi)
+username (standard)	emailadmin	fi	Käyttäjätunnus (standardi)
+username/password defined by admin	emailadmin	fi	Adminin määrittelemä Käyttäjänimi/salasana
 username@domainname (virtual mail manager)	emailadmin	fi	käyttäjätunnus@palvelimennimi (Virtual MAIL ManaGeR)
-users can define their own emailaccounts	emailadmin	fi	Käyttäjät voivat määritellä omat postilaatikkonsa
+users can define their own emailaccounts	emailadmin	fi	Käyttäjät voivat määritellä omia sähköpostitilejä
+users can define their own identities	emailadmin	fi	Käyttäjät voivat määritellä omia (uusia) identiteettejä
+users can define their own signatures	emailadmin	fi	Käyttäjät voivat määritellä omia (uusia) allekirjoituksia
 virtual mail manager	emailadmin	fi	Virtual MAIL ManaGeR
