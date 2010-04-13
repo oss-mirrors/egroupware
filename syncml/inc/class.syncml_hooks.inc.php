@@ -70,9 +70,11 @@ class syncml_hooks
 			$perms = EGW_ACL_READ | EGW_ACL_ADD | EGW_ACL_EDIT | EGW_ACL_DELETE;
 			$show_addr_lists = $addressbook_bo->get_lists($perms,array(0 => lang('None')));
 			$show_addr_addr = $addressbook_bo->get_addressbooks($perms);
+			unset($show_addr_addr[$user]); // skip personal addressbook
 			unset($show_addr_addr[0]); // No Acounts
 			$show_addr_addr = array('G'	=> lang('Primary Group'),
 									'P'	=> lang('Personal'),
+									'N' => lang('None'),
 								 	 0	=> lang('All')) +  $show_addr_addr;
 			// list the InfoLog filters
 			$infolog_bo = new infolog_bo();
@@ -85,7 +87,10 @@ class syncml_hooks
 								 	 0	=> lang('All'));
 			foreach((array)$calendar_bo->list_cals() as $grant)
 			{
-				$show_calendars[$grant['grantor']] = $grant['name'];
+				if ($grant['grantor'] != $user) // skip personal calendar
+				{
+					$show_calendars[$grant['grantor']] = $grant['name'];
+				}
 			}
 
 			// list the calendar categories of this user

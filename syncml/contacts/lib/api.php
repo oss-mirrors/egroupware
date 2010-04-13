@@ -74,6 +74,8 @@ function _egwcontactssync_list($filter='')
 		$filter['account_id'] = null;
 	}
 
+	$search_addressbook = true;
+
 	if (is_array($GLOBALS['egw_info']['user']['preferences']['syncml']))
 	{
 		$preferences = $GLOBALS['egw_info']['user']['preferences']['syncml'];
@@ -85,7 +87,7 @@ function _egwcontactssync_list($filter='')
 			unset($filter['list']);
 		}
 
-		if (isset($preferences['filter_addressbook']) && (int)$preferences['filter_addressbook'])
+		if (isset($preferences['filter_addressbook']))
 		{
 			switch ($preferences['filter_addressbook'])
 			{
@@ -95,14 +97,22 @@ function _egwcontactssync_list($filter='')
 				case 'P':
 					$filter['owner'] = $GLOBALS['egw_info']['user']['account_id'];
 					break;
+				case 'N':
+					$search_addressbook = false;
+					break;
+				case '0':
+					break;
 				default:
 					$filter['owner'] = (int)$preferences['filter_addressbook'];
 			}
 			//Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		}
 	}
+	if ($search_addressbook)
+	{
+		$allContacts = $soAddressbook->search($criteria,true,'','','',false,'AND',false,$filter);
+	}
 
-	$allContacts = $soAddressbook->search($criteria,true,'','','',false,'AND',false,$filter);
 	if (!is_array($allContacts)) $allContacts = array();
 	if (!empty($allOnList))	$allContacts = array_merge($allContacts, $allOnList);
 
