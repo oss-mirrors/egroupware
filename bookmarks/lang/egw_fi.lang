@@ -2,7 +2,7 @@
 %1 bookmarks imported from %2 successfully.	bookmarks	fi	%1 suosikkia tuotiin tiedostosta %2.
 %s bookmarks selected for export	bookmarks	fi	%1 suosikkia valittu vientiin
 (comma separate multiple addresses)	bookmarks	fi	(erota osoitteet toisistaan pilkuilla)
-(selecting a category includes all sub-categories)	bookmarks	fi	(valitsemalla kategorian valitset myös alakategoriat)
+(selecting a category includes all sub-categories)	bookmarks	fi	(valitsemalla kategorian valitset myös alikategoriat)
 <b>note:</b> this currently works with netscape bookmarks only	bookmarks	fi	<b>Huomaa:</b> Toimii vain Netscapen suosikki-tiedoston kanssa
 actions	bookmarks	fi	Toimenpiteet
 added	bookmarks	fi	Lisätty
@@ -24,11 +24,11 @@ categories to export	bookmarks	fi	Vie kategoriat
 change bookmark	bookmarks	fi	Muuta suosikki
 check all	bookmarks	fi	Valitse kaikki
 choose the categories to display	bookmarks	fi	Valitse näytettävät kategoriat
-close this window to return	bookmarks	fi	sulje ikkuna palataksesi
+close this window to return	bookmarks	fi	Sulje ikkuna palataksesi
 create bookmark	bookmarks	fi	Lisää suosikki
-create new bookmark	bookmarks	fi	Tee uusi suosikki
-create new links	bookmarks	fi	Luo uusi linkki
-created	bookmarks	fi	Luotu
+create new bookmark	bookmarks	fi	Lisää uusi suosikki
+create new links	bookmarks	fi	Lisää uusi linkki
+created	bookmarks	fi	Lisätty
 date added	bookmarks	fi	Päiväys lisätty
 date changed	bookmarks	fi	Päiväys muutettu
 date last updated	bookmarks	fi	Päivitetty viimeksi
@@ -37,13 +37,13 @@ descending	bookmarks	fi	Laskeva
 edit bookmark	bookmarks	fi	Muokkaa suosikkia
 edit this bookmark	bookmarks	fi	Muokkaa tätä suosikkia
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	fi	Valitse tuotava Netscapen suosikki-tiedosto.
-existing links	bookmarks	fi	olemassaolevat linkit
+existing links	bookmarks	fi	Olemassaolevat linkit
 export	bookmarks	fi	Vienti
 export bookmarks	common	fi	Vie suosikit
 export format	bookmarks	fi	Vie formaatti
 fewer	bookmarks	fi	Vähemmän
-filter by	bookmarks	fi	Rajaa joukkoa
-found a link you might like	bookmarks	fi	Sinua saattaisi kiinnostaa tämä
+filter by	bookmarks	fi	Suodata
+found a link you might like	bookmarks	fi	Sinua saattaisi kiinnostaa tämä linkki:
 from	bookmarks	fi	Mistä
 from category %1	bookmarks	fi	Kategoriasta %1
 general	bookmarks	fi	Yleinen
@@ -60,7 +60,7 @@ links	bookmarks	fi	Linkit
 list view	bookmarks	fi	Luettelo
 lowest	bookmarks	fi	Matalin
 mail this bookmark	bookmarks	fi	Lähetä sähköpostilla
-mail-this-link message sent to %1.	bookmarks	fi	linkki lähetetty vastaanottajalle %1.
+mail-this-link message sent to %1.	bookmarks	fi	Linkki lähetetty vastaanottajalle %1.
 mass update:	bookmarks	fi	Joukkopäivitys:
 message from	bookmarks	fi	Lähettäjä
 more	bookmarks	fi	Enemmän
@@ -70,31 +70,33 @@ netscape / firefox	bookmarks	fi	Netscape / Firefox
 netscape bookmark file	bookmarks	fi	Netscapen suosikit-tiedosto
 netscape bookmark filename is required!	bookmarks	fi	Netscapen suosikit-tiedoston nimi on annettava!
 new	bookmark	fi	Uusi
-new bookmark	bookmarks	fi	uusi suosikki
+new bookmark	bookmarks	fi	Uusi suosikki
 or	bookmarks	fi	tai
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	fi	Täytä <B>Vastaanottaja</B>, <B>Aihe</B> ja <B>Viesti</B>!
 please select the categories to export	bookmarks	fi	Valitse vietävät kategoriat
 query condition	bookmarks	fi	Hakuehto
 rating	bookmarks	fi	Luokitus
+rating of this site	bookmarks	fi	Sivuston luokitus
 search for:	bookmarks	fi	Etsi:
-select an action	bookmarks	fi	Valitse toimenpide
-select an action...	bookmarks	fi	Valitse toimenpide...
+select an action	bookmarks	fi	Valitse toiminto
+select an action...	bookmarks	fi	Valitse toiminto...
 select the format you would like to export to	bookmarks	fi	Valitse muoto, jolla viedään
 send bookmark	bookmarks	fi	Lähetä suosikki
-sub category	bookmarks	fi	Alakategoria
-sub-folders will create new categories	bookmarks	fi	Alakansiot luovat uusia kategorioita
+sub category	bookmarks	fi	Alikategoria
+sub-folders will create new categories	bookmarks	fi	Alikansiot luovat uusia kategorioita
 this module displays bookmarks in a javascript based tree	bookmarks	fi	Sovellus näyttää suosikit Javascript rungossa.
-to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	fi	Vastaanottajan osoite %1 ei kelpaa. Osoitteen on oltava muotoa <strong>kayttaja@verkkotunnus</strong> ja verkkotunnuksen on oltava olemassa!
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	fi	Virheellinen vastaanottajan osoite %1. Osoitteen on oltava muotoa <strong>kayttaja@verkkotunnus</strong> ja verkkotunnuksen on oltava olemassa!
 to e-mail addresses	bookmarks	fi	Sähköpostiosoitteisiin
 to which category should the imported folder hierarchy be attached	bookmarks	fi	Mihin kategoriaan tuotu kansiohierarkia lisätään
-total visits	bookmarks	fi	vierailukertoja
-tree view	bookmarks	fi	Puunäkymä
+total visits	bookmarks	fi	Vierailukertoja
+tree view	bookmarks	fi	Runkonäkymä
 unable to open temp file %1 for import.	bookmarks	fi	Virhe avattaessa tiedostoa %1 tuontia varten
 updated	bookmarks	fi	Päivitetty
 url is required.	bookmarks	fi	URL on annettava
 view bookmark	bookmarks	fi	Näytä suosikki
 view this bookmark	bookmarks	fi	Näytä tämä suosikki
 warning	bookmarks	fi	Varoitus
-you are viewing this site outside of egroupware	bookmarks	fi	Tämä on eGroupWare -järjestelmän ulkopuolinen sivu
+whole query	bookmarks	fi	Koko kysely
+you are viewing this site outside of egroupware	bookmarks	fi	Tämä on EGroupware -järjestelmän ulkopuolinen sivu
 you must select a category	bookmarks	fi	Valitse kategoria
 you need to select a category!	bookmarks	fi	Valitse kategoria!

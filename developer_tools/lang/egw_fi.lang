@@ -1,8 +1,8 @@
-add	developer_tools	fi	lisää
+add	developer_tools	fi	Lisää
 add change	developer_tools	fi	Lisää muutos
 add more	developer_tools	fi	Lisää enemmän
 add new phrase	developer_tools	fi	Uusi fraasi
-add phrase	developer_tools	fi	lisää fraasi
+add phrase	developer_tools	fi	Lisää fraasi
 allows you to add a single phrase	developer_tools	fi	Lisää yksi fraasi
 application	developer_tools	fi	Sovellus
 back	developer_tools	fi	Takaisin
@@ -16,7 +16,7 @@ create sgml file	developer_tools	fi	Uusi SGML -tiedosto
 developer tools - preferences	developer_tools	fi	Kehittäjän työkalut - asetukset
 developer_tools	common	fi	Käännöstyökalu
 diary	developer_tools	fi	Päiväkirja
-done	developer_tools	fi	valmis
+done	developer_tools	fi	Valmis
 download	developer_tools	fi	Lataa
 download the lang-file to be saved in the apps setup-dir	developer_tools	fi	Lataa kielitiedosto tallennettavaksi sovelluksen setup -hakemistoon
 edit	developer_tools	fi	Muokkaa
@@ -24,13 +24,13 @@ installed applications	developer_tools	fi	Asennetut sovellukset
 language file management	developer_tools	fi	Kielitiedostojen hallinta
 list changelogs	developer_tools	fi	Listaa muutoslokit
 load	developer_tools	fi	Lataa
-loading source langfile	developer_tools	fi	Lataan lähdekielen kielitiedostoa
-loading target langfile	developer_tools	fi	Lataan kohdekielen kielitiedostoa
+loading source langfile	developer_tools	fi	Ladataan lähdekielen kielitiedostoa
+loading target langfile	developer_tools	fi	Ladataan kohdekielen kielitiedostoa
 loads the selected lang-files, to be modified in the next steps	developer_tools	fi	Lataa valitut kielitiedostot muokattaviksi seuraavassa vaiheessa
 message	developer_tools	fi	Viesti
 message_id in english	developer_tools	fi	message_id (englanniksi)
-no file	developer_tools	fi	ei tiedostoa
-ok	developer_tools	fi	ok
+no file	developer_tools	fi	Ei tiedostoa
+ok	developer_tools	fi	OK
 original	developer_tools	fi	Alkuperäinen
 phrase in english (or empty if identical)	developer_tools	fi	Fraasi englanniksi (tai tyhjä jos sama)
 preferences	developer_tools	fi	Asetukset
