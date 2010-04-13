@@ -15,10 +15,23 @@
 $params = array();
 $params["title"] = lang('eGroupware Chat');
 /* Make the channel list configurable (via an admin interface?). */
-$params["channels"] = array("eGroupware","eGroupware-".$GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_primary_group']));
+$categories = new categories($GLOBALS['egw_info']['user']['account_id'],'phpfreechat');
+$channels = array();
+foreach((array)$categories->return_sorted_array(0,False,'','','',false) as $cat)
+{
+	if ($cat['appname']=='phpfreechat') $channels[] = $cat['name'];
+}
+$params["channels"] = (empty($channels)? array("eGroupware","eGroupware-".$GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_primary_group'])):$channels);
 if ($GLOBALS['egw_info']['user']['apps']['admin'])
 {
 	$params["isadmin"] = true;
+}
+/* some configured params */
+$config = config::read('phpfreechat');
+$frozen_nick = true;
+if (!empty($config['frozen_nick'])|| $config['frozen_nick']=='False') 
+{
+	$frozen_nick = ($config['frozen_nick']=='False'?False:True);
 }
 /* Pre-define some settings for known users (not from website) */
 if ($GLOBALS['egw_info']['user']['account_lid'] != 'anonymous')
@@ -122,7 +135,7 @@ if ($GLOBALS['egw_info']['user']['account_lid'] != 'anonymous')
 	 * and will also prohibit joining the chat multiple times (e.g. from
 	 * different offices with the same login).
 	*/
-	$params["frozen_nick"] = true;
+	$params["frozen_nick"] = $frozen_nick;
 
 }
 // if you use NFS you may want to use, since logging is enabled by default
@@ -133,9 +146,11 @@ $params['skip_proxies'] = array('log');
 $params["dyn_params"] = array(
 	"channels",
 	"nick",
+	"frozen_nick",
 	'language',
 	"nickmeta",
 	"data_public_path",
+	"data_private_path",
 	"isadmin",
 );
 /**

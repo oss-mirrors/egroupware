@@ -16,7 +16,7 @@ $setup_info['phpfreechat']['only_db'] = array('mysql','mysqlt','mysqli');
 /* Basic information about this app */
 $setup_info['phpfreechat']['name']      = 'phpfreechat';
 $setup_info['phpfreechat']['title']     = 'phpFreeChat';
-$setup_info['phpfreechat']['version']   = '1.6';
+$setup_info['phpfreechat']['version']   = '1.6.001';
 $setup_info['phpfreechat']['app_order'] = 4;
 $setup_info['phpfreechat']['enable']    = 4;	// 4 = popup
 
@@ -28,6 +28,8 @@ $setup_info['phpfreechat']['description'] = lang('phpFreeChat integration into e
 $setup_info['phpfreechat']['note'] = '';
 
 $setup_info['phpfreechat']['tables']  = array('egw_phpfreechat');	// handled by pfc itself atm.
+
+$setup_info['phpfreechat']['hooks']['admin'] = 'phpfreechat_hooks::all_hooks';
 
 /* Dependencies for this app to work */
 $setup_info['phpfreechat']['depends'][] = array(

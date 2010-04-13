@@ -34,12 +34,15 @@ require_once(EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat/src/phpfreechat.class.ph
 include(EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat_config.php');
 $chat = new phpFreeChat($params);
 
-echo "<html>\n";
-echo "<head>\n";
-echo "<title>EGroupware Chat</title>\n";
+//echo "<html>\n";
+//echo "<head>\n";
+//echo "<title>EGroupware Chat</title>\n";
+$GLOBALS['egw']->common->egw_header();
+$chat->printJavaScript();
+$chat->printStyle();
 if (isset($_GET['referer'])) echo "<script>window.focus();</script>\n";
-echo "</head>\n";
-echo "<body>\n";
+//echo "</head>\n";
+//echo "<body>\n";
 $chat->printChat();
 echo "</body>\n";
-echo "</html>\n";
+//echo "</html>\n";
