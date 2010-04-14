@@ -78,7 +78,12 @@ class syncml_hooks
 								 	 0	=> lang('All')) +  $show_addr_addr;
 			// list the InfoLog filters
 			$infolog_bo = new infolog_bo();
-			$show_infolog_filters = $infolog_bo->filters;
+			$show_infolog_filters = array();
+			translation::add_app('infolog');
+			foreach ($infolog_bo->filters as $key => $val)
+			{
+				$show_infolog_filters[$key] = lang($val);
+			}
 
 			// list the calendars this user has access to
 			$calendar_bo = new calendar_bo();
