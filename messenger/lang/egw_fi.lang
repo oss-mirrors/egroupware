@@ -1,15 +1,16 @@
 compose	messenger	fi	Kirjoita
 compose global message	common	fi	Kirjoita järjestelmäviesti
 compose message	messenger	fi	Kirjoita viesti
+compose to group-users	messenger	fi	Kirjoita ryhmäkäyttäjille
 delete a message.	messenger	fi	Poista viesti.
 delete selected	messenger	fi	Poista valittu.
 forward	messenger	fi	Lähetä eteenpäin
 forward a message	messenger	fi	Lähetä viesti eteenpäin
 forward a message to another user.	messenger	fi	Lähetä viesti toiselle käyttäjälle.
 forwarded	messenger	fi	Edelleenlähetetty
-from	messenger	fi	Mistä
+from	messenger	fi	Keneltä:
 global message	messenger	fi	Järjestelmäviesti
-i can't find the username %1 on the system	messenger	fi	En löydä käyttäjätunnusta %1 järjestelmästä.
+i can't find the username %1 on the system	messenger	fi	Käyttäjätunnusta %1 ei löydy järjestelmästä.
 inbox	messenger	fi	Saapuneet
 message from	messenger	fi	Lähettäjä
 messenger	common	fi	Viestit
@@ -32,5 +33,5 @@ you didn't enter anything for the message	messenger	fi	Et kirjoittanut viestiin 
 you have %1 new message	common	fi	Uusia viestejä %1
 you have %1 new messages	common	fi	Uusia viestejä %1
 you have no messages	messenger	fi	Sinulle ei ole viestejä
-you must enter a subject	messenger	fi	Sinun täytyy kirjoittaa aihe
-you must enter the username this message is for	messenger	fi	Sinun täytyy antaa käyttäjätunnus keneltä tämä viesti on
+you must enter a subject	messenger	fi	Kirjoita aihe
+you must enter the username this message is for	messenger	fi	Kirjoita käyttäjätunnus kenelle tämä viesti on
