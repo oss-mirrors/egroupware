@@ -85,6 +85,7 @@ function _egwcalendarsync_list($filter='')
 		switch ($owner)
 		{
 			case 'G':
+			case -1:
 				$calendarOwner = $GLOBALS['egw_info']['user']['account_primary_group'];
 			break;
 			case 'P':

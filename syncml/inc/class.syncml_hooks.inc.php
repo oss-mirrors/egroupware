@@ -568,7 +568,7 @@ class syncml_hooks
 				'name'		=> 'filter_addressbook',
 				'help'		=> lang('Only entries from this addressbook (and the above list) will be synchronized.'),
 				'values'	=> $show_addr_addr,
-				'default'	=> 0,
+				'default'	=> 'P', // Personal
 				'xmlrpc'	=> True,
 				'admin'		=> False,
 			),
@@ -616,7 +616,7 @@ class syncml_hooks
 				'name'		=> 'calendar_owner',
 				'help'		=> lang('Events from selected Calendars will be synchronized.'),
 				'values'	=> $show_calendars,
-				'default'	=> 'P',
+				'default'	=> 'P', // Personal
 				'xmlrpc'	 => True,
 				'admin'  	=> False,
 			),
