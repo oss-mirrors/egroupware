@@ -142,7 +142,8 @@ class syncml_hooks
 						'type'  => 'subsection',
 						'title' =>  $label,
 						'xmlrpc' => False,
-						'admin'  => False
+						'admin'  => False,
+						'run_lang' => false,	// do NOT translate title, as it's already translated
 					),
 					$me_name => array (
 						'type'		=> 'input',
@@ -211,15 +212,15 @@ class syncml_hooks
 		return array(
 			'prefssection' => array(
 				'type'  => 'section',
-				'title' => lang('Preferences for the SyncML'),
+				'title' => 'Preferences for the SyncML',
 				'xmlrpc' => False,
 				'admin'  => False
 			),
 			'denyunknown'	=> array(
 				'type'		=> 'select',
-				'label'		=> lang('Deny unkown devices'),
+				'label'		=> 'Deny unkown devices',
 				'name'		=> 'deny_unknown_devices',
-				'help'		=> lang('If enabled, EGroupware will allow only devices which are allowed by the administrator.'),
+				'help'		=> 'If enabled, EGroupware will allow only devices which are allowed by the administrator.',
 				'values'    => $selectAllowed,
 				'default'	=> 0,
 				'xmlrpc'	=> True,
@@ -227,9 +228,9 @@ class syncml_hooks
 			),
 			'slowsync'	=> array(
 				'type'		=> 'check',
-				'label'		=> lang('SlowSync ignore map'),
+				'label'		=> 'SlowSync ignore map',
 				'name'		=> 'slowsync_ignore_map',
-				'help'		=> lang('If enabled, EGroupware will ignore the mapping information of fromer sync-sessions during SlowSyncs.'),
+				'help'		=> 'If enabled, EGroupware will ignore the mapping information of fromer sync-sessions during SlowSyncs.',
 				'values'    => $selectYesNo,
 				'default'	=> 0,
 				'xmlrpc'	=> True,
@@ -239,7 +240,8 @@ class syncml_hooks
 				'type'  => 'subsection',
 				'title' => '<h3>' . lang('Preferences for the SyncML Conflict Handling<br/>and Server R/O Options') . '</h3>',
 				'xmlrpc' => False,
-				'admin'  => False
+				'admin'  => False,
+				'run_lang' => false,	// do NOT translate title, as it's already translated
 			),
 			'./calendar' => array(
 				'type'   => 'select',
@@ -248,7 +250,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'calendar' => array(
 				'type'   => 'select',
@@ -257,7 +260,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./events' => array(
 				'type'   => 'select',
@@ -266,7 +270,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'events' => array(
 				'type'   => 'select',
@@ -275,7 +280,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./contacts' => array(
 				'type'   => 'select',
@@ -284,7 +290,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'contacts' => array(
 				'type'   => 'select',
@@ -293,7 +300,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./card' => array(
 				'type'   => 'select',
@@ -302,7 +310,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'card' => array(
 				'type'   => 'select',
@@ -311,7 +320,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./tasks' => array(
 				'type'   => 'select',
@@ -320,7 +330,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'tasks' => array(
 				'type'   => 'select',
@@ -329,7 +340,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./jobs' => array(
 				'type'   => 'select',
@@ -338,7 +350,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'jobs' => array(
 				'type'   => 'select',
@@ -347,7 +360,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./caltasks' => array(
 				'type'   => 'select',
@@ -356,7 +370,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'caltasks' => array(
 				'type'   => 'select',
@@ -365,7 +380,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./notes' => array(
 				'type'   => 'select',
@@ -374,7 +390,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'notes' => array(
 				'type'   => 'select',
@@ -383,7 +400,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./sifcalendar' => array(
 				'type'   => 'select',
@@ -392,7 +410,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'sifcalendar' => array(
 				'type'   => 'select',
@@ -401,7 +420,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./scal' => array(
 				'type'   => 'select',
@@ -410,7 +430,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'scal' => array(
 				'type'   => 'select',
@@ -419,7 +440,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./sifcontacts' => array(
 				'type'   => 'select',
@@ -428,7 +450,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'sifcontacts' => array(
 				'type'   => 'select',
@@ -437,7 +460,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./scard' => array(
 				'type'   => 'select',
@@ -446,7 +470,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'scard' => array(
 				'type'   => 'select',
@@ -455,7 +480,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./siftasks' => array(
 				'type'   => 'select',
@@ -464,7 +490,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'siftasks' => array(
 				'type'   => 'select',
@@ -473,7 +500,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./stask' => array(
 				'type'   => 'select',
@@ -491,7 +519,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./sifnotes' => array(
 				'type'   => 'select',
@@ -500,7 +529,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'sifnotes' => array(
 				'type'   => 'select',
@@ -509,7 +539,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'./snote' => array(
 				'type'   => 'select',
@@ -518,7 +549,8 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'snote' => array(
 				'type'   => 'select',
@@ -527,17 +559,19 @@ class syncml_hooks
 				'values' => $show_entries,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default' => 1
+				'default' => 1,
+				'run_lang' => -1,	// do NOT translate label
 			),
 			'uidintro' => array(
 				'type'  => 'subsection',
 				'title' => '<h3>' . lang('Minimum Accepted UID Length') . '</h3>',
 				'xmlrpc' => False,
-				'admin'  => False
+				'admin'  => False,
+				'run_lang' => false,	// do NOT translate title, as it's already translated
 			),
 			'minimum_uid_length' => array (
 				'type'		=> 'input',
-				'label'		=> lang('Minimum UID Length'),
+				'label'		=> 'Minimum UID Length',
 				'name'		=> 'minimum_uid_length',
 				'size'		=> 2,
 				'maxsize'	=> 3,
@@ -549,14 +583,15 @@ class syncml_hooks
 				'type'  => 'subsection',
 				'title' => '<h3>' . lang('Addressbook Synchronization Options') . '</h3>',
 				'xmlrpc' => False,
-				'admin'  => False
+				'admin'  => False,
+				'run_lang' => false,	// do NOT translate title, as it's already translated
 			),
 			'filter_list'	=> array(
 				'type'		=> 'select',
 				'label'		=> 'Synchronize this list',
 				'name'		=> 'filter_list',
-				'help'		=> lang('This address list of contacts will be synchronized. ' .
-								'If used together with the addressbook option, this list will appended.'),
+				'help'		=> 'This address list of contacts will be synchronized. ' .
+								'If used together with the addressbook option, this list will appended.',
 				'values'	=> $show_addr_lists,
 				'xmlrpc'	=> True,
 				'default'	=> 0,
@@ -566,7 +601,7 @@ class syncml_hooks
 				'type'   	=> 'select',
 				'label'		=> 'Synchronize this addressbook',
 				'name'		=> 'filter_addressbook',
-				'help'		=> lang('Only entries from this addressbook (and the above list) will be synchronized.'),
+				'help'		=> 'Only entries from this addressbook (and the above list) will be synchronized.',
 				'values'	=> $show_addr_addr,
 				'default'	=> 'P', // Personal
 				'xmlrpc'	=> True,
@@ -576,13 +611,14 @@ class syncml_hooks
 				'type'  => 'subsection',
 				'title' => '<h3>' . lang('Calendar Synchronization Options') . '</h3>',
 				'xmlrpc' => False,
-				'admin'  => False
+				'admin'  => False,
+				'run_lang' => false,	// do NOT translate title, as it's already translated
 			),
 			'calendar_past' => array(
 				'type'		=> 'input',
-				'label'		=> lang('Calendar History Period'),
+				'label'		=> 'Calendar History Period',
 				'name'		=> 'calendar_past',
-				'help'	    => lang('Your calendar will be synchronized up to this number of seconds in the past (2678400 seconds = 31 days).'),
+				'help'	    => 'Your calendar will be synchronized up to this number of seconds in the past (2678400 seconds = 31 days).',
 				'size'		=> 8,
 				'maxsize'	=> 9,
 				'default'	=> 2678400,
@@ -591,9 +627,9 @@ class syncml_hooks
 			),
 			'calendar_future' => array (
 				'type'		=> 'input',
-				'label'		=> lang('Calendar Future Period'),
+				'label'		=> 'Calendar Future Period',
 				'name'		=> 'calendar_future',
-				'help'	    => lang('Only events up to this number of seconds in the future will be synchonized (65000000 seconds > 2 years).'),
+				'help'	    => 'Only events up to this number of seconds in the future will be synchonized (65000000 seconds > 2 years).',
 				'size'		=> 8,
 				'maxsize'	=> 9,
 				'default'	=> 65000000,
@@ -604,7 +640,7 @@ class syncml_hooks
 				'type'		=> 'select',
 				'label' 	=> 'Calendar Filter',
 				'name'		=> 'calendar_filter',
-				'help'		=> lang('Only Events matching this filter criteria will be synchronized.'),
+				'help'		=> 'Only Events matching this filter criteria will be synchronized.',
 				'values'	=> $select_CalendarFilter,
 				'default'	=> 'all',
 				'xmlrpc'	 => True,
@@ -614,7 +650,7 @@ class syncml_hooks
 				'type'		=> 'select',
 				'label' 	=> 'Syncronization Calendars',
 				'name'		=> 'calendar_owner',
-				'help'		=> lang('Events from selected Calendars will be synchronized.'),
+				'help'		=> 'Events from selected Calendars will be synchronized.',
 				'values'	=> $show_calendars,
 				'default'	=> 'P', // Personal
 				'xmlrpc'	 => True,
@@ -624,13 +660,14 @@ class syncml_hooks
 				'type'  => 'subsection',
 				'title' => '<h3>' . lang('Task Synchronization Options') . '</h3>',
 				'xmlrpc' => False,
-				'admin'  => False
+				'admin'  => False,
+				'run_lang' => false,	// do NOT translate title, as it's already translated
 			),
 			'task_filter' => array(
 				'type'   => 'select',
 				'label'  => 'Synchronize this selection',
 				'name'   => 'task_filter',
-				'help'   => lang('Only Tasks matching this filter criteria will be synchronized.'),
+				'help'   => 'Only Tasks matching this filter criteria will be synchronized.',
 				'values' => $show_infolog_filters,
 				'xmlrpc' => True,
 				'admin'  => False,
@@ -639,13 +676,14 @@ class syncml_hooks
 				'type'  => 'subsection',
 				'title' => '<h3>' . lang('Note Synchronization Options') . '</h3>',
 				'xmlrpc' => False,
-				'admin'  => False
+				'admin'  => False,
+				'run_lang' => false,	// do NOT translate title, as it's already translated
 			),
 			'note_filter' => array(
 				'type'   => 'select',
 				'label'  => 'Synchronize this selection',
 				'name'   => 'note_filter',
-				'help'   => lang('Only Notes matching this filter criteria will be synchronized.'),
+				'help'   => 'Only Notes matching this filter criteria will be synchronized.',
 				'values' => $show_infolog_filters,
 				'xmlrpc' => True,
 				'admin'  => False,
@@ -654,13 +692,14 @@ class syncml_hooks
 				'type'  => 'subsection',
 				'title' => '<h3>' . lang('Categories for Conflict Duplicates') . '</h3>',
 				'xmlrpc' => False,
-				'admin'  => False
+				'admin'  => False,
+				'run_lang' => false,	// do NOT translate title, as it's already translated
 			),
 			'calendar_conflict_category' => array(
 				'type'   => 'select',
 				'label'  => 'Calendar Conflict Category',
 				'name'   => 'calendar_conflict_category',
-				'help'   => lang('To this Calendar category a conflict duplicate will be added.'),
+				'help'   => 'To this Calendar category a conflict duplicate will be added.',
 				'values' => $show_cal_cats,
 				'xmlrpc' => True,
 				'admin'  => False,
@@ -669,7 +708,7 @@ class syncml_hooks
 				'type'   => 'select',
 				'label'  => 'Addressbook Conflict Category',
 				'name'   => 'addressbook_conflict_category',
-				'help'   => lang('To this Addressbook category a conflict duplicate will be added.'),
+				'help'   => 'To this Addressbook category a conflict duplicate will be added.',
 				'values' => $show_addr_cats,
 				'xmlrpc' => True,
 				'admin'  => False,
@@ -678,7 +717,7 @@ class syncml_hooks
 				'type'   => 'select',
 				'label'  => 'InfoLog Conflict Category',
 				'name'   => 'infolog_conflict_category',
-				'help'   => lang('A duplicate infolog entry from a synchronization conflict will be assigned to this category.'),
+				'help'   => 'A duplicate infolog entry from a synchronization conflict will be assigned to this category.',
 				'values' => $show_info_cats,
 				'xmlrpc' => True,
 				'admin'  => False,
@@ -688,7 +727,8 @@ class syncml_hooks
 				'title' => '<h2>' . lang('Device Specific Settings')  . '</h2>' .
 				lang('For <b>Max Entries</b> = 0 either <i>maxMsgSize</i> will be used or the default value 10.<br/>With <b>Non Blocking Allday Events</b> set allday events will be nonblocking when imported from this device.<br/>The <b>UID Extension</b> enables the preservation of vCalandar UIDs by appending them to <i>Description</i> field for this device.<br/>The selected <b>Time zone</b> is used for calendar event syncronization with the device. If not set, the timezones of the events are used.'),
 				'xmlrpc' => False,
-				'admin'  => False
+				'admin'  => False,
+				'run_lang' => false,	// do NOT translate title, as it's already translated
 			),
 		) + $devices_Entries;
 	}
