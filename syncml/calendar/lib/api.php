@@ -98,7 +98,6 @@ function _egwcalendarsync_list($filter='')
 					if (!$owner || $grant['grantor'] == $owner)
 					{
 						$calendarOwner[] = $grant['grantor'];
-						break;
 					}
 				}
 		}
