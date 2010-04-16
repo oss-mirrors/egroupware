@@ -30,11 +30,6 @@ class syncml_hooks
 			5 => lang('Enforce Server'),
 		);
 
-		$selectYesNo = array(
-			1 => lang('Yes'),
-			0 => lang('No')
-		);
-
 		$selectAllowed = array(
 			-1	=> lang('Deny unkown devices'),
 			0	=> lang('Disabled'),
@@ -159,7 +154,6 @@ class syncml_hooks
 						'type'		=> 'check',
 						'label'		=> 'UID Decription Extension',
 						'name'		=> $ue_name,
-						'values'    => $selectYesNo,
 						'default'	=> 0,
 						'xmlrpc'	=> True,
 						'admin'		=> False,
@@ -168,7 +162,6 @@ class syncml_hooks
 						'type'		=> 'check',
 						'label'		=> 'Non Blocking Allday Events',
 						'name'		=> $nba_name,
-						'values'    => $selectYesNo,
 						'default'	=> 0,
 						'xmlrpc'	=> True,
 						'admin'		=> False,
@@ -195,10 +188,9 @@ class syncml_hooks
 					),
 
 					$allowed_name => array(
-						'type'   => 'select',
+						'type'   => 'check',
 						'label'  => 'Allowed Devices',
 						'name'   => $allowed_name,
-						'values' => $selectYesNo,
 						'help'   => 'Is this device allowed to synchronize?',
 						'default' => -1,
 						'xmlrpc' => True,
@@ -231,7 +223,6 @@ class syncml_hooks
 				'label'		=> 'SlowSync ignore map',
 				'name'		=> 'slowsync_ignore_map',
 				'help'		=> 'If enabled, EGroupware will ignore the mapping information of fromer sync-sessions during SlowSyncs.',
-				'values'    => $selectYesNo,
 				'default'	=> 0,
 				'xmlrpc'	=> True,
 				'admin'		=> False,
