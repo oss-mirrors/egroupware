@@ -490,9 +490,7 @@ function _egwcalendarsync_search($content, $contentType, $contentid, $type=null)
  *                              'text/x-s4j-sife'
  *                             or an array with options:
  *                             'ContentType':  as above
- *                             'ENCODING': (optional) character encoding
- *                                         for strings fields
- *                             'CHARSET':  (optional) charset. Like UTF-8
+ *                             'Properties': the client properties
  *
  * @return string  The requested data.
  */
@@ -505,7 +503,7 @@ function _egwcalendarsync_export($guid, $contentType)
 			$deviceInfo['charset']) {
 		$charset = $deviceInfo['charset'];
 	} else {
-		$charset = null;
+		$charset = 'UTF-8';
 	}
 
   	$_id = $state->get_egwId($guid);
