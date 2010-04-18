@@ -256,7 +256,7 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
-	if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list']))
 	{
 		$vcaladdressbook->add2list($contactId, $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list']);
 	}
