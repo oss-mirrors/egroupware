@@ -1636,12 +1636,13 @@
 		function getMultipartAlternative($_uid, $_structure, $_htmlMode)
 		{
 			// a multipart/alternative has exactly 2 parts (text and html  OR  text and something else)
-
+			// sometimes there are 3 parts, when there is an ics/ical attached/included-> we want to show that 
+			// as attachment AND as abstracted ical information (we use our notification style here).
 			$partText = false;
 			$partHTML = false;
 			if (self::$debug) _debug_array($_structure);
 			foreach($_structure as $mimePart) {
-				if($mimePart->type == 'TEXT' && $mimePart->subType == 'PLAIN' && $mimePart->bytes > 0) {
+				if($mimePart->type == 'TEXT' && ($mimePart->subType == 'PLAIN' || $mimePart->subType == 'CALENDAR') && $mimePart->bytes > 0) {
 					$partText = $mimePart;
 				} elseif($mimePart->type == 'TEXT' && $mimePart->subType == 'HTML' && $mimePart->bytes > 0) {
 					$partHTML = $mimePart;
@@ -1726,6 +1727,7 @@
 						switch($part->subType) {
 							case 'PLAIN':
 							case 'HTML':
+							case 'CALENDAR': // inline ics/ical files
 								if($part->disposition != 'ATTACHMENT') {
 									$bodyPart[] = $this->getTextPart($_uid, $part, $_htmlMode);
 								}
@@ -1760,11 +1762,11 @@
 		function getTextPart($_uid, $_structure, $_htmlMode = '')
 		{
 			$bodyPart = array();
-			#_debug_array($_structure);
+			//_debug_array($_structure);
 			$partID = $_structure->partID;
 			$mimePartBody = $this->icServer->getBodyPart($_uid, $partID, true);
-			#_debug_array($mimePartBody);
-			#_debug_array(preg_replace('/PropertyFile___$/','',$this->decodeMimePart($mimePartBody, $_structure->encoding)));
+			//_debug_array($mimePartBody);
+			//_debug_array(preg_replace('/PropertyFile___$/','',$this->decodeMimePart($mimePartBody, $_structure->encoding)));
 			if($_structure->subType == 'HTML' && $_htmlMode != 'always_display'  && $_htmlMode != 'only_if_no_text') {
 				$bodyPart = array(
 					'body'		=> lang("displaying html messages is disabled"),
@@ -1778,6 +1780,61 @@
 					'mimeType'	=> ($_structure->type == 'TEXT' && $_structure->subType == 'HTML') ? 'text/html' : 'text/plain',
 					'charSet'	=> $this->getMimePartCharset($_structure),
 				);
+				if ($_structure->subType == 'CALENDAR')
+				{
+					// we get an inline CALENDAR ical/ics, we display it using the calendar notification style
+					$calobj = new calendar_ical;
+					$calboupdate = new calendar_boupdate;
+					// timezone stuff
+					$tz_diff = $GLOBALS['egw_info']['user']['preferences']['common']['tz_offset'] - $this->common_prefs['tz_offset'];
+					// form an event out of ical
+					$event = $calobj->icaltoegw($bodyPart['body']);
+					$event= $event[0];
+					// preset the olddate
+					$olddate = $calboupdate->format_date($event['start']+$tz_diff);
+					// search egw, if we can find it
+					$eventid = $calobj->find_event(array('uid'=>$event['uid']));
+					if ((int)$eventid[0]>0) 
+					{
+						// we found an event, we use the first one
+						$oldevent = $calobj->read($eventid);
+						// we set the olddate, to comply with the possible merge params for the notification message
+						if($oldevent != False && $oldevent[$eventid[0]]['start']!=$event[$eventid[0]]['start']) {
+							$olddate = $calboupdate->format_date($oldevent[$eventid[0]]['start']+$tz_diff);
+						}
+						// we merge the changes and the original event
+						$event = array_merge($oldevent[$eventid[0]],$event);
+						// for some strange reason, the title of the old event is not replaced with the new title 
+						// if you klick on the ics and import it into egw, so we dont show the title here. 
+						// so if it is a mere reply, we dont use the new title (more detailed info/work needed here)
+						if ($_structure->parameters['METHOD']=='REPLY') $event['title'] = $oldevent[$eventid[0]]['title'];
+					} 
+					// we prepare the message
+					$details = $calboupdate->_get_event_details($event,$action,$event_arr);
+					$details['olddate']=$olddate;
+					//_debug_array($_structure);
+					list($subject,$info) = $calboupdate->get_update_message($event,($_structure->parameters['METHOD']=='REPLY'?false:true));
+					$info = $GLOBALS['egw']->preferences->parse_notify($info,$details);
+					// we set the bodyPart, we only show the event, we dont actually do anything, as we expect the user to
+					// click on the attached ics to update his own eventstore
+					$bodyPart['body'] = $subject;
+					$bodyPart['body'] .= "\n".$info;
+					$bodyPart['body'] .= "\n\n".lang('Event Details follow').":\n";
+					foreach($event_arr as $key => $val)
+					{
+						if(strlen($details[$key])) {
+							switch($key){
+						 		case 'access':
+								case 'priority':
+								case 'link':
+									break;
+								default:
+									$bodyPart['body'] .= sprintf("%-20s %s\n",$val['field'].':',$details[$key]);
+									break;
+						 	}
+						}
+					}
+				}
 			}
 			//_debug_array($bodyPart);
 			return $bodyPart;
@@ -2319,11 +2376,7 @@
 					if ( $structure->disposition != 'ATTACHMENT') {
 						switch($structure->subType) {
 							case 'CALENDAR':
-								// maybe opening an egw_calendar object, ... in the future
-								#$calobj =& CreateObject('calendar.calendar_ical');
-								#$bodyPart = $this->getTextPart($_uid, $structure, $this->htmlOptions);
-								#$calobj->importVCal($bodyPart['body']);
-								#break;
+								// this is handeled in getTextPart
 							case 'HTML':
 							case 'PLAIN':
 							default:
@@ -2334,15 +2387,18 @@
 					}
 					return $bodyPart;
 					break;
+				case 'ATTACHMENT':
 				case 'MESSAGE':
 					switch($structure->subType) {
 						case 'RFC822':
 							$newStructure = array_shift($structure->subParts);
+							if (self::$debug) {echo __METHOD__." Message -> RFC -> NewStructure:"; _debug_array($newStructure);}
 							return $this->getMessageBody($_uid, $_htmlOptions, $newStructure->partID, $newStructure);
 							break;
 					}
 					break;
 				default:
+					if (self::$debug) _debug_array($structure);
 					return array(
 						array(
 							'body'		=> lang('The mimeparser can not parse this message.'),
