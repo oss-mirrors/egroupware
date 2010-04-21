@@ -83,7 +83,7 @@ function _egwcontactssync_list($filter='')
 		{
 			$filter['list'] = (int)$preferences['filter_list'];
 			$allOnList = $soAddressbook->search($criteria,true,'','','',false,'AND',false,$filter);
-			//Horde::logMessage('SymcML: egwcontactssync list() list='. $filter['list'] . ', ' . count($allOnList), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			//Horde::logMessage('SymcML: egwcontactssync list() list='. $filter['list'] . ', ' . array2string($allOnList), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			unset($filter['list']);
 		}
 
@@ -111,6 +111,7 @@ function _egwcontactssync_list($filter='')
 	if ($search_addressbook)
 	{
 		$allContacts = $soAddressbook->search($criteria,true,'','','',false,'AND',false,$filter);
+		//Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'] . ', ' . array2string($allContacts), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	}
 
 	if (!is_array($allContacts)) $allContacts = array();
@@ -119,11 +120,14 @@ function _egwcontactssync_list($filter='')
 	$guids = array();
 	foreach ($allContacts as $contact)
 	{
-		#Horde::logMessage("SymcML: egwcontactssync list generate id for: ". $contact['id'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
-		#Horde::logMessage("SymcML: egwcontactssync list generate id for: ". print_r($contact, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-		$guids[] = "contacts-".$contact['id'];
-
+		if (!empty($contact['contact_id']))
+		{
+			$guids[] = 'contacts-' . $contact['contact_id'];
+		}
+		elseif (!empty($contact['id']))
+		{
+			$guids[] = 'contacts-' . $contact['id'];
+		}
 	}
 
 	$guids = array_unique($guids);
@@ -390,7 +394,7 @@ function _egwcontactssync_export($guid, $contentType)
 			$vcaladdressbook = new addressbook_vcal('addressbook', $contentType, $clientProperties);
 			setSupportedFields($vcaladdressbook);
 
-			if($vcard = $vcaladdressbook->getVCard($contactID, $charset))	return $vcard;
+			if (($vcard = $vcaladdressbook->getVCard($contactID, $charset))) return $vcard;
 
 			return PEAR::raiseError(_("Access Denied"));
 
@@ -401,7 +405,7 @@ function _egwcontactssync_export($guid, $contentType)
 			/* fall through */
 		case 'text/x-s4j-sifc':
 			$sifaddressbook	= new addressbook_sif();
-			if($sifcard = $sifaddressbook->getSIF($contactID)) return $sifcard;
+			if (($sifcard = $sifaddressbook->getSIF($contactID))) return $sifcard;
 
 			return PEAR::raiseError(_("Access Denied"));
 
