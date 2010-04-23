@@ -993,6 +993,7 @@ function setSupportedFields($content)
 				case 'e71':
 				case 'n95':
 				case 'n97':
+				case '5800 XpressMusic':
 					$supportedFields = $defaultFields[9];
 					break;
 				case '9300':
