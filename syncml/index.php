@@ -24,7 +24,7 @@ include('../header.inc.php');
 echo('<h1>'.lang('The SyncML application').'</h1>');
 echo(lang('This application does not provide <i>frontend</i> functionality but implements synchronization of various content with external devices via the SyncML/HTTP protocol.<br/>This EGroupware version does support SyncML 1.0, 1.1 and 1.2.<br/>'));	
 echo(lang('You can synchronize your<ul><li>Addressbook</li><li>Calendar</li><li>Task (InfoLog)</li><li>Notes (InfoLog)</li></ul>'));
-echo(lang('The SyncML module provides some customization parameters for conflict handling which you can find in your ').html::a_href(lang('SyncML preferences'),array('menuaction'=>'preferences.uisettings.index','appname'=>'syncml')));
+echo(lang('The SyncML module provides some customization parameters for conflict handling which you can find in your').' '.html::a_href(lang('SyncML preferences'),array('menuaction'=>'preferences.uisettings.index','appname'=>'syncml')));
 echo('<h2>'.lang('Conflict handling and server R/O options').'</h2>');
 echo(lang('items are changed on both &mdash; server and client side &mdash; before the next synchronization, this is called a conflict situation. You can configure the conflict handling of EGroupware for every target individually. There are three different ways to handle colliding client changes:<br>'));
 echo('<ol>'.lang('<li>The client wins and overwrites the server data.</li><li>The server wins and overwrites the client data (default). </li><li>Duplicate entries are created from both versions.</li>').'</ol>');
