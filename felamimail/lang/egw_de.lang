@@ -172,7 +172,7 @@ error saving %1!	felamimail	de	Fehler beim Speichern von %1!
 error:	felamimail	de	FEHLER:
 error: could not save message as draft	felamimail	de	FEHLER: Die Nachricht konnte nicht als Entwurf gespeichert werden.
 error: message could not be displayed.	felamimail	de	FEHLER: Die Nachricht kann nicht angezeigt werden.
-event details follow	felamimail	de	Termindetails folgend:
+event details follow	felamimail	de	Termindetails folgend
 every	felamimail	de	alle
 every %1 days	felamimail	de	alle %1 Tage
 expunge	felamimail	de	Endgültig löschen
