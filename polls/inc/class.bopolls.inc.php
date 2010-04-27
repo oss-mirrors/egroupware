@@ -161,11 +161,11 @@ class bopolls
 		$this->so->add_answer($poll_id,$answer);
 	}
 
-	function add_question($question)
+	function add_question($question,$visible=0,$votable=0)
 	{
 		if(empty($question)) return false;
 		
-		return $this->so->add_question($question);
+		return $this->so->add_question($question,$visible,$votable);
 	}
 
 	function delete_answer($poll_id,$vote_id)

@@ -436,7 +436,7 @@ class uipolls
 		$this->t->set_var('td_message','&nbsp;');
 		$this->t->set_var('form_action',$this->adminlink('edit','answer',array('vote_id'=>$vote_id)));
 		$this->button_bar(array(
-			'submit' => lang('Edit'),
+			'submit' => lang('Save'),
 			'cancel' => lang('Cancel')
 		));
 
@@ -510,7 +510,7 @@ class uipolls
 		$this->t->set_var($poll);
 		$this->t->set_var('form_action',$this->adminlink('edit','question',array('poll_id'=>$poll_id)));
 		$this->button_bar(array(
-			'edit' => lang('Edit'),
+			'submit' => lang('Save'),
 			'cancel' => lang('Cancel')
 		));
 
