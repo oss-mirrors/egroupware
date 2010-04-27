@@ -1643,7 +1643,8 @@
 			if (self::$debug) _debug_array($_structure);
 			foreach($_structure as $mimePart) {
 				if($mimePart->type == 'TEXT' && ($mimePart->subType == 'PLAIN' || $mimePart->subType == 'CALENDAR') && $mimePart->bytes > 0) {
-					$partText = $mimePart;
+					if ($mimePart->subType == 'CALENDAR' && $partText === false) $partText = $mimePart; // only if there is no partText set already
+					if ($mimePart->subType == 'PLAIN') $partText = $mimePart;
 				} elseif($mimePart->type == 'TEXT' && $mimePart->subType == 'HTML' && $mimePart->bytes > 0) {
 					$partHTML = $mimePart;
 				} elseif ($mimePart->type == 'MULTIPART' && $mimePart->subType == 'RELATED' && is_array($mimePart->subParts)) {
