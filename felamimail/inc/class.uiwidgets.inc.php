@@ -249,7 +249,7 @@
 		// $_rowStyle felamimail or outlook
 		function messageTable($_headers, $_folderType, $_folderName, $_readInNewWindow, $_rowStyle='felamimail',$messageToBePreviewed=0)
 		{
-			//error_log(__METHOD__);
+			//error_log(__METHOD__.' preview Message:'.$messageToBePreviewed);
 			$this->t = CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
 			$this->t->set_block('body','header_row_felamimail');

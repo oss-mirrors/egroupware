@@ -91,6 +91,8 @@
 			{
 				//error_log(__METHOD__." Session restore ".function_backtrace());
 				$this->restoreSessionData();
+				$lv_mailbox = $this->sessionData['mailbox'];
+				$firstMessage = $this->sessionData['previewMessage'];
 			}
 			else
 			{
@@ -100,7 +102,7 @@
 				$this->sessionData = array();
 				$this->forcePrefReload();
 			}
-
+			//error_log(array2string(array($firstMessage,$lv_mailbox)));
 			// FIXME: this->foldername seems to be unused
 			//$this->foldername	= $this->sessionData['mailbox'];
 			$this->accountid	= $GLOBALS['egw_info']['user']['account_id'];

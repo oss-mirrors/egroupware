@@ -747,7 +747,8 @@
 						$folderType,
 						$this->mailbox,
 						$userPreferences['message_newwindow'],
-						$userPreferences['rowOrderStyle']
+						$userPreferences['rowOrderStyle'],
+						($this->bofelamimail->sessionData['previewMessage']?$this->bofelamimail->sessionData['previewMessage']:0)
 					)
 				);
 				
