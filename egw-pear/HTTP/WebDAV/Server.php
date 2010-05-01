@@ -181,7 +181,10 @@ class HTTP_WebDAV_Server
         // set path
         // $_SERVER['PATH_INFO'] is already urldecoded
         //$this->path = $this->_urldecode($path_info);
-        $this->path = $path_info;
+        // quote '#' (e.g. OpenOffice uses this for lock-files)
+        $this->path = strtr($path_info,
+        	array('#' => '%23',
+        	));
         if (!strlen($this->path)) {
             if ($this->_SERVER["REQUEST_METHOD"] == "GET") {
                 // redirect clients that try to GET a collection
@@ -2263,11 +2266,11 @@ class HTTP_WebDAV_Server
 			));
 		}
 		//error_log( __METHOD__."\n" .print_r($url,true));
-		return strtr($url, array(" "=>"%20",
-                                 "&"=>"%26",
-                                 "<"=>"%3C",
-                                 ">"=>"%3E",
-                                 '+'=>'%2B',
+		return strtr($url, array(' '	=>	'%20',
+                                 '&'	=>	'%26',
+                                 '<'	=>	'%3C',
+                                 '>'	=>	'%3E',
+                                 '+'	=>	'%2B',
                                  ));
     }
 
