@@ -398,7 +398,7 @@
 				if ($firstuid === null)
 				{
 					//_debug_array($header);
-					$firstuid = $header['uid'];
+					$firstuid = $selecteduid = $header['uid'];
 					$firstheader = $header;
 				}
 				if ($messageToBePreviewed>0 
@@ -406,6 +406,7 @@
 					&& $messageToBePreviewed == $header['uid']) 
 				{
 					//error_log(__METHOD__.$header['uid']);
+					$selecteduid = $header['uid'];
 					$firstheader = $header;
 				}
 				if($_folderType == 2 || $_folderType == 3) {
@@ -493,7 +494,13 @@
 						break;
 				}
 			}
-			
+			if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0)
+			{
+				$this->t->set_var('selected_style'.$selecteduid,'style="background-color:#ddddFF;"');
+			} else {
+				$this->t->set_var('selected_style'.$selecteduid,'');
+			}
+
 			$IFRAMEBody =  $this->updateMessagePreview($firstheader,$_folderType,$_folderName);
 
 			$this->t->set_var('IFrameForPreview',$IFRAMEBody);

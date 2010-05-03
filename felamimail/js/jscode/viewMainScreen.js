@@ -1,3 +1,21 @@
+function parentRefreshListRowStyle(oldID, newID)
+{
+	var trElement;
+	var aElements;
+	trElement = document.getElementById('row_'+oldID);
+	trElement.style.backgroundColor = "#FFFFFF";
+	trElement.style.fontWeight='normal';
+	aElements = trElement.getElementsByTagName("a");
+	aElements[0].style.fontWeight='normal';
+	aElements[1].style.fontWeight='normal';	
+	trElement = document.getElementById('row_'+newID);
+	trElement.style.backgroundColor = "#ddddFF";
+	trElement.style.fontWeight='normal';
+	aElements = trElement.getElementsByTagName("a");
+	aElements[0].style.fontWeight='normal';
+	aElements[1].style.fontWeight='normal';	
+
+}
 function setStatusMessage(_message) {
 	document.getElementById('messageCounter').innerHTML = '<table cellpadding="0" cellspacing="0"><tr><td><img src="'+ activityImagePath +'"></td><td>&nbsp;' + _message + '</td></tr></table>';
 }
@@ -489,6 +507,11 @@ function fm_startTimerMessageListUpdate(_refreshTimeOut) {
 
 function fm_readMessage(_url, _windowName, _node) {
 	var windowArray = _windowName.split('_');
+	var tableElement =_node.parentNode.parentNode.parentNode.parentNode;
+	var allRows = tableElement.getElementsByTagName("tr");
+	for(i=0; i< allRows.length; i++) {
+		allRows[i].style.backgroundColor = "#FFFFFF";
+	}
 	if (windowArray[0] == 'MessagePreview')
 	{
 		//document.getElementById('spanMessagePreview').innerHTML = '';
@@ -502,6 +525,7 @@ function fm_readMessage(_url, _windowName, _node) {
 	}
 	trElement = _node.parentNode.parentNode.parentNode;
 	trElement.style.fontWeight='normal';
+	trElement.style.backgroundColor = "#ddddFF";
 
 	aElements = trElement.getElementsByTagName("a");
 	aElements[0].style.fontWeight='normal';
@@ -533,6 +557,60 @@ function changeActiveAccount(_accountSelection)
 	//alert(_accountSelection.value);
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.changeActiveAccount',_accountSelection.value);
 }
+
+// stuff to change row background color
+function HexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
+function HexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
+function HexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
+function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
+function RGBtoHex(R,G,B) {return toHex(R)+toHex(G)+toHex(B)}
+function toHex(N) {
+ if (N==null) return "00";
+ N=parseInt(N); if (N==0 || isNaN(N)) return "00";
+ N=Math.max(0,N); N=Math.min(N,255); N=Math.round(N);
+ return "0123456789ABCDEF".charAt((N-N%16)/16)
+      + "0123456789ABCDEF".charAt(N%16);
+}
+function compareColor(colorA, colorB)
+{
+	var cA = colorA.search(/#/);
+	var cA2C = colorA;
+	var cB2C = colorB;
+	if (cA != -1)
+	{
+		cA2C = "rgb("+HexToR(colorA)+", "+HexToG(colorA)+", "+HexToB(colorA)+")";
+	}
+	var cB = colorB.search(/#/);
+	if (cB != -1)
+	{
+		cB2C = "rgb("+HexToR(colorB)+", "+HexToG(colorB)+", "+HexToB(colorB)+")";
+	}
+	if (cA2C == cB2C) 
+	{
+		//alert("match:"+colorA+cA2C+" == "+colorB+cB2C);
+		return true;
+	}
+	else
+	{
+		//alert("not match:"+colorA+cA2C+" == "+colorB+cB2C);
+		return false;
+	}
+}
+function onChangeColor(el,direction)
+{
+	if (!compareColor(el.style.backgroundColor,"#ddddFF") && !compareColor(el.style.backgroundColor,"#eeeddd"))
+	{
+		if (direction == 'in') el.style.backgroundColor="#dddddd";
+		if (direction == 'out') el.style.backgroundColor="#FFFFFF";
+	}
+	else
+	{
+		if (direction == 'in') el.style.backgroundColor="#eeeddd";
+		if (direction == 'out') el.style.backgroundColor="#ddddFF";
+	}
+	return true;
+}
+
 // DIALOG BOXES by Michael Leigeber
 // global variables //
 var TIMER = 5;

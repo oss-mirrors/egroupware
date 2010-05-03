@@ -171,7 +171,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 <!-- END status_row_tpl -->
 
 <!-- BEGIN header_row_felamimail -->
-	<tr id="row_{message_uid}" class="{row_css_class}" onMouseOver="style.backgroundColor='#dddddd';" onMouseOut="javascript:style.backgroundColor='#FFFFFF';">
+	<tr id="row_{message_uid}" class="{row_css_class}" {selected_style{message_uid}} onMouseOver="javascript:onChangeColor(this,'in');" onMouseOut="javascript:onChangeColor(this,'out');">
 		<td class="mainscreenRow" width="20px" align="left" valign="top">
 			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}"
 			onclick="toggleFolderRadio(this, refreshTimeOut)" {row_selected}>
@@ -202,7 +202,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 <!-- END header_row_felamimail -->
 
 <!-- BEGIN header_row_outlook -->
-	<tr id="row_{message_uid}" class="{row_css_class}" onMouseOver="style.backgroundColor='#dddddd';" onMouseOut="javascript:style.backgroundColor='#FFFFFF';" >
+	<tr id="row_{message_uid}" class="{row_css_class}" {selected_style{message_uid}} onMouseOver="javascript:onChangeColor(this,'in');" onMouseOut="javascript:onChangeColor(this,'out');" >
 		<td class="mainscreenRow" width="20px" align="left" valign="top">
 			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}"
 			onclick="toggleFolderRadio(this, refreshTimeOut)" {row_selected}>
