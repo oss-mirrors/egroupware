@@ -13,7 +13,7 @@
 	/* $Id$ */
 
 	class uicompose
-	{	
+	{
 		var $public_functions = array
 		(
 			'action'		=> True,
@@ -198,9 +198,34 @@
 						if ($_REQUEST[$name]) $sessionData[$name] .= (strlen($sessionData[$name])>0 ? ( $name == 'cc' || $name == 'bcc' ? ',' : ' ') : '') . $_REQUEST[$name];
 					}
 				}
-				if ($_REQUEST['preset']['file'] && is_readable($_REQUEST['preset']['file']))
+				if (isset($_REQUEST['preset']['file']))
 				{
-					$this->bocompose->addAttachment(array_merge($sessionData,$_REQUEST['preset']));
+					foreach((array)$_REQUEST['preset']['file'] as $path)
+					{
+						if (parse_url($path,PHP_URL_SCHEME == 'vfs'))
+						{
+							$formData = array(
+								'name' => egw_vfs::basename($path),
+								'type' => egw_vfs::mime_content_type($path),
+								'file' => $path,
+								'size' => filesize($path),
+							);
+						}
+						elseif(is_readable($path))
+						{
+							$formData = array(
+								'name' => basename($path),
+								'type' => function_exists('mime_content_type') ? mime_content_type($path) : mime_magic::filename2mime($path),
+								'file' => $path,
+								'size' => filesize($path),
+							);
+						}
+						else
+						{
+							continue;
+						}
+						$this->bocompose->addAttachment($formData);
+					}
 					$sessionData = $this->bocompose->getSessionData();
 				}
 				foreach(array('to','cc','bcc','subject','body') as $name)
@@ -412,14 +437,14 @@
 			foreach($signatures as $signature) {
 				$selectSignatures[$signature['fm_signatureid']] = lang('Signature').': '.$signature['fm_description'];
 			}
-			
+
 			$bostationery = new felamimail_bostationery();
 			$selectStationeries = array(
 				'0' => lang('no stationery')
 			);
 			$showStationaries = false;
 			$validStationaries = $bostationery->get_valid_templates();
-			if (is_array($validStationaries) && count($validStationaries)>0) 
+			if (is_array($validStationaries) && count($validStationaries)>0)
 			{
 				$showStationaries = true;
 				$selectStationeries += $validStationaries;
