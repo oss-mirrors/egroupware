@@ -210,6 +210,7 @@
 								'file' => $path,
 								'size' => filesize($path),
 							);
+							if ($formData['type'] == egw_vfs::DIR_MIME_TYPE) continue;	// ignore directories
 						}
 						elseif(is_readable($path))
 						{
