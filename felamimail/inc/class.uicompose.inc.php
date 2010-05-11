@@ -205,7 +205,7 @@
 						if (parse_url($path,PHP_URL_SCHEME == 'vfs'))
 						{
 							$formData = array(
-								'name' => egw_vfs::basename($path),
+								'name' => urldecode(egw_vfs::basename($path)),
 								'type' => egw_vfs::mime_content_type($path),
 								'file' => $path,
 								'size' => filesize($path),
