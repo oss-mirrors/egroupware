@@ -5,7 +5,7 @@
  * @link http://www.egroupware.org
  * @package wiki
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @copyright (C) 2004-8 by RalfBecker-AT-outdoor-training.de
+ * @copyright (C) 2004-10 by RalfBecker-AT-outdoor-training.de
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */
@@ -19,9 +19,14 @@ class wiki_ui extends wiki_bo
 	);
 	var $anonymous;		// wiki is used anonymous
 
-	function __construct()
+	/**
+	 * Constructor
+	 *
+	 * @param int $wiki_id=null wiki_id to pass on to parent if specified, otherwise $_GET['wiki_id'] is used
+	 */
+	function __construct($wiki_id=null)
 	{
-		parent::__construct($_GET['wiki_id']);
+		parent::__construct(isset($wiki_id) ? $wiki_id : $_GET['wiki_id']);
 
 		$this->anonymous = $this->config['allow_anonymous'] && $this->config['anonymous_username'] == $GLOBALS['egw_info']['user']['account_lid'];
 
