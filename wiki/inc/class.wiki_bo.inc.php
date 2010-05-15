@@ -320,18 +320,12 @@ class wiki_bo extends wiki_so
 	 * Hook called by link-class to include infolog in the appregistry of the linkage
 	 *
 	 * @param array/string $location location and other parameters (not used)
+	 * @deprecated use wiki_hooks::search_link() moved there, because it get's called at setup time, which fails here!
 	 * @return array with method-names
 	 */
 	static function search_link($location)
 	{
-		return array(
-			'query'      => 'wiki.wiki_bo.link_query',
-			'title'      => 'wiki.wiki_bo.link_title',
-			'view'       => array(
-				'menuaction' => 'wiki.wiki_ui.view',
-			),
-			'view_id'    => 'page',
-		);
+		return wiki_hooks::search_link();
 	}
 
 	/**

@@ -1,8 +1,7 @@
 <?php
 /* $Id$ */
 
-// Under phpgw these URL's are NOT configurable, you can set the phpgw install-path in setup
-
+// Under EGroupware these URL's are NOT configurable, you can set the webserver_url in setup
 $ScriptBase = $GLOBALS['egw']->link('/wiki/index.php');
 $ScriptBase .= strpos($ScriptBase,'?') !== false ? '&' : '?';
 

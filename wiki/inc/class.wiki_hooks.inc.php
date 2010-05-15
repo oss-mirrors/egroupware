@@ -83,4 +83,22 @@ class wiki_hooks
 			display_sidebox($appname,$menu_title,$file);
 		}
 	}
+
+	/**
+	 * Hook called by link-class to include infolog in the appregistry of the linkage
+	 *
+	 * @param array/string $location location and other parameters (not used)
+	 * @return array with method-names
+	 */
+	static function search_link($location)
+	{
+		return array(
+			'query'      => 'wiki.wiki_bo.link_query',
+			'title'      => 'wiki.wiki_bo.link_title',
+			'view'       => array(
+				'menuaction' => 'wiki.wiki_ui.view',
+			),
+			'view_id'    => 'page',
+		);
+	}
 }
