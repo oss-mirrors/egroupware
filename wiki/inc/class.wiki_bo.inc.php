@@ -325,7 +325,7 @@ class wiki_bo extends wiki_so
 	 */
 	static function search_link($location)
 	{
-		return wiki_hooks::search_link();
+		return wiki_hooks::search_link($location);
 	}
 
 	/**
