@@ -565,6 +565,14 @@ class felamimail_hooks
 				'compress folder'	=> "javascript:compressFolder();",
 			);
 		}
+		// import Message link
+		#$linkData = array(
+		#	'menuaction' => 'felamimail.uifelamimail.importMessage',
+		#);
+		#$file['import message'] = array(
+		#		'text' => '<a class="textSidebox" href="'. htmlspecialchars($GLOBALS['egw']->link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.$GLOBALS['egw']->link('/index.php', $linkData).'\',\''.lang('import').'\',700,100); return false;">'.lang('import message'),
+	    #        'no_lang' => true,
+		#);
 
 		// select account box, treeview
 		if($showMainScreenStuff) {
@@ -719,6 +727,13 @@ class felamimail_hooks
 				}
 			}
 			display_sidebox($appname,$menu_title,$file);
+		}
+		if ($GLOBALS['egw_info']['user']['apps']['admin'])
+		{
+			$file = Array(
+				'Site Configuration' => $GLOBALS['egw']->link('/index.php','menuaction=emailadmin.emailadmin_ui.index'),
+			);
+			display_sidebox($appname,lang('Admin'),$file);
 		}
 	}
 }
