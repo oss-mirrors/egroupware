@@ -38,6 +38,7 @@ div.activetab{ display:inline; }
 div.inactivetab{ display:none; }
 </style>
 <center>
+<div style="color:red;"> {message} </div>
 <form action="{form_action}" name="editAccountData" method="post">
 <INPUT TYPE=hidden NAME="identity[id]" value="{accountID}">
 <fieldset style="width:650px;" class="row_on" id="identity"><legend style="font-weight: bold;">{lang_identity} {accountID}</legend>

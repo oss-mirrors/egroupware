@@ -607,7 +607,7 @@ class felamimail_hooks
 					// redirect to new personal account
 					egw::redirect_link('/index.php',array('menuaction'=>'felamimail.uipreferences.editAccountData',
 						'accountID'=>"new",
-						'msg'   => lang("There is no IMAP Server configured."),
+						'msg'   => lang("There is no IMAP Server configured.")." - ".lang("Please configure access to an existing individual IMAP account."),
 					));
 				}
 

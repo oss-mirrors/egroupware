@@ -197,8 +197,9 @@
 			print $this->t->get('out','main');
 		}
 		
-		function editAccountData()
+		function editAccountData($msg='')
 		{
+			if ($_GET['msg']) $msg = html::purify($_GET['msg']);
 			if (!isset($this->bofelamimail)) $this->bofelamimail    = CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
 			if (!isset($this->bopreferences)) $this->bopreferences	= $this->bofelamimail->bopreferences; //CreateObject('felamimail.bopreferences');
 			$preferences =& $this->bopreferences->getPreferences();
@@ -284,7 +285,7 @@
 			
 			$this->t->set_file(array("body" => "edit_account_data.tpl"));
 			$this->t->set_block('body','main');
-
+			if ($msg) $this->t->set_var("message", $msg); else $this->t->set_var("message", '');
 			$this->translate();
 
 			// if there is no accountID with the call of the edit method, retrieve an active account

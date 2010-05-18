@@ -350,6 +350,7 @@ outgoing mail server(smtp)	felamimail	en	outgoing mail server(SMTP)
 participants	felamimail	en	Participants
 personal information	felamimail	en	Personal Information
 please ask the administrator to correct the emailadmin imap server settings for you.	felamimail	en	Please ask the administrator to correct the emailadmin IMAP Server Settings for you.
+please configure access to an existing individual IMAP account.	felamimail	en	please configure access to an existing individual IMAP account.
 please select a address	felamimail	en	Please select a address
 please select the number of days to wait between responses	felamimail	en	Please select the number of days to wait between responses
 please supply the message to send with auto-responses	felamimail	en	Please supply the message to send with auto-responses
