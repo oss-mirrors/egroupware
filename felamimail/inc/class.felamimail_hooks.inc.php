@@ -566,28 +566,26 @@ class felamimail_hooks
 			);
 		}
 		// import Message link
-		#$linkData = array(
-		#	'menuaction' => 'felamimail.uifelamimail.importMessage',
-		#);
-		#$file['import message'] = array(
-		#		'text' => '<a class="textSidebox" href="'. htmlspecialchars($GLOBALS['egw']->link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.$GLOBALS['egw']->link('/index.php', $linkData).'\',\''.lang('import').'\',700,100); return false;">'.lang('import message'),
-	    #        'no_lang' => true,
-		#);
-
+/*
+		$linkData = array(
+			'menuaction' => 'felamimail.uifelamimail.importMessage',
+		);
+		$file['import message'] = array(
+				'text' => '<a class="textSidebox" href="'. htmlspecialchars($GLOBALS['egw']->link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.$GLOBALS['egw']->link('/index.php', $linkData).'\',\''.lang('import').'\',700,100); return false;">'.lang('import message'),
+				'no_lang' => true,
+		);
+*/
 		// select account box, treeview
 		if($showMainScreenStuff) {
 			$bofelamimail->restoreSessionData();
 			$mailbox 		= $bofelamimail->sessionData['mailbox'];;
 			//_debug_array($mailbox);
+
 			$icServerID = 0;
 			if (is_object($preferences)) 
 			{
+				// gather profile data
 				$imapServer =& $preferences->getIncomingServer($icServerID);
-				$activeIdentity =& $preferences->getIdentity($icServerID);
-				if ($imapServer->_connected != 1) $connectionStatus = $bofelamimail->openConnection($icServerID);
-				$folderObjects = $bofelamimail->getFolderObjects(true, false);
-				$folderStatus = $bofelamimail->getFolderStatus($mailbox);
-
 				// account select box
 				$selectedID = 0;
 				if($preferences->userDefinedAccounts) $allAccountData = $bofelamimail->bopreferences->getAllAccountData($preferences);
@@ -603,6 +601,20 @@ class felamimail_hooks
 						if (!empty($identity->default)) $selectedID = $identity->id;
 					}
 				}
+				// if nothing valid is found return to user defined account definition
+				if (empty($imapServer->host) && count($identities)==0 && $preferences->userDefinedAccounts)
+				{
+					// redirect to new personal account
+					egw::redirect_link('/index.php',array('menuaction'=>'felamimail.uipreferences.editAccountData',
+						'accountID'=>"new",
+						'msg'   => lang("There is no IMAP Server configured."),
+					));
+				}
+
+				$activeIdentity =& $preferences->getIdentity($icServerID);
+				if ($imapServer->_connected != 1) $connectionStatus = $bofelamimail->openConnection($icServerID);
+				$folderObjects = $bofelamimail->getFolderObjects(true, false);
+				$folderStatus = $bofelamimail->getFolderStatus($mailbox);
 	
 				// the data needed here are collected at the start of this function
 				if (!isset($activeIdentity->id) && $selectedID == 0) {

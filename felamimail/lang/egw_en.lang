@@ -246,6 +246,7 @@ imaps authentication	felamimail	en	IMAPS Authentication
 imaps encryption only	felamimail	en	IMAPS Encryption only
 import	felamimail	en	import
 import mail	felamimail	en	Import Mail
+import message	felamimail	en	import message
 in	felamimail	en	in
 inbox	felamimail	en	INBOX
 incoming mail server(imap)	felamimail	en	incoming mail server(IMAP)

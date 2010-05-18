@@ -68,6 +68,8 @@ configure a valid imap server in emailadmin for the profile you are using.	felam
 connection dropped by imap server.	felamimail	fi	Yhteys IMAP palvelimeen katkesi
 contact not found!	felamimail	fi	Yhteystietoa ei löytynyt!
 contains	felamimail	fi	Sisältää
+copy or move messages?	felamimail	fi	Kopioisaanko vai siirretäänkö viestit?
+copying messages to	felamimail	fi	Viestejä kopioidaan
 could not complete request. reason given: %s	felamimail	fi	Pyyntöä ei voitu toteuttaa. Syynä oli: %s
 could not import message:	felamimail	fi	Tuonti epäonnistui:
 could not open secure connection to the imap server. %s : %s.	felamimail	fi	Suojattua yhteyttä IMAP palvelimeen ei voitu avata. %s : %s.
@@ -115,6 +117,7 @@ do not validate certificate	felamimail	fi	Älä tarkista sertifikaattia
 do you really want to delete the '%1' folder?	felamimail	fi	Oletko varma että haluat poistaa kansion '%1'
 do you really want to delete the selected accountsettings and the assosiated identity.	felamimail	fi	Haluatko varmasti poistaa valitut tiliasetukset ja Identiteetin?
 do you really want to delete the selected signatures?	felamimail	fi	Haluatko varmasti poistaa valitut allekirjoitukset?
+do you really want to move or copy the selected messages to folder:	felamimail	fi	Haluatko varmasti siirtää tai kopioida valitsemasi viestit kansioon:
 do you really want to move the selected messages to folder:	felamimail	fi	Haluatko varmasti siirtää valitsemasi viestit kansioon:
 do you want to be asked for confirmation before moving selected messages to another folder?	felamimail	fi	Haluatko, että sinulta varmistetaan asia ennenkuin siirrät valitut viestit toiseen kansioon?
 do you want to prevent the editing/setup for forwarding of mails via settings (, even if sieve is enabled)?	felamimail	fi	Haluatko estää välitettävän (Forwarding) sähköpostin muokkauksen/käyttöönoton, (vaikka SIEVE on käytössä)?
@@ -243,6 +246,7 @@ imaps authentication	felamimail	fi	IMAPS -tunnistus
 imaps encryption only	felamimail	fi	Vain IMAPS -salaus
 import	felamimail	fi	Tuonti
 import mail	felamimail	fi	Tuo sähköposteja
+import message	felamimail	fi	Tuo sähköpostiviesti
 in	felamimail	fi	sisältää
 inbox	felamimail	fi	Saapuneet
 incoming mail server(imap)	felamimail	fi	Saapuvan sähköpostin palvelin (IMAP)
@@ -291,6 +295,7 @@ mon	felamimail	fi	Ma
 move	felamimail	fi	Siirrä
 move folder	felamimail	fi	Siirrä kansio
 move messages	felamimail	fi	Siirrä viesti(t)
+move messages?	felamimail	fi	Siirretäänkö viestit?
 move selected to	felamimail	fi	Siirrä valitut:
 move to trash	felamimail	fi	Siirrä roskakoriin
 moving messages to	felamimail	fi	Siirretään viestejä
@@ -499,6 +504,7 @@ with message "%1"	felamimail	fi	Viestin "%1" kanssa
 wrap incoming text at	felamimail	fi	Aseta rivinleveydeksi
 writing	felamimail	fi	Kirjoitetaan
 wrote	felamimail	fi	Kirjoitettu
+yes, offer copy option	felamimail	fi	Kyllä, tarjoa kopiointimahdollisuutta
 you can use %1 for the above start-date and %2 for the end-date.	felamimail	fi	Käytä aloituspäivälle %1 ja lopetuspäivälle %1.
 you have received a new message on the	felamimail	fi	Uusi viesti kansiossa:
 your message to %1 was displayed.	felamimail	fi	Viesti henkilölle %1 esitetty

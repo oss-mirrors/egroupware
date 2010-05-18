@@ -162,7 +162,7 @@
 
 		function importMessage()
 		{
-			error_log(__METHOD__." called from:".function_backtrace());
+			//error_log(__METHOD__." called from:".function_backtrace());
 			if(is_array($_FILES["addFileName"])) {
 				#phpinfo();
 				#error_log(print_r($_FILES,true));
@@ -271,30 +271,17 @@
 			}
 			// -----------------------------------------------------------------------
 			#error_log(print_r($this->preferences->preferences['draftFolder'],true));
-			$fhandle = fopen($tmpFileName, "r");
-			$headercomplete = false;
-			$header = "";
-			$body = "";
-			while (!feof($fhandle)) {
-    			$buffer = fgets($fhandle, 4096);
-				if ($headercomplete === false && $buffer == "\r\n") {
-					$headercomplete = true;
-					continue;
-				}
-				if ($headercomplete == false) $header.=$buffer;
-				if ($headercomplete == true) $body.=$buffer;
-				#error_log($buffer);
-			}
-			fclose ($fhandle);
-			if ($_folder == '') $savingDestination = $this->preferences->preferences['draftFolder'];
-			if (empty($savingDestination) || $savingDestination == '') $savingDestination = $this->mailbox;
-			$message['folder'] = $savingDestination;
-			#error_log($header."\n".$body);
-			$message['uid'] = $this->bofelamimail->appendMessage($savingDestination,$header,$body,NULL);
-			error_log(print_r($message,true));
-			unlink($tmpFileName);
-			if (!$message['uid']) $message = false;
-			return $message;
+			/**
+			 * pear/Mail_mimeDecode requires package "pear/Mail_Mime" (version >= 1.4.0, excluded versions: 1.4.0)
+			 * ./pear upgrade Mail_Mime
+			 * ./pear install Mail_mimeDecode
+			 */
+			$message = file_get_contents($tmpFileName);
+			require_once 'Mail/mimeDecode.php';
+			$mailDecode = new Mail_mimeDecode($message);
+			$strucure = $mailDecode->decode(array('include_bodies'=>true,'decode_bodies'=>true,'decode_headers'=>true));
+			//_debug_array($strucure);
+			exit;
 		}
 
 		function deleteMessage()
@@ -488,7 +475,14 @@
 				}
 			}
 
-
+			if (empty($imapServer->host) && count($identities)==0 && $this->preferences->userDefinedAccounts) 
+			{
+				// redirect to new personal account
+				egw::redirect_link('/index.php',array('menuaction'=>'felamimail.uipreferences.editAccountData',
+					'accountID'=>"new",
+					'msg'	=> lang("There is no IMAP Server configured."),
+				));	
+			}
 			$this->display_app_header();
 
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
