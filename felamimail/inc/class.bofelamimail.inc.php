@@ -61,7 +61,7 @@
 		 * foldernames are subject to translation, keep that in mind too, if you change names here.
 		 * @var array
 		 */
-		var $autoFolders = array('Drafts', 'Junk', 'Sent', 'Trash', 'Templates');
+		static $autoFolders = array('Drafts', 'Junk', 'Sent', 'Trash', 'Templates');
 
 		/**
 		* Autoload classes from emailadmin, 'til they get autoloading conform names
@@ -1262,7 +1262,7 @@
 				$retValue['shortDisplayName']	= lang('INBOX');
 			}
 			// translate the automatic Folders (Sent, Drafts, ...) like the INBOX
-			elseif (in_array($retValue['shortName'],$this->autoFolders))
+			elseif (in_array($retValue['shortName'],self::$autoFolders))
 			{
 				$retValue['displayName'] = $retValue['shortDisplayName'] = lang($retValue['shortName']);
 			}
@@ -1443,9 +1443,9 @@
 					}
 					if ($this->mailPreferences->preferences['notavailableautofolders'] && !empty($this->mailPreferences->preferences['notavailableautofolders']))
 					{
-						$foldersToCheck = array_diff($this->autoFolders,explode(',',$this->mailPreferences->preferences['notavailableautofolders']));
+						$foldersToCheck = array_diff(self::$autoFolders,explode(',',$this->mailPreferences->preferences['notavailableautofolders']));
 					} else {
-						$foldersToCheck = $this->autoFolders;
+						$foldersToCheck = self::$autoFolders;
 					}
 					#echo "foldersToCheck:";_debug_array($foldersToCheck);
 					foreach($foldersToCheck as $personalFolderName) {
@@ -1536,7 +1536,7 @@
 							$folderObject->shortDisplayName = lang('INBOX');
 							$folderObject->subscribed	= true;
 						// translate the automatic Folders (Sent, Drafts, ...) like the INBOX
-						} elseif (in_array($shortName,$this->autoFolders)) {
+						} elseif (in_array($shortName,self::$autoFolders)) {
 							$tmpfolderparts = explode($delimiter,$folderObject->folderName);
 							array_pop($tmpfolderparts);
 							$folderObject->displayName = $this->encodeFolderName(implode($delimiter,$tmpfolderparts).$delimiter.lang($shortName));
@@ -1547,13 +1547,19 @@
 							$folderObject->shortDisplayName = $this->encodeFolderName($shortName);
 						}
 						$folderName = $folderName;
-						$folders[$folderName] = $folderObject;
+						if (in_array($shortName,self::$autoFolders)) {
+							$autoFolderObjects[$folderName] = $folderObject;
+						} else {
+							$folders[$folderName] = $folderObject;
+						}
 					}
 				}
 			}
+			uasort($autoFolderObjects,array($this,"sortByDisplayName"));
 			uasort($folders,array($this,"sortByDisplayName"));
-			//_debug_array($folders); #exit;
-			return $folders;
+			//$folders2return = array_merge($autoFolderObjects,$folders);
+			//_debug_array($folders2return); #exit;
+			return (is_array($autoFolderObjects) && is_array($folders) ? array_merge($autoFolderObjects,$folders):(array)$folders);
 		}
 
 		function sortByDisplayName($a,$b)

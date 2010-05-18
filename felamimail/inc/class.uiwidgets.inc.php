@@ -107,7 +107,7 @@
 				$allFolders[$key] = $obj;
 			}
 
-			$folderImageDir = $GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/templates/default/images/';
+			$folderImageDir = $GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/templates/default/images';
 
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new  = '<link rel="STYLESHEET" type="text/css" href="'.$GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/js/dhtmlxtree/css/dhtmlXTree.css">';
@@ -134,10 +134,19 @@
 			#_debug_array($allFolders);
 			foreach($allFolders as $longName => $obj) {
 				$messageCount = '';
-				$image1 = "'folderClosed.gif'";
-				$image2 = "0";
-				$image3 = "0";
-
+				if (in_array($obj->shortFolderName,bofelamimail::$autoFolders)) 
+				{
+					//echo $obj->shortFolderName.'<br>';
+					$image1 = $image2 = $image3 = "'MailFolder".$obj->shortFolderName.".png'";
+					//$image2 = "'MailFolderPlain.png'";
+					//$image3 = "'MailFolderPlain.png'";
+				}
+				else
+				{
+					$image1 = "'MailFolderPlain.png'";
+					$image2 = "'folderOpen.gif'";
+					$image3 = "'MailFolderClosed.png'";
+				}
 				$folderParts = explode($obj->delimiter, $longName);
 
 				//get rightmost folderpart
