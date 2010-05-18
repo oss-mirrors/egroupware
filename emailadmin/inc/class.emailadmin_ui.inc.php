@@ -260,6 +260,10 @@
 					$filter['ea_profile_id'] = $profileID;
 					$rowfound = parent::read($filter);
 				}
+				else
+				{
+					$content['ea_user_defined_accounts'] = "yes";
+				}
 			}
 			else
 			{

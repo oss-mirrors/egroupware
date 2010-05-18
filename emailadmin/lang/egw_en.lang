@@ -1,3 +1,4 @@
+%1 entries deleted.	emailadmin	en	%1 entries deleted.
 account '%1' not found !!!	emailadmin	en	Account '%1' not found !!!
 active templates	emailadmin	en	Active templates
 add new email address:	emailadmin	en	Add new email address:
@@ -42,8 +43,11 @@ enable sieve	emailadmin	en	Enable Sieve
 encrypted connection	emailadmin	en	encrypted connection
 encryption settings	emailadmin	en	Encryption settings
 enter your default mail domain (from: user@domain)	emailadmin	en	Enter your default mail domain (from: user@domain)
+entry saved	emailadmin	en	Entry saved
 error connecting to imap server. %s : %s.	emailadmin	en	Error connecting to IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	en	Error connecting to IMAP server: [%s] %s.
+error deleting entry!	emailadmin	en	Error deleting entry!
+error saving the entry!!!	emailadmin	en	Error saving the entry!!!
 filtered by account	emailadmin	en	filtered by Account
 filtered by group	emailadmin	en	filtered by Group
 forward also to	emailadmin	en	Forward also to
@@ -116,6 +120,7 @@ standard	emailadmin	en	Standard
 standard imap server	emailadmin	en	Standard IMAP server
 standard pop3 server	emailadmin	en	Standard POP3 server
 standard smtp-server	emailadmin	en	Standard SMTP server
+starts with	emailadmin	en	starts with
 stationery	emailadmin	en	Stationery
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	en	The IMAP server does not appear to support the authentication method selected. Please contact your system administrator.
 this php has no imap support compiled in!!	emailadmin	en	This PHP has no IMAP support compiled in!!
@@ -131,6 +136,7 @@ use predefined username and password defined below	emailadmin	en	Use predefined 
 use smtp auth	emailadmin	en	Use SMTP auth
 use tls authentication	emailadmin	en	Use TLS authentication
 use tls encryption	emailadmin	en	Use TLS encryption
+use users email-address (as seen in useraccount)	emailadmin	en	use Users eMail-Address (as seen in Useraccount)
 user can edit forwarding address	emailadmin	en	User can edit forwarding address
 username (standard)	emailadmin	en	username (standard)
 username/password defined by admin	emailadmin	en	Username/Password defined by admin
