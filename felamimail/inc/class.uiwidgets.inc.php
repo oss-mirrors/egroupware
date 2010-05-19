@@ -86,6 +86,18 @@
 		* @return string the html code, to be added into the template
 		*/
 		function createHTMLFolder($_folders, $_selected, $_selectedFolderCount, $_topFolderName, $_topFolderDescription, $_divName, $_displayCheckBox, $_useDisplayCharset = false) {
+			$bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+			$preferences = $bofelamimail->mailPreferences;
+			//_debug_array(bofelamimail::$autoFolders);
+			$userDefinedFunctionFolders = array();
+			if (isset($preferences->preferences['trashFolder']) && 
+				$preferences->preferences['trashFolder'] != 'none') $userDefinedFunctionFolders['Trash'] = $preferences->preferences['trashFolder'];
+			if (isset($preferences->preferences['sentFolder']) && 
+				$preferences->preferences['sentFolder'] != 'none') $userDefinedFunctionFolders['Sent'] = $preferences->preferences['sentFolder'];
+			if (isset($preferences->preferences['draftFolder']) &&
+				$preferences->preferences['draftFolder'] != 'none') $userDefinedFunctionFolders['Drafts'] = $preferences->preferences['draftFolder'];
+			if (isset($preferences->preferences['templateFolder']) &&
+				$preferences->preferences['templateFolder'] != 'none') $userDefinedFunctionFolders['Templates'] = $preferences->preferences['templateFolder'];
 			// create a list of all folders, also the ones which are not subscribed
  			foreach($_folders as $key => $obj) {
 				$folderParts = explode($obj->delimiter,$key);
@@ -140,6 +152,11 @@
 					$image1 = $image2 = $image3 = "'MailFolder".$obj->shortFolderName.".png'";
 					//$image2 = "'MailFolderPlain.png'";
 					//$image3 = "'MailFolderPlain.png'";
+				}
+				elseif (in_array($longName,$userDefinedFunctionFolders))
+				{
+					$key = array_search($longName,$userDefinedFunctionFolders);
+					$image1 = $image2 = $image3 = "'MailFolder".$key.".png'";
 				}
 				else
 				{

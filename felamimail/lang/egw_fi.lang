@@ -171,6 +171,7 @@ error opening	felamimail	fi	Virhe avattaessa
 error saving %1!	felamimail	fi	Virhe tallennettaessa %1!
 error:	felamimail	fi	Virhe:
 error: could not save message as draft	felamimail	fi	Virhe: Viestiä ei voitu tallentaa luonnoksena.
+error: could not save rule	felamimail	fi	Virhe: Sääntöä ei voitu tallentaa
 error: message could not be displayed.	felamimail	fi	Virhe: Viestiä ei voida näyttää.
 event details follow	felamimail	fi	Tapahtuman yksityiskohdat
 every	felamimail	fi	Joka
@@ -349,6 +350,7 @@ outgoing mail server(smtp)	felamimail	fi	Lähtevän sähköpostin palvelin (SMTP
 participants	felamimail	fi	Osallistujat
 personal information	felamimail	fi	Omat tiedot
 please ask the administrator to correct the emailadmin imap server settings for you.	felamimail	fi	Pyydä ylläpitäjiltä IMAP palvelinasetukset.
+please configure access to an existing individual imap account.	felamimail	fi	Konfiguroi jo olemassaolevan IMAP sähköpostitilisi asetukset.
 please select a address	felamimail	fi	Valitse osoite
 please select the number of days to wait between responses	felamimail	fi	Valitse päivien lukumäärä, joka vastausten välillä odotetaan
 please supply the message to send with auto-responses	felamimail	fi	Anna viesti joka lähetetään automaattisella vastauksella

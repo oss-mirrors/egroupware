@@ -167,10 +167,12 @@ error	felamimail	en	ERROR
 error connecting to imap serv	felamimail	en	Error connecting to IMAP serv
 error connecting to imap server. %s : %s.	felamimail	en	Error connecting to IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	felamimail	en	Error connecting to IMAP server: [%s] %s.
+error creating rule while trying to use forward/redirect.	felamimail	en	Error creating rule while trying to use forward/redirect.
 error opening	felamimail	en	Error opening
 error saving %1!	felamimail	en	Error saving %1!
 error:	felamimail	en	Error:
 error: could not save message as draft	felamimail	en	Error: Could not save Message as Draft
+error: could not save rule	felamimail	en	Error: Could not save rule
 error: message could not be displayed.	felamimail	en	ERROR: Message could not be displayed.
 event details follow	felamimail	en	Event Details follow
 every	felamimail	en	every
@@ -350,7 +352,7 @@ outgoing mail server(smtp)	felamimail	en	outgoing mail server(SMTP)
 participants	felamimail	en	Participants
 personal information	felamimail	en	Personal Information
 please ask the administrator to correct the emailadmin imap server settings for you.	felamimail	en	Please ask the administrator to correct the emailadmin IMAP Server Settings for you.
-please configure access to an existing individual IMAP account.	felamimail	en	please configure access to an existing individual IMAP account.
+please configure access to an existing individual imap account.	felamimail	en	please configure access to an existing individual IMAP account.
 please select a address	felamimail	en	Please select a address
 please select the number of days to wait between responses	felamimail	en	Please select the number of days to wait between responses
 please supply the message to send with auto-responses	felamimail	en	Please supply the message to send with auto-responses
