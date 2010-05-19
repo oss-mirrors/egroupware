@@ -61,7 +61,7 @@
 		 * foldernames are subject to translation, keep that in mind too, if you change names here.
 		 * @var array
 		 */
-		static $autoFolders = array('Drafts', 'Junk', 'Sent', 'Trash', 'Templates');
+		static $autoFolders = array('Drafts', 'Templates', 'Sent', 'Trash', 'Junk');
 
 		/**
 		* Autoload classes from emailadmin, 'til they get autoloading conform names
@@ -1335,7 +1335,7 @@
 				$_subscribedOnly = false;
 			} 
 			#$inboxData->attributes = 64;
-			$folders = array('INBOX' => $inboxData);
+			$inboxFolderObject = array('INBOX' => $inboxData);
 			#_debug_array($folders);
 
 			$nameSpace = $this->icServer->getNameSpaces();
@@ -1555,17 +1555,28 @@
 					}
 				}
 			}
-			uasort($autoFolderObjects,array($this,"sortByDisplayName"));
-			uasort($folders,array($this,"sortByDisplayName"));
+			if (is_array($autoFolderObjects)) {
+				uasort($autoFolderObjects,array($this,"sortByAutoFolderPos"));
+			}
+			if (is_array($folders)) uasort($folders,array($this,"sortByDisplayName"));
 			//$folders2return = array_merge($autoFolderObjects,$folders);
 			//_debug_array($folders2return); #exit;
-			return (is_array($autoFolderObjects) && is_array($folders) ? array_merge($autoFolderObjects,$folders):(array)$folders);
+			return (is_array($autoFolderObjects) && is_array($folders) ? array_merge($inboxFolderObject,$autoFolderObjects,$folders):array_merge($inboxFolderObject,(array)$folders));
 		}
 
 		function sortByDisplayName($a,$b)
 		{
 			// 0, 1 und -1
 			return strcasecmp($a->displayName,$b->displayName);
+		}
+
+		function sortByAutoFolderPos($a,$b)
+		{
+			// 0, 1 und -1
+			$pos1 = array_search($a->shortFolderName,self::$autoFolders);
+			$pos2 = array_search($b->shortFolderName,self::$autoFolders);
+			if ($pos1 == $pos2) return 0;
+			return ($pos1 < $pos2) ? -1 : 1;
 		}
 
 		function getMailBoxCounters($folderName)
