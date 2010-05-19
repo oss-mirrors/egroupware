@@ -200,7 +200,9 @@
 				}
 				if (isset($_REQUEST['preset']['file']))
 				{
-					foreach((array)$_REQUEST['preset']['file'] as $path)
+					$names = (array)$_REQUEST['preset']['name'];
+					$types = (array)$_REQUEST['preset']['type'];
+					foreach((array)$_REQUEST['preset']['file'] as $k => $path)
 					{
 						if (parse_url($path,PHP_URL_SCHEME == 'vfs'))
 						{
@@ -215,8 +217,8 @@
 						elseif(is_readable($path))
 						{
 							$formData = array(
-								'name' => basename($path),
-								'type' => function_exists('mime_content_type') ? mime_content_type($path) : mime_magic::filename2mime($path),
+								'name' => isset($names[$k]) ? $names[$k] : basename($path),
+								'type' => isset($types[$k]) ? $types[$k] : (function_exists('mime_content_type') ? mime_content_type($path) : mime_magic::filename2mime($path)),
 								'file' => $path,
 								'size' => filesize($path),
 							);
