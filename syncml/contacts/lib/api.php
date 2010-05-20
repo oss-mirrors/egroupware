@@ -326,6 +326,8 @@ function _egwcontactssync_search($content, $contentType, $contentid, $type=null)
 			break;
 
 		default:
+			Horde::logMessage("SymcML: egwcontactssync search: unsupported content: $content contentid: $contentid contenttype:\n"
+				. print_r($contentType, true), __FILE__, __LINE__, PEAR_LOG_ERROR);
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
