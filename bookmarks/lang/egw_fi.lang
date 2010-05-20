@@ -11,6 +11,7 @@ and	bookmarks	fi	Ja
 append this message to mailed bookmarks	bookmarks	fi	Lisää tämä teksti viestinä lähettyihin suosikkeihin
 ascending	bookmarks	fi	Nouseva
 book marks	common	fi	Suosikit
+bookmark - %1	bookmarks	fi	Suosikki - %1
 bookmark changed sucessfully	bookmarks	fi	Suosikki muutettu.
 bookmark created successfully.	bookmarks	fi	Suosikki lisätty.
 bookmark deleted successfully	bookmarks	fi	Suosikki poistettu.
@@ -19,6 +20,10 @@ bookmark file	bookmarks	fi	Suosikkitiedosto
 bookmark not editable	bookmarks	fi	Suosikkia ei voi muokata
 bookmark not readable	bookmarks	fi	Suosikkia ei voi näyttää
 bookmarks	common	fi	Suosikit
+bookmarks - export	bookmarks	fi	Suosikit - Vienti
+bookmarks - import	bookmarks	fi	Suosikit - Tuonti
+bookmarks - mail	bookmarks	fi	Suosikit - Lähetä sähköpostilla
+bookmarks - tree	bookmarks	fi	Suosikit - Runkonäkymä
 bookmarks settings	bookmarks	fi	Suosikkien asetukset
 categories to export	bookmarks	fi	Vie kategoriat
 change bookmark	bookmarks	fi	Muuta suosikki
@@ -29,12 +34,15 @@ create bookmark	bookmarks	fi	Lisää suosikki
 create new bookmark	bookmarks	fi	Lisää uusi suosikki
 create new links	bookmarks	fi	Lisää uusi linkki
 created	bookmarks	fi	Lisätty
+custom fields	bookmarks	fi	Lisäkentät
 date added	bookmarks	fi	Päiväys lisätty
 date changed	bookmarks	fi	Päiväys muutettu
 date last updated	bookmarks	fi	Päivitetty viimeksi
 date last visited	bookmarks	fi	Vierailtu viimeksi
+default view for bookmarks	bookmarks	fi	Suosikkien oletusnäkymä
 descending	bookmarks	fi	Laskeva
 edit bookmark	bookmarks	fi	Muokkaa suosikkia
+edit bookmark - %1	bookmarks	fi	Muokkaa suosikkia %1
 edit this bookmark	bookmarks	fi	Muokkaa tätä suosikkia
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	fi	Valitse tuotava Netscapen suosikki-tiedosto.
 existing links	bookmarks	fi	Olemassaolevat linkit
@@ -59,6 +67,7 @@ like	bookmarks	fi	kuin
 links	bookmarks	fi	Linkit
 list view	bookmarks	fi	Luettelo
 lowest	bookmarks	fi	Matalin
+mail	bookmarks	fi	Lähetä sähköpostilla
 mail this bookmark	bookmarks	fi	Lähetä sähköpostilla
 mail-this-link message sent to %1.	bookmarks	fi	Linkki lähetetty vastaanottajalle %1.
 mass update:	bookmarks	fi	Joukkopäivitys:
@@ -69,6 +78,7 @@ name is required	bookmarks	fi	Nimi on annettava
 netscape / firefox	bookmarks	fi	Netscape / Firefox
 netscape bookmark file	bookmarks	fi	Netscapen suosikit-tiedosto
 netscape bookmark filename is required!	bookmarks	fi	Netscapen suosikit-tiedoston nimi on annettava!
+netscape/mozilla	bookmarks	fi	Netscape/Mozilla
 new	bookmark	fi	Uusi
 new bookmark	bookmarks	fi	Uusi suosikki
 or	bookmarks	fi	tai
@@ -84,6 +94,7 @@ select the format you would like to export to	bookmarks	fi	Valitse muoto, jolla 
 send bookmark	bookmarks	fi	Lähetä suosikki
 sub category	bookmarks	fi	Alikategoria
 sub-folders will create new categories	bookmarks	fi	Alikansiot luovat uusia kategorioita
+this is the view bookmarks uses when you enter the application.	bookmarks	fi	Suosikit käyttää tätä oletusnäkymänä.
 this module displays bookmarks in a javascript based tree	bookmarks	fi	Sovellus näyttää suosikit Javascript rungossa.
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	fi	Virheellinen vastaanottajan osoite %1. Osoitteen on oltava muotoa <strong>kayttaja@verkkotunnus</strong> ja verkkotunnuksen on oltava olemassa!
 to e-mail addresses	bookmarks	fi	Sähköpostiosoitteisiin
@@ -91,12 +102,14 @@ to which category should the imported folder hierarchy be attached	bookmarks	fi	
 total visits	bookmarks	fi	Vierailukertoja
 tree view	bookmarks	fi	Runkonäkymä
 unable to open temp file %1 for import.	bookmarks	fi	Virhe avattaessa tiedostoa %1 tuontia varten
+unknown format	bookmarks	fi	Tuntematon muoto
 updated	bookmarks	fi	Päivitetty
 url is required.	bookmarks	fi	URL on annettava
 view bookmark	bookmarks	fi	Näytä suosikki
 view this bookmark	bookmarks	fi	Näytä tämä suosikki
 warning	bookmarks	fi	Varoitus
 whole query	bookmarks	fi	Koko kysely
+xbel	bookmarks	fi	XBEL
 you are viewing this site outside of egroupware	bookmarks	fi	Tämä on EGroupware -järjestelmän ulkopuolinen sivu
 you must select a category	bookmarks	fi	Valitse kategoria
 you need to select a category!	bookmarks	fi	Valitse kategoria!
