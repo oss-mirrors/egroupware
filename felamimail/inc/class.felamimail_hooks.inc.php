@@ -266,7 +266,7 @@ class felamimail_hooks
 				'name'   => 'PreViewFrameHeight',
 				'xmlrpc' => True,
 				'admin'  => False,
-				'forced' => '-1',
+				'forced' => '300',
 			),
 		    'message_forwarding' => array(
 		        'type'   => 'select',
@@ -534,7 +534,7 @@ class felamimail_hooks
 					'tooltip'	=> lang('mark as deleted'),
 				),
 			);
-			
+
 			foreach($navbarImages as $buttonName => $buttonInfo) {
 				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip']);
 			}
@@ -582,7 +582,7 @@ class felamimail_hooks
 			//_debug_array($mailbox);
 
 			$icServerID = 0;
-			if (is_object($preferences)) 
+			if (is_object($preferences))
 			{
 				// gather profile data
 				$imapServer =& $preferences->getIncomingServer($icServerID);
@@ -615,7 +615,7 @@ class felamimail_hooks
 				if ($imapServer->_connected != 1) $connectionStatus = $bofelamimail->openConnection($icServerID);
 				$folderObjects = $bofelamimail->getFolderObjects(true, false);
 				$folderStatus = $bofelamimail->getFolderStatus($mailbox);
-	
+
 				// the data needed here are collected at the start of this function
 				if (!isset($activeIdentity->id) && $selectedID == 0) {
 					$identities[0] = $activeIdentity->realName.' '.$activeIdentity->organization.' <'.$activeIdentity->emailAddress.'>';
@@ -647,10 +647,10 @@ class felamimail_hooks
 				//_debug_array($folderObjects);
 				$folderTree = $uiwidgets->createHTMLFolder
 				(
-					$folderObjects, 
-					$mailbox, 
+					$folderObjects,
+					$mailbox,
 					$folderStatus['unseen'],
-					lang('IMAP Server'), 
+					lang('IMAP Server'),
 					$imapServer->username.'@'.$imapServer->host,
 					'divFolderTree',
 					FALSE
