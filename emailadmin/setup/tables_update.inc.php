@@ -280,3 +280,24 @@ function emailadmin_upgrade1_6_001()
 
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.7.003';
 }
+
+function emailadmin_upgrade1_7_003()
+{
+	$GLOBALS['egw_setup']->oProc->AlterColumn('egw_emailadmin','ea_imap_type',array(
+		'type' => 'varchar',
+		'precision' => 56,
+	));
+	$GLOBALS['egw_setup']->oProc->AlterColumn('egw_emailadmin','ea_smtp_type',array(
+		'type' => 'varchar',
+		'precision' => 56,
+	));
+	foreach (array('1'=>'defaultsmtp', '2'=>'postfixldap', '3'=>'postfixinetorgperson', '4'=>'smtpplesk', '5' =>'postfixdbmailuser') as $id => $newtype)
+	{
+		$GLOBALS['egw_setup']->oProc->query('update egw_emailadmin set ea_smtp_type=\''.$newtype.'\' where ea_smtp_type='.$id,__LINE__,__FILE__);
+	}
+	foreach (array('2'=>'defaultimap', '3'=>'cyrusimap', '4'=>'dbmailqmailuser', '5'=>'pleskimap', '6' =>'dbmaildbmailuser') as $id => $newtype)
+	{
+		$GLOBALS['egw_setup']->oProc->query('update egw_emailadmin set ea_imap_type=\''.$newtype.'\' where ea_imap_type='.$id,__LINE__,__FILE__);
+	}
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.7.004';
+}

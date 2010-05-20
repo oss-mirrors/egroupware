@@ -46,7 +46,6 @@
 			'ea_organisation_name'		=> 'organisationName',
 			'ea_user_defined_identities'  => 'userDefinedIdentities',
 			'ea_user_defined_accounts'	=> 'userDefinedAccounts',
-			'ea_imapoldcclient'		=> 'imapoldcclient',
 			'ea_order'			=> 'ea_order',
 			'ea_active'			=> 'ea_active',
 			'ea_group'			=> 'ea_group',

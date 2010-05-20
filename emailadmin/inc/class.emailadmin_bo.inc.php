@@ -42,7 +42,6 @@
 			'ea_imap_sieve_port',
 			'ea_user_defined_identities',
 			'ea_user_defined_accounts',
-			'ea_imapoldcclient',
 			'ea_order',
 			'ea_active',
 			'ea_group',
@@ -74,7 +73,7 @@
 			$this->soemailadmin = new emailadmin_so();
 
 			$this->SMTPServerType = array(
-				'1' 	=> array(
+				'defaultsmtp' 	=> array(
 					'fieldNames'	=> array(
 						'smtpServer',
 						'smtpPort',
@@ -86,7 +85,7 @@
 					'description'	=> lang('standard SMTP-Server'),
 					'classname'	=> 'defaultsmtp'
 				),
-				'2' 	=> array(
+				'postfixldap' 	=> array(
 					'fieldNames'	=> array(
 						'smtpServer',
 						'smtpPort',
@@ -104,7 +103,7 @@
 					'description'	=> 'Postfix (qmail Schema)',
 					'classname'	=> 'postfixldap'
 				),
-				'3'     => array(
+				'postfixinetorgperson'     => array(
 					'fieldNames'    => array(
 						'smtpServer',
 						'smtpPort',
@@ -116,7 +115,7 @@
 					'description'   => 'Postfix (inetOrgPerson Schema)',
 					'classname'     => 'postfixinetorgperson'
 				),
-				'4'     => array(
+				'smtpplesk'     => array(
 					'fieldNames'    => array(
 						'smtpServer',
 						'smtpPort',
@@ -129,7 +128,7 @@
 					'description'   => 'Plesk SMTP-Server (Qmail)',
 					'classname'     => 'smtpplesk'
 				),
-				'5' 	=> array(
+				'postfixdbmailuser' 	=> array(
 					'fieldNames'	=> array(
 						'smtpServer',
 						'smtpPort',
@@ -150,7 +149,7 @@
 			);
 
 			$this->IMAPServerType = array(
-/*				'1' 	=> array(
+				'defaultimap' 	=> array(
 					'fieldNames'	=> array(
 						'imapServer',
 						'imapPort',
@@ -158,21 +157,6 @@
 						'imapLoginType',
 						'imapTLSEncryption',
 						'imapTLSAuthentication',
-						'imapoldcclient'
-					),
-					'description'	=> 'standard POP3 server',
-					'protocol'	=> 'pop3',
-					'classname'	=> 'defaultpop'
-				),*/
-				'2' 	=> array(
-					'fieldNames'	=> array(
-						'imapServer',
-						'imapPort',
-						'imapType',
-						'imapLoginType',
-						'imapTLSEncryption',
-						'imapTLSAuthentication',
-						'imapoldcclient',
 						'imapAuthUsername',
 						'imapAuthPassword'
 					),
@@ -180,7 +164,7 @@
 					'protocol'	=> 'imap',
 					'classname'	=> 'defaultimap'
 				),
-				'3' 	=> array(
+				'cyrusimap' 	=> array(
 					'fieldNames'	=> array(
 						'imapServer',
 						'imapPort',
@@ -188,7 +172,6 @@
 						'imapLoginType',
 						'imapTLSEncryption',
 						'imapTLSAuthentication',
-						'imapoldcclient',
 						'imapEnableCyrusAdmin',
 						'imapAdminUsername',
 						'imapAdminPW',
@@ -202,7 +185,7 @@
 					'protocol'	=> 'imap',
 					'classname'	=> 'cyrusimap'
 				),
-				'4' 	=> array(
+				'dbmailqmailuser' 	=> array(
 					'fieldNames'	=> array(
 						'imapServer',
 						'imapPort',
@@ -210,7 +193,6 @@
 						'imapLoginType',
 						'imapTLSEncryption',
 						'imapTLSAuthentication',
-						'imapoldcclient',
 						'imapEnableSieve',
 						'imapSieveServer',
 						'imapSievePort',
@@ -221,7 +203,7 @@
 					'protocol'	=> 'imap',
 					'classname'	=> 'dbmailqmailuser'
 				),
-				'5'     => array(
+				'pleskimap'     => array(
 					'fieldNames'    => array(
 						'imapServer',
 						'imapPort',
@@ -229,7 +211,6 @@
 						'imapLoginType',
 						'imapTLSEncryption',
 						'imapTLSAuthentication',
-						'imapoldcclient',
 						'imapAuthUsername',
 						'imapAuthPassword'
 					),
@@ -237,7 +218,7 @@
 					'protocol'      => 'imap',
 					'classname'     => 'pleskimap'
 				),
-				'6' 	=> array(
+				'dbmaildbmailuser' 	=> array(
 					'fieldNames'	=> array(
 						'imapServer',
 						'imapPort',
@@ -245,7 +226,6 @@
 						'imapLoginType',
 						'imapTLSEncryption',
 						'imapTLSAuthentication',
-						'imapoldcclient',
 						'imapEnableSieve',
 						'imapSieveServer',
 						'imapSievePort',
@@ -420,21 +400,20 @@
 						'smtpServer' => $GLOBALS['egw_info']['server']['smtp_server'],
 						'smtpPort' => $GLOBALS['egw_info']['server']['smtp_port'],
 						'smtpAuth' => '',
-						'smtpType' => '1',
+						'smtpType' => 'defaultsmtp',
 					),array(
 						'imapServer' => $GLOBALS['egw_info']['server']['mail_server'] ?
 							$GLOBALS['egw_info']['server']['mail_server'] : $GLOBALS['egw_info']['server']['smtp_server'],
 						'imapPort' => '143',
-						'imapType' => '2',	// imap
+						'imapType' => 'defaultimap',	// imap
 						'imapLoginType' => $GLOBALS['egw_info']['server']['mail_login_type'] ?
 							$GLOBALS['egw_info']['server']['mail_login_type'] : 'standard',
 						'imapTLSEncryption' => '0',
 						'imapTLSAuthentication' => '',
-						'imapoldcclient' => '',
 					));
 					$profileData[$found = 0] = array(
-						'smtpType' => '1',
-						'imapType' => '2',
+						'smtpType' => 'defaultsmtp',
+						'imapType' => 'defaultimap',
 					);
 				}
 			}
@@ -671,7 +650,7 @@
 			else
 			{
 				$profile = array(
-					'smtpType' => 1,
+					'smtpType' => 'defaultsmtp',
 					'description' => 'default profile (created by setup)',
 					'ea_appname' => '',
 					'ea_group' => 0,
@@ -688,25 +667,15 @@
 				'mail_server' => 'imapServer',
 				'mail_server_type' => array(
 					'imap' => array(
-						'imapType' => 2,
+						'imapType' => 'defaultimap',
 						'imapPort' => 143,
 						'imapTLSEncryption' => 0,
 					),
 					'imaps' => array(
-						'imapType' => 2,
+						'imapType' => 'defaultimap',
 						'imapPort' => 993,
 						'imapTLSEncryption' => '3',
 					),
-/*					'pop3' => array(
-						'imapType' => 1,
-						'imapPort' => 110,
-						'imapTLSEncryption' => 0,
-					),
-					'pop3s' => array(
-						'imapType' => 1,
-						'imapPort' => 995,
-						'imapTLSEncryption' => '1',
-					),*/
 				),
 				'mail_login_type' => 'imapLoginType',
 				'mail_suffix' => 'defaultDomain',
@@ -729,7 +698,7 @@
 						{
 							foreach($ea_data as $var => $val)
 							{
-								if ($var != 'imapType' || $val != 2 || $profile[$var] < 3)	// dont kill special imap server types
+								if ($var != 'imapType' || $val != 'defaultimap') // old code: || $profile[$var] < 3)	// dont kill special imap server types
 								{
 									$profile[$var] = $val;
 								}
@@ -791,9 +760,9 @@
 						{
 							$new_config[$config_name] = $all[$ea_name];
 						}
-						else	// imap type
+						else	// imap type, no pop3 code anymore
 						{
-							$new_config[$config_name] = ($all['imapType'] == 1 ? 'pop3' : 'imap').($all['imapTLSEncryption'] ? 's' : '');
+							$new_config[$config_name] = 'imap'.($all['imapTLSEncryption'] ? 's' : '');
 						}
 					}
 				}

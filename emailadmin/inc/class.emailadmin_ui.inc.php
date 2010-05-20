@@ -490,7 +490,6 @@
 					case 'userDefinedIdentities':
 					case 'ea_user_defined_signatures':
 					case 'ea_active':
-					case 'imapoldcclient':
 					case 'editforwardingaddress':
 						if($value == 'yes' || $value == 1) {
 							$this->t->set_var('selected_'.$key,'checked="1"');
