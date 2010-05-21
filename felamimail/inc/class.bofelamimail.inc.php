@@ -665,6 +665,7 @@
 
 		function getNotifyFlags ($_messageUID) {
 			$flags =  $this->icServer->getFlags($_messageUID, true);
+			if (self::$debug) error_log(__METHOD__.$_messageUID.array2string($flags));
 			if (PEAR::isError($flags)) {
 				return null;
 				}

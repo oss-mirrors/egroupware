@@ -47,6 +47,8 @@
 	*/
 	class uiwidgets
 	{
+		var $charset;
+		var $bofelamimail;
 		/**
 		* the contructor
 		*
@@ -57,7 +59,7 @@
 			$this->template = $template;
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
 			$this->charset = $GLOBALS['egw']->translation->charset();
-
+			$this->bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
 			if (!is_object($GLOBALS['egw']->html)) {
 				$GLOBALS['egw']->html = CreateObject('phpgwapi.html');
 			}
@@ -86,8 +88,7 @@
 		* @return string the html code, to be added into the template
 		*/
 		function createHTMLFolder($_folders, $_selected, $_selectedFolderCount, $_topFolderName, $_topFolderDescription, $_divName, $_displayCheckBox, $_useDisplayCharset = false) {
-			$bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
-			$preferences = $bofelamimail->mailPreferences;
+			$preferences = $this->bofelamimail->mailPreferences;
 			//_debug_array(bofelamimail::$autoFolders);
 			$userDefinedFunctionFolders = array();
 			if (isset($preferences->preferences['trashFolder']) && 
@@ -542,6 +543,26 @@
 			// IFrame for Preview ....
 			if ($headerData['uid'] && $GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0)
 			{
+				$jscall ='';
+				$this->bofelamimail->openConnection($_icServer);
+				$this->bofelamimail->reopen($_folderName);
+				$flags = $this->bofelamimail->getFlags($headerData['uid']);
+				if ($this->bofelamimail->getNotifyFlags($headerData['uid']) === null)
+				{
+					$headers    = $this->bofelamimail->getMessageHeader($headerData['uid']); 
+					if ( isset($headers['DISPOSITION-NOTIFICATION-TO']) ) {
+						$sent_not = $this->bofelamimail->decode_header(trim($headers['DISPOSITION-NOTIFICATION-TO']));
+					} else if ( isset($headers['RETURN-RECEIPT-TO']) ) {
+						$sent_not = $this->bofelamimail->decode_header(trim($headers['RETURN-RECEIPT-TO']));
+					} else if ( isset($headers['X-CONFIRM-READING-TO']) ) {
+						$sent_not = $this->bofelamimail->decode_header(trim($headers['X-CONFIRM-READING-TO']));
+					} else $sent_not = "";
+					if ( $sent_not != "" && strpos( array2string($flags),'Seen')===false) 
+					{
+						$jscall= " onload='javascript:sendNotifyMS(".$headerData['uid'].")'";
+					}
+				}
+				//if (strpos( array2string($flags),'Seen')===false) $this->bofelamimail->flagMessages('read', $headerData['uid']);
 				if ($_folderType > 0) {
 					// sent or drafts or template folder
 					if (!empty($headerData['to_name'])) {
@@ -654,7 +675,7 @@
 								</TR>
 								<TR>
 									<TD nowrap valign=\"top\" colspan=\"3\" height=\"".$IFrameHeight."\">
-										<iframe id=\"messageIFRAME\" frameborder=\"1\" height=\"".$IFrameHeight."\" scrolling=\"auto\" src=\"".$GLOBALS['egw']->link('/index.php',$linkData)."\">
+										<iframe ".(!empty($jscall) ? $jscall:"")." id=\"messageIFRAME\" frameborder=\"1\" height=\"".$IFrameHeight."\" scrolling=\"auto\" src=\"".$GLOBALS['egw']->link('/index.php',$linkData)."\">
 										</iframe>
 									</TD>
 								</TR>

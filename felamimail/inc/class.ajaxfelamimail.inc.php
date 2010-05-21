@@ -416,8 +416,9 @@
 
 		function sendNotify ($_uid, $_ret)
 		{
+			if($this->_debug) error_log(__METHOD__." with $_uid,$_ret");
 			$response = new xajaxResponse();
-			if ($_ret==='true') {
+			if ($_ret==='true' || $_ret===1 || $_ret == "1,") {
 				if ( $this->bofelamimail->sendMDN($_uid) )
 					$this->bofelamimail->flagMessages("mdnsent",array($_uid));
 			} else {

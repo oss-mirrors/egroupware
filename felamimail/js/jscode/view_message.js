@@ -21,7 +21,7 @@ function getUrlPart(url, name )
 }
 
 function sendNotify (uid) {
-	ret = confirm(lang_sendnotify)
+	ret = confirm(lang_sendnotify);
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.sendNotify",uid,ret);	
 }
 
