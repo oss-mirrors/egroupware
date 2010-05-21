@@ -150,10 +150,15 @@ class bopolls
 	{
 		if(isset($poll_id) && isset($vote_id) &&
 			(int)$poll_id >= 0 && (int)$vote_id >= 0 &&
-			$this->user_can_vote($poll_id))
+			$this->user_can_vote($poll_id) || $GLOBALS['poll_settings']['change_selection'])
 		{
 			$this->so->add_vote($poll_id,$vote_id);
 		}
+	}
+
+	function delete_vote($poll_id,$answer_id,$uid=null)
+	{
+		return $this->so->delete_vote($poll_id,$answer_id,$uid);
 	}
 
 	function add_answer($poll_id,$answer)
@@ -198,6 +203,11 @@ class bopolls
 		{
 			$this->so->update_question($poll_id,$question,$visible,$votable);
 		}
+	}
+	
+	function get_user_vote($poll_id,$user=null,$use_ip=null)
+	{
+		return $this->so->get_user_vote($poll_id,$user,$use_ip);
 	}
 
 	function get_latest_poll()
@@ -259,7 +269,12 @@ class bopolls
 	function user_can_vote($poll_id)
 	{
 		//echo "<p>user_can_vote($poll_id) check_acl($poll_id,'votable')=".(int)$this->check_acl($poll_id,'votable').", get_user_votecount($poll_id)=".$this->so->get_user_votecount($poll_id)."</p>\n";
-		return $this->check_acl($poll_id,'votable') && !$this->so->get_user_votecount($poll_id);
+		return $this->check_acl($poll_id,'votable') && !$this->get_user_votecount($poll_id);
+	}
+	
+	function get_user_votecount($poll_id)
+	{
+		return $this->so->get_user_votecount($poll_id);
 	}
 
 	/**

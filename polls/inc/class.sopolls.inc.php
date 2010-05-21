@@ -247,7 +247,7 @@ class sopolls
 		if (is_null($uid)) $uid = $this->user;
 		if (is_null($use_ip)) $use_ip = $this->is_anonymous();
 
-		if ($this->get_user_votecount($poll_id,$uid,$use_ip)) return false;	// already voted
+		if ($this->get_user_votecount($poll_id,$uid,$use_ip) && !$GLOBALS['poll_settings']['change_selection']) return false;	// already voted
 
 		// verify that we're adding a valid vote before update
 		$this->db->update($this->answers_table,'answer_votes=answer_votes+1',array(
@@ -266,6 +266,38 @@ class sopolls
 			'vote_ip' => $this->get_ip(),
 		);
 		return $this->db->insert($this->votes_table,$data,false,__LINE__,__FILE__);
+	}
+
+	/**
+	 * Delete a vote
+	 *
+	 * @param int $poll_id
+	 * @param int $answer_id
+	 * @param int $uid=null default null use current user
+	 * @param boolean $use_ip=null default use ip for anonymous users
+	 * @return boolean true if vote is valid and deleted, false otherwise
+	 */
+	function delete_vote($poll_id,$answer_id,$uid=null)
+	{
+		if (is_null($uid)) $uid = $this->user;
+
+		if (!$this->get_user_votecount($poll_id,$uid)) return false;
+
+		// verify that we're deleting a valid vote before update
+		$this->db->update($this->answers_table,'answer_votes=answer_votes-1',array(
+			'poll_id' => $poll_id,
+			'answer_id' => $answer_id,
+			//'answer_votable' => memberships($uid),
+		),__LINE__,__FILE__);
+
+		if (!$this->db->affected_rows()) return false;	// not existing vote, answer or not allowed to delete
+
+		$data = array(
+			'poll_id' => $poll_id,
+			'answer_id' => $answer_id,
+			'vote_uid' => $uid,
+		);
+		return $this->db->delete($this->votes_table,$data,__LINE__,__FILE__);
 	}
 
 	/**
@@ -304,6 +336,27 @@ class sopolls
 		$this->db->update($this->polls_table,$data,array('poll_id' => $poll_id),__LINE__,__FILE__);
 		
 		return $this->db->affected_rows();
+	}
+
+	/**
+	 * Gets the current answer a user voted
+	 *
+	 * @param int $poll_id
+	 * @param int $user=null
+	 * @param boolean $use_ip=null
+	 * @return int answer id or false, when the user has not voted yet
+	 */
+	function get_user_vote($poll_id,$user=null,$use_ip=null)
+	{
+		if (is_null($user)) $user = $this->user;
+		if (is_null($use_ip)) $use_ip = $this->is_anonymous();
+
+		if (!$this->get_user_votecount($poll_id,$user,$use_ip)) return false;
+
+		$data = array('poll_id' => $poll_id, 'vote_uid' => $user, 'vote_ip' >= $this->get_ip());
+		$this->db->select($this->votes_table,'answer_id',$data,__LINE__,__FILE__);
+
+		return $this->db->next_record() ? $this->db->f(0) : false;
 	}
 
 	/**

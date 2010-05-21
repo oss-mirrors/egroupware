@@ -23,7 +23,7 @@
 
 <!-- BEGIN entry -->
  <tr class="{tr_class}">
-  <td align="center"><input type="radio" name="poll_voteNr" id="vote{vote_id}" value="{vote_id}"></td>
+  <td align="center"><input type="radio" name="poll_voteNr" id="vote{vote_id}" value="{vote_id}" {checked}></td>
   <td><label for="vote{vote_id}">{option_text}</label></td>
  </tr>
 <!-- END entry -->

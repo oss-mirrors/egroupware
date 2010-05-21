@@ -18,6 +18,12 @@
     </td>
   </tr>
   <tr>
+  <tr>
+    <td>{lang_change_selection}</td>
+    <td>
+  	  <select name="settings[change_selection]">
+  	  {change_sel}
+  </tr>
     <td colspan="2"><input type="submit" name="submit" value="{lang_submit}">&nbsp;<input type="submit" name="cancel" value="{lang_cancel}"></td>
   </tr>
 </tbody>

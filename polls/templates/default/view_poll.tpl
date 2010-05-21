@@ -1,9 +1,12 @@
 <!-- BEGIN poll -->
-<table border="0" align="center" width="100%" style="max-width: 400px;"> 
-  {titlebar}
-  {votes}
-  {show_total}
-</table>
+<form action="{form_action}" method="post">
+  <table border="0" align="center" width="100%" style="max-width: 400px;"> 
+    {titlebar}
+    {votes}
+    {show_total}
+    {buttons}
+  </table>
+</form>
 <!-- END poll -->
 
 <!-- BEGIN title -->
@@ -30,3 +33,9 @@
   <td colspan="4" align="right">{lang_total}: {sum}</td>
  </tr>
 <!-- END total -->
+
+<!-- BEGIN button -->
+ <tr>
+  <td colspan="4" align="center"><input type="submit" name="submit" value="{button_text}"></td>
+ </tr>
+<!-- END button -->

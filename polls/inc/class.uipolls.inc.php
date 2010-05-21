@@ -43,6 +43,8 @@ class uipolls
 		'admin' => True,
 		'vote'  => True,
 		'view'  => True,
+		'change_vote' => True,
+		'revote' => True,
 	);
 
 	function uipolls($use_session=true)
@@ -58,13 +60,16 @@ class uipolls
 		echo parse_navbar();
 
 		$currentpoll = $GLOBALS['poll_settings']['currentpoll'] ? $GLOBALS['poll_settings']['currentpoll'] : $this->bo->get_latest_poll();
-		if(!$view && $this->bo->user_can_vote($currentpoll))
+		if(isset($currentpoll))
 		{
-			echo $this->show_ballot($currentpoll);
-		}
-		else
-		{
-			echo $this->view_results($currentpoll,true,true);
+			if(!$view && $this->bo->user_can_vote($currentpoll))
+			{
+				echo $this->show_ballot($currentpoll);
+			}
+			else
+			{
+				echo $this->view_results($currentpoll,true,true);
+			}
 		}
 		$GLOBALS['egw']->common->egw_footer();
 	}
@@ -99,6 +104,39 @@ class uipolls
 		echo parse_navbar();
 		echo $this->view_results($showpoll);
 		$GLOBALS['egw']->common->egw_footer();
+	}
+
+	function change_vote()
+	{
+		$currentpoll = $GLOBALS['poll_settings']['currentpoll'] ? $GLOBALS['poll_settings']['currentpoll'] : $this->bo->get_latest_poll();
+		$GLOBALS['egw']->common->egw_header();
+		echo parse_navbar();
+
+		$currentanswer = $this->bo->get_user_vote($currentpoll);
+		echo $this->show_ballot($currentpoll,null,$currentanswer);
+
+		$GLOBALS['egw']->common->egw_footer();
+	}
+	
+	function revote()
+	{
+		if (!isset($_GET['old']))
+			$this->index();
+
+		$currentpoll = $GLOBALS['poll_settings']['currentpoll'] ? $GLOBALS['poll_settings']['currentpoll'] : $this->bo->get_latest_poll();
+		$old_answer = $_GET['old'];
+		$new_answer = $_POST['poll_voteNr'];
+		if ($old_answer == $new_answer)
+		{
+			// don't vote the same again (sql error)
+			unset($_POST['vote']); unset($_POST['poll_id']); unset($_POST['poll_voteNr']);
+		}
+		else
+		{
+			$this->bo->delete_vote($currentpoll,$old_answer);
+		}
+
+		$this->vote();
 	}
 
 	function admin()
@@ -591,6 +629,7 @@ class uipolls
 //			'check_allow_multiple_votes' => $GLOBALS['poll_settings']['allow_multiple_votes']?' checked':'',
 			'lang_selectpoll' => lang('Select current poll'),
 			'lang_latest_poll' => lang('Allways use latest poll'),
+			'lang_change_selection' => lang('Allow users to change their vote'),
 			'lang_submit' => lang('Submit'),
 			'lang_cancel' => lang('Cancel'),
 		);
@@ -599,7 +638,16 @@ class uipolls
 		$poll_questions = $this->select_poll($GLOBALS['poll_settings']['currentpoll'],false);
 		$this->t->set_var('poll_questions', $poll_questions);
 
+		$change = $this->change_selection($GLOBALS['poll_settings']['change_selection']);
+		$this->t->set_var('change_sel', $change);
+
 		$this->t->pparse('out','settings');
+	}
+	
+	function change_selection($can_change=False)
+	{
+		return('<option value="0"'.($can_change ? '' : ' selected="1"').'>'.lang('no').'</option>'."\n".
+			   '<option value="1"'.($can_change ? ' selected="1"' : '').'>'.lang('yes').'</option>');
 	}
 
 	function viewquestion()
@@ -781,12 +829,20 @@ class uipolls
 		$this->t->set_block('viewpoll','image','image');
 		$this->t->set_block('viewpoll','total','total');
 
+		$change_vote = $GLOBALS['poll_settings']['change_selection'] && $this->bo->get_user_votecount($poll_id);
+		if($change_vote)
+		{
+			$this->t->set_block('viewpoll', 'button', 'buttons');
+		}
+
 		$this->t->set_var('titlebar', '');
 		if($showtitle)
 		{
 			$this->t->set_var('poll_title', $title);
 			$this->t->parse('titlebar','title');
 		}
+		$this->t->set_var('buttons', '');
+		$this->t->set_var('form_action', $GLOBALS['egw']->link('/index.php', array('menuaction' => 'polls.uipolls.change_vote')));
 
 		$this->t->set_var('votes', '');
 		$this->t->set_var('server_url',$GLOBALS['egw_info']['server']['webserver_url']);
@@ -836,10 +892,17 @@ class uipolls
 			$this->t->set_var('lang_total',lang('Total votes'));
 			$this->t->parse('show_total','total');
 		}
+
+		if($change_vote)
+		{
+			$this->t->set_var('button_text', lang('Change vote'));
+			$this->t->parse('buttons', 'button', True);
+		}
+		
 		return $this->t->parse('out','poll');
 	}
 
-	function show_ballot($poll_id = '',$action=null)
+	function show_ballot($poll_id = '',$action=null,$change_vote=false)
 	{
 		if(empty($poll_id))
 		{
@@ -852,7 +915,7 @@ class uipolls
 
 		$poll_id = (int)$poll_id;
 
-		if(!$this->bo->user_can_vote($poll_id))
+		if(!$this->bo->user_can_vote($poll_id) && $change_vote === false && !$GLOBALS['poll_settings']['change_selection'])
 		{
 			return False;
 		}
@@ -866,13 +929,19 @@ class uipolls
 		$this->t->set_block('ballot','form_end','form_end');
 		$this->t->set_block('ballot','entry','entry');
 
+		$link_data = array('menuaction' => 'polls.uipolls.vote');
+		if ($change_vote !== false)
+		{
+			$link_data['menuaction'] = 'polls.uipolls.revote';
+			$link_data['old']        = $change_vote;
+		}
 		$this->t->set_var('form_action',$action ? $action :
-			$GLOBALS['egw']->link('/index.php',array('menuaction'=>'polls.uipolls.vote'))
+			$GLOBALS['egw']->link('/index.php',$link_data)
 		);
 		$this->t->set_var('poll_id',$poll_id);
 		$this->t->set_var('poll_title',$poll_title);
 		$this->t->set_var('title_bgcolor', $GLOBALS['egw_info']['theme']['th_bg']);
-		$this->t->set_var('bgcolor', $GLOBALS['egw_info']['theme']['bgcolor']);
+		$this->t->set_var('bgcolor', $GLOBALS['egw_info']['the$currentanswerme']['bgcolor']);
 
 		$this->t->set_var('entries', '');
 		foreach($results as $result)
@@ -884,6 +953,7 @@ class uipolls
 			$this->t->set_var('tr_class',$this->nextmatchs->alternate_row_color('',true));
 			$this->t->set_var('vote_id', $vote_id);
 			$this->t->set_var('option_text', $option_text);
+			$this->t->set_var('checked', ($change_vote === $vote_id ? 'checked' : ''));
 
 			$this->t->parse('entries','entry',True);
 		}
