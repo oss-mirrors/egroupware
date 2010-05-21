@@ -1,5 +1,10 @@
-egroupware chat	phpfreechat	de	eGroupware Chat
-phpFreeChat	common	de	freeChat
-phpfreechat common  de  freeChat
-phpfreechat integration into egroupware	phpfreechat	de	phpFreeChat-Integration für eGroupWare
+are users allowed to change their nicknames in phpfreechat and are allowed to connect multiple times	admin	de	Allen Benutzern erlauben in phpFreeChat Ihre Spitznamen zu ändern UND sich mehrfach mit dem Chatmodul zu verbinden.
+egroupware chat	phpfreechat	de	EGroupware Chat
+frozen nick	admin	de	eingefrorener Spitzname
+global categories	phpfreechat	de	Globale Kategorien
+phpfreechat	common	de	freeChat
+phpfreechat configuration	admin	de	Konfiguration phpFreeChat
+phpfreechat integration into egroupware	phpfreechat	de	phpFreeChat-Integration für EGroupware
 the chat opens in a new window.	phpfreechat	de	Der Chat öffnet sich in einem neuen Fenster.
+to complete the phpfreechat installation you have to give the webserver write access to:	phpfreechat	de	Um die Installation fpr phpFreeChat abzuschliessen, müssen Sie dem Webserver für kurze Zeit Schreibrechte geben.
+you should remove the write access, once you see the chat!	phpfreechat	de	Sie sollten den Schreibzugriff wieder entfernen, nachdem Sie sich zu ersten mal eingeloggt haben und Sie das Chat Modul sehen können.
