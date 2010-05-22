@@ -569,9 +569,10 @@
 				unset($this->location_info['returnto2']);
 				$this->init();
 				return;
-			} elseif ($content['send'])	// Send button clicked
+			} 
+			elseif ($content['send'])	// Send button clicked
 			{
-				$validate =& CreateObject('phpgwapi.validator');
+				$validate = CreateObject('bookmarks.validator');
 				// Strip space and tab from anywhere in the To field
 				$to = $validate->strip_space($content['to']);
 
@@ -761,4 +762,3 @@
 			);
 		}
 	}
-?>

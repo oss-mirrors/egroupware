@@ -55,12 +55,12 @@
 
 		function bookmarks_bo()
 		{
-			$this->so =& CreateObject('bookmarks.bookmarks_so');
+			$this->so = new bookmarks_so();
 			$this->grants      = $GLOBALS['egw']->acl->get_grants('bookmarks');
 			$this->categories = $GLOBALS['egw']->categories;
 			$this->config = config::read('bookmarks');
 			$this->url_format_check = True;
-			$this->validate =& CreateObject('phpgwapi.validator');
+			$this->validate = CreateObject('bookmarks.validator');
 
 			$this->translation = $GLOBALS['egw']->translation;
 			$this->charset = $this->translation->charset();
@@ -91,7 +91,8 @@
 			$this->save_session_data($location_info);
 		}
 
-		public function get_rows(&$query, &$rows, &$readonlys = array()) {
+		public function get_rows(&$query, &$rows, &$readonlys = array()) 
+		{
 			// Pass grant list for permission filtering
 			$query['grants'] = array();
 			foreach($this->grants as $id => $perms) {
