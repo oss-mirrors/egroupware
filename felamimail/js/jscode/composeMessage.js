@@ -658,55 +658,68 @@ function fm_toggle_editor(toggler)
 	// do the appropriate conversion
 
 	var ckeditor = CKEDITOR.instances['body'];
-	var ckeditor_span = document.getElementById('cke_body');
-	var editorArea = document.getElementById('editorArea');
 	var plaineditor = document.getElementsByName('body')[0];
+	plaineditor.id = "body"; //This has to be added in order to allow XAJAX to write its content into body
 
 	if (selectedEditor == 'html')
 	{
-		var existingHtml = plaineditor.value;
-		
-
-		ckeditor_span.style.display = "inline";
+		//Hide the old editor
 		plaineditor.style.display = "none";
 
-		ckeditor.setData(existingHtml);	
+		//Copy the current ASCII data and recode it via a XAJAX request
+		var existingAscii = "<pre>" + plaineditor.value + "</pre>";
+		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID, existingAscii, 'simple');
 
-//		ckeditor.replace('body', null);
-
-//		var edit
-/*		var composeElement = document.getElementsByName('body')[0];
-		var existingPlainText = composeElement.value;
-		var htmlText = "<pre>" + existingPlainText + "</pre>";
-		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID,htmlText,'simple');*/
 		htmlFlag.value = "1";
 		mimeType.value = "html";
 	}
 	else
 	{
+		//Copy the current HTML data and recode it via a XAJAX request
+		var editorArea = document.getElementById('editorArea');
 		var existingHtml = ckeditor.getData();
+		var ckeditor_span = document.getElementById('cke_body');
 
+		//Hide the old editor		
 		ckeditor_span.style.display = "none";
-		
-		plaineditor.style.visibility = "visible";
-		plaineditor.style.display = "block";
-		plaineditor.style.width = "100%";
-		plaineditor.style.borderWidth = 0;
-		plaineditor.style.height = editorArea.style.height;
 
-		//plaineditor.value = existingHtml;
-		plaineditor.value = '';
 		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID, existingHtml, 'ascii');
 
-/*		var editor = CKEDITOR.instances['body'];
-	    var existingHtml = editor.getData();
-//		delete editor;
-		removeFCK('body');
-		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID,existingHtml,'ascii');*/
+		//Do some presets on the new editor
+		plaineditor.style.width = "100%";
+		plaineditor.style.borderWidth = 0;
+		plaineditor.style.height = editorArea.style.height;	
+		plaineditor.value = '';
+
 	    htmlFlag.value = "0";
 		mimeType.value = "text";
 	}
 }
+
+function showPlainEditor(_content)
+{
+	var plaineditor = document.getElementsByName('body')[0];
+
+	//Toggle the plain editor visiblity
+	plaineditor.style.visibility = "visible";
+	plaineditor.style.display = "block";
+
+	plaineditor.value = _content;	
+}
+
+function showHTMLEditor(_content)
+{
+	var ckeditor = CKEDITOR.instances['body'];
+	var ckeditor_span = document.getElementById('cke_body');
+
+	//Set the new content
+	ckeditor.setData(_content);
+
+	//Toggle the plain editor visiblity
+	ckeditor_span.style.display = 'block';
+}
+
+
 function removeFCK(fieldId)
 {
 /*       var configElement = document.getElementById(fieldId+'___Config');

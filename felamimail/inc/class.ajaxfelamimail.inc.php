@@ -239,6 +239,8 @@
 
         function toggleEditor($_composeID, $_content ,$_mode)
         {
+			$_content = utf8_decode($_content);
+			
 			if($this->_debug) error_log("ajaxfelamimail::toggleEditor->".$_mode.'->'.$_content);
 	        $bocompose  = CreateObject('felamimail.bocompose', $_composeID);
 			if($_mode == 'simple') {
@@ -254,13 +256,17 @@
 				$_content = $bocompose->_getCleanHTML($_content);
 				$_content = $bocompose->convertHTMLToText($_content);
 			}
-//			$htmlObject = html::fckEditorQuick('body', $_mode, $_content);
+
 			$this->saveSessionData();
+			
 			$response = new xajaxResponse();
-//			$response->addScript('FCKeditorAPI_ConfirmCleanup();');
-//			$response->addScript('alert("TEST");');
-//			$response->addAssign('editorArea', 'innerHTML', $htmlObject);
-			$response->addAssign('body', 'value', $_content);
+
+			$escaped = utf8_encode(str_replace(array("'", "\r", "\n"), array("\\'", "\\r", "\\n"), $_content));
+			if ($_mode == 'simple')
+				$response->addScript("showHTMLEditor('$escaped');");
+			else
+				$response->addScript("showPlainEditor('$escaped');");
+
 	        return $response->getXML();
         }
 
