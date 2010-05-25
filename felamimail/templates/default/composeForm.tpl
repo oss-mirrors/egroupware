@@ -147,9 +147,9 @@
 </tr>
 </table>
 <input type="hidden" id="mimeType" name="mimeType" value="{mimeType}">
-<div id="editorArea" style="border:0px solid black; width:99%; height:400px;">
+<span id="editorArea" style="border:0px solid black; width:99%; height:400px;">
 	{tinymce}
-</div>
+</span>
 <table width="99%" cellspacing="0" cellpadding="0"><tr>
 <td>
 <fieldset class="bordertop"><legend>{lang_signature}/{lang_stationery}/{lang_editormode}</legend>

@@ -254,12 +254,13 @@
 				$_content = $bocompose->_getCleanHTML($_content);
 				$_content = $bocompose->convertHTMLToText($_content);
 			}
-			$htmlObject = html::fckEditorQuick('body', $_mode, $_content);
+//			$htmlObject = html::fckEditorQuick('body', $_mode, $_content);
 			$this->saveSessionData();
 			$response = new xajaxResponse();
-			$response->addScript('FCKeditorAPI_ConfirmCleanup();');
-			$response->addScript('FCKeditorAPI_Cleanup();');
-			$response->addAssign('editorArea', 'innerHTML', $htmlObject);
+//			$response->addScript('FCKeditorAPI_ConfirmCleanup();');
+//			$response->addScript('alert("TEST");');
+//			$response->addAssign('editorArea', 'innerHTML', $htmlObject);
+			$response->addAssign('body', 'value', $_content);
 	        return $response->getXML();
         }
 

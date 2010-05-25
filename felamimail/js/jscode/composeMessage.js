@@ -657,42 +657,74 @@ function fm_toggle_editor(toggler)
 
 	// do the appropriate conversion
 
+	var ckeditor = CKEDITOR.instances['body'];
+	var ckeditor_span = document.getElementById('cke_body');
+	var editorArea = document.getElementById('editorArea');
+	var plaineditor = document.getElementsByName('body')[0];
+
 	if (selectedEditor == 'html')
 	{
-		var composeElement = document.getElementsByName('body')[0];
+		var existingHtml = plaineditor.value;
+		
+
+		ckeditor_span.style.display = "inline";
+		plaineditor.style.display = "none";
+
+		ckeditor.setData(existingHtml);	
+
+//		ckeditor.replace('body', null);
+
+//		var edit
+/*		var composeElement = document.getElementsByName('body')[0];
 		var existingPlainText = composeElement.value;
 		var htmlText = "<pre>" + existingPlainText + "</pre>";
-		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID,htmlText,'simple');
+		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID,htmlText,'simple');*/
 		htmlFlag.value = "1";
 		mimeType.value = "html";
 	}
 	else
 	{
-		var editor = FCKeditorAPI.GetInstance('body');
-	    var existingHtml = editor.GetHTML();
-		delete editor;
-		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID,existingHtml,'ascii');
-		//removeFCK('body');
+		var existingHtml = ckeditor.getData();
+
+		ckeditor_span.style.display = "none";
+		
+		plaineditor.style.visibility = "visible";
+		plaineditor.style.display = "block";
+		plaineditor.style.width = "100%";
+		plaineditor.style.borderWidth = 0;
+		plaineditor.style.height = editorArea.style.height;
+
+		//plaineditor.value = existingHtml;
+		plaineditor.value = '';
+		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID, existingHtml, 'ascii');
+
+/*		var editor = CKEDITOR.instances['body'];
+	    var existingHtml = editor.getData();
+//		delete editor;
+		removeFCK('body');
+		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID,existingHtml,'ascii');*/
 	    htmlFlag.value = "0";
 		mimeType.value = "text";
 	}
 }
 function removeFCK(fieldId)
 {
-       var configElement = document.getElementById(fieldId+'___Config');
-       var frameElement =  document.getElementById(fieldId+'___Frame');
+/*       var configElement = document.getElementById(fieldId+'___Config');
+       var frameElement =  document.getElementById(fieldId+'___Frame');*/
        //var textarea = document.forms[this].elements[fieldId];
-       var editor = FCKeditorAPI.GetInstance(fieldId);
+       var editor = CKEDITOR.instances[fieldId];
 
        //if (editor!=null && configElement && frameElement && configElement.parentNode==textarea.parentNode && frameElement.parentNode==textarea.parentNode && document.removeChild)
-	   if (editor!=null && configElement && frameElement && document.removeChild)
+	   if (editor!=null/* && configElement && frameElement && document.removeChild*/)
        {
-          editor.UpdateLinkedField();
+/*          editor.UpdateLinkedField();
           configElement.parentNode.removeChild(configElement);
           frameElement.parentNode.removeChild(frameElement);
           //textarea.style.display = '';
           delete FCKeditorAPI.Instances[fieldId];
-          delete editor;
+          delete editor;*/
+          editor.destroy(false);
+//		  delete editor;	
        }
 
 }
