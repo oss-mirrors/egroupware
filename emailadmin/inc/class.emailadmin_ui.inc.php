@@ -349,9 +349,13 @@
 				}
 			}
 			if ($rowfound) $content = array_merge($this->data,array());
+			$content['smtpcapabilities'] = $this->SMTPServerType[(!empty($content['ea_smtp_type'])?$content['ea_smtp_type']:'defaultsmtp')]['smtpcapabilities'];
+			$content['imapcapabilities'] = $this->IMAPServerType[(!empty($content['ea_imap_type'])?$content['ea_imap_type']:'defaultimap')]['imapcapabilities'];
 			if (!empty($msg)) $content['msg'] = $msg;
 			list($content['ea_smtp_auth_username'],$content['smtp_senders_email']) = explode(';',$content['ea_smtp_auth_username']);
 			$preserv['ea_profile_id'] = $content['ea_profile_id'];
+			$preserv['smtpcapabilities'] = $content['smtpcapabilities'];
+			$preserv['imapcapabilities'] = $content['imappcapabilities'];
 			//$preserv['ea_stationery_active_templates'] = $content['ea_stationery_active_templates'];
 			$sel_options['ea_smtp_type']=parent::getSMTPServerTypes();
 			$sel_options['ea_imap_type']=parent::getIMAPServerTypes(false);

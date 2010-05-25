@@ -83,6 +83,7 @@
 						'smtpType'
 					),
 					'description'	=> lang('standard SMTP-Server'),
+					'smtpcapabilities'	=> 'default',
 					'classname'	=> 'defaultsmtp'
 				),
 				'postfixldap' 	=> array(
@@ -101,6 +102,7 @@
 						'smtpLDAPUseDefault'
 					),
 					'description'	=> 'Postfix (qmail Schema)',
+					'smtpcapabilities'	=> 'default|forward',
 					'classname'	=> 'postfixldap'
 				),
 				'postfixinetorgperson'     => array(
@@ -113,6 +115,7 @@
 						'smtpType',
 					),
 					'description'   => 'Postfix (inetOrgPerson Schema)',
+					'smtpcapabilities'	=> 'default',
 					'classname'     => 'postfixinetorgperson'
 				),
 				'smtpplesk'     => array(
@@ -126,6 +129,7 @@
 						'editforwardingaddress',
 					),
 					'description'   => 'Plesk SMTP-Server (Qmail)',
+					'smtpcapabilities'	=> 'default|forward',
 					'classname'     => 'smtpplesk'
 				),
 				'postfixdbmailuser' 	=> array(
@@ -144,6 +148,7 @@
 						'smtpLDAPUseDefault'
 					),
 					'description'   => 'Postfix (dbmail Schema)',
+					'smtpcapabilities'	=> 'default|forward',
 					'classname'     => 'postfixdbmailuser'
 				),
 			);
@@ -162,6 +167,7 @@
 					),
 					'description'	=> 'standard IMAP server',
 					'protocol'	=> 'imap',
+					'imapcapabilities'	=> 'default',
 					'classname'	=> 'defaultimap'
 				),
 				'cyrusimap' 	=> array(
@@ -183,6 +189,7 @@
 					),
 					'description'	=> 'Cyrus IMAP Server',
 					'protocol'	=> 'imap',
+					'imapcapabilities'	=> 'default|sieve|admin',
 					'classname'	=> 'cyrusimap'
 				),
 				'dbmailqmailuser' 	=> array(
@@ -201,6 +208,7 @@
 					),
 					'description'	=> 'DBMail (qmailUser schema)',
 					'protocol'	=> 'imap',
+					'imapcapabilities'	=> 'default|sieve',
 					'classname'	=> 'dbmailqmailuser'
 				),
 				'pleskimap'     => array(
@@ -216,6 +224,7 @@
 					),
 					'description'   => 'Plesk IMAP Server (Courier)',
 					'protocol'      => 'imap',
+					'imapcapabilities'	=> 'default',
 					'classname'     => 'pleskimap'
 				),
 				'dbmaildbmailuser' 	=> array(
@@ -234,6 +243,7 @@
 					),
 					'description'	=> 'DBMail (dbmailUser schema)',
 					'protocol'	=> 'imap',
+					'imapcapabilities'	=> 'default|sieve',
 					'classname'	=> 'dbmaildbmailuser'
 				),
 			); 
