@@ -659,6 +659,8 @@ function fm_toggle_editor(toggler)
 
 	var ckeditor = CKEDITOR.instances['body'];
 	var plaineditor = document.getElementsByName('body')[0];
+	var editorArea = document.getElementById('editorArea');
+
 	plaineditor.id = "body"; //This has to be added in order to allow XAJAX to write its content into body
 
 	if (selectedEditor == 'html')
@@ -676,7 +678,6 @@ function fm_toggle_editor(toggler)
 	else
 	{
 		//Copy the current HTML data and recode it via a XAJAX request
-		var editorArea = document.getElementById('editorArea');
 		var existingHtml = ckeditor.getData();
 		var ckeditor_span = document.getElementById('cke_body');
 
@@ -685,14 +686,48 @@ function fm_toggle_editor(toggler)
 
 		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID, existingHtml, 'ascii');
 
-		//Do some presets on the new editor
-		plaineditor.style.width = "100%";
-		plaineditor.style.borderWidth = 0;
-		plaineditor.style.height = editorArea.style.height;	
-		plaineditor.value = '';
-
 	    htmlFlag.value = "0";
 		mimeType.value = "text";
+
+		setupPlainEditor(plaineditor, editorArea.style.height);
+	}
+
+	showAjaxLoader(editorArea);
+}
+
+function setupPlainEditor(plaineditor, height)
+{
+	if (plaineditor)
+	{
+		//Do some presets on the new editor
+		plaineditor.style.width = "99%";
+		plaineditor.style.borderWidth = 0;
+		plaineditor.style.height = height;	
+		plaineditor.style.borderWidth = "1px";
+		plaineditor.style.borderStyle = "solid";
+		plaineditor.style.borderColor = "gray";
+		plaineditor.style.margin = "1px";
+		plaineditor.value = '';
+	}
+}
+
+function showAjaxLoader(elem)
+{
+	if (elem)
+	{
+		elem.style.display = "block";
+		elem.style.backgroundImage = "url(phpgwapi/templates/default/images/ajax-loader.gif)";
+		elem.style.backgroundRepeat = "no-repeat";
+		elem.style.backgroundPosition = "center";
+	}
+}
+
+function hideAjaxLoader(elem)
+{
+	if (elem)
+	{
+		elem.style.display = "inline";
+		elem.style.backgroundImage = "";
 	}
 }
 
@@ -704,7 +739,9 @@ function showPlainEditor(_content)
 	plaineditor.style.visibility = "visible";
 	plaineditor.style.display = "block";
 
-	plaineditor.value = _content;	
+	plaineditor.value = _content;
+
+	hideAjaxLoader(document.getElementById('editorArea'));
 }
 
 function showHTMLEditor(_content)
@@ -717,6 +754,8 @@ function showHTMLEditor(_content)
 
 	//Toggle the plain editor visiblity
 	ckeditor_span.style.display = 'block';
+
+	hideAjaxLoader(document.getElementById('editorArea'));
 }
 
 
@@ -741,6 +780,7 @@ function removeFCK(fieldId)
        }
 
 }
+
 function changeIdentity(SelectedId)
 {
 	//alert(SelectedId.value);
