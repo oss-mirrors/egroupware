@@ -30,11 +30,11 @@ class bookmarks_hooks
 			'view_id'    => 'bm_id',
 			'view_list'	=>	'bookmarks.bookmarks_ui.list',
 			'add' => array(
-				'menuaction' => 'bookmarks.bookmarks_ui.add',
+				'menuaction' => 'bookmarks.bookmarks_ui.create',
 			),
 			'add_app'    => 'bookmarks',
 			'add_id'     => 'bm_id',
-			'add_popup'  => '750x550',
+//			'add_popup'  => '750x550', not a popup yet
 		);
 	}
 
