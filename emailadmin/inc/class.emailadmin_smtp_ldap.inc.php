@@ -247,7 +247,8 @@ class emailadmin_smtp_ldap extends defaultsmtp
 				$userData['mailForwardingAddress']	= $this->config['forward_attr'] ? $allValues[0][$this->config['forward_attr']] : array();
 				unset($userData['mailForwardingAddress']['count']);
 
-				$userData['deliveryProgramPath']	= $allValues[0][$this->config['mailbox_attr']][0];
+				//$userData['deliveryProgramPath']	= $allValues[0][$this->config['mailbox_attr']][0];
+				if ($this->config['mailbox_attr']) $userData[$this->config['mailbox_attr']]	= $allValues[0][$this->config['mailbox_attr']][0];
 
 				if ($this->config['forward_only_attr'])
 				{

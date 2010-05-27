@@ -57,7 +57,9 @@ class postfixdbmailuser extends emailadmin_smtp_ldap
 	/**
 	 * Attribute for mailbox, to which mail gets delivered OR false if not supported
 	 */
-	const MAILBOX_ATTR = 'deliveryprogrampath';
+	//const MAILBOX_ATTR = 'deliveryprogrampath';
+	//const MAILBOX_ATTR = 'dbmailuid';
+	const MAILBOX_ATTR = false;
 
 	/**
 	 * Log all LDAP writes / actions to error_log

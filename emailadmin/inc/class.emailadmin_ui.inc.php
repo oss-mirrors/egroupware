@@ -225,14 +225,16 @@
 			return $applications = array_merge(array('' => lang('any application')),$applications);
 		}
 
-		static function getIMAPLoginTypes()
+		static function getIMAPLoginTypes($serverclass='defaultimap')
 		{
-			return array(
+			//error_log(__METHOD__.' called with:'.$serverclass." with capabilities:".parent::$IMAPServerType[$serverclass]['imapcapabilities']);
+			$returnval = array(
 					'standard'	=>lang('username (standard)'),
 					'vmailmgr'	=>lang('username@domainname (Virtual MAIL ManaGeR)'),
 					'admin'		=>lang('Username/Password defined by admin'),
-					'email'		=>lang('use Users eMail-Address (as seen in Useraccount)'),
-			);					
+			);
+			if (!(stripos(parent::$IMAPServerType[$serverclass]['imapcapabilities'],'logintypeemail') === false))	$returnval['email']	= lang('use Users eMail-Address (as seen in Useraccount)');
+			return $returnval;
 		}
 
 		function edit($content=null)
@@ -349,8 +351,8 @@
 				}
 			}
 			if ($rowfound) $content = array_merge($this->data,array());
-			$content['smtpcapabilities'] = $this->SMTPServerType[(!empty($content['ea_smtp_type'])?$content['ea_smtp_type']:'defaultsmtp')]['smtpcapabilities'];
-			$content['imapcapabilities'] = $this->IMAPServerType[(!empty($content['ea_imap_type'])?$content['ea_imap_type']:'defaultimap')]['imapcapabilities'];
+			$content['smtpcapabilities'] = parent::$SMTPServerType[(!empty($content['ea_smtp_type'])?$content['ea_smtp_type']:'defaultsmtp')]['smtpcapabilities'];
+			$content['imapcapabilities'] = parent::$IMAPServerType[(!empty($content['ea_imap_type'])?$content['ea_imap_type']:'defaultimap')]['imapcapabilities'];
 			if (!empty($msg)) $content['msg'] = $msg;
 			list($content['ea_smtp_auth_username'],$content['smtp_senders_email']) = explode(';',$content['ea_smtp_auth_username']);
 			$preserv['ea_profile_id'] = $content['ea_profile_id'];
@@ -360,7 +362,7 @@
 			$sel_options['ea_smtp_type']=parent::getSMTPServerTypes();
 			$sel_options['ea_imap_type']=parent::getIMAPServerTypes(false);
 			$sel_options['ea_appname']	=self::getAllowedApps();
-			$sel_options['ea_imap_login_type'] = self::getIMAPLoginTypes();
+			$sel_options['ea_imap_login_type'] = self::getIMAPLoginTypes($content['ea_imap_type']);
 			// Stationery settings
 			$bostationery = new felamimail_bostationery();
 			$sel_options['ea_stationery_active_templates'] = $bostationery->get_stored_templates();

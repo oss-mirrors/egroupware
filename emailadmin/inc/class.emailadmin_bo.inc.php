@@ -54,8 +54,182 @@
 		#var $userSessionData;
 		var $LDAPData;
 
-		var $SMTPServerType = array();		// holds a list of config options
-		var $IMAPServerType = array();		// holds a list of config options
+		//var $SMTPServerType = array();		// holds a list of config options
+		static $SMTPServerType = array(
+			'defaultsmtp' 	=> array(
+				'fieldNames'	=> array(
+					'smtpServer',
+					'smtpPort',
+					'smtpAuth',
+					'ea_smtp_auth_username',
+					'ea_smtp_auth_password',
+					'smtpType'
+				),
+				'description'	=> 'standard SMTP-Server',
+				'smtpcapabilities'	=> 'default',
+				'classname'	=> 'defaultsmtp'
+			),
+			'postfixldap' 	=> array(
+				'fieldNames'	=> array(
+					'smtpServer',
+					'smtpPort',
+					'smtpAuth',
+					'ea_smtp_auth_username',
+					'ea_smtp_auth_password',
+					'smtpType',
+					'editforwardingaddress',
+					'smtpLDAPServer',
+					'smtpLDAPAdminDN',
+					'smtpLDAPAdminPW',
+					'smtpLDAPBaseDN',
+					'smtpLDAPUseDefault'
+				),
+				'description'	=> 'Postfix (qmail Schema)',
+				'smtpcapabilities'	=> 'default|forward',
+				'classname'	=> 'postfixldap'
+			),
+			'postfixinetorgperson'     => array(
+				'fieldNames'    => array(
+					'smtpServer',
+					'smtpPort',
+					'smtpAuth',
+					'ea_smtp_auth_username',
+					'ea_smtp_auth_password',
+					'smtpType',
+				),
+				'description'   => 'Postfix (inetOrgPerson Schema)',
+				'smtpcapabilities'	=> 'default',
+				'classname'     => 'postfixinetorgperson'
+			),
+			'smtpplesk'     => array(
+				'fieldNames'    => array(
+					'smtpServer',
+					'smtpPort',
+					'smtpAuth',
+					'ea_smtp_auth_username',
+					'ea_smtp_auth_password',
+					'smtpType',
+					'editforwardingaddress',
+				),
+				'description'   => 'Plesk SMTP-Server (Qmail)',
+				'smtpcapabilities'	=> 'default|forward',
+				'classname'     => 'smtpplesk'
+			),
+			'postfixdbmailuser' 	=> array(
+				'fieldNames'	=> array(
+					'smtpServer',
+					'smtpPort',
+					'smtpAuth',
+					'ea_smtp_auth_username',
+					'ea_smtp_auth_password',
+					'smtpType',
+					'editforwardingaddress',
+					'smtpLDAPServer',
+					'smtpLDAPAdminDN',
+					'smtpLDAPAdminPW',
+					'smtpLDAPBaseDN',
+					'smtpLDAPUseDefault'
+				),
+				'description'   => 'Postfix (dbmail Schema)',
+				'smtpcapabilities'	=> 'default|forward',
+				'classname'     => 'postfixdbmailuser'
+			),
+		);
+		//var $IMAPServerType = array();		// holds a list of config options
+		static $IMAPServerType = array(
+			'defaultimap' 	=> array(
+				'fieldNames'	=> array(
+					'imapServer',
+					'imapPort',
+					'imapType',
+					'imapLoginType',
+					'imapTLSEncryption',
+					'imapTLSAuthentication',
+					'imapAuthUsername',
+					'imapAuthPassword'
+				),
+				'description'	=> 'standard IMAP server',
+				'protocol'	=> 'imap',
+				'imapcapabilities'	=> 'default',
+				'classname'	=> 'defaultimap'
+			),
+			'cyrusimap' 	=> array(
+				'fieldNames'	=> array(
+					'imapServer',
+					'imapPort',
+					'imapType',
+					'imapLoginType',
+					'imapTLSEncryption',
+					'imapTLSAuthentication',
+					'imapEnableCyrusAdmin',
+					'imapAdminUsername',
+					'imapAdminPW',
+					'imapEnableSieve',
+					'imapSieveServer',
+					'imapSievePort',
+					'imapAuthUsername',
+					'imapAuthPassword'
+				),
+				'description'	=> 'Cyrus IMAP Server',
+				'protocol'	=> 'imap',
+				'imapcapabilities'	=> 'default|sieve|admin|logintypeemail',
+				'classname'	=> 'cyrusimap'
+			),
+			'dbmailqmailuser' 	=> array(
+				'fieldNames'	=> array(
+					'imapServer',
+					'imapPort',
+					'imapType',
+					'imapLoginType',
+					'imapTLSEncryption',
+					'imapTLSAuthentication',
+					'imapEnableSieve',
+					'imapSieveServer',
+					'imapSievePort',
+					'imapAuthUsername',
+					'imapAuthPassword',
+				),
+				'description'	=> 'DBMail (qmailUser schema)',
+				'protocol'	=> 'imap',
+				'imapcapabilities'	=> 'default|sieve',
+				'classname'	=> 'dbmailqmailuser'
+			),
+			'pleskimap'     => array(
+				'fieldNames'    => array(
+					'imapServer',
+					'imapPort',
+					'imapType',
+					'imapLoginType',
+					'imapTLSEncryption',
+					'imapTLSAuthentication',
+					'imapAuthUsername',
+					'imapAuthPassword'
+				),
+				'description'   => 'Plesk IMAP Server (Courier)',
+				'protocol'      => 'imap',
+				'imapcapabilities'	=> 'default',
+				'classname'     => 'pleskimap'
+			),
+			'dbmaildbmailuser' 	=> array(
+				'fieldNames'	=> array(
+					'imapServer',
+					'imapPort',
+					'imapType',
+					'imapLoginType',
+					'imapTLSEncryption',
+					'imapTLSAuthentication',
+					'imapEnableSieve',
+					'imapSieveServer',
+					'imapSievePort',
+					'imapAuthUsername',
+					'imapAuthPassword'
+				),
+				'description'	=> 'DBMail (dbmailUser schema)',
+				'protocol'	=> 'imap',
+				'imapcapabilities'	=> 'default|sieve',
+				'classname'	=> 'dbmaildbmailuser'
+			),
+		); 
 
 		var $imapClass;				// holds the imap/pop3 class
 		var $smtpClass;				// holds the smtp class
@@ -71,182 +245,9 @@
 				$GLOBALS['emailadmin_bo'] = $this;
 			}
 			$this->soemailadmin = new emailadmin_so();
-
-			$this->SMTPServerType = array(
-				'defaultsmtp' 	=> array(
-					'fieldNames'	=> array(
-						'smtpServer',
-						'smtpPort',
-						'smtpAuth',
-						'ea_smtp_auth_username',
-						'ea_smtp_auth_password',
-						'smtpType'
-					),
-					'description'	=> lang('standard SMTP-Server'),
-					'smtpcapabilities'	=> 'default',
-					'classname'	=> 'defaultsmtp'
-				),
-				'postfixldap' 	=> array(
-					'fieldNames'	=> array(
-						'smtpServer',
-						'smtpPort',
-						'smtpAuth',
-						'ea_smtp_auth_username',
-						'ea_smtp_auth_password',
-						'smtpType',
-						'editforwardingaddress',
-						'smtpLDAPServer',
-						'smtpLDAPAdminDN',
-						'smtpLDAPAdminPW',
-						'smtpLDAPBaseDN',
-						'smtpLDAPUseDefault'
-					),
-					'description'	=> 'Postfix (qmail Schema)',
-					'smtpcapabilities'	=> 'default|forward',
-					'classname'	=> 'postfixldap'
-				),
-				'postfixinetorgperson'     => array(
-					'fieldNames'    => array(
-						'smtpServer',
-						'smtpPort',
-						'smtpAuth',
-						'ea_smtp_auth_username',
-						'ea_smtp_auth_password',
-						'smtpType',
-					),
-					'description'   => 'Postfix (inetOrgPerson Schema)',
-					'smtpcapabilities'	=> 'default',
-					'classname'     => 'postfixinetorgperson'
-				),
-				'smtpplesk'     => array(
-					'fieldNames'    => array(
-						'smtpServer',
-						'smtpPort',
-						'smtpAuth',
-						'ea_smtp_auth_username',
-						'ea_smtp_auth_password',
-						'smtpType',
-						'editforwardingaddress',
-					),
-					'description'   => 'Plesk SMTP-Server (Qmail)',
-					'smtpcapabilities'	=> 'default|forward',
-					'classname'     => 'smtpplesk'
-				),
-				'postfixdbmailuser' 	=> array(
-					'fieldNames'	=> array(
-						'smtpServer',
-						'smtpPort',
-						'smtpAuth',
-						'ea_smtp_auth_username',
-						'ea_smtp_auth_password',
-						'smtpType',
-						'editforwardingaddress',
-						'smtpLDAPServer',
-						'smtpLDAPAdminDN',
-						'smtpLDAPAdminPW',
-						'smtpLDAPBaseDN',
-						'smtpLDAPUseDefault'
-					),
-					'description'   => 'Postfix (dbmail Schema)',
-					'smtpcapabilities'	=> 'default|forward',
-					'classname'     => 'postfixdbmailuser'
-				),
-			);
-
-			$this->IMAPServerType = array(
-				'defaultimap' 	=> array(
-					'fieldNames'	=> array(
-						'imapServer',
-						'imapPort',
-						'imapType',
-						'imapLoginType',
-						'imapTLSEncryption',
-						'imapTLSAuthentication',
-						'imapAuthUsername',
-						'imapAuthPassword'
-					),
-					'description'	=> 'standard IMAP server',
-					'protocol'	=> 'imap',
-					'imapcapabilities'	=> 'default',
-					'classname'	=> 'defaultimap'
-				),
-				'cyrusimap' 	=> array(
-					'fieldNames'	=> array(
-						'imapServer',
-						'imapPort',
-						'imapType',
-						'imapLoginType',
-						'imapTLSEncryption',
-						'imapTLSAuthentication',
-						'imapEnableCyrusAdmin',
-						'imapAdminUsername',
-						'imapAdminPW',
-						'imapEnableSieve',
-						'imapSieveServer',
-						'imapSievePort',
-						'imapAuthUsername',
-						'imapAuthPassword'
-					),
-					'description'	=> 'Cyrus IMAP Server',
-					'protocol'	=> 'imap',
-					'imapcapabilities'	=> 'default|sieve|admin',
-					'classname'	=> 'cyrusimap'
-				),
-				'dbmailqmailuser' 	=> array(
-					'fieldNames'	=> array(
-						'imapServer',
-						'imapPort',
-						'imapType',
-						'imapLoginType',
-						'imapTLSEncryption',
-						'imapTLSAuthentication',
-						'imapEnableSieve',
-						'imapSieveServer',
-						'imapSievePort',
-						'imapAuthUsername',
-						'imapAuthPassword',
-					),
-					'description'	=> 'DBMail (qmailUser schema)',
-					'protocol'	=> 'imap',
-					'imapcapabilities'	=> 'default|sieve',
-					'classname'	=> 'dbmailqmailuser'
-				),
-				'pleskimap'     => array(
-					'fieldNames'    => array(
-						'imapServer',
-						'imapPort',
-						'imapType',
-						'imapLoginType',
-						'imapTLSEncryption',
-						'imapTLSAuthentication',
-						'imapAuthUsername',
-						'imapAuthPassword'
-					),
-					'description'   => 'Plesk IMAP Server (Courier)',
-					'protocol'      => 'imap',
-					'imapcapabilities'	=> 'default',
-					'classname'     => 'pleskimap'
-				),
-				'dbmaildbmailuser' 	=> array(
-					'fieldNames'	=> array(
-						'imapServer',
-						'imapPort',
-						'imapType',
-						'imapLoginType',
-						'imapTLSEncryption',
-						'imapTLSAuthentication',
-						'imapEnableSieve',
-						'imapSieveServer',
-						'imapSievePort',
-						'imapAuthUsername',
-						'imapAuthPassword'
-					),
-					'description'	=> 'DBMail (dbmailUser schema)',
-					'protocol'	=> 'imap',
-					'imapcapabilities'	=> 'default|sieve',
-					'classname'	=> 'dbmaildbmailuser'
-				),
-			); 
+			//translate the standard entry description			
+			self::$SMTPServerType['defaultsmtp']['description'] = lang('standard SMTP-Server');
+			self::$IMAPServerType['defaultimap']['description'] = lang('standard IMAP Server');			
 			if ($_restoreSesssion) // &&  !(is_array(self::$sessionData) && (count(self::$sessionData)>0))  ) 
 			{
 				$this->restoreSessionData();
@@ -265,13 +266,13 @@
 				$this->profileData	= $this->getProfile($_profileID);
 
 				// try autoloading class, if that fails include it from emailadmin
-				if (!class_exists($class = $this->IMAPServerType[$this->profileData['imapType']]['classname']))
+				if (!class_exists($class = self::$IMAPServerType[$this->profileData['imapType']]['classname']))
 				{
 					include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$class.'.inc.php');
 				}
 				$this->imapClass	= new $class;
 
-				if (!class_exists($class = $this->SMTPServerType[$this->profileData['smtpType']]['classname']))
+				if (!class_exists($class = self::$SMTPServerType[$this->profileData['smtpType']]['classname']))
 				{
 					include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$class.'.inc.php');
 				}
@@ -317,8 +318,8 @@
 		{
 			$profileData	= $this->getProfile($_profileID);
 
-			#$smtpClass	= $this->SMTPServerType[$profileData['smtpType']]['classname'];
-			$smtpClass	= CreateObject('emailadmin.'.$this->SMTPServerType[$profileData['smtpType']]['classname']);
+			#$smtpClass	= self::$SMTPServerType[$profileData['smtpType']]['classname'];
+			$smtpClass	= CreateObject('emailadmin.'.self::$SMTPServerType[$profileData['smtpType']]['classname']);
 
 			#return empty($smtpClass) ? False : ExecMethod("emailadmin.$smtpClass.getAccountEmailAddress",$_accountName,3,$profileData);
 			return is_object($smtpClass) ?  $smtpClass->getAccountEmailAddress($_accountName) : False;
@@ -329,17 +330,17 @@
 			switch($_class)
 			{
 				case 'imap':
-					return $this->IMAPServerType[$_serverTypeID]['fieldNames'];
+					return self::$IMAPServerType[$_serverTypeID]['fieldNames'];
 					break;
 				case 'smtp':
-					return $this->SMTPServerType[$_serverTypeID]['fieldNames'];
+					return self::$SMTPServerType[$_serverTypeID]['fieldNames'];
 					break;
 			}
 		}
 
 		function getIMAPServerTypes($extended=true) 
 		{
-			foreach($this->IMAPServerType as $key => $value) {
+			foreach(self::$IMAPServerType as $key => $value) {
 				if ($extended)
 				{
 					$retData[$key]['description']	= $value['description'];
@@ -430,8 +431,8 @@
 			$fieldNames = array();
 			if (isset($profileData[$found]))
 			{
-				$fieldNames = array_merge($this->SMTPServerType[$profileData[$found]['smtpType']]['fieldNames'],
-					$this->IMAPServerType[$profileData[$found]['imapType']]['fieldNames']);
+				$fieldNames = array_merge(self::$SMTPServerType[$profileData[$found]['smtpType']]['fieldNames'],
+					self::$IMAPServerType[$profileData[$found]['imapType']]['fieldNames']);
 			}
 			$fieldNames[] = 'description';
 			$fieldNames[] = 'defaultDomain';
@@ -469,7 +470,7 @@
 
 		function getSMTPServerTypes()
 		{
-			foreach($this->SMTPServerType as $key => $value)
+			foreach(self::$SMTPServerType as $key => $value)
 			{
 				$retData[$key] = $value['description'];
 			}
@@ -503,7 +504,7 @@
 				$eaPreferences = CreateObject('emailadmin.ea_preferences');
 
 				// fetch the IMAP / incomming server data
-				$icClass = isset($this->IMAPServerType[$data['imapType']]) ? $this->IMAPServerType[$data['imapType']]['classname'] : 'defaultimap';
+				$icClass = isset(self::$IMAPServerType[$data['imapType']]) ? self::$IMAPServerType[$data['imapType']]['classname'] : 'defaultimap';
 
 				$icServer = CreateObject('emailadmin.'.$icClass);
 				$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes' ? 1 : (int)$data['imapTLSEncryption']);
@@ -532,7 +533,7 @@
 				$eaPreferences->setIncomingServer($icServer);
 
 				// fetch the SMTP / outgoing server data
-				$ogClass = isset($this->SMTPServerType[$data['smtpType']]) ? $this->SMTPServerType[$data['smtpType']]['classname'] : 'defaultsmtp';
+				$ogClass = isset(self::$SMTPServerType[$data['smtpType']]) ? self::$SMTPServerType[$data['smtpType']]['classname'] : 'defaultsmtp';
 				if (!class_exists($ogClass))
 				{
 					include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$ogClass.'.inc.php');
