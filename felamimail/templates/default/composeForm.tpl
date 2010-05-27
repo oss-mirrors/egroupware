@@ -7,6 +7,7 @@
 
 	var activityImagePath		= "{ajax-loader}";
 	var fm_compose_langNoAddressSet	= "{lang_no_address_set}";
+	var ckeditorConfig = {ckeditorConfig};
 
 	self.focus();
 

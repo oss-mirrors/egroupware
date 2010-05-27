@@ -321,6 +321,9 @@
 			$this->t->set_var("link_action",$GLOBALS['egw']->link('/index.php',$linkData));
 			$this->t->set_var('folder_name',$this->bofelamimail->sessionData['mailbox']);
 			$this->t->set_var('compose_id',$this->composeID);
+			// the editorobject is needed all the time (since we use CKEDITOR3
+			$editorObject = html::initCKEditor('400px','simple');
+			$this->t->set_var('ckeditorConfig',$editorObject->jsEncode($editorObject->config));
 
 			// check for some error messages from last posting attempt
 			if($errorInfo = $this->bocompose->getErrorInfo())
@@ -416,7 +419,9 @@
 				$ishtml=1;
 			} else {
 				$style="border:0px; width:100%; height:400px;";
-				$this->t->set_var('tinymce', html::fckEditorQuick('body', 'ascii', $sessionData['body'],'400px','99%'));
+				// initalize the CKEditor Object to enable switching back and force
+				$editor = $editorObject->init(). html::fckEditorQuick('body', 'ascii', $sessionData['body'],'400px','99%');
+				$this->t->set_var('tinymce', $editor); //html::fckEditorQuick('body', 'ascii', $sessionData['body'],'400px','99%'));
 				$this->t->set_var('mimeType', 'text');
 				$ishtml=0;
 			}

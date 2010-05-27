@@ -667,7 +667,14 @@ function fm_toggle_editor(toggler)
 	{
 		//Hide the old editor
 		plaineditor.style.display = "none";
-
+		if (ckeditor)
+		{
+			// nothing to do
+		}
+		else
+		{
+			ckeditor = CKEDITOR.replace('body',ckeditorConfig);
+		}
 		//Copy the current ASCII data and recode it via a XAJAX request
 		var existingAscii = "<pre>" + plaineditor.value + "</pre>";
 		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID, existingAscii, 'simple');
