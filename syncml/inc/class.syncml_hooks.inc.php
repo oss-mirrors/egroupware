@@ -589,7 +589,7 @@ class syncml_hooks
 				'admin'		=> False,
 			),
 			'filter_addressbook' => array(
-				'type'   	=> 'select',
+				'type'   	=> 'multiselect',
 				'label'		=> 'Synchronize this addressbook',
 				'name'		=> 'filter_addressbook',
 				'help'		=> 'Only entries from this addressbook (and the above list) will be synchronized.',

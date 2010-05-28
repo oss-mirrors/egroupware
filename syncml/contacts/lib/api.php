@@ -86,27 +86,32 @@ function _egwcontactssync_list($filter='')
 			//Horde::logMessage('SymcML: egwcontactssync list() list='. $filter['list'] . ', ' . array2string($allOnList), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			unset($filter['list']);
 		}
-
-		if (isset($preferences['filter_addressbook']))
+		if (!is_array($filter['addressbook']))
 		{
-			switch ($preferences['filter_addressbook'])
+			$filter['addressbook'] = $filter['addressbook'] ? explode(',',$filter['addressbook']) : array();
+		}
+		foreach($filter['addresssbook'] as &$owner)
+		{
+			switch ($owner)
 			{
 				case 'G':
-					$filter['owner'] = $GLOBALS['egw_info']['user']['account_primary_group'];
+					$owner = $GLOBALS['egw_info']['user']['account_primary_group'];
 					break;
 				case 'P':
-					$filter['owner'] = $GLOBALS['egw_info']['user']['account_id'];
+					$owner = $GLOBALS['egw_info']['user']['account_id'];
 					break;
-				case 'N':
+				case 'N':	// none
 					$search_addressbook = false;
 					break;
-				case '0':
+				case '0':	// all
+					$search_all = true;
 					break;
 				default:
-					$filter['owner'] = (int)$preferences['filter_addressbook'];
+					$owner = (int)$owner;
 			}
 			//Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		}
+		if (!$search_all) $filter['owner'] = $filter['addresssbook'];
 	}
 	if ($search_addressbook)
 	{
