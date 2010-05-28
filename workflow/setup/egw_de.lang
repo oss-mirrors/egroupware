@@ -26,4 +26,20 @@ act. status	workflow	de	Status des Vorgangs
 act. status:	workflow	de	Status des Vorgangs:
 action %1 is impossible if we have no activity and no instance designated for it!	workflow	de	Aktion %1 ist unmöglich, wenn Sie keine Aktivität und keine Instanz zugewiesen haben!
 action %1 is impossible, another user is already in place	workflow	de	Aktion %1 ist unmöglich, ein ander Benutzer ist schon hierfür vorgesehen.
-action %1 is impossible, there are no user assigned to this activity for this instance	workflow	de	Aktion %1 ist unmöglich, da noch keiner Benutzerthere are no user assigned to this activity for this instance
+action %1 is impossible, there are no user assigned to this activity for this instance	workflow	de	Aktion %1 ist unmöglich, da noch keiner Benutzer zu dieser Aktivität und Instanz hinzugefügt wurde.
+action %1 needs an activity and activity %2 does not exists	workflow	de	Aktion %1 benötigt eine Aktivität and Aktivität %2 ist nicht vorhanden.
+action %1 needs an instance and instance %2 does not exists	workflow	de	Aktion %1 benötigt eine Instanz and Instanz %2 ist nicht vorhanden
+actions	workflow	de	Aktionen
+actions right options	common	de	Berechtigungen für Aktionen
+activate	workflow	de	Aktivieren
+active	workflow	de	Aktiv
+active:	workflow	de	aktiveren:
+activities	workflow	de	Aktivitäten
+activities selection	workflow	de	Auswahl Aktivitäten
+activities updated	workflow	de	Aktivitäten aktualisiert
+activity	workflow	de	Aktivität
+activity  status	workflow	de	Status der Aktivität
+activity %1	workflow	de	Aktivität %1
+activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	de	Aktivität %1 (#%2) ist verbunden mit einem nicht existierenden Prozess (#%3)
+activity %1 code is not avaible	workflow	de	Aktivität %1, Code steht nicht zur Verfügung
+activity %1 is interactive but has no role assigned	workflow	de	Aktivität %1 ist
