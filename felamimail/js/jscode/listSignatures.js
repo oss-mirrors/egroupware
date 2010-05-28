@@ -5,7 +5,8 @@ var signatureEditWindowTimer;
 function fm_getEditorContent()
 {
 	// Get the editor instance that we want to interact with.
-	return FCKeditorAPI.GetInstance('signature').GetXHTML( true );
+	var ckeditor = CKEDITOR.instances['signature'];
+	return ckeditor.getData();
 }
 
 function fm_addSignature(_url)
