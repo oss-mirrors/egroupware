@@ -56,10 +56,10 @@
 	);
 	$setup_info['workflow']['depends'][] = array(
 		'appname' => 'preferences',
-		'versions' => Array('1.4','1.5','1.6')
+		'versions' => Array('1.4','1.5','1.6','1.7')
 	);
 	$setup_info['workflow']['depends'][] = array(
 		'appname' => 'emailadmin',
-		'versions' => Array('1.4','1.5','1.6')
+		'versions' => Array('1.4','1.5','1.6','1.7')
 	);
 ?>

@@ -1,0 +1,29 @@
+#	workflow	de	#
+%1 aborted	workflow	de	%1 abgebrochen
+%1 active	workflow	de	%1 aktiv
+%1 completed	workflow	de	%1 beendet
+%1 configuration	workflow	de	%1 Konfiguriert
+%1 days, %2:%3:%4	workflow	de	%1 Tag(e), %2:%3:%4
+%1 exception	workflow	de	%1 Ausnahme
+%1 menu	workflow	de	%1 Menü
+%1 monitoring	workflow	de	%1 Überwachung
+%1 processes (%2 active) (%3 being_run)	workflow	de	%1 Prozesse (%2 aktive) (%3 werde gerade gestartet)
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	de	/workflow Verzeichnis besteht nicht und konnte nicht erstellt werden, bitte fragen Sie Ihren Administrator, damit er die Konfiguration überprüfen kann.
+<strong>%owner%</strong> is the instance owner email	workflow	de	<strong>%owner%</strong> ist die E-Mai der Instanz
+<strong>%property_xx%</strong> is the content of the instance's property xx	workflow	de	<strong>%property_XX%</strong> ist der Inhalt der Instanz Eigenschaft XX
+<strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	de	<strong>%role_XX%</strong> sind alle emails von allen Benutzern zugewiesen zu den Rollen XX
+<strong>%roles%</strong> are the emails of all users mapped to any role on this activity	workflow	de	<strong>%roles%</strong> sind alle emails von allen Benutzern, zugewiesen zu irgendeiner Rolle dieser Aktivität
+<strong>%signature%</strong> is the agent signature defined in the process configuration	workflow	de	<strong>%signature%</strong> ist die Signature definiert in der Prozess Konfiguration
+<strong>%user%</strong> is the instance user email	workflow	de	<strong>%user%</strong> ist die Instanz Benutzeremail
+<strong>%user_xx%</strong> is the email of the acount xx	workflow	de	<strong>%user_XX%</strong> is the email des Benutzerkontos XX
+a please wait message is shown when loading the activity form usefull for long tasks	admin	de	Eine Bitte warten Meldung wird beim laden von langen aktivitäts Formularen als nützlich angesehen
+abort instance	workflow	de	Instanz abgebrochen
+abort this instance	workflow	de	Diese Instanz wird abgebrochen
+aborted	workflow	de	angebrochen
+access denied for user %1 on activity %2, no role	workflow	de	Zugriff verweigert für Benutzer %1 für die Aktivität %2, keine Rolle
+act	workflow	de	Vorgang
+act. status	workflow	de	Status des Vorgangs
+act. status:	workflow	de	Status des Vorgangs:
+action %1 is impossible if we have no activity and no instance designated for it!	workflow	de	Aktion %1 ist unmöglich, wenn Sie keine Aktivität und keine Instanz zugewiesen haben!
+action %1 is impossible, another user is already in place	workflow	de	Aktion %1 ist unmöglich, ein ander Benutzer ist schon hierfür vorgesehen.
+action %1 is impossible, there are no user assigned to this activity for this instance	workflow	de	Aktion %1 ist unmöglich, da noch keiner Benutzerthere are no user assigned to this activity for this instance
