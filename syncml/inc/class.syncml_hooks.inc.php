@@ -70,7 +70,7 @@ class syncml_hooks
 			$show_addr_addr = array('G'	=> lang('Primary Group'),
 									'P'	=> lang('Personal'),
 									'N' => lang('None'),
-								 	 0	=> lang('All')) +  $show_addr_addr;
+								 	'A'	=> lang('All')) +  $show_addr_addr;
 			// list the InfoLog filters
 			$infolog_bo = new infolog_bo();
 			$show_infolog_filters = array();

@@ -103,7 +103,8 @@ function _egwcontactssync_list($filter='')
 				case 'N':	// none
 					$search_addressbook = false;
 					break;
-				case '0':	// all
+				case 'A':	// all
+				case 0:		// old all
 					$search_all = true;
 					break;
 				default:
@@ -111,7 +112,10 @@ function _egwcontactssync_list($filter='')
 			}
 			//Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		}
-		if (!$search_all) $filter['owner'] = $filter['addresssbook'];
+		if (!$search_all && $filter['addresssbook'])	// no filter $filter['addresssbook']===0 --> all
+		{
+			$filter['owner'] = $filter['addresssbook'];
+		}
 	}
 	if ($search_addressbook)
 	{
