@@ -164,7 +164,7 @@
 				'menuaction'    => 'felamimail.uipreferences.editSignature'
 			);
 			$this->t->set_var('form_action', $GLOBALS['egw']->link('/index.php',$linkData));
-
+			$height = "350px";
 			if(isset($_GET['signatureID'])) {
 
 				$this->t->set_var('description', @htmlspecialchars($signatureData->fm_description, ENT_QUOTES, $this->charset));
@@ -174,7 +174,7 @@
 				$this->t->set_var('tinymce',html::fckEditorQuick(
 					'signature', 'advanced', 
 					$signatureData->fm_signature, 
-					'450px')
+					$height)
 				);
 
 				$this->t->set_var('checkbox_isDefaultSignature',html::checkbox(
@@ -185,7 +185,7 @@
 					)
 				);
 			} else {
-				$this->t->set_var('tinymce',html::fckEditorQuick('signature', 'advanced', '', '450px'));
+				$this->t->set_var('tinymce',html::fckEditorQuick('signature', 'advanced', '', $height));
 
 				$this->t->set_var('checkbox_isDefaultSignature',html::checkbox(
 					'isDefaultSignature', false, 'true', 'id="isDefaultSignature"'
