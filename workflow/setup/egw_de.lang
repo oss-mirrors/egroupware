@@ -43,3 +43,44 @@ activity %1	workflow	de	Aktivität %1
 activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	de	Aktivität %1 (#%2) ist verbunden mit einem nicht existierenden Prozess (#%3)
 activity %1 code is not avaible	workflow	de	Aktivität %1, Code steht nicht zur Verfügung
 activity %1 is interactive but has no role assigned	workflow	de	Aktivität %1 ist
+activity %1 is interactive so it must use the $instance->complete() method	workflow	de	Aktivität %1 ist inaktiv, diese Aktivität muss $instance->complete() Methode benutzen
+activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	de	Aktivität %1 ist nicht interaktiv und nicht selbstzuweisend, aber es gibt keine Rollen.
+activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	de	Aktivität %1 ist nicht interaktiv, diese Aktivität muss nicht $instance->complete() Methode benutzen.
+activity %1 is standalone and is using the $instance object	workflow	de	Aktivität %1 ist Eigenständigt (Standalone) und benutzt das $instance Objekt.
+activity %1 is standalone but has transitions	workflow	de	Aktivität %1 ist eigenständigt standalone, aber besitzt Transaktionen
+activity %1 is standalone or view but has transitions	workflow	de	Aktivität %1 ist eigenständigt (standalone) oder die Ansicht benötigt transaktionen.
+activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	de	Aktivität %1 ist Schalter (Switch), deshalb muss $instance->setNextActivity($actname) Methode verwendet werden.
+activity %1 is view and is using the $instance object in write mode	workflow	de	Aktivität %1 ist Ansicht (View) und benutzt das $instance Objekt im schreib modus
+activity agent removed	workflow	de	Aktivitäts Agend gelöscht
+activity completed	workflow	de	Aktivität kompiliert
+activity failure	workflow	de	Aktivitäts Ausfall
+activity in inexistent process	workflow	de	Aktivität in nicht vorhandenem Prozess
+activity is waiting for pending transitions	workflow	de	Aktivität wartet auf unerledigte Transaktionen
+activity name already exists	workflow	de	Name der Aktivität, bereits vergeben.
+activity role #%1 removed	workflow	de	Funktion der Aktivität #%1 gelöscht
+activity role removed	workflow	de	Funktion der Aktivität gelöscht
+activity saved	workflow	de	Aktivität gespeichert
+activity start not avaible, no corresponding activity was found.	workflow	de	Start der Aktivität nicht mögliche, keine dazugehörige Aktivität gefunden.
+activity start not set, no corresponding activity was found.	workflow	de	Start der Aktivität nicht definiert, keine dazugehörige Aktivität gefunden.
+activity status not avaible, no corresponding activity was found.	workflow	de	Status der Aktivität nicht gefunden, keine dazugehörige Aktivität gefunden.
+activity:	workflow	de	Aktivität:
+add a transition	workflow	de	Fügen Sie eine Überleitung (transition) hinzu
+add aborted instances	workflow	de	Hinzufügen von abgebrochenen Instanzen
+add advanced actions	workflow	de	Eine erweiterte Aktion zufügen
+add agent	workflow	de	Agend hinzufügen
+add completed instances	workflow	de	Abgeschlossene Instanzen zufügen
+add instances in exception	workflow	de	Zufügen von Ausnahme Instanzen
+add new	workflow	de	Neue zufügen
+add new role	workflow	de	Eine Funktion zufügen
+add or edit a process	workflow	de	Bearbeiten oder Zufügen eines Prozesses
+add or edit a role	workflow	de	Bearbeiten oder Zufügen einer Funktion
+add or edit an activity	workflow	de	Bearbeiten oder Zufügen einer Aktivität
+add property	workflow	de	Eigenschaft zufügen
+add role	workflow	de	Funktion anfügen
+add role to process	workflow	de	Funktion zu einem Prozess anfügen
+add transition	workflow	de	Einen Übergang (Transition) anfügen
+add transitions	workflow	de	Übergänge (Transition) anfügen
+add transitions from	workflow	de	Formular für Übergänge (Transition) anfügen
+add transitions to	workflow	de	Übergänge (Transition) zufügen für
+admin instance	workflow	de	Administrations Instanz
+admin process activities	workflow	de	Administrations Prozess Aktivitäten
