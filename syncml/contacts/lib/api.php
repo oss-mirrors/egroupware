@@ -90,7 +90,7 @@ function _egwcontactssync_list($filter='')
 		{
 			$filter['addressbook'] = $filter['addressbook'] ? explode(',',$filter['addressbook']) : array();
 		}
-		foreach($filter['addresssbook'] as &$owner)
+		foreach($filter['addressbook'] as &$owner)
 		{
 			switch ($owner)
 			{
