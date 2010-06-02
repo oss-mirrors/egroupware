@@ -1562,7 +1562,7 @@
 			if (is_array($folders)) uasort($folders,array($this,"sortByDisplayName"));
 			//$folders2return = array_merge($autoFolderObjects,$folders);
 			//_debug_array($folders2return); #exit;
-			return (is_array($autoFolderObjects) && is_array($folders) ? array_merge($inboxFolderObject,$autoFolderObjects,$folders):array_merge($inboxFolderObject,(array)$folders));
+			return array_merge($inboxFolderObject,(array)$autoFolderObjects,(array)$folders);
 		}
 
 		function sortByDisplayName($a,$b)
@@ -2283,7 +2283,7 @@
 					{
 						$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart), $attachments);
 					}
-					continue;
+					if (!($subPart->type=='TEXT' && $subPart->disposition =='INLINE' && $subPart->filename)) continue;
 				}
 
 			   	// fetch the subparts for this part
