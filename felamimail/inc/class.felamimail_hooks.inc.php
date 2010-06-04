@@ -530,7 +530,7 @@ class felamimail_hooks
 					'tooltip'	=> lang('mark selected as unflagged'),
 				),
 				'delete'		=> array(
-					'action'	=> "egw_appWindow('".$appname."').deleteMessages(xajax.getFormValues('formMessageList'))",
+					'action'	=> "egw_appWindow('".$appname."').deleteMessages(egw_appWindow('".$appname."').xajax.getFormValues('formMessageList'))",
 					'tooltip'	=> lang('mark as deleted'),
 				),
 			);
@@ -635,7 +635,7 @@ class felamimail_hooks
 					#$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
 				}
 
-				$selectAccount = html::select('accountSelect', $selectedID, $identities, true, "style='width:100%;' onchange='var appWindow=egw_appWindow(\"".$appname."\");appWindow.changeActiveAccount(this);'");
+				$selectAccount = html::select('accountSelect', $selectedID, $identities, true, 'style="width:100%;" onchange="var appWindow=egw_appWindow(\''.$appname.'\');appWindow.changeActiveAccount(this);"');
 
 				$file[] = array(
 					'text' => "<div id=\"divAccountSelect\" style=\" width:100%;\">".$selectAccount."</div>",
