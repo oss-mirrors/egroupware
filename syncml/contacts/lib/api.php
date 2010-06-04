@@ -86,10 +86,9 @@ function _egwcontactssync_list($filter='')
 			//Horde::logMessage('SymcML: egwcontactssync list() list='. $filter['list'] . ', ' . array2string($allOnList), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			unset($filter['list']);
 		}
-		if (!is_array($filter['addressbook']))
-		{
-			$filter['addressbook'] = $filter['addressbook'] ? explode(',',$filter['addressbook']) : array();
-		}
+		$filter['addressbook'] = !$preferences['addressbook'] ? array () :
+			(is_array($preferences['addressbook']) ? $preferences['addressbook'] :
+				explode(',',$preferences['addressbook']));
 		foreach($filter['addressbook'] as &$owner)
 		{
 			switch ($owner)
