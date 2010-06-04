@@ -418,17 +418,17 @@ class felamimail_hooks
 		$title = $appname = 'felamimail';
 		$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
 
-		$file['Preferences'] = $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=' . $appname);
+		$file['Preferences'] = egw::link('/index.php','menuaction=preferences.uisettings.index&appname=' . $appname);
 
 		if($mailPreferences->userDefinedAccounts) {
 			$linkData = array
 			(
 				'menuaction' => 'felamimail.uipreferences.listAccountData',
 			);
-			$file['Manage eMail Accounts and Identities'] = $GLOBALS['egw']->link('/index.php',$linkData);
+			$file['Manage eMail Accounts and Identities'] = egw::link('/index.php',$linkData);
 		}
 		if(empty($mailPreferences->preferences['prefpreventmanagefolders']) || $mailPreferences->preferences['prefpreventmanagefolders'] == 0) {
-			$file['Manage Folders'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder');
+			$file['Manage Folders'] = egw::link('/index.php','menuaction=felamimail.uipreferences.listFolder');
 		}
 		if (is_object($mailPreferences))
 		{
@@ -436,9 +436,9 @@ class felamimail_hooks
 
 			if($icServer->enableSieve) {
 				if(empty($mailPreferences->preferences['prefpreventeditfilterrules']) || $mailPreferences->preferences['prefpreventeditfilterrules'] == 0)
-					$file['filter rules'] = $GLOBALS['egw']->link('/index.php', 'menuaction=felamimail.uisieve.listRules');
+					$file['filter rules'] = egw::link('/index.php', 'menuaction=felamimail.uisieve.listRules');
 				if(empty($mailPreferences->preferences['prefpreventabsentnotice']) || $mailPreferences->preferences['prefpreventabsentnotice'] == 0)
-					$file['vacation notice'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uisieve.editVacation');
+					$file['vacation notice'] = egw::link('/index.php','menuaction=felamimail.uisieve.editVacation');
 			}
 		}
 		//Do not modify below this line
@@ -485,7 +485,7 @@ class felamimail_hooks
 		{
 			// action links that are mostly static and dont need any connection and additional classes ...
 			$file += array(
-				'felamimail'		=> $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen'),
+				'felamimail'		=> egw::link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen'),
 			);
 
 			// standard compose link
@@ -494,7 +494,7 @@ class felamimail_hooks
 			);
 			$file += array(
 				array(
-					'text' => '<a class="textSidebox" href="'. htmlspecialchars($GLOBALS['egw']->link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.$GLOBALS['egw']->link('/index.php', $linkData).'\',\''.lang('compose').'\',700,750); return false;">'.lang('compose'),
+					'text' => '<a class="textSidebox" href="'. htmlspecialchars(egw::link('/index.php', $linkData,false)).'" target="_blank" onclick="egw_openWindowCentered(\''.egw::link('/index.php', $linkData,false).'\',\''.lang('compose').'\',700,750); return false;">'.lang('compose'),
 		                        'no_lang' => true,
 				),
 			);
@@ -506,7 +506,7 @@ class felamimail_hooks
 			$linkData = array (
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
-			$urlCompose = "openComposeWindow('".$GLOBALS['egw']->link('/index.php',$linkData)."');";
+			$urlCompose = "egw_appWindow('".$appname."').openComposeWindow('".egw::link('/index.php',$linkData,false)."');";
 
 			$navbarImages = array(
 				'new'			=> array(
@@ -514,23 +514,23 @@ class felamimail_hooks
 					'tooltip'	=> lang('compose'),
 				),
 				'read_small'		=> array(
-					'action'	=> "flagMessages('read')",
+					'action'	=> "egw_appWindow('".$appname."').flagMessages('read')",
 					'tooltip'	=> lang('mark selected as read'),
 				),
 				'unread_small'		=> array(
-					'action'	=> "flagMessages('unread')",
+					'action'	=> "egw_appWindow('".$appname."').flagMessages('unread')",
 					'tooltip'	=> lang('mark selected as unread'),
 				),
 				'unread_flagged_small'	=> array(
-					'action'	=> "flagMessages('flagged')",
+					'action'	=> "egw_appWindow('".$appname."').flagMessages('flagged')",
 					'tooltip'	=> lang('mark selected as flagged'),
 				),
 				'read_flagged_small'	=> array(
-					'action'	=> "flagMessages('unflagged')",
+					'action'	=> "egw_appWindow('".$appname."').flagMessages('unflagged')",
 					'tooltip'	=> lang('mark selected as unflagged'),
 				),
 				'delete'		=> array(
-					'action'	=> "deleteMessages(xajax.getFormValues('formMessageList'))",
+					'action'	=> "egw_appWindow('".$appname."').deleteMessages(xajax.getFormValues('formMessageList'))",
 					'tooltip'	=> lang('mark as deleted'),
 				),
 			);
@@ -555,14 +555,14 @@ class felamimail_hooks
 		{
 			$file += Array(
 				'_NewLine_'	=> '', // give a newline
-				'empty trash'	=> "javascript:emptyTrash();",
+				'empty trash'	=> "javascript:egw_appWindow('".$appname."').emptyTrash();",
 			);
 		}
 		if($preferences->preferences['deleteOptions'] == 'mark_as_deleted')
 		{
 			$file += Array(
 				'_NewLine_'		=> '', // give a newline
-				'compress folder'	=> "javascript:compressFolder();",
+				'compress folder'	=> "javascript:egw_appWindow('".$appname."').compressFolder();",
 			);
 		}
 		// import Message link
@@ -571,7 +571,7 @@ class felamimail_hooks
 			'menuaction' => 'felamimail.uifelamimail.importMessage',
 		);
 		$file['import message'] = array(
-				'text' => '<a class="textSidebox" href="'. htmlspecialchars($GLOBALS['egw']->link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.$GLOBALS['egw']->link('/index.php', $linkData).'\',\''.lang('import').'\',700,100); return false;">'.lang('import message'),
+				'text' => '<a class="textSidebox" href="'. htmlspecialchars(egw::link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.egw::link('/index.php', $linkData).'\',\''.lang('import').'\',700,100); return false;">'.lang('import message'),
 				'no_lang' => true,
 		);
 */
@@ -635,7 +635,7 @@ class felamimail_hooks
 					#$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
 				}
 
-				$selectAccount = html::select('accountSelect', $selectedID, $identities, true, "style='width:100%;' onchange='changeActiveAccount(this);'");
+				$selectAccount = html::select('accountSelect', $selectedID, $identities, true, "style='width:100%;' onchange='var appWindow=egw_appWindow(\"".$appname."\");appWindow.changeActiveAccount(this);'");
 
 				$file[] = array(
 					'text' => "<div id=\"divAccountSelect\" style=\" width:100%;\">".$selectAccount."</div>",
@@ -660,7 +660,7 @@ class felamimail_hooks
 	        	    'text' => "<div id=\"divFolderTree\" class=\"dtree\" style=\"overflow:auto; max-width:400px; width:100%; max-height:450px; margin-bottom: 0px;padding-left: 0px; padding-right: 0px; padding-top:0px; z-index:100; \">
 					$folderTree
 					</div>
-					<script language=\"JavaScript1.2\">refreshFolderStatus();</script>",
+					<script language=\"JavaScript1.2\">egw_appWindow('".$appname."').refreshFolderStatus();</script>",
 					'no_lang' => True,
 					'link' => False,
 					'icon' => False,
@@ -675,14 +675,14 @@ class felamimail_hooks
 			#$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
 			$menu_title = lang('Preferences');
 			$file = array(
-				'Preferences'		=> $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
+				'Preferences'		=> egw::link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
 			);
 
 			if($preferences->userDefinedAccounts || $preferences->userDefinedIdentities) {
 				$linkData = array (
 					'menuaction' => 'felamimail.uipreferences.listAccountData',
 				);
-				$file['Manage eMail Accounts and Identities'] = $GLOBALS['egw']->link('/index.php',$linkData);
+				$file['Manage eMail Accounts and Identities'] = egw::link('/index.php',$linkData);
 
 			}
 
@@ -690,11 +690,11 @@ class felamimail_hooks
 				$linkData = array (
 					'menuaction' => 'felamimail.uipreferences.listSignatures',
 				);
-				$file['Manage Signatures'] = $GLOBALS['egw']->link('/index.php',$linkData);
+				$file['Manage Signatures'] = egw::link('/index.php',$linkData);
 			}
 
 			if(empty($preferences->preferences['prefpreventmanagefolders']) || $preferences->preferences['prefpreventmanagefolders'] == 0) {
-				$file['Manage Folders']	= $GLOBALS['egw']->link('/index.php',array('menuaction'=>'felamimail.uipreferences.listFolder'));
+				$file['Manage Folders']	= egw::link('/index.php',array('menuaction'=>'felamimail.uipreferences.listFolder'));
 			}
 
 			if (is_object($preferences)) $icServer = $preferences->getIncomingServer(0);
@@ -706,7 +706,7 @@ class felamimail_hooks
 						'menuaction'	=> 'felamimail.uisieve.listRules',
 					);
 					if(empty($preferences->preferences['prefpreventeditfilterrules']) || $preferences->preferences['prefpreventeditfilterrules'] == 0)
-						$file['filter rules']	= $GLOBALS['egw']->link('/index.php',$linkData);
+						$file['filter rules']	= egw::link('/index.php',$linkData);
 
 					$linkData = array
 					(
@@ -714,14 +714,14 @@ class felamimail_hooks
 					);
 					if(empty($preferences->preferences['prefpreventabsentnotice']) || $preferences->preferences['prefpreventabsentnotice'] == 0)
 					{
-						$file['vacation notice']	= $GLOBALS['egw']->link('/index.php',$linkData);
+						$file['vacation notice']	= egw::link('/index.php',$linkData);
 					}
 					if((empty($preferences->preferences['prefpreventnotificationformailviaemail']) ||
 						$preferences->preferences['prefpreventnotificationformailviaemail'] == 0) &&
 						(empty($preferences->preferences['prefpreventforwarding']) ||
 						$preferences->preferences['prefpreventforwarding'] == 0) )
 					{
-						$file['email notification'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uisieve.editEmailNotification'); //Added email notifications
+						$file['email notification'] = egw::link('/index.php','menuaction=felamimail.uisieve.editEmailNotification'); //Added email notifications
 					}
 				}
 			}
@@ -735,7 +735,7 @@ class felamimail_hooks
 						'menuaction'	=> 'felamimail.uipreferences.editForwardingAddress',
 					);
 					if(empty($preferences->preferences['prefpreventforwarding']) || $preferences->preferences['prefpreventforwarding'] == 0)
-						$file['Forwarding']	= $GLOBALS['egw']->link('/index.php',$linkData);
+						$file['Forwarding']	= egw::link('/index.php',$linkData);
 				}
 			}
 			display_sidebox($appname,$menu_title,$file);
@@ -743,7 +743,7 @@ class felamimail_hooks
 		if ($GLOBALS['egw_info']['user']['apps']['admin'])
 		{
 			$file = Array(
-				'Site Configuration' => $GLOBALS['egw']->link('/index.php','menuaction=emailadmin.emailadmin_ui.index'),
+				'Site Configuration' => egw::link('/index.php','menuaction=emailadmin.emailadmin_ui.index'),
 			);
 			display_sidebox($appname,lang('Admin'),$file);
 		}
