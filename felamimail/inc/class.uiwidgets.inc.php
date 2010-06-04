@@ -129,11 +129,11 @@
 			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');";
 			if($_displayCheckBox) {
 				$folder_tree_new .= "tree.enableCheckBoxes(1);";
-				$folder_tree_new .= "tree.setOnCheckHandler('onCheckHandler');";
+				$folder_tree_new .= "tree.setOnCheckHandler(egw_appWindow('felamimail').onCheckHandler);";
 			}
 			// beware this is "old" dhtmlx Code
 			$folder_tree_new .= "tree.openFuncHandler=1;";
-			$folder_tree_new .= "tree.setOnOpenHandler(OnLoadingStart);";
+			$folder_tree_new .= "tree.setOnOpenHandler(egw_appWindow('felamimail').OnLoadingStart);";
 			// this is code for their latest codebase, since "old" stuff is deprecated
 			/*
 			$folder_tree_new .='tree.attachEvent("onOpenStart", onOpenStartHandler);';
@@ -141,7 +141,7 @@
 			*/
 			#$topFolderBase64 = base64_encode('--topfolder--');
 			$topFolderBase64 = '--topfolder--';
-			$folder_tree_new .= "tree.insertNewItem(0,'$topFolderBase64','$_topFolderName',onNodeSelect,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";
+			$folder_tree_new .= "tree.insertNewItem(0,'$topFolderBase64','$_topFolderName',egw_appWindow('felamimail').onNodeSelect,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";
 
 			#foreach($_folders as $key => $obj)
 			#_debug_array($allFolders);
@@ -208,7 +208,7 @@
 				$parentName	= str_replace($search, $replace, $parentName);
 				$folderName	= str_replace($search, $replace, $folderName);
 
-				$folder_tree_new .= "tree.insertNewItem('$parentName','$folderName','$displayName',onNodeSelect,$image1,$image2,$image3,'$entryOptions');";
+				$folder_tree_new .= "tree.insertNewItem('$parentName','$folderName','$displayName',egw_appWindow('felamimail').onNodeSelect,$image1,$image2,$image3,'$entryOptions');";
 				$folder_tree_new .= "tree.setUserData('$folderName','folderName', '$userData');";
 				if($_displayCheckBox) {
 					$folder_tree_new .= "tree.setCheck('$folderName','".(int)$obj->subscribed."');";

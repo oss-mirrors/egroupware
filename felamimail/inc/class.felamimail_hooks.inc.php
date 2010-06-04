@@ -493,10 +493,7 @@ class felamimail_hooks
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
 			$file += array(
-				array(
-					'text' => '<a class="textSidebox" href="'. htmlspecialchars(egw::link('/index.php', $linkData,false)).'" target="_blank" onclick="egw_openWindowCentered(\''.egw::link('/index.php', $linkData,false).'\',\''.lang('compose').'\',700,750); return false;">'.lang('compose'),
-		                        'no_lang' => true,
-				),
+				'Compose' => "javascript:egw_openWindowCentered('".egw::link('/index.php', $linkData,false)."','compose',700,750);",
 			);
 		}
 		// buttons
@@ -602,6 +599,7 @@ class felamimail_hooks
 					}
 				}
 				// if nothing valid is found return to user defined account definition
+// todo klaus: can you move this redirect out of the sidebox on felamimail/index.php
 				if (empty($imapServer->host) && count($identities)==0 && $preferences->userDefinedAccounts)
 				{
 					// redirect to new personal account
@@ -660,7 +658,7 @@ class felamimail_hooks
 	        	    'text' => "<div id=\"divFolderTree\" class=\"dtree\" style=\"overflow:auto; max-width:400px; width:100%; max-height:450px; margin-bottom: 0px;padding-left: 0px; padding-right: 0px; padding-top:0px; z-index:100; \">
 					$folderTree
 					</div>
-					<script language=\"JavaScript1.2\">egw_appWindow('".$appname."').refreshFolderStatus();</script>",
+					<script>egw_appWindow('".$appname."').refreshFolderStatus();</script>",
 					'no_lang' => True,
 					'link' => False,
 					'icon' => False,

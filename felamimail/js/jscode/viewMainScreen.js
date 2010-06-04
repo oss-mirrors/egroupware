@@ -86,25 +86,25 @@ function emptyTrash() {
 
 function tellUser(message,_nodeID) {
 	if (_nodeID) {
-		alert(message+tree.getUserData(_nodeID, 'folderName'));
+		alert(message+top.tree.getUserData(_nodeID, 'folderName'));
 	} else {
 		alert(message);
 	}
 }
 
 function getTreeNodeOpenItems(_nodeID, mode) {
-	var z = tree.getSubItems(_nodeID).split(",");
+	var z = top.tree.getSubItems(_nodeID).split(",");
 	var oS;
 	var PoS;
 	var rv;
 	var returnValue = ""+_nodeID;
 	var modetorun = "none";
 	if (mode) { modetorun = mode }
-	PoS = tree.getOpenState(_nodeID)
+	PoS = top.tree.getOpenState(_nodeID)
 	if (modetorun == "forced") PoS = 1;
 	if (PoS == 1) {
 		for(var i=0;i<z.length;i++) {
-			oS = tree.getOpenState(z[i])
+			oS = top.tree.getOpenState(z[i])
 			//alert(oS)
 			if (oS == -1) { returnValue=returnValue+"#,#"+ z[i]}
 			if (oS == 0) {returnValue=returnValue+"#,#"+ z[i]}
@@ -120,9 +120,9 @@ function getTreeNodeOpenItems(_nodeID, mode) {
 
 function OnLoadingStart(_nodeID) {
 	// this one is used, when you click on the expand "+" icon in the tree
-	//tree.setItemImage(_nodeID, 'loading.gif','loading.gif');
+	//top.tree.setItemImage(_nodeID, 'loading.gif','loading.gif');
     //alert(_nodeID);
-	oS = tree.getOpenState(_nodeID)
+	oS = top.tree.getOpenState(_nodeID)
 	if (oS == -1) { 
 		//closed will be opened
 		//alert(_nodeID+ " state -1");
@@ -140,7 +140,7 @@ function OnLoadingStart(_nodeID) {
 }
 
 //function OnLoadingEnd(_nodeID) {
-//	tree.setItemImage(_nodeID, 'folderClose.gif','folderOpen.gif');
+//	top.tree.setItemImage(_nodeID, 'folderClose.gif','folderOpen.gif');
 //	alert(_nodeID);
 //}
 
@@ -175,14 +175,14 @@ function onNodeSelect(_nodeID) {
 //alert(_nodeID)
 	var Check = CopyOrMove;
 	var actionPending = false;
-	if(tree.getUserData(_nodeID, 'folderName')) {
+	if(top.tree.getUserData(_nodeID, 'folderName')) {
 		if(document.getElementsByName("folderAction")[0].value == "moveMessage") {
 			if (prefAskForMove == 1 || prefAskForMove == 2) 
 			{
-				//Check = confirm(lang_askformove + tree.getUserData(_nodeID, 'folderName'));
+				//Check = confirm(lang_askformove + top.tree.getUserData(_nodeID, 'folderName'));
 				title = lang_MoveCopyTitle;
 				node2call = _nodeID.replace(/&amp;/g,'#ampersand#');
-				message = lang_askformove + tree.getUserData(_nodeID, 'folderName');
+				message = lang_askformove + top.tree.getUserData(_nodeID, 'folderName');
 				message = message + "<p><button onclick=\"callNodeSelect('"+node2call+"', 1);hideDialog();\">"+lang_move+"</button>";
 				if (prefAskForMove == 2) message = message + "&nbsp;<button onclick=\"callNodeSelect('"+node2call+"', 2);hideDialog();\">"+lang_copy+"</button>";
 				message = message + "&nbsp;<button onclick=\"callNodeSelect('"+node2call+"', 0);hideDialog();\">"+lang_cancel+"</button>";
@@ -206,14 +206,14 @@ function onNodeSelect(_nodeID) {
 				}
 				if (actionPending == 'copy') 
 				{
-					setStatusMessage(copyingMessages +' <span style="font-weight: bold;">'+ tree.getUserData(_nodeID, 'folderName') +'</span>');
+					setStatusMessage(copyingMessages +' <span style="font-weight: bold;">'+ top.tree.getUserData(_nodeID, 'folderName') +'</span>');
 					document.getElementById('divMessageList').innerHTML = '';
 					xajax_doXMLHTTP("felamimail.ajaxfelamimail.copyMessages", _nodeID, formData);
 				}
 				else
 				{
 					// default: move messages
-					setStatusMessage(movingMessages +' <span style="font-weight: bold;">'+ tree.getUserData(_nodeID, 'folderName') +'</span>');
+					setStatusMessage(movingMessages +' <span style="font-weight: bold;">'+ top.tree.getUserData(_nodeID, 'folderName') +'</span>');
 					document.getElementById('divMessageList').innerHTML = '';
 					xajax_doXMLHTTP("felamimail.ajaxfelamimail.moveMessages", _nodeID, formData);
 				}
@@ -230,7 +230,7 @@ function onNodeSelect(_nodeID) {
 			}
 		} else {
 			resetMessageSelect();
-			setStatusMessage('<span style="font-weight: bold;">' + lang_loading + ' ' + tree.getUserData(_nodeID, 'folderName') + '</span>');
+			setStatusMessage('<span style="font-weight: bold;">' + lang_loading + ' ' + top.tree.getUserData(_nodeID, 'folderName') + '</span>');
 			document.getElementById('divMessageList').innerHTML = '';
 			xajax_doXMLHTTP("felamimail.ajaxfelamimail.updateMessageView",_nodeID);
 			refreshFolderStatus(_nodeID);
