@@ -61,3 +61,5 @@ ExecMethod('wiki.wiki_ui.view');
 
 // Expire old versions, etc.
 $GLOBALS['wiki_ui']->maintain();
+
+common::egw_footer();
