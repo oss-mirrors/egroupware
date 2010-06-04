@@ -677,6 +677,7 @@ function fm_toggle_editor(toggler)
 		}
 		//Copy the current ASCII data and recode it via a XAJAX request
 		var existingAscii = "<pre>" + plaineditor.value + "</pre>";
+		plaineditor.value= '';
 		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID, existingAscii, 'simple');
 
 		htmlFlag.value = "1";
@@ -687,9 +688,11 @@ function fm_toggle_editor(toggler)
 		//Copy the current HTML data and recode it via a XAJAX request
 		var existingHtml = ckeditor.getData();
 		var ckeditor_span = document.getElementById('cke_body');
-
+		ckeditor.setData('');
 		//Hide the old editor		
 		ckeditor_span.style.display = "none";
+		// we need to destroy the ckeditor, as the/a submit is using the content of the ckeditor instance for content of body
+		ckeditor.destroy();
 
 		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID, existingHtml, 'ascii');
 
