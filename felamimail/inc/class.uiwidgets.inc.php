@@ -674,7 +674,7 @@
 									</td>
 								</TR>
 								<TR>
-									<TD nowrap valign=\"top\" colspan=\"3\" height=\"".$IFrameHeight."\">
+									<TD nowrap id=\"tdmessageIFRAME\" valign=\"top\" colspan=\"3\" height=\"".$IFrameHeight."\">
 										<iframe ".(!empty($jscall) ? $jscall:"")." id=\"messageIFRAME\" frameborder=\"1\" height=\"".$IFrameHeight."\" scrolling=\"auto\" src=\"".$GLOBALS['egw']->link('/index.php',$linkData)."\">
 										</iframe>
 									</TD>

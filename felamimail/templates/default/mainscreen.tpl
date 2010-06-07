@@ -145,6 +145,52 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 <span id="spanMessagePreview">
 	{IFrameForPreview}
 </span>
+<script type="text/javascript">
+	window.onresize = handleResize;
+	handleResize();
+
+	function handleResize()
+	{
+		var divMessageTableList = document.getElementById('divMessageTableList');
+		var iframe = document.getElementById('messageIFRAME');
+		var tdiframe = document.getElementById('tdmessageIFRAME');
+
+		if (typeof window._felamimail_iframe_height == 'undefined')
+		{
+			if (typeof iframe != 'undefined')
+			{
+				window._felamimail_iframe_height = parseInt(iframe.height);
+			}
+			else
+			{
+				window._felamimail_iframe_height = 0;
+			}
+		}
+
+		if (typeof divMessageTableList != 'undefined')
+		{
+			var height = $(window).height() - _felamimail_iframe_height - divMessageTableList.offsetTop - 110;
+			if (height > 100)
+			{
+				divMessageTableList.style.height = height + 'px';//(height / 2) + 'px';
+				if (typeof iframe != 'undefined' && typeof tdiframe != 'undefined')
+				{
+					tdiframe.height = _felamimail_iframe_height;
+					iframe.height = _felamimail_iframe_height;
+				}
+			}
+			else
+			{
+				divMessageTableList.style.height = '100px';//(height / 2) + 'px';
+				if (typeof iframe != 'undefined' && typeof tdiframe != 'undefined')
+				{
+					tdiframe.height = _felamimail_iframe_height + (height - 500);
+					iframe.height = _felamimail_iframe_height + (height - 500);
+				}
+			}
+		}
+	}
+</script>
 <!-- END message_table -->
 
 <!-- BEGIN status_row_tpl -->
