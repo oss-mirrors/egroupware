@@ -1020,8 +1020,18 @@ function setSupportedFields($content)
 					$supportedFields = $defaultFields[4];
 					break;
 				default:
-					error_log('Unknown Nokia phone "' . $deviceInfo['model'] . '", assuming same as "6600"');
-					$supportedFields = $defaultFields[4];
+					if ($productName[0] == 'e')
+					{
+						$model = 'E90';
+						$supportedFields = $defaultFields[9];
+					}
+					else
+					{
+						$model = '6600';
+						$supportedFields = $defaultFields[4];
+					}
+					error_log('Unknown Nokia phone "' . $deviceInfo['model'] . '", assuming same as "'. $model . '"');
+					
 				break;
 			}
 			break;
