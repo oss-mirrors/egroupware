@@ -704,7 +704,14 @@ function showDialog(title,message,type,autohide) {
   dialogcontent.className = type;
   dialogcontent.innerHTML = message;
   var content = document.getElementById(WRAPPER);
-  dialogmask.style.height = content.offsetHeight + 'px';
+  if (typeof content == 'undefined' || content == null) 
+  {
+      dialogmask.style.height = '10px';
+  } 
+  else 
+  {
+    dialogmask.style.height = content.offsetHeight + 'px';
+  }
   dialog.timer = setInterval("fadeDialog(1)", TIMER);
   if(autohide) {
     dialogclose.style.visibility = "hidden";
