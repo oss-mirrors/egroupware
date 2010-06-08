@@ -148,24 +148,13 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 <script type="text/javascript">
 	window.onresize = handleResize;
 	handleResize();
-
+	var iframe_height = {messagelist_height};
 	function handleResize()
 	{
 		var divMessageTableList = document.getElementById('divMessageTableList');
 		var iframe = document.getElementById('messageIFRAME');
 		var tdiframe = document.getElementById('tdmessageIFRAME');
-
-		if (typeof window._felamimail_iframe_height == 'undefined')
-		{
-			if (typeof iframe != 'undefined')
-			{
-				window._felamimail_iframe_height = parseInt(iframe.height);
-			}
-			else
-			{
-				window._felamimail_iframe_height = 0;
-			}
-		}
+		window._felamimail_iframe_height = parseInt(iframe_height.peplace(/px/g,""));
 
 		if (typeof divMessageTableList != 'undefined')
 		{
@@ -184,8 +173,8 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 				divMessageTableList.style.height = '100px';//(height / 2) + 'px';
 				if (typeof iframe != 'undefined' && typeof tdiframe != 'undefined')
 				{
-					tdiframe.height = _felamimail_iframe_height + (height - 500);
-					iframe.height = _felamimail_iframe_height + (height - 500);
+					tdiframe.height = _felamimail_iframe_height + (height - 100);
+					iframe.height = _felamimail_iframe_height + (height - 100);
 				}
 			}
 		}
