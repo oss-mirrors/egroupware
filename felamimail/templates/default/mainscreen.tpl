@@ -146,7 +146,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 	{IFrameForPreview}
 </span>
 <script type="text/javascript">
-	var felamimail_iframe_height = parseInt("{messagelist_height}".replace(/px/g,"")) - 50;
+	var felamimail_iframe_height = parseInt("{messagelist_height}".replace(/px/g,""));
 
 	function handleResize()
 	{
@@ -156,7 +156,15 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 
 		if (typeof divMessageTableList != 'undefined')
 		{
-			var height = $(window).height() - felamimail_iframe_height - $(divMessageTableList).offset().top - 80;
+			if (window.parent && typeof window.parent.framework != 'undefined')
+			{
+				var height = $(window).height() - felamimail_iframe_height - $(divMessageTableList).offset().top - 58;
+			}
+			else
+			{
+				var height = $(window).height() - felamimail_iframe_height - $(divMessageTableList).offset().top - 75;
+			}
+
 			if (height > 100)
 			{
 				divMessageTableList.style.height = height + 'px';
