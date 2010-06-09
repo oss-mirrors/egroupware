@@ -82,7 +82,7 @@
 				$parentFolder = $this->_encodeFolderName($parentFolder);
 				$folderName = $this->_encodeFolderName($folderName);
 				$newSubFolder = $this->_encodeDisplayFolderName($newSubFolder);
-				$response->addScript("egw_topWindow().tree.insertNewItem('$parentFolder','$folderName','$newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED');");
+				$response->addScript("tree.insertNewItem('$parentFolder','$folderName','$newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED');");
 			}
 
 			$response->addAssign("newSubFolder", "value", '');
@@ -291,7 +291,7 @@
 
 			if($this->bofelamimail->deleteFolder($folderName)) {
 				$folderName = $this->_encodeFolderName($folderName);
-				$response->addScript("egw_topWindow().tree.deleteItem('$folderName',1);");
+				$response->addScript("tree.deleteItem('$folderName',1);");
 			}
 
 			return $response->getXML();
