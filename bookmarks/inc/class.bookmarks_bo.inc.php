@@ -101,6 +101,7 @@
 				}
 			}
 
+			if(!$query['order']) $query['order'] = 'bm_name';
 			$count = $this->so->get_rows($query, $rows, $readonlys);
 
 			// Add in permissions
