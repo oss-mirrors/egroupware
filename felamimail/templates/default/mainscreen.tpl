@@ -138,7 +138,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 
 <!-- BEGIN message_table -->
 <div id="divMessageTableList" style="overflow:auto; height:{messagelist_height}; margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid Silver;">
-	<table BORDER="0" style="width:98%; padding-left:2; table-layout: fixed;" cellspacing="0">
+	<table id="tableMessageTableList" BORDER="0" style="width:98%; padding-left:2; table-layout: fixed;" cellspacing="0">
 		{message_rows}
 	</table>
 </div>
@@ -150,12 +150,19 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 
 	function handleResize()
 	{
+		/* Constant values */
+		var MIN_TABLE_HEIGHT = 100;
+		var MAX_TABLE_WHITESPACE = 25;
+
 		var divMessageTableList = document.getElementById('divMessageTableList');
 		var iframe = document.getElementById('messageIFRAME');
 		var tdiframe = document.getElementById('tdmessageIFRAME');
+		var tableMessageTableList = document.getElementById('tableMessageTableList');
 
 		if (typeof divMessageTableList != 'undefined')
 		{
+			/* The height parameter specifies how many height is left for the message list
+			   if the iframe stays maximized. */
 			if (window.parent && typeof window.parent.framework != 'undefined')
 			{
 				var height = $(window).height() - felamimail_iframe_height - $(divMessageTableList).offset().top - 58;
@@ -165,23 +172,36 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 				var height = $(window).height() - felamimail_iframe_height - $(divMessageTableList).offset().top - 75;
 			}
 
-			if (height > 100)
+			/* Tableheight specifies the rendered size of the table,
+			   iframeheight the height of the message preview,
+			   divheight the end size height of the table outer div */
+			var tableheight = $(tableMessageTableList).height();
+			var iframeheight = felamimail_iframe_height;
+			var divheight = height;
+
+			/* If the remaining height is smaller than MIN_TABLE_HEIGHT, the iframe
+			   will be scaled to a smaller size */
+			if (height < MIN_TABLE_HEIGHT)
 			{
-				divMessageTableList.style.height = height + 'px';
-				if (typeof iframe != 'undefined' && typeof tdiframe != 'undefined')
-				{
-					tdiframe.height = felamimail_iframe_height;
-					iframe.height = felamimail_iframe_height;
-				}
+				divheight = MIN_TABLE_HEIGHT;
+				iframeheight = iframeheight + (height - MIN_TABLE_HEIGHT);
 			}
-			else
+
+			/* If the divheight is grater than the actual size of the message table,
+			   scale the divheight smaller and increase the size of the iframe */
+			if (divheight > tableheight + MAX_TABLE_WHITESPACE)
 			{
-				divMessageTableList.style.height = '100px';//(height / 2) + 'px';
-				if (typeof iframe != 'undefined' && typeof tdiframe != 'undefined')
-				{
-					tdiframe.height = felamimail_iframe_height + (height - 100);
-					iframe.height = felamimail_iframe_height + (height - 100);
-				}
+				var oh = divheight;
+				divheight = tableheight + MAX_TABLE_WHITESPACE;
+				iframeheight = iframeheight + (oh - divheight);
+			}
+
+			/* Set the sizes */
+			divMessageTableList.style.height = divheight + 'px';
+			if (typeof iframe != 'undefined' && typeof tdiframe != 'undefined')
+			{
+				tdiframe.height = iframeheight;
+				iframe.height = iframeheight;
 			}
 		}
 	}

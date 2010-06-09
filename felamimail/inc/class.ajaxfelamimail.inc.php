@@ -531,6 +531,8 @@
 
 			if($this->_debug) error_log('generateMessageList done');
 
+			$response->addScript('if (typeof handleResize != "undefined") handleResize();');
+
 			return $response->getXML();
 		}
 
