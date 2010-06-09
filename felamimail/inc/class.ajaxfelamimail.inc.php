@@ -82,7 +82,7 @@
 				$parentFolder = $this->_encodeFolderName($parentFolder);
 				$folderName = $this->_encodeFolderName($folderName);
 				$newSubFolder = $this->_encodeDisplayFolderName($newSubFolder);
-				$response->addScript("tree.insertNewItem('$parentFolder','$folderName','$newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED');");
+				$response->addScript("egw_appWindow('felamimail').tree.insertNewItem('$parentFolder','$folderName','$newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED');");
 			}
 
 			$response->addAssign("newSubFolder", "value", '');
@@ -291,7 +291,7 @@
 
 			if($this->bofelamimail->deleteFolder($folderName)) {
 				$folderName = $this->_encodeFolderName($folderName);
-				$response->addScript("tree.deleteItem('$folderName',1);");
+				$response->addScript("egw_appWindow('felamimail').tree.deleteItem('$folderName',1);");
 			}
 
 			return $response->getXML();
@@ -511,9 +511,9 @@
 
 			if($folderStatus = $this->bofelamimail->getFolderStatus($_folderName)) {
 				if($folderStatus['unseen'] > 0) {
-					$response->addScript("tree.setItemText('$_folderName', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
+					$response->addScript("egw_appWindow('felamimail').tree.setItemText('$_folderName', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
 				} else {
-					$response->addScript("tree.setItemText('$_folderName', '". $folderStatus['shortDisplayName'] ."');");
+					$response->addScript("egw_appWindow('felamimail').tree.setItemText('$_folderName', '". $folderStatus['shortDisplayName'] ."');");
 				}
 			}
 
@@ -521,13 +521,13 @@
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] != 'none' ) {
 				$folderStatus = $this->bofelamimail->getFolderStatus($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder']);
 				if($folderStatus['unseen'] > 0) {
-					$response->addScript("tree.setItemText('". $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] ."', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
+					$response->addScript("egw_appWindow('felamimail').tree.setItemText('". $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] ."', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
 				} else {
-					$response->addScript("tree.setItemText('". $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] ."', '". $folderStatus['shortDisplayName'] ."');");
+					$response->addScript("egw_appWindow('felamimail').tree.setItemText('". $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] ."', '". $folderStatus['shortDisplayName'] ."');");
 				}
 			}
 
-			$response->addScript("tree.selectItem('".$_folderName. "',false);");
+			$response->addScript("egw_appWindow('felamimail').tree.selectItem('".$_folderName. "',false);");
 
 			if($this->_debug) error_log('generateMessageList done');
 
@@ -773,9 +773,9 @@
 
 				if ($folderStatus = $this->bofelamimail->getFolderStatus($folderName)) {
 					if ($folderStatus['unseen'] > 0) {
-						$response->addScript("tree.setItemText('$folderName', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
+						$response->addScript("egw_appWindow('felamimail').tree.setItemText('$folderName', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
 					} else {
-						$response->addScript("tree.setItemText('$folderName', '". $folderStatus['shortDisplayName'] ."');");
+						$response->addScript("egw_appWindow('felamimail').tree.setItemText('$folderName', '". $folderStatus['shortDisplayName'] ."');");
 					}
 				}
 			}
@@ -813,9 +813,9 @@
 					#error_log("checking $folderName");
 					if($folderStatus = $this->bofelamimail->getFolderStatus($folderName)) {
 						if($folderStatus['unseen'] > 0) {
-							$response->addScript("tree.setItemText('$folderName', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
+							$response->addScript("egw_appWindow('felamimail').tree.setItemText('$folderName', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
 						} else {
-							$response->addScript("tree.setItemText('$folderName', '". $folderStatus['shortDisplayName'] ."');");
+							$response->addScript("egw_appWindow('felamimail').tree.setItemText('$folderName', '". $folderStatus['shortDisplayName'] ."');");
 						}
 					}
 				}
@@ -950,8 +950,8 @@
 						#$hasChildren = false;
 						#if ($folderStatus['attributes'][0]=="\\HasChildren") $hasChildren=true;
 					}
-					$response->addScript("tree.deleteItem('$_oldFolderName',0);");
-					$response->addScript("tree.insertNewItem('$_parentFolder','$newFolderName','$folderName',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
+					$response->addScript("egw_appWindow('felamimail').tree.deleteItem('$_oldFolderName',0);");
+					$response->addScript("egw_appWindow('felamimail').tree.insertNewItem('$_parentFolder','$newFolderName','$folderName',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
 				}
 			}
 			return $response->getXML();
