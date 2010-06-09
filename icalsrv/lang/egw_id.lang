@@ -1,0 +1,8 @@
+addressbook test	icalsrv	id	Tes Buku alamat
+app	icalsrv	id	Aplikasi
+apps	icalsrv	id	Aplikasi
+assigned sessionid	icalsrv	id	Assigned sessionid
+bogus request	icalsrv	id	Bogus Request
+calendar test	icalsrv	id	Tes Kalender
+icalsrv	common	id	iCalSrv
+system	icalsrv	id	Sistem

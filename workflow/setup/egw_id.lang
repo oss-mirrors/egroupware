@@ -1,0 +1,230 @@
+#	workflow	id	#
+%1 aborted	workflow	id	%1 aborted
+%1 active	workflow	id	%1 active
+%1 completed	workflow	id	%1 completed
+%1 configuration	workflow	id	%1 Configuration
+%1 exception	workflow	id	%1 exception
+%1 menu	workflow	id	%1 Menu
+%1 monitoring	workflow	id	%1 Monitoring
+abort instance	workflow	id	abort instance
+aborted	workflow	id	aborted
+act	workflow	id	act
+act. status	workflow	id	Act. Status
+act. status:	workflow	id	Act. status:
+actions	workflow	id	Actions
+activate	workflow	id	activate
+active	workflow	id	Active
+active:	workflow	id	active:
+activities	workflow	id	Activities
+activities selection	workflow	id	Activities selection
+activities updated	workflow	id	Activities updated
+activity	workflow	id	activity
+activity %1	workflow	id	activity %1
+activity completed	workflow	id	Activity completed
+activity failure	workflow	id	activity failure
+activity saved	workflow	id	Activity saved
+activity:	workflow	id	activity:
+add agent	workflow	id	Add agent
+add new	workflow	id	add new
+add property	workflow	id	Add property
+add role	workflow	id	Add role
+add transition	workflow	id	add transition
+add transitions	workflow	id	Add transitions
+admin instance	workflow	id	Admin Instance
+admin processes	common	id	Admin Processes
+administer instances	admin	id	Administer instances
+administer processes	admin	id	Administer processes
+all	workflow	id	All
+auto routed	workflow	id	Auto routed
+automatic	workflow	id	Automatic
+bad user	workflow	id	Bad user
+bcc:	workflow	id	Bcc:
+being run	workflow	id	being run
+cc:	workflow	id	Cc:
+cleanup actions	workflow	id	cleanup actions
+code	workflow	id	code
+compilation	workflow	id	Compilation
+complete	workflow	id	Complete
+completed	workflow	id	completed
+config values	common	id	Config values
+confirm delete	workflow	id	Confirm Delete
+create	workflow	id	create
+created	workflow	id	Created
+date:	workflow	id	date:
+default owner	workflow	id	Default owner
+default user	workflow	id	Default User
+delete selected	workflow	id	Delete selected
+delete transition	workflow	id	delete transition
+deletion successful	workflow	id	Deletion successful
+delition successful	workflow	id	Delition successful
+description	workflow	id	Description
+don't move	workflow	id	Don't move
+draw roles	common	id	draw roles
+duration	workflow	id	Duration
+end	workflow	id	end
+ended	workflow	id	ended
+exception	workflow	id	exception
+exception instance	workflow	id	exception instance
+exceptions	workflow	id	exceptions
+export	workflow	id	Export
+failure	workflow	id	failure
+filter	workflow	id	Filter
+fix	workflow	id	Fix
+font size	workflow	id	Font size
+from	workflow	id	From
+from:	workflow	id	From:
+get property	workflow	id	Get property
+global activities	workflow	id	Global activities
+go	workflow	id	go
+grab instance	workflow	id	grab instance
+graph	workflow	id	Graph
+graphic options	common	id	Graphic options
+group	workflow	id	Group
+id	workflow	id	Id
+if:setnextact	workflow	id	If:SetNextact
+import aborted	workflow	id	Import aborted
+import successfull	workflow	id	Import successfull
+inactive	workflow	id	Inactive
+inst.	workflow	id	Inst.
+inst. status	workflow	id	Inst. Status
+instance	workflow	id	Instance
+instance %1	workflow	id	instance %1
+instance history	workflow	id	Instance History
+instance properties	workflow	id	Instance properties
+instance:	workflow	id	instance:
+instances	workflow	id	Instances
+instances selection	workflow	id	Instances selection
+int.	workflow	id	Int.
+interactive	workflow	id	Interactive
+interactive:	workflow	id	interactive:
+interactivity	workflow	id	Interactivity
+invalid	workflow	id	invalid
+invalid process	workflow	id	Invalid Process
+is active	workflow	id	is active
+join	workflow	id	join
+manual	workflow	id	Manual
+map	workflow	id	map
+mappings deleted	workflow	id	Mappings deleted
+message:	workflow	id	Message:
+monitor activities	workflow	id	Monitor Activities
+monitor instance	workflow	id	monitor instance
+monitor instances	workflow	id	Monitor Instances
+monitor processes	workflow	id	Monitor Processes
+monitor workitems	workflow	id	Monitor workitems
+monitoring	admin	id	Monitoring
+monitors	workflow	id	Monitors
+more options?	workflow	id	more options?
+my activities	workflow	id	My Activities
+my instances	workflow	id	My Instances
+my processes	workflow	id	My Processes
+name	workflow	id	Name
+new instance	workflow	id	New Instance
+new major	workflow	id	New major
+new minor	workflow	id	New minor
+next activity	workflow	id	next activity
+next user:	workflow	id	Next user:
+no activites	workflow	id	No activites
+no roles	workflow	id	no roles
+no routage	workflow	id	no routage
+nobody	workflow	id	Nobody
+not defined	workflow	id	not defined
+owner	workflow	id	Owner
+owner:	workflow	id	Owner:
+pr.	workflow	id	Pr.
+printer friendly	workflow	id	Printer friendly
+priority level:	workflow	id	Priority level:
+process	workflow	id	Process
+process %1	workflow	id	process %1
+process activities	workflow	id	Process activities
+process alone	workflow	id	Process alone
+process form	workflow	id	Process form
+process name	workflow	id	Process Name
+process roles	workflow	id	Process roles
+process saved	workflow	id	Process saved
+process transitions	workflow	id	Process transitions
+process version:	workflow	id	process version:
+process:	workflow	id	process:
+processes	workflow	id	Processes
+properties	workflow	id	Properties
+property	workflow	id	Property
+read-only	workflow	id	read-only
+release instance	workflow	id	release instance
+reload filter	workflow	id	Reload filter
+replyto:	workflow	id	ReplyTo:
+restart	workflow	id	restart
+restart activity	workflow	id	restart activity
+role	workflow	id	Role
+role name	workflow	id	Role Name
+role saved	workflow	id	Role saved
+roles	workflow	id	Roles
+roles deleted	workflow	id	Roles deleted
+routing	workflow	id	Routing
+routing:	workflow	id	routing:
+run	workflow	id	run
+run activity	workflow	id	run activity
+run instance	workflow	id	run instance
+running	workflow	id	running
+running activity	workflow	id	Running Activity
+scan activities	workflow	id	Scan activities
+scan agents	workflow	id	Scan agents
+scan instances	workflow	id	Scan instances
+scan processes	workflow	id	Scan processes
+scan roles	workflow	id	Scan roles
+scan transitions	workflow	id	Scan transitions
+search:	workflow	id	search:
+select source	workflow	id	select source
+send instance	workflow	id	send instance
+send transition	workflow	id	send transition
+set property	workflow	id	Set property
+shared code	workflow	id	Shared code
+show code	workflow	id	show code
+show template	workflow	id	show template
+source saved	workflow	id	Source saved
+split	workflow	id	split
+standalone	workflow	id	standalone
+start	workflow	id	Start
+start activity	workflow	id	Start activity
+start process	workflow	id	start process
+started	workflow	id	Started
+started:	workflow	id	started:
+starting page	workflow	id	Starting page
+status	workflow	id	Status
+status:	workflow	id	status:
+stop	workflow	id	stop
+subject:	workflow	id	Subject:
+switch	workflow	id	switch
+switch construct	workflow	id	Switch construct
+template	workflow	id	template
+test concistency	workflow	id	Test Concistency
+to	workflow	id	To
+to:	workflow	id	To:
+transition	workflow	id	transition
+transition mode	workflow	id	transition mode
+transitions	workflow	id	transitions
+type	workflow	id	type
+type:	workflow	id	type:
+unknown status	workflow	id	unknown status
+update	workflow	id	update
+upload file	workflow	id	Upload file
+use default	workflow	id	Use Default
+user	workflow	id	User
+user activities	workflow	id	User Activities
+user instances	workflow	id	User Instances
+user processes	workflow	id	User Processes
+user/group	workflow	id	User/Group
+user:	workflow	id	user:
+users/groups	workflow	id	Users/Groups
+valid	workflow	id	Valid
+valid process	workflow	id	Valid Process
+valid:	workflow	id	valid:
+validity:	workflow	id	Validity:
+value	workflow	id	Value
+version	workflow	id	Version
+view details	workflow	id	view details
+view workitem	workflow	id	View Workitem
+workflow	common	id	Work-Flow
+workflow configuration	admin	id	Workflow configuration
+workflow navigation	workflow	id	Workflow navigation
+workflow preferences	workflow	id	Workflow Preferences
+workitem information	workflow	id	Workitem information
+workitems	workflow	id	Workitems
