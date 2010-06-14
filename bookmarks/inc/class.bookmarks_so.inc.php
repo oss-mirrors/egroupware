@@ -116,11 +116,13 @@
 			}
 			if($query['cat_id']) {
 				$query['col_filter']['category'] = $query['cat_id'];
+			} else {
+				$query['col_filter']['category'] = (array)$GLOBALS['egw']->categories->return_array( 'all', 0 , false, '', '', '', true, null, -1, 'id' );
 			}
 
 			// Permissions
-			$query['col_filter'][] = '(bm_owner = ' . (int)$GLOBALS['egw_info']['user']['account_id'] . ' OR 
-				bm_access = \'public\' AND bm_owner IN (' . implode(',', $query['grants']) . '))';
+			$query['col_filter'][] = '(bm_access = \'public\' OR (bm_owner = ' . (int)$GLOBALS['egw_info']['user']['account_id'] . 
+				' OR bm_owner IN (' . implode(',', $query['grants']) . ')))';
 		
 			// Split out timestamps into sortable seperate columns
 			$extra_cols = array(
