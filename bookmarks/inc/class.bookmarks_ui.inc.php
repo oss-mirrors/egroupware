@@ -389,6 +389,7 @@
 			}
 
 			$categories = (array)$this->bo->categories->return_array( 'all', 0 , false, '', '', '', true );
+			$categories = (array)$this->bo->categories->return_sorted_array( 0 , false, '', 'ASC', 'cat_name', true );
 
 			//build cat tree
 			foreach ( $categories as $key => $cat ) {
