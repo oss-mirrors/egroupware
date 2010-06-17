@@ -140,8 +140,8 @@ function _egwcalendarsync_list($filter='')
 			$deviceInfo['tzid']) {
 		switch ($deviceInfo['tzid'])
 		{
-			case 1:
-			case 2:
+			case -1:
+			case -2:
 				$tzid = null;
 				break;
 			default:
@@ -239,8 +239,8 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 			$deviceInfo['tzid']) {
 		switch ($deviceInfo['tzid'])
 		{
-			case 1:
-			case 2:
+			case -1:
+			case -2:
 				$tzid = null;
 				break;
 			default:
