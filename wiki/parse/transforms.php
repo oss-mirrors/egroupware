@@ -140,9 +140,9 @@ function parse_wikiname($text, $validate = 0)
 	if(!$EnableWikiLinks) { return $text; }
 
 	if($validate)
-		{ $ptn = "/(^|[^A-Za-z])($LinkPtn)(())(\"\")?/e"; }
+		{ $ptn = "/(^|[\s.;:,]+)($LinkPtn)($|[\s.!?;:,]+)/e"; }
 	else
-		{ $ptn = "/(^|[^A-Za-z])(!?$LinkPtn)((\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?)(\"\")?/e"; }
+		{ $ptn = "/(^|[\s.;:,]+)(!?$LinkPtn)((\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?)(\"\")?/e"; }
 
 	return preg_replace($ptn,
 											"q1('\\1').wikiname_token(q1('\\2'),'\\4')",
