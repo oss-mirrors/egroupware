@@ -3,7 +3,6 @@
 %s bookmarks selected for export	bookmarks	de	%1 Lesezeichen für den Export ausgewählt
 (comma separate multiple addresses)	bookmarks	de	(mehrere Adressen mit Komma getrennt)
 (selecting a category includes all sub-categories)	bookmarks	de	(Wenn Sie eine Kategorie auswählen, werden auch alle dazugehörigen Unterkategorien mit ausgewählt)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	de	<b>Achtung:</b> Geht im Moment nur mit Lesezeichen von Netscape.
 actions	bookmarks	de	Befehle
 added	bookmarks	de	Hinzugefügt
 all bookmarks	bookmarks	de	Alle Lesezeichen
@@ -81,6 +80,7 @@ netscape bookmark filename is required!	bookmarks	de	Dateinamen der Netscape-Les
 netscape/mozilla	bookmarks	de	Netscape/Mozilla
 new	bookmark	de	Neu
 new bookmark	bookmarks	de	Neues Lesezeichen
+note: you can use bookmark files exported as html	bookmarks	en	Achtung: Sie können Lesezeichen nutzen, die als HTML-Datei exportiert wurden.
 or	bookmarks	de	oder
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	de	Bitte <b>An E-Mail-Adresse</b>, <b>Betreff</b> and <b>Nachricht</b> ausfüllen!
 please select the categories to export	bookmarks	de	Bitte wählen Sie die zu exportierenden Kategorien

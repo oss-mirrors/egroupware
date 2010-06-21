@@ -3,12 +3,12 @@
 %s bookmarks selected for export	bookmarks	en	%s bookmarks selected for export
 (comma separate multiple addresses)	bookmarks	en	(comma separate multiple addresses)
 (selecting a category includes all sub-categories)	bookmarks	en	(Selecting a category includes all sub-categories)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	en	<b>Note:</b> This currently works with netscape bookmarks only
 actions	bookmarks	en	Actions
 added	bookmarks	en	Added
 all bookmarks	bookmarks	en	All bookmarks
 and	bookmarks	en	And
 append this message to mailed bookmarks	bookmarks	en	Append this message to mailed bookmarks
+apply the action on the whole query, not only the shown bookmarks!!!	bookmarks	en	Apply the action on the whole query, NOT only the shown bookmarks!!!
 ascending	bookmarks	en	Ascending
 book marks	common	en	Book marks
 bookmark - %1	bookmarks	en	Bookmark - %1
@@ -81,6 +81,7 @@ netscape bookmark filename is required!	bookmarks	en	Netscape bookmark filename 
 netscape/mozilla	bookmarks	en	Netscape/Mozilla
 new	bookmark	en	New
 new bookmark	bookmarks	en	new bookmark
+note: you can use bookmark files exported as html	bookmarks	en	Note: You can use bookmark files exported as HTML
 or	bookmarks	en	or
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	en	Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!
 please select the categories to export	bookmarks	en	Please select the categories to export
