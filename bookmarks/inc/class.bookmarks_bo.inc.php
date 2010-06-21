@@ -315,7 +315,7 @@
 			$query = array(
 				'search' => $pattern,
 			);
-			$rows = $this->so->search($pattern,false,$options['order']?$options['order'].' '.$options['sort']:'',$extra_cols,
+			$ids = $this->so->search($pattern,true,$options['order']?$options['order'].' '.$options['sort']:'',$extra_cols,
 				$wildcard,false,$op,$options['num_rows']?array((int)$options['start'],$options['num_rows']):(int)$options['start']);
 			$options['total'] = $this->so->total;
 			$content = array();
