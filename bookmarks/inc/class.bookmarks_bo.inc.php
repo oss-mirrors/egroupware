@@ -314,11 +314,10 @@
 		public function link_query($pattern, Array &$options = array()) {
 			$query = array(
 				'search' => $pattern,
-				'start'  => $options['start'],
-				'num_rows'      =>      $options['num_rows'],
 			);
-			$ids = $this->so->search($query, true);
-			$options['total'] = $query['total'];
+			$rows = $this->so->search($pattern,false,$options['order']?$options['order'].' '.$options['sort']:'',$extra_cols,
+				$wildcard,false,$op,$options['num_rows']?array((int)$options['start'],$options['num_rows']):(int)$options['start']);
+			$options['total'] = $this->so->total;
 			$content = array();
 			if (is_array($ids))
 			{
