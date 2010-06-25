@@ -156,11 +156,12 @@ function &_egwnotessync_listBy($action, $timestamp, $type, $filter)
  */
 function _egwnotessync_import($content, $contentType, $guid = null)
 {
-	Horde::logMessage("SymcML: egwnotessync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
+	
 	if (is_array($contentType)) {
 		$contentType = $contentType['ContentType'];
 	}
+	
+	Horde::logMessage("SymcML: egwnotessync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$boInfolog = new infolog_bo();
 	$noteId = -1; // default for new entry
@@ -322,18 +323,6 @@ function _egwnotessync_search($content, $contentType, $contentid, $type=null)
  */
 function _egwnotessync_export($guid, $contentType)
 {
-	Horde::logMessage("SymcML: egwnotessync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	$state =& $_SESSION['SyncML.state'];
-	$deviceInfo = $state->getClientDeviceInfo();
-
-	if (isset($deviceInfo['charset']) &&
-			$deviceInfo['charset']) {
-		$charset = $deviceInfo['charset'];
-	} else {
-		$charset = 'UTF-8';
-	}
-
 	if (is_array($contentType)) {
 		if (is_array($contentType['Properties'])) {
 			$clientProperties =& $contentType['Properties'];
@@ -344,6 +333,19 @@ function _egwnotessync_export($guid, $contentType)
 	} else {
 		$clientProperties = array();
 	}
+	
+	Horde::logMessage("SymcML: egwnotessync export guid: $guid contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+	$state =& $_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
+
+	if (isset($deviceInfo['charset']) &&
+			$deviceInfo['charset']) {
+		$charset = $deviceInfo['charset'];
+	} else {
+		$charset = 'UTF-8';
+	}
+	
 
 	$noteId = $state->get_egwId($guid);
 
@@ -414,13 +416,13 @@ function _egwnotessync_delete($guid)
  */
 function _egwnotessync_replace($guid, $content, $contentType, $type, $merge=false)
 {
-	Horde::logMessage("SymcML: egwtaskssync replace content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	$state =& $_SESSION['SyncML.state'];
-
 	if (is_array($contentType)) {
 		$contentType = $contentType['ContentType'];
 	}
+	
+	Horde::logMessage("SymcML: egwtaskssync replace content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+	$state =& $_SESSION['SyncML.state'];
 
 	$noteId = $state->get_egwId($guid);
 	$deviceInfo = $state->getClientDeviceInfo();

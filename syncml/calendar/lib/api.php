@@ -293,13 +293,13 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
  */
 function _egwcalendarsync_import($content, $contentType, $guid = null)
 {
-	Horde::logMessage("SymcML: egwcalendarsync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	#$syncProfile	= _egwcalendarsync_getSyncProfile();
-
 	if (is_array($contentType)) {
 		$contentType = $contentType['ContentType'];
 	}
+
+	Horde::logMessage("SymcML: egwcalendarsync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+	#$syncProfile	= _egwcalendarsync_getSyncProfile();
 
 	$calendarId = -1; // default for new entry
 
@@ -416,6 +416,10 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
  */
 function _egwcalendarsync_search($content, $contentType, $contentid, $type=null)
 {
+	if (is_array($contentType)) {
+		$contentType = $contentType['ContentType'];
+	}
+
 	Horde::logMessage("SymcML: egwcalendarsync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state =& $_SESSION['SyncML.state'];
@@ -430,11 +434,6 @@ function _egwcalendarsync_search($content, $contentType, $contentid, $type=null)
 
 	$eventId = false;
 	$relax = !$type;
-
-	if (is_array($contentType))
-	{
-		$contentType = $contentType['ContentType'];
-	}
 
 	// We want to break the slow-sync duplicates generation. If you have two identical entries
 	// on your device before a slow-sync, we match them one after the other.
@@ -651,13 +650,12 @@ function _egwcalendarsync_delete($guid)
  */
 function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=false)
 {
-	Horde::logMessage("SymcML: egwcalendarsync replace guid: $guid content: $content contenttype: $contentType",
-		__FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	if (is_array($contentType))
-	{
+	if (is_array($contentType))	{
 		$contentType = $contentType['ContentType'];
 	}
+
+	Horde::logMessage("SymcML: egwcalendarsync replace guid: $guid content: $content contenttype: $contentType",
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state =& $_SESSION['SyncML.state'];
 	$tzid = null;

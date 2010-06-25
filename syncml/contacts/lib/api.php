@@ -210,7 +210,7 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 	#Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype:\n" . print_r($contentType,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	if (is_array($contentType)) {
-                $contentType = $contentType['ContentType'];
+		$contentType = $contentType['ContentType'];
 	}
 
 	$state		= &$_SESSION['SyncML.state'];
@@ -495,7 +495,7 @@ function _egwcontactssync_replace($guid, $content, $contentType, $type, $merge=f
 	$contactID	= $state->get_egwId($guid);
 
 	if (is_array($contentType)) {
-                $contentType = $contentType['ContentType'];
+		$contentType = $contentType['ContentType'];
 	}
 
 	switch ($contentType) {

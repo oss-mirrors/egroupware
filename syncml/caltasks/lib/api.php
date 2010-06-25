@@ -131,11 +131,11 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
  */
 function _egwcaltaskssync_import($content, $contentType, $guid = null)
 {
-	Horde::logMessage("SymcML: egwcaltaskssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
 	if (is_array($contentType)) {
 		$contentType = $contentType['ContentType'];
 	}
+
+	Horde::logMessage("SymcML: egwcaltaskssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$boCalendar = new calendar_boupdate();
 	$boInfolog = new infolog_bo();
@@ -251,6 +251,10 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
  */
 function _egwcaltaskssync_search($content, $contentType, $contentid, $type=null)
 {
+	if (is_array($contentType)) {
+		$contentType = $contentType['ContentType'];
+	}
+
 	Horde::logMessage("SymcML: egwcaltaskssync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state =& $_SESSION['SyncML.state'];
@@ -491,12 +495,12 @@ function _egwcaltaskssync_delete($guid)
  */
 function _egwcaltaskssync_replace($guid, $content, $contentType, $type, $merge=false)
 {
-	Horde::logMessage("SymcML: egwcaltaskssync replace guid: $guid content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
 	if (is_array($contentType))
 	{
 		$contentType = $contentType['ContentType'];
 	}
+
+	Horde::logMessage("SymcML: egwcaltaskssync replace guid: $guid content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state =& $_SESSION['SyncML.state'];
 	$tzid = null;
