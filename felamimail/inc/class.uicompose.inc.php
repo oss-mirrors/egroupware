@@ -322,8 +322,8 @@
 			$this->t->set_var('folder_name',$this->bofelamimail->sessionData['mailbox']);
 			$this->t->set_var('compose_id',$this->composeID);
 			// the editorobject is needed all the time (since we use CKEDITOR3
-			$editorObject = html::initCKEditor('400px','simple');
-			$this->t->set_var('ckeditorConfig',$editorObject->jsEncode($editorObject->config));
+			//$editorObject = html::initCKEditor('400px','simple');
+			$this->t->set_var('ckeditorConfig', egw_ckeditor_config::get_ckeditor_config());//$editorObject->jsEncode($editorObject->config));
 
 			// check for some error messages from last posting attempt
 			if($errorInfo = $this->bocompose->getErrorInfo())
@@ -420,7 +420,7 @@
 			} else {
 				$style="border:0px; width:100%; height:400px;";
 				// initalize the CKEditor Object to enable switching back and force
-				$editor = $editorObject->init(). html::fckEditorQuick('body', 'ascii', $sessionData['body'],'400px','99%');
+				$editor = html::fckEditorQuick('body', 'ascii', $sessionData['body'],'400px','99%');
 				$this->t->set_var('tinymce', $editor); //html::fckEditorQuick('body', 'ascii', $sessionData['body'],'400px','99%'));
 				$this->t->set_var('mimeType', 'text');
 				$ishtml=0;
@@ -509,6 +509,8 @@
 		function display_app_header()
 		{
 			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
+			egw_framework::validate_file('ckeditor3','ckeditor','phpgwapi');
+
 			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 
