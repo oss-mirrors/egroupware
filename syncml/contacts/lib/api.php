@@ -736,12 +736,12 @@ function setSupportedFields($content)
 		'X-KADDRESSBOOK-X-Department' => array('org_unit'),
 	));
 
-	$defaultFields[9] = array(	// nokia e90
+	$defaultFields[9] = array(	// nokia E-series
 				'ADR;WORK'	=> array('','adr_one_street2','adr_one_street','adr_one_locality','adr_one_region',
 										'adr_one_postalcode','adr_one_countryname'),
 				'ADR;HOME'	=> array('','adr_two_street2','adr_two_street','adr_two_locality','adr_two_region',
 										'adr_two_postalcode','adr_two_countryname'),
-				'BDAY;TYPE=BASIC'		=> array('bday'),
+				'BDAY;BASIC'		=> array('bday'),
 				'X-CLASS'	=> array('private'),
 				'EMAIL;INTERNET;WORK' => array('email'),
 				'EMAIL;INTERNET;HOME' => array('email_home'),
@@ -754,9 +754,10 @@ function setSupportedFields($content)
 				'TEL;FAX;WORK'	=> array('tel_fax'),
 				'TEL;FAX;HOME'	=> array('tel_fax_home'),
 				'TEL;CAR'	=> array('tel_car'),
-				'TEL;PAGER;WORK' => array('tel_pager'),
 				'TEL;VOICE;WORK' => array('tel_work'),
 				'TEL;VOICE;HOME' => array('tel_home'),
+				'TEL;VOICE'		=> array('tel_other'),
+				'TEL;PAGER' => array('tel_pager'),
 				'TITLE'		=> array('title'),
 				'URL;WORK'	=> array('url'),
 				'URL;HOME'	=> array('url_home'),
