@@ -13,7 +13,9 @@
 	</td>
 </tr>
 </table>
+<span id="editorArea" style="border:0px solid black; width:99%; height:400px;">
 {tinymce}
+</span>
 <button type="button" onclick="fm_saveSignature()">{lang_save}</button>
 <button type="button" onclick="fm_applySignature()">{lang_apply}</button>
 <button type="button" onclick="window.close()">{lang_cancel}</button>

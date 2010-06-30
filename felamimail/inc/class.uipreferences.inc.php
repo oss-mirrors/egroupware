@@ -69,6 +69,7 @@
 			{
 				case 'felamimail.uipreferences.editSignature':
 					$GLOBALS['egw']->js->validate_file('jscode','listSignatures','felamimail');
+					egw_framework::validate_file('ckeditor3','ckeditor','phpgwapi');
 					#$GLOBALS['egw']->js->set_onload('fm_initEditLayout();');
 					break;
 				case 'felamimail.uipreferences.listAccountData':
@@ -164,9 +165,9 @@
 				'menuaction'    => 'felamimail.uipreferences.editSignature'
 			);
 			$this->t->set_var('form_action', $GLOBALS['egw']->link('/index.php',$linkData));
+
 			$height = "350px";
 			if(isset($_GET['signatureID'])) {
-
 				$this->t->set_var('description', @htmlspecialchars($signatureData->fm_description, ENT_QUOTES, $this->charset));
 			
 				$this->t->set_var('signatureID', $signatureID);
@@ -174,7 +175,7 @@
 				$this->t->set_var('tinymce',html::fckEditorQuick(
 					'signature', 'advanced', 
 					$signatureData->fm_signature, 
-					$height)
+					$height,'100%',false)
 				);
 
 				$this->t->set_var('checkbox_isDefaultSignature',html::checkbox(
@@ -185,7 +186,8 @@
 					)
 				);
 			} else {
-				$this->t->set_var('tinymce',html::fckEditorQuick('signature', 'advanced', '', $height));
+				$this->t->set_var('description', '');
+				$this->t->set_var('tinymce',html::fckEditorQuick('signature', 'advanced', '', $height,'100%',false));
 
 				$this->t->set_var('checkbox_isDefaultSignature',html::checkbox(
 					'isDefaultSignature', false, 'true', 'id="isDefaultSignature"'
@@ -193,8 +195,7 @@
 
 			}
 
-			$this->t->parse("out","main");
-			print $this->t->get('out','main');
+			$this->t->pparse("out","main");
 		}
 		
 		function editAccountData($msg='')
