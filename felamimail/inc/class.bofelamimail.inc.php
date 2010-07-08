@@ -1155,8 +1155,8 @@
 			#error_log("getAttachmentByCID:$_uid, $_cid, $_part");
 			$attachments = $this->getMessageAttachments($_uid, $_part);
 			foreach($attachments as $attachment) {
-				#error_log(print_r($attachment,true));
-				if(strpos($attachment['cid'], $_cid) !== false || strpos($cid, $attachment['cid']) !== false) {
+				//error_log(print_r($attachment,true));
+				if(isset($attachment['cid']) && (strpos($attachment['cid'], $_cid) !== false || strpos($_cid, $attachment['cid']) !== false)) {
 					$partID = $attachment['partID'];
 					break;
 				}
