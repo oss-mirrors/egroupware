@@ -272,6 +272,8 @@
 			$this->t->set_block('composeForm','simple_text');
 
 			$this->translate();
+			// store the selected Signature
+			$this->t->set_var("mySigID",($presetSig ? $presetSig : $sessionData['signatureID']));
 
 			if ($GLOBALS['egw_info']['user']['apps']['addressbook']) {
 				$this->t->set_var("link_addressbook",$GLOBALS['egw']->link('/index.php',array(
@@ -408,7 +410,51 @@
 			$this->t->set_var('lang_no_subject',lang('No subject given!'));
 			$this->t->pparse("out","header");
 
-			// body
+			// prepare signatures, the selected sig may be used on top of the body
+			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
+			$boSignatures = new felamimail_bosignatures();
+			$signatures = $boSignatures->getListOfSignatures();
+
+			if (empty($sessionData['signatureID'])) {
+				if ($signatureData = $boSignatures->getDefaultSignature()) {
+					if (is_array($signatureData)) {
+						$sessionData['signatureID'] = $signatureData['signatureid'];
+					} else {
+						$sessionData['signatureID'] =$signatureData;
+					}
+				}
+			}
+
+			$selectSignatures = array(
+				'-2' => lang('no signature')
+			);
+			foreach($signatures as $signature) {
+				$selectSignatures[$signature['fm_signatureid']] = lang('Signature').': '.$signature['fm_description'];
+			}
+			$disableRuler = false;
+			$signature = $boSignatures->getSignature(($presetSig ? $presetSig : $sessionData['signatureID']));
+			if ((isset($this->bocompose->preferencesArray['disableRulerForSignatureSeparation']) && 
+				$this->bocompose->preferencesArray['disableRulerForSignatureSeparation']) || 
+				empty($signature->fm_signature) || trim($this->bocompose->convertHTMLToText($signature->fm_signature)) =='')
+			{
+				$disableRuler = true;
+			}
+			$insertSigOnTop = false;
+			if (isset($this->bocompose->preferencesArray['insertSignatureAtTopOfMessage']) && $this->bocompose->preferencesArray['insertSignatureAtTopOfMessage'])
+			{
+				$insertSigOnTop = true;
+				if($sessionData['mimeType'] == 'html') {
+					$before = ($disableRuler ?'&nbsp;<br>':'&nbsp;<br><hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">');
+					$inbetween = '&nbsp;<br>';
+				} else {
+					$before = ($disableRuler ?"\r\n\r\n":"\r\n\r\n-- \r\n");
+					$inbetween = "\r\n";
+				}
+				$sigText = bofelamimail::merge($signature->fm_signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
+				$sessionData['body'] = $before.($sessionData['mimeType'] == 'html'?$sigText:$this->bocompose->convertHTMLToText($sigText)).$inbetween.$sessionData['body'];
+			}
+
+			// prepare body
 			if($sessionData['mimeType'] == 'html') {
 				$mode = 'simple';
 				#if (isset($GLOBALS['egw_info']['server']['enabled_spellcheck'])) $mode = 'egw_simple_spellcheck';
@@ -426,25 +472,6 @@
 				$ishtml=0;
 			}
 
-			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
-			$boSignatures = new felamimail_bosignatures();
-			$signatures = $boSignatures->getListOfSignatures();
-			if (empty($sessionData['signatureID'])) {
-				if ($signatureData = $boSignatures->getDefaultSignature()) {
-					if (is_array($signatureData)) {
-						$sessionData['signatureID'] = $signatureData['signatureid'];
-					} else {
-						$sessionData['signatureID'] =$signatureData;
-					}
-				}
-			}
-
-			$selectSignatures = array(
-				'-2' => lang('no signature')
-			);
-			foreach($signatures as $signature) {
-				$selectSignatures[$signature['fm_signatureid']] = lang('Signature').': '.$signature['fm_description'];
-			}
 
 			$bostationery = new felamimail_bostationery();
 			$selectStationeries = array(
@@ -457,7 +484,8 @@
 				$showStationaries = true;
 				$selectStationeries += $validStationaries;
 			}
-			$selectBoxSignature  = html::select('signatureID', ($presetSig ? $presetSig : $sessionData['signatureID']), $selectSignatures, true, "style='width: 35%;' onchange='fm_compose_changeInputType(this)'");
+			// if ID of signature Select Box is set, we allow for changing the sig onChange of the signatueSelect
+			$selectBoxSignature  = html::select('signatureID', ($presetSig ? $presetSig : $sessionData['signatureID']), $selectSignatures, true, ($insertSigOnTop?"id='signatureID'":"")." style='width: 35%;' onchange='fm_compose_changeInputType(this)'");
 			$selectBoxStationery = html::select('stationeryID', ($presetStationery ? $presetStationery : 0), $selectStationeries, true, "style='width: 35%;'");
 			$this->t->set_var("select_signature", $selectBoxSignature);
 			$this->t->set_var("select_stationery", ($showStationaries ? $selectBoxStationery:''));
