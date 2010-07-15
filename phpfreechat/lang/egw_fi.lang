@@ -1,4 +1,8 @@
+are users allowed to change their nicknames in phpfreechat and are allowed to connect multiple times	admin	fi	Sallitaanko käyttäjien vaihtaa Chatin käyttäjänimeä ja kirjautua sisään samanaikaisesti usealta eri selaimelta?
 egroupware chat	phpfreechat	fi	Chat
+frozen nick	admin	fi	Pakoitettu Chatin käyttäjänimi
+global categories	phpfreechat	fi	Yleiset kategoriat
 phpfreechat	common	fi	Chat
+phpfreechat configuration	admin	fi	Konfigurointi
 phpfreechat integration into egroupware	phpfreechat	fi	Chatin integraatio EGroupwareen
-the chat opens in a new window.	phpfreechat	fi	Chatti avaa uuden ikkunan
+the chat opens in a new window.	phpfreechat	fi	Chatti avautuu uudessa ikkunassa
