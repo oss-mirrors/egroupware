@@ -167,11 +167,11 @@ class uipolls
 		$func = $action.$type;
 		if(method_exists($this,$func))
 		{
-			call_user_method($func,$this);
+			call_user_func(array($this,$func));
 		}
 		elseif(method_exists($this,$action))
 		{
-			call_user_method($action,$this);
+			call_user_func(array($this,$action));
 		}
 		else
 		{
