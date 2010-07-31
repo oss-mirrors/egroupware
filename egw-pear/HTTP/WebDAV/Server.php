@@ -171,7 +171,11 @@ class HTTP_WebDAV_Server
         }
         // we cant use SCRIPT_NAME, because it fails, if there's any url rewriting
         //error_log("pathinfo:\n". $this->_urldecode($this->_SERVER['REQUEST_URI']).":\n".$this->_SERVER['PATH_INFO']);
-        $uri .= substr($this->_urldecode($this->_SERVER['REQUEST_URI']),0,-strlen($this->_SERVER["PATH_INFO"]));
+        $uri .= $this->_urldecode($this->_SERVER['REQUEST_URI']);
+        if (!empty($this->_SERVER["PATH_INFO"]))
+        {
+	        $uri = substr($uri,0,-strlen($this->_SERVER["PATH_INFO"]));
+        }
 
         $path_info = empty($this->_SERVER["PATH_INFO"]) ? "/" : $this->_SERVER["PATH_INFO"];
 
