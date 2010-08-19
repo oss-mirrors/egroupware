@@ -237,7 +237,7 @@ class emailadmin_ui extends emailadmin_bo
 				'vmailmgr'	=>lang('username@domainname (Virtual MAIL ManaGeR)'),
 				'admin'		=>lang('Username/Password defined by admin'),
 		);
-		if (stripos(constant($serverclass.'::CAPABILITIES'),'logintypeemail') !== false)
+		if (!empty($serverclass) && stripos(constant($serverclass.'::CAPABILITIES'),'logintypeemail') !== false)
 		{
 			$returnval['email']	= lang('use Users eMail-Address (as seen in Useraccount)');
 		}
