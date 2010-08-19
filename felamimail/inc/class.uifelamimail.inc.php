@@ -527,7 +527,7 @@
 			$refreshURL = $GLOBALS['egw']->link('/index.php',$linkData);
 			$this->t->set_var('reloadView',$refreshURL);
 			// display a warning if vacation notice is active
-			if(is_a($imapServer,'cyrusimap') && $imapServer->enableSieve) {
+			if(is_a($imapServer,'defaultimap') && $imapServer->enableSieve) {
 				$imapServer->retrieveRules($imapServer->scriptName);
 				$vacation = $imapServer->getVacation($imapServer->scriptName);
 				//_debug_array($vacation);
