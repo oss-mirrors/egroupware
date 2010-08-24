@@ -124,17 +124,39 @@
 			$query['col_filter'][] = '(bm_access = \'public\' OR (bm_owner = ' . (int)$GLOBALS['egw_info']['user']['account_id'] . 
 				' OR bm_owner IN (' . implode(',', $query['grants']) . ')))';
 		
-			// Split out timestamps into sortable seperate columns
-			$extra_cols = array(
-				"replace(substring(substring_index(bm_info, ',', 1), length(substring_index(bm_info, ',',0)) + 1), ',', '') AS added",
-				"replace(substring(substring_index(bm_info, ',', 2), length(substring_index(bm_info, ',', 2 - 1)) + 1), ',', '') AS visited",
-				"replace(substring(substring_index(bm_info, ',', 3), length(substring_index(bm_info, ',', 3 - 1)) + 1), ',', '') AS updated"
-			);
+			// Split out timestamps into sortable seperate columns mysql needs different treatment than postgres, if neither do it with php later on
+			if ($this->db->Type == 'mysql')
+			{
+				$extra_cols = array(
+					"replace(substring(substring_index(bm_info, ',', 1), length(substring_index(bm_info, ',',0)) + 1), ',', '') AS added",
+					"replace(substring(substring_index(bm_info, ',', 2), length(substring_index(bm_info, ',', 2 - 1)) + 1), ',', '') AS visited",
+					"replace(substring(substring_index(bm_info, ',', 3), length(substring_index(bm_info, ',', 3 - 1)) + 1), ',', '') AS updated"
+				);
+			}
+			elseif ($this->db->Type == 'pgsql')
+			{
+				$extra_cols = array(
+					"split_part(bm_info,',',1) AS added",
+					"split_part(bm_info,',',2) AS visited",
+					"split_part(bm_info,',',3) AS updated"
+				);
+			}
 			$rows = $this->search($criteria,false,$query['order']?$query['order'].' '.$query['sort']:'',$extra_cols,
 				$wildcard,false,$op,$query['num_rows']?array((int)$query['start'],$query['num_rows']):(int)$query['start'],
 				$query['col_filter'],$join,$need_full_no_count);
 
 			if (!$rows) $rows = array();    // otherwise false returned from search would be returned as array(false)
+
+			if (!isset($extra_cols)) // we need to create added, visited and updated from bm_info
+			{
+				foreach($rows as $key => $row)
+				{
+					list($added,$visited,$updated) = explode(',',$row['info']);
+					$rows[$key]['added'] = $added;
+					$rows[$key]['visited'] = $visited;
+					$rows[$key]['updated'] = $updated;
+				}
+			}
 
 			$selectcols = $query['selectcols'] ? explode(',',$query['selectcols']) : array();
 			if ($rows && $this->customfields && (!$selectcols || in_array('customfields',$selectcols)))
@@ -156,9 +178,9 @@
 						$rows[$id2keys[$id]] = array_merge($rows[$id2keys[$id]],$data);
 					}
 				}
-                        }
+			}
 
 			return $this->total;
-                }
+		}
 	}
 ?>
