@@ -3,12 +3,12 @@
 %s bookmarks selected for export	bookmarks	fi	%1 suosikkia valittu vientiin
 (comma separate multiple addresses)	bookmarks	fi	(erota osoitteet toisistaan pilkuilla)
 (selecting a category includes all sub-categories)	bookmarks	fi	(valitsemalla kategorian valitset myös alikategoriat)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	fi	<b>Huomaa:</b> Toimii vain Netscapen suosikki-tiedoston kanssa
 actions	bookmarks	fi	Toimenpiteet
 added	bookmarks	fi	Lisätty
 all bookmarks	bookmarks	fi	Kaikki suosikit
 and	bookmarks	fi	Ja
 append this message to mailed bookmarks	bookmarks	fi	Lisää tämä teksti viestinä lähettyihin suosikkeihin
+apply the action on the whole query, not only the shown bookmarks!!!	bookmarks	fi	Toimenpide vaikuttaa kaikkiin merkintöihin, ei vain näkyvissä oleviin!!
 ascending	bookmarks	fi	Nouseva
 book marks	common	fi	Suosikit
 bookmark - %1	bookmarks	fi	Suosikki - %1
