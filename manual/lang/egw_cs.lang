@@ -7,7 +7,7 @@ index	manual	cs	Index
 install or update the manual-pages	admin	cs	instalovat nebo aktualizovat stránky manuálu
 manual	common	cs	Manuál / Nápověda
 page(s) %1 not found !!!	manual	cs	Strana(y) %1 nenalezena(y) !!!
-remote egroupware url for the manual to use, empty for a local manual, default	admin	cs	URL vzdáleného eGroupWare, které má manuál používat. Pro použití lokálního manuálu ponechte prázdné (výchozí nastavení)
+remote egroupware url for the manual to use, empty for a local manual, default	admin	cs	URL vzdáleného eGroupWaru, které má manuál používat. Pro použití lokálního manuálu ponechte prázdné (výchozí nastavení)
 search for	manual	cs	Hledat (co)
 starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	cs	Začínám importovat od %1. Proces může trvat několik minut (zejména pokud ho spouštíte poprvé)...
 the search returned no result!	manual	cs	Hledání nevrátilo žádné výsledky!

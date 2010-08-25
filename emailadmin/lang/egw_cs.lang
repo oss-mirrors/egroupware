@@ -1,3 +1,4 @@
+%1 entries deleted.	emailadmin	cs	%1 záznamů smazáno.
 account '%1' not found !!!	emailadmin	cs	Účet '%1' nebyl nalezen !!!
 active templates	emailadmin	cs	Aktivní šablony
 add new email address:	emailadmin	cs	Přidat novou e-mailovou adresu:
@@ -42,8 +43,11 @@ enable sieve	emailadmin	cs	Povolit Sieve
 encrypted connection	emailadmin	cs	Šifrované připojení
 encryption settings	emailadmin	cs	Nastavení šifrování
 enter your default mail domain (from: user@domain)	emailadmin	cs	Zadejte Vaši výchozí poštovní doménu (z: uživatel@doména)
+entry saved	emailadmin	cs	Záznam uložen
 error connecting to imap server. %s : %s.	emailadmin	cs	Chyba spojení na IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	cs	Chyba spojení na IMAP server: [%s] %s.
+error deleting entry!	emailadmin	cs	Při mazání záznamu došlo k chybě!
+error saving the entry!!!	emailadmin	cs	Při ukládání záznamu došlo k chybě!
 filtered by account	emailadmin	cs	filtrováno podle účtu
 filtered by group	emailadmin	cs	filtrováno podle skupiny
 forward also to	emailadmin	cs	Přeposlat také na
@@ -116,6 +120,7 @@ standard	emailadmin	cs	Standardní
 standard imap server	emailadmin	cs	Standardní IMAP server
 standard pop3 server	emailadmin	cs	Standardní POP3 server
 standard smtp-server	emailadmin	cs	Standardní SMTP server
+starts with	emailadmin	cs	začíná s
 stationery	emailadmin	cs	Dopisní papíry
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	cs	Vypadá to, že IMAP server nepodporuje vybranou autentikační metodu. Zkontaktujte prosím Vašeho systémového administrátora.
 this php has no imap support compiled in!!	emailadmin	cs	Toto PHP nemá zkompilovanou podporu IMAPu.
@@ -131,6 +136,7 @@ use predefined username and password defined below	emailadmin	cs	Použít předd
 use smtp auth	emailadmin	cs	Použít SMTP autentikaci
 use tls authentication	emailadmin	cs	Použít TLS autentikaci
 use tls encryption	emailadmin	cs	Použít TLS šifrování
+use users email-address (as seen in useraccount)	emailadmin	cs	použít e-mailové adresy uživatelů (jak jsou definovány v uživatelském účtu)
 user can edit forwarding address	emailadmin	cs	Uživatel smí editovat adresu pro přeposílání
 username (standard)	emailadmin	cs	uživatelské jméno (standardní)
 username/password defined by admin	emailadmin	cs	Uživatelské jméno/Heslo definované administrátorem
