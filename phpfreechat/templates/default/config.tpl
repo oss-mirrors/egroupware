@@ -25,6 +25,13 @@
    <tr class="row_off">
 	<td colspan="2">&nbsp;{lang_are_users_allowed_to_change_their_nicknames_in_phpfreechat_AND_are_allowed_to_connect_multiple_times}</td>
    </tr>
+   <tr class="row_on">
+    <td>&nbsp;{lang_nick_length}:</td>
+    <td><input name="newsettings[max_nick_len]" value="{value_max_nick_len}" size="3" /></td>
+   </tr>
+   <tr class="row_off">
+	<td colspan="2">&nbsp;{lang_maximum_nickname_length}</td>
+   </tr>
 <!-- END body -->
 <!-- BEGIN footer -->
   <tr valign="bottom" style="height: 30px;">

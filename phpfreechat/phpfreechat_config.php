@@ -137,6 +137,8 @@ if ($GLOBALS['egw_info']['user']['account_lid'] != 'anonymous')
 	*/
 	$params["frozen_nick"] = $frozen_nick;
 
+	// Maximum nick length
+	$params['max_nick_len'] = $config['max_nick_len'];
 }
 // if you use NFS you may want to use, since logging is enabled by default
 $params['skip_proxies'] = array('log');
@@ -147,6 +149,7 @@ $params["dyn_params"] = array(
 	"channels",
 	"nick",
 	"frozen_nick",
+	'max_nick_len',
 	'language',
 	"nickmeta",
 	"data_public_path",
