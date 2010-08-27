@@ -30,7 +30,7 @@
     <td><input name="newsettings[max_nick_len]" value="{value_max_nick_len}" size="3" /></td>
    </tr>
    <tr class="row_off">
-	<td colspan="2">&nbsp;{lang_maximum_nickname_length}</td>
+	<td colspan="2">&nbsp;{lang_maximum_nickname_length_(if_not_set_the_length_of_64_is_used._as_it_is_the_maximum_lenght_of_usernames_within_egroupware)}</td>
    </tr>
 <!-- END body -->
 <!-- BEGIN footer -->
