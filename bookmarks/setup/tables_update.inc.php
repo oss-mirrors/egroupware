@@ -1,82 +1,76 @@
 <?php
-  /**************************************************************************\
-  * eGroupWare - Setup                                                       *
-  * http://www.egroupware.org                                                *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+/**
+ * EGroupware - Bookmarks
+ *
+ * @link http://www.egroupware.org
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @package admin
+ * @subpackage setup
+ * @version $Id$
+ */
 
-  /**************************************************************************\
-  * This file should be generated for you. It should never be edited by hand *
-  \**************************************************************************/
+function bookmarks_upgrade0_8_1()
+{
+	$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_owner', array('type' => 'int', 'precision' => 4,'nullable' => True));
+	$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_category', array('type' => 'int', 'precision' => 4,'nullable' => True));
+	$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_subcategory', array('type' => 'int', 'precision' => 4,'nullable' => True));
+	$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_rating', array('type' => 'int', 'precision' => 4,'nullable' => True));
+	$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_visits', array('type' => 'int', 'precision' => 4,'nullable' => True));
 
-  /* $Id$ */
+	return $GLOBALS['setup_info']['bookmarks']['currentver'] = '0.8.2';
+}
 
-	$test[] = '0.8.1';
-	function bookmarks_upgrade0_8_1()
-	{
-		$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_owner', array('type' => 'int', 'precision' => 4,'nullable' => True));
-		$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_category', array('type' => 'int', 'precision' => 4,'nullable' => True));
-		$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_subcategory', array('type' => 'int', 'precision' => 4,'nullable' => True));
-		$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_rating', array('type' => 'int', 'precision' => 4,'nullable' => True));
-		$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_visits', array('type' => 'int', 'precision' => 4,'nullable' => True));
 
-		return $GLOBALS['setup_info']['bookmarks']['currentver'] = '0.8.2';
-	}
+function bookmarks_upgrade0_8_2()
+{
+	$GLOBALS['egw_setup']->oProc->query("update phpgw_bookmarks SET bm_category = bm_subcategory WHERE bm_subcategory != 0");
 
-	$test[] = '0.8.2';
-	function bookmarks_upgrade0_8_2()
-	{
-		$GLOBALS['egw_setup']->oProc->query("update phpgw_bookmarks SET bm_category = bm_subcategory WHERE bm_subcategory != 0");
+	$newtbldef = array(
+		'fd' => array(
+			'bm_id' => array('type' => 'auto','nullable' => False),
+			'bm_owner' => array('type' => 'int', 'precision' => 4,'nullable' => True),
+			'bm_access' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
+			'bm_url' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
+			'bm_name' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
+			'bm_desc' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
+			'bm_keywords' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
+			'bm_category' => array('type' => 'int', 'precision' => 4,'nullable' => True),
+			'bm_rating' => array('type' => 'int', 'precision' => 4,'nullable' => True),
+			'bm_info' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
+			'bm_visits' => array('type' => 'int', 'precision' => 4,'nullable' => True)
+		),
+		'pk' => array('bm_id'),
+		'fk' => array(),
+		'ix' => array(),
+		'uc' => array()
+	);
+	$GLOBALS['egw_setup']->oProc->DropColumn('phpgw_bookmarks',$newtbldef,'bm_subcategory');
 
-		$newtbldef = array(
-			'fd' => array(
-				'bm_id' => array('type' => 'auto','nullable' => False),
-				'bm_owner' => array('type' => 'int', 'precision' => 4,'nullable' => True),
-				'bm_access' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
-				'bm_url' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
-				'bm_name' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
-				'bm_desc' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
-				'bm_keywords' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
-				'bm_category' => array('type' => 'int', 'precision' => 4,'nullable' => True),
-				'bm_rating' => array('type' => 'int', 'precision' => 4,'nullable' => True),
-				'bm_info' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
-				'bm_visits' => array('type' => 'int', 'precision' => 4,'nullable' => True)
-			),
-			'pk' => array('bm_id'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		);
-		$GLOBALS['egw_setup']->oProc->DropColumn('phpgw_bookmarks',$newtbldef,'bm_subcategory');
+	return $setup_info['bookmarks']['currentver'] = '0.9.1';
+}
 
-		return $setup_info['bookmarks']['currentver'] = '0.9.1';
-	}
 
-	$test[] = '0.9.1';
-	function bookmarks_upgrade0_9_1()
-	{
-		$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_desc',array('type' => 'text', 'nullable' => True));
+function bookmarks_upgrade0_9_1()
+{
+	$GLOBALS['egw_setup']->oProc->AlterColumn('phpgw_bookmarks','bm_desc',array('type' => 'text', 'nullable' => True));
 
-		return $setup_info['bookmarks']['currentver'] = '0.9.2';
-	}
+	return $setup_info['bookmarks']['currentver'] = '0.9.2';
+}
 
-	$test[] = '0.9.2';
-	function bookmarks_upgrade0_9_2()
-	{
-		return $setup_info['bookmarks']['currentver'] = '1.0.0';
-	}
 
-	$test[] = '1.0.0';
-	function bookmarks_upgrade1_0_0()
-	{
-		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_bookmarks','egw_bookmarks');
+function bookmarks_upgrade0_9_2()
+{
+	return $setup_info['bookmarks']['currentver'] = '1.0.0';
+}
 
-		return $setup_info['bookmarks']['currentver'] = '1.2';
-	}
+
+function bookmarks_upgrade1_0_0()
+{
+	$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_bookmarks','egw_bookmarks');
+
+	return $setup_info['bookmarks']['currentver'] = '1.2';
+}
+
 
 function bookmarks_upgrade1_2()
 {
@@ -115,3 +109,8 @@ function bookmarks_upgrade1_2()
 	return $GLOBALS['setup_info']['bookmarks']['currentver'] = '1.7.001';
 }
 
+
+function bookmarks_upgrade1_7_001()
+{
+	return $GLOBALS['setup_info']['bookmarks']['currentver'] = '1.8';
+}

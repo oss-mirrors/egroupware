@@ -6,8 +6,6 @@
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @package syncml
  * @subpackage setup
- * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @copyright (c) 2007-9 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
  * @version $Id$
  */
 
@@ -154,13 +152,7 @@ function syncml_upgrade1_6_001jl()
 	return $GLOBALS['setup_info']['syncml']['currentver'] = '1.6.500jl';
 }
 
-/**
- * Extend cal table for RECURRENC-ID
-
 function syncml_upgrade1_6_500jl()
 {
-	$GLOBALS['egw_setup']->oProc->AddColumn('egw_cal','cal_recurrence_id',array('type' => 'int', 'precision' => 8));
-
-	return $GLOBALS['setup_info']['syncml']['currentver'] = '1.6.500jl';
+	return $GLOBALS['setup_info']['syncml']['currentver'] = '1.8';
 }
-*/

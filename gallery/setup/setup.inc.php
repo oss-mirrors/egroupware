@@ -1,6 +1,6 @@
 <?php
 /**
- * eGroupWare Gallery2 integration
+ * EGroupware Gallery2 integration
  *
  * @link http://www.egroupware.org
  * @link http://gallery.sourceforge.net/
@@ -14,7 +14,7 @@
 /* Basic information about this app */
 $setup_info['gallery']['name']      = 'gallery';
 $setup_info['gallery']['title']     = 'Gallery';
-$setup_info['gallery']['version']   = '1.6';
+$setup_info['gallery']['version']   = '1.8';
 $setup_info['gallery']['app_order'] = 4;
 $setup_info['gallery']['enable']    = 1;
 
@@ -40,5 +40,5 @@ $setup_info['gallery']['hooks']['admin']			= 'gallery.g2_integration.menus';
 /* Dependencies for this app to work */
 $setup_info['gallery']['depends'][] = array(
 	'appname' => 'phpgwapi',
-	'versions' => Array('1.4','1.5','1.6','1.7')
+	'versions' => Array('1.7','1.8','1.9')
 );

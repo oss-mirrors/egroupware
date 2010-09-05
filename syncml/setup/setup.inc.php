@@ -6,15 +6,13 @@
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @package syncml
  * @subpackage setup
- * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @copyright (c) 2007-9 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
  * @version $Id$
  */
 
 /* Basic information about this app */
 $setup_info['syncml']['name']      = 'syncml';
 $setup_info['syncml']['title']     = 'SyncML';
-$setup_info['syncml']['version']   = '1.6.500jl';
+$setup_info['syncml']['version']   = '1.8';
 $setup_info['syncml']['enable']    = 2;
 $setup_info['syncml']['app_order'] = 99;
 
@@ -47,7 +45,7 @@ $setup_info['syncml']['hooks']['settings'] = 'syncml_hooks::settings';
 /* Dependencies for this app to work */
 $setup_info['syncml']['depends'][] = array(
 	 'appname'  => 'phpgwapi',
-	 'versions' => Array('1.4','1.5','1.6','1.7')
+	 'versions' => Array('1.7','1.8','1.9')
 );
 // installation checks for SyncML
 $setup_info['syncml']['check_install'] = array(

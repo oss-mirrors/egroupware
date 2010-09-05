@@ -1,6 +1,6 @@
 <?php
 /**
- * eGroupware - Wiki
+ * EGroupware - Wiki
  *
  * @link http://www.egroupware.org
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
@@ -259,4 +259,10 @@ function wiki_upgrade1_4()
 function wiki_upgrade1_5_001()
 {
 	return $GLOBALS['setup_info']['wiki']['currentver'] = '1.6';
+}
+
+
+function wiki_upgrade1_6()
+{
+	return $GLOBALS['setup_info']['wiki']['currentver'] = '1.8';
 }

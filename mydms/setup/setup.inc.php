@@ -51,5 +51,5 @@
 	/* Dependencies for this app to work */
 	$setup_info['mydms']['depends'][] = array(
 		 'appname'  => 'phpgwapi',
-		 'versions' => Array('1.4','1.5','1.6','1.7')
+		 'versions' => Array('1.4','1.5','1.6','1.7','1.8','1.9')
 	);

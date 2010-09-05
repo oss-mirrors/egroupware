@@ -1,6 +1,6 @@
 <?php
 /**
- * eGroupware - User manual
+ * EGroupware - User manual
  *
  * @link http://www.egroupware.org
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
@@ -13,7 +13,7 @@
 /* Basic information about this app */
 $setup_info['manual']['name']      = 'manual';
 $setup_info['manual']['title']     = 'User Manual';
-$setup_info['manual']['version']   = '1.6';
+$setup_info['manual']['version']   = '1.8';
 $setup_info['manual']['app_order'] = 5;
 $setup_info['manual']['enable']    = 4;	// popup
 
@@ -32,9 +32,9 @@ $setup_info['manual']['hooks']['config_validate'] = 'manual.uimanualadmin.config
 /* Dependencies for this app to work */
 $setup_info['manual']['depends'][] = array(
 	 'appname' => 'phpgwapi',
-	 'versions' => Array('1.4','1.5','1.6','1.7')
+	 'versions' => Array('1.7','1.8','1.9')
 );
 $setup_info['manual']['depends'][] = array(
 	 'appname' => 'wiki',
-	 'versions' => Array('1.4','1.5','1.6','1.7')
+	 'versions' => Array('1.7','1.8','1.9')
 );

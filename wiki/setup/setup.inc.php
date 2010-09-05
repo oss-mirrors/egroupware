@@ -1,6 +1,6 @@
 <?php
 /**
- * eGroupware - Wiki
+ * EGroupware - Wiki
  *
  * @link http://www.egroupware.org
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
@@ -12,7 +12,7 @@
 
 $setup_info['wiki']['name']      = 'wiki';
 $setup_info['wiki']['title']     = 'Wiki';
-$setup_info['wiki']['version']   = '1.6';
+$setup_info['wiki']['version']   = '1.8';
 $setup_info['wiki']['app_order'] = 11;
 $setup_info['wiki']['enable']    = 1;
 
@@ -41,10 +41,10 @@ $setup_info['wiki']['hooks']['search_link'] = 'wiki_hooks::search_link';
 $setup_info['wiki']['depends'][] = array
 (
 	'appname'  => 'phpgwapi',
-	'versions' => Array('1.4','1.5','1.6','1.7')
+	'versions' => Array('1.7','1.8','1.9')
 );
 $setup_info['wiki']['depends'][] = array
 (
 	'appname'  => 'etemplate',
-	'versions' => Array('1.4','1.5','1.6','1.7')
+	'versions' => Array('1.7','1.8','1.9')
 );
