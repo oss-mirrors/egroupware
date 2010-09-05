@@ -106,11 +106,19 @@ function bookmarks_upgrade1_2()
 		'precision' => '255'
 	));
 
-	return $GLOBALS['setup_info']['bookmarks']['currentver'] = '1.7.001';
+	return $GLOBALS['setup_info']['bookmarks']['currentver'] = '1.9.001';	// was 1.7.001
 }
 
 
 function bookmarks_upgrade1_7_001()
 {
-	return $GLOBALS['setup_info']['bookmarks']['currentver'] = '1.8';
+	return $GLOBALS['setup_info']['bookmarks']['currentver'] = '1.9.001';
+}
+
+
+function bookmarks_upgrade1_8()
+{
+	bookmarks_upgrade1_2();
+
+	return $GLOBALS['setup_info']['bookmarks']['currentver'] = '1.9.001';
 }
