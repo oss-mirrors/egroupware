@@ -176,7 +176,7 @@ class wiki_ui extends wiki_bo
 		if ($content['is_html'] || $this->AutoconvertPages == 'never' || !html::htmlarea_availible())
 		{
 			$this->tpl->disable_cells('action[convert]');
-			$content['upload_dir'] = $this->upload_dir;
+			$content['upload_dir'] = $GLOBALS['egw_info']['user']['preferences']['wiki']['upload_dir'];
 			$content['rtfEditorFeatures'] = $GLOBALS['egw_info']['user']['preferences']['wiki']['rtfEditorFeatures'];
 		}
 		$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['wiki']['title'] . ' - ' .

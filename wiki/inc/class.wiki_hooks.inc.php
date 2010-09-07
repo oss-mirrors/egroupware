@@ -22,7 +22,7 @@ class wiki_hooks
 	 */
 	static public function settings($hook_data)
 	{
-		return array(
+		$settings = array(
 			'rtfEditorFeatures' => array(
 				'type'   => 'select',
 				'label'  => 'Features of the editor?',
@@ -38,6 +38,19 @@ class wiki_hooks
 				'default'=> 'extended',
 			),
 		);
+		if ($GLOBALS['egw_info']['user']['apps']['filemanager'])
+		{
+			$settings['upload_dir'] = array(
+				'type'  => 'input',
+				'label' => 'VFS upload directory',
+				'name'  => 'upload_dir',
+				'size'  => 50,
+				'help'  => 'Start directory for image browser of rich text editor in EGroupware VFS (filemanager).',
+				'xmlrpc' => True,
+				'admin'  => False,
+			);
+		}
+		return $settings;
 	}
 
 	/**

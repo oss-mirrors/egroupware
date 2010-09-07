@@ -34,11 +34,4 @@ function final_validation($settings)
 			}
 		}
 	}
-	if ($settings['upload_dir'])
-	{
-		if (!is_dir($_SERVER['DOCUMENT_ROOT'].$settings['upload_dir']) || !file_exists($_SERVER['DOCUMENT_ROOT'].$settings['upload_dir'].'/.'))
-		{
-			$GLOBALS['config_error'] = 'Directory does not exist, is not readable by the webserver or is not relative to the document root!';
-		}
-	}
 }

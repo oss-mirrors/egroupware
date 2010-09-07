@@ -42,7 +42,6 @@ require_once(EGW_INCLUDE_ROOT.'/wiki/lib/category.php');
 
 class wiki_bo extends wiki_so
 {
-	var $upload_dir;
 	var $config;
 
 	function __construct($wiki_id=0)
@@ -68,7 +67,6 @@ class wiki_bo extends wiki_so
 		$EnableWikiLinks = isset($this->config['Enable_Wiki_Links']) ? $this->config['Enable_Wiki_Links'] == 'True' : true;
 
 		$this->ExpireLen = $this->config['ExpireLen'];
-		$this->upload_dir = $this->config['upload_dir'];
 
 		global $Charset,$UserName;
 		$Charset = $GLOBALS['egw']->translation->charset();
