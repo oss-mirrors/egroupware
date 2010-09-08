@@ -30,5 +30,5 @@ $setup_info['usage']['hooks'] = array();
 /* Dependencies for this app to work */
 $setup_info['usage']['depends'][] = array(
 	'appname' => 'phpgwapi',
-	'versions' => Array('1.7')
+	'versions' => Array('1.7','1.8','1.9')
 );
