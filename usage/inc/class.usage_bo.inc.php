@@ -241,7 +241,7 @@ class usage_bo extends so_sql
 				}
 				else
 				{
-					$content .= lang('Total sum').': '.$stats[$name.'2'];
+					$content .= lang('Total sum').': '.number_format($stats[$name.'2'],0,'',' ');
 				}
 				$content .= "\t\t</td>\n";
 			}
@@ -256,6 +256,15 @@ class usage_bo extends so_sql
 
 	/**
 	 * Calculate statistic
+	 *
+	 * @todo App statistic like:
+	 * SELECT usage_app_name, count( *  ) , sum( usage_app_users ) , sum( usage_app_records )
+	 * FROM egw_usage_apps
+	 * JOIN egw_usage
+	 * USING ( usage_id )
+	 * WHERE usage_submitted >= '2010-03-03'
+	 * GROUP BY usage_app_name
+	 * ORDER BY sum( usage_app_users ) DESC
 	 *
 	 * @return array
 	 */
