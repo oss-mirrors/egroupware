@@ -60,7 +60,7 @@ $_services['replace'] = array(
  *
  * @return array  An array of GUIDs for all events the user can access.
  */
-function _egwcalendarsync_list($filter='')
+function _egwcalendarsync_list($filter='',$sql_filter=null)
 {
 	Horde::logMessage("SymcML: egwcalendarsync list filter: $filter",
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -70,12 +70,8 @@ function _egwcalendarsync_list($filter='')
 	$vcal = new Horde_iCalendar;
 	$boCalendar = new calendar_bo();
 
-	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_filter']))
-	{
-		$syncCriteria = $GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_filter'];
-	} else {
-		$syncCriteria = 'all';
-	}
+	$syncCriteria = $GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_filter'];
+	if (empty($syncCriteria)) $syncCriteria = 'all';
 
 	$calendarOwner = $GLOBALS['egw_info']['user']['account_id'];
 
@@ -153,17 +149,18 @@ function _egwcalendarsync_list($filter='')
 	(
 		'start'		=> date('Ymd', $startDate),
 		'end'		=> date('Ymd', $endDate),
-		'filter'	=> $syncCriteria,
+		'filter'	=> $sql_filter && strpos($sql_filter,'cal_deleted') !== false ? 'deleted' : $syncCriteria,
 		'users'		=> $calendarOwner,
 		'daywise'	=> false,
 		'enum_recuring' => false,
 		'enum_groups' => true,
 		'cols'		=> array('egw_cal.cal_id', 'cal_start',	'recur_type'),
-		'order'     => 'cal_id,cal_start ASC'
+		'order'     => 'cal_id,cal_start ASC',
 	);
-
-	$events =& $boCalendar->search($searchFilter);
-
+$start = microtime(true);
+	$events =& $boCalendar->search($searchFilter,$sql_filter);
+//error_log(__METHOD__."('$filter','$sql_filter') bocalendar->search(".array2string($searchFilter).",'$sql_filter') took ".sprintf('%5.3lf s',microtime(true)-$start).' to return '.count($events).' events');
+	
 	$id = false;
 	foreach ($events as $event)
 	{
@@ -184,7 +181,8 @@ function _egwcalendarsync_list($filter='')
 	}
 	Horde::logMessage('SymcML: egwcalendarsync list found: ' . count($guids),
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
-	return $guids;
+error_log(__METHOD__."('$filter','$sql_filter') took ".sprintf('%5.3lf s',microtime(true)-$start).' to return '.count($guids));//.' events = '.array2string($guids));
+		return $guids;
 }
 
 /**
@@ -230,6 +228,7 @@ function &_egwcalendarsync_listPseudoExceptions($eventGUIDs, $tzid=null)
  */
 function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 {
+error_log(__METHOD__."('$action',$timestamp,'$type','$type')");
 	// Horde::logMessage("SymcML: egwcalendarsync listBy action: $action timestamp: $timestamp filter: $filter",
 	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state	=& $_SESSION['SyncML.state'];
@@ -248,35 +247,75 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 		}
 	}
 
-	$allChangedItems = $state->getHistory('calendar', $action, $timestamp);
+$start = $all_start = microtime(true);
+/*	$allChangedItems = $state->getHistory('calendar', $action, $timestamp);
+error_log('count(allChangedItems)='.count($allChangedItems).sprintf(' took %5.3lf s',microtime(true)-$start));
+$start = microtime(true);
 	$allChangedPseudoExceptions =& _egwcalendarsync_listPseudoExceptions($allChangedItems, $tzid);
+error_log('count(allChangedPseudoExceptions)='.count($allChangedPseudoExceptions).sprintf(' took %5.3lf s',microtime(true)-$start));
 	$allChangedItems = array_merge($allChangedItems, $allChangedPseudoExceptions);
 	#Horde::logMessage('SymcML: egwcalendarsync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+$start = microtime(true);
 	$allReadAbleItems = (array)_egwcalendarsync_list($filter);
+error_log('count(allReadableItems)='.count($allReadAbleItems).sprintf(' took %5.3lf s',microtime(true)-$start));*/
 	#Horde::logMessage('SymcML: egwcalendarsync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	$allClientItems = (array)$state->getClientItems($type);
+	$allClientItems = $state->getClientItems($type);
+	if (!$allClientItems) $allClientItems = array();	// maybe we can change getClientItems to return NULL or array()
+error_log('count(allClientItems)='.count($allClientItems).sprintf(' took %5.3lf s',microtime(true)-$start));//.' = '.array2string($allClientItems));
 	#Horde::logMessage('SymcML: egwcalendarsync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	switch ($action) {
 		case 'delete' :
+			$sql_filter = 'cal_deleted'.($timestamp ? ' >= '.(int)$timestamp : ' IS NOT NULL');
+			break;
+		case 'add' :
+			if ($timestamp) $sql_filter = 'cal_created >= '.(int)$timestamp;
+			break;
+		case 'modify' :
+			if ($timestamp)
+			{
+				$sql_filter = '(cal_modified >= '.(int)$timestamp.' OR '.
+					'(SELECT MAX(cal_user_modified) FROM egw_cal_user WHERE egw_cal_user.cal_id=cal_id) >= '.(int)$timestamp.')';
+			}
+			break;
+	}
+	$allChangedItems = (array)_egwcalendarsync_list($filter,$sql_filter);
+$start = microtime(true);
+	$allChangedPseudoExceptions =& _egwcalendarsync_listPseudoExceptions($allChangedItems, $tzid);
+error_log('count(allChangedPseudoExceptions)='.count($allChangedPseudoExceptions).sprintf(' took %5.3lf s',microtime(true)-$start));//.' = '.array2string($allChangedPseudoExceptions));
+	$allChangedItems = array_merge($allChangedItems, $allChangedPseudoExceptions);
+
+	switch ($action) {
+		case 'delete' :
+			// no longer readable items, need to be deleted on client, even if not delete on server
+			$allReadAbleItems = (array)_egwcalendarsync_list($filter);	// no sql_filter --> all readables
 			// filters may have changed, so we need to calculate which
 			// items are to delete from client because they are not longer in the list.
-			return array_unique($allChangedItems + array_diff($allClientItems, $allReadAbleItems));
+			$ret = array_unique($allChangedItems + array_diff($allClientItems, $allReadAbleItems));
+			break;
 
 		case 'add' :
+			// newly readable items, need to be added on client, even if not add on server
+			$allReadAbleItems = (array)_egwcalendarsync_list($filter);	// no sql_filter --> all readables
 			// - added items may not need to be added, cause they are filtered out.
 			// - filters or entries may have changed, so that more entries
 			//   pass the filter and need to be added on the client.
-			return array_unique(array_intersect($allChangedItems, $allReadAbleItems)+ array_diff($allReadAbleItems, $allClientItems));
+			//old: $ret = array_unique(array_intersect($allChangedItems, $allReadAbleItems)+ array_diff($allReadAbleItems, $allClientItems));
+			$ret = array_unique($allChangedItems + array_diff($allReadAbleItems, $allClientItems));
+			break;
 
 		case 'modify' :
 			// - modified entries, which not (longer) pass filters must not be send.
 			// - modified entries which are not at the client must not be send, cause
 			//   the 'add' run will send them!
-			return array_intersect($allChangedItems, $allReadAbleItems, $allClientItems);
+			//old: $ret = array_intersect($allChangedItems, $allReadAbleItems, $allClientItems);
+			$ret = array_intersect($allChangedItems, $allClientItems);
+			break;
 
 		default:
 			return new PEAR_Error("$action is not defined!");
 	}
+error_log('*** '.__METHOD__."('$action',$timestamp,'$type','$filter') returning ".count($ret).' items in '.sprintf('%5.3lf s',microtime(true)-$all_start));//.' = '.array2string($ret));
+	return $ret;
 }
 
 /**
