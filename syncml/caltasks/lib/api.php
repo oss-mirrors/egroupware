@@ -82,36 +82,55 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 	// Horde::logMessage("SymcML: egwcaltaskssync listBy action: $action timestamp: $timestamp filter: $filter",
 	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state	=& $_SESSION['SyncML.state'];
+	$tzid = null;
+	$deviceInfo = $state->getClientDeviceInfo();
+	if (isset($deviceInfo['tzid']) &&
+			$deviceInfo['tzid']) {
+		switch ($deviceInfo['tzid'])
+		{
+			case -1:
+			case -2:
+				$tzid = null;
+				break;
+			default:
+				$tzid = $deviceInfo['tzid'];
+		}
+	}
 
-	$allChangedCalendarItems = $state->getHistory('calendar', $action, $timestamp);
 	$allReadableCalendarItems = (array)_egwcalendarsync_list($filter);
-	$allChangedTaskItems = $state->getHistory('infolog_task', $action, $timestamp);
 	$allReadableTaskItems = (array)_egwtaskssync_list($filter);
-	$allChangedItems = array_merge($allChangedCalendarItems, $allChangedTaskItems);
-	unset($allChangedCalendarItems);
-	unset($allChangedTaskItems);
 	$allReadAbleItems = array_merge($allReadableCalendarItems, $allReadableTaskItems);
-	unset($allReadableCalendarItems);
-	unset($allReadableTaskItems);
-	$allClientItems = (array)$state->getClientItems($type);
-
+	$allClientItems = $state->getClientItems($type);
+	
 	switch ($action) {
 		case 'delete' :
 			// filters may have changed, so we need to calculate which
 			// items are to delete from client because they are not longer in the list.
+			$allChangedCalendarItems = $state->getHistory('calendar', $action, $timestamp, $allClientItems);
+			$allChangedPseudoExceptions =& _egwcalendarsync_listPseudoExceptions($allChangedCalendarItems, $tzid);
+			$allChangedTaskItems = $state->getHistory('infolog_task', $action, $timestamp, $allClientItems);
+			$allChangedItems = array_merge($allChangedCalendarItems, $allChangedPseudoExceptions, $allChangedTaskItems);
 			return array_unique($allChangedItems + array_diff($allClientItems, $allReadAbleItems));
 
 		case 'add' :
 			// - added items may not need to be added, cause they are filtered out.
 			// - filters or entries may have changed, so that more entries
 			//   pass the filter and need to be added on the client.
-			return array_unique(array_intersect($allChangedItems, $allReadAbleItems)+ array_diff($allReadAbleItems, $allClientItems));
+			$allChangedCalendarItems = $state->getHistory('calendar', $action, $timestamp, $allReadableCalendarItems);
+			$allChangedPseudoExceptions =& _egwcalendarsync_listPseudoExceptions($allChangedCalendarItems, $tzid);
+			$allChangedTaskItems = $state->getHistory('infolog_task', $action, $timestamp, $allReadableTaskItems);
+			$allChangedItems = array_merge($allChangedCalendarItems, $allChangedPseudoExceptions, $allChangedTaskItems);
+			return array_unique($allChangedItems + array_diff($allReadAbleItems, $allClientItems));
 
 		case 'modify' :
 			// - modified entries, which not (longer) pass filters must not be send.
 			// - modified entries which are not at the client must not be send, cause
 			//   the 'add' run will send them!
-			return array_intersect($allChangedItems, $allReadAbleItems, $allClientItems);
+			$allChangedCalendarItems = $state->getHistory('calendar', $action, $timestamp, $allClientItems);
+			$allChangedPseudoExceptions =& _egwcalendarsync_listPseudoExceptions($allChangedCalendarItems, $tzid);
+			$allChangedTaskItems = $state->getHistory('infolog_task', $action, $timestamp, $allClientItems);
+			$allChangedItems = array_merge($allChangedCalendarItems, $allChangedPseudoExceptions, $allChangedTaskItems);	
+			return $allChangedItems;
 
 		default:
 			return new PEAR_Error("$action is not defined!");

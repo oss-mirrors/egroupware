@@ -163,29 +163,31 @@ function &_egwcontactssync_listBy($action, $timestamp, $type, $filter='') {
 	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state =& $_SESSION['SyncML.state'];
 
-	$allChangedItems = (array)$state->getHistory('contacts', $action, $timestamp);
-	#Horde::logMessage('SymcML: egwcontactssync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allReadAbleItems = (array)_egwcontactssync_list($filter);
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allClientItems = (array)$state->getClientItems($type);
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	
 	switch ($action) {
 		case 'delete' :
 			// filters may have changed, so we need to calculate which
 			// items are to delete from client because they are not longer in the list.
+			$allChangedItems = (array)$state->getHistory('contacts', $action, $timestamp, $allClientItems);
 			return array_unique($allChangedItems + array_diff($allClientItems, $allReadAbleItems));
 
 		case 'add' :
 			// - added items may not need to be added, cause they are filtered out.
 			// - filters or entries may have changed, so that more entries
 			//   pass the filter and need to be added on the client.
-			return array_unique(array_intersect($allChangedItems, $allReadAbleItems)+ array_diff($allReadAbleItems, $allClientItems));
+			$allChangedItems = (array)$state->getHistory('contacts', $action, $timestamp, $allReadAbleItems);
+			return array_unique($allChangedItems + array_diff($allReadAbleItems, $allClientItems));
 
 		case 'modify' :
 			// - modified entries, which not (longer) pass filters must not be send.
 			// - modified entries which are not at the client must not be send, cause
 			//   the 'add' run will send them!
-			return array_intersect($allChangedItems, $allReadAbleItems, $allClientItems);
+			$allChangedItems = (array)$state->getHistory('contacts', $action, $timestamp, $allClientItems);
+			return $allChangedItems;
 
 		default:
 			return new PEAR_Error("$action is not defined!");
