@@ -21,6 +21,6 @@
 		)
 	);
 	include('../header.inc.php');
-
+	auth::check_password_age('bookmarks','index');
 	ExecMethod('bookmarks.bookmarks_ui.init');
 ?>

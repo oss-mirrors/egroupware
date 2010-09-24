@@ -56,7 +56,7 @@ $GLOBALS['egw_info']['flags'] = array(
 	'autocreate_session_callback' => 'wiki_check_anon_access',
 );
 include('../header.inc.php');
-
+auth::check_password_age('wiki','index');
 ExecMethod('wiki.wiki_ui.view');
 
 // Expire old versions, etc.
