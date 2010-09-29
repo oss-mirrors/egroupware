@@ -266,7 +266,7 @@ class emailadmin_bo extends so_sql
 			}
 			$this->smtpClass	= new $class;
 		}
-		$this->tracking =& new emailadmin_tracking($this);
+		$this->tracking = new emailadmin_tracking($this);
 	}
 
 	function delete($profileid=null)
