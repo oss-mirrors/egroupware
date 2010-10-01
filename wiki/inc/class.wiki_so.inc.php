@@ -497,6 +497,21 @@ class wiki_so	// DB-Layer
 	}
 
 	/**
+	 * expunge all pages of a given name wiki_id and language
+	 *
+	 * @param string/array $page page-name or array with values for wiki_id, name and lang keys
+	 */
+	function expunge_page($page)
+	{
+		if ($this->debug) error_log( __METHOD__.':'.__LINE__."(".print_r($page,true));
+		$this->db->delete($this->PgTbl,array(
+			'wiki_id' => is_array($page) && isset($page['wiki_id']) ? $page['wiki_id'] : $this->wiki_id,
+			'wiki_name'    => is_array($page) ? $page['name'] : $page,
+			'wiki_lang'    => $page['lang'],
+		),__LINE__,__FILE__);
+	}
+
+	/**
 	 * Clear all the links cached for a particular page.
 	 *
 	 * @param string/array $page page-name or array with values for wiki_id, name and lang keys

@@ -125,14 +125,23 @@ class wiki_ui extends wiki_bo
 		}
 		if (empty($content['title'])) $content['title'] = $content['name'];
 		//echo "<p>uiwiki::edit() action='$action', content=<pre>".print_r($content,True)."</pre>\n";
-
+		if (empty($content['summary']) && !empty($content['comment'])) $content['summary']=$content['comment'];
 		if ($action)
 		{
 			switch($action)
 			{
 				case 'delete':
-					$content['text'] = '';
-					$content['comment'] = lang('deleted');
+					//error_log(__METHOD__.array2string($content));
+					if (trim($content['text'])=='' || (trim($content['text'])=='##EXPUNGE##' && trim($content['summary'])=='##EXPUNGE##'))
+					{
+						$content['text']='##EXPUNGE##';
+						$content['comment'] = '##EXPUNGE##';
+					}
+					else
+					{
+						$content['text'] = '';
+						$content['comment'] = lang('deleted');
+					}
 					$content['is_html'] = False;	// else page is not realy empty
 				case 'rename':
 				case 'save':
@@ -141,6 +150,10 @@ class wiki_ui extends wiki_bo
 					if ($content['is_html'])
 					{
 						$content['text'] = "<html>\n".$content['text']."\n</html>\n";
+					}
+					if (empty($content['comment']) && !empty($content['summary']) && $action !='delete' && trim($content['summary'])!='##EXPUNGE##') 
+					{
+						$content['comment']=$content['summary'];
 					}
 					if ($action == 'rename')
 					{

@@ -153,9 +153,9 @@ class wiki_bo extends wiki_so
 
 	function write($values,$set_host_user=True)
 	{
-		//echo "<p>bowiki::write(".print_r($values,True).")</p>";
+		//error_log(__METHOD__. " Values to save (".print_r($values,True).")");
 		$page = $this->page($values['name'],$values['lang']);
-
+		//error_log(__METHOD__.' PageObject:'.array2string($page));
 		if ($page->read() !== False)	// !== as an empty page would return '' == False
 		{
 			$page->version++;
@@ -186,6 +186,9 @@ class wiki_bo extends wiki_so
 		$this->clear_link($values);
 		// Process save macros (eg. store the links or define interwiki entries).
 		$this->parse($page,'Save');
+		// delete the page finaly if it is to be expunged
+		//error_log(__METHOD__.$page->text.','.$page->comment.'.');
+		if (trim($page->text)=='##EXPUNGE##' && trim($page->comment)=='##EXPUNGE##') $this->expunge_page($values);
 
 		return True;
 	}
