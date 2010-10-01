@@ -751,8 +751,9 @@ class wiki_so	// DB-Layer
 		$this->db->query("SELECT t1.wiki_time,t1.wiki_name,t1.wiki_lang,t1.wiki_hostname,t1.wiki_username,0,t1.wiki_comment,t1.wiki_version,MAX(t2.wiki_version),t1.wiki_title " .
 										 " FROM $this->PgTbl AS t1, (select wiki_id,wiki_lang,wiki_name, max(wiki_version) as wiki_version  from $this->PgTbl GROUP BY wiki_id, wiki_lang, wiki_name) AS t2" .
 										 " WHERE t1.wiki_name=t2.wiki_name AND t1.wiki_lang=t2.wiki_lang AND t1.wiki_id=t2.wiki_id AND t1.wiki_id=".(int)$this->wiki_id.
+										 "  AND t1.wiki_body IS NULL ".
 										 " GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_time,t1.wiki_hostname,t1.wiki_username,t1.wiki_comment".
-										 " HAVING t1.wiki_version = MAX(t2.wiki_version) AND t1.wiki_body IS NULL",__LINE__,__FILE__);
+										 " HAVING t1.wiki_version = MAX(t2.wiki_version) ",__LINE__,__FILE__);
 
 		return $this->_return_pages('emptypages()');
 	}
