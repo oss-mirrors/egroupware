@@ -64,7 +64,8 @@ class syncml_hooks
 			$addressbook_bo = new addressbook_bo();
 			$perms = EGW_ACL_READ | EGW_ACL_ADD | EGW_ACL_EDIT | EGW_ACL_DELETE;
 			$show_addr_lists = $addressbook_bo->get_lists($perms,array(0 => lang('None')));
-			$show_addr_addr = $addressbook_bo->get_addressbooks($perms);
+			
+			$show_addr_addr = $addressbook_bo->get_addressbooks(EGW_ACL_READ);
 			unset($show_addr_addr[$user]); // skip personal addressbook
 			unset($show_addr_addr[0]); // No Acounts
 			$show_addr_addr = array('G'	=> lang('Primary Group'),
