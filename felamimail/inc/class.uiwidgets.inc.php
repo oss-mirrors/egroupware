@@ -125,7 +125,8 @@
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new  = '<link rel="STYLESHEET" type="text/css" href="'.$GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/js/dhtmlxtree/css/dhtmlXTree.css">';
 			$folder_tree_new .= "<script type='text/javascript'>";
-			$folder_tree_new .= "tree=new dhtmlXTreeObject('$_divName','100%','100%',0);";
+			$folder_tree_new .= "var tree=new dhtmlXTreeObject('$_divName','100%','100%',0);";
+			$folder_tree_new .= "tree.parentObject.style.overflow=\"auto\";";
 			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');";
 			if($_displayCheckBox) {
 				$folder_tree_new .= "tree.enableCheckBoxes(1);";
