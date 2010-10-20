@@ -320,9 +320,9 @@
 			else
 				$editMode	= 'filter';
 
-			$GLOBALS['egw']->js->validate_file('tabs','tabs');
-			$GLOBALS['egw']->js->validate_file('jscode','editProfile','felamimail');
-			$GLOBALS['egw']->js->validate_file('jscode','listSieveRules','felamimail');
+			egw_framework::validate_file('tabs','tabs');
+			egw_framework::validate_file('jscode','editProfile','felamimail');
+			egw_framework::validate_file('jscode','listSieveRules','felamimail');
 			$GLOBALS['egw']->js->set_onload("javascript:initAll('$editMode');");
 			if($_GET['menuaction'] == 'felamimail.uisieve.editRule') {
 				$GLOBALS['egw']->js->set_onunload('opener.fm_sieve_cancelReload();');
@@ -334,7 +334,7 @@
 				case 'felamimail.uisieve.editRule':
 					break;
 				default:
-					echo parse_navbar();
+					echo $GLOBALS['egw']->framework->navbar();
 					break;
 			}
 		}
@@ -911,9 +911,10 @@
 
 		function selectFolder()
 		{
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
-			$GLOBALS['egw']->js->validate_file('jscode','editSieveRule','felamimail');
+			// this call loads js and css for the treeobject
+			html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
+
+			egw_framework::validate_file('jscode','editSieveRule','felamimail');
 			$GLOBALS['egw']->common->egw_header();
 
 			$bofelamimail		=& CreateObject('felamimail.bofelamimail',$this->displayCharset);

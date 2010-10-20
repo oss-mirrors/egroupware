@@ -481,13 +481,6 @@ class felamimail_hooks
 		$showMainScreenStuff = false;
 		if($_GET['menuaction'] == 'felamimail.uifelamimail.viewMainScreen' ||
 			$_GET['menuaction'] == 'felamimail.uifelamimail.changeFolder') {
-			/* seems to be, its not needed here, as viewMainScreen does it anyway
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
-			$GLOBALS['egw']->js->validate_file('jscode','viewMainScreen','felamimail');
-			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
-			$GLOBALS['egw']->common->egw_header();
-			*/
 			if (isset($_GET["mailbox"]))
 			{
 				$bofelamimail->sessionData['mailbox'] = urldecode($_GET["mailbox"]);
@@ -580,16 +573,17 @@ class felamimail_hooks
 				'compress folder'	=> "javascript:egw_appWindow('".$appname."').compressFolder();",
 			);
 		}
-		// import Message link
-/*
-		$linkData = array(
-			'menuaction' => 'felamimail.uifelamimail.importMessage',
-		);
-		$file['import message'] = array(
-				'text' => '<a class="textSidebox" href="'. htmlspecialchars(egw::link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.egw::link('/index.php', $linkData).'\',\''.lang('import').'\',700,100); return false;">'.lang('import message'),
-				'no_lang' => true,
-		);
-*/
+		// import Message link - only when the required library is available
+		if ((@include_once 'Mail/mimeDecode.php') !== false)
+		{
+			$linkData = array(
+				'menuaction' => 'felamimail.uifelamimail.importMessage',
+			);
+			$file['import message'] = array(
+					'text' => '<a class="textSidebox" href="'. htmlspecialchars(egw::link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.egw::link('/index.php', $linkData).'\',\''.lang('import').'\',700,100); return false;">'.lang('import message'),
+					'no_lang' => true,
+			);
+		}
 		// select account box, treeview
 		if($showMainScreenStuff) {
 			$bofelamimail->restoreSessionData();

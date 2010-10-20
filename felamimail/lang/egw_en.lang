@@ -102,7 +102,7 @@ deleted	felamimail	en	deleted
 deleted folder successfully!	felamimail	en	Deleted folder successfully!
 deleting messages	felamimail	en	deleting messages
 disable	felamimail	en	Disable
-disable Ruler for separation of mailbody and signature when adding signature to composed message (this is not according to RFC).<br>If you use templates, this option is only applied to the text part of the message.	felamimail	en	disable Ruler for separation of mailbody and signature when adding signature to composed message (this is not according to RFC).<br>If you use templates, this option is only applied to the text part of the message.
+disable ruler for separation of mailbody and signature when adding signature to composed message (this is not according to rfc).<br>if you use templates, this option is only applied to the text part of the message.	felamimail	en	disable Ruler for separation of mailbody and signature when adding signature to composed message (this is not according to RFC).<br>If you use templates, this option is only applied to the text part of the message.
 discard	felamimail	en	discard
 discard message	felamimail	en	discard message
 display message in new window	felamimail	en	Display message in new window
@@ -250,6 +250,10 @@ imaps encryption only	felamimail	en	IMAPS Encryption only
 import	felamimail	en	import
 import mail	felamimail	en	Import Mail
 import message	felamimail	en	import message
+import of message %1 failed. destination folder %2 does not exist.	felamimail	en	Import of message %1 failed. Destination Folder %2 does not exist.
+import of message %1 failed. destination folder not set.	felamimail	en	Import of message %1 failed. Destination Folder not set.
+import of message %1 failes to meet basic restrictions.	felamimail	en	Import of message %1 failes to meet basic restrictions.
+importance	felamimail	en	importance
 in	felamimail	en	in
 inbox	felamimail	en	INBOX
 incoming mail server(imap)	felamimail	en	incoming mail server(IMAP)
@@ -294,6 +298,7 @@ matches regexp	felamimail	en	matches regexp
 max uploadsize	felamimail	en	max uploadsize
 message highlighting	felamimail	en	Message Highlighting
 message list	felamimail	en	Message List
+message rejected, no message/rfc. is:%1	felamimail	en	Message rejected, no message/rfc. Is:%1
 messages	felamimail	en	messages
 mon	felamimail	en	Mon
 move	felamimail	en	Move
@@ -395,8 +400,10 @@ save	felamimail	en	Save
 save all	felamimail	en	Save all
 save as draft	felamimail	en	save as draft
 save as infolog	felamimail	en	save as infolog
+save as tracker	felamimail	en	Save as tracker
 save changes	felamimail	en	save changes
 save message to disk	felamimail	en	save message to disk
+save:	felamimail	en	Save:
 script name	felamimail	en	script name
 script status	felamimail	en	script status
 search	felamimail	en	Search
@@ -408,6 +415,7 @@ select folder	felamimail	en	select folder
 select your mail server type	admin	en	Select your mail server type
 send	felamimail	en	Send
 send a reject message	felamimail	en	send a reject message
+sender	felamimail	en	sender
 sent	felamimail	en	Sent
 sent folder	felamimail	en	Sent Folder
 server supports mailfilter(sieve)	felamimail	en	server supports mailfilter (sieve)
@@ -438,6 +446,7 @@ subscribe	felamimail	en	Subscribe
 subscribed	felamimail	en	Subscribed
 subscribed successfully!	felamimail	en	Subscribed successfully!
 sun	felamimail	en	Sun
+switching of signatures failed	felamimail	en	Switching of Signatures failed
 system signature	felamimail	en	system signature
 table of contents	felamimail	en	Table of Contents
 template folder	felamimail	en	Template folder
@@ -511,6 +520,7 @@ wrap incoming text at	felamimail	en	Wrap incoming text at
 writing	felamimail	en	writing
 wrote	felamimail	en	wrote
 yes, offer copy option	felamimail	en	yes, offer copy option
+you can either choose to save as infolog or tracker, not both.	felamimail	en	You can either choose to save as infolog OR tracker, not both.
 you can use %1 for the above start-date and %2 for the end-date.	felamimail	en	You can use %1 for the above start-date and %2 for the end-date.
 you have received a new message on the	felamimail	en	You have received a new message on the
 your message to %1 was displayed.	felamimail	en	Your message to %1 was displayed.

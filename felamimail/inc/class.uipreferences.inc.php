@@ -68,30 +68,30 @@
 			switch($_GET['menuaction'])
 			{
 				case 'felamimail.uipreferences.editSignature':
-					$GLOBALS['egw']->js->validate_file('jscode','listSignatures','felamimail');
+					egw_framework::validate_file('jscode','listSignatures','felamimail');
 					egw_framework::validate_file('ckeditor3','ckeditor','phpgwapi');
 					#$GLOBALS['egw']->js->set_onload('fm_initEditLayout();');
 					break;
 				case 'felamimail.uipreferences.listAccountData':
 				case 'felamimail.uipreferences.editAccountData':
-					$GLOBALS['egw']->js->validate_file('tabs','tabs');
-					$GLOBALS['egw']->js->validate_file('jscode','editAccountData','felamimail');
+					egw_framework::validate_file('tabs','tabs');
+					egw_framework::validate_file('jscode','editAccountData','felamimail');
 					$GLOBALS['egw']->js->set_onload('javascript:initEditAccountData();');
 					$GLOBALS['egw']->js->set_onload('javascript:initTabs();');
 					break;
 
 				case 'felamimail.uipreferences.listSignatures':
-					$GLOBALS['egw']->js->validate_file('jscode','listSignatures','felamimail');
+					egw_framework::validate_file('jscode','listSignatures','felamimail');
 					#$GLOBALS['egw']->js->set_onload('javascript:initEditAccountData();');
 					break;
 
 				case 'felamimail.uipreferences.listFolder':
 				case 'felamimail.uipreferences.addACL':
 				case 'felamimail.uipreferences.listSelectFolder':
-					$GLOBALS['egw']->js->validate_file('tabs','tabs');
-					$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-					$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
-					$GLOBALS['egw']->js->validate_file('jscode','listFolder','felamimail');
+					egw_framework::validate_file('tabs','tabs');
+					// this call loads js and css for the treeobject
+					html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
+					egw_framework::validate_file('jscode','listFolder','felamimail');
 					$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 					break;
 			}
@@ -100,7 +100,7 @@
 						
 			$GLOBALS['egw']->common->egw_header();
 			if($_displayNavbar == TRUE)
-				echo parse_navbar();
+				echo $GLOBALS['egw']->framework->navbar();
 		}
 		
 		function editForwardingAddress()

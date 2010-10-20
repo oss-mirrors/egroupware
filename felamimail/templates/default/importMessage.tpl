@@ -43,6 +43,19 @@
 	<table style="width:99%;">
 		<tr>
 			<td style="text-align:center;">
+				<span id="messages" style="font-size:11px; color:red;">{messages}</span>
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align:center;">
+				<input type="hidden" size="0" id="newMailboxName" name="newMailboxName" value="" > <!-- this one is needed only to comply with the pop-box -->
+				<input type="text" size="50" id="newMailboxMoveName" name="newMailboxMoveName" value="{mailboxNameShort}" readonly="readonly">
+				<a id="aMoveSelectFolder" href="#" onclick="javascript:window.open('{folder_select_url}', 'windowName', 'width=400,height=500,toolbar=no,resizable=yes');
+					return false;">{lang_select}</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align:center;">
 				<span id="statusMessage">&nbsp;</span>
 			</td>
 		</tr>

@@ -1,20 +1,21 @@
 <?php
-	/***************************************************************************\
-	* eGroupWare - FeLaMiMail                                                   *
-	* http://www.linux-at-work.de                                               *
-	* http://www.phpgw.de                                                       *
-	* http://www.egroupware.org                                                 *
-	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
-	* maintained by Klaus Leithoff												*
-	* -------------------------------------------------                         *
-	* This program is free software; you can redistribute it and/or modify it   *
-	* under the terms of the GNU General Public License as published by the     *
-	* Free Software Foundation; version 2 of the License.                       *
-	\***************************************************************************/
-	/* $Id$ */
+/**
+ * EGroupware - FeLaMiMail
+ *
+ * @link http://www.egroupware.org
+ * @package felamimail
+ * @author Lars Kneschke [lkneschke@linux-at-work.de]
+ * @author Klaus Leithoff [kl@stylite.de]
+ * @copyright (c) 2009-10 by Klaus Leithoff <kl-AT-stylite.de>
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @version $Id$
+ */
 
-	class uifelamimail
-	{
+/**
+ * FeLaMiMail user interface class, provides UI functionality for mainview
+ */
+class uifelamimail
+{
 		var $public_functions = array
 		(
 			'addVcard'		=> True,
@@ -162,8 +163,15 @@
 
 		function importMessage()
 		{
+			// get passed messages
+			if (!empty($_GET["msg"])) $alert_message[] = html::purify($_GET["msg"]);
+			if (!empty($_POST["msg"])) $alert_message[] = html::purify($_POST["msg"]);
+			unset($_GET["msg"]);
+			unset($_POST["msg"]);
+			//_debug_array($alert_message);
 			//error_log(__METHOD__." called from:".function_backtrace());
 			if(is_array($_FILES["addFileName"])) {
+				$destination = html::purify($_POST['newMailboxMoveName']?$_POST['newMailboxMoveName']:'');
 				#phpinfo();
 				#error_log(print_r($_FILES,true));
 				if($_FILES['addFileName']['error'] == $UPLOAD_ERR_OK) {
@@ -171,7 +179,10 @@
 					$formData['type']	= $_FILES['addFileName']['type'];
 					$formData['file']	= $_FILES['addFileName']['tmp_name'];
 					$formData['size']	= $_FILES['addFileName']['size'];
-					$message = $this->importMessageToFolder($formData);
+					$message = $this->importMessageToFolder($formData,$destination);
+					// we are not comming back from importMessageToFolder as importMessageToFolder does the redirecting to the proper location
+					// so this function does not proceed from here
+					/*
 					print "<script type='text/javascript'>window.close();</script>";
 					if (!$message) {
 						print "<script type=\"text/javascript\">alert('".lang("Error: ").lang("Could not import Message:").htmlentities($formData['name'])."');</script>";
@@ -185,22 +196,39 @@
 						print "<script type=\"text/javascript\">opener.fm_readMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."', 'displayMessage_".$message['uid']."', this);</script>";
 						return;
 					}
+					*/
 				}
 			}
 			if(!@is_object($GLOBALS['egw']->js))
 			{
 				$GLOBALS['egw']->js = CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
-			$GLOBALS['egw']->js->validate_file('jscode','importMessage','felamimail');
+			// this call loads js and css for the treeobject
+			html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
 			$GLOBALS['egw']->common->egw_header();
 
 			#$uiwidgets		=& CreateObject('felamimail.uiwidgets');
 
 			$this->t->set_file(array("importMessage" => "importMessage.tpl"));
+			if (isset($alert_message) && !empty($alert_message)) 
+			{
+				$this->t->set_var('messages', implode('; ',$alert_message));
+			}
+			else
+			{
+				$this->t->set_var('messages','');
+			}
+			// prepare saving destination of imported message
 			$this->t->set_block('importMessage','fileSelector','fileSelector');
+			$linkData = array
+			(
+					'menuaction'    => 'felamimail.uipreferences.listSelectFolder',
+			);
+			$this->t->set_var('folder_select_url',$GLOBALS['egw']->link('/index.php',$linkData));
+			// preset for saving destination, we use draftfolder
+			$savingDestination = ($this->preferences->ic_server[0]->draftfolder ? $this->preferences->ic_server[0]->draftfolder : $GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder']);
 
+			$this->t->set_var('mailboxNameShort', $savingDestination);
 			$this->translate();
 
 			$linkData = array
@@ -219,6 +247,7 @@
 
 		function importMessageToFolder($_formData,$_folder='')
 		{
+			$importfailed = false;
 			if ($_formData['size'] != 0 && (is_uploaded_file($_formData['file']) || 
 				realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir'])))
 			{
@@ -246,9 +275,9 @@
 				// so if PHP did not pass any file_type info, then substitute the rfc default value
 				if (substr(strtolower(trim($_formData['type'])),0,strlen($mime_type_default)) != $mime_type_default)
 				{
-					// fail silently
-					error_log("Message rejected, no message/rfc. Is:".$_formData['type']);
-					return false;
+					//error_log("Message rejected, no message/rfc. Is:".$_formData['type']);
+					$importfailed = true;
+					$alert_msg .= lang("Message rejected, no message/rfc. Is:%1",$_formData['type']);
 				}
 				
 				$tmpFileName = $GLOBALS['egw_info']['server']['temp_dir'].
@@ -265,24 +294,72 @@
 					rename($_formData['file'],$tmpFileName);
 				}
 			} else {
-				// fail silently
-				error_log("Import of message ".$_formData['file']." failes to meet basic restrictions");
-				return false;
+				//error_log("Import of message ".$_formData['file']." failes to meet basic restrictions");
+				$importfailed = true;
+				$alert_msg .= lang("Import of message %1 failes to meet basic restrictions.",$_formData['name']);
 			}
 			// -----------------------------------------------------------------------
-			#error_log(print_r($this->preferences->preferences['draftFolder'],true));
-			/**
-			 * pear/Mail_mimeDecode requires package "pear/Mail_Mime" (version >= 1.4.0, excluded versions: 1.4.0)
-			 * ./pear upgrade Mail_Mime
-			 * ./pear install Mail_mimeDecode
-			 */
-			$message = file_get_contents($tmpFileName);
-			require_once 'Mail/mimeDecode.php';
-			$mailDecode = new Mail_mimeDecode($message);
-			$strucure = $mailDecode->decode(array('include_bodies'=>true,'decode_bodies'=>true,'decode_headers'=>true));
-			//_debug_array($strucure);
+			if ($importfailed === false)
+			{
+
+				$mailObject = new egw_mailer();
+				try
+				{
+					$this->bofelamimail->parseFileIntoMailObject($mailObject,$tmpFileName,$Header,$Body);
+				}
+				catch (egw_exception_assertion_failed $e)
+				{
+					$importfailed = true;
+					$alert_msg .= $e->getMessage();
+				}
+				//_debug_array($Body);
+				$this->bofelamimail->openConnection();
+				if (empty($_folder))
+				{
+					$importfailed = true;
+					$alert_msg .= lang("Import of message %1 failed. Destination Folder not set.",$_formData['name']);
+				}
+				$delimiter = $this->bofelamimail->getHierarchyDelimiter();
+				if($_folder=='INBOX'.$delimiter) $_folder='INBOX';
+				if ($this->bofelamimail->folderExists($_folder,true)) {
+					$messageUid = $this->bofelamimail->appendMessage($_folder,
+						$Header.$mailObject->LE.$mailObject->LE,
+						$Body,
+						$flags);
+				}
+				else
+				{
+					$importfailed = true;
+					$alert_msg .= lang("Import of message %1 failed. Destination Folder %2 does not exist.",$_formData['name'],$_folder);
+				}
+			}
+			// set the url to open when refreshing
+			if ($importfailed == true)
+			{
+		        $linkData = array
+		        (
+		            'menuaction'    => 'felamimail.uifelamimail.importMessage',
+					'msg'		=> htmlspecialchars($alert_msg),
+		        );
+			}
+			else
+			{
+		        $linkData = array
+		        (
+		            'menuaction'    => 'felamimail.uidisplay.display',
+					'uid'		=> $messageUid,
+					'mailbox'    => base64_encode($_folder),
+		        );
+			}
+			
+			//echo "Errors:".$alert_msg.'<br>';
+			//_debug_array($linkData);
+			//exit;
+			
+			egw::redirect_link('/index.php',$linkData);
 			exit;
 		}
+
 
 		function deleteMessage()
 		{
@@ -309,15 +386,14 @@
 		
 		function display_app_header()
 		{
-			#$GLOBALS['egw']->js->validate_file('foldertree','foldertree');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
-			$GLOBALS['egw']->js->validate_file('jscode','viewMainScreen','felamimail');
+			// this call loads js and css for the treeobject
+			html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
+			egw_framework::validate_file('jscode','viewMainScreen','felamimail');
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 
 			$GLOBALS['egw']->common->egw_header();
-
-			echo parse_navbar();
+			
+			echo $GLOBALS['egw']->framework->navbar();
 		}
 	
 		function handleButtons()
@@ -368,7 +444,7 @@
 			if(!$GLOBALS['egw']->acl->check('run',1,'admin'))
 			{
 				$GLOBALS['egw']->common->egw_header();
-				echo parse_navbar();
+				echo $GLOBALS['egw']->framework->navbar();
 				echo lang('access not permitted');
 				$GLOBALS['egw']->log->message('F-Abort, Unauthorized access to felamimail.uifelamimail.hookAdmin');
 				$GLOBALS['egw']->log->commit();
@@ -949,6 +1025,7 @@
 			$this->t->set_var('lang_search',lang("search"));
 			$this->t->set_var('lang_replied',lang("replied"));
 			$this->t->set_var('lang_read',lang("read"));
+			$this->t->set_var("lang_select",lang('select'));
 			$this->t->set_var('lang_unread',lang("unread"));
 			$this->t->set_var('lang_deleted',lang("deleted"));
 			$this->t->set_var('lang_recent',lang("recent"));
@@ -983,5 +1060,5 @@
 			$this->t->set_var('lang_updating_view',lang('updating view'));
 			$this->t->set_var('lang_sendnotify',lang('The message sender has requested a response to indicate that you have read this message. Would you like to send a receipt?'));
 		}
-	}
+}
 ?>

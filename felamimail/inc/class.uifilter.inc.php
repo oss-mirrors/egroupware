@@ -46,7 +46,7 @@
 		{
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			$GLOBALS['egw']->common->egw_header();
-			echo parse_navbar();
+			echo $GLOBALS['egw']->framework->navbar();
 		}
 
 		function mainScreen()

@@ -39,6 +39,13 @@ var disabledKeys1 = new Array(KEYCODE_TAB, KEYCODE_ENTER, KEYCODE_UP, KEYCODE_DO
 
 function initAll()
 {
+	if (egw_getWindowOuterHeight()<750)
+	{
+		var fm_height = screen.availHeight/100*75;
+		var resizeHeight = fm_height-egw_getWindowOuterHeight();
+		//alert(fm_height+' resize By:0,'+resizeHeight);
+		if (fm_height >= 750) window.resizeBy(0,resizeHeight);
+	}
 	//tab.init();
 	//alert(document.onkeydown);
 	var titletext = document.getElementById('fm_compose_subject').value;

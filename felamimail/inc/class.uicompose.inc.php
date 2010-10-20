@@ -547,7 +547,7 @@
 
 		function display_app_header()
 		{
-			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
+			egw_framework::validate_file('jscode','composeMessage','felamimail');
 			egw_framework::validate_file('ckeditor3','ckeditor','phpgwapi');
 
 			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
@@ -601,9 +601,9 @@
 			{
 				$GLOBALS['egw']->js = CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
-			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
+			// this call loads js and css for the treeobject
+			html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
+			egw_framework::validate_file('jscode','composeMessage','felamimail');
 			$GLOBALS['egw']->common->egw_header();
 
 			#$uiwidgets		=& CreateObject('felamimail.uiwidgets');
@@ -684,9 +684,10 @@
 
 		function selectFolder()
 		{
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
-			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
+			// this call loads js and css for the treeobject
+			html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
+
+			egw_framework::validate_file('jscode','composeMessage','felamimail');
 			$GLOBALS['egw']->common->egw_header();
 
 			$bofelamimail		=& $this->bofelamimail; //CreateObject('felamimail.bofelamimail',$this->displayCharset);

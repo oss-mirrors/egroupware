@@ -934,8 +934,8 @@
 				$_GET['menuaction'] != 'felamimail.uidisplay.displayAttachments' &&
 				empty($printing)) 
 			{
-				$GLOBALS['egw']->js->validate_file('tabs','tabs');
-				$GLOBALS['egw']->js->validate_file('jscode','view_message','felamimail');
+				egw_framework::validate_file('tabs','tabs');
+				egw_framework::validate_file('jscode','view_message','felamimail');
 				$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			}
 

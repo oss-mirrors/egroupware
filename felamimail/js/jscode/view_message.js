@@ -37,6 +37,13 @@ function goToMessage(url) {
 function initAll()
 {
 	//tab.init();
+	if (egw_getWindowOuterHeight()<750)
+	{
+		var fm_height = screen.availHeight/100*75;
+		var resizeHeight = fm_height-egw_getWindowOuterHeight();
+		//alert(fm_height+' resize By:0,'+resizeHeight);
+		if (fm_height >= 750) window.resizeBy(0,resizeHeight);
+	}
 
 	var headerTable = document.getElementById('headerTable');
 	var headerDIV = document.getElementById('headerDIV');

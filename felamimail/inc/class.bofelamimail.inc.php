@@ -1,31 +1,25 @@
 <?php
-	/***************************************************************************\
-	* eGroupWare - FeLaMiMail                                                   *
-	* http://www.linux-at-work.de                                               *
-	* http://www.phpgw.de                                                       *
-	* http://www.egroupware.org                                                 *
-	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
-	* -------------------------------------------------                         *
-	* This program is free software; you can redistribute it and/or modify it   *
-	* under the terms of the GNU General Public License as published by the     *
-	* Free Software Foundation; either version 2 of the License, or (at your    *
-	* option) any later version.                                                *
-	\***************************************************************************/
+/**
+ * EGroupware - FeLaMiMail
+ *
+ * @link http://www.egroupware.org
+ * @package felamimail
+ * @author Lars Kneschke [lkneschke@linux-at-work.de]
+ * @author Klaus Leithoff [kl@stylite.de]
+ * @version 1.9.002
+ * @copyright (c) 2002,2003,2004 by Lars Kneschke
+ * @copyright (c) 2009-10 by Klaus Leithoff <kl-AT-stylite.de>
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @version $Id$
+ */
 
-	/* $Id$ */
-
-	/**
-	* the core logic of FeLaMiMail
-	*
-	* This class contains all logic of FeLaMiMail.
-	* @package FeLaMiMail
-	* @author Lars Kneschke
-	* @version 1.35
-	* @copyright Lars Kneschke 2002,2003,2004
-	* @license http://opensource.org/licenses/gpl-license.php GPL
-	*/
-	class bofelamimail
-	{
+/**
+ * FeLaMiMail worker class 
+ *  -provides backend functionality for all classes in FeLaMiMail
+ *  -provides classes that may be used by other apps too
+ */
+class bofelamimail
+{
 		var $public_functions = array
 		(
 			'flagMessages'		=> True,
@@ -220,7 +214,7 @@
 		* this function is a wrapper function for emailadmin
 		*
 		* @param _hookValues contains the hook values as array
-		* @returns nothing
+		* @return nothing
 		*/
 		function addAccount($_hookValues)
 		{
@@ -266,7 +260,7 @@
 		* @param string _body the body of the message
 		* @param string _flags the imap flags to set for the saved message
 		*
-		* @returns the id of the message appended or false
+		* @return the id of the message appended or false
 		*/
 		function appendMessage($_folderName, $_header, $_body, $_flags)
 		{
@@ -289,7 +283,7 @@
 		* remove any messages from the trashfolder
 		*
 		* @param string _folderName the foldername
-		* @returns nothing
+		* @return nothing
 		*/
 		function compressFolder($_folderName = false)
 		{
@@ -314,7 +308,7 @@
 		* @param string _folderName the new foldername
 		* @param bool _subscribe subscribe to the new folder
 		*
-		* @returns mixed name of the newly created folder or false on error
+		* @return mixed name of the newly created folder or false on error
 		*/
 		function createFolder($_parent, $_folderName, $_subscribe=false)
 		{
@@ -410,7 +404,7 @@
 		*
 		* @param string _folderName the foldername
 		*
-		* @returns string the converted foldername
+		* @return string the converted foldername
 		*/
 		function decodeFolderName($_folderName)
 		{
@@ -442,7 +436,7 @@
 		 * decode header (or envelope information
 		 * if array given, note that only values will be converted 
 		 * @param $_string mixed input to be converted, if array call decode_header recursively on each value
-		 * @returns mixed - based on the input type
+		 * @return mixed - based on the input type
 		 */
 		static function decode_header($_string)
 		{
@@ -548,7 +542,7 @@
 		*
 		* @param string _folderName the name of the folder to be deleted
 		*
-		* @returns bool true on success, false on failure
+		* @return bool true on success, false on failure
 		*/
 		function deleteFolder($_folderName)
 		{
@@ -645,7 +639,7 @@
 		*
 		* @param string _folderName the foldername
 		*
-		* @returns string the converted string
+		* @return string the converted string
 		*/
 		function encodeFolderName($_folderName)
 		{
@@ -1125,7 +1119,7 @@
 		* @param string _partID the id of the part, which holds the attachment
 		* @param int _winmail_nr winmail.dat attachment nr.
 		*
-		* @returns array
+		* @return array
 		*/
 		function getAttachment($_uid, $_partID, $_winmail_nr=0)
 		{
@@ -1251,7 +1245,7 @@
 		*
 		* @param _folderName string the foldername
 		*
-		* @returns array
+		* @return array
 		*/
 		function getFolderStatus($_folderName)
 		{
@@ -1324,7 +1318,7 @@
 		* @param _subscribedOnly boolean get subscribed or all folders
 		* @param _getCounters    boolean get get messages counters
 		*
-		* @returns array with folder objects. eg.: INBOX => {inbox object}
+		* @return array with folder objects. eg.: INBOX => {inbox object}
 		*/
 		function getFolderObjects($_subscribedOnly=false, $_getCounters=false)
 		{
@@ -1667,8 +1661,8 @@
 
 		/**
 		 * getMimePartCharset - fetches the charset mimepart if it exists
-		 * @params $_mimePartObject structure object
-		 * @returns mixed mimepart or false if no CHARSET is found, the missing charset has to be handled somewhere else, 
+		 * @param $_mimePartObject structure object
+		 * @return mixed mimepart or false if no CHARSET is found, the missing charset has to be handled somewhere else, 
 		 *		as we cannot safely assume any charset as we did earlier
 		 */
 		function getMimePartCharset($_mimePartObject)
@@ -2511,7 +2505,7 @@
 		/**
 		 * normalizeBodyParts - function to gather and normalize all body Information
 		 * @param _bodyParts - Body Array
-		 * @returns array - a normalized Bodyarray
+		 * @return array - a normalized Bodyarray
 		 */
 		static function normalizeBodyParts($_bodyParts) 
 		{
@@ -2521,7 +2515,7 @@
 				{
 					if (!isset($singleBodyPart['body'])) {
 						$buff = self::normalizeBodyParts($singleBodyPart);
-						foreach ($buff as $val)	$body2return[] = $val;
+						foreach ((array)$buff as $val)	$body2return[] = $val;
 						continue;
 					}
 					$body2return[] = $singleBodyPart;
@@ -2757,7 +2751,7 @@
 		* @param string _parent the parent foldername
 		* @param string _folderName the new foldername
 		*
-		* @returns mixed name of the newly created folder or false on error
+		* @return mixed name of the newly created folder or false on error
 		*/
 		function renameFolder($_oldFolderName, $_parent, $_folderName)
 		{
@@ -2940,7 +2934,7 @@
 		* convert the foldername from display charset to UTF-7
 		*
 		* @param string _parent the parent foldername
-		* @returns ISO-8859-1 / UTF7-IMAP encoded string
+		* @return ISO-8859-1 / UTF7-IMAP encoded string
 		*/
 		function _encodeFolderName($_folderName) {
 			return $GLOBALS['egw']->translation->convert($_folderName, self::$displayCharset, 'ISO-8859-1');
@@ -2951,7 +2945,7 @@
 		* convert the foldername from UTF-7 to display charset
 		*
 		* @param string _parent the parent foldername
-		* @returns ISO-8859-1 / self::$displayCharset encoded string
+		* @return ISO-8859-1 / self::$displayCharset encoded string
 		*/
 		function _decodeFolderName($_folderName) {
 			return $GLOBALS['egw']->translation->convert($_folderName, self::$displayCharset, 'ISO-8859-1');
@@ -2962,7 +2956,7 @@
 		* convert the sort value from the gui(integer) into a string
 		*
 		* @param int _sort the integer sort order
-		* @returns the ascii sort string
+		* @return the ascii sort string
 		*/
 		function _getSortString($_sort)
 		{
@@ -3128,7 +3122,7 @@
 		 * detect_encoding - try to detect the encoding
 		 *    only to be used if the string in question has no structure that determines his encoding
 		 * @param string - to be evaluated
-		 * @returns mixed string/boolean (encoding or false
+		 * @return mixed string/boolean (encoding or false
 		 */
 		static function detect_encoding($string) { 
 			static $list = array('utf-8', 'iso-8859-1', 'windows-1251'); // list may be extended
@@ -3180,11 +3174,11 @@
 
 		/**
 		 * get_mailcontent - fetches the actual mailcontent, and returns it as well defined array
-		 * @param bofelamimail the bofelamimailobject to be used
+		 * @param object bofelamimail the bofelamimailobject to be used
 		 * @param uid the uid of the email to be processed
 		 * @param partid the partid of the email
 		 * @param mailbox the mailbox, that holds the message
-		 * @returns array with 'mailaddress'=>$mailaddress,
+		 * @return array with 'mailaddress'=>$mailaddress,
 		 *				'subject'=>$subject,
 		 *				'message'=>$message,
 		 *				'attachments'=>$attachments,
@@ -3271,8 +3265,8 @@
 
 		/**
 		 * createHeaderInfoSection - creates a textual headersection from headerobject
-		 * @params header headerarray may contain SUBJECT,FROM,SENDER,TO,CC,BCC,DATE,PRIORITY,IMPORTANCE
-		 * @returns string a preformatted string with the information of the header worked into it
+		 * @param array header headerarray may contain SUBJECT,FROM,SENDER,TO,CC,BCC,DATE,PRIORITY,IMPORTANCE
+		 * @return string a preformatted string with the information of the header worked into it
 		 */
 		static function createHeaderInfoSection($header,$headline='')
 		{
@@ -3302,9 +3296,9 @@
 
 		/**
 		 * getdisplayableBody - creates the bodypart of the email as textual representation
-		 * @param bofelamimail the bofelamimailobject to be used
-		 * @params bodyPorts array with the bodyparts
-		 * @returns string a preformatted string with the mails converted to text
+		 * @param object $bofelamimail the bofelamimailobject to be used
+		 * @param array $bodyParts  with the bodyparts
+		 * @return string a preformatted string with the mails converted to text
 		 */
 		static function &getdisplayableBody(&$bofelamimail, $bodyParts)
 		{
@@ -3344,4 +3338,97 @@
 			}
 			return $message;
 		}
-	}
+
+		/**
+		 * functions to allow the parsing of message/rfc files
+		 * used in felamimail to import mails, or parsev a message from file enrich it with addressdata (merge) and send it right away.
+		 */
+
+		/**
+		 * parseFileIntoMailObject - parses a message/rfc mail from file to the mailobject and returns the header and body via reference
+		 *   throws egw_exception_assertion_failed when the required Pear Class is not found/loadable
+		 * @param object $mailObject instance of the SMTP Mailer Object
+		 * @param string $tmpFileName string that points/leads to the file to be imported
+		 * @param string &$Header  reference used to return the imported Mailheader
+		 * @param string &$Body reference to return the imported Body
+		 * @return void Mailheader and body is returned via Reference in $Header $Body
+		 */
+		function parseFileIntoMailObject($mailObject,$tmpFileName,&$Header,&$Body)
+		{
+				/**
+				 * pear/Mail_mimeDecode requires package "pear/Mail_Mime" (version >= 1.4.0, excluded versions: 1.4.0)
+				 * ./pear upgrade Mail_Mime
+				 * ./pear install Mail_mimeDecode
+				 */
+				$message = file_get_contents($tmpFileName);
+
+				if ((@include_once 'Mail/mimeDecode.php') === false) throw new egw_exception_assertion_failed(lang('Required PEAR class Mail/mimeDecode.php not found.'));
+
+				$mailDecode = new Mail_mimeDecode($message);
+				$structure = $mailDecode->decode(array('include_bodies'=>true,'decode_bodies'=>false,'decode_headers'=>false));
+				//_debug_array($structure);
+				//exit;
+				// now create a message to view, save it in Drafts and open it
+
+				$mailObject->IsSMTP();
+				$result ='';
+				foreach((array)$structure->headers as $key => $val)
+				{
+					foreach((array)$val as $i => $v) if ($key!='content-type') $Header .= $mailObject->HeaderLine($key, trim($v));
+				}
+				if ($structure->ctype_primary=='text' && $structure->body)
+				{
+					$mailObject->IsHTML($structure->ctype_secondary=='html'?true:false);
+					$mailObject->Body = $structure->body;
+				}
+				$this->createBodyFromStructure($mailObject, $structure, $parenttype=null);
+
+				$mailObject->CreateHeader(); // this sets the boundary stufff
+				//echo "Boundary:".$mailObject->FetchBoundary(1).'<br>';
+				$boundary ='';
+				if (isset($structure->ctype_parameters['boundary'])) $boundary = ' boundary="'.$mailObject->FetchBoundary(1).'";';
+				if (isset($structure->headers['content-type'])) $Header .= $mailObject->HeaderLine('Content-type', $structure->ctype_primary.'/'.$structure->ctype_secondary.';'.$boundary);
+				$Body = $mailObject->getMessageBody();
+		}
+
+		/**
+		 * createBodyFromStructure - fetches/creates the bodypart of the email as textual representation
+		 *   is called recursively to be able to fetch the stuctureparts of the mail parsed from Mail/mimeDecode
+		 * @param object $mailObject instance of the SMTP Mailer Object
+		 * @param array $structure array that represents structure and content of a mail parsed from Mail/mimeDecode
+		 * @param string $parenttype type of the parent node
+		 * @return void Parsed Information is passed to the mailObject to be processed there
+		 */
+		function createBodyFromStructure($mailObject, $structure, $parenttype=null)
+		{
+			if ($structure->parts && $structure->ctype_primary=='multipart')
+			{
+				foreach($structure->parts as $part)
+				{
+					//echo __METHOD__.__LINE__.$structure->ctype_primary.'/'.$structure->ctype_secondary.'<br>';
+					if ($part->headers['content-transfer-encoding']) $mailObject->Encoding = $part->headers['content-transfer-encoding'];
+					$mailObject->IsHTML($part->ctype_secondary=='html'?true:false);
+					if (isset($part->ctype_parameters['charset'])) $mailObject->CharSet = $part->ctype_parameters['charset'];
+					if ($structure->ctype_secondary=='alternative' && $part->ctype_primary=='text' && $part->ctype_secondary=='plain' && $part->body)
+					{
+						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
+						$mailObject->AltBody = $part->body;
+					}
+					if ($structure->ctype_secondary=='alternative' && $part->ctype_primary=='text' && $part->ctype_secondary=='html' && $part->body)
+					{
+						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
+						$mailObject->Body = $part->body;
+					}
+					if ($structure->ctype_secondary=='mixed' && $part->ctype_primary=='multipart')
+					{
+						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
+						$this->createBodyFromStructure($mailObject, $part, $parenttype=null);
+					}
+					if ($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart')
+					{
+						$mailObject->AddStringAttachment(base64_decode($part->body), $part->ctype_parameters['name'], 'base64', $part->ctype_primary.'/'.$part->ctype_secondary);
+					}
+				}
+			}
+		}
+}
