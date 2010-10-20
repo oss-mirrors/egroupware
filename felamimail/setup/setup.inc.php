@@ -64,6 +64,13 @@ $setup_info['felamimail']['check_install'] = array(
 	'Auth_SASL' => array(
 		'func' => 'pear_check',
 	),
+	'Mail_Mime' => array(
+		'func' => 'pear_check',
+		'version' => '1.4.1',
+	),
+	'Mail_mimeDecode' => array(
+		'func' => 'pear_check',
+	),
 	'imap' => array(
 		'func' => 'extension_check',
 	),
@@ -71,5 +78,8 @@ $setup_info['felamimail']['check_install'] = array(
 		'func' => 'php_ini_check',
 		'value' => 0,
 		'verbose_value' => 'Off',
+	),
+	'tnef' => array(
+		'func' => 'tnef_check',
 	),
 );
