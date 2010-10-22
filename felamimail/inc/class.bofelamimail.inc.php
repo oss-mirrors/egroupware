@@ -1,6 +1,6 @@
 <?php
 /**
- * EGroupware - FeLaMiMail
+ * EGroupware - FeLaMiMail - worker class
  *
  * @link http://www.egroupware.org
  * @package felamimail
@@ -252,7 +252,7 @@ class bofelamimail
 
 		/**
 		* save a message in folder
-		*
+		*	throws exception on failure
 		* @todo set flags again
 		*
 		* @param string _folderName the foldername
@@ -260,7 +260,7 @@ class bofelamimail
 		* @param string _body the body of the message
 		* @param string _flags the imap flags to set for the saved message
 		*
-		* @return the id of the message appended or false
+		* @return the id of the message appended or exception
 		*/
 		function appendMessage($_folderName, $_header, $_body, $_flags)
 		{
@@ -269,7 +269,8 @@ class bofelamimail
 			$messageid = $this->icServer->appendMessage("$header"."$body", $_folderName, $_flags);
 			if ( PEAR::isError($messageid)) {
 				if (self::$debug) error_log("Could not append Message:".print_r($messageid->message,true));
-				return false;
+				throw new egw_exception_wrong_userinput(lang("Could not append Message:".array2string($messageid->message)));
+				//return false;
 			}
 			return $messageid;
 		}
@@ -2129,7 +2130,6 @@ class bofelamimail
 					if(substr($headerObject['DATE'],-2) === 'UT') {
 						$headerObject['DATE'] .= 'C';
 					}
-
 					$retValue['header'][$sortOrder[$uid]]['subject']	= $this->decode_subject($headerObject['SUBJECT']);
 					$retValue['header'][$sortOrder[$uid]]['size'] 		= $headerObject['SIZE'];
 					$retValue['header'][$sortOrder[$uid]]['date']		= self::_strtotime($headerObject['DATE']);
@@ -3365,8 +3365,8 @@ class bofelamimail
 				if ((@include_once 'Mail/mimeDecode.php') === false) throw new egw_exception_assertion_failed(lang('Required PEAR class Mail/mimeDecode.php not found.'));
 
 				$mailDecode = new Mail_mimeDecode($message);
-				$structure = $mailDecode->decode(array('include_bodies'=>true,'decode_bodies'=>false,'decode_headers'=>false));
-				//_debug_array($structure);
+				$structure = $mailDecode->decode(array('include_bodies'=>true,'decode_bodies'=>true,'decode_headers'=>true));
+				//error_log(__METHOD__.__LINE__.array2string($structure));
 				//exit;
 				// now create a message to view, save it in Drafts and open it
 
@@ -3384,11 +3384,14 @@ class bofelamimail
 				$this->createBodyFromStructure($mailObject, $structure, $parenttype=null);
 
 				$mailObject->CreateHeader(); // this sets the boundary stufff
-				//echo "Boundary:".$mailObject->FetchBoundary(1).'<br>';
+				echo "Boundary:".$mailObject->FetchBoundary(1).'<br>';
 				$boundary ='';
 				if (isset($structure->ctype_parameters['boundary'])) $boundary = ' boundary="'.$mailObject->FetchBoundary(1).'";';
 				if (isset($structure->headers['content-type'])) $Header .= $mailObject->HeaderLine('Content-type', $structure->ctype_primary.'/'.$structure->ctype_secondary.';'.$boundary);
 				$Body = $mailObject->getMessageBody();
+				//_debug_array($Header);
+				//_debug_array($Body);
+				//exit;
 		}
 
 		/**
@@ -3401,34 +3404,52 @@ class bofelamimail
 		 */
 		function createBodyFromStructure($mailObject, $structure, $parenttype=null)
 		{
+			static $attachmentnumber;
+			if (is_null($attachmentnumber)) $attachmentnumber = 0;
 			if ($structure->parts && $structure->ctype_primary=='multipart')
 			{
+				$alternatebodyneeded = false;
 				foreach($structure->parts as $part)
 				{
+					//error_log(__METHOD__.__LINE__.' Structure Content Type:'.$structure->ctype_primary.'/'.$structure->ctype_secondary);
+					//error_log(__METHOD__.__LINE__.array2string($part));
 					//echo __METHOD__.__LINE__.$structure->ctype_primary.'/'.$structure->ctype_secondary.'<br>';
 					if ($part->headers['content-transfer-encoding']) $mailObject->Encoding = $part->headers['content-transfer-encoding'];
 					$mailObject->IsHTML($part->ctype_secondary=='html'?true:false);
 					if (isset($part->ctype_parameters['charset'])) $mailObject->CharSet = $part->ctype_parameters['charset'];
-					if ($structure->ctype_secondary=='alternative' && $part->ctype_primary=='text' && $part->ctype_secondary=='plain' && $part->body)
+					if (($structure->ctype_secondary=='alternative'||
+						 $structure->ctype_secondary=='mixed' ||
+						 $structure->ctype_secondary=='signed') && $part->ctype_primary=='text' && $part->ctype_secondary=='plain' && $part->body)
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
-						$mailObject->AltBody = $part->body;
+						$mailObject->Body = $mailObject->AltBody = $part->body;
 					}
-					if ($structure->ctype_secondary=='alternative' && $part->ctype_primary=='text' && $part->ctype_secondary=='html' && $part->body)
+					if (($structure->ctype_secondary=='alternative'||
+						 $structure->ctype_secondary=='mixed' ||
+						 $structure->ctype_secondary=='signed' ) && 
+						$part->ctype_primary=='text' && $part->ctype_secondary=='html' && $part->body)
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
 						$mailObject->Body = $part->body;
+						$alternatebodyneeded = true;
 					}
-					if ($structure->ctype_secondary=='mixed' && $part->ctype_primary=='multipart')
+					if (($structure->ctype_secondary=='mixed' || $structure->ctype_secondary=='signed') && $part->ctype_primary=='multipart')
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
 						$this->createBodyFromStructure($mailObject, $part, $parenttype=null);
 					}
-					if ($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart')
+					if (($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart') || $part->disposition == 'attachment')
 					{
-						$mailObject->AddStringAttachment(base64_decode($part->body), $part->ctype_parameters['name'], 'base64', $part->ctype_primary.'/'.$part->ctype_secondary);
+						$attachmentnumber++;
+						echo $part->headers['content-transfer-encoding'].'#<br>';
+						$mailObject->AddStringAttachment($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body), 
+														 ($part->ctype_parameters['name']?$part->ctype_parameters['name']:'noname_'.$attachmentnumber), 
+														 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'), 
+														 $part->ctype_primary.'/'.$part->ctype_secondary
+														);
 					}
 				}
+				if ($alternatebodyneeded == false) $mailObject->AltBody = '';
 			}
 		}
 }

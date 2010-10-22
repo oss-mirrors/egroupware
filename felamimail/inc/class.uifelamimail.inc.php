@@ -1,6 +1,6 @@
 <?php
 /**
- * EGroupware - FeLaMiMail
+ * EGroupware - FeLaMiMail - user interface
  *
  * @link http://www.egroupware.org
  * @package felamimail
@@ -322,10 +322,18 @@ class uifelamimail
 				$delimiter = $this->bofelamimail->getHierarchyDelimiter();
 				if($_folder=='INBOX'.$delimiter) $_folder='INBOX';
 				if ($this->bofelamimail->folderExists($_folder,true)) {
-					$messageUid = $this->bofelamimail->appendMessage($_folder,
-						$Header.$mailObject->LE.$mailObject->LE,
-						$Body,
-						$flags);
+					try
+					{
+						$messageUid = $this->bofelamimail->appendMessage($_folder,
+							$Header.$mailObject->LE.$mailObject->LE,
+							$Body,
+							$flags);
+					}
+					catch (egw_exception_wrong_userinput $e)
+					{
+						$importfailed = true;
+						$alert_msg .= lang("Import of message %1 failed. Could not save message to folder %2 due to: %3",$_formData['name'],$_folder,$e->getMessage());
+					}
 				}
 				else
 				{

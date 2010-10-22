@@ -922,10 +922,19 @@
 			if (count($mailAddr)>0) $BCCmail = $mail->AddrAppend("Bcc",$mailAddr);
 			$bofelamimail->openConnection();
 			if ($bofelamimail->folderExists($savingDestination,true)) {
-				$messageUid = $bofelamimail->appendMessage($savingDestination,
-					$BCCmail.$mail->getMessageHeader(),
-					$mail->getMessageBody(),
-					$flags);
+				try
+				{
+					$messageUid = $bofelamimail->appendMessage($savingDestination,
+						$BCCmail.$mail->getMessageHeader(),
+						$mail->getMessageBody(),
+						$flags);
+				}
+				catch (egw_exception_wrong_userinput $e)
+				{
+					error_log(__METHOD__.__LINE__.lang("Import of message %1 failed. Could not save message to folder %2 due to: %3",__METHOD__,$savingDestination,$e->getMessage()));
+					return false;
+				}
+
 			} else {
 				error_log("bofelamimail::saveAsDraft->".lang("folder")." ". $savingDestination." ".lang("does not exist on IMAP Server."));
 				return false;
@@ -1068,10 +1077,21 @@
 					#$mailHeader=explode('From:',$mail->getMessageHeader());
 					#$mailHeader[0].$mail->AddrAppend("Bcc",$mailAddr).'From:'.$mailHeader[1],
 					if ($bofelamimail->folderExists($folderName,true)) {
-						$bofelamimail->appendMessage($folderName,
-								$BCCmail.$mail->getMessageHeader(),
-								$mail->getMessageBody(),
-								$flags);
+						try
+						{
+							$bofelamimail->appendMessage($folderName,
+									$BCCmail.$mail->getMessageHeader(),
+									$mail->getMessageBody(),
+									$flags);
+						}
+						catch (egw_exception_wrong_userinput $e)
+						{
+							error_log(__METHOD__.__LINE__.'->'.lang("Import of message %1 failed. Could not save message to folder %2 due to: %3",$this->sessionData['subject'],$foldeName,$e->getMessage()));
+						}
+					}
+					else
+					{
+						error_log(__METHOD__.__LINE__.'->'.lang("Import of message %1 failed. Destination Folder %2 does not exist.",$this->sessionData['subject'],$folderName));
 					}
 				}
 				//$bofelamimail->closeConnection();
