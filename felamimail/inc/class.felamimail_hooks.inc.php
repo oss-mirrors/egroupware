@@ -579,10 +579,11 @@ class felamimail_hooks
 			$linkData = array(
 				'menuaction' => 'felamimail.uifelamimail.importMessage',
 			);
-			$file['import message'] = array(
-					'text' => '<a class="textSidebox" href="'. htmlspecialchars(egw::link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.egw::link('/index.php', $linkData).'\',\''.lang('import').'\',700,100); return false;">'.lang('import message'),
-					'no_lang' => true,
+
+			$file += array(
+				'import message' => "javascript:egw_openWindowCentered2('".egw::link('/index.php', $linkData,false)."','import',700,125,'no','$appname');",
 			);
+
 		}
 		// select account box, treeview
 		if($showMainScreenStuff) {
