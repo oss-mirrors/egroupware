@@ -161,8 +161,22 @@ class uifelamimail
 			$this->viewMainScreen();
 		}
 
+		/**
+		 * importMessage
+		 */
 		function importMessage()
 		{
+			//error_log(array2string($_POST));
+			if (empty($importtype)) $importtype = htmlspecialchars($_POST["importtype"]);
+			if (empty($toggleFS)) $toggleFS = htmlspecialchars($_POST["toggleFS"]);
+			if (empty($importID)) $importID = htmlspecialchars($_POST["importid"]);
+			if (empty($addFileName)) $addFileName =html::purify($_POST['addFileName']);
+			if (empty($importtype)) $importtype = 'file';
+			if (empty($toggleFS)) $toggleFS= false;
+			if (empty($addFileName)) $addFileName = false;
+			if ($toggleFS == 'vfs' && $importtype=='file') $importtype='vfs';
+			if (!$toggleFS && $importtype=='vfs') $importtype='file';
+
 			// get passed messages
 			if (!empty($_GET["msg"])) $alert_message[] = html::purify($_GET["msg"]);
 			if (!empty($_POST["msg"])) $alert_message[] = html::purify($_POST["msg"]);
@@ -180,23 +194,24 @@ class uifelamimail
 					$formData['file']	= $_FILES['addFileName']['tmp_name'];
 					$formData['size']	= $_FILES['addFileName']['size'];
 					$message = $this->importMessageToFolder($formData,$destination);
-					// we are not comming back from importMessageToFolder as importMessageToFolder does the redirecting to the proper location
-					// so this function does not proceed from here
-					/*
-					print "<script type='text/javascript'>window.close();</script>";
-					if (!$message) {
-						print "<script type=\"text/javascript\">alert('".lang("Error: ").lang("Could not import Message:").htmlentities($formData['name'])."');</script>";
-						return;
-					} else {
-						$linkData = array(
-							'menuaction'	=> 'felamimail.uidisplay.display',
-							'uid'		=> $message['uid'],
-							'mailbox'    => base64_encode($message['folder']),
-						);
-						print "<script type=\"text/javascript\">opener.fm_readMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."', 'displayMessage_".$message['uid']."', this);</script>";
-						return;
+				}
+			}
+			if ($addFileName && $toggleFS == 'vfs' && $importtype == 'vfs' && $importID)
+			{
+				$destination = html::purify($_POST['newMailboxMoveName']?$_POST['newMailboxMoveName']:'');
+				$sessionData = $GLOBALS['egw']->session->appsession('compose_session_data_'.$importID, 'felamimail');
+				//error_log(__METHOD__.__LINE__.array2string($sessionData));
+				foreach((array)$sessionData['attachments'] as $attachment) {
+					//error_log(__METHOD__.__LINE__.array2string($attachment));
+					if ($addFileName == $attachment['name'])
+					{
+						$formData['name']	= $attachment['name'];
+						$formData['type']	= $attachment['type'];
+						$formData['file']	= $attachment['file'];
+						$formData['size']	= $attachment['size'];
+						$message = $this->importMessageToFolder($formData,$destination);
+						break;
 					}
-					*/
 				}
 			}
 			if(!@is_object($GLOBALS['egw']->js))
@@ -210,6 +225,16 @@ class uifelamimail
 			#$uiwidgets		=& CreateObject('felamimail.uiwidgets');
 
 			$this->t->set_file(array("importMessage" => "importMessage.tpl"));
+			$importID =bofelamimail::getRandomString();
+			$this->t->set_block('importMessage','fileSelector','fileSelector');
+			// prepare saving destination of imported message
+			$linkData = array
+			(
+					'menuaction'    => 'felamimail.uipreferences.listSelectFolder',
+			);
+			$this->t->set_var('folder_select_url',$GLOBALS['egw']->link('/index.php',$linkData));
+
+			// messages that may be passed to the Form
 			if (isset($alert_message) && !empty($alert_message)) 
 			{
 				$this->t->set_var('messages', implode('; ',$alert_message));
@@ -218,17 +243,15 @@ class uifelamimail
 			{
 				$this->t->set_var('messages','');
 			}
-			// prepare saving destination of imported message
-			$this->t->set_block('importMessage','fileSelector','fileSelector');
-			$linkData = array
-			(
-					'menuaction'    => 'felamimail.uipreferences.listSelectFolder',
-			);
-			$this->t->set_var('folder_select_url',$GLOBALS['egw']->link('/index.php',$linkData));
+
 			// preset for saving destination, we use draftfolder
 			$savingDestination = ($this->preferences->ic_server[0]->draftfolder ? $this->preferences->ic_server[0]->draftfolder : $GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder']);
 
 			$this->t->set_var('mailboxNameShort', $savingDestination);
+			$this->t->set_var('importtype', $importtype);
+			$this->t->set_var('importid', $importID);
+			if ($toggleFS) $this->t->set_var('toggleFS_preset','checked'); else $this->t->set_var('toggleFS_preset','');
+
 			$this->translate();
 
 			$linkData = array
@@ -236,6 +259,27 @@ class uifelamimail
 				'menuaction'	=> 'felamimail.uifelamimail.importMessage',
 			);
 			$this->t->set_var('file_selector_url', $GLOBALS['egw']->link('/index.php',$linkData));
+
+			$this->t->set_var('vfs_selector_url', egw::link('/index.php',array(
+				'menuaction' => 'filemanager.filemanager_select.select',
+				'mode' => 'open-multiple',
+				'method' => 'felamimail.uifelamimail.selectFromVFS',
+				'id'	=> $importID,
+				'label' => lang('Attach'),
+			)));
+			if ($GLOBALS['egw_info']['user']['apps']['filemanager'] && $importtype == 'vfs')
+			{
+				$this->t->set_var('vfs_attach_button','
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="fm_import_displayVfsSelector();" title="'.htmlspecialchars(lang('filemanager')).'">
+					<img src="'.$GLOBALS['egw']->common->image('filemanager','navbar').'" height="18">
+				</a>&nbsp;&nbsp;&nbsp;&nbsp;');
+				$this->t->set_var('filebox_readonly','readonly="readonly"');
+			}
+			else
+			{
+				$this->t->set_var('vfs_attach_button','');
+				$this->t->set_var('filebox_readonly','');
+			}
 
 			$maxUploadSize = ini_get('upload_max_filesize');
 			$this->t->set_var('max_uploadsize', $maxUploadSize);
@@ -245,11 +289,39 @@ class uifelamimail
 			$this->t->pparse("out","fileSelector");
 		}
 
+		/**
+		 * Callback for filemanagers select file dialog
+		 *
+		 * @param string|array $files path of file(s) in vfs (no egw_vfs::PREFIX, just the path)
+		 * @return string javascript output by the file select dialog, usually to close it
+		 */
+		function selectFromVFS($importid,$files)
+		{
+			//error_log(__METHOD__.__LINE__.'->ImportID:'.$importid);
+			$bocompose   = CreateObject('felamimail.bocompose',$importid,$this->displayCharset);
+			$path = implode(' ',$files);
+
+			foreach((array) $files as $path)
+			{
+				$formData = array(
+					'name' => egw_vfs::basename($path),
+					'type' => egw_vfs::mime_content_type($path),
+					'file' => egw_vfs::PREFIX.$path,
+					'size' => filesize(egw_vfs::PREFIX.$path),
+				);
+				$bocompose->addAttachment($formData);
+			}
+
+			//error_log(__METHOD__.__LINE__.$path);
+			return 'window.close();';
+		}
+
 		function importMessageToFolder($_formData,$_folder='')
 		{
 			$importfailed = false;
 			if ($_formData['size'] != 0 && (is_uploaded_file($_formData['file']) || 
-				realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir'])))
+				realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir']) ||
+				parse_url($_formData['file'],PHP_URL_SCHEME) == 'vfs'))
 			{
 				// ensure existance of eGW temp dir
 				// note: this is different from apache temp dir, 
@@ -275,9 +347,17 @@ class uifelamimail
 				// so if PHP did not pass any file_type info, then substitute the rfc default value
 				if (substr(strtolower(trim($_formData['type'])),0,strlen($mime_type_default)) != $mime_type_default)
 				{
-					//error_log("Message rejected, no message/rfc. Is:".$_formData['type']);
-					$importfailed = true;
-					$alert_msg .= lang("Message rejected, no message/rfc. Is:%1",$_formData['type']);
+					// maybe its application/octet-stream -> this may mean that we could not determine the type
+					// so we check for the suffix too
+					$buff = explode('.',$_formData['name']);
+					$suffix = '';
+					if (is_array($buff)) $suffix = array_pop($buff); // take the last extension to check with ext2mime
+					if (!(strtolower(trim($_formData['type'])) == "application/octet-stream" && mime_magic::ext2mime($suffix)=='message/rfc822'))
+					{
+						//error_log("Message rejected, no message/rfc. Is:".$_formData['type']);
+						$importfailed = true;
+						$alert_msg .= lang("Message rejected, no message/rfc. Is:%1",$_formData['type']);
+					}
 				}
 				
 				$tmpFileName = $GLOBALS['egw_info']['server']['temp_dir'].
@@ -285,7 +365,11 @@ class uifelamimail
 					$GLOBALS['egw_info']['user']['account_id'].
 					basename($_formData['file']);
 				
-				if (is_uploaded_file($_formData['file']))
+				if (parse_url($_formData['file'],PHP_URL_SCHEME) == 'vfs')
+				{
+					$tmpFileName = $_formData['file'];	// no need to store it somewhere
+				}
+				elseif (is_uploaded_file($_formData['file']))
 				{
 					move_uploaded_file($_formData['file'],$tmpFileName);	// requirement for safe_mode!
 				}
@@ -301,6 +385,10 @@ class uifelamimail
 			// -----------------------------------------------------------------------
 			if ($importfailed === false)
 			{
+				if (parse_url($tmpFileName,PHP_URL_SCHEME) == 'vfs')
+				{
+					egw_vfs::load_wrapper('vfs');
+				}
 
 				$mailObject = new egw_mailer();
 				try
@@ -1066,6 +1154,7 @@ class uifelamimail
 			$this->t->set_var('lang_jumping_to_start',lang('jumping to start'));
 			$this->t->set_var('lang_jumping_to_end',lang('jumping to end'));
 			$this->t->set_var('lang_updating_view',lang('updating view'));
+			$this->t->set_var('lang_toggleFS',lang('choose from VFS'));
 			$this->t->set_var('lang_sendnotify',lang('The message sender has requested a response to indicate that you have read this message. Would you like to send a receipt?'));
 		}
 }

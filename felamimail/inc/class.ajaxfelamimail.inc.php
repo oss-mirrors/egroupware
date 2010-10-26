@@ -873,6 +873,24 @@
 			return $response->getXML();
 		}
 
+		function reloadImportMail($_importID)
+		{
+			//error_log(__METHOD__.__LINE__.'called');
+			$bocompose	= CreateObject('felamimail.bocompose', $_importID);
+			foreach((array)$bocompose->sessionData['attachments'] as $id => $attachment) {
+				switch(strtoupper($attachment['type'])) {
+					case 'MESSAGE/RFC822':
+						//error_log(__METHOD__.__LINE__.array2string($attachment));
+						break;
+				}
+			}
+
+			$response = new xajaxResponse();
+			$response->addAssign('addFileName', 'value', $attachment['name']);
+			$response->addScript("document.fileUploadForm.submit();");
+			return $response->getXML();		
+		}
+
 		function reloadAttachments($_composeID)
 		{
 			$bocompose	= CreateObject('felamimail.bocompose', $_composeID);

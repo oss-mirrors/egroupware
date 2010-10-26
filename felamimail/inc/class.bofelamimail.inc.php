@@ -3168,6 +3168,16 @@ class bofelamimail
 		}
 
 		/**
+		 * getRandomString - function to be used to fetch a random string and md5 encode that one
+		 * @param none
+		 * @return string - a random number which is md5 encoded
+		 */
+		static function getRandomString() {
+			mt_srand((float) microtime() * 1000000);
+			return md5(mt_rand (100000, 999999));
+		}
+
+		/**
 		 * functions to allow access to mails through other apps to fetch content
 		 * used in infolog, tracker
 		 */
@@ -3361,7 +3371,7 @@ class bofelamimail
 				 * ./pear install Mail_mimeDecode
 				 */
 				$message = file_get_contents($tmpFileName);
-
+				//echo '<pre>'.$message.'</pre>';
 				if ((@include_once 'Mail/mimeDecode.php') === false) throw new egw_exception_assertion_failed(lang('Required PEAR class Mail/mimeDecode.php not found.'));
 
 				$mailDecode = new Mail_mimeDecode($message);
@@ -3384,7 +3394,7 @@ class bofelamimail
 				$this->createBodyFromStructure($mailObject, $structure, $parenttype=null);
 
 				$mailObject->CreateHeader(); // this sets the boundary stufff
-				echo "Boundary:".$mailObject->FetchBoundary(1).'<br>';
+				//echo "Boundary:".$mailObject->FetchBoundary(1).'<br>';
 				$boundary ='';
 				if (isset($structure->ctype_parameters['boundary'])) $boundary = ' boundary="'.$mailObject->FetchBoundary(1).'";';
 				if (isset($structure->headers['content-type'])) $Header .= $mailObject->HeaderLine('Content-type', $structure->ctype_primary.'/'.$structure->ctype_secondary.';'.$boundary);

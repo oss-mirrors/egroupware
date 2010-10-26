@@ -65,8 +65,9 @@
 		 */
 		function addAttachment($_formData)
 		{
-#echo "addattachment<br>";
-#_debug_array($_formData);
+			//echo "addattachment<br>";
+			//_debug_array($_formData);
+			//error_log(__METHOD__.__LINE__.array2string($_formData));
 			// to gard against exploits the file must be either uploaded or be in the temp_dir
 			if ($_formData['size'] != 0 && (is_uploaded_file($_formData['file']) ||
 				realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir'])) ||
@@ -133,9 +134,9 @@
 			}
 
 			$this->saveSessionData();
-			#print"<pre>";
-			#error_log(print_r($this->sessionData,true));
-			#print"</pre>";exit;
+			//print"<pre>";
+			//error_log(__METHOD__.__LINE__.print_r($this->sessionData,true));
+			//print"</pre>";exit;
 		}
 
 		function addMessageAttachment($_uid, $_partID, $_folder, $_name, $_type, $_size)
@@ -440,11 +441,10 @@
 		/**
 		 * getRandomString - function to be used to fetch a random string and md5 encode that one
 		 * @param none
-		 * @returns string - a random number which is md5 encoded
+		 * @return string - a random number which is md5 encoded
 		 */
 		function getRandomString() {
-			mt_srand((float) microtime() * 1000000);
-			return md5(mt_rand (100000, 999999));
+			return bofelamimail::getRandomString();
 		}
 
 		/**

@@ -1,43 +1,27 @@
-<!-- BEGIN header -->
-<script language="JavaScript1.2">
-	var folderSelectURL		="{folder_select_url}";
-	var displayFileSelectorURL	="{file_selector_url}";
-	var composeID			="{compose_id}";
-
-	var activityImagePath		= "{ajax-loader}";
-	var fm_compose_langNoAddressSet	= "{lang_no_address_set}";
-
-	self.focus();
-
-	self.name="first_Window";
-
-	function addybook() {
-		Window1=window.open('{link_addressbook}',"{lang_search}","width=800,height=600,toolbar=no,scrollbars=yes,status=yes,resizable=yes");
-	}
-
-	function attach_window(url) {
-		awin = window.open(url,"attach","width=500,height=400,toolbar=no,resizable=yes");
-	}
-
-	function check_data()
-	{
-		return true;
-	}
-</script>
-<center>
-<form method="post" name="doit" action="{link_action}" ENCTYPE="multipart/form-data" onsubmit="return check_data();">
-
-
-<!-- BEGIN attachment -->
-<script language="javascript1.2">
-// position cursor in top form field
-///////////////////////////////////////////////////////////////////////document.doit.{focusElement}.focus();
-//sString = document.doit.{focusElement}.innerHTML;
-//document.doit.{focusElement}.innerHTML = sString;
-</script>
-
-
 <!-- BEGIN fileSelector -->
+<script language="javascript1.2">
+	var fileSelectorWindow;
+	var importID = "{importid}";
+	var fileSelectorWindowTimer;
+	var fileSelectorWindowTimeout=500;
+	function fm_import_displayVfsSelector() {
+		fileSelectorWindow = egw_openWindowCentered('{vfs_selector_url}','fm_import_vfsSelector','640','580',window.outerWidth/2,window.outerHeight/2);
+		if(fileSelectorWindowTimer) {
+			window.clearTimeout(fileSelectorWindowTimer);
+		}
+		fileSelectorWindowTimer = window.setInterval('fm_import_reloadImport()', fileSelectorWindowTimeout);
+	}
+
+	function fm_import_reloadImport() {
+		//searchesPending++;
+		//document.title=searchesPending;
+		if(fileSelectorWindow.closed == true) {
+			window.clearTimeout(fileSelectorWindowTimer);
+			xajax_doXMLHTTP("felamimail.ajaxfelamimail.reloadImportMail", importID);
+		}
+	}
+</script>
+
 <div id="fileSelectorDIV1" style="height:80px; border:0px solid red; background-color:white; padding:0px; margin:0px;">
 <form method="post" enctype="multipart/form-data" name="fileUploadForm" action="{file_selector_url}">
 	<table style="width:99%;">
@@ -47,11 +31,15 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="text-align:center;">
-				<input type="hidden" size="0" id="newMailboxName" name="newMailboxName" value="" > <!-- this one is needed only to comply with the pop-box -->
-				<input type="text" size="50" id="newMailboxMoveName" name="newMailboxMoveName" value="{mailboxNameShort}" readonly="readonly">
-				<a id="aMoveSelectFolder" href="#" onclick="javascript:window.open('{folder_select_url}', 'windowName', 'width=400,height=500,toolbar=no,resizable=yes');
-					return false;">{lang_select}</a>
+			<td style="text-align:left;">
+				<div style="padding-left:150px;">
+					<input type="hidden" size="0" id="newMailboxName" name="newMailboxName" value="" > <!-- this one is needed only to comply with the pop-box -->
+					<input type="hidden" size="0" id="importtype" name="importtype" value="{importtype}" >
+					<input type="hidden" size="0" id="importid" name="importid" value="{importid}" >
+					<input type="text" size="50" id="newMailboxMoveName" name="newMailboxMoveName" value="{mailboxNameShort}" readonly="readonly">
+					<a id="aMoveSelectFolder" href="#" onclick="javascript:window.open('{folder_select_url}', 'windowName', 'width=400,height=500,toolbar=no,resizable=yes');
+						return false;">{lang_select}</a>
+				</div>
 			</td>
 		</tr>
 		<tr>
@@ -60,8 +48,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="text-align:center;">
-				<input id="addFileName" name="addFileName" size="50" sstyle="width:450px;" type="file" onchange="submit()"/>
+			<td style="text-align:left;">
+				<div style="padding-left:150px;">
+					<input id="addFileName" name="addFileName" size="50" sstyle="width:450px;" type="{importtype}" {filebox_readonly} onchange="submit()"/>{vfs_attach_button} &nbsp; {lang_toggleFS}<input id="toggleFS" name="toggleFS" type="checkbox" value='vfs' {toggleFS_preset} onchange="submit()"/>
+				</div>
 			</td>
 		</tr>
 		<tr>
