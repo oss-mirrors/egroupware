@@ -257,7 +257,8 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 			$allChangedPseudoExceptions =& _egwcalendarsync_listPseudoExceptions($allChangedItems, $tzid);
 			$allChangedItems = array_merge($allChangedItems, $allChangedPseudoExceptions);
 			#Horde::logMessage('SymcML: egwcalendarsync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-			return array_unique($allChangedItems + array_diff($allClientItems, $allReadAbleItems));
+			$guids = array_unique($allChangedItems + array_diff($allClientItems, $allReadAbleItems));
+			break;
 
 		case 'add' :
 			// - added items may not need to be added, cause they are filtered out.
@@ -267,7 +268,8 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 			$allChangedPseudoExceptions =& _egwcalendarsync_listPseudoExceptions($allChangedItems, $tzid);
 			$allChangedItems = array_merge($allChangedItems, $allChangedPseudoExceptions);
 			#Horde::logMessage('SymcML: egwcalendarsync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-			return array_unique($allChangedItems + array_diff($allReadAbleItems, $allClientItems));
+			$guids = array_unique($allChangedItems + array_diff($allReadAbleItems, $allClientItems));
+			break;
 
 		case 'modify' :
 			// - modified entries, which not (longer) pass filters must not be send.
@@ -277,12 +279,38 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 			$allChangedPseudoExceptions =& _egwcalendarsync_listPseudoExceptions($allChangedItems, $tzid);
 			$allChangedItems = array_merge($allChangedItems, $allChangedPseudoExceptions);
 			#Horde::logMessage('SymcML: egwcalendarsync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-			return $allChangedItems;
+			$guids = $allChangedItems;
+			break;
 
 		default:
 			return new PEAR_Error("$action is not defined!");
 	}
+	usort($guids,"_calendarsync_guid_sort");
+	return $guids;
 }
+
+/**
+ * Sort GUIDs be calendar-id and recurrence
+ *
+ * @param string $a calendar-123[:456], 123=calendar-id, 456=recurrence
+ * @param string $b
+ * @return int see usort
+ */
+function _calendarsync_guid_sort($a,$b)
+{
+	// remove calendar- prefix;
+	list(,$a) = explode('-',$a);
+	list(,$b) = explode('-',$b);
+	list($a_id,$a_recurrence) = explode(':',$a);
+	list($b_id,$b_recurrence) = explode(':',$b);
+
+	if ($a_id == $b_id)
+	{
+		return $a_recurrence - $b_recurrence;
+	}
+	return $a_id - $b_id;
+}
+
 
 /**
  * Import an event represented in the specified contentType.
