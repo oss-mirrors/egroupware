@@ -273,7 +273,7 @@
 			#_debug_array($rawheaders);exit;
 			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid, $partID);
 			#_debug_array($attachments); exit;
-			$envelope	= $this->bofelamimail->getMessageEnvelope($this->uid, $partIDi,true);
+			$envelope	= $this->bofelamimail->getMessageEnvelope($this->uid, $partID);
 			#_debug_array($envelope); exit;
 			// if not using iFrames, we need to retrieve the messageBody here
 			// by now this is a fixed value and controls the use/loading of the template and how the vars are set.
@@ -454,7 +454,7 @@
 			$this->t->set_var("date_received",
 				@htmlspecialchars(bofelamimail::_strtotime($headers['DATE'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).' - '.bofelamimail::_strtotime($headers['DATE'],'H:i:s'),
 				ENT_QUOTES,$this->displayCharset));
-
+			//echo 'Envelope:'.preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT']).'#0<br>';
 			$subject = bofelamimail::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT'])),
                 $this->displayCharset);
 			$this->t->set_var("subject_data",$subject);
@@ -1458,7 +1458,6 @@
 			}
 			$this->t->set_var("date_data",
 				@htmlspecialchars(bofelamimail::_strtotime($headers['DATE'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).' - '.bofelamimail::_strtotime($headers['DATE'],'H:i:s'), ENT_QUOTES,$this->displayCharset));
-
 			// link to go back to the message view. the link differs if the print was called from a normal viewing window, or from compose
 			$subject = bofelamimail::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters, '', $envelope['SUBJECT']),false), $this->displayCharset);
 			$this->t->set_var("subject_data", $subject);
