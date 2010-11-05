@@ -273,7 +273,7 @@
 			#_debug_array($rawheaders);exit;
 			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid, $partID);
 			#_debug_array($attachments); exit;
-			$envelope	= $this->bofelamimail->getMessageEnvelope($this->uid, $partID);
+			$envelope	= $this->bofelamimail->getMessageEnvelope($this->uid, $partID,true);
 			#_debug_array($envelope); exit;
 			// if not using iFrames, we need to retrieve the messageBody here
 			// by now this is a fixed value and controls the use/loading of the template and how the vars are set.
@@ -455,7 +455,7 @@
 				@htmlspecialchars(bofelamimail::_strtotime($headers['DATE'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).' - '.bofelamimail::_strtotime($headers['DATE'],'H:i:s'),
 				ENT_QUOTES,$this->displayCharset));
 			//echo 'Envelope:'.preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT']).'#0<br>';
-			$subject = bofelamimail::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT'])),
+			$subject = bofelamimail::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT']),false),
                 $this->displayCharset);
 			$this->t->set_var("subject_data",$subject);
 
@@ -720,7 +720,7 @@
 			// (regis) seems to be necessary to reopen...
 			$this->bofelamimail->reopen($this->mailbox);
 			$headers	= $this->bofelamimail->getMessageHeader($this->uid, $partID);
-			$envelope   = $this->bofelamimail->getMessageEnvelope($this->uid, $partID);
+			$envelope   = $this->bofelamimail->getMessageEnvelope($this->uid, $partID,true);
 			if (PEAR::isError($headers)) {
 				print lang("ERROR: Message could not be displayed.")."<br>";
 				print "In Mailbox: $this->mailbox, with ID: $this->uid, and PartID: $partID<br>";
@@ -741,7 +741,7 @@
 			$this->t->egroupware_hack = False;
 
 			$this->translate();
-			$subject = bofelamimail::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT'])),
+			$subject = bofelamimail::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT']),false),
                 $this->displayCharset);
             $this->t->set_var("subject_data",$subject);
 
