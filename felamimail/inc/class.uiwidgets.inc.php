@@ -321,8 +321,7 @@
 				$replace = '';
 
 				$header['subject'] = preg_replace($search,$replace,$header['subject']);
-				$headerSubject = @htmlentities($header['subject'],ENT_QUOTES,$this->charset,false);
-				if (empty($headerSubject)) $headerSubject = @htmlentities($GLOBALS['egw']->translation->convert($header['subject'], bofelamimail::detect_encoding($header['subject']), $this->charset),ENT_QUOTES | ENT_IGNORE,$this->charset,false);
+				$headerSubject = bofelamimail::htmlentities($header['subject'],$this->charset);
 				$header['subject'] = $headerSubject;
 				// curly brackets get messed up by the template!
 				$header['subject'] = str_replace(array('{','}'),array('&#x7B;','&#x7D;'),$header['subject']);
@@ -379,12 +378,10 @@
 
 				if ($_folderType > 0) {
 					// sent or drafts or template folder
-					$header2add = @htmlentities($header['to_address'],ENT_QUOTES,$this->charset,false);
-					if (empty($header2add)) $header2add = @htmlentities($GLOBALS['egw']->translation->convert($header['to_address'], bofelamimail::detect_encoding($header['to_address']), $this->charset),ENT_QUOTES | ENT_IGNORE,$this->charset,false);
+					$header2add = bofelamimail::htmlentities($header['to_address'],$this->charset);
 					$header['to_address'] = $header2add;
 					if (!empty($header['to_name'])) {
-						$header2name = @htmlentities($header['to_name'],ENT_QUOTES,$this->charset,false);
-						if (empty($header2name)) $header2name = @htmlentities($GLOBALS['egw']->translation->convert($header['to_name'], bofelamimail::detect_encoding($header['to_name']), $this->charset),ENT_QUOTES | ENT_IGNORE,$this->charset,false);
+						$header2name = bofelamimail::htmlentities($header['to_name'],$this->charset);
 						$header['to_name'] = $header2name;
 
 						$sender_name	= $header['to_name'];
@@ -394,12 +391,10 @@
 						$full_address	= $header['to_address'];
 					}
 				} else {
-					$header2add = @htmlentities($header['sender_address'],ENT_QUOTES,$this->charset,false);
-					if (empty($header2add)) $header2add = @htmlentities($GLOBALS['egw']->translation->convert($header['sender_address'], bofelamimail::detect_encoding($header['sender_address']), $this->charset),ENT_QUOTES | ENT_IGNORE,$this->charset,false);
+					$header2add = bofelamimail::htmlentities($header['sender_address'],$this->charset);
 					$header['sender_address'] = $header2add;
 					if (!empty($header['sender_name'])) {
-						$header2name = @htmlentities($header['sender_name'],ENT_QUOTES,$this->charset,false);
-						if (empty($header2name)) $header2name = @htmlentities($GLOBALS['egw']->translation->convert($header['sender_name'], bofelamimail::detect_encoding($header['sender_name']), $this->charset),ENT_QUOTES | ENT_IGNORE,$this->charset,false);
+						$header2name = bofelamimail::htmlentities($header['sender_name'],$this->charset);
 						$header['sender_name'] = $header2name;
 
 						$sender_name	= $header['sender_name'];
