@@ -17,6 +17,7 @@ class devices
 	var $public_functions = array
 		(
 			'listDevices'		=> 'True',
+			'consistencyCheck'	=> 'True',
 			'viewDeviceDetails'	=> 'True',
 		);
 
@@ -76,6 +77,35 @@ class devices
 		}
 		return $devices;
 	}
+	
+	function cleanupDevices()
+	{
+		$wherer1 = array();
+		
+		if (!$GLOBALS['egw']->acl->check('run',1,'admin'))
+		{
+			$where1['owner_locname'] = $this->user;
+		}
+		
+		foreach ($this->db->select('egw_syncmldeviceowner',
+			'owner_devid', $where1,
+			__LINE__, __FILE__, 'syncml') as $row)
+		{
+			$deviceID = $row['owner_devid'];
+			$where2['dev_id'] = $deviceID;
+			if (!$this->db->select('egw_syncmldevinfo', 'dev_id', $where2,
+				__LINE__, __FILE__, 'syncml')->fetch())
+			{
+				$map_id = $this->user . $deviceID . '%';
+				$where[0] = "map_id LIKE '$map_id'";
+				$this->db->delete('egw_contentmap', $where, __LINE__, __FILE__, 'syncml');
+				$where[0] = "dev_id = '$this->user" . "$deviceID'";
+				$this->db->delete('egw_syncmlsummary', $where, __LINE__, __FILE__, 'syncml');
+				$where[0] = "owner_devid = '$deviceID'";
+				$this->db->delete('egw_syncmldeviceowner', $where, __LINE__, __FILE__, 'syncml');
+			}
+		}	
+	}
 
 
 	function getSyncSummary($deviceID)
@@ -101,9 +131,10 @@ class devices
 			$this->db->delete('egw_contentmap', $where, __LINE__, __FILE__, 'syncml');
 			$where[0] = "dev_id = '$this->user" . "$deviceID'";
 			$this->db->delete('egw_syncmlsummary', $where, __LINE__, __FILE__, 'syncml');
-			$where[0] = "owner_deviceid = '$deviceID' AND owner_locname = '$this->user'";
+			$where[0] = "owner_devid = '$deviceID' AND owner_locname = '$this->user'";
 			$this->db->delete('egw_syncmldeviceowner', $where, __LINE__, __FILE__, 'syncml');
 		}
+		$this->cleanupDevices();
 	}
 
 
@@ -120,7 +151,8 @@ class devices
 			$where[1] = "sync_path  = '$dataStore'";
 			$this->db->delete('egw_syncmlsummary', $where, __LINE__, __FILE__, 'syncml');
 		}
-		}
+		$this->cleanupDevices();
+	}
 
 
 	function listDevices()
@@ -210,6 +242,15 @@ class devices
 		}
 	}
 
+	function consistencyCheck()
+	{
+		$this->cleanupDevices();
+		$this->display_app_header(TRUE);
+		echo('<center>');
+		echo('<h1>'.lang('SyncML Table Consistency').'</h1>');
+		echo(lang('The consistency of the internal data structures is re-established.'));
+		echo('</center>');
+	}
 
 	function createDeviceDetailView()
 	{
