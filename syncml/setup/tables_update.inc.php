@@ -143,12 +143,14 @@ function syncml_upgrade1_6()
 function syncml_upgrade1_6_001()
 {
 	$GLOBALS['egw_setup']->db->delete('egw_syncmldevinfo', array(0 => '1'), __LINE__, __FILE__, 'syncml');
+	$GLOBALS['egw_setup']->db->delete('egw_syncmldeviceowner', array(0 => '1'), __LINE__, __FILE__, 'syncml');
 	return $GLOBALS['setup_info']['syncml']['currentver'] = '1.6.500jl';
 }
 
 function syncml_upgrade1_6_001jl()
 {
 	$GLOBALS['egw_setup']->db->delete('egw_syncmldevinfo', array(0 => '1'), __LINE__, __FILE__, 'syncml');
+	$GLOBALS['egw_setup']->db->delete('egw_syncmldeviceowner', array(0 => '1'), __LINE__, __FILE__, 'syncml');
 	return $GLOBALS['setup_info']['syncml']['currentver'] = '1.6.500jl';
 }
 

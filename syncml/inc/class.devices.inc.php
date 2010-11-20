@@ -82,7 +82,7 @@ class devices
 	{
 		$wherer1 = array();
 		
-		if (!$GLOBALS['egw']->acl->check('run',1,'admin'))
+		if (!isset($GLOBALS['egw_info']['user']['apps']['admin']))
 		{
 			$where1['owner_locname'] = $this->user;
 		}
@@ -96,17 +96,12 @@ class devices
 			if (!$this->db->select('egw_syncmldevinfo', 'dev_id', $where2,
 				__LINE__, __FILE__, 'syncml')->fetch())
 			{
-				$map_id = $this->user . $deviceID . '%';
-				$where[0] = "map_id LIKE '$map_id'";
-				$this->db->delete('egw_contentmap', $where, __LINE__, __FILE__, 'syncml');
-				$where[0] = "dev_id = '$this->user" . "$deviceID'";
-				$this->db->delete('egw_syncmlsummary', $where, __LINE__, __FILE__, 'syncml');
-				$where[0] = "owner_devid = '$deviceID'";
-				$this->db->delete('egw_syncmldeviceowner', $where, __LINE__, __FILE__, 'syncml');
+				$where1[0] = "owner_devid = '$deviceID'";
+				$this->db->delete('egw_syncmldeviceowner', $where1, __LINE__, __FILE__, 'syncml');
+				unset($where1[0]);
 			}
 		}	
 	}
-
 
 	function getSyncSummary($deviceID)
 	{
@@ -131,7 +126,7 @@ class devices
 			$this->db->delete('egw_contentmap', $where, __LINE__, __FILE__, 'syncml');
 			$where[0] = "dev_id = '$this->user" . "$deviceID'";
 			$this->db->delete('egw_syncmlsummary', $where, __LINE__, __FILE__, 'syncml');
-			$where[0] = "owner_devid = '$deviceID' AND owner_locname = '$this->user'";
+			$where[0] = "owner_deviceid = '$deviceID' AND owner_locname = '$this->user'";
 			$this->db->delete('egw_syncmldeviceowner', $where, __LINE__, __FILE__, 'syncml');
 		}
 		$this->cleanupDevices();
