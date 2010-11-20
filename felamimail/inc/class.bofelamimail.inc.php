@@ -14,7 +14,7 @@
  */
 
 /**
- * FeLaMiMail worker class 
+ * FeLaMiMail worker class
  *  -provides backend functionality for all classes in FeLaMiMail
  *  -provides classes that may be used by other apps too
  */
@@ -81,7 +81,7 @@ class bofelamimail
 
 		function bofelamimail($_displayCharset='iso-8859-1',$_restoreSession=true)
 		{
-			if ($_restoreSession) 
+			if ($_restoreSession)
 			{
 				//error_log(__METHOD__." Session restore ".function_backtrace());
 				$this->restoreSessionData();
@@ -119,7 +119,7 @@ class bofelamimail
 			}
 
 			// set some defaults
-			if(empty($this->sessionData)) 
+			if(empty($this->sessionData))
 			{
 				// this should be under user preferences
 				// sessionData empty
@@ -127,7 +127,7 @@ class bofelamimail
 				$this->sessionData['activeFilter']	= "-1";
 				// default mailbox INBOX
 				$this->sessionData['mailbox']		= (($lv_mailbox && self::folderExists($lv_mailbox,true)) ? $lv_mailbox : "INBOX");
-				$this->sessionData['previewMessage'] = ($firstMessage >0 ? $firstMessage : 0); 
+				$this->sessionData['previewMessage'] = ($firstMessage >0 ? $firstMessage : 0);
 				// default start message
 				$this->sessionData['startMessage']	= 1;
 				// default mailbox for preferences pages
@@ -437,7 +437,7 @@ class bofelamimail
 
 		/**
 		 * decode header (or envelope information
-		 * if array given, note that only values will be converted 
+		 * if array given, note that only values will be converted
 		 * @param $_string mixed input to be converted, if array call decode_header recursively on each value
 		 * @return mixed - based on the input type
 		 */
@@ -494,7 +494,7 @@ class bofelamimail
 				if (exec("which tnef")) // use tnef if exsting, as it gives better results..
 				{
 					exec( "cd $dir && tnef --save-body --overwrite -C $dir -f ./winmail.dat" );
-				} 
+				}
 				elseif (exec("which ytnef"))
 				{
 					exec( "cd $dir && ytnef -f . winmail.dat" );
@@ -566,7 +566,7 @@ class bofelamimail
 			$msglist = '';
 			$oldMailbox = '';
 			if (is_null($_folder) || empty($_folder)) $_folder = $this->sessionData['mailbox'];
-			if(!is_array($_messageUID) || count($_messageUID) === 0) 
+			if(!is_array($_messageUID) || count($_messageUID) === 0)
 			{
 				if ($_messageUID=='all')
 				{
@@ -575,7 +575,7 @@ class bofelamimail
 				else
 				{
 					if (self::$debug) error_log(__METHOD__." no messages Message(s): ".implode(',',$_messageUID));
-					return false;					
+					return false;
 				}
 			}
 
@@ -840,9 +840,9 @@ class bofelamimail
 			//repair doubleencoded ampersands
 			$_html = str_replace('&amp;amp;','&amp;',$_html);
 			self::replaceTagsCompletley($_html,'style'); // clean out empty or pagewide style definitions / left over tags
-			self::replaceTagsCompletley($_html,'head'); // Strip out stuff in head	
-			self::replaceTagsCompletley($_html,'!\[if','<!\[endif\]>',false); // Strip out stuff in ifs	
-			self::replaceTagsCompletley($_html,'!--\[if','<!\[endif\]-->',false); // Strip out stuff in ifs	
+			self::replaceTagsCompletley($_html,'head'); // Strip out stuff in head
+			self::replaceTagsCompletley($_html,'!\[if','<!\[endif\]>',false); // Strip out stuff in ifs
+			self::replaceTagsCompletley($_html,'!--\[if','<!\[endif\]-->',false); // Strip out stuff in ifs
 			//error_log($_html);
 			// force the use of kses, as it is still have the edge over purifier with some stuff
 			$usepurify = false;
@@ -851,7 +851,7 @@ class bofelamimail
 				// we may need a customized config, as we may allow external images, $GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs']
 
 				$config = html::purifyCreateDefaultConfig();
-				
+
 				$config->set('Core.Encoding', (self::$displayCharset?self::$displayCharset:'UTF-8'));
 				// maybe the two following lines are useful for caching???
 				$config->set('HTML.DefinitionID', 'felamimail');
@@ -896,7 +896,7 @@ class bofelamimail
 	            // clean out comments , should not be needed as purify should do the job.
 				$search = array(
 					'@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
-					'@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA 
+					'@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA
 	            );
 	            //$_html = preg_replace($search,"",$_html);
 	            // remove non printable chars
@@ -1098,7 +1098,7 @@ class bofelamimail
 				// no scripts allowed
 				// clean out comments
 				$search = array(
-					'@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA 
+					'@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA
 					'@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
 				);
 				//error_log(__METHOD__.$_html);
@@ -1245,7 +1245,7 @@ class bofelamimail
 			);
 			// try guessing the mimetype, if we get the application/octet-stream
 			if (strtolower($attachmentData['type']) == 'application/octet-stream') $attachmentData['type'] = mime_magic::filename2mime($attachmentData['filename']);
- 
+
 			return $attachmentData;
 		}
 
@@ -1379,12 +1379,12 @@ class bofelamimail
 				$inboxData->counter = self::getMailBoxCounters('INBOX');
 			}
 			// force unsubscribed by preference showAllFoldersInFolderPane
-			if ($_subscribedOnly == true && 
-				isset($this->mailPreferences->preferences['showAllFoldersInFolderPane']) && 
+			if ($_subscribedOnly == true &&
+				isset($this->mailPreferences->preferences['showAllFoldersInFolderPane']) &&
 				$this->mailPreferences->preferences['showAllFoldersInFolderPane']==1)
 			{
 				$_subscribedOnly = false;
-			} 
+			}
 			#$inboxData->attributes = 64;
 			$inboxFolderObject = array('INBOX' => $inboxData);
 			#_debug_array($folders);
@@ -1693,7 +1693,7 @@ class bofelamimail
 		/**
 		 * getMimePartCharset - fetches the charset mimepart if it exists
 		 * @param $_mimePartObject structure object
-		 * @return mixed mimepart or false if no CHARSET is found, the missing charset has to be handled somewhere else, 
+		 * @return mixed mimepart or false if no CHARSET is found, the missing charset has to be handled somewhere else,
 		 *		as we cannot safely assume any charset as we did earlier
 		 */
 		function getMimePartCharset($_mimePartObject)
@@ -1716,7 +1716,7 @@ class bofelamimail
 		function getMultipartAlternative($_uid, $_structure, $_htmlMode)
 		{
 			// a multipart/alternative has exactly 2 parts (text and html  OR  text and something else)
-			// sometimes there are 3 parts, when there is an ics/ical attached/included-> we want to show that 
+			// sometimes there are 3 parts, when there is an ics/ical attached/included-> we want to show that
 			// as attachment AND as abstracted ical information (we use our notification style here).
 			$partText = false;
 			$partHTML = false;
@@ -1785,7 +1785,7 @@ class bofelamimail
 		{
 			if (self::$debug) echo __METHOD__."$_uid, $_htmlMode<br>";
 			$bodyPart = array();
-			if (self::$debug) _debug_array($_structure); 
+			if (self::$debug) _debug_array($_structure);
 			if (!is_array($_structure)) $_structure = array($_structure);
 			foreach($_structure as $part) {
 				if (self::$debug) echo $part->type."/".$part->subType."<br>";
@@ -1883,7 +1883,7 @@ class bofelamimail
 					$olddate = $calboupdate->format_date($event['start']+$tz_diff);
 					// search egw, if we can find it
 					$eventid = $calobj->find_event(array('uid'=>$event['uid']));
-					if ((int)$eventid[0]>0) 
+					if ((int)$eventid[0]>0)
 					{
 						// we found an event, we use the first one
 						$oldevent = $calobj->read($eventid);
@@ -1893,11 +1893,11 @@ class bofelamimail
 						}
 						// we merge the changes and the original event
 						$event = array_merge($oldevent[$eventid[0]],$event);
-						// for some strange reason, the title of the old event is not replaced with the new title 
-						// if you klick on the ics and import it into egw, so we dont show the title here. 
+						// for some strange reason, the title of the old event is not replaced with the new title
+						// if you klick on the ics and import it into egw, so we dont show the title here.
 						// so if it is a mere reply, we dont use the new title (more detailed info/work needed here)
 						if ($_structure->parameters['METHOD']=='REPLY') $event['title'] = $oldevent[$eventid[0]]['title'];
-					} 
+					}
 					// we prepare the message
 					$details = $calboupdate->_get_event_details($event,$action,$event_arr);
 					$details['olddate']=$olddate;
@@ -1937,7 +1937,7 @@ class bofelamimail
 		function getHierarchyDelimiter()
 		{
 			$HierarchyDelimiter = '/';
-			if(is_a($this->icServer,'defaultimap')) 
+			if(is_a($this->icServer,'defaultimap'))
 			{
 				$HierarchyDelimiter = $this->icServer->getHierarchyDelimiter();
 				if (PEAR::isError($HierarchyDelimiter)) $HierarchyDelimiter = '/';
@@ -1986,7 +1986,7 @@ class bofelamimail
 						// if there is an PEAR Error, we assume that the server is not capable of sorting
 						if (PEAR::isError($sortResult)) {
 							$advFilter = 'CHARSET '. strtoupper(self::$displayCharset) .' '.$filter;
-							if (PEAR::isError($sortResult)) 
+							if (PEAR::isError($sortResult))
 							{
 								$resultByUid = false;
 								$sortResult = $this->icServer->search($filter, $resultByUid);
@@ -2002,7 +2002,7 @@ class bofelamimail
 					if (self::$debug) error_log(__METHOD__." Mailserver has NO SORT Capability");
 					$advFilter = 'CHARSET '. strtoupper(self::$displayCharset) .' '.$filter;
 					$sortResult = $this->icServer->search($advFilter, $resultByUid);
-					if (PEAR::isError($sortResult)) 
+					if (PEAR::isError($sortResult))
 					{
 						$sortResult = $this->icServer->search($filter, $resultByUid);
 						if (PEAR::isError($sortResult))
@@ -2328,7 +2328,7 @@ class bofelamimail
 			if (self::$debug) _debug_array($structure);
 			$attachments = array();
 			// this kind of messages contain only the attachment and no body
-			if($structure->type == 'APPLICATION' || $structure->type == 'AUDIO' || $structure->type == 'VIDEO' || $structure->type == 'IMAGE') 
+			if($structure->type == 'APPLICATION' || $structure->type == 'AUDIO' || $structure->type == 'VIDEO' || $structure->type == 'IMAGE')
 			{
 				$newAttachment = array();
 				$newAttachment['name']		= self::getFileNameFromStructure($structure);
@@ -2338,7 +2338,7 @@ class bofelamimail
 				$newAttachment['encoding']      = $structure->encoding;
 				// try guessing the mimetype, if we get the application/octet-stream
 				if (strtolower($newAttachment['mimeType']) == 'application/octet-stream') $newAttachment['mimeType'] = mime_magic::filename2mime($newAttachment['name']);
- 
+
 				if(isset($structure->cid)) {
 					$newAttachment['cid']	= $structure->cid;
 				}
@@ -2355,7 +2355,7 @@ class bofelamimail
 				#return $attachments;
 			}
 			// outlook sometimes sends a TEXT/CALENDAR;REQUEST as plain ics, nothing more.
-			if ($structure->type == 'TEXT' && $structure->subType == 'CALENDAR' && 
+			if ($structure->type == 'TEXT' && $structure->subType == 'CALENDAR' &&
 				isset($structure->parameters['METHOD'] ) && $structure->parameters['METHOD'] == 'REQUEST')
 			{
 				$newAttachment = array();
@@ -2369,7 +2369,7 @@ class bofelamimail
 			// this kind of message can have no attachments
 			if(($structure->type == 'TEXT' && !($structure->disposition == 'INLINE' && $structure->dparameters['FILENAME'])) ||
 			   ($structure->type == 'MULTIPART' && $structure->subType == 'ALTERNATIVE' && !is_array($structure->subParts)) ||
-			   !is_array($structure->subParts)) 
+			   !is_array($structure->subParts))
 			{
 				if (count($attachments) == 0) return array();
 			}
@@ -2408,7 +2408,7 @@ class bofelamimail
 					$newAttachment['encoding']	= $subPart->encoding;
 					// try guessing the mimetype, if we get the application/octet-stream
 					if (strtolower($newAttachment['mimeType']) == 'application/octet-stream') $newAttachment['mimeType'] = mime_magic::filename2mime($newAttachment['name']);
- 
+
 					if(isset($subPart->cid)) {
 						$newAttachment['cid']	= $subPart->cid;
 					}
@@ -2542,11 +2542,11 @@ class bofelamimail
 		 * @param _bodyParts - Body Array
 		 * @return array - a normalized Bodyarray
 		 */
-		static function normalizeBodyParts($_bodyParts) 
+		static function normalizeBodyParts($_bodyParts)
 		{
 			if (is_array($_bodyParts))
 			{
-				foreach($_bodyParts as $singleBodyPart) 
+				foreach($_bodyParts as $singleBodyPart)
 				{
 					if (!isset($singleBodyPart['body'])) {
 						$buff = self::normalizeBodyParts($singleBodyPart);
@@ -2687,6 +2687,23 @@ class bofelamimail
 			}
 		}
 
+		function isTrashFolder($_folderName)
+		{
+			if(empty($this->mailPreferences->preferences['trashFolder'])) {
+				return false;
+			}
+			// does the folder exist???
+			if (!self::folderExists($_folderName)) {
+				return false;
+			}
+
+			if(false !== stripos($_folderName, $this->mailPreferences->preferences['trashFolder'])) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
 		function isTemplateFolder($_folderName)
 		{
 			if(empty($this->mailPreferences->preferences['templateFolder'])) {
@@ -2738,14 +2755,14 @@ class bofelamimail
 			if ($deleteAfterMove === true)
 			{
 				$retValue = $this->icServer->deleteMessages($_messageUID, true);
-				if ( PEAR::isError($retValue)) 
+				if ( PEAR::isError($retValue))
 				{
 					error_log(__METHOD__.__LINE__."Delete After Move PEAR::Error:".array2string($retValue->message));
 					throw new egw_exception("Delete After Move PEAR::Error:".array2string($retValue->message));
 					return false;
 				}
 
-				if($deleteOptions != "mark_as_deleted") 
+				if($deleteOptions != "mark_as_deleted")
 				{
 					// delete the messages finaly
 					$this->icServer->expunge();
@@ -2756,7 +2773,7 @@ class bofelamimail
 
 		function openConnection($_icServerID=0, $_adminConnection=false)
 		{
-			if (!is_object($this->mailPreferences)) 
+			if (!is_object($this->mailPreferences))
 			{
 				error_log(__METHOD__." No Object for MailPreferences found.". function_backtrace());
 				$this->errorMessage .= lang('No valid data to create MailProfile!!');
@@ -2940,14 +2957,14 @@ class bofelamimail
 				//$line = str_replace("\t","        ",$line);
 				//$newStr .= wordwrap($line, $cols, $cut);
 				$allowedLength = $cols-strlen($cut);
-				if (strlen($line) > $allowedLength && 
-					($dontbreaklinesstartingwith==false || 
-					 ($dontbreaklinesstartingwith && 
+				if (strlen($line) > $allowedLength &&
+					($dontbreaklinesstartingwith==false ||
+					 ($dontbreaklinesstartingwith &&
 					  strlen($dontbreaklinesstartingwith)>=1 &&
 					  substr($line,0,strlen($dontbreaklinesstartingwith)) != $dontbreaklinesstartingwith
 					 )
 					)
-				   ) 
+				   )
 				{
 					$s=explode(" ", $line);
 					$line = "";
@@ -3056,7 +3073,7 @@ class bofelamimail
 			} else return false;
 			$singleAddress = imap_rfc822_parse_adrlist($toAddr,'');
 			if (self::$debug) error_log(__METHOD__.__LINE__.' To Address:'.$singleAddress[0]->mailbox."@".$singleAddress[0]->host.", ".$singleAddress[0]->personal);
-			$send->AddAddress($singleAddress[0]->mailbox."@".$singleAddress[0]->host, $singleAddress[0]->personal);	
+			$send->AddAddress($singleAddress[0]->mailbox."@".$singleAddress[0]->host, $singleAddress[0]->personal);
 			$send->AddCustomHeader('References: '.$headers['MESSAGE-ID']);
 			$send->Subject = $send->encode_subject( lang('Read')." : ".$headers['SUBJECT'] );
 
@@ -3164,10 +3181,10 @@ class bofelamimail
 		}
 
 		/**
-		 * htmlspecialchars 
+		 * htmlspecialchars
 		 * helperfunction to cope with wrong encoding in strings
 		 * @param string $_string  input to be converted
-		 * @return string 
+		 * @return string
 		 */
 		static function htmlspecialchars($_string, $_charset=false)
 		{
@@ -3183,7 +3200,7 @@ class bofelamimail
 		 * htmlentities
 		 * helperfunction to cope with wrong encoding in strings
 		 * @param string $_string  input to be converted
-		 * @return string 
+		 * @return string
 		 */
 		static function htmlentities($_string, $_charset=false)
 		{
@@ -3201,10 +3218,10 @@ class bofelamimail
 		 * @param string - to be evaluated
 		 * @return mixed string/boolean (encoding or false
 		 */
-		static function detect_encoding($string) { 
+		static function detect_encoding($string) {
 			static $list = array('utf-8', 'iso-8859-1', 'windows-1251'); // list may be extended
 			if (function_exists('iconv'))
-			{ 
+			{
 				foreach ($list as $item) {
 				$sample = iconv($item, $item, $string);
 				if (md5($sample) == md5($string))
@@ -3233,11 +3250,11 @@ class bofelamimail
 			{
 				$dtarr = explode(' ',$date);
 				$test = null;
-				while ($test===null && count($dtarr)>=1) 
+				while ($test===null && count($dtarr)>=1)
 				{
 					array_pop($dtarr);
 					$test= ($convert2usertime ? egw_time::server2user(implode(' ',$dtarr),$format): egw_time::to(implode(' ',$dtarr),$format));
-					if ($test) $date2return = $test; 
+					if ($test) $date2return = $test;
 				}
 				if ($test===null) $date2return = egw_time::to('now',$format);
 			}
@@ -3257,18 +3274,18 @@ class bofelamimail
 		{
 			//error_log(__METHOD__.__FILE__.array2string($_formData).' Id:'.$IDtoAddToFileName.' ReqMimeType:'.$reqMimeType);
 			$importfailed = $tmpFileName = false;
-			if ($_formData['size'] != 0 && (is_uploaded_file($_formData['file']) || 
+			if ($_formData['size'] != 0 && (is_uploaded_file($_formData['file']) ||
 				realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir']) ||
 				parse_url($_formData['file'],PHP_URL_SCHEME) == 'vfs'))
 			{
 				// ensure existance of eGW temp dir
-				// note: this is different from apache temp dir, 
+				// note: this is different from apache temp dir,
 				// and different from any other temp file location set in php.ini
 				if (!file_exists($GLOBALS['egw_info']['server']['temp_dir']))
 				{
 					@mkdir($GLOBALS['egw_info']['server']['temp_dir'],0700);
 				}
-				
+
 				// if we were NOT able to create this temp directory, then make an ERROR report
 				if (!file_exists($GLOBALS['egw_info']['server']['temp_dir']))
 				{
@@ -3278,10 +3295,10 @@ class bofelamimail
 						.'Please check your configuration'.'<br>'
 						.'<br>';
 				}
-				
+
 				// sometimes PHP is very clue-less about MIME types, and gives NO file_type
 				// rfc default for unknown MIME type is:
-				if ($reqMimeType == 'message/rfc822') 
+				if ($reqMimeType == 'message/rfc822')
 				{
 					$mime_type_default = 'message/rfc';
 				}
@@ -3316,12 +3333,12 @@ class bofelamimail
 						}
 					}
 				}
-				
+
 				$tmpFileName = $GLOBALS['egw_info']['server']['temp_dir'].
 					SEP.
 					$GLOBALS['egw_info']['user']['account_id'].
 					trim($IDtoAddToFileName).basename($_formData['file']);
-				
+
 				if (parse_url($_formData['file'],PHP_URL_SCHEME) == 'vfs')
 				{
 					$tmpFileName = $_formData['file'];	// no need to store it somewhere
@@ -3350,7 +3367,7 @@ class bofelamimail
 					egw_vfs::load_wrapper('vfs');
 				}
 				return $tmpFileName;
-			}			
+			}
 		}
 
 		/**
@@ -3477,7 +3494,7 @@ class bofelamimail
 			if ($header['PRIORITY'] && $header['PRIORITY'] != 'normal') $headdata .= lang('priority').': '.$header['PRIORITY']."\n";
 			if ($header['IMPORTANCE'] && $header['IMPORTANCE'] !='normal') $headdata .= lang('importance').': '.$header['IMPORTANCE']."\n";
 			//if ($mailcontent['headers']['ORGANIZATION']) $headdata .= lang('organization').': '.$mailcontent['headers']['ORGANIZATION']."\
-			if (!empty($headdata)) 
+			if (!empty($headdata))
 			{
 				if (!empty($headline)) $headdata = "---------------------------- $headline ----------------------------\n".$headdata;
 				if (empty($headline)) $headdata = "--------------------------------------------------------\n".$headdata;
@@ -3622,7 +3639,7 @@ class bofelamimail
 					}
 					if (($structure->ctype_secondary=='alternative'||
 						 $structure->ctype_secondary=='mixed' ||
-						 $structure->ctype_secondary=='signed' ) && 
+						 $structure->ctype_secondary=='signed' ) &&
 						$part->ctype_primary=='text' && $part->ctype_secondary=='html' && $part->body)
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
@@ -3638,9 +3655,9 @@ class bofelamimail
 					{
 						$attachmentnumber++;
 						echo $part->headers['content-transfer-encoding'].'#<br>';
-						$mailObject->AddStringAttachment($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body), 
-														 ($part->ctype_parameters['name']?$part->ctype_parameters['name']:'noname_'.$attachmentnumber), 
-														 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'), 
+						$mailObject->AddStringAttachment($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
+														 ($part->ctype_parameters['name']?$part->ctype_parameters['name']:'noname_'.$attachmentnumber),
+														 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'),
 														 $part->ctype_primary.'/'.$part->ctype_secondary
 														);
 					}
