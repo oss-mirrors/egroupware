@@ -18,6 +18,7 @@ class devices
 		(
 			'listDevices'		=> 'True',
 			'consistencyCheck'	=> 'True',
+			'deleteAccount'		=> 'True',
 			'viewDeviceDetails'	=> 'True',
 		);
 
@@ -100,6 +101,35 @@ class devices
 				$this->db->delete('egw_syncmldeviceowner', $where1, __LINE__, __FILE__, 'syncml');
 				unset($where1[0]);
 			}
+		}	
+	}
+	
+	/**
+	 * Delete account hook
+	 *
+	 * @param array|int $old_user integer old user or array with keys 
+	 'account_id' and 'new_owner' as the deleteaccount hook uses it
+	 * @param int $new_user=null
+	 */
+	static function deleteAccount($old_user, $newuser=null)
+	{
+		if (is_array($old_user))
+		{
+			$new_user = $old_user['new_owner'];
+			$old_user = $old_user['account_id'];
+		}
+		if (($user = $GLOBALS['egw']->accounts->id2name($old_user)))
+		{
+			$where = array();
+			$domain = empty($GLOBALS['egw_info']['user']['domain']) ? 'default' : $GLOBALS['egw_info']['user']['domain'];
+			$locname = $user . '@' . $domain;
+			$where[0] = "owner_locname = '$locname'";
+			$GLOBALS['egw']->db->delete('egw_syncmldeviceowner', $where, __LINE__, __FILE__, 'syncml');
+			$map_id = $locname . '%';
+			$where[0] = "map_id LIKE '$map_id'";
+			$GLOBALS['egw']->db->delete('egw_contentmap', $where, __LINE__, __FILE__, 'syncml');
+			$where[0] = "dev_id LIKE '$map_id'";
+			$GLOBALS['egw']->db->delete('egw_syncmlsummary', $where, __LINE__, __FILE__, 'syncml');
 		}	
 	}
 

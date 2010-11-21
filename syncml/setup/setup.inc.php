@@ -40,6 +40,8 @@ $setup_info['syncml']['tables'][]  = 'egw_syncmldeviceowner';
 /* The hooks this app includes, needed for hooks registration */
 $setup_info['syncml']['hooks']['preferences'] = 'syncml_hooks::preferences';
 $setup_info['syncml']['hooks']['settings'] = 'syncml_hooks::settings';
+$setup_info['syncml']['hooks']['deleteaccount'] = 'syncml.devices.deleteAccount';
+
 
 
 /* Dependencies for this app to work */
