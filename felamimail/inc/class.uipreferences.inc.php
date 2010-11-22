@@ -1,20 +1,21 @@
 <?php
-	/***************************************************************************\
-	* eGroupWare - FeLaMiMail                                                   *
-	* http://www.linux-at-work.de                                               *
-	* http://www.phpgw.de                                                       *
-	* http://www.egroupware.org                                                 *
-	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
-	* -------------------------------------------------                         *
-	* This program is free software; you can redistribute it and/or modify it   *
-	* under the terms of the GNU General Public License as published by the     *
-	* Free Software Foundation; either version 2 of the License, or (at your    *
-	* option) any later version.                                                *
-	\***************************************************************************/
+/**
+ * EGroupware - FeLaMiMail - preference user interface
+ *
+ * @link http://www.egroupware.org
+ * @package felamimail
+ * @author Lars Kneschke [lkneschke@linux-at-work.de]
+ * @author Klaus Leithoff [kl@stylite.de]
+ * @copyright (c) 2009-10 by Klaus Leithoff <kl-AT-stylite.de>
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @version $Id$
+ */
 
-	/* $Id$ */
-
-	require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
+/**
+ * FeLaMiMail preference user interface class, provides UI functionality for preferences/actions like
+ * managing folders, acls, signatures, rules
+ */
+require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
 
 	class uipreferences
 	{
@@ -276,7 +277,7 @@
 			if($this->bofelamimail->openConnection()) {
 				$folderObjects = $this->bofelamimail->getFolderObjects();
 				foreach($folderObjects as $folderName => $folderInfo) {
-					#_debug_array($folderData);
+					//_debug_array($folderInfo);
 					$folderList[$folderName] = $folderInfo->displayName;
 				}
 				$this->bofelamimail->closeConnection();

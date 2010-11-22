@@ -25,10 +25,11 @@ class uifelamimail
 			'compressFolder'	=> True,
 			'importMessage'		=> True,
 			'deleteMessage'		=> True,
-			'handleButtons'		=> True,
 			'hookAdmin'		=> True,
 			'toggleFilter'		=> True,
-			'viewMainScreen'	=> True
+			'viewMainScreen'	=> True,
+			'redirectToPreferences' => True,
+			'redirectToEmailadmin' => True,
 		);
 		
 		var $mailbox;		// the current folder in use
@@ -83,6 +84,33 @@ class uifelamimail
 			$this->dataRowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->dataRowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
 			#print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+		}
+
+		function redirectToPreferences ()
+		{
+			$this->display_app_header();
+			//appname is a $_GET parameter, so the passing as function parameter does not work 
+			ExecMethod('preferences.uisettings.index',array('appname'=>'felamimail'));
+			exit;
+		}
+
+		function redirectToEmailadmin ()
+		{
+			$GLOBALS['egw_info']['flags']['currentapp'] = 'emailadmin';
+			$this->display_app_header(false);
+			if (!file_exists(EGW_SERVER_ROOT.($et_css_file ='/etemplate/templates/'.$GLOBALS['egw_info']['user']['preferences']['common']['template_set'].'/app.css')))
+			{
+				$et_css_file = '/etemplate/templates/default/app.css';
+			}
+			echo '
+<style type="text/css">
+<!--
+    @import url('.$GLOBALS['egw_info']['server']['webserver_url'].$et_css_file.');
+-->
+</style>';
+
+			ExecMethod2('emailadmin.emailadmin_ui.index');
+			exit;
 		}
 
 		function addVcard()
@@ -184,36 +212,61 @@ class uifelamimail
 			unset($_POST["msg"]);
 			//_debug_array($alert_message);
 			//error_log(__METHOD__." called from:".function_backtrace());
-			if(is_array($_FILES["addFileName"])) {
-				$destination = html::purify($_POST['newMailboxMoveName']?$_POST['newMailboxMoveName']:'');
+			$proceed = false;
+			if(is_array($_FILES["addFileName"])) 
+			{
 				#phpinfo();
 				#error_log(print_r($_FILES,true));
 				if($_FILES['addFileName']['error'] == $UPLOAD_ERR_OK) {
+					$proceed = true;
 					$formData['name']	= $_FILES['addFileName']['name'];
 					$formData['type']	= $_FILES['addFileName']['type'];
 					$formData['file']	= $_FILES['addFileName']['tmp_name'];
 					$formData['size']	= $_FILES['addFileName']['size'];
-					$message = $this->importMessageToFolder($formData,$destination);
 				}
 			}
 			if ($addFileName && $toggleFS == 'vfs' && $importtype == 'vfs' && $importID)
 			{
-				$destination = html::purify($_POST['newMailboxMoveName']?$_POST['newMailboxMoveName']:'');
 				$sessionData = $GLOBALS['egw']->session->appsession('compose_session_data_'.$importID, 'felamimail');
 				//error_log(__METHOD__.__LINE__.array2string($sessionData));
 				foreach((array)$sessionData['attachments'] as $attachment) {
 					//error_log(__METHOD__.__LINE__.array2string($attachment));
 					if ($addFileName == $attachment['name'])
 					{
+						$proceed = true;
 						$formData['name']	= $attachment['name'];
 						$formData['type']	= $attachment['type'];
 						$formData['file']	= $attachment['file'];
 						$formData['size']	= $attachment['size'];
-						$message = $this->importMessageToFolder($formData,$destination);
 						break;
 					}
 				}
 			}
+			if ($proceed === true)
+			{
+				$destination = html::purify($_POST['newMailboxMoveName']?$_POST['newMailboxMoveName']:'');
+				try
+				{
+					$messageUid = $this->importMessageToFolder($formData,$destination,$importID);
+				    $linkData = array
+				    (
+				        'menuaction'    => 'felamimail.uidisplay.display',
+						'uid'		=> $messageUid,
+						'mailbox'    => base64_encode($destination),
+				    );
+				}
+				catch (egw_exception_wrong_userinput $e)
+				{
+				    $linkData = array
+				    (
+				        'menuaction'    => 'felamimail.uifelamimail.importMessage',
+						'msg'		=> htmlspecialchars($e->getMessage()),
+				    );
+				}
+				egw::redirect_link('/index.php',$linkData);
+				exit;
+			}
+
 			if(!@is_object($GLOBALS['egw']->js))
 			{
 				$GLOBALS['egw']->js = CreateObject('phpgwapi.javascript');
@@ -225,8 +278,10 @@ class uifelamimail
 			#$uiwidgets		=& CreateObject('felamimail.uiwidgets');
 
 			$this->t->set_file(array("importMessage" => "importMessage.tpl"));
-			$importID =bofelamimail::getRandomString();
+
 			$this->t->set_block('importMessage','fileSelector','fileSelector');
+			$importID =bofelamimail::getRandomString();
+
 			// prepare saving destination of imported message
 			$linkData = array
 			(
@@ -316,80 +371,32 @@ class uifelamimail
 			return 'window.close();';
 		}
 
-		function importMessageToFolder($_formData,$_folder='')
+		/**
+		 * importMessageToFolder
+		 *
+		 * @param array $_formData Array with information of name, type, file and size
+		 * @param string $_folder (passed by reference) will set the folder used. must be set with a folder, but will hold modifications if
+		 *					folder is modified
+		 * @param string $importID ID for the imported message, used by attachments to identify them unambiguously
+		 * @return mixed $messageUID or exception
+		 */
+		function importMessageToFolder($_formData,&$_folder,$importID='')
 		{
 			$importfailed = false;
-			if ($_formData['size'] != 0 && (is_uploaded_file($_formData['file']) || 
-				realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir']) ||
-				parse_url($_formData['file'],PHP_URL_SCHEME) == 'vfs'))
+
+			// check if formdata meets basic restrictions (in tmp dir, or vfs, mimetype, etc.)
+			try
 			{
-				// ensure existance of eGW temp dir
-				// note: this is different from apache temp dir, 
-				// and different from any other temp file location set in php.ini
-				if (!file_exists($GLOBALS['egw_info']['server']['temp_dir']))
-				{
-					@mkdir($GLOBALS['egw_info']['server']['temp_dir'],0700);
-				}
-				
-				// if we were NOT able to create this temp directory, then make an ERROR report
-				if (!file_exists($GLOBALS['egw_info']['server']['temp_dir']))
-				{
-					$alert_msg .= 'Error:'.'<br>'
-						.'Server is unable to access phpgw tmp directory'.'<br>'
-						.$GLOBALS['egw_info']['server']['temp_dir'].'<br>'
-						.'Please check your configuration'.'<br>'
-						.'<br>';
-				}
-				
-				// sometimes PHP is very clue-less about MIME types, and gives NO file_type
-				// rfc default for unknown MIME type is:
-				$mime_type_default = 'message/rfc';
-				// so if PHP did not pass any file_type info, then substitute the rfc default value
-				if (substr(strtolower(trim($_formData['type'])),0,strlen($mime_type_default)) != $mime_type_default)
-				{
-					// maybe its application/octet-stream -> this may mean that we could not determine the type
-					// so we check for the suffix too
-					$buff = explode('.',$_formData['name']);
-					$suffix = '';
-					if (is_array($buff)) $suffix = array_pop($buff); // take the last extension to check with ext2mime
-					if (!(strtolower(trim($_formData['type'])) == "application/octet-stream" && mime_magic::ext2mime($suffix)=='message/rfc822'))
-					{
-						//error_log("Message rejected, no message/rfc. Is:".$_formData['type']);
-						$importfailed = true;
-						$alert_msg .= lang("Message rejected, no message/rfc. Is:%1",$_formData['type']);
-					}
-				}
-				
-				$tmpFileName = $GLOBALS['egw_info']['server']['temp_dir'].
-					SEP.
-					$GLOBALS['egw_info']['user']['account_id'].
-					basename($_formData['file']);
-				
-				if (parse_url($_formData['file'],PHP_URL_SCHEME) == 'vfs')
-				{
-					$tmpFileName = $_formData['file'];	// no need to store it somewhere
-				}
-				elseif (is_uploaded_file($_formData['file']))
-				{
-					move_uploaded_file($_formData['file'],$tmpFileName);	// requirement for safe_mode!
-				}
-				else
-				{
-					rename($_formData['file'],$tmpFileName);
-				}
-			} else {
-				//error_log("Import of message ".$_formData['file']." failes to meet basic restrictions");
+				$tmpFileName = bofelamimail::checkFileBasics($_formData,$importID);
+			}
+			catch (egw_exception_wrong_userinput $e)
+			{
 				$importfailed = true;
-				$alert_msg .= lang("Import of message %1 failes to meet basic restrictions.",$_formData['name']);
+				$alert_msg .= $e->getMessage();
 			}
 			// -----------------------------------------------------------------------
 			if ($importfailed === false)
 			{
-				if (parse_url($tmpFileName,PHP_URL_SCHEME) == 'vfs')
-				{
-					egw_vfs::load_wrapper('vfs');
-				}
-
 				$mailObject = new egw_mailer();
 				try
 				{
@@ -409,53 +416,139 @@ class uifelamimail
 				}
 				$delimiter = $this->bofelamimail->getHierarchyDelimiter();
 				if($_folder=='INBOX'.$delimiter) $_folder='INBOX';
-				if ($this->bofelamimail->folderExists($_folder,true)) {
-					try
-					{
-						$messageUid = $this->bofelamimail->appendMessage($_folder,
-							$Header.$mailObject->LE.$mailObject->LE,
-							$Body,
-							$flags);
+				if ($importfailed === false)
+				{
+					if ($this->bofelamimail->folderExists($_folder,true)) {
+						try
+						{
+							$messageUid = $this->bofelamimail->appendMessage($_folder,
+								$Header.$mailObject->LE.$mailObject->LE,
+								$Body,
+								$flags);
+						}
+						catch (egw_exception_wrong_userinput $e)
+						{
+							$importfailed = true;
+							$alert_msg .= lang("Import of message %1 failed. Could not save message to folder %2 due to: %3",$_formData['name'],$_folder,$e->getMessage());
+						}
 					}
-					catch (egw_exception_wrong_userinput $e)
+					else
 					{
 						$importfailed = true;
-						$alert_msg .= lang("Import of message %1 failed. Could not save message to folder %2 due to: %3",$_formData['name'],$_folder,$e->getMessage());
+						$alert_msg .= lang("Import of message %1 failed. Destination Folder %2 does not exist.",$_formData['name'],$_folder);
 					}
-				}
-				else
-				{
-					$importfailed = true;
-					$alert_msg .= lang("Import of message %1 failed. Destination Folder %2 does not exist.",$_formData['name'],$_folder);
 				}
 			}
 			// set the url to open when refreshing
 			if ($importfailed == true)
 			{
-		        $linkData = array
-		        (
-		            'menuaction'    => 'felamimail.uifelamimail.importMessage',
-					'msg'		=> htmlspecialchars($alert_msg),
-		        );
+				throw new egw_exception_wrong_userinput($alert_msg);
 			}
 			else
 			{
-		        $linkData = array
-		        (
-		            'menuaction'    => 'felamimail.uidisplay.display',
-					'uid'		=> $messageUid,
-					'mailbox'    => base64_encode($_folder),
-		        );
-			}
-			
-			//echo "Errors:".$alert_msg.'<br>';
-			//_debug_array($linkData);
-			//exit;
-			
-			egw::redirect_link('/index.php',$linkData);
-			exit;
+				return $messageUid;
+			}			
 		}
 
+		/**
+		 * importMessageToMergeAndSend
+		 *
+		 * @param array $_formData Array with information of name, type, file and size
+		 * @param array $SendAndMergeTocontacts array of contact ids 
+		 * @param string $_folder (passed by reference) will set the folder used. must be set with a folder, but will hold modifications if
+		 *					folder is modified
+		 * @param string $importID ID for the imported message, used by attachments to identify them unambiguously
+		 * @return mixed $messageUID or exception
+		 */
+		function importMessageToMergeAndSend($_formData, $SendAndMergeTocontacts, &$_folder, $importID='')
+		{
+			$importfailed = false;
+			if (empty($SendAndMergeTocontacts)) 
+			{
+				$importfailed = true;
+				$alert_msg .= lang("Import of message %1 failed. No Contacts to merge and send to specified.",$_formData['name']);
+			}
+
+			// check if formdata meets basic restrictions (in tmp dir, or vfs, mimetype, etc.)
+			try
+			{
+				$tmpFileName = bofelamimail::checkFileBasics($_formData,$importID);
+			}
+			catch (egw_exception_wrong_userinput $e)
+			{
+				$importfailed = true;
+				$alert_msg .= $e->getMessage();
+			}
+			// -----------------------------------------------------------------------
+			if ($importfailed === false)
+			{
+				$mailObject = new egw_mailer();
+				try
+				{
+					$this->bofelamimail->parseFileIntoMailObject($mailObject,$tmpFileName,$Header,$Body);
+				}
+				catch (egw_exception_assertion_failed $e)
+				{
+					$importfailed = true;
+					$alert_msg .= $e->getMessage();
+				}
+				//_debug_array($Body);
+				$this->bofelamimail->openConnection();
+				if (empty($_folder))
+				{
+					$importfailed = true;
+					$alert_msg .= lang("Import of message %1 failed. Destination Folder not set.",$_formData['name']);
+				}
+				$delimiter = $this->bofelamimail->getHierarchyDelimiter();
+				if($_folder=='INBOX'.$delimiter) $_folder='INBOX';
+				if ($importfailed === false)
+				{
+					foreach ($SendAndMergeTocontacts as $k => $val)
+					{
+						if (is_int($val)) // do the merge
+						{
+							//$Body = $this->bofelamimail->merge($Body,$val);
+						}
+						if ($val != 'dontmerge')
+						{
+							//$this->mailObject->Send
+						}
+						if ($val == 'dontmerge')
+						{
+							// this action is performed, when no send is required and no merge is required (only copy to folder is done)
+							if ($this->bofelamimail->folderExists($_folder,true)) {
+								try
+								{
+									$messageUid = $this->bofelamimail->appendMessage($_folder,
+										$Header.$mailObject->LE.$mailObject->LE,
+										$Body,
+										$flags);
+								}
+								catch (egw_exception_wrong_userinput $e)
+								{
+									$importfailed = true;
+									$alert_msg .= lang("Import of message %1 failed. Could not save message to folder %2 due to: %3",$_formData['name'],$_folder,$e->getMessage());
+								}
+							}
+							else
+							{
+								$importfailed = true;
+								$alert_msg .= lang("Import of message %1 failed. Destination Folder %2 does not exist.",$_formData['name'],$_folder);
+							}
+						}
+					}
+				}
+			}
+			// set the url to open when refreshing
+			if ($importfailed == true)
+			{
+				throw new egw_exception_wrong_userinput($alert_msg);
+			}
+			else
+			{
+				return $messageUid;
+			}			
+		}
 
 		function deleteMessage()
 		{
@@ -480,60 +573,19 @@ class uifelamimail
 			window.close();</script>";
 		}
 		
-		function display_app_header()
+		function display_app_header($includeFMStuff=true)
 		{
-			// this call loads js and css for the treeobject
-			html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
-			egw_framework::validate_file('jscode','viewMainScreen','felamimail');
-			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
-
+			if ($includeFMStuff)
+			{
+				// this call loads js and css for the treeobject
+				html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
+				egw_framework::validate_file('jscode','viewMainScreen','felamimail');
+				$GLOBALS['egw_info']['flags']['include_xajax'] = True;
+			}
 			$GLOBALS['egw']->common->egw_header();
 			
 			echo $GLOBALS['egw']->framework->navbar();
-		}
-	
-		function handleButtons()
-		{
-			error_log(__METHOD__." called from:".function_backtrace());
-			if($this->moveNeeded == "1")
-			{
-				$this->bofelamimail->moveMessages($_POST["mailbox"],
-									$_POST["msg"]);
-			}
-			
-			elseif(!empty($_POST["mark_deleted"]) &&
-				is_array($_POST["msg"]))
-			{
-				$this->bofelamimail->deleteMessages($_POST["msg"]);
-			}
-			
-			elseif(!empty($_POST["mark_unread"]) &&
-				is_array($_POST["msg"]))
-			{
-				$this->bofelamimail->flagMessages("unread",$_POST["msg"]);
-			}
-			
-			elseif(!empty($_POST["mark_read"]) &&
-				is_array($_POST["msg"]))
-			{
-				$this->bofelamimail->flagMessages("read",$_POST["msg"]);
-			}
-			
-			elseif(!empty($_POST["mark_unflagged"]) &&
-				is_array($_POST["msg"]))
-			{
-				$this->bofelamimail->flagMessages("unflagged",$_POST["msg"]);
-			}
-			
-			elseif(!empty($_POST["mark_flagged"]) &&
-				is_array($_POST["msg"]))
-			{
-				$this->bofelamimail->flagMessages("flagged",$_POST["msg"]);
-			}
-			
-
-			$this->viewMainScreen();
-		}
+		}	
 
 		function hookAdmin()
 		{
@@ -986,38 +1038,6 @@ class uifelamimail
 				$this->bofelamimail->closeConnection();
 
 			}
-			$this->t->set_var('current_mailbox',$this->mailbox);
-			//$this->t->set_var('folder_tree',$folderTree);
-
-			$this->t->set_var('options_folder',$options_folder);
-			
-			$linkData = array
-			(
-				'menuaction'    => 'felamimail.uicompose.compose'
-			);
-			$this->t->set_var('url_compose_empty',"egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','test',700,egw_getWindowOuterHeight());");
-
-
-			$linkData = array
-			(
-				'menuaction'    => 'felamimail.uifilter.mainScreen'
-			);
-			$this->t->set_var('url_filter',$GLOBALS['egw']->link('/index.php',$linkData));
-
-			$linkData = array
-			(
-				'menuaction'    => 'felamimail.uifelamimail.handleButtons'
-			);
-			$this->t->set_var('url_change_folder',$GLOBALS['egw']->link('/index.php',$linkData));
-
-			$linkData = array
-			(
-				'menuaction'    => 'felamimail.uifelamimail.changeFilter'
-			);
-			$this->t->set_var('url_search_settings',$GLOBALS['egw']->link('/index.php',$linkData));
-
-			$this->t->set_var('lang_mark_messages_as',lang('mark messages as'));
-			$this->t->set_var('lang_delete',lang('delete'));
 
 			switch($GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle']) {
 				case 'outlook':

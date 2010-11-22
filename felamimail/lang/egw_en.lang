@@ -182,6 +182,7 @@ expunge	felamimail	en	Expunge
 extended	felamimail	en	extended
 felamimail	common	en	eMail
 file into	felamimail	en	file into
+file rejected, no %2. is:%1	felamimail	en	File rejected, no %2. Is:%1
 filemanager	felamimail	en	Filemanager
 files	felamimail	en	files
 filter active	felamimail	en	filter active
@@ -252,7 +253,6 @@ import mail	felamimail	en	Import Mail
 import message	felamimail	en	import message
 import of message %1 failed. destination folder %2 does not exist.	felamimail	en	Import of message %1 failed. Destination Folder %2 does not exist.
 import of message %1 failed. destination folder not set.	felamimail	en	Import of message %1 failed. Destination Folder not set.
-import of message %1 failes to meet basic restrictions.	felamimail	en	Import of message %1 failes to meet basic restrictions.
 importance	felamimail	en	importance
 in	felamimail	en	in
 inbox	felamimail	en	INBOX
@@ -298,7 +298,6 @@ matches regexp	felamimail	en	matches regexp
 max uploadsize	felamimail	en	max uploadsize
 message highlighting	felamimail	en	Message Highlighting
 message list	felamimail	en	Message List
-message rejected, no message/rfc. is:%1	felamimail	en	Message rejected, no message/rfc. Is:%1
 messages	felamimail	en	messages
 mon	felamimail	en	Mon
 move	felamimail	en	Move
@@ -370,6 +369,7 @@ previous message	felamimail	en	previous message
 print it	felamimail	en	print it
 print this page	felamimail	en	print this page
 printview	felamimail	en	printview
+processing of file %1 failed. Failed to meet basic restrictions.	felamimail	en	processing of file %1 failed. Failed to meet basic restrictions.
 quicksearch	felamimail	en	Quicksearch
 read	felamimail	en	read
 reading	felamimail	en	reading

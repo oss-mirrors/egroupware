@@ -893,6 +893,7 @@
 			if (  !empty($_formData['printit']) && $_formData['printit'] == 0 ) $savingDestination = ($this->preferences->ic_server[0]->draftfolder ? $this->preferences->ic_server[0]->draftfolder : $this->preferencesArray['draftFolder']);
 
 			if (count($mailAddr)>0) $BCCmail = $mail->AddrAppend("Bcc",$mailAddr);
+error_log(__METHOD__.__LINE__.$BCCmail.$mail->getMessageHeader().$mail->getMessageBody());
 			$bofelamimail->openConnection();
 			if ($bofelamimail->folderExists($savingDestination,true)) {
 				try
@@ -904,7 +905,7 @@
 				}
 				catch (egw_exception_wrong_userinput $e)
 				{
-					error_log(__METHOD__.__LINE__.lang("Import of message %1 failed. Could not save message to folder %2 due to: %3",__METHOD__,$savingDestination,$e->getMessage()));
+					error_log(__METHOD__.__LINE__.lang("Save of message %1 failed. Could not save message to folder %2 due to: %3",__METHOD__,$savingDestination,$e->getMessage()));
 					return false;
 				}
 

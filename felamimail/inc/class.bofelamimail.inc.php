@@ -436,9 +436,9 @@ class bofelamimail
 		}
 
 		/**
-		 * decode header (or envelope information
+		 * decode header (or envelope information)
 		 * if array given, note that only values will be converted
-		 * @param $_string mixed input to be converted, if array call decode_header recursively on each value
+		 * @param  mixed $_string input to be converted, if array call decode_header recursively on each value
 		 * @return mixed - based on the input type
 		 */
 		static function decode_header($_string)
@@ -1143,6 +1143,14 @@ class bofelamimail
 			}
 			$filename = self::getFileNameFromStructure($structure);
 			$attachment = $this->icServer->getBodyPart($_uid, $_partID, true);
+			if (PEAR::isError($attachment))
+			{
+				error_log(__METHOD__.__LINE__.' failed:'.$attachment->message);
+				return array('type' => 'text/plain',
+							 'filename' => 'error.txt',
+							 'attachment' =>__METHOD__.' failed:'.$attachment->message
+						);
+			}
 
 			if (PEAR::isError($attachment))
 			{
@@ -1214,6 +1222,14 @@ class bofelamimail
 			$structure = $this->_getSubStructure($structure, $partID);
 			$filename = self::getFileNameFromStructure($structure);
 			$attachment = $this->icServer->getBodyPart($_uid, $partID, true);
+			if (PEAR::isError($attachment))
+			{
+				error_log(__METHOD__.__LINE__.' failed:'.$attachment->message);
+				return array('type' => 'text/plain',
+							 'filename' => 'error.txt',
+							 'attachment' =>__METHOD__.' failed:'.$attachment->message
+						);
+			}
 
 			if (PEAR::isError($attachment))
 			{
@@ -1284,6 +1300,7 @@ class bofelamimail
 			$retValue = array();
 			$retValue['subscribed'] = false;
 			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
+				if (self::$debug) error_log(__METHOD__." no Server found for Folder:".$_folderName);
 				return false;
 			}
 
@@ -2042,7 +2059,7 @@ class bofelamimail
 				if( PEAR::isError($envelope = $this->icServer->getEnvelope('', $_uid, true)) ) {
 					return false;
 				}
-
+				//if ($decode) _debug_array($envelope[0]);
 				return ($decode ? self::decode_header($envelope[0]): $envelope[0]);
 			} else {
 				if( PEAR::isError($headers = $this->icServer->getParsedHeaders($_uid, true, $_partID, true)) ) {
@@ -2084,7 +2101,7 @@ class bofelamimail
 						}
 					}
 				}
-				#_debug_array($newData);
+				//if ($decode) _debug_array($newData);
 
 				return $newData;
 			}
@@ -2610,6 +2627,7 @@ class bofelamimail
 			}
 
 			$quota = $this->icServer->getStorageQuotaRoot('INBOX');
+			//error_log(__METHOD__.__LINE__.array2string($quota));
 			if(is_array($quota)) {
 				return array(
 					'usage'	=> $quota['USED'],
@@ -3119,37 +3137,13 @@ class bofelamimail
 		 * @param string &$err error-message on error
 		 * @return string/boolean merged content or false on error
 		 */
-		function merge($content,$ids)
+		function merge($content,$ids,$mimetype='')
 		{
 			$contacts = new addressbook_bo();
 			$mergeobj = new addressbook_merge();
-
-			foreach ($ids as $id)
-			{
-				// generate replacements
-				if (!($replacements = $mergeobj->contact_replacements($id)))
-				{
-					$err = lang('Contact not found!');
-					#return false;
-					continue;
-				}
-				if (strpos($content,'$$user/') !== null && ($user = $GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')))
-				{
-					$replacements += $mergeobj->contact_replacements($user,'user');
-				}
-				$replacements['$$date$$'] = date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],time()+$this->contacts->tz_offset_s);
-
-				$content = str_replace(array_keys($replacements),array_values($replacements),$content);
-
-
-				$this->replacements = $replacements;
-				if (strpos($content,'$$IF'))
-				{	//Example use to use: $$IF n_prefix~Herr~Sehr geehrter~Sehr geehrte$$
-					$content = preg_replace_callback('/\$\$IF ([0-9a-z_-]+)~(.*)~(.*)~(.*)\$\$/imU',Array($this,'replace_callback'),$content);
-				}
-
-			}
-			return $content;
+			
+			if (empty($mimetype)) $mimetype = (strlen(strip_tags($content)) == strlen($content) ?'text/plain':'text/html');
+			return $mergeobj->merge_string($content,$ids,&$err,$mimetype);
 		}
 
 		/**
@@ -3185,7 +3179,8 @@ class bofelamimail
 		 * htmlspecialchars
 		 * helperfunction to cope with wrong encoding in strings
 		 * @param string $_string  input to be converted
-		 * @return string
+		 * @param mixed $charset false or string -> Target charset, if false bofelamimail displayCharset will be used
+		 * @return string 
 		 */
 		static function htmlspecialchars($_string, $_charset=false)
 		{
@@ -3201,7 +3196,8 @@ class bofelamimail
 		 * htmlentities
 		 * helperfunction to cope with wrong encoding in strings
 		 * @param string $_string  input to be converted
-		 * @return string
+		 * @param mixed $charset false or string -> Target charset, if false bofelamimail displayCharset will be used
+		 * @return string 
 		 */
 		static function htmlentities($_string, $_charset=false)
 		{
@@ -3224,9 +3220,9 @@ class bofelamimail
 			if (function_exists('iconv'))
 			{
 				foreach ($list as $item) {
-				$sample = iconv($item, $item, $string);
-				if (md5($sample) == md5($string))
-					return $item;
+					$sample = iconv($item, $item, $string);
+					if (md5($sample) == md5($string))
+						return $item;
 				}
 			}
 			return false; // we may choose to return iso-8859-1 as default at some point
@@ -3581,14 +3577,55 @@ class bofelamimail
 				$mailDecode = new Mail_mimeDecode($message);
 				$structure = $mailDecode->decode(array('include_bodies'=>true,'decode_bodies'=>true,'decode_headers'=>true));
 				//error_log(__METHOD__.__LINE__.array2string($structure));
+				//_debug_array($structure);
 				//exit;
 				// now create a message to view, save it in Drafts and open it
-
+				$mailObject->PluginDir = EGW_SERVER_ROOT."/phpgwapi/inc/";
 				$mailObject->IsSMTP();
+				$mailObject->CharSet = self::$displayCharset; // some default, may be altered by BodyImport
+				if (isset($structure->ctype_parameters['charset'])) $mailObject->CharSet = $structure->ctype_parameters['charset'];
+				$mailObject->Encoding = 'quoted-printable'; // some default, may be altered by BodyImport
+/*
+				$mailObject->AddAddress($emailAddress, $addressObject->personal);
+				$mailObject->AddCC($emailAddress, $addressObject->personal);
+				$mailObject->AddBCC($emailAddress, $addressObject->personal);
+				$mailObject->AddReplyto($emailAddress, $addressObject->personal);
+*/
+
 				$result ='';
 				foreach((array)$structure->headers as $key => $val)
 				{
 					foreach((array)$val as $i => $v) if ($key!='content-type') $Header .= $mailObject->HeaderLine($key, trim($v));
+					switch ($key)
+					{
+						case 'sender':
+							$mailObject->Sender  = $val;
+							break;
+						case 'from':
+							$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($val):$val),'');
+							foreach((array)$address_array as $addressObject) {
+								$mailObject->From = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+								$mailObject->FromName = $addressObject->personal;
+							}
+							break;
+						case 'content-transfer-encoding':
+							$mailObject->Encoding = $val;
+							break;
+						case 'subject':
+							$mailObject->Subject = $val;
+							break;
+						default:
+							// stuff like X- ...
+							//$mailObject->AddCustomHeader('X-Mailer: FeLaMiMail');
+							if (!strtolower(substr($key,0,2))=='x-') break;
+						//case 'priority': // priority is a cusom header field
+						//	$mailObject->Priority = $val;
+						//	break;
+						case 'disposition-notification-To':
+						case 'organization':
+							foreach((array)$val as $i => $v) $mailObject->AddCustomHeader($key.': '. $v);
+							break;
+					}
 				}
 				if ($structure->ctype_primary=='text' && $structure->body)
 				{
@@ -3605,6 +3642,7 @@ class bofelamimail
 				$Body = $mailObject->getMessageBody();
 				//_debug_array($Header);
 				//_debug_array($Body);
+				//_debug_array($mailObject);
 				//exit;
 		}
 

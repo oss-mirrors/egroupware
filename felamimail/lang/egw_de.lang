@@ -182,6 +182,7 @@ expunge	felamimail	de	Endgültig löschen
 extended	felamimail	de	Erweitert
 felamimail	common	de	eMail
 file into	felamimail	de	verschiebe nach
+file rejected, no %2. is:%1	felamimail	de	Datei abgelehnt; die vorliegende Datei ist nicht vom Typ %2. Sie ist vom Typ %1
 filemanager	felamimail	de	Dateimanager
 files	felamimail	de	Dateien
 filter active	felamimail	de	Filter aktiv
@@ -252,7 +253,6 @@ import mail	felamimail	de	Mail Importieren
 import message	felamimail	de	Nachricht importieren
 import of message %1 failed. destination folder %2 does not exist.	felamimail	de	Der Import der Nachricht %1 schlug fehl. Zielordner %2 existiert nicht.
 import of message %1 failed. destination folder not set.	felamimail	de	Der Import der Nachricht %1 schlug fehl. Zielordner nicht gesetzt.
-import of message %1 failes to meet basic restrictions.	felamimail	de	Der Import der Nachricht %1 schlug fehl. Grundlegende Vorraussetzungen wurden nicht erfüllt.
 importance	felamimail	de	Wichtigkeit
 in	felamimail	de	In
 inbox	felamimail	de	Posteingang
@@ -298,7 +298,6 @@ matches regexp	felamimail	de	stimmt überein mit regulärem Ausdruck
 max uploadsize	felamimail	de	maximal Dateigröße
 message highlighting	felamimail	de	Nachrichtenhervorhebung
 message list	felamimail	de	Nachrichtenliste
-message rejected, no message/rfc. is:%1	felamimail	de	Nachricht abgelehnt; die vorliegende Nachricht ist nicht vom Typ message/rfc. Sie ist vom Typ %1
 messages	felamimail	de	Nachrichten
 mon	felamimail	de	Mo
 move	felamimail	de	Verschieben
@@ -370,6 +369,7 @@ previous message	felamimail	de	vorherige Nachricht
 print it	felamimail	de	E-Mail drucken
 print this page	felamimail	de	Diese Seite drucken
 printview	felamimail	de	Druckansicht
+processing of file %1 failed. Failed to meet basic restrictions.	felamimail	de	Das Verarbeiten der Datei %1 schlug fehl. Grundlegende Vorraussetzungen wurden nicht erfüllt.
 quicksearch	felamimail	de	Schnellsuche
 read	felamimail	de	gelesen
 reading	felamimail	de	lese

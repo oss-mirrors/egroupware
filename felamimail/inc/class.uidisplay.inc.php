@@ -187,6 +187,7 @@
 				if ($llink == $link) next($addresses);
 				#echo $text."#<br>";
 				#echo $link."#<br>\n";
+				$link = str_replace("\n","",$link);
 				$comp_uri = "<a href=\"$webserverURL/redirect.php?go=".$link;
 				$body = str_replace('<a href="'.$link, $comp_uri, $body);
 				$llink=$link;
@@ -208,7 +209,7 @@
 			);
 			$link = $GLOBALS['egw']->link('/index.php',$linkData);
 			//error_log(__METHOD__." link:".$link.'#<br>');
-			return "<a href='#' onclick='egw_openWindowCentered(\"$link\",\"compose\",700,egw_getWindowOuterHeight());' ><font color=\"blue\">".$text."</font></a>";
+			return "<a href='#' onclick='egw_openWindowCentered(\"$link\", \"compose\", 700, egw_getWindowOuterHeight());' > <font color=\"blue\"> ".$text." </font> </a>";
 		}
 
 		function highlightQuotes($text, $level = 5)
@@ -410,7 +411,8 @@
 			}
 
 
-			foreach($navbarImages as $buttonName => $buttonData) {
+			foreach($navbarImages as $buttonName => $buttonData) 
+			{
 				$navbarButtons .= $uiWidgets->navbarButton($buttonName, $buttonData['action'], $buttonData['tooltip'], 'right');
 			}
 
@@ -1068,7 +1070,7 @@
 
 						if ($showAddToAdrdessbookLink && $GLOBALS['egw_info']['user']['apps']['addressbook']) {
 							$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
-							$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
+							$onClick = "window.open(this,this.target, 'dependent=yes, width=850, height=440, location=no, menubar=no, toolbar=no, scrollbars=yes, status=yes'); return false;";
 							$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
 							$senderAddress .= sprintf('<a href="%s" onClick="%s">
 								<img src="%s" width="10" height="8" border="0"
@@ -1220,8 +1222,8 @@
 				if(!empty($body)) {
 					$body .= '<hr style="border:dotted 1px silver;">';
 				}
-				#_debug_array($singleBodyPart['charSet']);
-				#_debug_array($singleBodyPart['mimeType']);
+				//_debug_array($singleBodyPart['charSet']);
+				//_debug_array($singleBodyPart['mimeType']);
 				//error_log($singleBodyPart['body']);
 				// some characterreplacements, as they fail to translate
 				$sar = array(
@@ -1327,7 +1329,7 @@
 					// create links for email addresses
 					$link = $GLOBALS['egw']->link('/index.php',array('menuaction'    => 'felamimail.uicompose.compose'));
 					$newBody = preg_replace("/href=(\"|\')mailto:([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)(\"|\')/ie",
-						"'href=\"#\"'.' onclick=\"egw_openWindowCentered(\'$link&send_to='.base64_encode('$2').'\',\'compose\',700,egw_getWindowOuterHeight());\"'", $newBody);
+						"'href=\"#\"'.' onclick=\"egw_openWindowCentered(\'$link&send_to='.base64_encode('$2').'\', \'compose\', 700, egw_getWindowOuterHeight());\"'", $newBody);
 //						"'href=\"$link&send_to='.base64_encode('$2').'\"'", $newBody);
 					//print "<pre>".htmlentities($newBody)."</pre><hr>";
 					
@@ -1337,7 +1339,6 @@
 				$body .= $newBody;
 				#print "<hr><pre>$body</pre><hr>";
 			}
-
 			// create links for windows shares
 			// \\\\\\\\ == '\\' in real life!! :)
 			$body = preg_replace("/(\\\\\\\\)([\w,\\\\,-]+)/i",
