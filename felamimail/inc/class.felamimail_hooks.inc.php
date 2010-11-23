@@ -483,7 +483,7 @@ class felamimail_hooks
 			$_GET['menuaction'] == 'felamimail.uifelamimail.changeFolder' ||
 			stripos($_GET['menuaction'],'ajax_sidebox') !== false) &&
 			$_GET['menuaction'] != 'felamimail.uifelamimail.redirectToPreferences' &&
-			$_GET['menuaction'] != 'felamimail.uifelamimail.reditectToEmailadmin') {
+			$_GET['menuaction'] != 'felamimail.uifelamimail.redirectToEmailadmin') {
 			if (isset($_GET["mailbox"]))
 			{
 				$bofelamimail->sessionData['mailbox'] = urldecode($_GET["mailbox"]);

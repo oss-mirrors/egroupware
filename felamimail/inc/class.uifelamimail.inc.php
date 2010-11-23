@@ -88,7 +88,7 @@ class uifelamimail
 
 		function redirectToPreferences ()
 		{
-			$this->display_app_header();
+			$this->display_app_header(false);
 			//appname is a $_GET parameter, so the passing as function parameter does not work 
 			ExecMethod('preferences.uisettings.index',array('appname'=>'felamimail'));
 			exit;
@@ -96,7 +96,7 @@ class uifelamimail
 
 		function redirectToEmailadmin ()
 		{
-			$GLOBALS['egw_info']['flags']['currentapp'] = 'emailadmin';
+			//$GLOBALS['egw_info']['flags']['currentapp'] = 'emailadmin';
 			$this->display_app_header(false);
 			if (!file_exists(EGW_SERVER_ROOT.($et_css_file ='/etemplate/templates/'.$GLOBALS['egw_info']['user']['preferences']['common']['template_set'].'/app.css')))
 			{
