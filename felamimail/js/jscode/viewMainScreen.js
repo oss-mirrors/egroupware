@@ -2,10 +2,6 @@ if (typeof CopyOrMove == 'undefined') var CopyOrMove = egw_appWindow('felamimail
 if (typeof prefAskForMove == 'undefined') var prefAskForMove = egw_appWindow('felamimail').prefAskForMove; 
 if (typeof sURL == 'undefined') var sURL = window.sURL;
 
-// some translations needed for javascript functions
-if (typeof movingMessages == 'undefined') var movingMessages		= egw_appWindow('felamimail').movingMessages;
-if (typeof copyingMessages == 'undefined') var copyingMessages		= egw_appWindow('felamimail').copyingMessages;
-
 if (typeof copyingMessages == 'undefined') var MessageBuffer;
 // global vars to store server and active folder info
 //var activeServerID			= '{activeServerID}';
@@ -236,14 +232,14 @@ function onNodeSelect(_nodeID) {
 				}
 				if (actionPending == 'copy') 
 				{
-					egw_appWindow('felamimail').setStatusMessage(copyingMessages +' <span style="font-weight: bold;">'+ top.tree.getUserData(_nodeID, 'folderName') +'</span>');
+					egw_appWindow('felamimail').setStatusMessage(egw_appWindow('felamimail').copyingMessages +' <span style="font-weight: bold;">'+ top.tree.getUserData(_nodeID, 'folderName') +'</span>');
 					document.getElementById('divMessageList').innerHTML = '';
 					egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.copyMessages", _nodeID, formData);
 				}
 				else
 				{
 					// default: move messages
-					egw_appWindow('felamimail').setStatusMessage(movingMessages +' <span style="font-weight: bold;">'+ top.tree.getUserData(_nodeID, 'folderName') +'</span>');
+					egw_appWindow('felamimail').setStatusMessage(egw_appWindow('felamimail').movingMessages +' <span style="font-weight: bold;">'+ top.tree.getUserData(_nodeID, 'folderName') +'</span>');
 					document.getElementById('divMessageList').innerHTML = '';
 					egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.moveMessages", _nodeID, formData);
 				}
