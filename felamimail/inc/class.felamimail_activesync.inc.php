@@ -77,6 +77,7 @@ class felamimail_activesync implements activesync_plugin_read
 	 */
 	private function _disconnect()
 	{
+		debugLog(__METHOD__);
 		if ($this->mail) $this->mail->closeConnection();
 
 		unset($this->mail);
@@ -134,13 +135,28 @@ class felamimail_activesync implements activesync_plugin_read
 	{
 		
 		debugLog (__METHOD__.' for Folder:'.$folderid.' SINCE:'.$cutoffdate);
+		$this->_connect($this->account);
 		$messagelist = array();
 		if (!empty($cutoffdate)) $_filter = array('type'=>"SINCE",'string'=> date("d-M-Y", $cutoffdate));
 		$rv = $this->splitID($folderid,$account,$_folderName,$id);
-		$this->messages = $this->mail->getHeaders($_folderName, $_startMessage=0, $_numberOfMessages=9999999, $_sort=0, $_reverse=false, $_filter, $_thisUIDOnly=null);
-		foreach ($this-messages as $k => $m)
+		debugLog (__METHOD__.' for Folder:'.$_folderName.' '.array2string($_filter));
+		$this->messages = $this->mail->getHeaders($_folderName, $_startMessage=1, $_numberOfMessages=9999999, $_sort=0, $_reverse=false, $_filter, $_thisUIDOnly=null);
+
+		foreach ((array)$this->messages['header'] as $k => $vars)
 		{
-			debugLog(__METHOD__.__LINE__.' MailID:'.$k.'->'.array2string($m));
+			//debugLog(__METHOD__.__LINE__.' MailID:'.$k.'->'.array2string($vars));
+			if (!empty($vars['deleted'])) continue; // cut of deleted messages
+			if ($cutoffdate && $vars['date'] < $cutoffdate) continue; // message is out of range for cutoffdate, ignore it
+			$mess["mod"] = $vars['date'];
+			$mess["id"] = $vars['uid'];
+			// 'seen' aka 'read' is the only flag we want to know about
+			$mess["flags"] = 0;
+			// outlook supports additional flags, set them to 0
+			$mess["olflags"] = 0;
+
+			if($vars["seen"]) $mess["flags"] = 1;
+			debugLog(__METHOD__.__LINE__.array2string($mess));
+			$messagelist[] = $mess;
 		}
 		return $messagelist;
 	}
