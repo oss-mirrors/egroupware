@@ -339,10 +339,11 @@ class bofelamimail
 
 		function createIMAPFilter($_folder, $_criterias)
 		{
+			//_debug_array($_criterias);
 			if(!is_array($_criterias)) {
 				return 'ALL';
 			}
-		#	error_log(print_r($_criterias, true));
+			#error_log(print_r($_criterias, true));
 			$imapFilter = '';
 
 			#foreach($_criterias as $criteria => $parameter) {
@@ -364,6 +365,9 @@ class bofelamimail
 					case 'SUBJECT':
 					case 'TEXT':
 					case 'TO':
+					case 'SINCE':
+					case 'BEFORE':
+					case 'ON':
 						$imapFilter .= $criteria .' "'. $_criterias['string'] .'" ';
 						break;
 				}
@@ -1992,6 +1996,7 @@ class bofelamimail
 			} else {
 				if (self::$debug) error_log(__METHOD__." USE NO CACHE");
 				$filter = $this->createIMAPFilter($_folderName, $_filter);
+				//_debug_array($filter);
 				if($this->icServer->hasCapability('SORT')) {
 					if (self::$debug) error_log(__METHOD__." Mailserver has SORT Capability");
 					$sortOrder = $this->_getSortString($_sort);
