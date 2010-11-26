@@ -86,6 +86,7 @@ class felamimail_activesync implements activesync_plugin_read
 	}
 
 	private $folders;
+	private $messages;
 
 	/**
 	 *  This function is analogous to GetMessageList.
@@ -117,12 +118,59 @@ class felamimail_activesync implements activesync_plugin_read
 	
 	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $mimesupport = 0)
 	{
-		debugLog (__METHOD__);		
-
+		debugLog (__METHOD__);
+		$stat = $this->StatMessage($folderid, $id);
+		debugLog(__METHOD__.__LINE__.array2string($stat));
+		// StatMessage should reopen the folder in question, so we dont need folderids in the following statements.
+		if ($stat)
+		{
+			$header = $this->mail->getMessageRawHeader($id);
+			$body = $this->mail->getMessageRawBody($id);
+			$output = new SyncMail();
+			$output->bodytruncated = 0; // should be handeled by comparing bodysize vs. $truncsize
+			// if ....
+			$output->bodysize = 1;
+			$output->body = 'i';
+			$output->read = $stat["flags"];
+			$output->subject = $this->messages[$id]['subject'];
+			$output->importance = $this->messages[$id]['priority'] ;
+			$output->daterecieved = $stat['mod'];
+			$output->displayto = $this->messages[$id]['to_address']; //$stat['FETCHED_HEADER']['to_name']
+			$output->to = $this->messages[$id]['to_address']; //$stat['FETCHED_HEADER']['to_name']
+			$output->from = $this->messages[$id]['sender_address']; //$stat['FETCHED_HEADER']['sender_name']
+			$output->cc = '';
+			$output->reply_to ='';
+			$output->messageclass = "IPM.Note";
+			if (stripos($this->messages[$id]['mimetype'],'signed')!== false) $output->messageclass = "IPM.Note.SMIME.MultipartSigned";
+			// start AS12 Stuff
+			$output->poommailflag = new SyncPoommailFlag();
+			$output->poommailflag->flagstatus = 0;
+			$output->internetcpid = 65001;
+			$output->contentclass="urn:content-classes:message";
+			if ($bodypreference == true)
+			{
+				$output->airsyncbasebody = new SyncAirSyncBaseBody();
+				debugLog("airsyncbasebody!");
+				if (isset($bodypreference[4])) 
+				{
+					debugLog("MIME Body");
+					$output->airsyncbasebody->type = 4;
+					$output->airsyncbasenativebodytype = 4;
+				}
+				$output->airsyncbasebody->data = $header."\r\n".$body;
+				$output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
+			}
+			// end AS12 Stuff
+			debugLog(__METHOD__.__LINE__.array2string($output));
+			return $output;
+		}
+		return false;
 	}
 	
-	public function StatMessage($folderid, $id) {
-		debugLog (__METHOD__);
+	public function StatMessage($folderid, $id) 
+	{
+        debugLog (__METHOD__.' for Folder:'.$folderid.' ID:'.$id);
+        return $this->fetchMessages($folderid, NULL, (array)$id);
 	}
 	
 	
@@ -133,17 +181,22 @@ class felamimail_activesync implements activesync_plugin_read
 	 */
 	public function GetMessageList($folderid, $cutoffdate=NULL)
 	{
-		
 		debugLog (__METHOD__.' for Folder:'.$folderid.' SINCE:'.$cutoffdate);
+		return $this->fetchMessages($folderid, $cutoffdate);
+	}
+	
+	private function fetchMessages($folderid, $cutoffdate=NULL, $_id=NULL)
+	{
+		
 		$this->_connect($this->account);
 		$messagelist = array();
 		if (!empty($cutoffdate)) $_filter = array('type'=>"SINCE",'string'=> date("d-M-Y", $cutoffdate));
 		$rv = $this->splitID($folderid,$account,$_folderName,$id);
-		debugLog (__METHOD__.' for Folder:'.$_folderName.' '.array2string($_filter));
-		$this->messages = $this->mail->getHeaders($_folderName, $_startMessage=1, $_numberOfMessages=9999999, $_sort=0, $_reverse=false, $_filter, $_thisUIDOnly=null);
-
-		foreach ((array)$this->messages['header'] as $k => $vars)
+		debugLog (__METHOD__.' for Folder:'.$_folderName.' '.array2string($_filter).' Ids:'.array2string($_id));
+		$rv_messages = $this->mail->getHeaders($_folderName, $_startMessage=1, $_numberOfMessages=9999999, $_sort=0, $_reverse=false, $_filter, $_id);
+		foreach ((array)$rv_messages['header'] as $k => $vars)
 		{
+			$this->messages[$vars['uid']] = $vars;
 			//debugLog(__METHOD__.__LINE__.' MailID:'.$k.'->'.array2string($vars));
 			if (!empty($vars['deleted'])) continue; // cut of deleted messages
 			if ($cutoffdate && $vars['date'] < $cutoffdate) continue; // message is out of range for cutoffdate, ignore it
@@ -153,10 +206,10 @@ class felamimail_activesync implements activesync_plugin_read
 			$mess["flags"] = 0;
 			// outlook supports additional flags, set them to 0
 			$mess["olflags"] = 0;
-
 			if($vars["seen"]) $mess["flags"] = 1;
 			debugLog(__METHOD__.__LINE__.array2string($mess));
-			$messagelist[] = $mess;
+			$messagelist[$vars['uid']] = $mess;
+			unset($mess);
 		}
 		return $messagelist;
 	}
