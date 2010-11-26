@@ -113,7 +113,51 @@ class felamimail_activesync implements activesync_plugin_read
 
 		return $folderlist;
 	}
+	
+	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $mimesupport = 0)
+	{
+	debugLog (__METHOD__);		
 
+	}
+	
+	public function StatMessage($folderid, $id) {
+		debugLog (__METHOD__);
+	}
+	
+	
+	/**
+	 *  This function is analogous to GetMessageList.
+	 *
+	 *  @ToDo loop over available email accounts
+	 */
+	public function GetMessageList($folderid)
+	{
+		
+		debug_log (__METHOD__);
+		$messagelist = array();
+/*
+		//foreach($available_accounts as $account)  $account = 0;
+		{
+			$this->_connect($account);
+			$this->messages = $this->messages = $this->mail->getHeaders()
+			if (!isset($this->folders)) $this->messages = $this->mail->getFolderObjects(true,false);
+
+			foreach ($this->folders as $folder => $folderObj) {
+				$folderlist[] = $f = array(
+					'id'     => $this->createID($account,$folder),
+					'mod'    => $folderObj->shortDisplayName,
+					'parent' => $this->getParentID($account,$folder),
+				);
+				debugLog(__METHOD__."() returning ".array2string($f));
+			}
+		}
+		//debugLog(__METHOD__."() returning ".array2string($folderlist));
+*/
+		return $messagelist;
+	}
+	
+
+	
 	/**
 	 * Get ID of parent Folder or '0' for folders in root
 	 *
@@ -218,7 +262,8 @@ class felamimail_activesync implements activesync_plugin_read
 
 		return $stat;
 	}
-
+	
+	
 	/**
 	 * Create a max. 32 hex letter ID, current 20 chars are used
 	 *
