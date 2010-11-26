@@ -116,7 +116,7 @@ class felamimail_activesync implements activesync_plugin_read
 	
 	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $mimesupport = 0)
 	{
-	debugLog (__METHOD__);		
+		debugLog (__METHOD__);		
 
 	}
 	
@@ -130,29 +130,18 @@ class felamimail_activesync implements activesync_plugin_read
 	 *
 	 *  @ToDo loop over available email accounts
 	 */
-	public function GetMessageList($folderid)
+	public function GetMessageList($folderid, $cutoffdate=NULL)
 	{
 		
-		debug_log (__METHOD__);
+		debugLog (__METHOD__.' for Folder:'.$folderid.' SINCE:'.$cutoffdate);
 		$messagelist = array();
-/*
-		//foreach($available_accounts as $account)  $account = 0;
+		if (!empty($cutoffdate)) $_filter = array('type'=>"SINCE",'string'=> date("d-M-Y", $cutoffdate));
+		$rv = $this->splitID($folderid,$account,$_folderName,$id);
+		$this->messages = $this->mail->getHeaders($_folderName, $_startMessage=0, $_numberOfMessages=9999999, $_sort=0, $_reverse=false, $_filter, $_thisUIDOnly=null);
+		foreach ($this-messages as $k => $m)
 		{
-			$this->_connect($account);
-			$this->messages = $this->messages = $this->mail->getHeaders()
-			if (!isset($this->folders)) $this->messages = $this->mail->getFolderObjects(true,false);
-
-			foreach ($this->folders as $folder => $folderObj) {
-				$folderlist[] = $f = array(
-					'id'     => $this->createID($account,$folder),
-					'mod'    => $folderObj->shortDisplayName,
-					'parent' => $this->getParentID($account,$folder),
-				);
-				debugLog(__METHOD__."() returning ".array2string($f));
-			}
+			debugLog(__METHOD__.__LINE__.' MailID:'.$k.'->'.array2string($m));
 		}
-		//debugLog(__METHOD__."() returning ".array2string($folderlist));
-*/
 		return $messagelist;
 	}
 	
