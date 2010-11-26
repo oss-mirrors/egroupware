@@ -162,7 +162,8 @@ class felamimail_activesync implements activesync_plugin_read
 			}
 			// end AS12 Stuff
 			debugLog(__METHOD__.__LINE__.array2string($output));
-			return $output;
+			//return $output;
+			return false;
 		}
 		return false;
 	}
