@@ -61,19 +61,34 @@
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
 
 			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
- 			$this->botranslation	= $GLOBALS['egw']->translation;
+ 			$this->botranslation	=& $GLOBALS['egw']->translation;
 
-			$this->bopreferences    =& CreateObject('felamimail.bopreferences');
-			$this->mailPreferences  = $this->bopreferences->getPreferences();
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+			if (is_object($this->bofelamimail->mailPreferences))
+			{
+				// account select box
+				$selectedID = $this->bofelamimail->getIdentitiesWithAccounts($identities);
+				// if nothing valid is found return to user defined account definition
+				if (empty($this->bofelamimail->icServer->host) && count($identities)==0 && $this->bofelamimail->mailPreferences->userDefinedAccounts)
+				{
+					// redirect to new personal account
+					egw::redirect_link('/index.php',array('menuaction'=>'felamimail.uipreferences.editAccountData',
+						'accountID'=>"new",
+						'msg'   => lang("There is no IMAP Server configured.")." - ".lang("Please configure access to an existing individual IMAP account."),
+					));
+				}
+			}						
+
+			$this->mailPreferences  =& $this->bofelamimail->mailPreferences;
 
 			$this->felamimailConfig	= config::read('felamimail');
 
 			$this->restoreSessionData();
 
-			$icServer = $this->mailPreferences->getIncomingServer(0);
+			$icServer =& $this->bofelamimail->icServer;
 
 			if(is_a($icServer,'defaultimap') && $icServer->enableSieve) {
-				$this->bosieve		= $icServer;
+				$this->bosieve		=& $icServer;
 				$this->timed_vacation = is_a($icServer,'cyrusimap') && $icServer->enableCyrusAdmin &&
 					$icServer->adminUsername && $icServer->adminPassword;
 			} else {
@@ -340,7 +355,7 @@
 		}
 
 		function displayRule($_ruleID, $_ruleData, $msg='') {
-			$preferences = $this->mailPreferences;
+			$preferences =& $this->mailPreferences;
 			// display the header
 			$this->display_app_header();
 			$msg = html::purify($msg);
@@ -414,7 +429,7 @@
 
 		function editRule()
 		{
-			$preferences = $this->mailPreferences;
+			$preferences =& $this->mailPreferences;
 			$msg = '';
 			$error = 0;
 			$this->getRules();	/* ADDED BY GHORTH */
@@ -519,7 +534,7 @@
 		}
 
 		function editVacation() {
-			$preferences = $this->mailPreferences;
+			$preferences =& $this->mailPreferences;
 			if(!(empty($preferences->preferences['prefpreventabsentnotice']) || $preferences->preferences['prefpreventabsentnotice'] == 0))
 			{
 				die('You should not be here!');
@@ -698,7 +713,7 @@
 		}
 
 		function editEmailNotification() {
-			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
+			$preferences =& $this->mailPreferences;
 			if(!(empty($preferences->preferences['prefpreventnotificationformailviaemail']) || $preferences->preferences['prefpreventnotificationformailviaemail'] == 0))
 				die('You should not be here!');
 
@@ -785,7 +800,8 @@
 
 		function listRules()
 		{
-			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
+			$preferences =& $this->mailPreferences;
+
 			if(!(empty($preferences->preferences['prefpreventeditfilterrules']) || $preferences->preferences['prefpreventeditfilterrules'] == 0))
 				die('You should not be here!');
 	
@@ -913,11 +929,10 @@
 		{
 			// this call loads js and css for the treeobject
 			html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
-
 			egw_framework::validate_file('jscode','editSieveRule','felamimail');
 			$GLOBALS['egw']->common->egw_header();
 
-			$bofelamimail		=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$bofelamimail		=& $this->bofelamimail;
 			$uiwidgets		=& CreateObject('felamimail.uiwidgets');
 			$connectionStatus	= $bofelamimail->openConnection();
 
@@ -1120,6 +1135,7 @@
 			if($script = $this->bosieve->getScript($this->scriptName)) {
 				$this->scriptToEdit 	= $this->scriptName;
 				if(PEAR::isError($error = $this->bosieve->retrieveRules($this->scriptName)) ) {
+					error_log(__METHOD__.__LINE__.$error->message);
 					$this->rules	= array();
 					$this->vacation	= array();
 				} else {
@@ -1128,6 +1144,7 @@
 				}
 			} else {
 				// something went wrong
+				error_log(__METHOD__.__LINE__.' failed');
 			}
 		}
 	}

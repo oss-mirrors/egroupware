@@ -79,8 +79,9 @@ class bofelamimail
 			}
 		}
 
-		function bofelamimail($_displayCharset='iso-8859-1',$_restoreSession=true)
+		function bofelamimail($_displayCharset='iso-8859-1',$_restoreSession=true, $_profileID=0)
 		{
+			$this->profileID = $_profileID;
 			if ($_restoreSession)
 			{
 				//error_log(__METHOD__." Session restore ".function_backtrace());
@@ -106,8 +107,8 @@ class bofelamimail
 
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			if ($this->mailPreferences) {
-				$this->icServer = $this->mailPreferences->getIncomingServer(0);
-				$this->ogServer = $this->mailPreferences->getOutgoingServer(0);
+				$this->icServer = $this->mailPreferences->getIncomingServer($this->profileID);
+				$this->ogServer = $this->mailPreferences->getOutgoingServer($this->profileID);
 				$this->htmlOptions  = $this->mailPreferences->preferences['htmlOptions'];
 			}
 			#_debug_array($this->mailPreferences->preferences);
@@ -123,6 +124,8 @@ class bofelamimail
 			{
 				// this should be under user preferences
 				// sessionData empty
+				// store active profileID
+				$this->sessionData['profileID']	= $_profileID;
 				// no filter active
 				$this->sessionData['activeFilter']	= "-1";
 				// default mailbox INBOX
@@ -1269,6 +1272,34 @@ class bofelamimail
 			return $attachmentData;
 		}
 
+		/**
+		 * getIdentitiesWithAccounts
+		 *
+		 * @param array reference to pass all identities back
+		 * @return the default Identity (active) or 0
+		 */
+		function getIdentitiesWithAccounts(&$identities)
+		{
+			// account select box
+			$selectedID = 0;
+			if($this->mailPreferences->userDefinedAccounts) $allAccountData = $this->bopreferences->getAllAccountData($this->mailPreferences);
+
+			if ($allAccountData) {
+				foreach ($allAccountData as $tmpkey => $accountData)
+				{
+					$identity =& $accountData['identity'];
+					$icServer =& $accountData['icServer'];
+					//_debug_array($identity);
+					//_debug_array($icServer);
+					if (empty($icServer->host)) continue;
+					$identities[$identity->id]=$identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+					if (!empty($identity->default)) $selectedID = $identity->id;
+				}
+			}
+
+			return $selectedID;
+		}
+
 		function getEMailProfile()
 		{
 			$config = CreateObject('phpgwapi.config','felamimail');
@@ -2114,6 +2145,7 @@ class bofelamimail
 
 		function getHeaders($_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse, $_filter, $_thisUIDOnly=null)
 		{
+			//self::$debug=true;
 			$reverse = (bool)$_reverse;
 			// get the list of messages to fetch
 			$this->reopen($_folderName);
@@ -2123,7 +2155,9 @@ class bofelamimail
 			#$this->icServer->setDebug(true);
 			if ($_thisUIDOnly === null)
 			{
+				if (self::$debug) error_log(__METHOD__.__LINE__."$_folderName, $_sort, $_reverse, ".array2string($_filter).", $rByUid");
 				$sortResult = $this->getSortedList($_folderName, $_sort, $_reverse, $_filter, $rByUid);
+				if (self::$debug) error_log(__METHOD__.__LINE__.array2string($sortResult));
 				#$this->icServer->setDebug(false);
 				#print "</pre>";
 				// nothing found
@@ -2231,7 +2265,7 @@ class bofelamimail
 
 					$count++;
 				}
-
+				//self::$debug=false;
 				// sort the messages to the requested displayorder
 				if(is_array($retValue['header'])) {
 					ksort($retValue['header']);

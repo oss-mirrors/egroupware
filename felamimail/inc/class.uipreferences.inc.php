@@ -38,13 +38,26 @@ require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc
 		{
 			$this->t = $GLOBALS['egw']->template;
 			$this->charset = $GLOBALS['egw']->translation->charset();
-
 			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
-			$this->bopreferences	= $this->bofelamimail->bopreferences; //CreateObject('felamimail.bopreferences');
+			$this->bopreferences	=& $this->bofelamimail->bopreferences; //CreateObject('felamimail.bopreferences');
+
 			$this->uiwidgets	= CreateObject('felamimail.uiwidgets');
+
+			if (is_object($this->bofelamimail->mailPreferences))
+			{
+				// account select box
+				$selectedID = $this->bofelamimail->getIdentitiesWithAccounts($identities);
+				// if nothing valid is found return to user defined account definition
+				if (empty($this->bofelamimail->icServer->host) && count($identities)==0 && $this->bofelamimail->mailPreferences->userDefinedAccounts)
+				{
+					// redirect to new personal account
+					$this->editAccountData(lang("There is no IMAP Server configured.")." - ".lang("Please configure access to an existing individual IMAP account."), 'new');
+					exit;
+				}
+			}						
+
 			$this->bofelamimail->openConnection();
-			
-			
+
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
 		}
@@ -166,9 +179,9 @@ require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc
 				'menuaction'    => 'felamimail.uipreferences.editSignature'
 			);
 			$this->t->set_var('form_action', $GLOBALS['egw']->link('/index.php',$linkData));
-
 			$height = "350px";
 			if(isset($_GET['signatureID'])) {
+
 				$this->t->set_var('description', @htmlspecialchars($signatureData->fm_description, ENT_QUOTES, $this->charset));
 			
 				$this->t->set_var('signatureID', $signatureID);
@@ -187,7 +200,7 @@ require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc
 					)
 				);
 			} else {
-				$this->t->set_var('description', '');
+				$this->t->set_var('description','');
 				$this->t->set_var('tinymce',html::fckEditorQuick('signature', 'advanced', '', $height,'100%',false));
 
 				$this->t->set_var('checkbox_isDefaultSignature',html::checkbox(
@@ -199,7 +212,7 @@ require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc
 			$this->t->pparse("out","main");
 		}
 		
-		function editAccountData($msg='')
+		function editAccountData($msg='', $account2retrieve='active')
 		{
 			if ($_GET['msg']) $msg = html::purify($_GET['msg']);
 			if (!isset($this->bofelamimail)) $this->bofelamimail    = CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
@@ -291,7 +304,6 @@ require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc
 			$this->translate();
 
 			// if there is no accountID with the call of the edit method, retrieve an active account
-			$account2retrieve = 'active';
 			if ((int)$_GET['accountID']) {
 				$account2retrieve = $_GET['accountID'];
 			}
