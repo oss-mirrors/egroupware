@@ -583,7 +583,7 @@ class wiki_so	// DB-Layer
 
 		if ($this->debug) echo "<p>sowiki::new_link('$where[wiki_id]:$where[wiki_name]:$where[wiki_lang]','$link') = $data[wiki_count]</p>";
 
-		if ($where['wiki_count'] == 1)
+		if ($data['wiki_count'] == 1)
 		{
 			$this->db->insert($this->LkTbl,array_merge($data,$where),False,__LINE__,__FILE__);
 		}

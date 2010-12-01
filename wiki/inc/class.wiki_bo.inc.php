@@ -209,7 +209,10 @@ class wiki_bo extends wiki_so
 		);
 		if (preg_match('/'.$LinkPtn.'/',$old_name))		// only replace the plain old_name, if it is a wiki link
 		{
-			$to_replace[] = '/(?=\b)'.preg_quote($old_name).'(?=\b )/i';	// wiki link
+			$to_replace[] = '/(?=\b)'.preg_quote($old_name).'(?=\b)/i';	// wiki link
+			$to_replace[] = '/(?=>)'.preg_quote($old_name).'(?=\b)/i';	// wiki link in mixed mode with leading tag
+			$to_replace[] = '/(?=\b)'.preg_quote($old_name).'(?=<)/i';	// wiki link in mixed mode with trailing tag
+			$to_replace[] = '/(?=>)'.preg_quote($old_name).'(?=<)/i';	// wiki link enclosed in Tags
 		}
 		return preg_replace($to_replace,$new_link,$text);
 	}
@@ -237,7 +240,7 @@ class wiki_bo extends wiki_so
 					$to_replace['text'] = $this->rename_links($old_name,$values['name'],$values['title'],$was=$to_replace['text']);
 					$to_replace['comment'] = $old_name . ($old_lang && $old_lang != $values['lang'] ? ':'.$old_lang : '') . ' --> ' .
 						$values['name'] . ($values['lang']  && $old_lang != $values['lang'] ? ':'.$values['lang'] : '');
-					//echo "<p><b>$to_replace[name]</b>: $to_replace[comment]<br>\n<b>From:</b><br>\n$was<br>\n<b>To</b><br>\n$to_replace[text]</p>\n";
+					echo "<p><b>$to_replace[name]</b>: $to_replace[comment]<br>\n<b>From:</b><br>\n$was<br>\n<b>To</b><br>\n$to_replace[text]</p>\n";
 					$this->write($to_replace);
 				}
 			}
