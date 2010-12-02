@@ -13,6 +13,7 @@
  */
 
 require_once (EGW_INCLUDE_ROOT.'/felamimail/inc/class.bofelamimail.inc.php');
+require_once (EGW_INCLUDE_ROOT.'/felamimail/inc/class.uidisplay.inc.php');
 
 /**
  * FMail activesync plugin
@@ -34,11 +35,26 @@ class felamimail_activesync implements activesync_plugin_read
 	private $mail;
 
 	/**
+	 * Instance of uidisplay
+	 * needed to use various bodyprocessing functions
+	 *
+	 * @var uidisplay
+	 */
+	private $ui;
+
+	/**
 	 * Integer id of current mail account / connection
 	 *
 	 * @var int
 	 */
 	private $account;
+
+	/**
+	 * debugLevel - enables more debug
+	 *
+	 * @var int
+	 */
+	private $debugLevel = 1;
 
 	/**
 	 * Constructor
@@ -65,6 +81,8 @@ class felamimail_activesync implements activesync_plugin_read
 			$this->account = $account;
 			// todo: tell fmail which account to use
 			$this->mail = new bofelamimail ("UTF-8",false);
+			$this->ui	= new uidisplay();
+
 			if (!$this->mail->openConnection(0,false))
 			{
 				throw new egw_exception_not_found(__METHOD__."($account) can not open connection!");
@@ -96,7 +114,7 @@ class felamimail_activesync implements activesync_plugin_read
 	public function GetFolderList()
 	{
 		$folderlist = array();
-
+		debugLog(__METHOD__.__LINE__);
 		/*foreach($available_accounts as $account)*/ $account = 0;
 		{
 			$this->_connect($account);
@@ -108,7 +126,7 @@ class felamimail_activesync implements activesync_plugin_read
 					'mod'    => $folderObj->shortDisplayName,
 					'parent' => $this->getParentID($account,$folder),
 				);
-				debugLog(__METHOD__."() returning ".array2string($f));
+				if ($this->debugLevel>0) debugLog(__METHOD__."() returning ".array2string($f));
 			}
 		}
 		//debugLog(__METHOD__."() returning ".array2string($folderlist));
@@ -118,52 +136,141 @@ class felamimail_activesync implements activesync_plugin_read
 
 	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $mimesupport = 0)
 	{
-		debugLog (__METHOD__);
+		debugLog (__METHOD__.__LINE__);
 		$stat = $this->StatMessage($folderid, $id);
-		debugLog(__METHOD__.__LINE__.array2string($stat));
+		if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($stat));
 		// StatMessage should reopen the folder in question, so we dont need folderids in the following statements.
 		if ($stat)
 		{
-			$header = $this->mail->getMessageRawHeader($id);
-			$body = $this->mail->getMessageRawBody($id);
+			debugLog(__METHOD__.__LINE__." Message $id with stat ");
+			// initialize the object
 			$output = new SyncMail();
-			$output->bodytruncated = 0; // should be handeled by comparing bodysize vs. $truncsize
-			// if ....
-			$output->bodysize = 1;
-			$output->body = 'i';
+			$headers = $this->mail->getMessageHeader($id,'',true);
+			$rawHeaders = $this->mail->getMessageRawHeader($id);	
+			// simple style
+			// start AS12 Stuff (bodypreference === false) case = old behaviour
+			debugLog(__METHOD__.__LINE__.array2string($bodypreference));
+			if ($bodypreference === false) {
+				$bodyStruct = $this->mail->getMessageBody($id, 'only_if_no_text');
+				$body = $this->ui->getdisplayableBody($bodyStruct);	
+				$body = preg_replace("/<style.*?<\/style>/is", "", $body); // in case there is only a html part
+				// remove all other html
+				$body = strip_tags($body);
+				if(strlen($body) > $truncsize) {
+					$body = utf8_truncate($body, $truncsize);
+					$output->bodytruncated = 1;
+				}
+				else
+				{
+					$output->bodytruncated = 0;
+				}			
+				$output->bodysize = strlen($body);
+				$output->body = $body;
+			}
+			else // style with bodypreferences
+			{
+				if (isset($bodypreference[1]) && !isset($bodypreference[1]["TruncationSize"])) 
+					$bodypreference[1]["TruncationSize"] = 1024*1024;
+				if (isset($bodypreference[2]) && !isset($bodypreference[2]["TruncationSize"])) 
+					$bodypreference[2]["TruncationSize"] = 1024*1024;
+				if (isset($bodypreference[3]) && !isset($bodypreference[3]["TruncationSize"]))
+					$bodypreference[3]["TruncationSize"] = 1024*1024;
+				if (isset($bodypreference[4]) && !isset($bodypreference[4]["TruncationSize"]))
+					$bodypreference[4]["TruncationSize"] = 1024*1024;
+				$output->airsyncbasebody = new SyncAirSyncBaseBody();
+				if ($this->debugLevel>0) debugLog("airsyncbasebody!");
+				
+				$bodyStruct = $this->mail->getMessageBody($id, 'always_display');
+				$body = $this->ui->getdisplayableBody($bodyStruct);
+			    if ($body != "") {
+					// may be html
+				    $output->airsyncbasenativebodytype=2;
+				} else {
+					// plain text Message
+				    $output->airsyncbasenativebodytype=1;
+			        $bodyStruct = $this->mail->getMessageBody($id,'never_display');
+				    $body = $this->ui->getdisplayableBody($bodyStruct);
+				}
+				//$body = str_replace("\n","\r\n", str_replace("\r","",$body)); // do we need that?
+				if (isset($bodypreference[4])) 
+				{
+					$output->airsyncbasebody->type = 4;
+					$body = "";
+					foreach($rawHeaders as $key=>$value) 
+					{
+						debugLog(__METHOD__.__LINE__.' Key:'.$key.' Value:'.array2string($value));
+						if ($key != "content-type" && $key != "mime-version" && $key != "content-transfer-encoding" &&
+						    !is_array($value)) {
+							$body .= $key.":";
+							$tokens = split(" ",trim($value));
+							$line = "";
+							foreach($tokens as $valu) {
+			    				if ((strlen($line)+strlen($valu)+2) > 60) {
+									$line .= "\n";
+									$body .= $line;
+									$line = " ".$valu;
+							    } else {
+									$line .= " ".$valu;
+							    }
+							}
+							$body .= $line."\n";
+						}
+					}
+
+					if ($this->debugLevel>0) debugLog("MIME Body");
+					if ($output->airsyncbasenativebodytype==1) { //plain
+					}
+					if ($output->airsyncbasenativebodytype==2) { //html
+					}
+				}
+				else if (isset($bodypreference[2]))
+				{
+					if ($this->debugLevel>0) debugLog("HTML Body");
+					// Send HTML if requested and native type was html
+				} 
+				else 
+				{
+					// Send Plaintext as Fallback or if original body is plainttext
+					if ($this->debugLevel>0) debugLog("Plaintext Body");
+				}
+				// In case we have nothing for the body, send at least a blank... 
+				// dw2412 but only in case the body is not rtf!
+				if ($output->airsyncbasebody->type != 3 && (!isset($output->airsyncbasebody->data) || strlen($output->airsyncbasebody->data) == 0))
+				{
+					$output->airsyncbasebody->data = " ";
+				}
+				$output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
+			}
+			// end AS12 Stuff
+			debugLog(__METHOD__.__LINE__.' gather Header info');
 			$output->read = $stat["flags"];
 			$output->subject = $this->messages[$id]['subject'];
-			$output->importance = $this->messages[$id]['priority'] ;
+			$output->importance = ($this->messages[$id]['priority'] ?  $this->messages[$id]['priority']:1) ;
 			$output->daterecieved = $stat['mod'];
-			$output->displayto = $this->messages[$id]['to_address']; //$stat['FETCHED_HEADER']['to_name']
+			$output->displayto = ($headers['TO'] ? $headers['TO']:null); //$stat['FETCHED_HEADER']['to_name']
 			$output->to = $this->messages[$id]['to_address']; //$stat['FETCHED_HEADER']['to_name']
 			$output->from = $this->messages[$id]['sender_address']; //$stat['FETCHED_HEADER']['sender_name']
-			$output->cc = '';
-			$output->reply_to ='';
+			$output->cc = ($headers['CC'] ? $headers['CC']:null);
+			$output->reply_to = ($headers['REPLY_TO']?$headers['REPLY_TO']:null);
 			$output->messageclass = "IPM.Note";
-			if (stripos($this->messages[$id]['mimetype'],'signed')!== false) $output->messageclass = "IPM.Note.SMIME.MultipartSigned";
+			if (stripos($this->messages[$id]['mimetype'],'multipart')!== false && 
+				stripos($this->messages[$id]['mimetype'],'signed')!== false) 
+			{
+				$output->messageclass = "IPM.Note.SMIME.MultipartSigned";
+			}
 			// start AS12 Stuff
 			$output->poommailflag = new SyncPoommailFlag();
 			$output->poommailflag->flagstatus = 0;
 			$output->internetcpid = 65001;
 			$output->contentclass="urn:content-classes:message";
-			if ($bodypreference == true)
-			{
-				$output->airsyncbasebody = new SyncAirSyncBaseBody();
-				debugLog("airsyncbasebody!");
-				if (isset($bodypreference[4]))
-				{
-					debugLog("MIME Body");
-					$output->airsyncbasebody->type = 4;
-					$output->airsyncbasenativebodytype = 4;
-				}
-				$output->airsyncbasebody->data = $header."\r\n".$body;
-				$output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
-			}
 			// end AS12 Stuff
-			debugLog(__METHOD__.__LINE__.array2string($output));
-			//return $output;
-			return array();
+			
+			// start handle Attachments
+			$attachments = $this->mail->getMessageAttachments($id);
+
+			// end handle Attachments
+			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($output));
+			return $output;
 		}
 		return false;
 	}
@@ -182,21 +289,25 @@ class felamimail_activesync implements activesync_plugin_read
 	 */
 	public function GetMessageList($folderid, $cutoffdate=NULL)
 	{
+		//static $cutdate;
+		//if ($cutoffdate >0) $cutdate = $cutoffdate;
 		debugLog (__METHOD__.' for Folder:'.$folderid.' SINCE:'.$cutoffdate);
 		return $this->fetchMessages($folderid, $cutoffdate);
 	}
 
 	private function fetchMessages($folderid, $cutoffdate=NULL, $_id=NULL)
 	{
-
+		debugLog(__METHOD__.__LINE__);
 		$this->_connect($this->account);
 		$messagelist = array();
 		if (!empty($cutoffdate)) $_filter = array('type'=>"SINCE",'string'=> date("d-M-Y", $cutoffdate));
 		$rv = $this->splitID($folderid,$account,$_folderName,$id);
-		debugLog (__METHOD__.' for Folder:'.$_folderName.' '.array2string($_filter).' Ids:'.array2string($_id));
+		if ($this->debugLevel>0) debugLog (__METHOD__.' for Folder:'.$_folderName.' Filter:'.array2string($_filter).' Ids:'.array2string($_id));
 		$rv_messages = $this->mail->getHeaders($_folderName, $_startMessage=1, $_numberOfMessages=9999999, $_sort=0, $_reverse=false, $_filter, $_id);
+		//debugLog(__METHOD__.__LINE__.array2string($rv_messages));
 		foreach ((array)$rv_messages['header'] as $k => $vars)
 		{
+			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' ID:'.$vars['uid'].' Subject:'.$vars['subject']);
 			$this->messages[$vars['uid']] = $vars;
 			//debugLog(__METHOD__.__LINE__.' MailID:'.$k.'->'.array2string($vars));
 			if (!empty($vars['deleted'])) continue; // cut of deleted messages
@@ -208,7 +319,7 @@ class felamimail_activesync implements activesync_plugin_read
 			// outlook supports additional flags, set them to 0
 			$mess["olflags"] = 0;
 			if($vars["seen"]) $mess["flags"] = 1;
-			debugLog(__METHOD__.__LINE__.array2string($mess));
+			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($mess));
 			$messagelist[$vars['uid']] = $mess;
 			unset($mess);
 		}
@@ -237,7 +348,7 @@ class felamimail_activesync implements activesync_plugin_read
 		$parent = implode($fmailFolder->delimiter,$parent);
 
 		$id = $parent ? $this->createID($account, $parent) : '0';
-		//debugLog(__METHOD__."('$folder') --> parent=$parent --> $id");
+		if ($this->debugLevel>1) debugLog(__METHOD__."('$folder') --> parent=$parent --> $id");
 		return $id;
 	}
 
@@ -292,7 +403,7 @@ class felamimail_activesync implements activesync_plugin_read
 		{
 			$folderObj->type = SYNC_FOLDER_TYPE_USER_MAIL;
 		}
-		debugLog(__METHOD__."($id) --> $folder --> type=$folderObj->type, parentID=$folderObj->parentid, displayname=$folderObj->displayname");
+		if ($this->debugLevel>1) debugLog(__METHOD__."($id) --> $folder --> type=$folderObj->type, parentID=$folderObj->parentid, displayname=$folderObj->displayname");
 		return $folderObj;
 	}
 
@@ -353,7 +464,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 		$str = $this->backend->createID($account, $folder, $id);
 
-		//debugLog(__METHOD__."($account,'$f',$id) type=$account, folder=$folder --> '$str'");
+		if ($this->debugLevel>1) debugLog(__METHOD__."($account,'$f',$id) type=$account, folder=$folder --> '$str'");
 
 		return $str;
 	}
@@ -374,7 +485,7 @@ class felamimail_activesync implements activesync_plugin_read
 		// convert numeric folder-id back to folder name
 		$folder = $this->hash2folder($account,$f=$folder);
 
-		//debugLog(__METHOD__."('$str','$account','$folder',$id)");
+		if ($this->debugLevel>1) debugLog(__METHOD__."('$str','$account','$folder',$id)");
 	}
 
 	/**
