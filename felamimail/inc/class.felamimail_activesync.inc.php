@@ -115,7 +115,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 		return $folderlist;
 	}
-	
+
 	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $mimesupport = 0)
 	{
 		debugLog (__METHOD__);
@@ -151,7 +151,7 @@ class felamimail_activesync implements activesync_plugin_read
 			{
 				$output->airsyncbasebody = new SyncAirSyncBaseBody();
 				debugLog("airsyncbasebody!");
-				if (isset($bodypreference[4])) 
+				if (isset($bodypreference[4]))
 				{
 					debugLog("MIME Body");
 					$output->airsyncbasebody->type = 4;
@@ -163,18 +163,18 @@ class felamimail_activesync implements activesync_plugin_read
 			// end AS12 Stuff
 			debugLog(__METHOD__.__LINE__.array2string($output));
 			//return $output;
-			return false;
+			return array();
 		}
 		return false;
 	}
-	
-	public function StatMessage($folderid, $id) 
+
+	public function StatMessage($folderid, $id)
 	{
         debugLog (__METHOD__.' for Folder:'.$folderid.' ID:'.$id);
         return $this->fetchMessages($folderid, NULL, (array)$id);
 	}
-	
-	
+
+
 	/**
 	 *  This function is analogous to GetMessageList.
 	 *
@@ -185,10 +185,10 @@ class felamimail_activesync implements activesync_plugin_read
 		debugLog (__METHOD__.' for Folder:'.$folderid.' SINCE:'.$cutoffdate);
 		return $this->fetchMessages($folderid, $cutoffdate);
 	}
-	
+
 	private function fetchMessages($folderid, $cutoffdate=NULL, $_id=NULL)
 	{
-		
+
 		$this->_connect($this->account);
 		$messagelist = array();
 		if (!empty($cutoffdate)) $_filter = array('type'=>"SINCE",'string'=> date("d-M-Y", $cutoffdate));
@@ -214,9 +214,9 @@ class felamimail_activesync implements activesync_plugin_read
 		}
 		return $messagelist;
 	}
-	
 
-	
+
+
 	/**
 	 * Get ID of parent Folder or '0' for folders in root
 	 *
@@ -321,8 +321,19 @@ class felamimail_activesync implements activesync_plugin_read
 
 		return $stat;
 	}
-	
-	
+
+
+	/**
+	 * @todo implement using ctag
+	 */
+	function AlterPingChanges($folderid, &$syncstate)
+	{
+		debugLog (__METHOD__." should not see this -not yet implemented");
+		return false;
+	}
+
+
+
 	/**
 	 * Create a max. 32 hex letter ID, current 20 chars are used
 	 *
