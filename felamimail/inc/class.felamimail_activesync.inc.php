@@ -149,10 +149,11 @@ class felamimail_activesync implements activesync_plugin_read
 			$rawHeaders = $this->mail->getMessageRawHeader($id);	
 			// simple style
 			// start AS12 Stuff (bodypreference === false) case = old behaviour
-			debugLog(__METHOD__.__LINE__.array2string($bodypreference));
+			debugLog(__METHOD__.__LINE__.' Bodypreference: '.array2string($bodypreference));
 			if ($bodypreference === false) {
 				$bodyStruct = $this->mail->getMessageBody($id, 'only_if_no_text');
-				$body = $this->ui->getdisplayableBody($bodyStruct);	
+				$body = $this->ui->getdisplayableBody($bodyStruct,false);	
+				$body = html_entity_decode($body,ENT_QUOTES);
 				$body = preg_replace("/<style.*?<\/style>/is", "", $body); // in case there is only a html part
 				// remove all other html
 				$body = strip_tags($body);
@@ -181,7 +182,7 @@ class felamimail_activesync implements activesync_plugin_read
 				if ($this->debugLevel>0) debugLog("airsyncbasebody!");
 				
 				$bodyStruct = $this->mail->getMessageBody($id, 'always_display');
-				$body = $this->ui->getdisplayableBody($bodyStruct);
+				$body = $this->ui->getdisplayableBody($bodyStruct,false);
 			    if ($body != "") {
 					// may be html
 				    $output->airsyncbasenativebodytype=2;
@@ -189,7 +190,9 @@ class felamimail_activesync implements activesync_plugin_read
 					// plain text Message
 				    $output->airsyncbasenativebodytype=1;
 			        $bodyStruct = $this->mail->getMessageBody($id,'never_display');
-				    $body = $this->ui->getdisplayableBody($bodyStruct);
+				    $body = $this->ui->getdisplayableBody($bodyStruct,false);
+					$body = html_entity_decode($body,ENT_QUOTES);
+					$body = strip_tags($body);
 				}
 				//$body = str_replace("\n","\r\n", str_replace("\r","",$body)); // do we need that?
 				if (isset($bodypreference[4])) 
@@ -232,6 +235,19 @@ class felamimail_activesync implements activesync_plugin_read
 				{
 					// Send Plaintext as Fallback or if original body is plainttext
 					if ($this->debugLevel>0) debugLog("Plaintext Body");
+					$bodyStruct = $this->mail->getMessageBody($id,'never_display');
+					$plain = $this->ui->getdisplayableBody($bodyStruct,false);
+					$plain = html_entity_decode($plain,ENT_QUOTES);
+					$plain = strip_tags($plain);
+					//$plain = str_replace("\n","\r\n",str_replace("\r","",$plain));
+					$output->airsyncbasebody->type = 1;
+					if(isset($bodypreference[1]["TruncationSize"]) &&
+			    		strlen($plain) > $bodypreference[1]["TruncationSize"]) 
+					{
+						$plain = utf8_truncate($plain, $bodypreference[1]["TruncationSize"]);
+						$output->airsyncbasebody->truncated = 1;
+					}
+					$output->airsyncbasebody->data = $plain;
 				}
 				// In case we have nothing for the body, send at least a blank... 
 				// dw2412 but only in case the body is not rtf!
