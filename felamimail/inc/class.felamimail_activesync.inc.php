@@ -289,10 +289,10 @@ class felamimail_activesync implements activesync_plugin_read
 	 */
 	public function GetMessageList($folderid, $cutoffdate=NULL)
 	{
-		//static $cutdate;
-		//if ($cutoffdate >0) $cutdate = $cutoffdate;
-		debugLog (__METHOD__.' for Folder:'.$folderid.' SINCE:'.$cutoffdate);
-		return $this->fetchMessages($folderid, $cutoffdate);
+		static $cutdate;
+		if (!empty($cutoffdate) && $cutoffdate >0 && (empty($cutdate) || $cutoffdate != $cutdate))  $cutdate = $cutoffdate;
+		debugLog (__METHOD__.' for Folder:'.$folderid.' SINCE:'.$cutdate);
+		return $this->fetchMessages($folderid, $cutdate);
 	}
 
 	private function fetchMessages($folderid, $cutoffdate=NULL, $_id=NULL)
