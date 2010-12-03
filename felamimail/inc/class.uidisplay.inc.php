@@ -43,6 +43,7 @@
 			'saveMessage'	=> True,
 			'showHeader'	=> True,
 			'getAttachment'	=> True,
+			'getdisplayableBody' => True,
 		);
 
 		var $icServerID=0;
@@ -102,13 +103,13 @@
 			if(isset($_GET['id'])) {
 				$this->id	= (int)$_GET['id'];
 			}
-
+			/* this one (idToUid) does not exist (anymore)
 			if(isset($this->id) && !isset($this->uid)) {
 				if($uid = $this->bofelamimail->idToUid($this->mailbox, $this->id)) {
 					$this->uid = $uid;
 				}
 			}
-
+			*/
 			if(isset($_GET['part'])) {
 				$this->partID = (int)$_GET['part'];
 			}
@@ -1199,7 +1200,7 @@
 			exit;
 		}
 
-		function &getdisplayableBody($_bodyParts)
+		function &getdisplayableBody($_bodyParts,$modifyURI=true)
 		{
 			$bodyParts	= $_bodyParts;
 
@@ -1215,7 +1216,7 @@
 			if (empty($bodyParts)) return "";
 			foreach((array)$bodyParts as $singleBodyPart) {
 				if (!isset($singleBodyPart['body'])) {
-					$singleBodyPart['body'] = $this->getdisplayableBody($singleBodyPart);
+					$singleBodyPart['body'] = $this->getdisplayableBody($singleBodyPart,$modifyURI);
 					$body .= $singleBodyPart['body'];
 					continue;
 				}
@@ -1273,14 +1274,14 @@
 					// http://www.php.net/manual/en/function.preg-replace.php
 
 					// create links for websites
-					$newBody = html::activate_links($newBody);
+					if ($modifyURI) $newBody = html::activate_links($newBody);
 					// redirect links for websites if you use no cookies
 					#if (!($GLOBALS['egw_info']['server']['usecookies'])) 
 					#	$newBody = preg_replace("/href=(\"|\')((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\(,\),\*,#,:,~,\+]+)(\"|\')/ie",
 					#		"'href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$4://$5$6'),ENT_QUOTES,\"$this->displayCharset\").'\"'", $newBody);	
 					
 					// create links for email addresses
-					$this->parseEmail($newBody);
+					if ($modifyURI) $this->parseEmail($newBody);
 					$newBody	= $this->highlightQuotes($newBody);
 					// to display a mailpart of mimetype plain/text, may be better taged as preformatted
 					#$newBody	= nl2br($newBody);
@@ -1309,30 +1310,35 @@
 
 					// redirect links for websites if you use no cookies
 					#if (!($GLOBALS['egw_info']['server']['usecookies'])) { //do it all the time, since it does mask the mailadresses in urls
-						$this->parseHREF($newBody);
+						if ($modifyURI) $this->parseHREF($newBody);
 					#}
 					// create links for inline images
-					$linkData = array (
-						'menuaction'    => 'felamimail.uidisplay.displayImage',
-						'uid'		=> $this->uid,
-						'mailbox'	=> base64_encode($this->mailbox)
-					);
-					$imageURL = $GLOBALS['egw']->link('/index.php', $linkData);
-					if ($this->partID) {
-						$newBody = preg_replace("/src=(\"|\')cid:(.*)(\"|\')/iUe",
-							"'src=\"$imageURL&cid='.base64_encode('$2').'&partID='.urlencode($this->partID).'\"'", $newBody);
-					} else {
-						$newBody = preg_replace("/src=(\"|\')cid:(.*)(\"|\')/iUe",
-							"'src=\"$imageURL&cid='.base64_encode('$2').'&partID='.'\"'", $newBody);
+					if ($modifyURI)
+					{
+						$linkData = array (
+							'menuaction'    => 'felamimail.uidisplay.displayImage',
+							'uid'		=> $this->uid,
+							'mailbox'	=> base64_encode($this->mailbox)
+						);
+						$imageURL = $GLOBALS['egw']->link('/index.php', $linkData);
+						if ($this->partID) {
+							$newBody = preg_replace("/src=(\"|\')cid:(.*)(\"|\')/iUe",
+								"'src=\"$imageURL&cid='.base64_encode('$2').'&partID='.urlencode($this->partID).'\"'", $newBody);
+						} else {
+							$newBody = preg_replace("/src=(\"|\')cid:(.*)(\"|\')/iUe",
+								"'src=\"$imageURL&cid='.base64_encode('$2').'&partID='.'\"'", $newBody);
+						}
 					}
 
 					// create links for email addresses
-					$link = $GLOBALS['egw']->link('/index.php',array('menuaction'    => 'felamimail.uicompose.compose'));
-					$newBody = preg_replace("/href=(\"|\')mailto:([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)(\"|\')/ie",
-						"'href=\"#\"'.' onclick=\"egw_openWindowCentered(\'$link&send_to='.base64_encode('$2').'\', \'compose\', 700, egw_getWindowOuterHeight());\"'", $newBody);
-//						"'href=\"$link&send_to='.base64_encode('$2').'\"'", $newBody);
-					//print "<pre>".htmlentities($newBody)."</pre><hr>";
-					
+					if ($modifyURI)
+					{
+						$link = $GLOBALS['egw']->link('/index.php',array('menuaction'    => 'felamimail.uicompose.compose'));
+						$newBody = preg_replace("/href=(\"|\')mailto:([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)(\"|\')/ie",
+							"'href=\"#\"'.' onclick=\"egw_openWindowCentered(\'$link&send_to='.base64_encode('$2').'\', \'compose\', 700, egw_getWindowOuterHeight());\"'", $newBody);
+//							"'href=\"$link&send_to='.base64_encode('$2').'\"'", $newBody);
+						//print "<pre>".htmlentities($newBody)."</pre><hr>";
+					}		
 					// replace emails within the text with clickable links.
 					$this->parseEmail($newBody);
 				}
