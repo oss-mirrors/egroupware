@@ -211,10 +211,13 @@
 		 */
 		function listProcessConfigurationFields()
 		{
-			$profile_list = $this->bo_emailadmin->getProfileList();
-			foreach($profile_list as $profile)
-			{
-				$my_profile_list[$profile['profileID']] = $profile['description'];
+			$my_profile_list = array();
+			if($GLOBALS['egw_info']['apps']['emailadmin']['enabled']) {
+				$profile_list = $this->bo_emailadmin->getProfileList();
+				foreach($profile_list as $profile)
+				{
+					$my_profile_list[$profile['profileID']] = $profile['description'];
+				}
 			}
 			$this->showProcessConfigurationFields = array(
 				'Mail SMTP Agent' 		=> 'title',
