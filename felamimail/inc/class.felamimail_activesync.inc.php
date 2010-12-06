@@ -40,7 +40,7 @@ class felamimail_activesync implements activesync_plugin_read
 	 *
 	 * @var uidisplay
 	 */
-	private $ui;
+	//private $ui; // may not be needed after all
 
 	/**
 	 * Integer id of current mail account / connection
@@ -81,7 +81,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$this->account = $account;
 			// todo: tell fmail which account to use
 			$this->mail = new bofelamimail ("UTF-8",false);
-			$this->ui	= new uidisplay();
+			//$this->ui	= new uidisplay();
 
 			if (!$this->mail->openConnection(0,false))
 			{
@@ -152,8 +152,8 @@ class felamimail_activesync implements activesync_plugin_read
 			debugLog(__METHOD__.__LINE__.' Bodypreference: '.array2string($bodypreference));
 			if ($bodypreference === false) {
 				$bodyStruct = $this->mail->getMessageBody($id, 'only_if_no_text');
-				$body = $this->ui->getdisplayableBody($bodyStruct,false);	
-				$body = html_entity_decode($body,ENT_QUOTES);
+				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);	
+				$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
 				$body = preg_replace("/<style.*?<\/style>/is", "", $body); // in case there is only a html part
 				// remove all other html
 				$body = strip_tags($body);
@@ -182,7 +182,7 @@ class felamimail_activesync implements activesync_plugin_read
 				if ($this->debugLevel>0) debugLog("airsyncbasebody!");
 				
 				$bodyStruct = $this->mail->getMessageBody($id, 'always_display');
-				$body = $this->ui->getdisplayableBody($bodyStruct,false);
+				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
 			    if ($body != "") {
 					// may be html
 				    $output->airsyncbasenativebodytype=2;
@@ -190,8 +190,8 @@ class felamimail_activesync implements activesync_plugin_read
 					// plain text Message
 				    $output->airsyncbasenativebodytype=1;
 			        $bodyStruct = $this->mail->getMessageBody($id,'never_display');
-				    $body = $this->ui->getdisplayableBody($bodyStruct,false);
-					$body = html_entity_decode($body,ENT_QUOTES);
+				    $body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+					$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
 					$body = strip_tags($body);
 				}
 				//$body = str_replace("\n","\r\n", str_replace("\r","",$body)); // do we need that?
@@ -236,8 +236,8 @@ class felamimail_activesync implements activesync_plugin_read
 					// Send Plaintext as Fallback or if original body is plainttext
 					if ($this->debugLevel>0) debugLog("Plaintext Body");
 					$bodyStruct = $this->mail->getMessageBody($id,'never_display');
-					$plain = $this->ui->getdisplayableBody($bodyStruct,false);
-					$plain = html_entity_decode($plain,ENT_QUOTES);
+					$plain = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+					$plain = html_entity_decode($plain,ENT_QUOTES,$this->mail->detect_encoding($plain));
 					$plain = strip_tags($plain);
 					//$plain = str_replace("\n","\r\n",str_replace("\r","",$plain));
 					$output->airsyncbasebody->type = 1;
@@ -262,7 +262,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$output->read = $stat["flags"];
 			$output->subject = $this->messages[$id]['subject'];
 			$output->importance = ($this->messages[$id]['priority'] ?  $this->messages[$id]['priority']:1) ;
-			$output->daterecieved = $stat['mod'];
+			$output->daterecieved = $this->mail->_strtotime($headers['DATE'],'ts',true);
 			$output->displayto = ($headers['TO'] ? $headers['TO']:null); //$stat['FETCHED_HEADER']['to_name']
 			$output->to = $this->messages[$id]['to_address']; //$stat['FETCHED_HEADER']['to_name']
 			$output->from = $this->messages[$id]['sender_address']; //$stat['FETCHED_HEADER']['sender_name']
@@ -285,7 +285,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$attachments = $this->mail->getMessageAttachments($id);
 
 			// end handle Attachments
-			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($output));
+			if ($this->debugLevel>3); debugLog(__METHOD__.__LINE__.array2string($output));
 			return $output;
 		}
 		return false;
