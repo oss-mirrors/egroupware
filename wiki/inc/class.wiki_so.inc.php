@@ -131,9 +131,13 @@ class soWikiPage
 		$filter = array_merge($filter,$this->memberships);
 
 		$sql = '('.($add_wiki_id ? " wiki_id=$this->wiki_id AND " : '').
-			($table ? $table.'.' : '').
-			($readable ? 'wiki_readable' : 'wiki_writable').' IN ('.implode(',',$filter).'))';
-
+			($table ? $table.'.' : '');
+		if($readable)
+		{
+			$sql .= 'wiki_readable IN ('.implode(',',$filter).')';
+		}
+		// Writable implies readable
+		$sql .= ($readable ? ' OR ' : ' ') . 'wiki_writable IN ('.implode(',',$filter).'))';
 		if ($this->debug) echo "<p>sowiki::acl_filter($readable,$add_wiki_id) = '$sql'</p>\n";
 
 		return $filters[$filter_id] = $sql;
@@ -170,7 +174,8 @@ class soWikiPage
 				return  isset($GLOBALS['egw_info']['user']['apps']['admin']);
 
 			default:
-				return in_array($acl,$this->memberships);
+				// Writable implies readable
+				return in_array($this->writable, $this->memberships) || in_array($acl,$this->memberships);
 		}
 		return False;
 	}
