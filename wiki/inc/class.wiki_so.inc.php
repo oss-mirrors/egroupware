@@ -162,20 +162,37 @@ class soWikiPage
 		{
 			return False;	// Global config overrides page-specific setting
 		}
-		switch ($acl = $readable ? $this->readable : $this->writable)
+
+		$writable = False;
+		switch($this->writable) {
+			case WIKI_ACL_ALL:
+				$writable = True;
+				break;
+			case WIKI_ACL_USER:
+				$writable = $GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username'];
+				break;
+			case WIKI_ACL_ADMIN:
+				$writable = isset($GLOBALS['egw_info']['user']['apps']['admin']);
+				break;
+			default:
+				$writable =  in_array($this->writable, $this->memberships);
+		}
+		if(!$readable) return $writable;
+
+		// Writable implies readable
+		switch ($this->readable)
 		{
 			case WIKI_ACL_ALL:
 				return True;
 
 			case WIKI_ACL_USER:
-				return $GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username'];
+				return $writable || ($GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username']);
 
 			case WIKI_ACL_ADMIN:
-				return  isset($GLOBALS['egw_info']['user']['apps']['admin']);
+				return $writable || isset($GLOBALS['egw_info']['user']['apps']['admin']);
 
 			default:
-				// Writable implies readable
-				return in_array($this->writable, $this->memberships) || in_array($acl,$this->memberships);
+				return $writable || in_array($this->readable,$this->memberships);
 		}
 		return False;
 	}
