@@ -258,7 +258,7 @@ class felamimail_activesync implements activesync_plugin_read
 				$output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
 			}
 			// end AS12 Stuff
-			debugLog(__METHOD__.__LINE__.' gather Header info');
+			debugLog(__METHOD__.__LINE__.' gather Header info:'.$headers['SUBJECT'].' from:'.$headers['DATE']);
 			$output->read = $stat["flags"];
 			$output->subject = $this->messages[$id]['subject'];
 			$output->importance = ($this->messages[$id]['priority'] ?  $this->messages[$id]['priority']:1) ;
@@ -285,7 +285,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$attachments = $this->mail->getMessageAttachments($id);
 
 			// end handle Attachments
-			if ($this->debugLevel>3); debugLog(__METHOD__.__LINE__.array2string($output));
+			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($output));
 			return $output;
 		}
 		return false;
