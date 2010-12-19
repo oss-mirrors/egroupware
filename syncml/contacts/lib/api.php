@@ -103,7 +103,6 @@ function _egwcontactssync_list($filter='')
 					$search_addressbook = false;
 					break;
 				case 'A':	// all
-				case 0:		// old all
 					$search_all = true;
 					break;
 				default:
