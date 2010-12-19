@@ -67,7 +67,11 @@ class syncml_hooks
 			
 			$show_addr_addr = $addressbook_bo->get_addressbooks(EGW_ACL_READ);
 			unset($show_addr_addr[$user]); // skip personal addressbook
-			$show_addr_addr[0] = lang('Accounts');
+			if (isset($show_addr_addr[$user.'p']))
+			{
+				unset($show_addr_addr[$user.'p']);
+				$show_addr_addr['p'] = lang('Private');
+			}
 			$show_addr_addr = array('G'	=> lang('Primary Group'),
 									'P'	=> lang('Personal'),
 									'N' => lang('None'),

@@ -99,6 +99,9 @@ function _egwcontactssync_list($filter='')
 				case 'P':
 					$owner = $GLOBALS['egw_info']['user']['account_id'];
 					break;
+				case 'p':
+					$owner = $GLOBALS['egw_info']['user']['account_id'] . 'p';
+					break;
 				case 'N':	// none
 					$search_addressbook = false;
 					break;
