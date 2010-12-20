@@ -626,7 +626,17 @@ class bofelamimail
 
 				case "mark_as_deleted":
 					// mark messages as deleted
+					foreach((array)$_messageUID as $key =>$uid)
+					{
+						$flags = $this->getFlags($uid);
+						if (strpos( array2string($flags),'Deleted')!==false) $undelete[] = $uid; 
+						unset($flags);
+					}
 					$retValue = PEAR::isError($this->icServer->deleteMessages($_messageUID, true));
+					foreach((array)$undelete as $key =>$uid)
+					{
+						$this->flagMessages('undelete', $uid, $oldMailbox);
+					}
 					if ( PEAR::isError($retValue)) {
 						if (self::$debug) error_log(__METHOD__." failed to mark as deleted for Message(s): ".implode(',',$_messageUID));
 						throw new egw_exception("failed to mark as deleted for Message(s): ".implode(',',$_messageUID).' due to:'.array2string($retValue->message));
