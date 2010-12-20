@@ -265,6 +265,7 @@
 			$this->bofelamimail->reopen($this->mailbox);
 			// retrieve the flags of the message, before touching it.
 			if (!empty($this->uid)) $flags = $this->bofelamimail->getFlags($this->uid);
+
 			#print "$this->mailbox, $this->uid, $partID<br>";
 			$headers	= $this->bofelamimail->getMessageHeader($this->uid, $partID);
 			if (PEAR::isError($headers)) {
@@ -362,6 +363,10 @@
 			$headerData = array('uid'=>$this->uid);
 			if($partID != '') {
 				$headerData['partid'] = $partID;
+			}
+			if (strpos( array2string($flags),'Deleted')!==false)
+			{
+				$headerData['deleted']=1;
 			}
 			$this->t->set_var('navbarButtonsLeft',$uiWidgets->displayMessageActions($headerData, $this->mailbox, $this->icServer));
 

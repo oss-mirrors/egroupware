@@ -715,7 +715,7 @@ class bofelamimail
 			return null;
 		}
 
-		function flagMessages($_flag, $_messageUID)
+		function flagMessages($_flag, $_messageUID,$_folder=NULL)
 		{
 			#error_log("felamimail::bocompose::flagMessages");
 			if(!is_array($_messageUID)) {
@@ -730,9 +730,12 @@ class bofelamimail
 				}
 			}
 
-			$this->icServer->selectMailbox($this->sessionData['mailbox']);
-
+			$this->icServer->selectMailbox(($_folder?$_folder:$this->sessionData['mailbox']));
+			
 			switch($_flag) {
+				case "undelete":
+					$this->icServer->setFlags($_messageUID, '\\Deleted', 'remove', true);
+					break;
 				case "flagged":
 					$this->icServer->setFlags($_messageUID, '\\Flagged', 'add', true);
 					break;
@@ -3187,7 +3190,7 @@ class bofelamimail
 			$mergeobj = new addressbook_merge();
 			
 			if (empty($mimetype)) $mimetype = (strlen(strip_tags($content)) == strlen($content) ?'text/plain':'text/html');
-			return $mergeobj->merge_string($content,$ids,&$err,$mimetype);
+			return $mergeobj->merge_string($content,$ids,$err,$mimetype);
 		}
 
 		/**

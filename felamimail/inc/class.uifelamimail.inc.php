@@ -25,6 +25,7 @@ class uifelamimail
 			'compressFolder'	=> True,
 			'importMessage'		=> True,
 			'deleteMessage'		=> True,
+			'undeleteMessage'     => True,
 			'hookAdmin'		=> True,
 			'toggleFilter'		=> True,
 			'viewMainScreen'	=> True,
@@ -582,6 +583,24 @@ class uifelamimail
 			);
 			$refreshURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
+			print "<script type=\"text/javascript\">
+			opener.location.href = '" .$refreshURL. "';
+			window.close();</script>";
+		}
+
+		function undeleteMessage()
+		{	// only for messages marked as deleted
+			$preferences        = ExecMethod('felamimail.bopreferences.getPreferences');
+			$message[] = $_GET["message"];
+			$mailfolder = NULL;
+			if (!empty($_GET['folder'])) $mailfolder  = base64_decode($_GET['folder']);
+			$this->bofelamimail->flagMessages('undelete',$message,$mailfolder);
+			// set the url to open when refreshing
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uifelamimail.viewMainScreen'
+			);
+			$refreshURL = $GLOBALS['egw']->link('/index.php',$linkData);
 			print "<script type=\"text/javascript\">
 			opener.location.href = '" .$refreshURL. "';
 			window.close();</script>";
