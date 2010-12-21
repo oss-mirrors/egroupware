@@ -54,7 +54,7 @@ class felamimail_activesync implements activesync_plugin_read
 	 *
 	 * @var int
 	 */
-	private $debugLevel = 1;
+	private $debugLevel = 2;
 
 	/**
 	 * Constructor
@@ -319,6 +319,7 @@ class felamimail_activesync implements activesync_plugin_read
 		static $cutdate;
 		if (!empty($cutoffdate) && $cutoffdate >0 && (empty($cutdate) || $cutoffdate != $cutdate))  $cutdate = $cutoffdate;
 		debugLog (__METHOD__.' for Folder:'.$folderid.' SINCE:'.$cutdate);
+
 		return $this->fetchMessages($folderid, $cutdate);
 	}
 
@@ -472,7 +473,9 @@ class felamimail_activesync implements activesync_plugin_read
 	 */
 	function AlterPingChanges($folderid, &$syncstate)
 	{
+		debugLog(__METHOD__.' called with '.$folderid);
 		$this->splitID($folderid, $account, $folder);
+		if (is_numeric($account)) $type = 'felamimail';
 		if ($type != 'felamimail') return false;
 
 		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
@@ -480,9 +483,6 @@ class felamimail_activesync implements activesync_plugin_read
 		$changes = array();
         debugLog("AlterPingChanges on $folderid ($folder) stat: ". $syncstate);
         $this->mail->reopen($folder);
-
-        // courier-imap only cleares the status cache after checking
-        @imap_check($this->_mbox);
 
         $status = $this->mail->getFolderStatus($folder);
         if (!$status) {
