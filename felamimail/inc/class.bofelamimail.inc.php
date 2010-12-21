@@ -3641,6 +3641,25 @@ class bofelamimail
 				 * ./pear install Mail_mimeDecode
 				 */
 				$message = file_get_contents($tmpFileName);
+				return $this->parseRawMessageIntoMailObject($mailObject,$message,$Header,$Body);
+		}
+
+		/**
+		 * parseRawMessageIntoMailObject - parses a message/rfc mail from file to the mailobject and returns the header and body via reference
+		 *   throws egw_exception_assertion_failed when the required Pear Class is not found/loadable
+		 * @param object $mailObject instance of the SMTP Mailer Object
+		 * @param string $message string containing the RawMessage
+		 * @param string &$Header  reference used to return the imported Mailheader
+		 * @param string &$Body reference to return the imported Body
+		 * @return void Mailheader and body is returned via Reference in $Header $Body
+		 */
+		function parseRawMessageIntoMailObject($mailObject,$message,&$Header,&$Body)
+		{
+				/**
+				 * pear/Mail_mimeDecode requires package "pear/Mail_Mime" (version >= 1.4.0, excluded versions: 1.4.0)
+				 * ./pear upgrade Mail_Mime
+				 * ./pear install Mail_mimeDecode
+				 */
 				//echo '<pre>'.$message.'</pre>';
 				if ((@include_once 'Mail/mimeDecode.php') === false) throw new egw_exception_assertion_failed(lang('Required PEAR class Mail/mimeDecode.php not found.'));
 
