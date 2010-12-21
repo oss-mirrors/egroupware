@@ -725,6 +725,17 @@ class bofelamimail
 			return null;
 		}
 
+		/**
+		 * flag a Message
+		 *
+		 * @param string _flag (readable name)
+		 * @param mixed array/string _messageUID array of ids to flag, or 'all'
+		 * @param string _folder foldername
+		 *
+		 * @todo handle handle icserver->setFlags returnValue
+		 *
+		 * @return bool true, as we do not handle icserver->setFlags returnValue 
+		 */
 		function flagMessages($_flag, $_messageUID,$_folder=NULL)
 		{
 			#error_log("felamimail::bocompose::flagMessages");
@@ -775,6 +786,7 @@ class bofelamimail
 
 			$this->sessionData['folderStatus'][$this->profileID][$this->sessionData['mailbox']]['uidValidity'] = 0;
 			$this->saveSessionData();
+			return true; // as we do not catch/examine setFlags returnValue
 		}
 
 		function _getSubStructure($_structure, $_partID)
@@ -839,12 +851,12 @@ class bofelamimail
 		}
 
 		/*
-		* strip tags out of the message completely with their content
-		* param $_body is the text to be processed
-		* param $tag is the tagname which is to be removed. Note, that only the name of the tag is to be passed to the function
-		*            without the enclosing brackets
-		* param $endtag can be different from tag  but should be used only, if begin and endtag are known to be different e.g.: <!-- -->
-		*/
+		 * strip tags out of the message completely with their content
+		 * param $_body is the text to be processed
+		 * param $tag is the tagname which is to be removed. Note, that only the name of the tag is to be passed to the function
+		 *            without the enclosing brackets
+		 * param $endtag can be different from tag  but should be used only, if begin and endtag are known to be different e.g.: <!-- -->
+		 */
 		static function replaceTagsCompletley(&$_body,$tag,$endtag='',$addbracesforendtag=true)
 		{
 			translation::replaceTagsCompletley($_body,$tag,$endtag,$addbracesforendtag);
@@ -1146,14 +1158,14 @@ class bofelamimail
 		}
 
 		/**
-		* retrieve a attachment
-		*
-		* @param int _uid the uid of the message
-		* @param string _partID the id of the part, which holds the attachment
-		* @param int _winmail_nr winmail.dat attachment nr.
-		*
-		* @return array
-		*/
+		 * retrieve a attachment
+		 *
+		 * @param int _uid the uid of the message
+		 * @param string _partID the id of the part, which holds the attachment
+		 * @param int _winmail_nr winmail.dat attachment nr.
+		 *
+		 * @return array
+		 */
 		function getAttachment($_uid, $_partID, $_winmail_nr=0)
 		{
 			// parse message structure
