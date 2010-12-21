@@ -297,6 +297,17 @@ class felamimail_activesync implements activesync_plugin_read
         return $this->fetchMessages($folderid, NULL, (array)$id);
 	}
 
+	/**
+	 * This function is called when a message has been changed on the PDA. You should parse the new
+	 * message here and save the changes to disk. The return value must be whatever would be returned
+	 * from StatMessage() after the message has been saved. This means that both the 'flags' and the 'mod'
+	 * properties of the StatMessage() item may change via ChangeMessage().
+	 * Note that this function will never be called on E-mail items as you can't change e-mail items, you
+	 * can only set them as 'read'.
+	 */
+	function ChangeMessage($folderid, $id, $message) {
+		return false;
+	}
 
 	/**
 	 *  This function is analogous to GetMessageList.
@@ -451,12 +462,45 @@ class felamimail_activesync implements activesync_plugin_read
 
 
 	/**
-	 * @todo implement using ctag
+	 * Return a changes array
+	 *
+	 * if changes occurr default diff engine computes the actual changes
+	 *
+	 * @param string $folderid
+	 * @param string &$syncstate on call old syncstate, on return new syncstate
+	 * @return array|boolean false if $folderid not found, array() if no changes or array(array("type" => "fakeChange"))
 	 */
 	function AlterPingChanges($folderid, &$syncstate)
 	{
-		debugLog (__METHOD__." should not see this -not yet implemented");
-		return false;
+		$this->splitID($folderid, $account, $folder);
+		if ($type != 'felamimail') return false;
+
+		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+
+		$changes = array();
+        debugLog("AlterPingChanges on $folderid ($folder) stat: ". $syncstate);
+        $this->mail->reopen($folder);
+
+        // courier-imap only cleares the status cache after checking
+        @imap_check($this->_mbox);
+
+        $status = $this->mail->getFolderStatus($folder);
+        if (!$status) {
+            debugLog("AlterPingChanges: could not stat folder $folder ");
+            return false;
+        } else {
+            $newstate = "M:". $status['messages'] ."-R:". $status['recent'] ."-U:". $status['unseen']."-NUID:".$status['uidnext']."-UIDV:".$status['uidvalidity'];
+
+            // message number is different - change occured
+            if ($syncstate != $newstate) {
+                $syncstate = $newstate;
+                debugLog("AlterPingChanges: Change FOUND!");
+                // build a dummy change
+                $changes = array(array("type" => "fakeChange"));
+            }
+        }
+		//error_log(__METHOD__."('$folderid','$syncstate_was') syncstate='$syncstate' returning ".array2string($changes));
+		return $changes;
 	}
 
 
