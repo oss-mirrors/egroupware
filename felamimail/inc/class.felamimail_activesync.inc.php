@@ -43,6 +43,20 @@ class felamimail_activesync implements activesync_plugin_read
 	//private $ui; // may not be needed after all
 
 	/**
+	 * Integer id of trash folder
+	 *
+	 * @var mixed
+	 */
+	private $_wasteID = false;
+
+	/**
+	 * Integer id of sent folder
+	 *
+	 * @var mixed
+	 */
+	private $_sentID = false;
+
+	/**
 	 * Integer id of current mail account / connection
 	 *
 	 * @var int
@@ -54,7 +68,7 @@ class felamimail_activesync implements activesync_plugin_read
 	 *
 	 * @var int
 	 */
-	private $debugLevel = 2;
+	private $debugLevel = 1;
 
 	/**
 	 * Constructor
@@ -76,6 +90,8 @@ class felamimail_activesync implements activesync_plugin_read
 	{
 		if ($this->mail && $this->account != $account) $this->_disconnect();
 
+		$this->_wasteID = false;
+		$this->_sentID = false;
 		if (!$this->mail)
 		{
 			$this->account = $account;
@@ -422,10 +438,12 @@ class felamimail_activesync implements activesync_plugin_read
 		elseif($this->mail->isTrashFolder($folder))
 		{
 			$folderObj->type = SYNC_FOLDER_TYPE_WASTEBASKET;
+			$this->_wasteID = $folder;
 		}
 		elseif($this->mail->isSentFolder($folder))
 		{
 			$folderObj->type = SYNC_FOLDER_TYPE_SENTMAIL;
+			$this->_sentID = $folder;
 		}
 		else
 		{
@@ -503,6 +521,63 @@ class felamimail_activesync implements activesync_plugin_read
 		return $changes;
 	}
 
+	/**
+	 * Should return a wastebasket folder if there is one. This is used when deleting
+	 * items; if this function returns a valid folder ID, then all deletes are handled
+	 * as moves and are sent to your backend as a move. If it returns FALSE, then deletes
+	 * are always handled as real deletes and will be sent to your importer as a DELETE
+	 */
+	function GetWasteBasket() {
+		return $this->_wasteID;
+	}
+
+	/**
+	 * This function is called when the user has requested to delete (really delete) a message. Usually
+	 * this means just unlinking the file its in or somesuch. After this call has succeeded, a call to
+	 * GetMessageList() should no longer list the message. If it does, the message will be re-sent to the PDA
+	 * as it will be seen as a 'new' item. This means that if you don't implement this function, you will
+	 * be able to delete messages on the PDA, but as soon as you sync, you'll get the item back
+	 */
+	function DeleteMessage($folderid, $id) 
+	{
+		debugLog("IMAP-DeleteMessage: (fid: '$folderid'  id: '$id' )");
+		/*
+		$this->imap_reopenFolder($folderid);
+		$s1 = @imap_delete ($this->_mbox, $id, FT_UID);
+		$s11 = @imap_setflag_full($this->_mbox, $id, "\\Deleted", FT_UID);
+		$s2 = @imap_expunge($this->_mbox);
+		*/
+		$_messageUID = (array)$id;
+
+		$rv = $this->mail->deleteMessages($_messageUID, $folderid);
+		// this may be a bit rude, it may be sufficient that GetMessageList does not list messages flagged as deleted
+		if ($this->mail->mailPreferences->preferences['deleteOptions'] == 'mark_as_deleted')
+		{
+			// ignore mark as deleted -> Expunge!
+			//$this->mail->icServer->expunge(); // do not expunge as GetMessageList does not List messages flagged as deleted
+		}
+		debugLog("IMAP-DeleteMessage: $rv");
+
+		return $rv;
+	}
+
+	/**
+	 * This should change the 'read' flag of a message on disk. The $flags
+	 * parameter can only be '1' (read) or '0' (unread). After a call to
+	 * SetReadFlag(), GetMessageList() should return the message with the
+	 * new 'flags' but should not modify the 'mod' parameter. If you do
+	 * change 'mod', simply setting the message to 'read' on the PDA will trigger
+	 * a full resync of the item from the server
+	 */
+	function SetReadFlag($folderid, $id, $flags) 
+	{
+		debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
+		$_messageUID = (array)$id;
+		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$_folderid);
+		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
+
+		return $rv;
+	}
 
 
 	/**
