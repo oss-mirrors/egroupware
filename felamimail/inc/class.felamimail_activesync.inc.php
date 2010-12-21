@@ -214,33 +214,31 @@ class felamimail_activesync implements activesync_plugin_read
 				if (isset($bodypreference[4])) 
 				{
 					$output->airsyncbasebody->type = 4;
-					$body = "";
-					foreach($rawHeaders as $key=>$value) 
+					$rawBody = $this->mail->getMessageRawBody($id);
+					$mailObject = new egw_mailer();
+					try
 					{
-						debugLog(__METHOD__.__LINE__.' Key:'.$key.' Value:'.array2string($value));
-						if ($key != "content-type" && $key != "mime-version" && $key != "content-transfer-encoding" &&
-						    !is_array($value)) {
-							$body .= $key.":";
-							$tokens = split(" ",trim($value));
-							$line = "";
-							foreach($tokens as $valu) {
-			    				if ((strlen($line)+strlen($valu)+2) > 60) {
-									$line .= "\n";
-									$body .= $line;
-									$line = " ".$valu;
-							    } else {
-									$line .= " ".$valu;
-							    }
-							}
-							$body .= $line."\n";
-						}
+						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Creation of Mailobject.");
+						if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Using data from ".$rawHeaders.$rawBody);
+						$this->mail->parseRawMessageIntoMailObject($mailObject,$rawHeaders.$rawBody,$Header,$Body);
 					}
-
+					catch (egw_exception_assertion_failed $e)
+					{
+						debugLog(__METHOD__.__LINE__." Creation of Mail failed.");
+						$Header = '';
+						$Body   = '';
+					}
+					// now we should have all we need for a Mail: $Header.$mailObject->LE.$mailObject->LE.$Body
+					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$mailObject->LE.$mailObject->LE.$Body);
+					$output->airsyncbasebody->data = $Header.$mailObject->LE.$mailObject->LE.$Body;
+				    $output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
+					/* not sure we need this alltogether, as we process the message as it is and rebuild it to meet expectations.
 					if ($this->debugLevel>0) debugLog("MIME Body");
 					if ($output->airsyncbasenativebodytype==1) { //plain
 					}
 					if ($output->airsyncbasenativebodytype==2) { //html
 					}
+					*/
 				}
 				else if (isset($bodypreference[2]))
 				{
@@ -301,7 +299,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$attachments = $this->mail->getMessageAttachments($id);
 
 			// end handle Attachments
-			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($output));
+			if ($this->debugLevel>3); debugLog(__METHOD__.__LINE__.array2string($output));
 			return $output;
 		}
 		return false;
@@ -351,11 +349,12 @@ class felamimail_activesync implements activesync_plugin_read
 		//debugLog(__METHOD__.__LINE__.array2string($rv_messages));
 		foreach ((array)$rv_messages['header'] as $k => $vars)
 		{
-			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' ID:'.$vars['uid'].' Subject:'.$vars['subject']);
+			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' ID to process:'.$vars['uid'].' Subject:'.$vars['subject']);
 			$this->messages[$vars['uid']] = $vars;
-			//debugLog(__METHOD__.__LINE__.' MailID:'.$k.'->'.array2string($vars));
+			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' MailID:'.$k.'->'.array2string($vars));
 			if (!empty($vars['deleted'])) continue; // cut of deleted messages
 			if ($cutoffdate && $vars['date'] < $cutoffdate) continue; // message is out of range for cutoffdate, ignore it
+			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' ID to report:'.$vars['uid'].' Subject:'.$vars['subject']);
 			$mess["mod"] = $vars['date'];
 			$mess["id"] = $vars['uid'];
 			// 'seen' aka 'read' is the only flag we want to know about
