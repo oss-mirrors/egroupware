@@ -3674,7 +3674,7 @@ class bofelamimail
 				$mailObject->PluginDir = EGW_SERVER_ROOT."/phpgwapi/inc/";
 				$mailObject->IsSMTP();
 				$mailObject->CharSet = self::$displayCharset; // some default, may be altered by BodyImport
-				if (isset($structure->ctype_parameters['charset'])) $mailObject->CharSet = $structure->ctype_parameters['charset'];
+				if (isset($structure->ctype_parameters['charset'])) $mailObject->CharSet = trim($structure->ctype_parameters['charset']);
 				$mailObject->Encoding = 'quoted-printable'; // some default, may be altered by BodyImport
 /*
 				$mailObject->AddAddress($emailAddress, $addressObject->personal);
@@ -3757,7 +3757,7 @@ class bofelamimail
 					//echo __METHOD__.__LINE__.$structure->ctype_primary.'/'.$structure->ctype_secondary.'<br>';
 					if ($part->headers['content-transfer-encoding']) $mailObject->Encoding = $part->headers['content-transfer-encoding'];
 					$mailObject->IsHTML($part->ctype_secondary=='html'?true:false);
-					if (isset($part->ctype_parameters['charset'])) $mailObject->CharSet = $part->ctype_parameters['charset'];
+					if (isset($part->ctype_parameters['charset'])) $mailObject->CharSet = trim($part->ctype_parameters['charset']);
 					if (($structure->ctype_secondary=='alternative'||
 						 $structure->ctype_secondary=='mixed' ||
 						 $structure->ctype_secondary=='signed') && $part->ctype_primary=='text' && $part->ctype_secondary=='plain' && $part->body)
@@ -3782,7 +3782,7 @@ class bofelamimail
 					if (($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart') || $part->disposition == 'attachment')
 					{
 						$attachmentnumber++;
-						echo $part->headers['content-transfer-encoding'].'#<br>';
+						//echo $part->headers['content-transfer-encoding'].'#<br>';
 						$mailObject->AddStringAttachment($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
 														 ($part->ctype_parameters['name']?$part->ctype_parameters['name']:'noname_'.$attachmentnumber),
 														 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'),

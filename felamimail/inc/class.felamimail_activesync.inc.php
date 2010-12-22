@@ -200,7 +200,7 @@ class felamimail_activesync implements activesync_plugin_read
 				
 				$bodyStruct = $this->mail->getMessageBody($id, 'always_display');
 				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
-				debugLog(__METHOD__.__LINE__.' Always Display:'.$body);
+				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Always Display:'.$body);
 			    if ($body != "" || (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
 					// may be html
 				    $output->airsyncbasenativebodytype=2;
@@ -211,7 +211,7 @@ class felamimail_activesync implements activesync_plugin_read
 				    $body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
 					$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
 					$body = strip_tags($body);
-					debugLog(__METHOD__.__LINE__.' Plain Text:'.$body);
+					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Plain Text:'.$body);
 				}
 				//$body = str_replace("\n","\r\n", str_replace("\r","",$body)); // do we need that?
 				if (isset($bodypreference[4])) 
@@ -232,18 +232,38 @@ class felamimail_activesync implements activesync_plugin_read
 						$Header = '';
 						$Body   = '';
 					}
-					// now we should have all we need for a Mail: $Header.$mailObject->LE.$mailObject->LE.$Body
-					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$mailObject->LE.$mailObject->LE.$Body);
-					$output->airsyncbasebody->data = $Header.$mailObject->LE.$mailObject->LE.$Body;
-					//$output->airsyncbasebody->data = $rawHeaders.$rawBody;
-				    $output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
-					/* not sure we need this alltogether, as we process the message as it is and rebuild it to meet expectations.
+					// now force UTF-8
+					$mailObject->CharSet = 'utf-8';
+					$mailObject->Subject = translation::convert($mailObject->Subject,$this->mail->detect_encoding($mailObject->Subject));
+
 					if ($this->debugLevel>0) debugLog("MIME Body");
-					if ($output->airsyncbasenativebodytype==1) { //plain
-					}
+			        $bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text');//'never_display');
+				    $body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+					$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
+					$plainBody = strip_tags($body);
 					if ($output->airsyncbasenativebodytype==2) { //html
+						$html = '<html>'.
+	    					    '<head>'.
+						        '<meta name="Generator" content="Z-Push">'.
+						        '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'.
+							    '</head>'.
+							    '<body>'.
+						        str_replace("\n","<BR>",str_replace("\r","", str_replace("\r\n","<BR>",$body))).
+							    '</body>'.
+								'</html>';
+						$mailObject->Body = str_replace("\n","\r\n", str_replace("\r","",$html));
+						$mailObject->AltBody = $plainBody;						
 					}
-					*/
+					if ($output->airsyncbasenativebodytype==1) { //plain
+						$mailObject->Body = $plainBody;
+						$mailObject->AltBody = '';
+					}
+					$Header = $mailObject->CreateHeader();
+					$Body = $mailObject->CreateBody();
+					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' MailObject:'.array2string($mailObject));
+					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$Body);
+					$output->airsyncbasebody->data = $mailObject->getMessageHeader().$mailObject->getMessageBody();
+					$output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
 				}
 				else if (isset($bodypreference[2]))
 				{
