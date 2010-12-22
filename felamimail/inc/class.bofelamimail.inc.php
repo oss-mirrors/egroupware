@@ -3635,13 +3635,15 @@ class bofelamimail
 		 */
 		function parseFileIntoMailObject($mailObject,$tmpFileName,&$Header,&$Body)
 		{
-				/**
-				 * pear/Mail_mimeDecode requires package "pear/Mail_Mime" (version >= 1.4.0, excluded versions: 1.4.0)
-				 * ./pear upgrade Mail_Mime
-				 * ./pear install Mail_mimeDecode
-				 */
 				$message = file_get_contents($tmpFileName);
-				return $this->parseRawMessageIntoMailObject($mailObject,$message,$Header,$Body);
+				try
+				{
+					return $this->parseRawMessageIntoMailObject($mailObject,$message,$Header,$Body);
+				}
+				catch (egw_exception_assertion_failed $e)
+				{	// not sure that this is needed to pass on exeptions
+					throw new egw_exception_assertion_failed($e->getMessage());
+				}
 		}
 
 		/**
