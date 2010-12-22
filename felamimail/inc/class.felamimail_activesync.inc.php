@@ -13,7 +13,8 @@
  */
 
 require_once (EGW_INCLUDE_ROOT.'/felamimail/inc/class.bofelamimail.inc.php');
-require_once (EGW_INCLUDE_ROOT.'/felamimail/inc/class.uidisplay.inc.php');
+//require_once (EGW_INCLUDE_ROOT.'/felamimail/inc/class.uidisplay.inc.php');
+//require_once (EGW_INCLUDE_ROOT.'/phpgwapi/inc/class.egw_mailer.inc.php');
 
 /**
  * FMail activesync plugin
@@ -199,16 +200,18 @@ class felamimail_activesync implements activesync_plugin_read
 				
 				$bodyStruct = $this->mail->getMessageBody($id, 'always_display');
 				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
-			    if ($body != "") {
+				debugLog(__METHOD__.__LINE__.' Always Display:'.$body);
+			    if ($body != "" || (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
 					// may be html
 				    $output->airsyncbasenativebodytype=2;
 				} else {
 					// plain text Message
 				    $output->airsyncbasenativebodytype=1;
-			        $bodyStruct = $this->mail->getMessageBody($id,'never_display');
+			        $bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text');//'never_display');
 				    $body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
 					$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
 					$body = strip_tags($body);
+					debugLog(__METHOD__.__LINE__.' Plain Text:'.$body);
 				}
 				//$body = str_replace("\n","\r\n", str_replace("\r","",$body)); // do we need that?
 				if (isset($bodypreference[4])) 
@@ -221,6 +224,7 @@ class felamimail_activesync implements activesync_plugin_read
 						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Creation of Mailobject.");
 						if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Using data from ".$rawHeaders.$rawBody);
 						$this->mail->parseRawMessageIntoMailObject($mailObject,$rawHeaders.$rawBody,$Header,$Body);
+						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Creation of Mailobject succeeded.");
 					}
 					catch (egw_exception_assertion_failed $e)
 					{
@@ -229,8 +233,9 @@ class felamimail_activesync implements activesync_plugin_read
 						$Body   = '';
 					}
 					// now we should have all we need for a Mail: $Header.$mailObject->LE.$mailObject->LE.$Body
-					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$mailObject->LE.$mailObject->LE.$Body);
+					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$mailObject->LE.$mailObject->LE.$Body);
 					$output->airsyncbasebody->data = $Header.$mailObject->LE.$mailObject->LE.$Body;
+					//$output->airsyncbasebody->data = $rawHeaders.$rawBody;
 				    $output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
 					/* not sure we need this alltogether, as we process the message as it is and rebuild it to meet expectations.
 					if ($this->debugLevel>0) debugLog("MIME Body");
@@ -249,7 +254,7 @@ class felamimail_activesync implements activesync_plugin_read
 				{
 					// Send Plaintext as Fallback or if original body is plainttext
 					if ($this->debugLevel>0) debugLog("Plaintext Body");
-					$bodyStruct = $this->mail->getMessageBody($id,'never_display');
+					$bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text'); //'never_display');
 					$plain = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
 					$plain = html_entity_decode($plain,ENT_QUOTES,$this->mail->detect_encoding($plain));
 					$plain = strip_tags($plain);
@@ -299,7 +304,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$attachments = $this->mail->getMessageAttachments($id);
 
 			// end handle Attachments
-			if ($this->debugLevel>3); debugLog(__METHOD__.__LINE__.array2string($output));
+			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($output));
 			return $output;
 		}
 		return false;
