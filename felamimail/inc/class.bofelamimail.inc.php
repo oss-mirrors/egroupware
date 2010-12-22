@@ -3663,8 +3663,8 @@ class bofelamimail
 				 * ./pear install Mail_mimeDecode
 				 */
 				//echo '<pre>'.$message.'</pre>';
-				if ((@include_once 'Mail/mimeDecode.php') === false) throw new egw_exception_assertion_failed(lang('Required PEAR class Mail/mimeDecode.php not found.'));
-
+				//error_log(__METHOD__.__LINE__.$message);
+				if (class_exists('Mail_mimeDecode',false)==false && (@include_once 'Mail/mimeDecode.php') === false) throw new egw_exception_assertion_failed(lang('Required PEAR class Mail/mimeDecode.php not found.'));
 				$mailDecode = new Mail_mimeDecode($message);
 				$structure = $mailDecode->decode(array('include_bodies'=>true,'decode_bodies'=>true,'decode_headers'=>true));
 				//error_log(__METHOD__.__LINE__.array2string($structure));
@@ -3682,7 +3682,6 @@ class bofelamimail
 				$mailObject->AddBCC($emailAddress, $addressObject->personal);
 				$mailObject->AddReplyto($emailAddress, $addressObject->personal);
 */
-
 				$result ='';
 				foreach((array)$structure->headers as $key => $val)
 				{
@@ -3724,7 +3723,6 @@ class bofelamimail
 					$mailObject->Body = $structure->body;
 				}
 				$this->createBodyFromStructure($mailObject, $structure, $parenttype=null);
-
 				$mailObject->CreateHeader(); // this sets the boundary stufff
 				//echo "Boundary:".$mailObject->FetchBoundary(1).'<br>';
 				$boundary ='';
