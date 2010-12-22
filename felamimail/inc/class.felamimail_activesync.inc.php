@@ -221,16 +221,17 @@ class felamimail_activesync implements activesync_plugin_read
 					$mailObject = new egw_mailer();
 					try
 					{
+						$Header = $Body = '';
 						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Creation of Mailobject.");
 						if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Using data from ".$rawHeaders.$rawBody);
 						$this->mail->parseRawMessageIntoMailObject($mailObject,$rawHeaders.$rawBody,$Header,$Body);
+						$Header = $Body = ''; // we do not use Header and Body we use the MailObject
 						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Creation of Mailobject succeeded.");
 					}
 					catch (egw_exception_assertion_failed $e)
 					{
 						debugLog(__METHOD__.__LINE__." Creation of Mail failed.");
-						$Header = '';
-						$Body   = '';
+						$Header = $Body = '';
 					}
 					// now force UTF-8
 					$mailObject->CharSet = 'utf-8';
@@ -242,6 +243,7 @@ class felamimail_activesync implements activesync_plugin_read
 					$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
 					$plainBody = strip_tags($body);
 					if ($output->airsyncbasenativebodytype==2) { //html
+						$mailObject->IsHTML(true);
 						$html = '<html>'.
 	    					    '<head>'.
 						        '<meta name="Generator" content="Z-Push">'.
@@ -255,14 +257,15 @@ class felamimail_activesync implements activesync_plugin_read
 						$mailObject->AltBody = $plainBody;						
 					}
 					if ($output->airsyncbasenativebodytype==1) { //plain
+						$mailObject->IsHTML(false);
 						$mailObject->Body = $plainBody;
 						$mailObject->AltBody = '';
 					}
 					$Header = $mailObject->CreateHeader();
 					$Body = $mailObject->CreateBody();
 					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' MailObject:'.array2string($mailObject));
-					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$Body);
-					$output->airsyncbasebody->data = $mailObject->getMessageHeader().$mailObject->getMessageBody();
+					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$mailObject->LE.$mailObject->LE.$Body);
+					$output->airsyncbasebody->data = $Header.$mailObject->LE.$mailObject->LE.$Body;
 					$output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
 				}
 				else if (isset($bodypreference[2]))

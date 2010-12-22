@@ -3685,7 +3685,13 @@ class bofelamimail
 				$result ='';
 				foreach((array)$structure->headers as $key => $val)
 				{
-					foreach((array)$val as $i => $v) if ($key!='content-type') $Header .= $mailObject->HeaderLine($key, trim($v));
+					foreach((array)$val as $i => $v) 
+					{
+						if ($key!='content-type') 
+						{
+							$Header .= $mailObject->HeaderLine($key, trim($v));
+						}
+					}
 					switch ($key)
 					{
 						case 'sender':
