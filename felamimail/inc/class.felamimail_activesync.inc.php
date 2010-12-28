@@ -163,13 +163,13 @@ class felamimail_activesync implements activesync_plugin_read
 			// initialize the object
 			$output = new SyncMail();
 			$headers = $this->mail->getMessageHeader($id,'',true);
-			$rawHeaders = $this->mail->getMessageRawHeader($id);	
+			$rawHeaders = $this->mail->getMessageRawHeader($id);
 			// simple style
 			// start AS12 Stuff (bodypreference === false) case = old behaviour
 			debugLog(__METHOD__.__LINE__.' Bodypreference: '.array2string($bodypreference));
 			if ($bodypreference === false) {
 				$bodyStruct = $this->mail->getMessageBody($id, 'only_if_no_text');
-				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);	
+				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);
 				$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
 				$body = preg_replace("/<style.*?<\/style>/is", "", $body); // in case there is only a html part
 				// remove all other html
@@ -181,15 +181,15 @@ class felamimail_activesync implements activesync_plugin_read
 				else
 				{
 					$output->bodytruncated = 0;
-				}			
+				}
 				$output->bodysize = strlen($body);
 				$output->body = $body;
 			}
 			else // style with bodypreferences
 			{
-				if (isset($bodypreference[1]) && !isset($bodypreference[1]["TruncationSize"])) 
+				if (isset($bodypreference[1]) && !isset($bodypreference[1]["TruncationSize"]))
 					$bodypreference[1]["TruncationSize"] = 1024*1024;
-				if (isset($bodypreference[2]) && !isset($bodypreference[2]["TruncationSize"])) 
+				if (isset($bodypreference[2]) && !isset($bodypreference[2]["TruncationSize"]))
 					$bodypreference[2]["TruncationSize"] = 1024*1024;
 				if (isset($bodypreference[3]) && !isset($bodypreference[3]["TruncationSize"]))
 					$bodypreference[3]["TruncationSize"] = 1024*1024;
@@ -197,7 +197,7 @@ class felamimail_activesync implements activesync_plugin_read
 					$bodypreference[4]["TruncationSize"] = 1024*1024;
 				$output->airsyncbasebody = new SyncAirSyncBaseBody();
 				if ($this->debugLevel>0) debugLog("airsyncbasebody!");
-				
+
 				$bodyStruct = $this->mail->getMessageBody($id, 'always_display');
 				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
 				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Always Display:'.$body);
@@ -214,7 +214,7 @@ class felamimail_activesync implements activesync_plugin_read
 					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Plain Text:'.$body);
 				}
 				//$body = str_replace("\n","\r\n", str_replace("\r","",$body)); // do we need that?
-				if (isset($bodypreference[4])) 
+				if (isset($bodypreference[4]))
 				{
 					$output->airsyncbasebody->type = 4;
 					$rawBody = $this->mail->getMessageRawBody($id);
@@ -254,7 +254,7 @@ class felamimail_activesync implements activesync_plugin_read
 							    '</body>'.
 								'</html>';
 						$mailObject->Body = str_replace("\n","\r\n", str_replace("\r","",$html));
-						$mailObject->AltBody = $plainBody;						
+						$mailObject->AltBody = $plainBody;
 					}
 					if ($output->airsyncbasenativebodytype==1) { //plain
 						$mailObject->IsHTML(false);
@@ -272,8 +272,8 @@ class felamimail_activesync implements activesync_plugin_read
 				{
 					if ($this->debugLevel>0) debugLog("HTML Body");
 					// Send HTML if requested and native type was html
-				} 
-				else 
+				}
+				else
 				{
 					// Send Plaintext as Fallback or if original body is plainttext
 					if ($this->debugLevel>0) debugLog("Plaintext Body");
@@ -284,14 +284,14 @@ class felamimail_activesync implements activesync_plugin_read
 					//$plain = str_replace("\n","\r\n",str_replace("\r","",$plain));
 					$output->airsyncbasebody->type = 1;
 					if(isset($bodypreference[1]["TruncationSize"]) &&
-			    		strlen($plain) > $bodypreference[1]["TruncationSize"]) 
+			    		strlen($plain) > $bodypreference[1]["TruncationSize"])
 					{
 						$plain = utf8_truncate($plain, $bodypreference[1]["TruncationSize"]);
 						$output->airsyncbasebody->truncated = 1;
 					}
 					$output->airsyncbasebody->data = $plain;
 				}
-				// In case we have nothing for the body, send at least a blank... 
+				// In case we have nothing for the body, send at least a blank...
 				// dw2412 but only in case the body is not rtf!
 				if ($output->airsyncbasebody->type != 3 && (!isset($output->airsyncbasebody->data) || strlen($output->airsyncbasebody->data) == 0))
 				{
@@ -311,8 +311,8 @@ class felamimail_activesync implements activesync_plugin_read
 			$output->cc = ($headers['CC'] ? $headers['CC']:null);
 			$output->reply_to = ($headers['REPLY_TO']?$headers['REPLY_TO']:null);
 			$output->messageclass = "IPM.Note";
-			if (stripos($this->messages[$id]['mimetype'],'multipart')!== false && 
-				stripos($this->messages[$id]['mimetype'],'signed')!== false) 
+			if (stripos($this->messages[$id]['mimetype'],'multipart')!== false &&
+				stripos($this->messages[$id]['mimetype'],'signed')!== false)
 			{
 				$output->messageclass = "IPM.Note.SMIME.MultipartSigned";
 			}
@@ -322,7 +322,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$output->internetcpid = 65001;
 			$output->contentclass="urn:content-classes:message";
 			// end AS12 Stuff
-			
+
 			// start handle Attachments
 			$attachments = $this->mail->getMessageAttachments($id);
 
@@ -333,10 +333,24 @@ class felamimail_activesync implements activesync_plugin_read
 		return false;
 	}
 
+	/**
+	 * StatMessage should return message stats, analogous to the folder stats (StatFolder). Entries are:
+	 * 'id'	 => Server unique identifier for the message. Again, try to keep this short (under 20 chars)
+	 * 'flags'	 => simply '0' for unread, '1' for read
+	 * 'mod'	=> modification signature. As soon as this signature changes, the item is assumed to be completely
+	 *			 changed, and will be sent to the PDA as a whole. Normally you can use something like the modification
+	 *			 time for this field, which will change as soon as the contents have changed.
+	 *
+	 * @param string $folderid
+	 * @param int|array $id event id or array or cal_id:recur_date for virtual exception
+	 * @return array
+	 */
 	public function StatMessage($folderid, $id)
 	{
-        debugLog (__METHOD__.' for Folder:'.$folderid.' ID:'.$id);
-        return $this->fetchMessages($folderid, NULL, (array)$id);
+        $messages = $this->fetchMessages($folderid, NULL, (array)$id);
+        $stat = array_shift($messages);
+        debugLog (__METHOD__."('$folderid','$id') returning ".array2string($stat));
+        return $stat;
 	}
 
 	/**
@@ -347,7 +361,8 @@ class felamimail_activesync implements activesync_plugin_read
 	 * Note that this function will never be called on E-mail items as you can't change e-mail items, you
 	 * can only set them as 'read'.
 	 */
-	function ChangeMessage($folderid, $id, $message) {
+	function ChangeMessage($folderid, $id, $message)
+	{
 		return false;
 	}
 
@@ -565,7 +580,7 @@ class felamimail_activesync implements activesync_plugin_read
 	 * as it will be seen as a 'new' item. This means that if you don't implement this function, you will
 	 * be able to delete messages on the PDA, but as soon as you sync, you'll get the item back
 	 */
-	function DeleteMessage($folderid, $id) 
+	function DeleteMessage($folderid, $id)
 	{
 		debugLog("IMAP-DeleteMessage: (fid: '$folderid'  id: '$id' )");
 		/*
@@ -596,7 +611,7 @@ class felamimail_activesync implements activesync_plugin_read
 	 * change 'mod', simply setting the message to 'read' on the PDA will trigger
 	 * a full resync of the item from the server
 	 */
-	function SetReadFlag($folderid, $id, $flags) 
+	function SetReadFlag($folderid, $id, $flags)
 	{
 		debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
 		$_messageUID = (array)$id;
