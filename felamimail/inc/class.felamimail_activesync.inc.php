@@ -304,6 +304,35 @@ class felamimail_activesync implements activesync_plugin_read
 						$mailObject->Body = $plainBody;
 						$mailObject->AltBody = '';
 					}
+					// we still need the attachments to be added ( if there are any )
+					// start handle Attachments
+					$attachments = $this->mail->getMessageAttachments($id);
+					if (is_array($attachments))
+					{
+						debugLog(__METHOD__.__LINE__.' gather Attachments for BodyCreation of/for MessageID:'.$id.' found:'.count($attachments));
+						foreach((array)$attachments as $key => $attachment) 
+						{
+							if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Key:'.$key.'->'.array2string($attachment));
+							switch($attachment['type']) 
+							{
+								case 'MESSAGE/RFC822':
+									$rawHeader = $rawBody = '';
+									if (isset($attachment['partID'])) 
+									{
+										$rawHeader = $this->mail->getMessageRawHeader($attachment['uid'], $attachment['partID']);
+									}
+									$rawBody = $this->mail->getMessageRawBody($attachment['uid'], $attachment['partID']);
+									$mailObject->AddStringAttachment($rawHeader.$rawBody, $mailObject->EncodeHeader($attachment['name']), '7bit', 'message/rfc822');
+									break;
+								default:
+									$attachmentData = '';
+									$attachmentData	= $this->mail->getAttachment($attachment['uid'], $attachment['partID']);
+									$mailObject->AddStringAttachment($attachmentData['attachment'], $mailObject->EncodeHeader($attachment['name']), 'base64', $attachment['type']);
+									break;
+							}
+						}
+					}
+
 					$mailObject->SetMessageType();
 					$Header = $mailObject->CreateHeader();
 					$Body = trim($mailObject->CreateBody()); // philip thinks this is needed, so lets try if it does any good/harm
@@ -410,7 +439,24 @@ class felamimail_activesync implements activesync_plugin_read
 					$attachment->displayname = $attach['name'];
 					$attachment->attname = $folderid . ":" . $id . ":" . $key;
 					$attachment->attmethod = 1;
-					$attachment->attoid = isset($part->headers['content-id']) ? trim($part->headers['content-id']) : "";
+					$attachment->attoid = "";//isset($part->headers['content-id']) ? trim($part->headers['content-id']) : "";
+					if (!empty($attach['cid']) && $attach['cid'] <> 'NIL' ) 
+					{
+						$attachment->isinline=true;
+						$attachment->attmethod=6;
+						$attachment->contentid= $attach['cid'];
+						//	debugLog("'".$part->headers['content-id']."'  ".$attachment->contentid);
+						$attachment->contenttype = trim($attach['mimeType']);
+						//	debugLog("'".$part->headers['content-type']."'  ".$attachment->contentid);
+					} else {
+						$attachment->attmethod=1;
+					}
+
+					if (isset($output->_mapping['POOMMAIL:Attachments'])) {
+						array_push($output->attachments, $attachment);
+					} else if(isset($output->_mapping['AirSyncBase:Attachments'])) {
+						array_push($output->airsyncbaseattachments, $attachment);
+					}
 				}
 			}
 
