@@ -217,14 +217,45 @@ class felamimail_activesync implements activesync_plugin_read
 				if (isset($bodypreference[4]))
 				{
 					$output->airsyncbasebody->type = 4;
-					$rawBody = $this->mail->getMessageRawBody($id);
+					//$rawBody = $this->mail->getMessageRawBody($id);
 					$mailObject = new egw_mailer();
 					try
 					{
 						$Header = $Body = '';
 						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Creation of Mailobject.");
 						if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Using data from ".$rawHeaders.$rawBody);
-						$this->mail->parseRawMessageIntoMailObject($mailObject,$rawHeaders.$rawBody,$Header,$Body);
+						//$this->mail->parseRawMessageIntoMailObject($mailObject,$rawHeaders.$rawBody,$Header,$Body);
+						//debugLog(__METHOD__.__LINE__.array2string($headers));
+						// now force UTF-8
+						$mailObject->CharSet = 'utf-8';
+						$mailObject->Priority = $headers['PRIORITY'];
+						$mailObject->Encoding = 'quoted-printable';
+
+						$mailObject->RFCDateToSet = $headers['DATE'];
+						$mailObject->Sender = $headers['RETURN-PATH'];
+						$mailObject->Subject = $headers['SUBJECT'];
+						$mailObject->MessageID = $headers['MESSAGE-ID'];
+						// from
+						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($headers['FROM']):$headers['FROM']),'');
+						foreach((array)$address_array as $addressObject) {
+							$mailObject->From = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+							$mailObject->FromName = $addressObject->personal;
+						}
+						// to
+						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($headers['TO']):$headers['TO']),'');
+						foreach((array)$address_array as $addressObject) {
+							$mailObject->AddAddress($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
+						}
+						// CC
+						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($headers['CC']):$headers['CC']),'');
+						foreach((array)$address_array as $addressObject) {
+							$mailObject->AddAddress($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
+						}
+						//	AddReplyTo
+						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($headers['REPLY-TO']):$headers['REPLY-TO']),'');
+						foreach((array)$address_array as $addressObject) {
+							$mailObject->AddReplyTo($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
+						}
 						$Header = $Body = ''; // we do not use Header and Body we use the MailObject
 						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Creation of Mailobject succeeded.");
 					}
@@ -233,16 +264,23 @@ class felamimail_activesync implements activesync_plugin_read
 						debugLog(__METHOD__.__LINE__." Creation of Mail failed.");
 						$Header = $Body = '';
 					}
-					// now force UTF-8
-					$mailObject->CharSet = 'utf-8';
-					$mailObject->Subject = translation::convert($mailObject->Subject,$this->mail->detect_encoding($mailObject->Subject));
 
 					if ($this->debugLevel>0) debugLog("MIME Body");
 			        $bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text');//'never_display');
+					//if ($this->debugLevel>0) debugLog("MIME Body".array2string($bodyStruct));
 				    $body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+					//if ($this->debugLevel>0) debugLog("MIME Body".$body);
 					$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
-					$plainBody = strip_tags($body);
-					if ($output->airsyncbasenativebodytype==2) { //html
+					//if ($this->debugLevel>0) debugLog("MIME Body".$body);
+					$plainBody = preg_replace("/<style.*?<\/style>/is", "", $body);
+					// remove all other html
+					$plainBody = preg_replace("/<br.*>/is","<br>",$plainBody);
+					$plainBody = preg_replace("/<br >/is","<br>",$plainBody);
+					$plainBody = preg_replace("/<br\/>/is","<br>",$plainBody);
+					$plainBody = str_replace("<br>","\r\n",$plainBody);
+					$plainBody = strip_tags($plainBody);
+					if ($output->airsyncbasenativebodytype==1) { //html
+						if ($this->debugLevel>0) debugLog("HTML Body");
 						$mailObject->IsHTML(true);
 						$html = '<html>'.
 	    					    '<head>'.
@@ -256,15 +294,17 @@ class felamimail_activesync implements activesync_plugin_read
 						$mailObject->Body = str_replace("\n","\r\n", str_replace("\r","",$html));
 						$mailObject->AltBody = $plainBody;
 					}
-					if ($output->airsyncbasenativebodytype==1) { //plain
+					if ($output->airsyncbasenativebodytype==2) { //plain
+						if ($this->debugLevel>0) debugLog("Plain Body");
 						$mailObject->IsHTML(false);
 						$mailObject->Body = $plainBody;
 						$mailObject->AltBody = '';
 					}
+					$mailObject->SetMessageType();
 					$Header = $mailObject->CreateHeader();
 					$Body = $mailObject->CreateBody();
 					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' MailObject:'.array2string($mailObject));
-					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$mailObject->LE.$mailObject->LE.$Body);
+					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$mailObject->LE.$mailObject->LE.$Body);
 					$output->airsyncbasebody->data = $Header.$mailObject->LE.$mailObject->LE.$Body;
 					$output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
 				}
@@ -364,6 +404,31 @@ class felamimail_activesync implements activesync_plugin_read
 	function ChangeMessage($folderid, $id, $message)
 	{
 		return false;
+	}
+
+	/**
+	 * This function is called when the user moves an item on the PDA. You should do whatever is needed
+	 * to move the message on disk. After this call, StatMessage() and GetMessageList() should show the items
+	 * to have a new parent. This means that it will disappear from GetMessageList() will not return the item
+	 * at all on the source folder, and the destination folder will show the new message
+	 *
+	 */
+	function MoveMessage($folderid, $id, $newfolderid) {
+		debugLog("IMAP-MoveMessage: (sfid: '$folderid'  id: '$id'  dfid: '$newfolderid' )");
+		$this->splitID($folderid, $account, $srcFolder);
+		$this->splitID($newfolderid, $account, $destFolder);
+		debugLog("IMAP-MoveMessage: (SourceFolder: '$srcFolder'  id: '$id'  DestFolder: '$destFolder' )");
+		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+		$this->mail->reopen($destFolder);
+		$status = $this->mail->getFolderStatus($destFolder);
+		$uidNext = $status['uidnext'];
+		$this->mail->reopen($srcFolder);
+
+		// move message
+		$rv = $this->mail->moveMessages($destFolder,(array)$id,true,$srcFolder,true);
+		debugLog(__METHOD__.__LINE__.array2string($rv)); // this may be true, so try using the nextUID value by examine
+		// return the new id "as string""
+		return ($rv===true ? $uidNext : $rv[$id]) . "";
 	}
 
 	/**

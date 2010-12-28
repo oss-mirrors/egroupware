@@ -2828,15 +2828,15 @@ class bofelamimail
 			}
 		}
 
-		function moveMessages($_foldername, $_messageUID, $deleteAfterMove=true)
+		function moveMessages($_foldername, $_messageUID, $deleteAfterMove=true, $currentFolder = Null, $returnUIDs = false)
 		{
 			$msglist = '';
 
 			$deleteOptions  = $GLOBALS['egw_info']["user"]["preferences"]["felamimail"]["deleteOptions"];
-			$retValue = $this->icServer->copyMessages($_foldername, $_messageUID, $this->sessionData['mailbox'], true);
-			if ( PEAR::isError($retValue) ) {
-				error_log(__METHOD__.__LINE__."Copying to Folder $_foldername failed! PEAR::Error:".array2string($retValue->message));
-				throw new egw_exception("Copying to Folder $_foldername failed! PEAR::Error:".array2string($retValue->message));
+			$retUid = $this->icServer->copyMessages($_foldername, $_messageUID, (!empty($currentFolder)?$currentFolder: $this->sessionData['mailbox']), true, $returnUIDs);
+			if ( PEAR::isError($retUid) ) {
+				error_log(__METHOD__.__LINE__."Copying to Folder $_foldername failed! PEAR::Error:".array2string($retUid->message));
+				throw new egw_exception("Copying to Folder $_foldername failed! PEAR::Error:".array2string($retUid->message));
 				return false;
 			}
 			if ($deleteAfterMove === true)
@@ -2855,7 +2855,8 @@ class bofelamimail
 					$this->icServer->expunge();
 				}
  			}
-			return true;
+			//error_log(__METHOD__.__LINE__.array2string($retUid));
+			return ($returnUIDs ? $retUid : true);
 		}
 
 		function openConnection($_icServerID=0, $_adminConnection=false)
@@ -3687,7 +3688,7 @@ class bofelamimail
 				{
 					foreach((array)$val as $i => $v) 
 					{
-						if ($key!='content-type') 
+						if ($key!='content-type' && $key !='content-transfer-encoding') // the omitted values to that will be set at the end 
 						{
 							$Header .= $mailObject->HeaderLine($key, trim($v));
 						}
@@ -3729,11 +3730,13 @@ class bofelamimail
 					$mailObject->Body = $structure->body;
 				}
 				$this->createBodyFromStructure($mailObject, $structure, $parenttype=null);
+				$mailObject->SetMessageType();
 				$mailObject->CreateHeader(); // this sets the boundary stufff
 				//echo "Boundary:".$mailObject->FetchBoundary(1).'<br>';
-				$boundary ='';
-				if (isset($structure->ctype_parameters['boundary'])) $boundary = ' boundary="'.$mailObject->FetchBoundary(1).'";';
-				if (isset($structure->headers['content-type'])) $Header .= $mailObject->HeaderLine('Content-type', $structure->ctype_primary.'/'.$structure->ctype_secondary.';'.$boundary);
+				//$boundary ='';
+				//if (isset($structure->ctype_parameters['boundary'])) $boundary = ' boundary="'.$mailObject->FetchBoundary(1).'";';
+				//if (isset($structure->headers['content-type'])) $Header .= $mailObject->HeaderLine('Content-type', $structure->ctype_primary.'/'.$structure->ctype_secondary.';'.$boundary);
+				$Header .= $mailObject->GetMailMIME();
 				$Body = $mailObject->getMessageBody();
 				//_debug_array($Header);
 				//_debug_array($Body);
