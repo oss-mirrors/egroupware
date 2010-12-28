@@ -110,7 +110,10 @@ class Net_IMAP extends Net_IMAPProtocol {
      */
     function login($user, $pass, $useauthenticate = true, $selectMailbox=true)
     {
+		//error_log(__METHOD__.':'.$user.','.$pass.','.$useauthenticate.','.$selectMailbox);
         if ( $useauthenticate ){
+			//$useauthenticate = 'LOGIN';
+			//error_log(__METHOD__.':'.'about to authenticate');
             //$useauthenticate is a string if the user hardcodes an AUTHMethod
             // (the user calls $imap->login("user","password","CRAM-MD5"); for example!
 
@@ -125,6 +128,7 @@ class Net_IMAP extends Net_IMAPProtocol {
                     $this->_serverAuthMethods=null;
                 }
                 if($this->_serverAuthMethods == null  || count($commonMethods) == 0 || $this->supportedAuthMethods == null ){
+					//error_log(__METHOD__.":The server does not have any auth method, so I try LOGIN");
                     // The server does not have any auth method, so I try LOGIN
                     if ( PEAR::isError( $ret = $this->cmdLogin( $user, $pass ) ) ) {
                         return $ret;
@@ -137,6 +141,7 @@ class Net_IMAP extends Net_IMAPProtocol {
                 return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
             }
         }else{
+			//error_log(__METHOD__.':'.'about to use plain login');
             //The user request "PLAIN"  auth, we use the login command
             if ( PEAR::isError( $ret = $this->cmdLogin( $user, $pass ) ) ) {
                 return $ret;
@@ -1225,13 +1230,14 @@ class Net_IMAP extends Net_IMAPProtocol {
      *                                     can be an array
      * @param   string  $source_mailbox mailbox name from where the messages are copied (default is current mailbox)
      * @param   bool    $uidCopy        msg_id contains UID's instead of Message Sequence Number if set to true
+     * @param 	bool	$returnUIDs     return an array with uid => newuid 
      *
      * @return mixed true on Success/PearError on Failure
      *
      * @access  public
      * @since   1.0
      */
-    function copyMessages($dest_mailbox, $msg_id = null , $source_mailbox = null, $uidCopy = false )
+    function copyMessages($dest_mailbox, $msg_id = null , $source_mailbox = null, $uidCopy = false, $returnUIDs = false )
     {
         if($source_mailbox == null){
             $source_mailbox = $this->getCurrentMailbox();
@@ -1257,13 +1263,33 @@ class Net_IMAP extends Net_IMAPProtocol {
         } else {
           $ret = $this->cmdCopy($message_set, $dest_mailbox );
         }
+		//error_log(array2string($ret));
         if ( PEAR::isError( $ret ) ) {
             return $ret;
         }
         if(strtoupper($ret["RESPONSE"]["CODE"]) != "OK"){
             return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
         }
-        return true;
+		if ($returnUIDs === false)
+		{
+			//error_log(__METHOD__.__LINE__." ReturnUIDs is set to false");
+        	return true;
+		} 
+		else
+		{
+			//error_log(__METHOD__.__LINE__." ReturnUIDs is set to true".$ret["RESPONSE"]["STR_CODE"]);
+			list($cmd,$ts,$oldList,$newIds) = explode(' ',$ret["RESPONSE"]["STR_CODE"]);
+			if ($cmd == 'APPENDUID' || $cmd == 'COPYUID') // the server may not support this
+			{
+				$oldArray = explode(',',$oldList);
+				$newArray = explode(':',$newIds);#
+				foreach((array)$oldArray as $i => $uid)
+				{
+					$rv[$uid] = $newIds[$i];
+				}
+			}
+			return (is_array($rv)?$rv:true);
+		}
     }
 
 
