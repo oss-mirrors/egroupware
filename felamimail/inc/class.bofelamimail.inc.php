@@ -3581,7 +3581,7 @@ class bofelamimail
 		 * @param array $bodyParts  with the bodyparts
 		 * @return string a preformatted string with the mails converted to text
 		 */
-		static function &getdisplayableBody(&$bofelamimail, $bodyParts)
+		static function &getdisplayableBody(&$bofelamimail, $bodyParts, $preserveHTML = false)
 		{
 			for($i=0; $i<count($bodyParts); $i++)
 			{
@@ -3597,7 +3597,7 @@ class bofelamimail
 				if ($bodyParts[$i]['mimeType'] == 'text/html') {
 					// convert HTML to text, as we dont want HTML in infologs
 					$newBody = html::purify($newBody);
-					$newBody = $bofelamimail->convertHTMLToText($newBody,true);
+					if ($preserveHTML==false) $newBody = $bofelamimail->convertHTMLToText($newBody,true);
 					$bofelamimail->getCleanHTML($newBody); // new Body passed by reference
 					$message .= $newBody;
 					continue;
@@ -3686,6 +3686,7 @@ class bofelamimail
 				$result ='';
 				foreach((array)$structure->headers as $key => $val)
 				{
+					//error_log(__METHOD__.__LINE__.$key);
 					foreach((array)$val as $i => $v) 
 					{
 						if ($key!='content-type' && $key !='content-transfer-encoding') // the omitted values to that will be set at the end 

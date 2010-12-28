@@ -163,7 +163,7 @@ class felamimail_activesync implements activesync_plugin_read
 			// initialize the object
 			$output = new SyncMail();
 			$headers = $this->mail->getMessageHeader($id,'',true);
-			$rawHeaders = $this->mail->getMessageRawHeader($id);
+			//$rawHeaders = $this->mail->getMessageRawHeader($id);
 			// simple style
 			// start AS12 Stuff (bodypreference === false) case = old behaviour
 			debugLog(__METHOD__.__LINE__.' Bodypreference: '.array2string($bodypreference));
@@ -195,41 +195,58 @@ class felamimail_activesync implements activesync_plugin_read
 					$bodypreference[3]["TruncationSize"] = 1024*1024;
 				if (isset($bodypreference[4]) && !isset($bodypreference[4]["TruncationSize"]))
 					$bodypreference[4]["TruncationSize"] = 1024*1024;
+				// set the protocoll class
 				$output->airsyncbasebody = new SyncAirSyncBaseBody();
 				if ($this->debugLevel>0) debugLog("airsyncbasebody!");
-
+				// fetch the body (try to gather data only once)
 				$bodyStruct = $this->mail->getMessageBody($id, 'always_display');
-				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);//$this->ui->getdisplayableBody($bodyStruct,false);
 				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Always Display:'.$body);
 			    if ($body != "" || (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
 					// may be html
+					if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with always_display)');
 				    $output->airsyncbasenativebodytype=2;
 				} else {
 					// plain text Message
+					if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text (HTML, if no text available)');
 				    $output->airsyncbasenativebodytype=1;
 			        $bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text');//'never_display');
 				    $body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
-					$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
-					$body = strip_tags($body);
-					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Plain Text:'.$body);
 				}
+				// whatever format decode (using the correct encoding)
+				if ($this->debugLevel>3) debugLog("MIME Body".' Type:'.($output->airsyncbasenativebodytype==2?' html ':' plain ').$body);
+				$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
+				// prepare plaintextbody
+				if ($output->airsyncbasenativebodytype == 2) $plainBody = $this->mail->convertHTMLToText($body,true); // always display with preserved HTML
+				//if ($this->debugLevel>0) debugLog("MIME Body".$body);
+				$plainBody = preg_replace("/<style.*?<\/style>/is", "", $plainBody);
+				// remove all other html
+				$plainBody = preg_replace("/<br.*>/is","<br>",$plainBody);
+				$plainBody = preg_replace("/<br >/is","<br>",$plainBody);
+				$plainBody = preg_replace("/<br\/>/is","<br>",$plainBody);
+				$plainBody = str_replace("<br>","\r\n",$plainBody);
+				$plainBody = strip_tags($plainBody);
+				if ($this->debugLevel>3 && $output->airsyncbasenativebodytype==1) debugLog(__METHOD__.__LINE__.' Plain Text:'.$plainBody);
 				//$body = str_replace("\n","\r\n", str_replace("\r","",$body)); // do we need that?
 				if (isset($bodypreference[4]))
 				{
 					$output->airsyncbasebody->type = 4;
 					//$rawBody = $this->mail->getMessageRawBody($id);
 					$mailObject = new egw_mailer();
+					// this try catch block is probably of no use anymore, as it was intended to catch exceptions thrown by parseRawMessageIntoMailObject
 					try
 					{
+						// we create a complete new rfc822 message here to paa a clean one to the client.
+						// this strips a lot of information, but ...
 						$Header = $Body = '';
 						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Creation of Mailobject.");
-						if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Using data from ".$rawHeaders.$rawBody);
+						//if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__." Using data from ".$rawHeaders.$rawBody);
 						//$this->mail->parseRawMessageIntoMailObject($mailObject,$rawHeaders.$rawBody,$Header,$Body);
 						//debugLog(__METHOD__.__LINE__.array2string($headers));
 						// now force UTF-8
 						$mailObject->CharSet = 'utf-8';
 						$mailObject->Priority = $headers['PRIORITY'];
-						$mailObject->Encoding = 'quoted-printable';
+						$mailObject->Encoding = 'quoted-printable'; // we use this by default
 
 						$mailObject->RFCDateToSet = $headers['DATE'];
 						$mailObject->Sender = $headers['RETURN-PATH'];
@@ -261,25 +278,12 @@ class felamimail_activesync implements activesync_plugin_read
 					}
 					catch (egw_exception_assertion_failed $e)
 					{
-						debugLog(__METHOD__.__LINE__." Creation of Mail failed.");
+						debugLog(__METHOD__.__LINE__." Creation of Mail failed.".$e->getMessage());
 						$Header = $Body = '';
 					}
 
-					if ($this->debugLevel>0) debugLog("MIME Body");
-			        $bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text');//'never_display');
-					//if ($this->debugLevel>0) debugLog("MIME Body".array2string($bodyStruct));
-				    $body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
-					//if ($this->debugLevel>0) debugLog("MIME Body".$body);
-					$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
-					//if ($this->debugLevel>0) debugLog("MIME Body".$body);
-					$plainBody = preg_replace("/<style.*?<\/style>/is", "", $body);
-					// remove all other html
-					$plainBody = preg_replace("/<br.*>/is","<br>",$plainBody);
-					$plainBody = preg_replace("/<br >/is","<br>",$plainBody);
-					$plainBody = preg_replace("/<br\/>/is","<br>",$plainBody);
-					$plainBody = str_replace("<br>","\r\n",$plainBody);
-					$plainBody = strip_tags($plainBody);
-					if ($output->airsyncbasenativebodytype==1) { //html
+					if ($this->debugLevel>0) debugLog("MIME Body"); // body is retrieved up
+					if ($output->airsyncbasenativebodytype==2) { //html
 						if ($this->debugLevel>0) debugLog("HTML Body");
 						$mailObject->IsHTML(true);
 						$html = '<html>'.
@@ -294,7 +298,7 @@ class felamimail_activesync implements activesync_plugin_read
 						$mailObject->Body = str_replace("\n","\r\n", str_replace("\r","",$html));
 						$mailObject->AltBody = $plainBody;
 					}
-					if ($output->airsyncbasenativebodytype==2) { //plain
+					if ($output->airsyncbasenativebodytype==1) { //plain
 						if ($this->debugLevel>0) debugLog("Plain Body");
 						$mailObject->IsHTML(false);
 						$mailObject->Body = $plainBody;
@@ -302,34 +306,59 @@ class felamimail_activesync implements activesync_plugin_read
 					}
 					$mailObject->SetMessageType();
 					$Header = $mailObject->CreateHeader();
-					$Body = $mailObject->CreateBody();
-					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' MailObject:'.array2string($mailObject));
-					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$mailObject->LE.$mailObject->LE.$Body);
+					$Body = trim($mailObject->CreateBody()); // philip thinks this is needed, so lets try if it does any good/harm
+					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' MailObject:'.array2string($mailObject));
+					if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$mailObject->LE.$mailObject->LE.$Body);
 					$output->airsyncbasebody->data = $Header.$mailObject->LE.$mailObject->LE.$Body;
-					$output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
 				}
 				else if (isset($bodypreference[2]))
 				{
 					if ($this->debugLevel>0) debugLog("HTML Body");
 					// Send HTML if requested and native type was html
+					$output->airsyncbasebody->type = 2;
+					if ($output->airsyncbasenativebodytype==2) 
+					{
+						// as we fetch html, and body is HTML, we may not need to handle this
+					}
+					else
+					{
+						// html requested but got only plaintext, so fake html
+						$body = '<html>'.
+							'<head>'.
+							'<meta name="Generator" content="Z-Push">'.
+							'<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'.
+							'</head>'.
+							'<body>'.
+							str_replace("\n","<BR>",str_replace("\r","<BR>", str_replace("\r\n","<BR>",$plainBody))).
+							'</body>'.
+							'</html>';
+					}
+					if(isset($bodypreference[2]["TruncationSize"]) && strlen($html) > $bodypreference[2]["TruncationSize"]) 
+					{
+						$body = utf8_truncate($body,$bodypreference[2]["TruncationSize"]);
+						$output->airsyncbasebody->truncated = 1;
+					}
+					$output->airsyncbasebody->data = $body;
 				}
 				else
 				{
 					// Send Plaintext as Fallback or if original body is plainttext
 					if ($this->debugLevel>0) debugLog("Plaintext Body");
+					/* we use plainBody (set above) instead
 					$bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text'); //'never_display');
 					$plain = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
 					$plain = html_entity_decode($plain,ENT_QUOTES,$this->mail->detect_encoding($plain));
 					$plain = strip_tags($plain);
 					//$plain = str_replace("\n","\r\n",str_replace("\r","",$plain));
+					*/
 					$output->airsyncbasebody->type = 1;
 					if(isset($bodypreference[1]["TruncationSize"]) &&
-			    		strlen($plain) > $bodypreference[1]["TruncationSize"])
+			    		strlen($plainBody) > $bodypreference[1]["TruncationSize"])
 					{
-						$plain = utf8_truncate($plain, $bodypreference[1]["TruncationSize"]);
+						$plainBody = utf8_truncate($plainBody, $bodypreference[1]["TruncationSize"]);
 						$output->airsyncbasebody->truncated = 1;
 					}
-					$output->airsyncbasebody->data = $plain;
+					$output->airsyncbasebody->data = $plainBody;
 				}
 				// In case we have nothing for the body, send at least a blank...
 				// dw2412 but only in case the body is not rtf!
@@ -337,6 +366,7 @@ class felamimail_activesync implements activesync_plugin_read
 				{
 					$output->airsyncbasebody->data = " ";
 				}
+				// determine estimated datasize for all the above cases ...
 				$output->airsyncbasebody->estimateddatasize = strlen($output->airsyncbasebody->data);
 			}
 			// end AS12 Stuff
@@ -365,6 +395,24 @@ class felamimail_activesync implements activesync_plugin_read
 
 			// start handle Attachments
 			$attachments = $this->mail->getMessageAttachments($id);
+			if (is_array($attachments))
+			{
+				debugLog(__METHOD__.__LINE__.' gather Attachments for MessageID:'.$id.' found:'.count($attachments));
+				foreach ($attachments as $key => $attach)
+				{
+					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Key:'.$key.'->'.array2string($attach));
+					if(isset($output->_mapping['POOMMAIL:Attachments'])) {
+						$attachment = new SyncAttachment();
+					} else if(isset($output->_mapping['AirSyncBase:Attachments'])) {
+						$attachment = new SyncAirSyncBaseAttachment();
+					}
+					$attachment->attsize = $attach['size'];
+					$attachment->displayname = $attach['name'];
+					$attachment->attname = $folderid . ":" . $id . ":" . $key;
+					$attachment->attmethod = 1;
+					$attachment->attoid = isset($part->headers['content-id']) ? trim($part->headers['content-id']) : "";
+				}
+			}
 
 			// end handle Attachments
 			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($output));
@@ -654,9 +702,13 @@ class felamimail_activesync implements activesync_plugin_read
 		$s11 = @imap_setflag_full($this->_mbox, $id, "\\Deleted", FT_UID);
 		$s2 = @imap_expunge($this->_mbox);
 		*/
+		// we may have to split folderid
+		$this->splitID($folderid, $account, $folder);
+		debugLog(__METHOD__.__LINE__.' '.$folderid.'->'.$folder);
 		$_messageUID = (array)$id;
 
-		$rv = $this->mail->deleteMessages($_messageUID, $folderid);
+		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+		$rv = $this->mail->deleteMessages($_messageUID, $folder);
 		// this may be a bit rude, it may be sufficient that GetMessageList does not list messages flagged as deleted
 		if ($this->mail->mailPreferences->preferences['deleteOptions'] == 'mark_as_deleted')
 		{
@@ -680,6 +732,7 @@ class felamimail_activesync implements activesync_plugin_read
 	{
 		debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
 		$_messageUID = (array)$id;
+		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
 		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$_folderid);
 		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
 
