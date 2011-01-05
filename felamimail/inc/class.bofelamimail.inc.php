@@ -3602,7 +3602,8 @@ class bofelamimail
 					$message .= $newBody;
 					continue;
 				}
-				$newBody = strip_tags($newBody);
+				$newBody = strip_tags(self::htmlspecialchars($newBody)); //we need to fix broken tags (or just stuff like "<800 USD/p" ) 
+				$newBody = htmlspecialchars_decode($newBody,ENT_QUOTES);
 				$newBody  = explode("\n",$newBody);
 				// create it new, with good line breaks
 				reset($newBody);
