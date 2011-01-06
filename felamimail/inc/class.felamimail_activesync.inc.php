@@ -437,7 +437,8 @@ class felamimail_activesync implements activesync_plugin_read
 					}
 					$attachment->attsize = $attach['size'];
 					$attachment->displayname = $attach['name'];
-					$attachment->attname = $folderid . ":" . $id . ":" . $key;
+					$attachment->attname = $folderid . ":" . $id . ":" . $attach['partID'];//$key;
+					//error_log(__METHOD__.__LINE__.'->'.$folderid . ":" . $id . ":" . $attach['partID']);
 					$attachment->attmethod = 1;
 					$attachment->attoid = "";//isset($part->headers['content-id']) ? trim($part->headers['content-id']) : "";
 					if (!empty($attach['cid']) && $attach['cid'] <> 'NIL' ) 
@@ -465,6 +466,69 @@ class felamimail_activesync implements activesync_plugin_read
 			return $output;
 		}
 		return false;
+	}
+
+	/**
+	 * GetAttachmentData 
+	 * Should return attachment data for the specified attachment. The passed attachment identifier is
+	 * the exact string that is returned in the 'AttName' property of an SyncAttachment. So, you should
+	 * encode any information you need to find the attachment in that 'attname' property.
+	 *
+     * @param string $fid - id
+     * @param string $attname - should contain (folder)id
+	 * @return true, prints the content of the attachment
+	 */
+	function GetAttachmentData($fid,$attname) {
+		debugLog("getAttachmentData: (attname: '$attname')");
+
+		list($folderid, $id, $part) = explode(":", $attname);
+
+		$this->splitID($folderid, $account, $folder);
+
+		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+
+		$this->mail->reopen($folder);
+		$attachment = $this->mail->getAttachment($id,$part);
+		print $attachment['attachment'];
+		unset($attachment);
+		return true;
+	}
+
+	/**
+	 * ItemOperationsGetAttachmentData 
+	 * Should return attachment data for the specified attachment. The passed attachment identifier is
+	 * the exact string that is returned in the 'AttName' property of an SyncAttachment. So, you should
+	 * encode any information you need to find the attachment in that 'attname' property.
+	 *
+     * @param string $fid - id
+     * @param string $attname - should contain (folder)id
+	 * @return SyncAirSyncBaseFileAttachment-object
+	 */
+	function ItemOperationsGetAttachmentData($fid,$attname) {
+		debugLog("ItemOperationsGetAttachmentData: (attname: '$attname')");
+
+		list($folderid, $id, $part) = explode(":", $attname);
+
+		$this->splitID($folderid, $account, $folder);
+
+		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+
+		$this->mail->reopen($folder);
+		$att = $this->mail->getAttachment($id,$part);
+		$attachment = new SyncAirSyncBaseFileAttachment();
+		/*
+		debugLog(__METHOD__.__LINE__.array2string($att));
+		if ($arr['filename']=='error.txt' && stripos($arr['attachment'], 'bofelamimail::getAttachment failed') !== false)
+		{
+			return $attachment;
+		}
+		*/
+		if (is_array($att)) {
+			$attachment->_data = $att['attachment'];
+			$attachment->contenttype = trim($att['type']);
+		}
+		unset($att);
+		return $attachment;
 	}
 
 	/**
