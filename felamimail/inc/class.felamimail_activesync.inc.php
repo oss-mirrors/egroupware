@@ -328,7 +328,7 @@ class felamimail_activesync implements activesync_plugin_read
 								default:
 									$attachmentData = '';
 									$attachmentData	= $this->mail->getAttachment($id, $attachment['partID']);
-									$mailObject->AddStringAttachment($attachmentData['attachment'], $mailObject->EncodeHeader($attachment['name']), 'base64', $attachment['type']);
+									$mailObject->AddStringAttachment($attachmentData['attachment'], $mailObject->EncodeHeader($attachment['name']), 'base64', $attachment['mimeType']);
 									break;
 							}
 						}
