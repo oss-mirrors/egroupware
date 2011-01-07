@@ -230,6 +230,7 @@ class felamimail_activesync implements activesync_plugin_read
 				//$body = str_replace("\n","\r\n", str_replace("\r","",$body)); // do we need that?
 				if (isset($bodypreference[4]))
 				{
+					debugLog(__METHOD__.__LINE__." bodypreference 4 requested");
 					$output->airsyncbasebody->type = 4;
 					//$rawBody = $this->mail->getMessageRawBody($id);
 					$mailObject = new egw_mailer();
@@ -284,7 +285,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 					if ($this->debugLevel>0) debugLog("MIME Body"); // body is retrieved up
 					if ($output->airsyncbasenativebodytype==2) { //html
-						if ($this->debugLevel>0) debugLog("HTML Body");
+						if ($this->debugLevel>0) debugLog("HTML Body with requested pref 4");
 						$mailObject->IsHTML(true);
 						$html = '<html>'.
 	    					    '<head>'.
@@ -299,7 +300,7 @@ class felamimail_activesync implements activesync_plugin_read
 						$mailObject->AltBody = $plainBody;
 					}
 					if ($output->airsyncbasenativebodytype==1) { //plain
-						if ($this->debugLevel>0) debugLog("Plain Body");
+						if ($this->debugLevel>0) debugLog("Plain Body with requested pref 4");
 						$mailObject->IsHTML(false);
 						$mailObject->Body = $plainBody;
 						$mailObject->AltBody = '';
@@ -319,14 +320,14 @@ class felamimail_activesync implements activesync_plugin_read
 									$rawHeader = $rawBody = '';
 									if (isset($attachment['partID'])) 
 									{
-										$rawHeader = $this->mail->getMessageRawHeader($attachment['uid'], $attachment['partID']);
+										$rawHeader = $this->mail->getMessageRawHeader($id, $attachment['partID']);
 									}
-									$rawBody = $this->mail->getMessageRawBody($attachment['uid'], $attachment['partID']);
+									$rawBody = $this->mail->getMessageRawBody($id, $attachment['partID']);
 									$mailObject->AddStringAttachment($rawHeader.$rawBody, $mailObject->EncodeHeader($attachment['name']), '7bit', 'message/rfc822');
 									break;
 								default:
 									$attachmentData = '';
-									$attachmentData	= $this->mail->getAttachment($attachment['uid'], $attachment['partID']);
+									$attachmentData	= $this->mail->getAttachment($id, $attachment['partID']);
 									$mailObject->AddStringAttachment($attachmentData['attachment'], $mailObject->EncodeHeader($attachment['name']), 'base64', $attachment['type']);
 									break;
 							}
@@ -342,7 +343,7 @@ class felamimail_activesync implements activesync_plugin_read
 				}
 				else if (isset($bodypreference[2]))
 				{
-					if ($this->debugLevel>0) debugLog("HTML Body");
+					if ($this->debugLevel>0) debugLog("HTML Body with requested pref 2");
 					// Send HTML if requested and native type was html
 					$output->airsyncbasebody->type = 2;
 					if ($output->airsyncbasenativebodytype==2) 
