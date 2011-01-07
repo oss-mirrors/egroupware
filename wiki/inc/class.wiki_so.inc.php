@@ -460,20 +460,17 @@ class wiki_so	// DB-Layer
 			" GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_title,t1.wiki_body".
 			" HAVING t1.wiki_version=MAX(t2.wiki_version) AND (";
 
-		// fix for case-insensitiv search on pgsql for lowercase searchwords
-		$op_text = !preg_match('/[A-Z]/',$text) ? $this->db->capabilities['case_insensitive_like'] : 'LIKE';
-		$op_text .= ' '.$this->db->quote($search_in ? $text : "%$text%");
-
 		$search_in = $search_in ? explode(',',$search_in) : array('wiki_name','wiki_title','wiki_body');
 
 		if (!$this->db->capabilities['like_on_text'])
 		{
 			$search_in = array_intersect($search_in,array('wiki_name','wiki_title'));
 		}
-		foreach($search_in as $n => $name)
-		{
-			$sql .= ($n ? ' OR ' : '') . "t1.$name $op_text";
-		}
+
+		// Use so_sql's search builder for consistancy & extra features, like AND / OR
+		$so_sql = new so_sql('wiki', $this->PgTbl, $this->db);
+		$search = $so_sql->search2criteria($text, $wildcard, $op, $extra_col, $search_in);
+		$sql .= implode(' AND ', $search);
 		$sql .= ')';
 
 		$this->db->query($sql,__LINE__,__FILE__);
