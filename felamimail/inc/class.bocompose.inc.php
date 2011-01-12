@@ -1121,8 +1121,8 @@ error_log(__METHOD__.__LINE__.$BCCmail.$mail->getMessageHeader().$mail->getMessa
 			}
 			if (is_array($this->sessionData['cc'])) $mailaddresses['cc'] = $this->sessionData['cc'];
 			if (is_array($this->sessionData['bcc'])) $mailaddresses['bcc'] = $this->sessionData['bcc'];
-			if (!empty($mailaddresses)) $mailaddresses['from'] = $fromAddress;
-			// attention: we dont return from infolog/trackere. You cannot check both. cleanups will be done there.
+			if (!empty($mailaddresses)) $mailaddresses['from'] = $GLOBALS['egw']->translation->decodeMailHeader($fromAddress);
+			// attention: we dont return from infolog/tracker. You cannot check both. cleanups will be done there.
 			if ($_formData['to_infolog'] == 'on') {
 				$uiinfolog =& CreateObject('infolog.infolog_ui');
 				$uiinfolog->import_mail(
