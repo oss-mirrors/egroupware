@@ -897,7 +897,7 @@
 			if (  !empty($_formData['printit']) && $_formData['printit'] == 0 ) $savingDestination = ($this->preferences->ic_server[0]->draftfolder ? $this->preferences->ic_server[0]->draftfolder : $this->preferencesArray['draftFolder']);
 
 			if (count($mailAddr)>0) $BCCmail = $mail->AddrAppend("Bcc",$mailAddr);
-error_log(__METHOD__.__LINE__.$BCCmail.$mail->getMessageHeader().$mail->getMessageBody());
+//error_log(__METHOD__.__LINE__.$BCCmail.$mail->getMessageHeader().$mail->getMessageBody());
 			$bofelamimail->openConnection();
 			if ($bofelamimail->folderExists($savingDestination,true)) {
 				try
