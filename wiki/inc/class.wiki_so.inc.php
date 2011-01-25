@@ -469,7 +469,8 @@ class wiki_so	// DB-Layer
 
 		// Use so_sql's search builder for consistancy & extra features, like AND / OR
 		$so_sql = new so_sql('wiki', $this->PgTbl, $this->db);
-		$search = $so_sql->search2criteria($text, $wildcard, $op, $extra_col, $search_in);
+		//_debug_array(array('text'=>$text,'fields'=>$search_in));
+		$search = $so_sql->search2criteria(($text=='%'?'*':str_replace('%','',$text)), $wildcard, $op, $extra_col, $search_in);
 		$sql .= implode(' AND ', $search);
 		$sql .= ')';
 
