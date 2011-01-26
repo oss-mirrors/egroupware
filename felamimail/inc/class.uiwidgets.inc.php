@@ -529,9 +529,10 @@ class uiwidgets
 			} else {
 				$this->t->set_var('selected_style'.$selecteduid,'');
 			}
+			//error_log(__METHOD__.__LINE__.' FolderType:'.$_folderType);
 			if ($firstheader && 
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0 &&
-				$_folderType==0) // only if not sent or drafts or template folder
+				($_folderType==0 || $_folderType==1)) // only if not drafts or template folder
 			{
 				$IFRAMEBody =  $this->updateMessagePreview($firstheader,$_folderType,$_folderName);
 			}
