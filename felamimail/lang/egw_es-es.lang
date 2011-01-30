@@ -3,6 +3,7 @@
 (only cc/bcc)	felamimail	es-es	(sólo Cc/Cco)
 (separate multiple addresses by comma)	felamimail	es-es	(separar múltiples direcciones con comas)
 (unknown sender)	felamimail	es-es	(remitente desconocido)
+3paneview: if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here (300 seems to be a good working value). the preview will be displayed at the end of the message list on demand (click).	felamimail	es-es	Vista de tres paneles: si desea tener una vista previa del correo con un simple clic en el asunto, ponga aquí la altura para la lista de mensajes y el área de vista previa (300 parece un valor apropiado). La vista previa se mostrará al final de la lista de mensajes bajo demanda, al pulsar.
 aborted	felamimail	es-es	abortado
 activate	felamimail	es-es	Activar
 activate script	felamimail	es-es	activar script
@@ -21,6 +22,7 @@ address book search	felamimail	es-es	Buscar en la libreta de direcciones
 after message body	felamimail	es-es	Después del cuerpo del mensaje
 all address books	felamimail	es-es	Todas las libretas de direcciones
 all folders	felamimail	es-es	Todas las carpetas
+all messages in folder	felamimail	es-es	todos los mensajes de la carpeta
 all of	felamimail	es-es	todos los
 allow images from external sources in html emails	felamimail	es-es	Permitir imágenes de origen externo en correos HTML
 allways a new window	felamimail	es-es	siempre una ventana nueva
@@ -66,6 +68,8 @@ configure a valid imap server in emailadmin for the profile you are using.	felam
 connection dropped by imap server.	felamimail	es-es	La conexión ha sido ignorada por el servidor IMAP
 contact not found!	felamimail	es-es	¡No se encontró el contacto!
 contains	felamimail	es-es	contiene
+copy or move messages?	felamimail	es-es	¿Copiar o mover mensajes?
+copying messages to	felamimail	es-es	copiar los mensajes a
 could not complete request. reason given: %s	felamimail	es-es	No se pudo completar la petición. Razón: %s
 could not import message:	felamimail	es-es	No se pudo importar el mensaje:
 could not open secure connection to the imap server. %s : %s.	felamimail	es-es	No se pudo abrir una conexión segura al servidor IMAP. %s: %s.
@@ -98,6 +102,7 @@ deleted	felamimail	es-es	Borrado
 deleted folder successfully!	felamimail	es-es	Carpeta borrada correctamente
 deleting messages	felamimail	es-es	borrando mensajes
 disable	felamimail	es-es	Deshabilitar
+disable ruler for separation of mailbody and signature when adding signature to composed message (this is not according to rfc).<br>if you use templates, this option is only applied to the text part of the message.	felamimail	es-es	desactivar la regla para separar el cuerpo del mensaje y la firma al añadir la firma al mensaje redactado (sin seguir las reglas del RFC).<br>Si usa plantillas, esta opción se aplica sólo a la parte de texto del mensaje.
 discard	felamimail	es-es	descargar
 discard message	felamimail	es-es	descartar mensaje
 display message in new window	felamimail	es-es	Mostrar el mensaje en una ventana nueva
@@ -113,6 +118,7 @@ do not validate certificate	felamimail	es-es	No validar el certificado
 do you really want to delete the '%1' folder?	felamimail	es-es	¿Realmente quiere borrar la carpeta '%1'?
 do you really want to delete the selected accountsettings and the assosiated identity.	felamimail	es-es	¿Realmente desea borrar las configuraciones de cuenta seleccionadas y la identidad asociada?
 do you really want to delete the selected signatures?	felamimail	es-es	¿Realmente desea borrar las firmas seleccionadas?
+do you really want to move or copy the selected messages to folder:	felamimail	es-es	¿Realmente desea mover o copiar los siguientes mensajes a la carpeta:
 do you really want to move the selected messages to folder:	felamimail	es-es	¿Realmente desea mover los mensajes seleccionados a la carpeta:
 do you want to be asked for confirmation before moving selected messages to another folder?	felamimail	es-es	¿Desea que se le pida confirmación antes de mover los mensajes seleccionados a otra carpeta?
 do you want to prevent the editing/setup for forwarding of mails via settings (, even if sieve is enabled)?	felamimail	es-es	¿Desea prevenir la edición o configuración de los correos mediante las preferencias (incluso si SIEVE está activado)?
@@ -162,11 +168,14 @@ error	felamimail	es-es	ERROR
 error connecting to imap serv	felamimail	es-es	Error al conectar al servidor IMAP
 error connecting to imap server. %s : %s.	felamimail	es-es	Error al conectar con el servidor IMAP: %s: %s
 error connecting to imap server: [%s] %s.	felamimail	es-es	Error al conectar con el servidor IMAP: [%s] %s
+error creating rule while trying to use forward/redirect.	felamimail	es-es	Error al crear la regla al intentar reenviar.
 error opening	felamimail	es-es	Error al abrir
 error saving %1!	felamimail	es-es	¡Error al guardar %1!
 error:	felamimail	es-es	Error:
 error: could not save message as draft	felamimail	es-es	Error: no se pudo salvar el mensaje como borrador
+error: could not save rule	felamimail	es-es	Error: no se pudo guardar la regla
 error: message could not be displayed.	felamimail	es-es	ERROR: No se pudo mostrar el mensaje
+event details follow	felamimail	es-es	Los detalles del evento a continuación
 every	felamimail	es-es	cada
 every %1 days	felamimail	es-es	cada %1 días
 expunge	felamimail	es-es	Suprimir
@@ -240,11 +249,13 @@ imaps authentication	felamimail	es-es	Identificación IMAPS
 imaps encryption only	felamimail	es-es	Cifrado IMAPS solamente
 import	felamimail	es-es	importar
 import mail	felamimail	es-es	Importar correo
+import message	felamimail	es-es	importar mensaje
 in	felamimail	es-es	en
 inbox	felamimail	es-es	Bandeja de entrada
 incoming mail server(imap)	felamimail	es-es	servidor de correo entrante (IMAP)
 index order	felamimail	es-es	Orden del índice
 info	felamimail	es-es	Información
+insert the signature at top of the new (or reply) message when opening compose dialog (you may not be able to switch signatures)	felamimail	es-es	inserte la firma en la parte superior del mensaje al abrir el diálogo de redactar (quizás no pueda cambiar la firma)
 invalid user name or password	felamimail	es-es	El usuario o la contraseña no son válidos
 javascript	felamimail	es-es	JavaScript
 jumping to end	felamimail	es-es	saltando al final
@@ -288,6 +299,7 @@ mon	felamimail	es-es	Lun
 move	felamimail	es-es	mover
 move folder	felamimail	es-es	mover carpeta
 move messages	felamimail	es-es	mover mensajes
+move messages?	felamimail	es-es	¿Mover mensajes?
 move selected to	felamimail	es-es	mover los seleccionados a
 move to trash	felamimail	es-es	Mover a la papelera
 moving messages to	felamimail	es-es	mover mensajes a
@@ -318,6 +330,7 @@ no signature	felamimail	es-es	sin firma
 no stationery	felamimail	es-es	sin material preimpreso
 no subject given!	felamimail	es-es	¡No se ha indicado un asunto!
 no supported imap authentication method could be found.	felamimail	es-es	No se pudo encontrar ningún método de identificación IMAP
+no valid data to create mailprofile!!	felamimail	es-es	¡No hay datos válidos para crear el perfil de correo!
 no valid emailprofile selected!!	felamimail	es-es	No se ha seleccionado un perfil de correo válido
 none	felamimail	es-es	ninguno
 none, create all	felamimail	es-es	ninguno, crear todo
@@ -340,6 +353,8 @@ original message	felamimail	es-es	mensaje original
 outgoing mail server(smtp)	felamimail	es-es	servidor de correo de salida (SMTP)
 participants	felamimail	es-es	Participantes
 personal information	felamimail	es-es	Información personal
+please ask the administrator to correct the emailadmin imap server settings for you.	felamimail	es-es	Por favor, solicite al administrador que corrija la configuración del servidor IMAP.
+please configure access to an existing individual imap account.	felamimail	es-es	por favor, configure el acceso a una cuenta individual IMAP.
 please select a address	felamimail	es-es	Por favor, seleccione una dirección
 please select the number of days to wait between responses	felamimail	es-es	Por favor, seleccione el número de días a esperar entre las respuestas
 please supply the message to send with auto-responses	felamimail	es-es	Por favor, indique el mensaje a enviar para respuestas automáticas
@@ -397,6 +412,7 @@ sent	felamimail	es-es	Enviados
 sent folder	felamimail	es-es	Carpeta de enviados
 server supports mailfilter(sieve)	felamimail	es-es	El servidor soporta filtro de correo (sieve)
 set as default	felamimail	es-es	Establecer como predeterminado
+show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	es-es	mostrar todas las carpetas (suscritas Y no suscritas) en la pantalla principal
 show header	felamimail	es-es	mostrar cabecera
 show new messages on main screen	felamimail	es-es	Mostrar mensajes nuevos en la pantalla principal
 sieve script name	felamimail	es-es	nombre del script sieve
@@ -428,6 +444,7 @@ template folder	felamimail	es-es	Carpeta de plantillas
 templates	felamimail	es-es	Plantillas
 text only	felamimail	es-es	Sólo texto
 text/plain	felamimail	es-es	text/plain
+the action will be applied to all messages of the current folder.ndo you want to proceed?	felamimail	es-es	La acción se aplicará a todos los mensajes de la carpeta actual.\n¿Desea continuar?
 the connection to the imap server failed!!	felamimail	es-es	¡Ha fallado la conexión con el servidor IMAP!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	es-es	El servidor IMAP no parece que soporte el método de identificación seleccionado. Por favor, póngase en contacto con su administrador del sistema.
 the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	es-es	El remitente del mensaje ha solicitado una respuesta para indicar que usted ha leído este mensaje. ¿Desea enviar una confirmación?
@@ -493,6 +510,7 @@ with message "%1"	felamimail	es-es	con mensaje "%1"
 wrap incoming text at	felamimail	es-es	Ajustar el texto entrante a
 writing	felamimail	es-es	escribiendo
 wrote	felamimail	es-es	escribió
+yes, offer copy option	felamimail	es-es	sí, ofrecer la opción de copiar
 you can use %1 for the above start-date and %2 for the end-date.	felamimail	es-es	Puede usar %1 para la fecha de inicio de arriba y %2 para la fecha de fin.
 you have received a new message on the	felamimail	es-es	Ha recibido un mensaje nuevo en la
 your message to %1 was displayed.	felamimail	es-es	Su mensaje para %1 ha sido mostrado

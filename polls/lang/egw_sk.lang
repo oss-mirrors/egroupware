@@ -16,7 +16,7 @@ are you sure want to delete this question ?	polls	sk	Naozaj chcete odstrániť t
 current poll	polls	sk	Aktuálna voľba
 edit answer	polls	sk	Upraviť odpoveď
 edit poll question	polls	sk	Upraviť otázku pre voľbu
-egroupware users (non-anonymous)	polls	sk	Používatelia eGroupWare (nie anonymní)
+egroupware users (non-anonymous)	polls	sk	Používatelia EGroupware (nie anonymní)
 enter poll question	polls	sk	Zadať otázku pre voľbu
 everyone incl. anonymous users	polls	sk	Všetci vrátane anonymných používateľov
 new poll has been added.  you should now add some answers for this poll	polls	sk	Nová voľba bola pridaná. Mali by ste teraz zadať nejaké odpovede pre túto voľbu
@@ -33,7 +33,6 @@ show bullet if allowed to vote and result else	polls	sk	Zobraziť odrážku ak j
 show only the ballot	polls	sk	Zobraziť iba hlasovanie
 show only the result	polls	sk	Zobraziť iba výsledky
 show questions	common	sk	Zobraziť otázky
-site configuration	polls	sk	Konfigurácia stránky
 this module displays polls.	polls	sk	Tento modul zobrazuje voľby.
 total votes	polls	sk	Celkovo
 view poll	polls	sk	Zobraziť voľbu

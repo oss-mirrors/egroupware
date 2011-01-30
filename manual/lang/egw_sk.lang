@@ -7,7 +7,7 @@ index	manual	sk	Index
 install or update the manual-pages	admin	sk	inštalovať alebo aktualizovať stránky manuálu
 manual	common	sk	Manuál / Pomocník
 page(s) %1 not found !!!	manual	sk	Nenašiel som stránky %1 !!!
-remote egroupware url for the manual to use, empty for a local manual, default	admin	sk	Vzdialená URL adresa eGroupWare, ktorá sa má používať pre manuál. Ak necháte prázdne, uplatní sa predvolené, čiže lokálny manuál.
+remote egroupware url for the manual to use, empty for a local manual, default	admin	sk	Vzdialená URL adresa EGroupware, ktorá sa má používať pre manuál. Ak necháte prázdne, uplatní sa predvolené, čiže lokálny manuál.
 search for	manual	sk	Hľadaj
 starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	sk	Začínam importovať z %1, môže to trvať niekoľko minút (najmä ak to spúšťate po prvýkrát) ...
 the search returned no result!	manual	sk	Vyhľadávanie skončilo bezvýsledne!
