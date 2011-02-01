@@ -66,7 +66,7 @@ class uifelamimail
 				// account select box
 				$selectedID = $this->bofelamimail->getIdentitiesWithAccounts($identities);
 				// if nothing valid is found return to user defined account definition
-				if (empty($this->bofelamimail->host) && count($identities)==0 && $this->preferences->userDefinedAccounts)
+				if (empty($this->bofelamimail->icServer->host) && count($identities)==0 && $this->preferences->userDefinedAccounts)
 				{
 					// redirect to new personal account
 					egw::redirect_link('/index.php',array('menuaction'=>'felamimail.uipreferences.editAccountData',
