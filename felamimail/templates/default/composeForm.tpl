@@ -264,7 +264,7 @@
 		</tr>
 		<tr>
 			<td style="text-align:center;">
-				<input id="addFileName" name="addFileName" size="50" style="width:450px;" type="file" onchange="fm_compose_addFile()"/>
+				<input id="addFileName" name="addFileName[]" size="50" style="width:450px;" type="file" onchange="fm_compose_addFile()" multiple="true"/>
 			</td>
 		</tr>
 		<tr>
