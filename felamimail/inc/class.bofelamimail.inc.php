@@ -277,6 +277,15 @@ class bofelamimail
 				throw new egw_exception_wrong_userinput(lang("Could not append Message:".array2string($messageid->message)));
 				//return false;
 			}
+			if ($messageid === true) // try to figure out the message uid
+			{
+				$list = $this->getHeaders($_folderName, $_startMessage=1, $_numberOfMessages=1, $_sort=0, $_reverse=true, $_filter=array());
+				if ($list)
+				{
+					if (self::$debug) error_log(__METHOD__.__LINE__.' MessageUid:'.$messageid.' but found:'.array2string($list));
+					$messageid = $list['header'][0]['uid'];
+				}
+			}
 			return $messageid;
 		}
 
@@ -2518,13 +2527,13 @@ class bofelamimail
 		static function getFileNameFromStructure(&$structure)
 		{
 			if(isset($structure->parameters['NAME'])) {
-				return self::decode_header($structure->parameters['NAME']);
+				return rawurldecode(self::decode_header($structure->parameters['NAME']));
 			} elseif(isset($structure->dparameters['FILENAME'])) {
-				return self::decode_header($structure->dparameters['FILENAME']);
+				return rawurldecode(self::decode_header($structure->dparameters['FILENAME']));
 			} elseif(isset($structure->dparameters['FILENAME*'])) {
-				return self::decode_header($structure->dparameters['FILENAME*']);
+				return rawurldecode(self::decode_header($structure->dparameters['FILENAME*']));
 			} elseif ( isset($structure->filename) && !empty($structure->filename) && $structure->filename != 'NIL') {
-				return self::decode_header($structure->filename);
+				return rawurldecode(self::decode_header($structure->filename));
 			} else {
 				return lang("unknown").($structure->subType ? ".".$structure->subType : "");
 			}
