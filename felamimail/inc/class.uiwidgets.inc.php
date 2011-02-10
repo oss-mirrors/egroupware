@@ -119,7 +119,7 @@ class uiwidgets
 			*/
 			#$topFolderBase64 = base64_encode('--topfolder--');
 			$topFolderBase64 = '--topfolder--';
-			$folder_tree_new .= "tree.insertNewItem(0,'$topFolderBase64','$_topFolderName',egw_appWindow('felamimail').onNodeSelect,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";
+			$folder_tree_new .= "tree.insertNewItem(0,'$topFolderBase64','$_topFolderName',nodeHandler,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";
 
 			#foreach($_folders as $key => $obj)
 			#_debug_array($allFolders);
