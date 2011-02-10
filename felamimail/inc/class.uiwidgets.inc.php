@@ -94,6 +94,14 @@ class uiwidgets
 
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new .= "<script type='text/javascript'>";
+			$folder_tree_new .= "function nodeHandler()
+{
+	var wnd = egw_appWindow('felamimail');
+	if (wnd && (typeof wnd.onNodeSelect == 'function'))
+	{
+		egw_appWindow('felamimail').onNodeSelect.apply(this, arguments);
+	}
+}";
 			$folder_tree_new .= "var tree=new dhtmlXTreeObject('$_divName','100%','100%',0);";
 			$folder_tree_new .= "tree.parentObject.style.overflow=\"auto\";";
 			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');";
@@ -178,7 +186,7 @@ class uiwidgets
 				$parentName	= str_replace($search, $replace, $parentName);
 				$folderName	= str_replace($search, $replace, $folderName);
 
-				$folder_tree_new .= "tree.insertNewItem('$parentName','$folderName','$displayName',egw_appWindow('felamimail').onNodeSelect,$image1,$image2,$image3,'$entryOptions');";
+				$folder_tree_new .= "tree.insertNewItem('$parentName','$folderName','$displayName',nodeHandler,$image1,$image2,$image3,'$entryOptions');";
 				$folder_tree_new .= "tree.setUserData('$folderName','folderName', '$userData');";
 				if($_displayCheckBox) {
 					$folder_tree_new .= "tree.setCheck('$folderName','".(int)$obj->subscribed."');";
