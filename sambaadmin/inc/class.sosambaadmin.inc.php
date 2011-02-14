@@ -48,6 +48,12 @@
 					{
 						return true;
 					}
+					// try binded as $accountDN with $_newPassword, in case root DN has no rights to modify anything
+					$ldap = $GLOBALS['egw']->common->ldapConnect('',$accountDN,$_newPassword);
+					if(@ldap_mod_replace ($ldap, $accountDN, $newData))
+					{
+						return true;
+					}
 					#print ldap_error($ldap); exit;
 				}
 			}
