@@ -12,7 +12,6 @@
 \**************************************************************************/
 
 /* $Id$ */
-
 if (isset($_GET['action']))	// calling the old code
 {
 	include('lib/main.php');
@@ -57,9 +56,24 @@ $GLOBALS['egw_info']['flags'] = array(
 );
 include('../header.inc.php');
 auth::check_password_age('wiki','index');
-ExecMethod('wiki.wiki_ui.view');
+$goto = 'wiki.wiki_ui.view';
+if (!empty($_REQUEST['menuaction']))
+{
+	$buff = explode('.',$_REQUEST['menuaction']);
+	if ($buff[0]=='wiki' && method_exists($buff[1],$buff[2]))// if wiki and method exists, allow to go there
+	{
+		  $goto = implode('.',$buff);
+	}
+}
+ExecMethod($goto);
 
 // Expire old versions, etc.
-$GLOBALS['wiki_ui']->maintain();
-
+if (!is_object($GLOBALS['wiki_ui']))
+{
+	ExecMethod('wiki.wiki_ui.maintain');
+}
+else
+{
+	$GLOBALS['wiki_ui']->maintain();
+}
 common::egw_footer();
