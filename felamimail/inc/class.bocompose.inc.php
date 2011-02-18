@@ -34,7 +34,7 @@
 			$this->bosignatures	= CreateObject('felamimail.felamimail_bosignatures');
 			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$this->bopreferences =& $this->bofelamimail->bopreferences;
-			$this->preferences	= $this->bopreferences->getPreferences();
+			$this->preferences	=& $this->bofelamimail->mailPreferences; // $this->bopreferences->getPreferences();
 			$this->preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 			//force the default for the forwarding -> asmail
 			if (is_array($this->preferencesArray)) {
@@ -821,10 +821,10 @@
 			$bofelamimail->openConnection();
 			foreach((array)$this->sessionData['attachments'] as $attachment) {
 				if(!empty($attachment['uid']) && !empty($attachment['folder'])) {
+					$bofelamimail->reopen($attachment['folder']);
 					switch($attachment['type']) {
 						case 'MESSAGE/RFC822':
 							$rawHeader='';
-							$bofelamimail->reopen($attachment['folder']);
 							if (isset($attachment['partID'])) {
 								$rawHeader      = $bofelamimail->getMessageRawHeader($attachment['uid'], $attachment['partID']);
 							}
@@ -832,7 +832,6 @@
 							$_mailObject->AddStringAttachment($rawHeader.$rawBody, $_mailObject->EncodeHeader($attachment['name']), '7bit', 'message/rfc822');
 							break;
 						default:
-							$bofelamimail->reopen($attachment['folder']);
 							$attachmentData	= $bofelamimail->getAttachment($attachment['uid'], $attachment['partID']);
 
 							$_mailObject->AddStringAttachment($attachmentData['attachment'], $_mailObject->EncodeHeader($attachment['name']), 'base64', $attachment['type']);
@@ -1077,7 +1076,7 @@
 						}
 						catch (egw_exception_wrong_userinput $e)
 						{
-							error_log(__METHOD__.__LINE__.'->'.lang("Import of message %1 failed. Could not save message to folder %2 due to: %3",$this->sessionData['subject'],$foldeName,$e->getMessage()));
+							error_log(__METHOD__.__LINE__.'->'.lang("Import of message %1 failed. Could not save message to folder %2 due to: %3",$this->sessionData['subject'],$folderName,$e->getMessage()));
 						}
 					}
 					else
