@@ -3783,7 +3783,9 @@ class bofelamimail
 						 $structure->ctype_secondary=='signed') && $part->ctype_primary=='text' && $part->ctype_secondary=='plain' && $part->body)
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
-						$mailObject->Body = $mailObject->AltBody = $part->body;
+						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary);
+						$mailObject->Body .= $part->body;
+						$mailObject->AltBody .= $part->body;
 					}
 					if (($structure->ctype_secondary=='alternative'||
 						 $structure->ctype_secondary=='mixed' ||
@@ -3791,7 +3793,8 @@ class bofelamimail
 						$part->ctype_primary=='text' && $part->ctype_secondary=='html' && $part->body)
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
-						$mailObject->Body = $part->body;
+						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary);
+						$mailObject->Body .= $part->body;
 						$alternatebodyneeded = true;
 					}
 					if (($structure->ctype_secondary=='mixed' || $structure->ctype_secondary=='signed') && $part->ctype_primary=='multipart')
