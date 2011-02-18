@@ -99,7 +99,7 @@ class felamimail_activesync implements activesync_plugin_read
 			// todo: tell fmail which account to use
 			$this->mail = new bofelamimail ("UTF-8",false);
 			//$this->ui	= new uidisplay();
-
+//error_log(__METHOFD__.__LINE__.array2string($this->mail));
 			if (!$this->mail->openConnection(0,false))
 			{
 				throw new egw_exception_not_found(__METHOD__."($account) can not open connection!");
@@ -149,6 +149,410 @@ class felamimail_activesync implements activesync_plugin_read
 		//debugLog(__METHOD__."() returning ".array2string($folderlist));
 
 		return $folderlist;
+	}
+
+    /**
+     * Sends a message which is passed as rfc822. You basically can do two things
+     * 1) Send the message to an SMTP server as-is
+     * 2) Parse the message yourself, and send it some other way
+     * It is up to you whether you want to put the message in the sent items folder. If you
+     * want it in 'sent items', then the next sync on the 'sent items' folder should return
+     * the new message as any other new message in a folder.
+     *
+     * @param string $rfc822 mail
+     * @param array $smartdata=array() values for keys:
+     * 	'task': 'forward', 'new', 'reply'
+     *  'itemid': id of message if it's an reply or forward
+     *  'folderid': folder
+     *  'replacemime': false = send as is, false = decode and recode for whatever reason ???
+	 *	'saveinsentitems': 1 or absent?
+     * @param boolean|double $protocolversion=false
+     * @return boolean true on success, false on error
+     *
+     * @see eg. BackendIMAP::SendMail()
+     * @todo implement either here or in fmail backend
+     * 	(maybe sending here and storing to sent folder in plugin, as sending is supposed to always work in EGroupware)
+     */
+	public function SendMail($rfc822, $smartdata=array(), $protocolversion = false)
+	{
+        if ($protocolversion < 14.0) 
+    	    debugLog("IMAP-SendMail: " . (isset($rfc822) ? $rfc822 : ""). "task: ".(isset($smartdata['task']) ? $smartdata['task'] : "")." itemid: ".(isset($smartdata['itemid']) ? $smartdata['itemid'] : "")." parent: ".(isset($smartdata['folderid']) ? $smartdata['folderid'] : ""));
+		// if we cannot decode the mail in question, fail
+		if (class_exists('Mail_mimeDecode',false)==false && (@include_once 'Mail/mimeDecode.php') === false)
+		{
+			debugLog("IMAP-SendMail: Could not find Mail_mimeDecode.");
+			return false;
+		}
+		// initialize our bofelamimail
+		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+		$activeMailProfile = $this->mail->mailPreferences->getIdentity(0);
+
+		// initialize the new egw_mailer object for sending
+		$mailObject = new egw_mailer();
+		// default, should this be forced?
+		$mailObject->IsSMTP();
+		$mailObject->Sender  = $activeMailProfile->emailAddress;
+		$mailObject->From 	= $activeMailProfile->emailAddress;
+		$mailObject->FromName = $mailObject->EncodeHeader($activeMailProfile->realName);
+		$mailObject->AddCustomHeader('X-Mailer: FeLaMiMail-Activesync');
+
+		$mimeParams = array('decode_headers' => true,
+							'decode_bodies' => true,
+							'include_bodies' => true,
+							'input' => $rfc822,
+							'crlf' => "\r\n",
+							'charset' => 'utf-8');
+		$mobj = new Mail_mimeDecode($mimeParams['input'], $mimeParams['crlf']);
+		$message = $mobj->decode($mimeParams, $mimeParams['crlf']);
+		//error_log(__METHOD__.__LINE__.array2string($message));
+		$mailObject->CharSet = 'utf-8'; // set charset always to utf-8
+		$mailObject->Priority = $message->headers['priority'];
+		$mailObject->Encoding = 'quoted-printable'; // we use this by default
+
+		if (isset($message->headers['date'])) $mailObject->RFCDateToSet = $message->headers['date'];
+		if (isset($message->headers['return-path'])) $mailObject->Sender = $message->headers['return-path'];
+		$mailObject->Subject = $message->headers['subject'];
+		$mailObject->MessageID = $message->headers['message-id'];
+		// from
+		$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($message->headers['from']):$message->headers['from']),'');
+		foreach((array)$address_array as $addressObject) {
+			if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+			$mailObject->From = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+			$mailObject->FromName = $addressObject->personal;
+		}
+		// to
+		$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($message->headers["to"]):$message->headers["to"]),'');
+		foreach((array)$address_array as $addressObject) {
+			if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+			$mailObject->AddAddress($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
+		}
+		// CC
+		$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($message->headers["cc"]):$message->headers["cc"]),'');
+		foreach((array)$address_array as $addressObject) {
+			if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+			$mailObject->AddCC($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
+		}
+		// BCC
+		$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($message->headers["bcc"]):$message->headers["bcc"]),'');
+		foreach((array)$address_array as $addressObject) {
+			if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+			$mailObject->AddBCC($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
+			$bccMailAddr = imap_rfc822_write_address($addressObject->mailbox, $addressObject->host, $addressObject->personal);
+		}
+		//	AddReplyTo
+		$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($message->headers['reply-to']):$message->headers['reply-to']),'');
+		foreach((array)$address_array as $addressObject) {
+			if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+			$mailObject->AddReplyTo($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
+		}
+
+		$addedfullname = false;
+		// save some headers when forwarding mails (content type & transfer-encoding)
+		$headers = "";
+
+		$use_orgbody = false;
+
+		// clean up the transmitted headers
+		// remove default headers because we are using our own mailer
+		//$returnPathSet = false;
+		//$body_base64 = false;
+		$org_charset = "";
+		foreach($message->headers as $k => $v) {
+			if ($k == "subject" || 
+				$k == "to" || $k == "cc" || $k == "bcc" || $k == "sender" || $k == "reply-to" || $k == 'from' || $k == 'return_path' ||
+				$k == "message-id" || $k == 'date')
+                continue; // already set
+
+				debugLog("Header Sentmail original Header (filtered): " . $k.  " = ".trim($v));
+				if ($k == "content-type") {
+					// if the message is a multipart message, then we should use the sent body
+					if (preg_match("/multipart/i", $v)) {
+						$use_orgbody = true;
+						$org_boundary = $message->ctype_parameters["boundary"];
+					}
+
+					// save the original content-type header for the body part when forwarding
+					if ($smartdata['task'] == 'forward' && $smartdata['itemid'] && !$use_orgbody) {
+						continue; // ignore
+					}
+
+					$org_charset = $v;
+					$v = preg_replace("/charset=([A-Za-z0-9-\"']+)/", "charset=\"utf-8\"", $v);
+				}
+
+            if ($k == "content-transfer-encoding") {
+/*
+				// if the content was base64 encoded, encode the body again when sending
+				if (trim($v) == "base64") $body_base64 = true;
+
+				// save the original encoding header for the body part when forwarding
+				if ($smartdata['task'] == 'forward' && $smartdata['itemid']) {
+					continue; // ignore
+				}
+*/
+			}
+
+			// if the message is a multipart message, then we should use the sent body
+			if (($smartdata['task'] == 'new' || $smartdata['task'] == 'reply' || $smartdata['task'] == 'forward') && 
+				((isset($smartdata['replacemime']) && $smartdata['replacemime'] == true) || 
+				$k == "content-type" && preg_match("/multipart/i", $v))) {
+				$use_orgbody = true;
+			}
+
+			// all other headers stay, we probably dont use them, but we may add them with AddHeader/AddCustomHeader
+			if ($headers) $headers .= "\n";
+			$headers .= ucfirst($k) . ": ". trim($v);
+        }
+		// if this is a simple message, no structure at all
+		if ($message->ctype_primary=='text' && $message->body)
+		{
+			$mailObject->IsHTML($message->ctype_secondary=='html'?true:false);
+			$mailObject->Body = $body = $message->body;
+		}
+		//error_log(__METHOD__.__LINE__.array2string($mailObject));
+		// if this is a multipart message with a boundary, we must use the original body
+		$this->mail->createBodyFromStructure($mailObject, $message);
+        if ($use_orgbody) {
+    	    debugLog("IMAP-Sendmail: use_orgbody = true");
+            $repl_body = $body = $mailObject->Body;
+        }
+        else {
+    	    debugLog("IMAP-Sendmail: use_orgbody = false");
+			$body = $mailObject->Body;
+		}
+		//error_log(__METHOD__.__LINE__.array2string($mailObject));
+		// as we use our mailer (phpmailer) it is detecting / setting the mimetype by itself while creating the mail
+    	if (isset($smartdata['replacemime']) && $smartdata['replacemime'] == true && 
+    	    isset($message->ctype_primary)) {
+            //if ($headers) $headers .= "\n";
+    	    //$headers .= "Content-Type: ". $message->ctype_primary . "/" . $message->ctype_secondary .
+    		//	(isset($message->ctype_parameters['boundary']) ? ";\n\tboundary=".$message->ctype_parameters['boundary'] : "");
+		}
+		$body = str_replace("\r","",$body);
+
+        // reply
+        if ($smartdata['task'] == 'reply' && isset($smartdata['itemid']) && 
+    	    isset($smartdata['folderid']) && $smartdata['itemid'] && $smartdata['folderid'] &&
+	    	(!isset($smartdata['replacemime']) || 
+	    	(isset($smartdata['replacemime']) && $smartdata['replacemime'] == false))) 
+		{
+			$uid = $smartdata['itemid'];
+			debugLog("IMAP Smartreply is called with FolderID:".$smartdata['folderid'].' and ItemID:'.$smartdata['itemid']);
+			$this->splitID($smartdata['folderid'], $account, $folder);
+
+			$this->mail->reopen($folder);
+			$headers	= $this->mail->getMessageEnvelope($uid, $_partID);
+			$body .= $this->mail->createHeaderInfoSection($headers,lang("original message"));
+
+			$bodyStruct = $this->mail->getMessageBody($uid, 'always_display');
+			$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);
+			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Always Display:'.$body);
+		    if ($bodyBUFF != "" || (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
+				// may be html
+				if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with always_display)');
+			} else {
+				// plain text Message
+				if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text (HTML, if no text available)');
+		        $bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text');//'never_display');
+			    $bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+			}
+            // receive only body
+            $body .= $bodyBUFF;
+        }
+
+        // forward
+        if ($smartdata['task'] == 'forward' && isset($smartdata['itemid']) && 
+    	    isset($smartdata['folderid']) && $smartdata['itemid'] && $smartdata['folderid'] && 
+    	    (!isset($smartdata['replacemime']) || 
+    	     (isset($smartdata['replacemime']) && $smartdata['replacemime'] == false))) 
+		{
+			// how to forward
+			$preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
+			//force the default for the forwarding -> asmail
+			if (is_array($preferencesArray)) {
+				if (!array_key_exists('message_forwarding',$preferencesArray)
+					|| !isset($preferencesArray['message_forwarding'])
+					|| empty($preferencesArray['message_forwarding'])) $preferencesArray['message_forwarding'] = 'asmail';
+			} else {
+				$preferencesArray['message_forwarding'] = 'asmail';
+			}
+			// construct the uid of the message out of the itemid
+			$uid = $smartdata['itemid'];
+			debugLog("IMAP Smartfordward is called with FolderID:".$smartdata['folderid'].' and ItemID:'.$smartdata['itemid']);
+			$this->splitID($smartdata['folderid'], $account, $folder);
+
+			$this->mail->reopen($folder);
+            // receive entire mail (header + body)
+			// get message headers for specified message
+			$headers	= $this->mail->getMessageEnvelope($uid, $_partID);
+
+            // build a new mime message, forward entire old mail as file
+            if ($preferencesArray['message_forwarding'] == 'asmail') 
+			{
+				$rawHeader='';
+				$rawHeader      = $this->mail->getMessageRawHeader($smartdata['itemid'], $_partID);
+				$rawBody        = $this->mail->getMessageRawBody($smartdata['itemid'], $_partID);
+				$mailObject->AddStringAttachment($rawHeader.$rawBody, $mailObject->EncodeHeader($headers['SUBJECT']), '7bit', 'message/rfc822');
+            }
+            else 
+			{
+/* ToDo - as it may double text
+				// This is for forwarding and using the original body as Client may only include parts of the original mail
+				if (!$use_orgbody)
+					$nbody = $body;
+				else
+					$nbody = $repl_body;
+*/
+				$body .= $this->mail->createHeaderInfoSection($headers,lang("original message"));
+				$bodyStruct = $this->mail->getMessageBody($uid, 'always_display');
+				$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);
+				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Always Display:'.$body);
+				if ($bodyBUFF != "" || (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
+					// may be html
+					if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with always_display)');
+				} else {
+					// plain text Message
+					if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text (HTML, if no text available)');
+				    $bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text');//'never_display');
+					$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+				}
+		        // receive only body
+		        $body .= $bodyBUFF;
+				// get all the attachments and add them too.
+				// start handle Attachments
+				$attachments = $this->mail->getMessageAttachments($uid);
+				$attachmentNames = false;
+				if (is_array($attachments) && count($attachments)>0)
+				{
+					debugLog(__METHOD__.__LINE__.' gather Attachments for BodyCreation of/for MessageID:'.$uid.' found:'.count($attachments));
+					foreach((array)$attachments as $key => $attachment) 
+					{
+						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Key:'.$key.'->'.array2string($attachment));
+						$attachmentNames .= $attachment['name']."\n";
+						switch($attachment['type']) 
+						{
+							case 'MESSAGE/RFC822':
+								$rawHeader = $rawBody = '';
+								$rawHeader = $this->mail->getMessageRawHeader($uid, $attachment['partID']);
+								$rawBody = $this->mail->getMessageRawBody($uid, $attachment['partID']);
+								$mailObject->AddStringAttachment($rawHeader.$rawBody, $mailObject->EncodeHeader($attachment['name']), '7bit', 'message/rfc822');
+								break;
+							default:
+								$attachmentData = '';
+								$attachmentData	= $this->mail->getAttachment($uid, $attachment['partID']);
+								$mailObject->AddStringAttachment($attachmentData['attachment'], $mailObject->EncodeHeader($attachment['name']), 'base64', $attachment['mimeType']);
+								break;
+						}
+					}
+				}
+            }
+
+        } // end forward
+
+		// add signature!! 
+		/* ToDo */
+
+        // remove carriage-returns from body, set the body of the mailObject
+		if (trim($body) =='' && trim($mailObject->Body)==''/* && $attachmentNames*/) $body .= ($attachmentNames?$attachmentNames:lang('no text body supplied, check attachments for message text')); // to avoid failure on empty messages with attachments 
+		$mailObject->Body = $body = str_replace("\r\n", "\n", $body);
+		if ($mailObject->IsHTML) $mailObject->AltBody = $this->mail->convertHTMLToText($body);
+
+        //advanced debugging
+        //debugLog("IMAP-SendMail: parsed message: ". print_r($message,1));
+        debugLog("IMAP-SendMail: MailObject:".array2string($mailObject));
+		#_debug_array($ogServer);
+		$mailObject->Host 	= $this->mail->ogServer->host;
+		$mailObject->Port	= $this->mail->ogServer->port;
+		// SMTP Auth??
+		if($this->mail->ogServer->smtpAuth) {
+			$mailObject->SMTPAuth	= true;
+			// check if username contains a ; -> then a sender is specified (and probably needed)
+			list($username,$senderadress) = explode(';', $this->mail->ogServer->username,2);
+			if (isset($senderadress) && !empty($senderadress)) $mailObject->Sender = $senderadress;
+			$mailObject->Username = $username;
+			$mailObject->Password	= $this->mail->ogServer->password;
+		}
+
+		// set a higher timeout for big messages
+		@set_time_limit(120);
+
+		// send
+		$send = true;
+		try {
+			$mailObject->Send();
+		}
+		catch(phpmailerException $e) {
+            debugLog("The email could not be sent. Last-SMTP-error: ". $e->getMessage());
+			$send = false;
+		}
+		$asf = ($send ? true:false); // initalize accordingly
+		if ($smartdata['saveinsentitems']==1 && $send==true)
+		{
+		    $asf = false;
+		    if ($this->_sentID) {
+		        $folder[] = $this->_sentID;
+		    }
+		    else if(isset($this->mail->mailPreferences->preferences['sentFolder']) &&
+				$this->mail->mailPreferences->preferences['sentFolder'] != 'none') 
+			{
+		        $folder[] = $this->mail->mailPreferences->preferences['sentFolder'];
+		    }
+		    // No Sent folder set, try defaults
+		    else 
+			{
+		        debugLog("IMAP-SendMail: No Sent mailbox set");
+				// we dont try guessing
+				$asf = true;
+		    }
+			if (count($folder) > 0) {
+
+				foreach((array)$bccMailAddr as $address) {
+					$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($address):$address),'');
+					foreach((array)$address_array as $addressObject) {
+						$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+						$mailAddr[] = array($emailAddress, $addressObject->personal);
+					}
+				}
+				$BCCmail='';
+				if (count($mailAddr)>0) $BCCmail = $mailObject->AddrAppend("Bcc",$mailAddr);
+				foreach($folder as $folderName) {
+					if($this->mail->isSentFolder($folderName)) {
+						$flags = '\\Seen';
+					} elseif($this->mail->isDraftFolder($folderName)) {
+						$flags = '\\Draft';
+					} else {
+						$flags = '';
+					}
+					$asf = true;
+					if ($this->mail->folderExists($folderName,true)) {
+						try
+						{
+							$this->mail->appendMessage($folderName,
+									$BCCmail.$mailObject->getMessageHeader(),
+									$mailObject->getMessageBody(),
+									$flags);
+						}
+						catch (egw_exception_wrong_userinput $e)
+						{
+							$asf = false;
+							debugLog(__METHOD__.__LINE__.'->'.lang("Import of message %1 failed. Could not save message to folder %2 due to: %3",$mailObject->Subject,$folderName,$e->getMessage()));
+						}
+					}
+					else
+					{
+						$asf = false;
+						debugLog(__METHOD__.__LINE__.'->'.lang("Import of message %1 failed. Destination Folder %2 does not exist.",$mailObject->Subject,$folderName));
+					}
+			        debugLog("IMAP-SendMail: Outgoing mail saved in configured 'Sent' folder '".$folderName."': ". (($asf)?"success":"failed"));
+				}
+				//$this->mail->closeConnection();
+			}
+		}
+        // unset mimedecoder - free memory
+		unset($message);
+        unset($mobj);
+        return ($send && $asf);
+		//return true;
 	}
 
 	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $mimesupport = 0)
@@ -237,7 +641,7 @@ class felamimail_activesync implements activesync_plugin_read
 					// this try catch block is probably of no use anymore, as it was intended to catch exceptions thrown by parseRawMessageIntoMailObject
 					try
 					{
-						// we create a complete new rfc822 message here to paa a clean one to the client.
+						// we create a complete new rfc822 message here to pass a clean one to the client.
 						// this strips a lot of information, but ...
 						$Header = $Body = '';
 						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Creation of Mailobject.");
@@ -267,7 +671,7 @@ class felamimail_activesync implements activesync_plugin_read
 						// CC
 						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($headers['CC']):$headers['CC']),'');
 						foreach((array)$address_array as $addressObject) {
-							$mailObject->AddAddress($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
+							$mailObject->AddCC($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
 						}
 						//	AddReplyTo
 						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($headers['REPLY-TO']):$headers['REPLY-TO']),'');
@@ -308,7 +712,7 @@ class felamimail_activesync implements activesync_plugin_read
 					// we still need the attachments to be added ( if there are any )
 					// start handle Attachments
 					$attachments = $this->mail->getMessageAttachments($id);
-					if (is_array($attachments))
+					if (is_array($attachments) && count($attachments)>0)
 					{
 						debugLog(__METHOD__.__LINE__.' gather Attachments for BodyCreation of/for MessageID:'.$id.' found:'.count($attachments));
 						foreach((array)$attachments as $key => $attachment) 
@@ -425,7 +829,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 			// start handle Attachments
 			$attachments = $this->mail->getMessageAttachments($id);
-			if (is_array($attachments))
+			if (is_array($attachments) && count($attachments)>0)
 			{
 				debugLog(__METHOD__.__LINE__.' gather Attachments for MessageID:'.$id.' found:'.count($attachments));
 				foreach ($attachments as $key => $attach)
@@ -849,7 +1253,6 @@ class felamimail_activesync implements activesync_plugin_read
 
 		return $rv;
 	}
-
 
 	/**
 	 * Create a max. 32 hex letter ID, current 20 chars are used
