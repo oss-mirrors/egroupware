@@ -507,7 +507,11 @@ class bofelamimail
 					@mkdir( $dir, 0700, true );
 					file_put_contents( "$dir/winmail.dat", $attachment['attachment'] );
 				}
-				if (exec("which tnef")) // use tnef if exsting, as it gives better results..
+				if (file_exists('/usr/bin/tnef'))
+				{
+					exec( "cd $dir && /usr/bin/tnef --save-body --overwrite -C $dir -f ./winmail.dat" );
+				}
+				elseif (exec("which tnef")) // use tnef if exsting, as it gives better results..
 				{
 					exec( "cd $dir && tnef --save-body --overwrite -C $dir -f ./winmail.dat" );
 				}
