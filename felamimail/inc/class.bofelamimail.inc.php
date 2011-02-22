@@ -3770,6 +3770,8 @@ class bofelamimail
 		function createBodyFromStructure($mailObject, $structure, $parenttype=null)
 		{
 			static $attachmentnumber;
+			static $isHTML;
+			if (is_null($isHTML)) $isHTML = $structure->ctype_secondary=='html'?true:false;
 			if (is_null($attachmentnumber)) $attachmentnumber = 0;
 			if ($structure->parts && $structure->ctype_primary=='multipart')
 			{
@@ -3787,8 +3789,8 @@ class bofelamimail
 						 $structure->ctype_secondary=='signed') && $part->ctype_primary=='text' && $part->ctype_secondary=='plain' && $part->body)
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
-						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary);
-						$mailObject->Body .= $part->body;
+						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML);
+						$mailObject->Body = ($isHTML==false?$mailObject->Body:'').$part->body;
 						$mailObject->AltBody .= $part->body;
 					}
 					if (($structure->ctype_secondary=='alternative'||
@@ -3797,9 +3799,10 @@ class bofelamimail
 						$part->ctype_primary=='text' && $part->ctype_secondary=='html' && $part->body)
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
-						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary);
-						$mailObject->Body .= $part->body;
+						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML);
+						$mailObject->Body = ($isHTML?$mailObject->Body:'').$part->body;
 						$alternatebodyneeded = true;
+						$isHTML=true;
 					}
 					if (($structure->ctype_secondary=='mixed' || $structure->ctype_secondary=='signed') && $part->ctype_primary=='multipart')
 					{
