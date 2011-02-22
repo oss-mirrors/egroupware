@@ -307,6 +307,7 @@ class felamimail_activesync implements activesync_plugin_read
 		{
 			$mailObject->IsHTML($message->ctype_secondary=='html'?true:false);
 			$mailObject->Body = $body = $message->body;
+			debugLog("IMAP-Sendmail: fetched simple body as ".($message->ctype_secondary=='html'?'html':'text'));
 		}
 		//error_log(__METHOD__.__LINE__.array2string($mailObject));
 		// if this is a multipart message with a boundary, we must use the original body
@@ -327,8 +328,9 @@ class felamimail_activesync implements activesync_plugin_read
     	    //$headers .= "Content-Type: ". $message->ctype_primary . "/" . $message->ctype_secondary .
     		//	(isset($message->ctype_parameters['boundary']) ? ";\n\tboundary=".$message->ctype_parameters['boundary'] : "");
 		}
-		$body = str_replace("\r","",$body);
-
+		debugLog(__METHOD__.__LINE__.' retrieved Body:'.$body);
+		$body = str_replace("\r",($mailObject->ContentType=='text/html'?'<br>':""),$body); // what is this for?
+		debugLog(__METHOD__.__LINE__.' retrieved Body (modified):'.$body);
 		// reply ---------------------------------------------------------------------------
 		if ($smartdata['task'] == 'reply' && isset($smartdata['itemid']) && 
 			isset($smartdata['folderid']) && $smartdata['itemid'] && $smartdata['folderid'] &&
@@ -463,19 +465,21 @@ class felamimail_activesync implements activesync_plugin_read
 			$disableRuler = true;
 		}
 		$before = "";
-		if($mailObject->IsHTML) {
-			$before = ($disableRuler ?'&nbsp;<br>':'&nbsp;<br><hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">');
-		} else {
-			$before = ($disableRuler ?"\r\n\r\n":"\r\n\r\n-- \r\n");
+		if ($disableRuler==false)
+		{
+			if($mailObject->ContentType=='text/html') {
+				$before = ($disableRuler ?'&nbsp;<br>':'&nbsp;<br><hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">');
+			} else {
+				$before = ($disableRuler ?"\r\n\r\n":"\r\n\r\n-- \r\n");
+			}
 		}
-
 		$sigText = $this->mail->merge($signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
-		$body .= $before.($mailObject->IsHTML?$sigText:$this->mail->convertHTMLToText($sigText));
+		$body .= $before.($mailObject->ContentType=='text/html'?$sigText:$this->mail->convertHTMLToText($sigText));
 
 		// remove carriage-returns from body, set the body of the mailObject
 		if (trim($body) =='' && trim($mailObject->Body)==''/* && $attachmentNames*/) $body .= ($attachmentNames?$attachmentNames:lang('no text body supplied, check attachments for message text')); // to avoid failure on empty messages with attachments 
 		$mailObject->Body = $body = str_replace("\r\n", "\n", $body);
-		if ($mailObject->IsHTML) $mailObject->AltBody = $this->mail->convertHTMLToText($body);
+		if ($mailObject->ContentType=='text/html') $mailObject->AltBody = $this->mail->convertHTMLToText($body);
 
         //advanced debugging
         //debugLog("IMAP-SendMail: parsed message: ". print_r($message,1));
