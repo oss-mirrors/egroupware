@@ -98,8 +98,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$this->account = $account;
 			// todo: tell fmail which account to use
 			$this->mail = new bofelamimail ("UTF-8",false);
-			//$this->ui	= new uidisplay();
-//error_log(__METHOFD__.__LINE__.array2string($this->mail));
+			//error_log(__METHOFD__.__LINE__.array2string($this->mail));
 			if (!$this->mail->openConnection(0,false))
 			{
 				throw new egw_exception_not_found(__METHOD__."($account) can not open connection!");
@@ -281,7 +280,7 @@ class felamimail_activesync implements activesync_plugin_read
 				}
 
             if ($k == "content-transfer-encoding") {
-/*
+/* we do not use this, as we determine that by ourself
 				// if the content was base64 encoded, encode the body again when sending
 				if (trim($v) == "base64") $body_base64 = true;
 
@@ -300,8 +299,8 @@ class felamimail_activesync implements activesync_plugin_read
 			}
 
 			// all other headers stay, we probably dont use them, but we may add them with AddHeader/AddCustomHeader
-			if ($headers) $headers .= "\n";
-			$headers .= ucfirst($k) . ": ". trim($v);
+			//if ($headers) $headers .= "\n";
+			//$headers .= ucfirst($k) . ": ". trim($v);
         }
 		// if this is a simple message, no structure at all
 		if ($message->ctype_primary=='text' && $message->body)
@@ -330,11 +329,11 @@ class felamimail_activesync implements activesync_plugin_read
 		}
 		$body = str_replace("\r","",$body);
 
-        // reply
-        if ($smartdata['task'] == 'reply' && isset($smartdata['itemid']) && 
-    	    isset($smartdata['folderid']) && $smartdata['itemid'] && $smartdata['folderid'] &&
-	    	(!isset($smartdata['replacemime']) || 
-	    	(isset($smartdata['replacemime']) && $smartdata['replacemime'] == false))) 
+		// reply ---------------------------------------------------------------------------
+		if ($smartdata['task'] == 'reply' && isset($smartdata['itemid']) && 
+			isset($smartdata['folderid']) && $smartdata['itemid'] && $smartdata['folderid'] &&
+			(!isset($smartdata['replacemime']) || 
+			(isset($smartdata['replacemime']) && $smartdata['replacemime'] == false))) 
 		{
 			$uid = $smartdata['itemid'];
 			debugLog("IMAP Smartreply is called with FolderID:".$smartdata['folderid'].' and ItemID:'.$smartdata['itemid']);
@@ -360,14 +359,15 @@ class felamimail_activesync implements activesync_plugin_read
             $body .= $bodyBUFF;
         }
 
-        // forward
-        if ($smartdata['task'] == 'forward' && isset($smartdata['itemid']) && 
-    	    isset($smartdata['folderid']) && $smartdata['itemid'] && $smartdata['folderid'] && 
-    	    (!isset($smartdata['replacemime']) || 
-    	     (isset($smartdata['replacemime']) && $smartdata['replacemime'] == false))) 
+		// how to forward and other prefs
+		$preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
+
+		// forward -------------------------------------------------------------------------
+		if ($smartdata['task'] == 'forward' && isset($smartdata['itemid']) && 
+			isset($smartdata['folderid']) && $smartdata['itemid'] && $smartdata['folderid'] && 
+			(!isset($smartdata['replacemime']) || 
+			(isset($smartdata['replacemime']) && $smartdata['replacemime'] == false))) 
 		{
-			// how to forward
-			$preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 			//force the default for the forwarding -> asmail
 			if (is_array($preferencesArray)) {
 				if (!array_key_exists('message_forwarding',$preferencesArray)
@@ -376,7 +376,7 @@ class felamimail_activesync implements activesync_plugin_read
 			} else {
 				$preferencesArray['message_forwarding'] = 'asmail';
 			}
-			// construct the uid of the message out of the itemid
+			// construct the uid of the message out of the itemid - seems to be the uid, no construction needed
 			$uid = $smartdata['itemid'];
 			debugLog("IMAP Smartfordward is called with FolderID:".$smartdata['folderid'].' and ItemID:'.$smartdata['itemid']);
 			$this->splitID($smartdata['folderid'], $account, $folder);
@@ -449,10 +449,30 @@ class felamimail_activesync implements activesync_plugin_read
 
         } // end forward
 
-		// add signature!! 
-		/* ToDo */
+		// add signature!! -----------------------------------------------------------------
+		$presetSig = (!empty($activeMailProfile->signature) ? $activeMailProfile->signature : -1); // thats the default
+		$disableRuler = false;
 
-        // remove carriage-returns from body, set the body of the mailObject
+		$bosignatures	= CreateObject('felamimail.felamimail_bosignatures');
+		$_signature = $bosignatures->getSignature($presetSig);
+		$signature = $_signature->fm_signature;
+		if ((isset($preferencesArray['disableRulerForSignatureSeparation']) && 
+			$preferencesArray['disableRulerForSignatureSeparation']) || 
+			empty($signature) || trim($this->mail->convertHTMLToText($signature)) =='')
+		{
+			$disableRuler = true;
+		}
+		$before = "";
+		if($mailObject->IsHTML) {
+			$before = ($disableRuler ?'&nbsp;<br>':'&nbsp;<br><hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">');
+		} else {
+			$before = ($disableRuler ?"\r\n\r\n":"\r\n\r\n-- \r\n");
+		}
+
+		$sigText = $this->mail->merge($signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
+		$body .= $before.($mailObject->IsHTML?$sigText:$this->mail->convertHTMLToText($sigText));
+
+		// remove carriage-returns from body, set the body of the mailObject
 		if (trim($body) =='' && trim($mailObject->Body)==''/* && $attachmentNames*/) $body .= ($attachmentNames?$attachmentNames:lang('no text body supplied, check attachments for message text')); // to avoid failure on empty messages with attachments 
 		$mailObject->Body = $body = str_replace("\r\n", "\n", $body);
 		if ($mailObject->IsHTML) $mailObject->AltBody = $this->mail->convertHTMLToText($body);
