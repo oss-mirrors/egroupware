@@ -262,7 +262,7 @@ class felamimail_activesync implements activesync_plugin_read
 				$k == "message-id" || $k == 'date')
                 continue; // already set
 
-				debugLog("Header Sentmail original Header (filtered): " . $k.  " = ".trim($v));
+				if ($this->debugLevel>0) debugLog("Header Sentmail original Header (filtered): " . $k.  " = ".trim($v));
 				if ($k == "content-type") {
 					// if the message is a multipart message, then we should use the sent body
 					if (preg_match("/multipart/i", $v)) {
@@ -307,17 +307,17 @@ class felamimail_activesync implements activesync_plugin_read
 		{
 			$mailObject->IsHTML($message->ctype_secondary=='html'?true:false);
 			$mailObject->Body = $body = $message->body;
-			debugLog("IMAP-Sendmail: fetched simple body as ".($message->ctype_secondary=='html'?'html':'text'));
+			if ($this->debugLevel>0) debugLog("IMAP-Sendmail: fetched simple body as ".($message->ctype_secondary=='html'?'html':'text'));
 		}
 		//error_log(__METHOD__.__LINE__.array2string($mailObject));
 		// if this is a multipart message with a boundary, we must use the original body
 		$this->mail->createBodyFromStructure($mailObject, $message);
         if ($use_orgbody) {
-    	    debugLog("IMAP-Sendmail: use_orgbody = true");
+    	    if ($this->debugLevel>0) debugLog("IMAP-Sendmail: use_orgbody = true");
             $repl_body = $body = $mailObject->Body;
         }
         else {
-    	    debugLog("IMAP-Sendmail: use_orgbody = false");
+    	    if ($this->debugLevel>0) debugLog("IMAP-Sendmail: use_orgbody = false");
 			$body = $mailObject->Body;
 		}
 		//error_log(__METHOD__.__LINE__.array2string($mailObject));
@@ -328,9 +328,9 @@ class felamimail_activesync implements activesync_plugin_read
     	    //$headers .= "Content-Type: ". $message->ctype_primary . "/" . $message->ctype_secondary .
     		//	(isset($message->ctype_parameters['boundary']) ? ";\n\tboundary=".$message->ctype_parameters['boundary'] : "");
 		}
-		debugLog(__METHOD__.__LINE__.' retrieved Body:'.$body);
+		if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__.' retrieved Body:'.$body);
 		$body = str_replace("\r",($mailObject->ContentType=='text/html'?'<br>':""),$body); // what is this for?
-		debugLog(__METHOD__.__LINE__.' retrieved Body (modified):'.$body);
+		if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__.' retrieved Body (modified):'.$body);
 		// reply ---------------------------------------------------------------------------
 		if ($smartdata['task'] == 'reply' && isset($smartdata['itemid']) && 
 			isset($smartdata['folderid']) && $smartdata['itemid'] && $smartdata['folderid'] &&
@@ -338,7 +338,7 @@ class felamimail_activesync implements activesync_plugin_read
 			(isset($smartdata['replacemime']) && $smartdata['replacemime'] == false))) 
 		{
 			$uid = $smartdata['itemid'];
-			debugLog("IMAP Smartreply is called with FolderID:".$smartdata['folderid'].' and ItemID:'.$smartdata['itemid']);
+			if ($this->debugLevel>0) debugLog("IMAP Smartreply is called with FolderID:".$smartdata['folderid'].' and ItemID:'.$smartdata['itemid']);
 			$this->splitID($smartdata['folderid'], $account, $folder);
 
 			$this->mail->reopen($folder);
@@ -380,7 +380,7 @@ class felamimail_activesync implements activesync_plugin_read
 			}
 			// construct the uid of the message out of the itemid - seems to be the uid, no construction needed
 			$uid = $smartdata['itemid'];
-			debugLog("IMAP Smartfordward is called with FolderID:".$smartdata['folderid'].' and ItemID:'.$smartdata['itemid']);
+			if ($this->debugLevel>0) debugLog("IMAP Smartfordward is called with FolderID:".$smartdata['folderid'].' and ItemID:'.$smartdata['itemid']);
 			$this->splitID($smartdata['folderid'], $account, $folder);
 
 			$this->mail->reopen($folder);
@@ -426,7 +426,7 @@ class felamimail_activesync implements activesync_plugin_read
 				$attachmentNames = false;
 				if (is_array($attachments) && count($attachments)>0)
 				{
-					debugLog(__METHOD__.__LINE__.' gather Attachments for BodyCreation of/for MessageID:'.$uid.' found:'.count($attachments));
+					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' gather Attachments for BodyCreation of/for MessageID:'.$uid.' found:'.count($attachments));
 					foreach((array)$attachments as $key => $attachment) 
 					{
 						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Key:'.$key.'->'.array2string($attachment));
@@ -474,6 +474,7 @@ class felamimail_activesync implements activesync_plugin_read
 			}
 		}
 		$sigText = $this->mail->merge($signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
+		if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Signature to use:'.$sigText);
 		$body .= $before.($mailObject->ContentType=='text/html'?$sigText:$this->mail->convertHTMLToText($sigText));
 
 		// remove carriage-returns from body, set the body of the mailObject
@@ -482,8 +483,12 @@ class felamimail_activesync implements activesync_plugin_read
 		if ($mailObject->ContentType=='text/html') $mailObject->AltBody = $this->mail->convertHTMLToText($body);
 
         //advanced debugging
+		if ($mailObject->CharSet != 'utf-8')
+		{
+			debugLog(__METHOD__.__LINE__.' POSSIBLE PROBLEM: CharSet was changed during processing of the Body to:'.$mailObject->CharSet.'. Force back to UTF-8 now.');
+			$mailObject->CharSet = 'utf-8';
+		}
         //debugLog("IMAP-SendMail: parsed message: ". print_r($message,1));
-        debugLog("IMAP-SendMail: MailObject:".array2string($mailObject));
 		#_debug_array($ogServer);
 		$mailObject->Host 	= $this->mail->ogServer->host;
 		$mailObject->Port	= $this->mail->ogServer->port;
@@ -496,7 +501,19 @@ class felamimail_activesync implements activesync_plugin_read
 			$mailObject->Username = $username;
 			$mailObject->Password	= $this->mail->ogServer->password;
 		}
-
+		if ($this->debugLevel>2) debugLog("IMAP-SendMail: MailObject:".array2string($mailObject));
+		if ($this->debugLevel>0 && $this->debugLevel<=2)
+		{
+			debugLog("IMAP-SendMail: MailObject (short):".array2string(array('host'=>$mailObject->Host,
+				'port'=>$mailObject->Port,
+				'username'=>$mailObject->Username,
+				'subject'=>$mailObject->Subject,
+				'CharSet'=>$mailObject->CharSet,
+				'Priority'=>$mailObject->Priority,
+				'Encoding'=>$mailObject->Encoding,
+				'ContentType'=>$mailObject->ContentType,
+			)));
+		}
 		// set a higher timeout for big messages
 		@set_time_limit(120);
 
