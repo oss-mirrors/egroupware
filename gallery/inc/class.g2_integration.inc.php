@@ -243,16 +243,17 @@ class g2_integration
 					$error = $this->addAccount($data);
 					if ($error) die($error);
 				}
+				elseif ($ret->getErrorCode() & ERROR_OBSOLETE_DATA)
+				{
+					// not an error, just indicating no updated needed (nothing changed)
+				}
 				else
 				{
 					die($ret->getAsHtml());
 				}
 			}
-			else
-			{
-				$this->checkSetSiteAdmin($data['account_id']);
-				GalleryEmbed::done();
-			}
+			$this->checkSetSiteAdmin($data['account_id']);
+			GalleryEmbed::done();
 		}
 	}
 
