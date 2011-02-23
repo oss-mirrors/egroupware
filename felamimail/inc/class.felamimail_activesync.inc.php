@@ -346,8 +346,9 @@ class felamimail_activesync implements activesync_plugin_read
 			$body .= $this->mail->createHeaderInfoSection($headers,lang("original message"));
 
 			$bodyStruct = $this->mail->getMessageBody($uid, 'always_display');
+			
 			$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);
-			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Always Display:'.$body);
+			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Always Display:'.$bodyBUFF);
 		    if ($bodyBUFF != "" || (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
 				// may be html
 				if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with always_display)');
@@ -357,6 +358,7 @@ class felamimail_activesync implements activesync_plugin_read
 		        $bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text');//'never_display');
 			    $bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
 			}
+			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Body -> '.$bodyBUFF);
             // receive only body
             $body .= $bodyBUFF;
         }
@@ -527,16 +529,16 @@ class felamimail_activesync implements activesync_plugin_read
 			$send = false;
 		}
 		$asf = ($send ? true:false); // initalize accordingly
-		if ($smartdata['saveinsentitems']==1 && $send==true)
+		if (($smartdata['saveinsentitems']==1 || !isset($smartdata['saveinsentitems'])) && $send==true)
 		{
 		    $asf = false;
 		    if ($this->_sentID) {
-		        $folder[] = $this->_sentID;
+		        $folderArray[] = $this->_sentID;
 		    }
 		    else if(isset($this->mail->mailPreferences->preferences['sentFolder']) &&
 				$this->mail->mailPreferences->preferences['sentFolder'] != 'none') 
 			{
-		        $folder[] = $this->mail->mailPreferences->preferences['sentFolder'];
+		        $folderArray[] = $this->mail->mailPreferences->preferences['sentFolder'];
 		    }
 		    // No Sent folder set, try defaults
 		    else 
@@ -545,7 +547,7 @@ class felamimail_activesync implements activesync_plugin_read
 				// we dont try guessing
 				$asf = true;
 		    }
-			if (count($folder) > 0) {
+			if (count($folderArray) > 0) {
 
 				foreach((array)$bccMailAddr as $address) {
 					$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($address):$address),'');
@@ -556,7 +558,7 @@ class felamimail_activesync implements activesync_plugin_read
 				}
 				$BCCmail='';
 				if (count($mailAddr)>0) $BCCmail = $mailObject->AddrAppend("Bcc",$mailAddr);
-				foreach($folder as $folderName) {
+				foreach($folderArray as $folderName) {
 					if($this->mail->isSentFolder($folderName)) {
 						$flags = '\\Seen';
 					} elseif($this->mail->isDraftFolder($folderName)) {
