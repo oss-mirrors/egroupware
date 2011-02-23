@@ -22,7 +22,7 @@ can be used by user	emailadmin	de	Kann von folgendem Benutzer verwendet werden
 connection dropped by imap server.	emailadmin	de	Verbindung von IMAP-Server beendet.
 could not complete request. reason given: %s	emailadmin	de	Konnte Anfrage nicht beenden. Grund: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	de	Konnte keine sichere Verbindung zum IMAP Server aufbauen. %s: %s.
-cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	de	CRAM-MD5 oder DIGEST-MD5 erforder das das Auth_SASL Packet instaliert ist.
+cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	de	CRAM-MD5 oder DIGEST-MD5 erfordert, das das Auth_SASL Packet installiert ist.
 cyrus imap server	emailadmin	de	Cyrus IMAP-Server
 cyrus imap server administration	emailadmin	de	Cyrus IMAP-Server Administration
 default	emailadmin	de	Vorgabe
@@ -54,7 +54,7 @@ forward also to	emailadmin	de	zusätzlich weiterleiten
 forward email's to	emailadmin	de	E-Mails weiterleiten an
 forward only	emailadmin	de	nur weiterleiten
 global options	emailadmin	de	Globale Optionen
-if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	de	Wenn Sie SSL oder TLS benutzern, müssen Sie die openssl PHP Erweiterung geladen haben.
+if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	de	Wenn Sie SSL oder TLS benutzen, müssen Sie die openssl PHP Erweiterung geladen haben.
 imap admin password	admin	de	IMAP Administrator Passwort
 imap admin user	admin	de	IMAP Administrator Benutzer
 imap c-client version < 2001	emailadmin	de	IMAP C-Client Version < 2001
@@ -125,7 +125,7 @@ stationery	emailadmin	de	Briefpapier
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	de	Der IMAP Server scheint die eingestellte Authentifizierungsmethode nicht zu unterstützen. Bitte fragen Sie ihren Systemadministrator.
 this php has no imap support compiled in!!	emailadmin	de	Dieses PHP hat keine IMAP Unterstützung!!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	de	Um eine TLS Verbindung zu verwenden, benötigen Sie PHP 5.1.0 oder neuer.
-unexpected response from server to authenticate command.	emailadmin	de	Unerwartete Antwort des Servers auf das AUTHENTICATE Komando.
+unexpected response from server to authenticate command.	emailadmin	de	Unerwartete Antwort des Servers auf das AUTHENTICATE Kommando.
 unexpected response from server to digest-md5 response.	emailadmin	de	Unerwartete Antwort des Servers auf die Digest-MD5 Antwort.
 unexpected response from server to login command.	emailadmin	de	Unerwartete Antwort des Servers auf das LOGIN Komando.
 unknown imap response from the server. server responded: %s	emailadmin	de	Unbekannte IMAP Antwort vom Server. Server antwortet: %s
@@ -138,6 +138,7 @@ use tls authentication	emailadmin	de	TLS Authentifizierung benutzen
 use tls encryption	emailadmin	de	TLS Verschlüsselung benutzen
 use users email-address (as seen in useraccount)	emailadmin	de	Benutzt E-Mail Adresse des Benutzters (Die unter seinem Benutzerkonto angezeigt wird)
 user can edit forwarding address	emailadmin	de	Anwender können ihre Weiterleitungsadresse bearbeiten
+userid@domain eg. u1234@domain	emailadmin	de	UserId@domain z.B. u1234@domain
 username (standard)	emailadmin	de	Benutzername (Standard)
 username/password defined by admin	emailadmin	de	Benutzername/Passwort vordefiniert
 username@domainname (virtual mail manager)	emailadmin	de	Benutzername@Domänenname (Virtual MAIL ManaGeR)
@@ -145,5 +146,6 @@ users can define their own emailaccounts	emailadmin	de	Anwender können ihre eig
 users can define their own identities	emailadmin	de	Anwender können ihre eigenen Identitäten definieren
 users can define their own signatures	emailadmin	de	Anwender können ihre eigenen Signaturen definieren
 users can utilize these stationery templates	emailadmin	de	Benutzer können diese Briefpapiervorlagen verwenden
-vaction messages with start- and end-date require an admin account to be set!	emailadmin	de	Urlaubsbenachrichtigungen mit Start- und Endedatum benötigen einen gesetzten Administrator Benutzer!
+vaction messages with start- and end-date require an admin account to be set!	emailadmin	de	Urlaubsbenachrichtigungen mit Start- und Enddatum benötigen einen gesetzten Administrator Benutzer!
 virtual mail manager	emailadmin	de	Virtual MAIL ManaGeR
+you have received a new message on the	emailadmin	de	Sie haben eine neue Nachricht erhalten
