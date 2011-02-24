@@ -197,7 +197,7 @@ class felamimail_activesync implements activesync_plugin_read
 		$mailObject->AddCustomHeader('X-Mailer: FeLaMiMail-Activesync');
 
 		$mimeParams = array('decode_headers' => true,
-							'decode_bodies' => true,
+							'decode_bodies' => false,
 							'include_bodies' => true,
 							'input' => $rfc822,
 							'crlf' => "\r\n",
@@ -289,7 +289,7 @@ class felamimail_activesync implements activesync_plugin_read
 				}
 
             if ($k == "content-transfer-encoding") {
-/* we do not use this, as we determine that by ourself
+/* we do not use this, as we determine that by ourself by forcing Encoding=base64 on smartreply/forward
 				// if the content was base64 encoded, encode the body again when sending
 				if (trim($v) == "base64") $body_base64 = true;
 
@@ -315,12 +315,15 @@ class felamimail_activesync implements activesync_plugin_read
 		if ($message->ctype_primary=='text' && $message->body)
 		{
 			$mailObject->IsHTML($message->ctype_secondary=='html'?true:false);
+			// we decode the body ourself
+			$message->body = $this->mail->decodeMimePart($message->body,($message->headers['content-transfer-encoding']?$message->headers['content-transfer-encoding']:'base64'));
 			$mailObject->Body = $body = $message->body;
 			if ($this->debugLevel>0) debugLog("IMAP-Sendmail: fetched simple body as ".($message->ctype_secondary=='html'?'html':'text'));
 		}
 		//error_log(__METHOD__.__LINE__.array2string($mailObject));
 		// if this is a multipart message with a boundary, we must use the original body
-		$this->mail->createBodyFromStructure($mailObject, $message);
+		$this->mail->createBodyFromStructure($mailObject, $message,NULL,$decode=true);
+		debugLog(__METHOD__.__LINE__.array2string($mailObject));
         if ($use_orgbody) {
     	    if ($this->debugLevel>0) debugLog("IMAP-Sendmail: use_orgbody = true");
             $repl_body = $body = $mailObject->Body;
@@ -373,6 +376,7 @@ class felamimail_activesync implements activesync_plugin_read
 			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Body -> '.$bodyBUFF);
             // receive only body
             $body .= $bodyBUFF;
+			$mailObject->Encoding = 'base64';
         }
 
 		// how to forward and other prefs
@@ -462,7 +466,7 @@ class felamimail_activesync implements activesync_plugin_read
 					}
 				}
             }
-
+			$mailObject->Encoding = 'base64';
         } // end forward
 
 		// add signature!! -----------------------------------------------------------------
@@ -490,16 +494,17 @@ class felamimail_activesync implements activesync_plugin_read
 		$sigText = $this->mail->merge($signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
 		if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Signature to use:'.$sigText);
 		$body .= $before.($mailObject->ContentType=='text/html'?$sigText:$this->mail->convertHTMLToText($sigText));
-
+//debugLog(__METHOD__.__LINE__.' -> '.$body);
 		// remove carriage-returns from body, set the body of the mailObject
 		if (trim($body) =='' && trim($mailObject->Body)==''/* && $attachmentNames*/) $body .= ($attachmentNames?$attachmentNames:lang('no text body supplied, check attachments for message text')); // to avoid failure on empty messages with attachments 
+//debugLog(__METHOD__.__LINE__.' -> '.$body);
 		$mailObject->Body = $body = str_replace("\r\n", "\n", $body);
 		if ($mailObject->ContentType=='text/html') $mailObject->AltBody = $this->mail->convertHTMLToText($body);
 
         //advanced debugging
-		if ($mailObject->CharSet != 'utf-8')
+		if (strtolower($mailObject->CharSet) != 'utf-8')
 		{
-			debugLog(__METHOD__.__LINE__.' POSSIBLE PROBLEM: CharSet was changed during processing of the Body to:'.$mailObject->CharSet.'. Force back to UTF-8 now.');
+			debugLog(__METHOD__.__LINE__.' POSSIBLE PROBLEM: CharSet was changed during processing of the Body from:'.$mailObject->CharSet.'. Force back to UTF-8 now.');
 			$mailObject->CharSet = 'utf-8';
 		}
         //debugLog("IMAP-SendMail: parsed message: ". print_r($message,1));
@@ -1158,23 +1163,27 @@ class felamimail_activesync implements activesync_plugin_read
 		}
 		elseif($this->mail->isDraftFolder($folder))
 		{
-			debugLog(__METHOD__.' isDraft');
+			//debugLog(__METHOD__.' isDraft');
 			$folderObj->type = SYNC_FOLDER_TYPE_DRAFTS;
+			$folderObj->parentid = 0; // required by devices
 		}
 		elseif($this->mail->isTrashFolder($folder))
 		{
 			$folderObj->type = SYNC_FOLDER_TYPE_WASTEBASKET;
 			$this->_wasteID = $folder;
+			$folderObj->parentid = 0; // required by devices
 		}
 		elseif($this->mail->isSentFolder($folder))
 		{
 			$folderObj->type = SYNC_FOLDER_TYPE_SENTMAIL;
+			$folderObj->parentid = 0; // required by devices
 			$this->_sentID = $folder;
 		}
 		elseif($this->mail->isOutbox($folder))
 		{
 			//debugLog(__METHOD__.' isOutbox');
 			$folderObj->type = SYNC_FOLDER_TYPE_OUTBOX;
+			$folderObj->parentid = 0; // required by devices
 		}
 		else
 		{
