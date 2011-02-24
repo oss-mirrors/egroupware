@@ -352,11 +352,11 @@ class felamimail_activesync implements activesync_plugin_read
 
 			$this->mail->reopen($folder);
 			// not needed, as the original header is always transmitted
-			
+			/*
 			$headers	= $this->mail->getMessageEnvelope($uid, $_partID, true);
 			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Headers of Message with UID:$uid ->".array2string($headers));
 			$body .= $this->mail->createHeaderInfoSection($headers,lang("original message"));
-			
+			*/
 			$bodyStruct = $this->mail->getMessageBody($uid, 'always_display');
 			
 			$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);
@@ -1158,6 +1158,7 @@ class felamimail_activesync implements activesync_plugin_read
 		}
 		elseif($this->mail->isDraftFolder($folder))
 		{
+			debugLog(__METHOD__.' isDraft');
 			$folderObj->type = SYNC_FOLDER_TYPE_DRAFTS;
 		}
 		elseif($this->mail->isTrashFolder($folder))
@@ -1170,10 +1171,17 @@ class felamimail_activesync implements activesync_plugin_read
 			$folderObj->type = SYNC_FOLDER_TYPE_SENTMAIL;
 			$this->_sentID = $folder;
 		}
+		elseif($this->mail->isOutbox($folder))
+		{
+			//debugLog(__METHOD__.' isOutbox');
+			$folderObj->type = SYNC_FOLDER_TYPE_OUTBOX;
+		}
 		else
 		{
+			//debugLog(__METHOD__.' isOther Folder'.$folder);
 			$folderObj->type = SYNC_FOLDER_TYPE_USER_MAIL;
 		}
+
 		if ($this->debugLevel>1) debugLog(__METHOD__."($id) --> $folder --> type=$folderObj->type, parentID=$folderObj->parentid, displayname=$folderObj->displayname");
 		return $folderObj;
 	}

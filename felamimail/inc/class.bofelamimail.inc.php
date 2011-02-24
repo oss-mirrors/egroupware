@@ -53,9 +53,11 @@ class bofelamimail
 		 * the folder will not be automatically created. This is controlled in bofelamimail->getFolderObjects
 		 * so changing names here, must include a change of keywords there as well. Since these
 		 * foldernames are subject to translation, keep that in mind too, if you change names here.
+		 * ActiveSync: 
+		 *  Outbox is needed by Nokia Clients to be able to send Mails
 		 * @var array
 		 */
-		static $autoFolders = array('Drafts', 'Templates', 'Sent', 'Trash', 'Junk');
+		static $autoFolders = array('Drafts', 'Templates', 'Sent', 'Trash', 'Junk', 'Outbox');
 
 		/**
 		* Autoload classes from emailadmin, 'til they get autoloading conform names
@@ -1620,6 +1622,11 @@ class bofelamimail
 									if ($this->mailPreferences->preferences['templateFolder'] && $this->mailPreferences->preferences['templateFolder']=='none')
 										$createfolder=false;
 									break;
+								case 'Outbox': // Nokia Outbox for activesync
+									//if ($this->mailPreferences->preferences['outboxFolder'] && $this->mailPreferences->preferences['outboxFolder']=='none')
+										$createfolder=false;
+									if ($GLOBALS['egw_info']['user']['apps']['activesync']) $createfolder = true;
+									break;	
 							}
 							if($createfolder === true && $this->createFolder('', $folderName, true)) {
 								$foldersNameSpace['personal']['all'][] = $folderName;
@@ -2770,6 +2777,21 @@ class bofelamimail
 			}
 		}
 
+		/**
+		 * checks if the Outbox folder exists and is port of the foldername to be checked
+		 */
+		function isOutbox($_folderName)
+		{
+			if (stripos($_folderName, 'Outbox')===false) {
+				return false;
+			}
+			// does the folder exist???
+			if (!self::folderExists($_folderName)) {
+				return false;
+			}
+			return true;
+		}
+
 		function isDraftFolder($_folderName)
 		{
 			if(empty($this->mailPreferences->preferences['draftFolder'])) {
@@ -3609,16 +3631,23 @@ class bofelamimail
 					}
 					if ($addressData['RFC822_EMAIL']) 
 					{
-						$addressObject = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($addressData['RFC822_EMAIL']):$addressData['RFC822_EMAIL']),'');
+						$addressObjectA = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($addressData['RFC822_EMAIL']):$addressData['RFC822_EMAIL']),'');
 					}
 					else
 					{
 						$emailaddress = ($addressData['PERSONAL_NAME']?$addressData['PERSONAL_NAME'].' <'.$addressData['EMAIL'].'>':$addressData['EMAIL']);
-						$addressObject = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($emailaddress):$emailaddress),'');
+						$addressObjectA = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($emailaddress):$emailaddress),'');
 					}
+					$addressObject = $addressObjectA[0];
 					//error_log(__METHOD__.__LINE__.array2string($addressObject));
 					if ($addressObject->host == '.SYNTAX-ERROR.') continue;
-					$returnAddr .= (strlen($returnAddr)>0?',':'').imap_rfc822_write_address($addressObject->mailbox, $addressObject->host, $addressObject->personal);
+					//$mb =(string)$addressObject->mailbox;
+					//$h = (string)$addressObject->host;
+					//$p = (string)$addressObject->personal;
+					$returnAddr .= (strlen($returnAddr)>0?',':'');
+					//error_log(__METHOD__.__LINE__.$p.' <'.$mb.'@'.$h.'>');
+					$returnAddr .= imap_rfc822_write_address($addressObject->mailbox, $addressObject->host, $addressObject->personal);
+					//error_log(__METHOD__.__LINE__.' Address: '.$returnAddr);
 				}
 			}
 			else
