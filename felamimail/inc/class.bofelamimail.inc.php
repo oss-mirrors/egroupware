@@ -3566,11 +3566,11 @@ class bofelamimail
 		{
 			$headdata = null;
 			if ($header['SUBJECT']) $headdata = lang('subject').': '.$header['SUBJECT']."\n";
-			if ($header['FROM']) $headdata .= lang('from').': '.$header['FROM']."\n";
-			if ($header['SENDER']) $headdata .= lang('sender').': '.$header['SENDER']."\n";
-			if ($header['TO']) $headdata .= lang('to').': '.$header['TO']."\n";
-			if ($header['CC']) $headdata .= lang('cc').': '.$header['CC']."\n";
-			if ($header['BCC']) $headdata .= lang('bcc').': '.$header['BCC']."\n";
+			if ($header['FROM']) $headdata .= lang('from').': '.self::convertAddressArrayToString($header['FROM'])."\n";
+			if ($header['SENDER']) $headdata .= lang('sender').': '.self::convertAddressArrayToString($header['SENDER'])."\n";
+			if ($header['TO']) $headdata .= lang('to').': '.self::convertAddressArrayToString($header['TO'])."\n";
+			if ($header['CC']) $headdata .= lang('cc').': '.self::convertAddressArrayToString($header['CC'])."\n";
+			if ($header['BCC']) $headdata .= lang('bcc').': '.self::convertAddressArrayToString($header['BCC'])."\n";
 			if ($header['DATE']) $headdata .= lang('date').': '.$header['DATE']."\n";
 			if ($header['PRIORITY'] && $header['PRIORITY'] != 'normal') $headdata .= lang('priority').': '.$header['PRIORITY']."\n";
 			if ($header['IMPORTANCE'] && $header['IMPORTANCE'] !='normal') $headdata .= lang('importance').': '.$header['IMPORTANCE']."\n";
@@ -3586,6 +3586,47 @@ class bofelamimail
 				$headdata = "--------------------------------------------------------\n";
 			}
 			return $headdata;
+		}
+
+		/**
+		 * convertAddressArrayToString - converts an felamimail envelope Address Array To String
+		 * @param array $rfcAddressArray  an addressarray as provided by felamimail retieved via egw_pear....
+		 * @return string a comma separated string with the mailaddress(es) converted to text
+		 */
+		static function convertAddressArrayToString($rfcAddressArray)
+		{
+			//error_log(__METHOD__.__LINE__.array2string($rfcAddressArray));
+			$returnAddr ='';
+			if (is_array($rfcAddressArray))
+			{
+				foreach((array)$rfcAddressArray as $addressData) {
+					//error_log(__METHOD__.__LINE__.array2string($addressData));
+					if($addressData['MAILBOX_NAME'] == 'NIL') {
+						continue;
+					}
+					if(strtolower($addressData['MAILBOX_NAME']) == 'undisclosed-recipients') {
+						continue;
+					}
+					if ($addressData['RFC822_EMAIL']) 
+					{
+						$addressObject = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($addressData['RFC822_EMAIL']):$addressData['RFC822_EMAIL']),'');
+					}
+					else
+					{
+						$emailaddress = ($addressData['PERSONAL_NAME']?$addressData['PERSONAL_NAME'].' <'.$addressData['EMAIL'].'>':$addressData['EMAIL']);
+						$addressObject = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($emailaddress):$emailaddress),'');
+					}
+					//error_log(__METHOD__.__LINE__.array2string($addressObject));
+					if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+					$returnAddr .= (strlen($returnAddr)>0?',':'').imap_rfc822_write_address($addressObject->mailbox, $addressObject->host, $addressObject->personal);
+				}
+			}
+			else
+			{
+				// do not mess with strings, return them untouched /* ToDo: validate string as Address */
+				if (is_string($rfcAddressArray)) return $rfcAddressArray;
+			}
+			return $returnAddr;
 		}
 
 		/**
