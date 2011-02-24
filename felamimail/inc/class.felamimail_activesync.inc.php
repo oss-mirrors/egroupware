@@ -175,7 +175,8 @@ class felamimail_activesync implements activesync_plugin_read
 	public function SendMail($rfc822, $smartdata=array(), $protocolversion = false)
 	{
         if ($protocolversion < 14.0) 
-    	    debugLog("IMAP-SendMail: " . (isset($rfc822) ? $rfc822 : ""). "task: ".(isset($smartdata['task']) ? $smartdata['task'] : "")." itemid: ".(isset($smartdata['itemid']) ? $smartdata['itemid'] : "")." parent: ".(isset($smartdata['folderid']) ? $smartdata['folderid'] : ""));
+    	    debugLog("IMAP-SendMail: " . (isset($rfc822) ? $rfc822 : ""). "task: ".(isset($smartdata['task']) ? $smartdata['task'] : "")." itemid: ".(isset($smartdata['itemid']) ? $smartdata['itemid'] : "")." folder: ".(isset($smartdata['folderid']) ? $smartdata['folderid'] : ""));
+		if ($this->debugLevel>0) debugLog("IMAP-Sendmail: Smartdata = ".array2string($smartdata));
 		// if we cannot decode the mail in question, fail
 		if (class_exists('Mail_mimeDecode',false)==false && (@include_once 'Mail/mimeDecode.php') === false)
 		{
@@ -212,39 +213,47 @@ class felamimail_activesync implements activesync_plugin_read
 		if (isset($message->headers['return-path'])) $mailObject->Sender = $message->headers['return-path'];
 		$mailObject->Subject = $message->headers['subject'];
 		$mailObject->MessageID = $message->headers['message-id'];
+		/* the client send garbage sometimes (blackberry->domain\username)
 		// from
 		$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($message->headers['from']):$message->headers['from']),'');
 		foreach((array)$address_array as $addressObject) {
 			if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+			if ($this->debugLevel>0) debugLog("Header Sentmail From: ".array2string($addressObject).' vs. '.array2string($message->headers['from']));
 			$mailObject->From = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
 			$mailObject->FromName = $addressObject->personal;
 		}
+		*/
 		// to
 		$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($message->headers["to"]):$message->headers["to"]),'');
 		foreach((array)$address_array as $addressObject) {
 			if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+			if ($this->debugLevel>0) debugLog("Header Sentmail To: ".array2string($addressObject) );
 			$mailObject->AddAddress($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
 		}
 		// CC
 		$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($message->headers["cc"]):$message->headers["cc"]),'');
 		foreach((array)$address_array as $addressObject) {
 			if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+			if ($this->debugLevel>0) debugLog("Header Sentmail CC: ".array2string($addressObject) );
 			$mailObject->AddCC($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
 		}
 		// BCC
 		$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($message->headers["bcc"]):$message->headers["bcc"]),'');
 		foreach((array)$address_array as $addressObject) {
 			if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+			if ($this->debugLevel>0) debugLog("Header Sentmail BCC: ".array2string($addressObject) );
 			$mailObject->AddBCC($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
 			$bccMailAddr = imap_rfc822_write_address($addressObject->mailbox, $addressObject->host, $addressObject->personal);
 		}
+		/*
 		//	AddReplyTo
 		$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($message->headers['reply-to']):$message->headers['reply-to']),'');
 		foreach((array)$address_array as $addressObject) {
 			if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+			if ($this->debugLevel>0) debugLog("Header Sentmail REPLY-TO: ".array2string($addressObject) );
 			$mailObject->AddReplyTo($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
 		}
-
+		*/
 		$addedfullname = false;
 		// save some headers when forwarding mails (content type & transfer-encoding)
 		$headers = "";
@@ -342,9 +351,12 @@ class felamimail_activesync implements activesync_plugin_read
 			$this->splitID($smartdata['folderid'], $account, $folder);
 
 			$this->mail->reopen($folder);
-			$headers	= $this->mail->getMessageEnvelope($uid, $_partID);
+			// not needed, as the original header is always transmitted
+			
+			$headers	= $this->mail->getMessageEnvelope($uid, $_partID, true);
+			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Headers of Message with UID:$uid ->".array2string($headers));
 			$body .= $this->mail->createHeaderInfoSection($headers,lang("original message"));
-
+			
 			$bodyStruct = $this->mail->getMessageBody($uid, 'always_display');
 			
 			$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);
@@ -388,7 +400,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$this->mail->reopen($folder);
             // receive entire mail (header + body)
 			// get message headers for specified message
-			$headers	= $this->mail->getMessageEnvelope($uid, $_partID);
+			$headers	= $this->mail->getMessageEnvelope($uid, $_partID, true);
 
             // build a new mime message, forward entire old mail as file
             if ($preferencesArray['message_forwarding'] == 'asmail') 
