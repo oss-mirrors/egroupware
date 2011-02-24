@@ -436,7 +436,7 @@ class bofelamimail
 		{
 			// decode the part
 			if (self::$debug) error_log("bofelamimail::decodeMimePart with $_encoding and $_charset:".print_r($_mimeMessage,true));
-			switch ($_encoding)
+			switch (strtoupper($_encoding))
 			{
 				case 'BASE64':
 					// use imap_base64 to decode, not any longer, as it is strict, and fails if it encounters invalid chars
@@ -3837,7 +3837,7 @@ class bofelamimail
 		 * @param string $parenttype type of the parent node
 		 * @return void Parsed Information is passed to the mailObject to be processed there
 		 */
-		function createBodyFromStructure($mailObject, $structure, $parenttype=null)
+		function createBodyFromStructure($mailObject, $structure, $parenttype=null, $decode=false)
 		{
 			static $attachmentnumber;
 			static $isHTML;
@@ -3860,6 +3860,7 @@ class bofelamimail
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
 						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML);
+if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));						
 						$mailObject->Body = ($isHTML==false?$mailObject->Body:'').$part->body;
 						$mailObject->AltBody .= $part->body;
 					}
@@ -3870,6 +3871,7 @@ class bofelamimail
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
 						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML);
+if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
 						$mailObject->Body = ($isHTML?$mailObject->Body:'').$part->body;
 						$alternatebodyneeded = true;
 						$isHTML=true;
@@ -3879,10 +3881,13 @@ class bofelamimail
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
 						$this->createBodyFromStructure($mailObject, $part, $parenttype=null);
 					}
-					if (($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart') || $part->disposition == 'attachment')
+					//error_log(__METHOD__.__LINE__.$structure->ctype_secondary.'/'.$part->ctype_primary.'->'.array2string($part));
+					if (($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart') || trim($part->disposition) == 'attachment')
 					{
+						//error_log(__METHOD__.__LINE__.' Add String Attachment.');
 						$attachmentnumber++;
 						//echo $part->headers['content-transfer-encoding'].'#<br>';
+if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
 						$mailObject->AddStringAttachment($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
 														 ($part->ctype_parameters['name']?$part->ctype_parameters['name']:'noname_'.$attachmentnumber),
 														 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'),
