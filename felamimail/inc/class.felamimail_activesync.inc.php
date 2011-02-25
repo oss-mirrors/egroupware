@@ -323,7 +323,7 @@ class felamimail_activesync implements activesync_plugin_read
 		//error_log(__METHOD__.__LINE__.array2string($mailObject));
 		// if this is a multipart message with a boundary, we must use the original body
 		$this->mail->createBodyFromStructure($mailObject, $message,NULL,$decode=true);
-		debugLog(__METHOD__.__LINE__.array2string($mailObject));
+		if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__.' mailObject after Inital Parse:'.array2string($mailObject));
         if ($use_orgbody) {
     	    if ($this->debugLevel>0) debugLog("IMAP-Sendmail: use_orgbody = true");
             $repl_body = $body = $mailObject->Body;
@@ -360,19 +360,23 @@ class felamimail_activesync implements activesync_plugin_read
 			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__." Headers of Message with UID:$uid ->".array2string($headers));
 			$body .= $this->mail->createHeaderInfoSection($headers,lang("original message"));
 			*/
-			$bodyStruct = $this->mail->getMessageBody($uid, 'always_display');
+			$bodyStruct = $this->mail->getMessageBody($uid, 'html_only');
 			
 			$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);
-			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Always Display:'.$bodyBUFF);
-		    if ($bodyBUFF != "" || (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
+			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' html_only:'.$bodyBUFF);
+		    if ($bodyBUFF != "" && (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
 				// may be html
-				if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with always_display)');
+				if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with html_only):'.$bodyBUFF);
 			} else {
 				// plain text Message
-				if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text (HTML, if no text available)');
-		        $bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text');//'never_display');
-			    $bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+				if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text:');
+				$bodyStruct = $this->mail->getMessageBody($uid,'never_display');//'never_display');
+				$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+
+				if ($this->debugLevel>0) debugLog("MIME Body ContentType ".$mailObject->ContentType);
+				$bodyBUFF = ($mailObject->ContentType=='text/html'?'<pre>':'').$bodyBUFF.($mailObject->ContentType=='text/html'?'</pre>':'');
 			}
+
 			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Body -> '.$bodyBUFF);
             // receive only body
             $body .= $bodyBUFF;
@@ -423,21 +427,25 @@ class felamimail_activesync implements activesync_plugin_read
 				else
 					$nbody = $repl_body;
 */
-				$body .= $this->mail->createHeaderInfoSection($headers,lang("original message"));
-				$bodyStruct = $this->mail->getMessageBody($uid, 'always_display');
+				//$body .= $this->mail->createHeaderInfoSection($headers,lang("original message"));
+				$bodyStruct = $this->mail->getMessageBody($uid, 'html_only');
 				$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);
-				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Always Display:'.$body);
-				if ($bodyBUFF != "" || (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
+				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' html_only:'.$body);
+				if ($bodyBUFF != "" && (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
 					// may be html
-					if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with always_display)');
+					if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with html_only)');
 				} else {
 					// plain text Message
-					if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text (HTML, if no text available)');
-				    $bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text');//'never_display');
+					if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text:');
+					$bodyStruct = $this->mail->getMessageBody($uid,'never_display');//'never_display');
 					$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+				
+					if ($this->debugLevel>0) debugLog("MIME Body ContentType ".$mailObject->ContentType);
+					$bodyBUFF = ($mailObject->ContentType=='text/html'?'<pre>':'').$bodyBUFF.($mailObject->ContentType=='text/html'?'</pre>':'');
 				}
-		        // receive only body
-		        $body .= $bodyBUFF;
+				if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Body -> '.$bodyBUFF);
+				// receive only body
+				$body .= $bodyBUFF;
 				// get all the attachments and add them too.
 				// start handle Attachments
 				$attachments = $this->mail->getMessageAttachments($uid);
@@ -498,7 +506,7 @@ class felamimail_activesync implements activesync_plugin_read
 		// remove carriage-returns from body, set the body of the mailObject
 		if (trim($body) =='' && trim($mailObject->Body)==''/* && $attachmentNames*/) $body .= ($attachmentNames?$attachmentNames:lang('no text body supplied, check attachments for message text')); // to avoid failure on empty messages with attachments 
 //debugLog(__METHOD__.__LINE__.' -> '.$body);
-		$mailObject->Body = $body = str_replace("\r\n", "\n", $body);
+		$mailObject->Body = $body ;//= str_replace("\r\n", "\n", $body); // if there is a <pre> this needs \r\n so DO NOT replace them
 		if ($mailObject->ContentType=='text/html') $mailObject->AltBody = $this->mail->convertHTMLToText($body);
 
         //advanced debugging
@@ -663,27 +671,30 @@ class felamimail_activesync implements activesync_plugin_read
 				$output->airsyncbasebody = new SyncAirSyncBaseBody();
 				if ($this->debugLevel>0) debugLog("airsyncbasebody!");
 				// fetch the body (try to gather data only once)
-				$bodyStruct = $this->mail->getMessageBody($id, 'always_display');
+				$bodyStruct = $this->mail->getMessageBody($id, 'html_only');
+				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' html_only Struct:'.array2string($bodyStruct));
 				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);//$this->ui->getdisplayableBody($bodyStruct,false);
-				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' Always Display:'.$body);
-			    if ($body != "" || (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
+				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' html_only:'.$body);
+			    if ($body != "" && (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
 					// may be html
-					if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with always_display)');
-				    $output->airsyncbasenativebodytype=2;
+					if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with html_only)');
+					$output->airsyncbasenativebodytype=2;
 				} else {
 					// plain text Message
 					if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text (HTML, if no text available)');
-				    $output->airsyncbasenativebodytype=1;
-			        $bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text');//'never_display');
-				    $body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+					$output->airsyncbasenativebodytype=1;
+					$bodyStruct = $this->mail->getMessageBody($id,'never_display'); //'only_if_no_text');
+					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' plain text Struct:'.array2string($bodyStruct));
+					$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
+					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' never display html(plain text only):'.$body);
 				}
 				// whatever format decode (using the correct encoding)
-				if ($this->debugLevel>3) debugLog("MIME Body".' Type:'.($output->airsyncbasenativebodytype==2?' html ':' plain ').$body);
+				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__."MIME Body".' Type:'.($output->airsyncbasenativebodytype==2?' html ':' plain ').$body);
 				$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
 				// prepare plaintextbody
 				if ($output->airsyncbasenativebodytype == 2) $plainBody = $this->mail->convertHTMLToText($body,true); // always display with preserved HTML
 				//if ($this->debugLevel>0) debugLog("MIME Body".$body);
-				$plainBody = preg_replace("/<style.*?<\/style>/is", "", $plainBody);
+				$plainBody = preg_replace("/<style.*?<\/style>/is", "", (strlen($plainBody)?$plainBody:$body));
 				// remove all other html
 				$plainBody = preg_replace("/<br.*>/is","<br>",$plainBody);
 				$plainBody = preg_replace("/<br >/is","<br>",$plainBody);
@@ -747,7 +758,7 @@ class felamimail_activesync implements activesync_plugin_read
 						$Header = $Body = '';
 					}
 
-					if ($this->debugLevel>0) debugLog("MIME Body"); // body is retrieved up
+					if ($this->debugLevel>0) debugLog("MIME Body -> ".$body); // body is retrieved up
 					if ($output->airsyncbasenativebodytype==2) { //html
 						if ($this->debugLevel>0) debugLog("HTML Body with requested pref 4");
 						$mailObject->IsHTML(true);
@@ -837,7 +848,7 @@ class felamimail_activesync implements activesync_plugin_read
 				else
 				{
 					// Send Plaintext as Fallback or if original body is plainttext
-					if ($this->debugLevel>0) debugLog("Plaintext Body");
+					if ($this->debugLevel>0) debugLog("Plaintext Body:".$plainBody);
 					/* we use plainBody (set above) instead
 					$bodyStruct = $this->mail->getMessageBody($id,'only_if_no_text'); //'never_display');
 					$plain = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
