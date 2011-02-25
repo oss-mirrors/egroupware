@@ -1839,16 +1839,17 @@ class bofelamimail
 					return $this->getMultipartAlternative($_uid,$mimePart->subParts,$_htmlMode);
 				}
 			}
-
+			//error_log(__METHOD__.__LINE__.$_htmlMode);
 			switch($_htmlMode) {
+				case 'html_only':
 				case 'always_display':
 					if(is_object($partHTML)) {
 						if($partHTML->subType == 'RELATED') {
-							return $this->getMultipartRelated($_uid, $partHTML, 'always_display');
+							return $this->getMultipartRelated($_uid, $partHTML, $_htmlMode);
 						} else {
-							return $this->getTextPart($_uid, $partHTML, 'always_display');
+							return $this->getTextPart($_uid, $partHTML, $_htmlMode);
 						}
-					} elseif(is_object($partText)) {
+					} elseif(is_object($partText) && $_htmlMode=='always_display') {
 						return $this->getTextPart($_uid, $partText);
 					}
 
@@ -1957,12 +1958,19 @@ class bofelamimail
 				return false;
 			}
 			//_debug_array($mimePartBody);
+			//error_log(__METHOD__.__LINE__.' '.$_htmlMode.' ->'.array2string($_structure).array2string($mimePartBody));
 			//_debug_array(preg_replace('/PropertyFile___$/','',$this->decodeMimePart($mimePartBody, $_structure->encoding)));
-			if($_structure->subType == 'HTML' && $_htmlMode != 'always_display'  && $_htmlMode != 'only_if_no_text') {
+			if($_structure->subType == 'HTML' && $_htmlMode!= 'html_only' && $_htmlMode != 'always_display'  && $_htmlMode != 'only_if_no_text') {
 				$bodyPart = array(
 					'body'		=> lang("displaying html messages is disabled"),
 					'mimeType'	=> 'text/html',
 					'charSet'	=> self::$displayCharset,
+				);
+			} elseif ($_structure->subType == 'PLAIN' && $_htmlMode == 'html_only') {
+				$bodyPart = array(
+					'body'      => lang("displaying plain messages is disabled"),
+					'mimeType'  => 'text/plain', // make sure we do not return mimeType text/html
+					'charSet'   => self::$displayCharset,
 				);
 			} else {
 				// some Servers append PropertyFile___ ; strip that here for display
@@ -3675,8 +3683,9 @@ class bofelamimail
 				}
 				if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = self::detect_encoding($bodyParts[$i]['body']);
 				// add line breaks to $bodyParts
+				//error_log(__METHOD__.__LINE__.' Charset:'.$bodyParts[$i]['charSet'].'->'.$bodyParts[$i]['body']);
 				$newBody  = $GLOBALS['egw']->translation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
-
+				//error_log(__METHOD__.__LINE__.' MimeType:'.$bodyParts[$i]['mimeType'].'->'.$newBody);
 				if ($bodyParts[$i]['mimeType'] == 'text/html') {
 					// convert HTML to text, as we dont want HTML in infologs
 					$newBody = html::purify($newBody);
@@ -3685,12 +3694,20 @@ class bofelamimail
 					$message .= $newBody;
 					continue;
 				}
-				$newBody = strip_tags(self::htmlspecialchars($newBody)); //we need to fix broken tags (or just stuff like "<800 USD/p" ) 
+				$newBody =self::htmlspecialchars($newBody);
+				//error_log(__METHOD__.__LINE__.' Body(after specialchars):'.$newBody);
+				$newBody = strip_tags($newBody); //we need to fix broken tags (or just stuff like "<800 USD/p" ) 
+				//error_log(__METHOD__.__LINE__.' Body(after strip tags):'.$newBody);
 				$newBody = htmlspecialchars_decode($newBody,ENT_QUOTES);
-				$newBody  = explode("\n",$newBody);
+				//error_log(__METHOD__.__LINE__.' Body (after hmlspc_decode):'.$newBody);
+				$message = $newBody;
+				//continue;
+/* // ToDo only break lines that are way longer then we accept
+				$newBodyA  = explode("\n",$newBody);
+				error_log(__METHOD__.__LINE__.' Body (after explode):'.array2string($newBodyA));
 				// create it new, with good line breaks
-				reset($newBody);
-				while(list($key,$value) = @each($newBody))
+				reset($newBodyA);
+				while(list($key,$value) = @each($newBodyA))
 				{
 					if (trim($value) != '') {
 						#if ($value != "\r") $value .= "\n";
@@ -3700,6 +3717,7 @@ class bofelamimail
 					}
 					$message .= $bofelamimail->wordwrap($value,75,"\n");
 				}
+*/
 			}
 			return $message;
 		}
@@ -3822,7 +3840,7 @@ class bofelamimail
 				//if (isset($structure->ctype_parameters['boundary'])) $boundary = ' boundary="'.$mailObject->FetchBoundary(1).'";';
 				//if (isset($structure->headers['content-type'])) $Header .= $mailObject->HeaderLine('Content-type', $structure->ctype_primary.'/'.$structure->ctype_secondary.';'.$boundary);
 				$Header .= $mailObject->GetMailMIME();
-				$Body = $mailObject->getMessageBody();
+				$Body = $mailObject->getMessageBody(); // this is a method of the egw_mailer/phpmailer class
 				//_debug_array($Header);
 				//_debug_array($Body);
 				//_debug_array($mailObject);
