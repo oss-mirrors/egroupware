@@ -36,7 +36,30 @@
 			'replyto'	=> 'replyto',
 			'folder'	=> 'folder'
 		);
+		/**
+		 * Instance of bofelamimail
+		 *
+		 * @var bofelamimail
+		 */
 		var $bofelamimail;
+		/**
+		 * Instance of bocompose
+		 *
+		 * @var bocompose
+		 */
+		var $bocompose;
+		/**
+		 * Active preferences, reference to $this->bofelamimail->mailPreferences
+		 *
+		 * @var array
+		 */
+		var $mailPreferences;
+		/**
+		 * Instance of Template class
+		 *
+		 * @var Template
+		 */
+		var $t;
 
 		function uicompose()
 		{
@@ -115,7 +138,7 @@
 				$formData['subject'] = "[".lang('printview').":]".$formData['subject'];
 				$messageUid = $this->bocompose->saveAsDraft($formData);
 				if (!$messageUid) {
-					 print "<script type=\"text/javascript\">alert('".lang("Error: Could not save Message as Draft")."');</script>";
+					print "<script type=\"text/javascript\">alert('".lang("Error: Could not save Message as Draft")."');</script>";
 					return;
 				}
 				$uidisplay   = CreateObject('felamimail.uidisplay');
@@ -145,14 +168,14 @@
 				$messageUid = ($messageUid===true ? $uidNext : $messageUid);
 				if ($this->bofelamimail->getMessageHeader($messageUid))
 				{
-					//error_log(__METHOD__.__LINE__.' (re)open drafted message with new UID: '.$messageUid.' in folder:'.$folder); 
+					//error_log(__METHOD__.__LINE__.' (re)open drafted message with new UID: '.$messageUid.' in folder:'.$folder);
 					$uicompose->bocompose->getDraftData($uicompose->bofelamimail->icServer, $folder, $messageUid);
 					$uicompose->compose();
 					return;
 				}
 			} else {
 				if(!$this->bocompose->send($formData)) {
-					print "<script type=\"text/javascript\">alert('".lang("Error: Could not send Message.")." ".lang("Trying to recover from session data")."');</script>";
+//					print "<script type=\"text/javascript\">alert('".lang("Error: Could not send Message.")." ".lang("Trying to recover from session data")."');</script>";
 					$this->compose();
 					return;
 				}
@@ -439,7 +462,7 @@
 				$this->t->set_var('lang_save_as_infolog','');
 				$this->t->set_var('infolog_checkbox','');
 			}
-			if ($GLOBALS['egw_info']['user']['apps']['tracker']) 
+			if ($GLOBALS['egw_info']['user']['apps']['tracker'])
 			{
 				$this->t->set_var('trackerImage',html::image('felamimail','to_tracker',lang('Save as tracker'),'width="17px" height="17px" valign="middle"' ));
 				$this->t->set_var('lang_save_as_infolog',($GLOBALS['egw_info']['user']['apps']['infolog']?lang('Save:'):lang('Save as tracker')));
@@ -476,14 +499,14 @@
 			}
 			$disableRuler = false;
 			$signature = $boSignatures->getSignature(($presetSig ? $presetSig : $sessionData['signatureID']));
-			if ((isset($this->bocompose->preferencesArray['disableRulerForSignatureSeparation']) && 
-				$this->bocompose->preferencesArray['disableRulerForSignatureSeparation']) || 
+			if ((isset($this->bocompose->preferencesArray['disableRulerForSignatureSeparation']) &&
+				$this->bocompose->preferencesArray['disableRulerForSignatureSeparation']) ||
 				empty($signature->fm_signature) || trim($this->bocompose->convertHTMLToText($signature->fm_signature)) =='')
 			{
 				$disableRuler = true;
 			}
 			$insertSigOnTop = false;
-			if (isset($this->bocompose->preferencesArray['insertSignatureAtTopOfMessage']) && 
+			if (isset($this->bocompose->preferencesArray['insertSignatureAtTopOfMessage']) &&
 				$this->bocompose->preferencesArray['insertSignatureAtTopOfMessage'] &&
 				!(isset($_POST['mySigID']) && !empty($_POST['mySigID']))
 			)
@@ -622,7 +645,7 @@
 				$success=false;
 				if (is_array($_FILES["addFileName"]['name']))
 				{
-					// multiple uploads supported by newer firefox (>3.6) and chrome (>4) versions, 
+					// multiple uploads supported by newer firefox (>3.6) and chrome (>4) versions,
 					// upload array information is by key within the attribute (name, type, size, temp_name)
 					foreach($_FILES["addFileName"]['name'] as $key => $filename)
 					{
@@ -651,7 +674,7 @@
 				{
 					print "<script type='text/javascript'>window.close();</script>";
 				}
-				else 
+				else
 				{
 					print "<script type='text/javascript'>document.getElementById('fileSelectorDIV1').style.display = 'inline';document.getElementById('fileSelectorDIV2').style.display = 'none';</script>";
 				}

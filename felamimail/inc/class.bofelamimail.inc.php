@@ -34,7 +34,17 @@ class bofelamimail
 		// message encodings
 		var $encoding = array("7bit", "8bit", "binary", "base64", "quoted-printable", "other");
 		static $displayCharset;
+		/**
+		 * Instance of bopreference
+		 *
+		 * @var bopreferences
+		 */
 		var $bopreferences;
+		/**
+		 * Active preferences
+		 *
+		 * @var array
+		 */
 		var $mailPreferences;
 		// set to true, if php is compiled with multi byte string support
 		var $mbAvailable = FALSE;
@@ -53,7 +63,7 @@ class bofelamimail
 		 * the folder will not be automatically created. This is controlled in bofelamimail->getFolderObjects
 		 * so changing names here, must include a change of keywords there as well. Since these
 		 * foldernames are subject to translation, keep that in mind too, if you change names here.
-		 * ActiveSync: 
+		 * ActiveSync:
 		 *  Outbox is needed by Nokia Clients to be able to send Mails
 		 * @var array
 		 */
@@ -644,7 +654,7 @@ class bofelamimail
 					foreach((array)$_messageUID as $key =>$uid)
 					{
 						$flags = $this->getFlags($uid);
-						if (strpos( array2string($flags),'Deleted')!==false) $undelete[] = $uid; 
+						if (strpos( array2string($flags),'Deleted')!==false) $undelete[] = $uid;
 						unset($flags);
 					}
 					$retValue = PEAR::isError($this->icServer->deleteMessages($_messageUID, true));
@@ -749,7 +759,7 @@ class bofelamimail
 		 *
 		 * @todo handle handle icserver->setFlags returnValue
 		 *
-		 * @return bool true, as we do not handle icserver->setFlags returnValue 
+		 * @return bool true, as we do not handle icserver->setFlags returnValue
 		 */
 		function flagMessages($_flag, $_messageUID,$_folder=NULL)
 		{
@@ -767,7 +777,7 @@ class bofelamimail
 			}
 
 			$this->icServer->selectMailbox(($_folder?$_folder:$this->sessionData['mailbox']));
-			
+
 			switch($_flag) {
 				case "undelete":
 					$this->icServer->setFlags($_messageUID, '\\Deleted', 'remove', true);
@@ -1626,7 +1636,7 @@ class bofelamimail
 									//if ($this->mailPreferences->preferences['outboxFolder'] && $this->mailPreferences->preferences['outboxFolder']=='none')
 										$createfolder=false;
 									if ($GLOBALS['egw_info']['user']['apps']['activesync']) $createfolder = true;
-									break;	
+									break;
 							}
 							if($createfolder === true && $this->createFolder('', $folderName, true)) {
 								$foldersNameSpace['personal']['all'][] = $folderName;
@@ -3104,7 +3114,7 @@ class bofelamimail
 						$cnt = strlen($v);
 						// only break long words within the wordboundaries,
 						// but it may destroy links, so we check for href and dont it if we find one
-						if($cnt > $allowedLength && stripos($v,'href=')===false && stripos($v,'onclick=')===false) 
+						if($cnt > $allowedLength && stripos($v,'href=')===false && stripos($v,'onclick=')===false)
 						{
 							$v=wordwrap($v, $allowedLength, $cut, true);
 						}
@@ -3254,7 +3264,7 @@ class bofelamimail
 		{
 			$contacts = new addressbook_bo();
 			$mergeobj = new addressbook_merge();
-			
+
 			if (empty($mimetype)) $mimetype = (strlen(strip_tags($content)) == strlen($content) ?'text/plain':'text/html');
 			return $mergeobj->merge_string($content,$ids,$err,$mimetype);
 		}
@@ -3293,7 +3303,7 @@ class bofelamimail
 		 * helperfunction to cope with wrong encoding in strings
 		 * @param string $_string  input to be converted
 		 * @param mixed $charset false or string -> Target charset, if false bofelamimail displayCharset will be used
-		 * @return string 
+		 * @return string
 		 */
 		static function htmlspecialchars($_string, $_charset=false)
 		{
@@ -3310,7 +3320,7 @@ class bofelamimail
 		 * helperfunction to cope with wrong encoding in strings
 		 * @param string $_string  input to be converted
 		 * @param mixed $charset false or string -> Target charset, if false bofelamimail displayCharset will be used
-		 * @return string 
+		 * @return string
 		 */
 		static function htmlentities($_string, $_charset=false)
 		{
@@ -3637,7 +3647,7 @@ class bofelamimail
 					if(strtolower($addressData['MAILBOX_NAME']) == 'undisclosed-recipients') {
 						continue;
 					}
-					if ($addressData['RFC822_EMAIL']) 
+					if ($addressData['RFC822_EMAIL'])
 					{
 						$addressObjectA = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($addressData['RFC822_EMAIL']):$addressData['RFC822_EMAIL']),'');
 					}
@@ -3696,7 +3706,7 @@ class bofelamimail
 				}
 				$newBody =self::htmlspecialchars($newBody);
 				//error_log(__METHOD__.__LINE__.' Body(after specialchars):'.$newBody);
-				$newBody = strip_tags($newBody); //we need to fix broken tags (or just stuff like "<800 USD/p" ) 
+				$newBody = strip_tags($newBody); //we need to fix broken tags (or just stuff like "<800 USD/p" )
 				//error_log(__METHOD__.__LINE__.' Body(after strip tags):'.$newBody);
 				$newBody = htmlspecialchars_decode($newBody,ENT_QUOTES);
 				//error_log(__METHOD__.__LINE__.' Body (after hmlspc_decode):'.$newBody);
@@ -3789,9 +3799,9 @@ class bofelamimail
 				foreach((array)$structure->headers as $key => $val)
 				{
 					//error_log(__METHOD__.__LINE__.$key);
-					foreach((array)$val as $i => $v) 
+					foreach((array)$val as $i => $v)
 					{
-						if ($key!='content-type' && $key !='content-transfer-encoding') // the omitted values to that will be set at the end 
+						if ($key!='content-type' && $key !='content-transfer-encoding') // the omitted values to that will be set at the end
 						{
 							$Header .= $mailObject->HeaderLine($key, trim($v));
 						}
@@ -3878,7 +3888,7 @@ class bofelamimail
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
 						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML);
-if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));						
+if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
 						$mailObject->Body = ($isHTML==false?$mailObject->Body:'').$part->body;
 						$mailObject->AltBody .= $part->body;
 					}

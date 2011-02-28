@@ -420,7 +420,7 @@
 		 * 		all: for a reply to all
 		 * 		forward: inlineforwarding of a message with its attachments
 		 * @param $_icServer number (0 as it is the active Profile)
-		 * @param $_folder string 
+		 * @param $_folder string
 		 * @param $_uid number
 		 * @param $_partID number
 		 */
@@ -565,7 +565,7 @@
 			foreach ($headers['CC'] as $mailheader) {
 				$ccAddressA[] =  ($mailheader['PERSONAL_NAME'] != 'NIL') ? $mailheader['RFC822_EMAIL'] : $mailheader['EMAIL'];
 			}
-			if (count($ccAddressA)>0) 
+			if (count($ccAddressA)>0)
 			{
 				$ccAddress = bofelamimail::htmlspecialchars($bofelamimail->decode_header(implode(', ', $ccAddressA)));
 				$ccAddress = @htmlspecialchars(lang("cc")).": ".$ccAddress.($bodyParts['0']['mimeType'] == 'text/html'?"\r\n<br>":"\r\n");
@@ -770,12 +770,12 @@
 			$signature = $_signature->fm_signature;
 			if ((isset($this->preferencesArray['insertSignatureAtTopOfMessage']) && $this->preferencesArray['insertSignatureAtTopOfMessage']))
 			{
-				// note: if you use stationery ' s the insert signatures at the top does not apply here anymore, as the signature 
+				// note: if you use stationery ' s the insert signatures at the top does not apply here anymore, as the signature
 				// is already part of the body, so the signature part of the teplate will not be applied.
 				$signature = null; // note: no signature, no ruler!!!!
 			}
-			if ((isset($this->preferencesArray['disableRulerForSignatureSeparation']) && 
-				$this->preferencesArray['disableRulerForSignatureSeparation']) || 
+			if ((isset($this->preferencesArray['disableRulerForSignatureSeparation']) &&
+				$this->preferencesArray['disableRulerForSignatureSeparation']) ||
 				empty($signature) || trim($this->convertHTMLToText($signature)) =='')
 			{
 				$disableRuler = true;
@@ -790,7 +790,7 @@
 						$_mailObject->Body = $bostationery->render($this->sessionData['stationeryID'],$_formData['body'],$signature);
 					} else {
 						$_mailObject->Body = $_formData['body'] .
-							($disableRuler ?'<br>':'<hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">'). 
+							($disableRuler ?'<br>':'<hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">').
 							$signature;
 					}
 					$_mailObject->AltBody = $this->convertHTMLToText($_formData['body']).
@@ -812,7 +812,7 @@
 				$_mailObject->Body = $this->convertHTMLToText($_formData['body'],false);
 				#$_mailObject->Body = $_formData['body'];
 				if(!empty($signature)) {
-					$_mailObject->Body .= ($disableRuler ?"\r\n":"\r\n-- \r\n"). 
+					$_mailObject->Body .= ($disableRuler ?"\r\n":"\r\n-- \r\n").
 						$this->convertHTMLToText($signature);
 				}
 			}
@@ -998,10 +998,10 @@
 					$mail->Send();
 				}
 				catch(phpmailerException $e) {
-					$this->errorInfo = $e->getMessage(); 
+					$this->errorInfo = $e->getMessage();
 					if ($mail->ErrorInfo) // use the complete mailer ErrorInfo, for full Information
 					{
-						if (stripos($mail->ErrorInfo, $this->errorInfo)===false) 
+						if (stripos($mail->ErrorInfo, $this->errorInfo)===false)
 						{
 							$this->errorInfo = $mail->ErrorInfo.'<br>'.$this->errorInfo;
 						}
