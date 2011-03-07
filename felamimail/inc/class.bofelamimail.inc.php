@@ -763,7 +763,7 @@ class bofelamimail
 		 */
 		function flagMessages($_flag, $_messageUID,$_folder=NULL)
 		{
-			#error_log("felamimail::bocompose::flagMessages");
+			error_log("felamimail::bocompose::flagMessages " .$_flag);
 			if(!is_array($_messageUID)) {
 				#return false;
 				if ($_messageUID=='all')
@@ -1956,12 +1956,12 @@ class bofelamimail
 			return $this->getMultipartMixed($_uid, $_structure, $_htmlMode);
 		}
 
-		function getTextPart($_uid, $_structure, $_htmlMode = '')
+		function getTextPart($_uid, $_structure, $_htmlMode = '', $preserveSeen = false)
 		{
 			$bodyPart = array();
 			if (self::$debug) _debug_array(array($_structure,function_backtrace()));
 			$partID = $_structure->partID;
-			$mimePartBody = $this->icServer->getBodyPart($_uid, $partID, true);
+			$mimePartBody = $this->icServer->getBodyPart($_uid, $partID, true, $preserveSeen);
 			if (PEAR::isError($mimePartBody))
 			{
 				error_log(__METHOD__.__LINE__.' failed:'.$mimePartBody->message);
@@ -2096,6 +2096,7 @@ class bofelamimail
 				if (self::$debug) error_log(__METHOD__." USE NO CACHE");
 				$filter = $this->createIMAPFilter($_folderName, $_filter);
 				//_debug_array($filter);
+
 				if($this->icServer->hasCapability('SORT')) {
 					if (self::$debug) error_log(__METHOD__." Mailserver has SORT Capability");
 					$sortOrder = $this->_getSortString($_sort);
@@ -2568,7 +2569,7 @@ class bofelamimail
 			}
 		}
 
-		function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure = '')
+		function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure = '', $preserveSeen = false)
 		{
 			if (self::$debug) echo __METHOD__."$_uid, $_htmlOptions, $_partID<br>";
 			if($_htmlOptions != '') {
@@ -2631,7 +2632,7 @@ class bofelamimail
 							case 'HTML':
 							case 'PLAIN':
 							default:
-								$bodyPart = array($this->getTextPart($_uid, $structure, $this->htmlOptions));
+								$bodyPart = array($this->getTextPart($_uid, $structure, $this->htmlOptions, $preserveSeen));
 						}
 					} else {
 						// what if the structure->disposition is attachment ,...
@@ -2695,7 +2696,6 @@ class bofelamimail
 				error_log(__METHOD__.__LINE__.array2string($retValue->message));
 				$retValue = null;
 			}
-
 			return ($decode ? self::decode_header($retValue):$retValue);
 		}
 
