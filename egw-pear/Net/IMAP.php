@@ -265,9 +265,11 @@ class Net_IMAP extends Net_IMAPProtocol {
     function getRawHeaders($msg_id, $part_id = '', $uidFetch = false)
     {
         if($part_id != '') {
-          $command = "BODY[$part_id.HEADER]";
+          $command = 'BODY.PEEK[' . $part_id . 'HEADER]';
+          $resp_command = 'BODY[' . $part_id . 'HEADER]';
         } else {
-          $command = "BODY[HEADER]";
+          $command = 'BODY.PEEK[HEADER]';
+          $resp_command = 'BODY[HEADER]';
         }
         if($uidFetch == true) {
           $ret=$this->cmdUidFetch($msg_id, $command);
@@ -280,7 +282,7 @@ class Net_IMAP extends Net_IMAPProtocol {
         if(strtoupper( $ret["RESPONSE"]["CODE"]) != "OK" ){
             return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
         }
-        $ret=$ret["PARSED"][0]["EXT"][$command]["CONTENT"];
+        $ret=$ret["PARSED"][0]["EXT"][$resp_command]["CONTENT"];
         return $ret;
     }
 
@@ -425,8 +427,8 @@ class Net_IMAP extends Net_IMAPProtocol {
         #    return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
         #}
 
-        #print "<hr>"; 
-		#error_log("egw-pear::NET::IMAP:getSummary->".print_r($ret["PARSED"],TRUE)); 
+        #print "<hr>";
+		#error_log("egw-pear::NET::IMAP:getSummary->".print_r($ret["PARSED"],TRUE));
 		#print "<hr>";
         if(isset( $ret["PARSED"] ) ){
             for($i=0; $i<count($ret["PARSED"]) ; $i++){
@@ -471,17 +473,19 @@ class Net_IMAP extends Net_IMAPProtocol {
      *
      * @param   $msg_id Message number
      * @param   boolean $uidFetch  msg_id contains UID's instead of Message Sequence Number if set to true
+     * @param   boolean $preserveSeen  leaves the Seen Flag untouched if set to true (default is false)
      *
      * @return  mixed   Either message body or false on error
      *
      * @access  public
      */
-    function getBody($msg_id, $uidFetch = false)
+    function getBody($msg_id, $uidFetch = false, $preserveSeen = false)
     {
+    	$peek = ($preserveSeen) ? ".PEEK" : "";
         if($uidFetch) {
-          $ret=$this->cmdUidFetch($msg_id,"BODY[TEXT]");
+          $ret=$this->cmdUidFetch($msg_id, "BODY".$peek."[TEXT]");
         } else {
-          $ret=$this->cmdFetch($msg_id,"BODY[TEXT]");
+          $ret=$this->cmdFetch($msg_id, "BODY".$peek."[TEXT]");
         }
         if (PEAR::isError($ret)) {
             return $ret;
@@ -501,17 +505,19 @@ class Net_IMAP extends Net_IMAPProtocol {
      * @param   $msg_id Message number
      * @param   string  $partId Message number
      * @param   boolean $uidFetch  msg_id contains UID's instead of Message Sequence Number if set to true
+     * @param   boolean $preserveSeen  leaves the Seen Flag untouched if set to true (default is false)
      *
      * @return  mixed   Either message body or false on error
      *
      * @access  public
      */
-    function getBodyPart($msg_id, $partId, $uidFetch = false)
+    function getBodyPart($msg_id, $partId, $uidFetch = false, $preserveSeen = false)
     {
+    	$peek = ($preserveSeen) ? ".PEEK" :  "" ;
         if($uidFetch) {
-          $ret=$this->cmdUidFetch($msg_id,"BODY[$partId]");
+          $ret=$this->cmdUidFetch($msg_id,"BODY".$peek."[$partId]");
         } else {
-          $ret=$this->cmdFetch($msg_id,"BODY[$partId]");
+          $ret=$this->cmdFetch($msg_id,"BODY".$peek."[$partId]");
         }
         if (PEAR::isError($ret)) {
             return $ret;
@@ -583,7 +589,7 @@ class Net_IMAP extends Net_IMAPProtocol {
      *
      * @access  private
      */
-    function _parseStructureArray($_structure, &$_mimeParts, $_partID = '') 
+    function _parseStructureArray($_structure, &$_mimeParts, $_partID = '')
     {
         // something went wrong
         if(!is_array($_structure)) {
@@ -611,9 +617,9 @@ class Net_IMAP extends Net_IMAPProtocol {
               break;
           }
         }
-        
+
     }
-    
+
 
 
     /**
@@ -628,7 +634,7 @@ class Net_IMAP extends Net_IMAPProtocol {
      *
      * @access  private
      */
-    function _parseStructureMultipartArray($_structure, &$_mimeParts, $_partID, $_parentIsMessage = false) 
+    function _parseStructureMultipartArray($_structure, &$_mimeParts, $_partID, $_parentIsMessage = false)
     {
         #print "Net_IMAP::_parseStructureMultipartArray _partID: $_partID<br>";
         // a multipart/mixed, multipart/report or multipart/alternative or multipart/related get's no own partid, if the parent is message/rfc822
@@ -643,7 +649,7 @@ class Net_IMAP extends Net_IMAPProtocol {
             $_partID = substr($_partID, 0, strrpos($_partID, '.'));
           }
         }
-        
+
         $subPartID = 1;
         $partID = ($_partID == '') ? '' : $_partID.'.';
         $subMimeParts = array();
@@ -656,22 +662,22 @@ class Net_IMAP extends Net_IMAPProtocol {
               switch(strtoupper($structurePart[0])) {
                  case 'IMAGE':
                   $this->_parseStructureImageArray($structurePart, $subMimeParts, $partID.$subPartID);
-                  
+
                   break;
 
                  case 'MESSAGE':
                   $this->_parseStructureMessageArray($structurePart, $subMimeParts, $partID.$subPartID);
-                  
+
                   break;
 
                 case 'TEXT':
                   $this->_parseStructureTextArray($structurePart, $subMimeParts, $partID.$subPartID);
-              
+
                   break;
 
                 default:
                   $this->_parseStructureApplicationArray($structurePart, $subMimeParts, $partID.$subPartID);
-              
+
                   break;
 
               }
@@ -681,9 +687,9 @@ class Net_IMAP extends Net_IMAPProtocol {
             $part = new stdClass;
             $part->type = 'MULTIPART';
             $part->subType = strtoupper($structurePart);
-          
+
             $part->subParts = $subMimeParts;
-          
+
             if($_partID == '') {
               $part->partID = 0;
               $_mimeParts = array(0 => $part);
@@ -691,7 +697,7 @@ class Net_IMAP extends Net_IMAPProtocol {
               $part->partID = $_partID;
               $_mimeParts[$_partID] = $part;
             }
-            
+
             return;
           }
         }
@@ -708,18 +714,18 @@ class Net_IMAP extends Net_IMAPProtocol {
      *
      * @access  private
      */
-    function _parseStructureImageArray($_structure, &$_mimeParts, $_partID) 
+    function _parseStructureImageArray($_structure, &$_mimeParts, $_partID)
     {
         #print "Net_IMAP::_parseStructureImageArray _partID: $_partID<br>";
         $part = $this->_parseStructureCommonFields($_structure);
         $part->cid = $_structure[3];
         $part->partID = $_partID;
-        
+
         $_mimeParts[$_partID] = $part;
     }
 
 
-    
+
     /**
      * Parse structure application array
      *
@@ -731,7 +737,7 @@ class Net_IMAP extends Net_IMAPProtocol {
      *
      * @access  private
      */
-    function _parseStructureApplicationArray($_structure, &$_mimeParts, $_partID) 
+    function _parseStructureApplicationArray($_structure, &$_mimeParts, $_partID)
     {
         #print "Net_IMAP::_parseStructureApplicationArray _partID: $_partID<br>";
         $part = $this->_parseStructureCommonFields($_structure);
@@ -748,7 +754,7 @@ class Net_IMAP extends Net_IMAPProtocol {
           }
         }
         $part->partID = $_partID;
-        
+
         $_mimeParts[$_partID] = $part;
     }
 
@@ -769,13 +775,13 @@ class Net_IMAP extends Net_IMAPProtocol {
     {
         #print "Net_IMAP::_parseStructureMessageArray _partID: $_partID<br>";
         $part = $this->_parseStructureCommonFields($_structure);
-        
+
         if(is_array($_structure[8][0])) {
           $this->_parseStructureMultipartArray($_structure[8], $subMimeParts, $_partID.'.1', true);
         } else {
           $this->_parseStructureArray($_structure[8], $subMimeParts, $_partID);
         }
-        
+
         if(is_array($subMimeParts)) {
           $part->subParts = $subMimeParts;
         }
@@ -783,7 +789,7 @@ class Net_IMAP extends Net_IMAPProtocol {
 
         $_mimeParts[$_partID] = $part;
     }
-    
+
 
 
     /**
@@ -797,14 +803,14 @@ class Net_IMAP extends Net_IMAPProtocol {
      *
      * @access  private
      */
-    function _parseStructureTextArray($_structure, &$_mimeParts, $_partID) 
+    function _parseStructureTextArray($_structure, &$_mimeParts, $_partID)
     {
         #print "Net_IMAP::_parseStructureTextArray _partID: $_partID<br>";
         $part = $this->_parseStructureCommonFields($_structure);
         $part->lines = $_structure[7];
-        
+
         // what is the difference between $_structure[8] and $_structure[9]????
-        
+
         if(is_array($_structure[8])) {
           if(isset($_structure[8][0]) && $_structure[8][0] != 'NIL') {
             $part->disposition = strtoupper($_structure[8][0]);
@@ -830,9 +836,9 @@ class Net_IMAP extends Net_IMAPProtocol {
             }
           }
         }
-        
+
         $part->partID = $_partID;
-        
+
         $_mimeParts[$_partID] = $part;
     }
 
@@ -847,7 +853,7 @@ class Net_IMAP extends Net_IMAPProtocol {
      *
      * @access  private
      */
-    function _parseStructureCommonFields(&$_structure) 
+    function _parseStructureCommonFields(&$_structure)
     {
 		#error_log(__METHOD__.print_r($_structure,true)." ".function_backtrace());
         #print "Net_IMAP::_parseStructureTextArray _partID: $_partID<br>";
@@ -872,7 +878,7 @@ class Net_IMAP extends Net_IMAPProtocol {
         $part->filename = $_structure[4];
         $part->encoding = strtoupper($_structure[5]);
         $part->bytes = $_structure[6];
-        
+
         return $part;
     }
 
@@ -1230,7 +1236,7 @@ class Net_IMAP extends Net_IMAPProtocol {
      *                                     can be an array
      * @param   string  $source_mailbox mailbox name from where the messages are copied (default is current mailbox)
      * @param   bool    $uidCopy        msg_id contains UID's instead of Message Sequence Number if set to true
-     * @param 	bool	$returnUIDs     return an array with uid => newuid 
+     * @param 	bool	$returnUIDs     return an array with uid => newuid
      *
      * @return mixed true on Success/PearError on Failure
      *
@@ -1274,7 +1280,7 @@ class Net_IMAP extends Net_IMAPProtocol {
 		{
 			//error_log(__METHOD__.__LINE__." ReturnUIDs is set to false");
         	return true;
-		} 
+		}
 		else
 		{
 			//error_log(__METHOD__.__LINE__." ReturnUIDs is set to true".$ret["RESPONSE"]["STR_CODE"]);
@@ -1359,7 +1365,7 @@ class Net_IMAP extends Net_IMAPProtocol {
                 );
             }
         }
-        
+
         return $nameSpaces;
     }
 
@@ -1553,9 +1559,9 @@ class Net_IMAP extends Net_IMAPProtocol {
         }
         return true;
     }
-    
-    
-    
+
+
+
     /**
      * Renames the mailbox $mailbox
      *
@@ -1769,7 +1775,7 @@ class Net_IMAP extends Net_IMAPProtocol {
      *
      * @param   mixed   $msg_id     the message list or string "all" for all
      * @param   mixed   $flags      flags to set (space separated String or array)
-     * @param   string  $mod        "set" to set flags (default) 
+     * @param   string  $mod        "set" to set flags (default)
      *                              "add" to add flags
      *                              "remove" to remove flags
      * @param   boolean $uidStore   msg_id contains UID's instead of Message Sequence Number if set to true
@@ -1792,14 +1798,14 @@ class Net_IMAP extends Net_IMAPProtocol {
                 $message_set = $msg_id;
             }
         }
-        
+
         $flaglist = '';
         if (is_array($flags)) {
             $flaglist = implode(' ', $flags);
         } else {
             $flaglist = $flags;
         }
-        
+
         switch ($mod) {
             case 'set':
                 $dataitem = 'FLAGS';
@@ -1815,7 +1821,7 @@ class Net_IMAP extends Net_IMAPProtocol {
                 return new PEAR_Error('wrong input $mod');
                 break;
         }
-        #error_log("egw-pear::Net::setFlags for Message: ".print_r($message_set,true)."->".$flaglist); 
+        #error_log("egw-pear::Net::setFlags for Message: ".print_r($message_set,true)."->".$flaglist);
         if($uidStore == true) {
           $ret=$this->cmdUidStore($message_set, $dataitem, $flaglist);
         } else {
@@ -1842,7 +1848,7 @@ class Net_IMAP extends Net_IMAPProtocol {
      * @return  mixed   true on success/PearError on failure
      *
      * @since   1.1
-     * @access  public 
+     * @access  public
      */
     function addFlags($msg_id, $flags)
     {
@@ -2158,7 +2164,7 @@ class Net_IMAP extends Net_IMAPProtocol {
     **                                                               **
     ******************************************************************/
 
-    
+
     /**
      * expunge function. Sends the EXPUNGE command
      *
@@ -2360,8 +2366,8 @@ class Net_IMAP extends Net_IMAPProtocol {
         }
         return array('USED'=>'NOT SET', 'QMAX'=>'NOT SET');
     }
-     
-    
+
+
 
     /**
      * sets STORAGE quota
@@ -2721,7 +2727,7 @@ class Net_IMAP extends Net_IMAPProtocol {
 
     *********************************************************/
 
-    
+
     /**
      * same as getMailboxSize()
      * Net_POP3 Compatibility function
@@ -2791,7 +2797,7 @@ class Net_IMAP extends Net_IMAPProtocol {
     }
 
 
-    
+
     /**
      * same as deleteMessages($msg_id)
      * Net_POP3 Compatibility function
