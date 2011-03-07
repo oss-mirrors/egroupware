@@ -174,8 +174,8 @@ class felamimail_activesync implements activesync_plugin_read
      */
 	public function SendMail($rfc822, $smartdata=array(), $protocolversion = false)
 	{
-        if ($protocolversion < 14.0) 
-    	    debugLog("IMAP-SendMail: " . (isset($rfc822) ? $rfc822 : ""). "task: ".(isset($smartdata['task']) ? $smartdata['task'] : "")." itemid: ".(isset($smartdata['itemid']) ? $smartdata['itemid'] : "")." folder: ".(isset($smartdata['folderid']) ? $smartdata['folderid'] : ""));
+		if ($protocolversion < 14.0)
+    		debugLog("IMAP-SendMail: " . (isset($rfc822) ? $rfc822 : ""). "task: ".(isset($smartdata['task']) ? $smartdata['task'] : "")." itemid: ".(isset($smartdata['itemid']) ? $smartdata['itemid'] : "")." folder: ".(isset($smartdata['folderid']) ? $smartdata['folderid'] : ""));
 		if ($this->debugLevel>0) debugLog("IMAP-Sendmail: Smartdata = ".array2string($smartdata));
 		// if we cannot decode the mail in question, fail
 		if (class_exists('Mail_mimeDecode',false)==false && (@include_once 'Mail/mimeDecode.php') === false)
@@ -266,7 +266,7 @@ class felamimail_activesync implements activesync_plugin_read
 		//$body_base64 = false;
 		$org_charset = "";
 		foreach($message->headers as $k => $v) {
-			if ($k == "subject" || 
+			if ($k == "subject" ||
 				$k == "to" || $k == "cc" || $k == "bcc" || $k == "sender" || $k == "reply-to" || $k == 'from' || $k == 'return_path' ||
 				$k == "message-id" || $k == 'date')
                 continue; // already set
@@ -301,8 +301,8 @@ class felamimail_activesync implements activesync_plugin_read
 			}
 
 			// if the message is a multipart message, then we should use the sent body
-			if (($smartdata['task'] == 'new' || $smartdata['task'] == 'reply' || $smartdata['task'] == 'forward') && 
-				((isset($smartdata['replacemime']) && $smartdata['replacemime'] == true) || 
+			if (($smartdata['task'] == 'new' || $smartdata['task'] == 'reply' || $smartdata['task'] == 'forward') &&
+				((isset($smartdata['replacemime']) && $smartdata['replacemime'] == true) ||
 				$k == "content-type" && preg_match("/multipart/i", $v))) {
 				$use_orgbody = true;
 			}
@@ -334,7 +334,7 @@ class felamimail_activesync implements activesync_plugin_read
 		}
 		//error_log(__METHOD__.__LINE__.array2string($mailObject));
 		// as we use our mailer (phpmailer) it is detecting / setting the mimetype by itself while creating the mail
-    	if (isset($smartdata['replacemime']) && $smartdata['replacemime'] == true && 
+    	if (isset($smartdata['replacemime']) && $smartdata['replacemime'] == true &&
     	    isset($message->ctype_primary)) {
             //if ($headers) $headers .= "\n";
     	    //$headers .= "Content-Type: ". $message->ctype_primary . "/" . $message->ctype_secondary .
@@ -344,10 +344,10 @@ class felamimail_activesync implements activesync_plugin_read
 		$body = str_replace("\r",($mailObject->ContentType=='text/html'?'<br>':""),$body); // what is this for?
 		if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__.' retrieved Body (modified):'.$body);
 		// reply ---------------------------------------------------------------------------
-		if ($smartdata['task'] == 'reply' && isset($smartdata['itemid']) && 
+		if ($smartdata['task'] == 'reply' && isset($smartdata['itemid']) &&
 			isset($smartdata['folderid']) && $smartdata['itemid'] && $smartdata['folderid'] &&
-			(!isset($smartdata['replacemime']) || 
-			(isset($smartdata['replacemime']) && $smartdata['replacemime'] == false))) 
+			(!isset($smartdata['replacemime']) ||
+			(isset($smartdata['replacemime']) && $smartdata['replacemime'] == false)))
 		{
 			$uid = $smartdata['itemid'];
 			if ($this->debugLevel>0) debugLog("IMAP Smartreply is called with FolderID:".$smartdata['folderid'].' and ItemID:'.$smartdata['itemid']);
@@ -361,7 +361,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$body .= $this->mail->createHeaderInfoSection($headers,lang("original message"));
 			*/
 			$bodyStruct = $this->mail->getMessageBody($uid, 'html_only');
-			
+
 			$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);
 			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' html_only:'.$bodyBUFF);
 		    if ($bodyBUFF != "" && (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
@@ -387,10 +387,10 @@ class felamimail_activesync implements activesync_plugin_read
 		$preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 
 		// forward -------------------------------------------------------------------------
-		if ($smartdata['task'] == 'forward' && isset($smartdata['itemid']) && 
-			isset($smartdata['folderid']) && $smartdata['itemid'] && $smartdata['folderid'] && 
-			(!isset($smartdata['replacemime']) || 
-			(isset($smartdata['replacemime']) && $smartdata['replacemime'] == false))) 
+		if ($smartdata['task'] == 'forward' && isset($smartdata['itemid']) &&
+			isset($smartdata['folderid']) && $smartdata['itemid'] && $smartdata['folderid'] &&
+			(!isset($smartdata['replacemime']) ||
+			(isset($smartdata['replacemime']) && $smartdata['replacemime'] == false)))
 		{
 			//force the default for the forwarding -> asmail
 			if (is_array($preferencesArray)) {
@@ -411,14 +411,14 @@ class felamimail_activesync implements activesync_plugin_read
 			$headers	= $this->mail->getMessageEnvelope($uid, $_partID, true);
 
             // build a new mime message, forward entire old mail as file
-            if ($preferencesArray['message_forwarding'] == 'asmail') 
+            if ($preferencesArray['message_forwarding'] == 'asmail')
 			{
 				$rawHeader='';
 				$rawHeader      = $this->mail->getMessageRawHeader($smartdata['itemid'], $_partID);
 				$rawBody        = $this->mail->getMessageRawBody($smartdata['itemid'], $_partID);
 				$mailObject->AddStringAttachment($rawHeader.$rawBody, $mailObject->EncodeHeader($headers['SUBJECT']), '7bit', 'message/rfc822');
             }
-            else 
+            else
 			{
 /* ToDo - as it may double text
 				// This is for forwarding and using the original body as Client may only include parts of the original mail
@@ -439,7 +439,7 @@ class felamimail_activesync implements activesync_plugin_read
 					if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text:');
 					$bodyStruct = $this->mail->getMessageBody($uid,'never_display');//'never_display');
 					$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
-				
+
 					if ($this->debugLevel>0) debugLog("MIME Body ContentType ".$mailObject->ContentType);
 					$bodyBUFF = ($mailObject->ContentType=='text/html'?'<pre>':'').$bodyBUFF.($mailObject->ContentType=='text/html'?'</pre>':'');
 				}
@@ -453,11 +453,11 @@ class felamimail_activesync implements activesync_plugin_read
 				if (is_array($attachments) && count($attachments)>0)
 				{
 					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' gather Attachments for BodyCreation of/for MessageID:'.$uid.' found:'.count($attachments));
-					foreach((array)$attachments as $key => $attachment) 
+					foreach((array)$attachments as $key => $attachment)
 					{
 						if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Key:'.$key.'->'.array2string($attachment));
 						$attachmentNames .= $attachment['name']."\n";
-						switch($attachment['type']) 
+						switch($attachment['type'])
 						{
 							case 'MESSAGE/RFC822':
 								$rawHeader = $rawBody = '';
@@ -484,8 +484,8 @@ class felamimail_activesync implements activesync_plugin_read
 		$bosignatures	= CreateObject('felamimail.felamimail_bosignatures');
 		$_signature = $bosignatures->getSignature($presetSig);
 		$signature = $_signature->fm_signature;
-		if ((isset($preferencesArray['disableRulerForSignatureSeparation']) && 
-			$preferencesArray['disableRulerForSignatureSeparation']) || 
+		if ((isset($preferencesArray['disableRulerForSignatureSeparation']) &&
+			$preferencesArray['disableRulerForSignatureSeparation']) ||
 			empty($signature) || trim($this->mail->convertHTMLToText($signature)) =='')
 		{
 			$disableRuler = true;
@@ -504,7 +504,7 @@ class felamimail_activesync implements activesync_plugin_read
 		$body .= $before.($mailObject->ContentType=='text/html'?$sigText:$this->mail->convertHTMLToText($sigText));
 //debugLog(__METHOD__.__LINE__.' -> '.$body);
 		// remove carriage-returns from body, set the body of the mailObject
-		if (trim($body) =='' && trim($mailObject->Body)==''/* && $attachmentNames*/) $body .= ($attachmentNames?$attachmentNames:lang('no text body supplied, check attachments for message text')); // to avoid failure on empty messages with attachments 
+		if (trim($body) =='' && trim($mailObject->Body)==''/* && $attachmentNames*/) $body .= ($attachmentNames?$attachmentNames:lang('no text body supplied, check attachments for message text')); // to avoid failure on empty messages with attachments
 //debugLog(__METHOD__.__LINE__.' -> '.$body);
 		$mailObject->Body = $body ;//= str_replace("\r\n", "\n", $body); // if there is a <pre> this needs \r\n so DO NOT replace them
 		if ($mailObject->ContentType=='text/html') $mailObject->AltBody = $this->mail->convertHTMLToText($body);
@@ -560,13 +560,13 @@ class felamimail_activesync implements activesync_plugin_read
 		    if ($this->_sentID) {
 		        $folderArray[] = $this->_sentID;
 		    }
-		    else if(isset($this->mail->mailPreferences->preferences['sentFolder']) &&
-				$this->mail->mailPreferences->preferences['sentFolder'] != 'none') 
+			else if(isset($this->mail->mailPreferences->preferences['sentFolder']) &&
+				$this->mail->mailPreferences->preferences['sentFolder'] != 'none')
 			{
 		        $folderArray[] = $this->mail->mailPreferences->preferences['sentFolder'];
 		    }
 		    // No Sent folder set, try defaults
-		    else 
+			else
 			{
 		        debugLog("IMAP-SendMail: No Sent mailbox set");
 				// we dont try guessing
@@ -640,7 +640,7 @@ class felamimail_activesync implements activesync_plugin_read
 			// start AS12 Stuff (bodypreference === false) case = old behaviour
 			debugLog(__METHOD__.__LINE__.' Bodypreference: '.array2string($bodypreference));
 			if ($bodypreference === false) {
-				$bodyStruct = $this->mail->getMessageBody($id, 'only_if_no_text');
+				$bodyStruct = $this->mail->getMessageBody($id, 'only_if_no_text', '', '', true);
 				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);
 				$body = html_entity_decode($body,ENT_QUOTES,$this->mail->detect_encoding($body));
 				$body = preg_replace("/<style.*?<\/style>/is", "", $body); // in case there is only a html part
@@ -671,7 +671,7 @@ class felamimail_activesync implements activesync_plugin_read
 				$output->airsyncbasebody = new SyncAirSyncBaseBody();
 				if ($this->debugLevel>0) debugLog("airsyncbasebody!");
 				// fetch the body (try to gather data only once)
-				$bodyStruct = $this->mail->getMessageBody($id, 'html_only');
+				$bodyStruct = $this->mail->getMessageBody($id, 'html_only', '', '', true);
 				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' html_only Struct:'.array2string($bodyStruct));
 				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);//$this->ui->getdisplayableBody($bodyStruct,false);
 				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' html_only:'.$body);
@@ -683,7 +683,7 @@ class felamimail_activesync implements activesync_plugin_read
 					// plain text Message
 					if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text (HTML, if no text available)');
 					$output->airsyncbasenativebodytype=1;
-					$bodyStruct = $this->mail->getMessageBody($id,'never_display'); //'only_if_no_text');
+					$bodyStruct = $this->mail->getMessageBody($id,'never_display', '', '', true); //'only_if_no_text');
 					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' plain text Struct:'.array2string($bodyStruct));
 					$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
 					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' never display html(plain text only):'.$body);
@@ -786,14 +786,14 @@ class felamimail_activesync implements activesync_plugin_read
 					if (is_array($attachments) && count($attachments)>0)
 					{
 						debugLog(__METHOD__.__LINE__.' gather Attachments for BodyCreation of/for MessageID:'.$id.' found:'.count($attachments));
-						foreach((array)$attachments as $key => $attachment) 
+						foreach((array)$attachments as $key => $attachment)
 						{
 							if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Key:'.$key.'->'.array2string($attachment));
-							switch($attachment['type']) 
+							switch($attachment['type'])
 							{
 								case 'MESSAGE/RFC822':
 									$rawHeader = $rawBody = '';
-									if (isset($attachment['partID'])) 
+									if (isset($attachment['partID']))
 									{
 										$rawHeader = $this->mail->getMessageRawHeader($id, $attachment['partID']);
 									}
@@ -821,7 +821,7 @@ class felamimail_activesync implements activesync_plugin_read
 					if ($this->debugLevel>0) debugLog("HTML Body with requested pref 2");
 					// Send HTML if requested and native type was html
 					$output->airsyncbasebody->type = 2;
-					if ($output->airsyncbasenativebodytype==2) 
+					if ($output->airsyncbasenativebodytype==2)
 					{
 						// as we fetch html, and body is HTML, we may not need to handle this
 					}
@@ -838,7 +838,7 @@ class felamimail_activesync implements activesync_plugin_read
 							'</body>'.
 							'</html>';
 					}
-					if(isset($bodypreference[2]["TruncationSize"]) && strlen($html) > $bodypreference[2]["TruncationSize"]) 
+					if(isset($bodypreference[2]["TruncationSize"]) && strlen($html) > $bodypreference[2]["TruncationSize"])
 					{
 						$body = utf8_truncate($body,$bodypreference[2]["TruncationSize"]);
 						$output->airsyncbasebody->truncated = 1;
@@ -881,8 +881,10 @@ class felamimail_activesync implements activesync_plugin_read
 			$output->importance = ($this->messages[$id]['priority'] ?  $this->messages[$id]['priority']:1) ;
 			$output->datereceived = $this->mail->_strtotime($headers['DATE'],'ts',true);
 			$output->displayto = ($headers['TO'] ? $headers['TO']:null); //$stat['FETCHED_HEADER']['to_name']
-			$output->to = $this->messages[$id]['to_address']; //$stat['FETCHED_HEADER']['to_name']
-			$output->from = $this->messages[$id]['sender_address']; //$stat['FETCHED_HEADER']['sender_name']
+			// $output->to = $this->messages[$id]['to_address']; //$stat['FETCHED_HEADER']['to_name']
+			// $output->from = $this->messages[$id]['sender_address']; //$stat['FETCHED_HEADER']['sender_name']
+			$output->to = $headers['TO'];
+			$output->from = $headers['FROM'];
 			$output->cc = ($headers['CC'] ? $headers['CC']:null);
 			$output->reply_to = ($headers['REPLY_TO']?$headers['REPLY_TO']:null);
 			$output->messageclass = "IPM.Note";
@@ -894,6 +896,7 @@ class felamimail_activesync implements activesync_plugin_read
 			// start AS12 Stuff
 			$output->poommailflag = new SyncPoommailFlag();
 			$output->poommailflag->flagstatus = 0;
+			//$output->poommailflag->flagtype = 0;  // TODO : flagged flag
 			$output->internetcpid = 65001;
 			$output->contentclass="urn:content-classes:message";
 			// end AS12 Stuff
@@ -917,7 +920,7 @@ class felamimail_activesync implements activesync_plugin_read
 					//error_log(__METHOD__.__LINE__.'->'.$folderid . ":" . $id . ":" . $attach['partID']);
 					$attachment->attmethod = 1;
 					$attachment->attoid = "";//isset($part->headers['content-id']) ? trim($part->headers['content-id']) : "";
-					if (!empty($attach['cid']) && $attach['cid'] <> 'NIL' ) 
+					if (!empty($attach['cid']) && $attach['cid'] <> 'NIL' )
 					{
 						$attachment->isinline=true;
 						$attachment->attmethod=6;
@@ -945,7 +948,7 @@ class felamimail_activesync implements activesync_plugin_read
 	}
 
 	/**
-	 * GetAttachmentData 
+	 * GetAttachmentData
 	 * Should return attachment data for the specified attachment. The passed attachment identifier is
 	 * the exact string that is returned in the 'AttName' property of an SyncAttachment. So, you should
 	 * encode any information you need to find the attachment in that 'attname' property.
@@ -971,7 +974,7 @@ class felamimail_activesync implements activesync_plugin_read
 	}
 
 	/**
-	 * ItemOperationsGetAttachmentData 
+	 * ItemOperationsGetAttachmentData
 	 * Should return attachment data for the specified attachment. The passed attachment identifier is
 	 * the exact string that is returned in the 'AttName' property of an SyncAttachment. So, you should
 	 * encode any information you need to find the attachment in that 'attname' property.
@@ -1081,6 +1084,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 	private function fetchMessages($folderid, $cutoffdate=NULL, $_id=NULL)
 	{
+		$starttime = microtime (true);
 		debugLog(__METHOD__.__LINE__);
 		$this->_connect($this->account);
 		$messagelist = array();
@@ -1088,6 +1092,7 @@ class felamimail_activesync implements activesync_plugin_read
 		$rv = $this->splitID($folderid,$account,$_folderName,$id);
 		if ($this->debugLevel>0) debugLog (__METHOD__.' for Folder:'.$_folderName.' Filter:'.array2string($_filter).' Ids:'.array2string($_id));
 		$rv_messages = $this->mail->getHeaders($_folderName, $_startMessage=1, $_numberOfMessages=9999999, $_sort=0, $_reverse=false, $_filter, $_id);
+		if ($_id == NULL)  error_log(__METHOD__." found :". count($rv_messages['header']));
 		//debugLog(__METHOD__.__LINE__.array2string($rv_messages));
 		foreach ((array)$rv_messages['header'] as $k => $vars)
 		{
@@ -1108,6 +1113,8 @@ class felamimail_activesync implements activesync_plugin_read
 			$messagelist[$vars['uid']] = $mess;
 			unset($mess);
 		}
+		$endtime = microtime(true) - $starttime;
+		error_log(__METHOD__. " time used : ".$endtime);
 		return $messagelist;
 	}
 
@@ -1330,6 +1337,7 @@ class felamimail_activesync implements activesync_plugin_read
 	{
 		debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
 		$_messageUID = (array)$id;
+		$this->_connect($this->account);
 		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
 		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$_folderid);
 		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
