@@ -179,6 +179,43 @@ displays as:
 <html>
 <b> more </b> <font color=\"red\">to</font> <b>come</b>
 </html>
+----
+=== Macros ===
+<code>
+[[PageSize]]
+</code>
+Displays the size of each page in bytes.
+[[PageSize]]
+<code>
+[[LinkTable]]
+</code>
+Displays all of the pages that each page links to
+[[LinkTable]]
+<code>
+[[PageLinks]]
+</code>
+Indicates how many links to other pages each page contains. Multiple links to the same page count multiple times
+[[PageLinks]]
+<code>
+[[PageRefs]]
+</code>
+Displays how many links there are to each page. Multiple links on a page increase the count. A page that links to itself also counts.
+[[PageRefs]]
+<code>
+[[OrphanedPages]]
+</code>
+Displays all of the pages that no other page links to
+[[OrphanedPages]]
+<code>
+[[WantedPages]]
+</code>
+Displays all pages that are linked to but do not yet exist
+[[WantedPages]]
+<code>
+[[Transclude eGroupWare]]
+</code>
+Include the text of an other wikipage:
+[[Transclude eGroupWare]]
 ",
 	) as $name => $body)
 	{

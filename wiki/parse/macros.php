@@ -127,10 +127,8 @@ function view_macro_orphans()
 
 	foreach($pages as $page)
 	{
-		$esc_page = addslashes($page[1]);
-		$q2 = $pagestore->db->query("SELECT wiki_name FROM ".$pagestore->LkTbl." " .
-																 "WHERE wiki_link='$esc_page' AND wiki_name!='$esc_page'",__LINE__,__FILE__);
-		if(!($r2 = $pagestore->db->next_record()) || empty($r2[0]))
+		if (!$pagestore->db->query("SELECT wiki_name FROM ".$pagestore->LkTbl." " .
+			"WHERE wiki_link=".$pagestore->db->quote($page[1])." AND wiki_name!=".$pagestore->db->quote($page[1]),__LINE__,__FILE__)->fetchColumn(0))
 		{
 			if(!$first)                       // Don't prepend newline to first one.
 				{ $text = $text . "\n"; }
@@ -192,14 +190,12 @@ function view_macro_wanted()
 	$text = '';
 	$first = 1;
 
-	$q1 = $pagestore->db->query("SELECT l.wiki_link, SUM(l.wiki_count) AS ct, p.wiki_title " .
-															 "FROM ".$pagestore->LkTbl." AS l LEFT JOIN ".$pagestore->PgTbl." AS p " .
-															 "ON l.wiki_link = p.wiki_title " .
-															 "GROUP BY l.wiki_link " .
-															 "HAVING p.wiki_title IS NULL " .
-															 "ORDER BY ct DESC, l.wiki_link",__LINE__,__FILE__);
-
-	while(($result = $pagestore->db->next_record()))
+	foreach($pagestore->db->query("SELECT l.wiki_link, SUM(l.wiki_count) AS ct, p.wiki_title " .
+		"FROM ".$pagestore->LkTbl." AS l LEFT JOIN ".$pagestore->PgTbl." AS p " .
+		"ON l.wiki_link = p.wiki_title " .
+		"GROUP BY l.wiki_link " .
+		"HAVING p.wiki_title IS NULL " .
+		"ORDER BY ct DESC, l.wiki_link",__LINE__,__FILE__) as $result)
 	{
 		if(!$first)                         // Don't prepend newline to first one.
 			{ $text = $text . "\n"; }
@@ -222,9 +218,8 @@ function view_macro_outlinks()
 	$text = '';
 	$first = 1;
 
-	$q1 = $pagestore->db->query("SELECT wiki_name, SUM(wiki_count) AS ct FROM ".$pagestore->LkTbl." " .
-															 "GROUP BY wiki_name ORDER BY ct DESC, wiki_name",__LINE__,__FILE__);
-	while(($result = $pagestore->db->next_record()))
+	foreach($pagestore->db->query("SELECT wiki_name, SUM(wiki_count) AS ct FROM ".$pagestore->LkTbl." " .
+		"GROUP BY wiki_name ORDER BY ct DESC, wiki_name",__LINE__,__FILE__) as $result)
 	{
 		if(!$first)                         // Don't prepend newline to first one.
 			{ $text = $text . "\n"; }
@@ -252,14 +247,11 @@ function view_macro_refs()
 // exist.  If anyone has some efficient suggestions, I'd be welcome to
 // entertain them.  -- ScottMoonen
 
-	$q1 = $pagestore->db->query("SELECT wiki_link, SUM(wiki_count) AS ct FROM ".$pagestore->LkTbl." " .
-															 "GROUP BY wiki_link ORDER BY ct DESC, wiki_link",__LINE__,__FILE__);
-	while(($result = $pagestore->db->next_record()))
+	foreach($pagestore->db->query("SELECT wiki_link, SUM(wiki_count) AS ct FROM ".$pagestore->LkTbl." " .
+		"GROUP BY wiki_link ORDER BY ct DESC, wiki_link",__LINE__,__FILE__) as $result)
 	{
-		$esc_page = addslashes($result[0]);
-		$q2 = $pagestore->db->query("SELECT MAX(wiki_version) FROM ".$pagestore->PgTbl." " .
-																 "WHERE wiki_title='$esc_page'",__LINE__,__FILE__);
-		if(($r2 = $q2->next_record()) && !empty($r2[0]))
+		if ($pagestore->db->query("SELECT MAX(wiki_version) FROM ".$pagestore->PgTbl." " .
+			"WHERE wiki_title=".$pagestore->db->quote($result[0]),__LINE__,__FILE__)->fetchColumn(0))
 		{
 			if(!$first)                       // Don't prepend newline to first one.
 				{ $text = $text . "\n"; }
@@ -286,39 +278,6 @@ function view_macro_anchor($args)
 		{ return ''; }
 }
 
-// This macro transcludes another page into a wiki page.
-/*
-function view_macro_transclude($args)
-{
-	global $pagestore, $ParseEngine, $ParseObject;
-	static $visited_array = array();
-	static $visited_count = 0;
-
-	if(!validate_page($args))
-		{ return '[[Transclude ' . $args . ']]'; }
-
-	$visited_array[$visited_count++] = $ParseObject;
-	for($i = 0; $i < $visited_count; $i++)
-	{
-		if($visited_array[$i] == $args)
-		{
-			$visited_count--;
-			return '[[Transclude ' . $args . ']]';
-		}
-	}
-
-	$pg = $pagestore->page($args);
-	$pg->read();
-	if(!$pg->exists)
-	{
-		$visited_count--;
-		return '[[Transclude ' . $args . ']]';
-	}
-	$result = parseText($pg->text, $ParseEngine, $args);
-	$visited_count--;
-	return $result;
-}
-*/
 // This macro transcludes another page into a wiki page.
 function view_macro_transclude($args)
 {
