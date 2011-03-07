@@ -35,7 +35,7 @@ function view_macro_category($args)
 	usort($list, 'catSort');
 
 	$now = time();
- 
+
 	//for($i = 0; $i < count($list); $i++)
 	foreach($list as $i => $lpage)
 	{
@@ -87,8 +87,7 @@ function view_macro_pagesize()
 		else
 			{ $first = 0; }
 
-		$text = $text .
-						$page[4] . ' ' . html_ref($page[1], $page[1]);
+		$text .= $page['username'] . ' ' . html_ref($page['name'], $page['name']).' '.$page['length'];
 	}
 
 	return html_code($text);
@@ -326,14 +325,14 @@ function view_macro_transclude($args)
   global $pagestore, $ParseEngine, $ParseObject, $HeadingOffset;
   static $visited_array = array();
   static $visited_count = 0;
-  
+
   $previousHeadingOffset = $HeadingOffset;  // Backup previous version
-  
+
   // Check for CurlyOptions, and split them
   preg_match("/^(?:\s*{([^]]*)})?\s*(.*)$/", $args, $arg);
   $options = $arg[1];
   $page = $arg[2];
-  
+
   if(!validate_page($page))
     { return '[[Transclude ' . $args . ']]'; }
 
@@ -355,7 +354,7 @@ function view_macro_transclude($args)
     return '[[Transclude ' . $args . ']]';
   }
 
-  // Check for CurlyOptions affecting transclusion 
+  // Check for CurlyOptions affecting transclusion
   // Parse options
   foreach (split_curly_options($options) as $name=>$value) {
     $name=strtolower($name);
@@ -363,7 +362,7 @@ function view_macro_transclude($args)
       $HeadingOffset = $previousHeadingOffset + (($value=='') ? 1 : $value);
     }
   }
-  
+
   $result = parseText($pg->text, $ParseEngine, $page);
   $visited_count--;
   $HeadingOffset = $previousHeadingOffset; // Restore offset

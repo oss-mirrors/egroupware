@@ -750,7 +750,7 @@ class wiki_so	// DB-Layer
 			$page = array();
 			foreach($this->db->Record as $col => $val)
 			{
-				$name = isset($this->colNames[$col]) ? $this->colNames[$col] : ($name == 'wiki_length' ? 'length' : $col);
+				$name = isset($this->colNames[$col]) ? $this->colNames[$col] : ($col == 'wiki_length' ? 'length' : $col);
 				$page[$name] = $val;
 			}
 			$list[] = $page;
