@@ -22,6 +22,27 @@ class wiki_hooks
 	 */
 	static public function settings($hook_data)
 	{
+		$options = array(
+			// Defines not defined here
+			/*WIKI_ACL_ALL*/  '_0' => lang('everyone'),
+			/*WIKI_ACL_USER*/ '_1' => lang('users'),
+			/*WIKI_ACL_ADMIN*/'_2' => lang('admins'),
+		);
+		$accs = $GLOBALS['egw']->accounts->get_list('groups');
+		foreach($accs as $acc)
+		{
+			if ($acc['account_type'] == 'u')
+			{
+				$options[$acc['account_id']] = common::grab_owner_name($acc['account_id']);
+			}
+		}
+		foreach($accs as $acc)
+		{
+			if ($acc['account_type'] == 'g' && (!$owngroups || ($owngroups && in_array($acc['account_id'],(array)$mygroups))))
+			{
+				$options[$acc['account_id']] = common::grab_owner_name($acc['account_id']);
+			}
+		}
 		$settings = array(
 			'rtfEditorFeatures' => array(
 				'type'   => 'select',
@@ -37,6 +58,24 @@ class wiki_hooks
 				'admin'  => False,
 				'default'=> 'extended',
 			),
+			'default_read' => array(
+				'type'   => 'multiselect',
+				'label'  => 'Default read permission',
+				'name'   => 'default_read',
+				'values' => $options,
+				'help'   => 'Default read permissions for creating a new page',
+				'xmlrpc' => True,
+				'admin'  => False,
+			),
+			'default_write' => array(
+				'type'   => 'multiselect',
+				'label'  => 'Default write permission',
+				'name'   => 'default_write',
+				'values' => $options,
+				'help'   => 'Default write permissions for creating a new page',
+				'xmlrpc' => True,
+				'admin'  => False,
+			)
 		);
 		if ($GLOBALS['egw_info']['user']['apps']['filemanager'])
 		{

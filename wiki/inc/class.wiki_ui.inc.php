@@ -83,6 +83,14 @@ class wiki_ui extends wiki_bo
 		if ($pg->read() === False)	// new entry
 		{
 			$pg->lang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
+			if($GLOBALS['egw_info']['user']['preferences']['wiki']['default_read'])
+			{
+				$pg->readable = explode(',',$GLOBALS['egw_info']['user']['preferences']['wiki']['default_read']);
+			}
+			if($GLOBALS['egw_info']['user']['preferences']['wiki']['default_write'])
+			{
+				$pg->writable = explode(',',$GLOBALS['egw_info']['user']['preferences']['wiki']['default_write']);
+			}
 		}
 
 		// acl checks

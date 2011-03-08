@@ -23,6 +23,10 @@ converts the page to richtext	wiki	en	Converts the page to richtext
 current version	wiki	en	Current Version
 deleted	wiki	en	Deleted
 deletes this page	wiki	en	Deletes this page
+default read permission preferences	en	Default read permission
+default read permissions for creating a new page	preferences	en	Default read permissions for creating a new page
+default write permission	preferences	en	Default write permission
+default write permissions for creating a new page	preferences	en	Default write permissions for creating a new page
 difference between versions	wiki	en	Difference between versions
 differences in	wiki	en	Differences in
 different languages can have different titles	wiki	en	different languages can have different titles
