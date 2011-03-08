@@ -12,9 +12,9 @@
  * @version $Id$
  */
 
-define ('WIKI_ACL_ALL',0);		// everyone incl. anonymous
-define ('WIKI_ACL_USER',1);		// everyone BUT anonymous
-define ('WIKI_ACL_ADMIN',2);	// only admins (access to the admin app !)
+define ('WIKI_ACL_ALL','_0');		// everyone incl. anonymous
+define ('WIKI_ACL_USER','_1');		// everyone BUT anonymous
+define ('WIKI_ACL_ADMIN','_2');	// only admins (access to the admin app !)
 
 /**
  * Class representing a wiki-page, usualy gets instanciated via sowiki::page()
@@ -30,8 +30,8 @@ class soWikiPage
 	var $comment  = '';                   // Description of last edit.
 	var $version = -1;                    // Version number of page.
 	var $mutable = 1;                     // Whether page may be edited (depricated !)
-	var $readable = WIKI_ACL_ALL;         // who can read the page
-	var $writable = WIKI_ACL_ALL;         // who can write the page
+	var $readable = array(WIKI_ACL_ALL);  // who can read the page
+	var $writable = array(WIKI_ACL_ALL);  // who can write the page
 	var $exists = 0;                      // Whether page already exists.
 	var $db; /* @var $db db */            // Database object.
 	var $PgTbl;
@@ -130,14 +130,26 @@ class soWikiPage
 		}
 		$filter = array_merge($filter,$this->memberships);
 
-		$sql = '('.($add_wiki_id ? " wiki_id=$this->wiki_id AND " : '').
-			($table ? $table.'.' : '');
+		$sql = '('.($add_wiki_id ? " wiki_id=$this->wiki_id AND " : '');
 		if($readable)
 		{
-			$sql .= 'wiki_readable IN ('.implode(',',$filter).')';
+			$sql .= ' (';
+			$read = array();
+			foreach($filter as $id)
+			{
+				$read[] = ($table ? $table.'.' : '') . 'wiki_readable LIKE "%,'.$id .'%" ';
+			}
+			$sql .= implode(' OR ', $read);
+			$sql .= ') ';
 		}
 		// Writable implies readable
-		$sql .= ($readable ? ' OR ' : ' ') . 'wiki_writable IN ('.implode(',',$filter).'))';
+		$sql .= ($readable ? ' OR ' : ' ') . ' (';
+		$write = array();
+		foreach($filter as $id) {
+			$write[] = ($table ? $table.'.' : ''). 'wiki_writable LIKE "%,'.$id.'%"';
+		}
+		$sql .= implode(' OR ', $write) . '))';
+
 		if ($this->debug) echo "<p>sowiki::acl_filter($readable,$add_wiki_id) = '$sql'</p>\n";
 
 		return $filters[$filter_id] = $sql;
@@ -156,7 +168,7 @@ class soWikiPage
 	{
 		if (!$this->time) $this->read(true);	// read the page (ignoring acl), if we have not done so
 
-		//echo "soWikiPage::acl_check(".($readable?'readable':'writeable').") $this->name ($this->time/$this->version): readable=$this->readable, writable=$this->writable</p>\n";
+		//echo "<p>soWikiPage::acl_check(".($readable?'readable':'writeable').") $this->name ($this->time/$this->version): readable=".print_r($this->readable, true) . ', writable=' . print_r($this->writable, true)."</p>\n";
 		if (!$readable && $this->config['Anonymous_Session_Type'] != 'editable' &&
 			$GLOBALS['egw_info']['user']['account_lid'] == $this->config['anonymous_username'])
 		{
@@ -164,35 +176,40 @@ class soWikiPage
 		}
 
 		$writable = False;
-		switch($this->writable) {
-			case WIKI_ACL_ALL:
-				$writable = True;
-				break;
-			case WIKI_ACL_USER:
-				$writable = $GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username'];
-				break;
-			case WIKI_ACL_ADMIN:
-				$writable = isset($GLOBALS['egw_info']['user']['apps']['admin']);
-				break;
-			default:
-				$writable =  in_array($this->writable, $this->memberships);
+		if(in_array(WIKI_ACL_ALL, $this->writable))
+		{
+			$writable = True;
+		}
+		else if (in_array(WIKI_ACL_USER, $this->writable))
+		{
+			$writable = $GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username'];
+		}
+		else if (in_array(WIKI_ACL_ADMIN, $this->writable))
+		{
+			$writable = isset($GLOBALS['egw_info']['user']['apps']['admin']);
+		}
+		else
+		{
+			$writable = count(array_intersect($this->writable, $this->memberships)) > 0;
 		}
 		if(!$readable) return $writable;
 
 		// Writable implies readable
-		switch ($this->readable)
+		if(in_array(WIKI_ACL_ALL, $this->readable))
 		{
-			case WIKI_ACL_ALL:
-				return True;
-
-			case WIKI_ACL_USER:
-				return $writable || ($GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username']);
-
-			case WIKI_ACL_ADMIN:
-				return $writable || isset($GLOBALS['egw_info']['user']['apps']['admin']);
-
-			default:
-				return $writable || in_array($this->readable,$this->memberships);
+			return True;
+		}
+		else if (in_array(WIKI_ACL_USER, $this->readable))
+		{
+			return $writable || ($GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username']);
+		}
+		else if (in_array(WIKI_ACL_ADMIN, $this->readable))
+		{
+			return $writable || isset($GLOBALS['egw_info']['user']['apps']['admin']);
+		}
+		else
+		{
+			return $writable || count(array_intersect($this->readable,$this->memberships)) > 0;
 		}
 		return False;
 	}
@@ -262,6 +279,10 @@ class soWikiPage
 		{
 			$this->$name     = $this->db->f($dbname);
 		}
+		$this->readable = explode(',', $this->readable); 
+		if(!$this->readable[0]) unset($this->readable[0]);
+		$this->writable = explode(',', $this->writable); 
+		if(!$this->writable[0]) unset($this->writable[0]);
 		$this->exists   = 1;
 		$this->mutable  = $this->acl_check();
 
@@ -280,6 +301,9 @@ class soWikiPage
 		{
 			$arr[$dbname] = $this->$name;
 		}
+		// Prepend , for easer LIKEing
+		$arr['wiki_readable'] = ','.implode(',',$arr['wiki_readable']);
+		$arr['wiki_writable'] = ','.implode(',',$arr['wiki_writable']);
 		if (is_null($arr['wiki_comment'])) $arr['wiki_comment'] = '';	// can not be null
 
 		if (empty($this->text))	unset($arr['wiki_body']);	// deleted / empty pages are written as SQL NULL
@@ -490,6 +514,10 @@ class wiki_so	// DB-Layer
 	{
 		$name = $this->db->db_addslashes(is_array($page) ? $page['name'] : $page);
 		$lang = $this->db->db_addslashes(is_array($page) && !$lang ? $page['lang'] : $lang);
+
+		// Don't allow access to hidden content via history
+		$_page = $this->page($name, $lang);
+		if(!$_page->acl_check(True)) return array();
 
 		$this->db->select($this->PgTbl,'wiki_time,wiki_hostname,wiki_version,wiki_username,wiki_comment',array(
 				'wiki_name'	=> is_array($page) ? $page['name'] : $page,

@@ -12,7 +12,7 @@
 
 $setup_info['wiki']['name']      = 'wiki';
 $setup_info['wiki']['title']     = 'Wiki';
-$setup_info['wiki']['version']   = '1.8';
+$setup_info['wiki']['version']   = '1.9.001';
 $setup_info['wiki']['app_order'] = 11;
 $setup_info['wiki']['enable']    = 1;
 
@@ -48,3 +48,4 @@ $setup_info['wiki']['depends'][] = array
 	'appname'  => 'etemplate',
 	'versions' => Array('1.7','1.8','1.9')
 );
+

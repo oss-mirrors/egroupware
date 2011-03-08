@@ -32,8 +32,8 @@ $phpgw_baseline = array(
 			'wiki_version' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '1'),
 			'wiki_time' => array('type' => 'int','precision' => '4'),
 			'wiki_supercede' => array('type' => 'int','precision' => '4'),
-			'wiki_readable' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-			'wiki_writable' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
+			'wiki_readable' => array('type' => 'varchar','precision' => '255','nullable' => False,'default' => ',_0'),
+			'wiki_writable' => array('type' => 'varchar','precision' => '255','nullable' => False,'default' => ',_0'),
 			'wiki_username' => array('type' => 'varchar','precision' => '80'),
 			'wiki_hostname' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
 			'wiki_comment' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
@@ -42,7 +42,7 @@ $phpgw_baseline = array(
 		),
 		'pk' => array('wiki_id','wiki_name','wiki_lang','wiki_version'),
 		'fk' => array(),
-		'ix' => array('wiki_title',array('wiki_body','options' => array('mysql' => 'FULLTEXT',' mssql' => '',' pgsql' => '',' maxdb' => '',' sapdb' => ''))),
+		'ix' => array('wiki_title',array('wiki_body','options' => array('mysql' => 'FULLTEXT','  mssql' => '','  pgsql' => '','  maxdb' => '','  sapdb' => ''))),
 		'uc' => array()
 	),
 	'egw_wiki_rate' => array(
