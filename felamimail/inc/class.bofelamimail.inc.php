@@ -394,7 +394,7 @@ class bofelamimail
 					case 'SINCE':
 					case 'BEFORE':
 					case 'ON':
-						$imapFilter .= $criteria .' '. $_criterias['string'];
+						$imapFilter .= $criteria .' '. $_criterias['string'].' ';
 						break;
 				}
 			}
