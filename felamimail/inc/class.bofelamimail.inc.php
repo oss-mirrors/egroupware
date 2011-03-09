@@ -389,10 +389,12 @@ class bofelamimail
 					case 'SUBJECT':
 					case 'TEXT':
 					case 'TO':
+						$imapFilter .= $criteria .' "'. $_criterias['string'] .'" ';
+						break;
 					case 'SINCE':
 					case 'BEFORE':
 					case 'ON':
-						$imapFilter .= $criteria .' "'. $_criterias['string'] .'" ';
+						$imapFilter .= $criteria .' '. $_criterias['string'];
 						break;
 				}
 			}
