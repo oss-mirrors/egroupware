@@ -15,10 +15,15 @@
  * FeLaMiMail preference user interface class, provides UI functionality for preferences/actions like
  * managing folders, acls, signatures, rules
  */
-require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
 
 	class uipreferences
 	{
+		/**
+		 * Reference to felamimail_bo
+		 *
+		 * @var felamimail_bo
+		 */
+		var $bofelamimail;
 
 		var $public_functions = array
 		(
@@ -37,7 +42,7 @@ require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc
 		function uipreferences()
 		{
 			$this->t = $GLOBALS['egw']->template;
-			$this->charset = $GLOBALS['egw']->translation->charset();
+			$this->charset = translation::charset();
 			$this->bofelamimail	= felamimail_bo::getInstance();
 			$this->bopreferences	= $this->bofelamimail->bopreferences;
 
@@ -55,9 +60,6 @@ require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc
 					exit;
 				}
 			}
-
-// try not open connection from Phillip
-//			$this->bofelamimail->openConnection();
 
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
@@ -424,6 +426,7 @@ require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc
 		function listFolder()
 		{
 			if (!isset($this->bofelamimail)) $this->bofelamimail    = felamimail_bo::getInstance();
+			$this->bofelamimail->openConnection();
 			if (!isset($this->bopreferences)) $this->bopreferences  = $this->bofelamimail->bopreferences;
 			$preferences =& $this->bopreferences->getPreferences();
 			if(!(empty($preferences->preferences['prefpreventmanagefolders']) || $preferences->preferences['prefpreventmanagefolders'] == 0)) {
@@ -797,4 +800,3 @@ require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc
 		}
 	}
 
-?>
