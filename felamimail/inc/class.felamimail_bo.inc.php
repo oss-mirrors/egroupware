@@ -227,7 +227,7 @@ class felamimail_bo
 
 		}
 
-		function forcePrefReload()
+		public static function forcePrefReload()
 		{
 			// unset the fm_preferences session object, to force the reload/rebuild
 			$GLOBALS['egw']->session->appsession('fm_preferences','felamimail',serialize(array()));
@@ -275,24 +275,6 @@ class felamimail_bo
 				if(is_a($ogServer,'defaultsmtp')) {
 					$ogServer->addAccount($_hookValues);
 				}
-			}
-		}
-
-		function adminMenu()
-		{
- 			if ($GLOBALS['egw_info']['server']['account_repository'] == "ldap")
-			{
-				$data = Array
-				(
-					'description'   => 'email settings',
-					'url'           => '/index.php',
-					'extradata'     => 'menuaction=emailadmin.uiuserdata.editUserData'
-				);
-
-				//Do not modify below this line
-				global $menuData;
-
-				$menuData[] = $data;
 			}
 		}
 

@@ -13,7 +13,51 @@
  */
 class felamimail_hooks
 {
-    /**
+/**
+ * Several hooks calling an instanciated felamimail_bo, which need to use the felamimail_bo::getInstance() singelton
+ *
+ * @param string|array $hookData
+ */
+	static public function accountHooks($hookData)
+	{
+		$bofelamimail = felamimail_bo::getInstance();
+
+		switch(is_array($hookData) ? $hookData['location'] : $hookData)
+		{
+			case 'addaccount':
+				$bofelamimail->addAccount($hookData);
+				break;
+			case 'deleteaccount':
+				$bofelamimail->deleteAccount($hookData);
+				break;
+			case 'editaccount':
+				$bofelamimail->updateAccount($hookData);
+				break;
+		}
+	}
+
+	/**
+	 * Menu for Admin >> Edit accounts
+	 */
+	static public function adminMenu()
+	{
+		if ($GLOBALS['egw_info']['server']['account_repository'] == "ldap")
+		{
+			$data = Array
+			(
+				'description'   => 'email settings',
+				'url'           => '/index.php',
+				'extradata'     => 'menuaction=emailadmin.uiuserdata.editUserData'
+			);
+
+			//Do not modify below this line
+			global $menuData;
+
+			$menuData[] = $data;
+		}
+	}
+
+	/**
      * Hook called by link-class to include calendar in the appregistry of the linkage
      *
      * @param array/string $location location and other parameters (not used)
