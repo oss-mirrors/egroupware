@@ -15,7 +15,7 @@
 /**
  * a class containing / implementing the xajax actions triggered by javascript
  */
-class ajaxfelamimail 
+class ajaxfelamimail
 {
 		// which profile to use(currently only 0 is supported)
 		var $imapServerID=0;
@@ -34,7 +34,7 @@ class ajaxfelamimail
 		{
 			if($this->_debug) error_log("ajaxfelamimail::ajaxfelamimail");
 			$this->charset		=  $GLOBALS['egw']->translation->charset();
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->charset);
+			$this->bofelamimail	= felamimail_bo::getInstance();
 			$this->uiwidgets	= CreateObject('felamimail.uiwidgets');
 			$this->_connectionStatus = $this->bofelamimail->openConnection();
 
@@ -241,7 +241,7 @@ class ajaxfelamimail
         function toggleEditor($_composeID, $_content ,$_mode)
         {
 			$_content = utf8_decode($_content);
-			
+
 			if($this->_debug) error_log("ajaxfelamimail::toggleEditor->".$_mode.'->'.$_content);
 	        $bocompose  = CreateObject('felamimail.bocompose', $_composeID);
 			if($_mode == 'simple') {
@@ -267,7 +267,7 @@ class ajaxfelamimail
 			}
 
 			$this->saveSessionData();
-			
+
 			$response = new xajaxResponse();
 
 			$escaped = utf8_encode(str_replace(array("'", "\r", "\n"), array("\\'", "\\r", "\\n"), $_content));
@@ -528,7 +528,7 @@ class ajaxfelamimail
 
 			if($quota = $this->bofelamimail->getQuotaRoot()) {
 				if (isset($quota['usage']) && is_int($quota['usage']))
-				{ 
+				{
 					$quotaDisplay = $this->uiwidgets->quotaDisplay($quota['usage'], $quota['limit']);
 					$response->addAssign('quotaDisplay', 'innerHTML', $quotaDisplay);
 				}
@@ -728,7 +728,7 @@ class ajaxfelamimail
 			if(is_array($_selectedMessages) && count($_selectedMessages['msg']) > 0) $messageCount = count($_selectedMessages['msg']);
 			$folderName = $this->_decodeEntityFolderName($_folderName);
 			if ($_selectedMessages == 'all' || !empty( $_selectedMessages['msg']) && !empty($folderName)) {
-				if ($this->sessionData['mailbox'] != $folderName) 
+				if ($this->sessionData['mailbox'] != $folderName)
 				{
 					$deleteAfterMove = false;
 					try
@@ -744,8 +744,8 @@ class ajaxfelamimail
 						$response->addScript('onNodeSelect("'.$this->sessionData['mailbox'].'");');
 						return $response->getXML();
 					}
-				} 
-				else 
+				}
+				else
 				{
 					  if($this->_debug) error_log("ajaxfelamimail::copyMessages-> same folder than current selected");
 				}
@@ -797,7 +797,7 @@ class ajaxfelamimail
 			$headerData = $headerData['header'][0];
 			foreach ($headerData as $key => $val)
 			{
-				$headerData[$key] = bofelamimail::htmlentities($val);
+				$headerData[$key] = felamimail_bo::htmlentities($val);
 			}
 			$headerData['subject'] = $this->bofelamimail->decode_subject($headerData['subject'],false);
 			$this->sessionData['previewMessage'] = $headerData['uid'];
@@ -869,9 +869,9 @@ class ajaxfelamimail
 					//error_log(__METHOD__.__LINE__."checking $folderName -> ".array2string($this->bofelamimail->getFolderStatus($folderName)));
 					if($folderStatus = $this->bofelamimail->getFolderStatus($folderName)) {
 						if($folderStatus['unseen'] > 0) {
-							$response->addScript("egw_topWindow().tree.setItemText('".@htmlspecialchars($folderName,ENT_QUOTES, bofelamimail::$displayCharset,false)."', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
+							$response->addScript("egw_topWindow().tree.setItemText('".@htmlspecialchars($folderName,ENT_QUOTES, felamimail_bo::$displayCharset,false)."', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
 						} else {
-							$response->addScript("egw_topWindow().tree.setItemText('".@htmlspecialchars($folderName,ENT_QUOTES, bofelamimail::$displayCharset,false)."', '". $folderStatus['shortDisplayName'] ."');");
+							$response->addScript("egw_topWindow().tree.setItemText('".@htmlspecialchars($folderName,ENT_QUOTES, felamimail_bo::$displayCharset,false)."', '". $folderStatus['shortDisplayName'] ."');");
 						}
 					}
 				}
@@ -932,7 +932,7 @@ class ajaxfelamimail
 			$response = new xajaxResponse();
 			$response->addAssign('addFileName', 'value', $attachment['name']);
 			$response->addScript("document.fileUploadForm.submit();");
-			return $response->getXML();		
+			return $response->getXML();
 		}
 
 		function reloadAttachments($_composeID)
@@ -1078,7 +1078,7 @@ class ajaxfelamimail
 		{
 			// we need a lot of encoding/decoding transforming here to get at least some acceptable result
 			// the changing does not work with all sigs, as the old Signature may not match the Signaturepart in Content
-			
+
 			if($this->_debug) error_log(__METHOD__.$_oldSig.','.$_signatureID.'#');
 			$bocompose  = CreateObject('felamimail.bocompose', $_composeID);
 			// prepare signatures, the selected sig may be used on top of the body
@@ -1089,7 +1089,7 @@ class ajaxfelamimail
 			$signature = $boSignatures->getSignature($_signatureID);
 			$sigText = $signature->fm_signature;
 
-			if ($_currentMode == 'plain') 
+			if ($_currentMode == 'plain')
 			{
 				$oldSigText = $bocompose->convertHTMLToText($oldSigText);
 				$sigText = $bocompose->convertHTMLToText($sigText);
@@ -1097,12 +1097,12 @@ class ajaxfelamimail
 				if($this->_debug) error_log(__METHOD__." Old signature:".$oldSigText);
 			}
 
-			$oldSigText = bofelamimail::merge($oldSigText,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
-			$sigText = bofelamimail::merge($sigText,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
+			$oldSigText = felamimail_bo::merge($oldSigText,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
+			$sigText = felamimail_bo::merge($sigText,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
 			$oldSigText = str_replace(array("\r","\t","<br />\n",": "),array("","","<br />",":"),($_currentMode == 'html'?html::purify($oldSigText):$oldSigText));
 			$_content = str_replace(array("\r","\t","<br />\n",": "),array("","","<br />",":"),($_currentMode == 'html'?html::purify($_content):$_content));
 			$found = strpos($_content,trim($oldSigText));
-			if ($found !== false && $_oldSig != -2 && !(empty($oldSigText) || trim($bocompose->convertHTMLToText($oldSigText)) =='')) 
+			if ($found !== false && $_oldSig != -2 && !(empty($oldSigText) || trim($bocompose->convertHTMLToText($oldSigText)) ==''))
 			{
 				$_content = substr_replace($_content,$sigText,$found,mb_strlen($oldSigText));
 			}

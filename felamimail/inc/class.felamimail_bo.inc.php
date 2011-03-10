@@ -18,7 +18,7 @@
  *  -provides backend functionality for all classes in FeLaMiMail
  *  -provides classes that may be used by other apps too
  */
-class bofelamimail
+class felamimail_bo
 {
 		var $public_functions = array
 		(
@@ -91,7 +91,36 @@ class bofelamimail
 			}
 		}
 
-		function bofelamimail($_displayCharset='iso-8859-1',$_restoreSession=true, $_profileID=0)
+		/**
+		 * Hold instances by profileID for getInstances() singleton
+		 *
+		 * @var array
+		 */
+		private static $instances = array();
+
+		/**
+		 * Singleton for felamimail_bo
+		 *
+		 * @param boolean $_restoreSession=true
+		 * @param int $_profileID=0
+		 */
+		public static function getInstance($_restoreSession=true, $_profileID=0)
+		{
+			if (!isset(self::$instances[$_profileID]))
+			{
+				self::$instances[$_profileID] = new felamimail_bo('utf-8',$_restoreSession,$_profileID);
+			}
+			return self::$instances[$_profileID];
+		}
+
+		/**
+		 * Private constructor, use felamimail_bo::getInstance() instead
+		 *
+		 * @param string $_displayCharset='utf-8'
+		 * @param boolean $_restoreSession=true
+		 * @param int $_profileID=0
+		 */
+		private function __construct($_displayCharset='utf-8',$_restoreSession=true, $_profileID=0)
 		{
 			$this->profileID = $_profileID;
 			if ($_restoreSession)
@@ -441,13 +470,13 @@ class bofelamimail
 		*/
 		function decodeFolderName($_folderName)
 		{
-			return $GLOBALS['egw']->translation->convert($_folderName, self::$displayCharset, 'UTF7-IMAP');
+			return translation::convert($_folderName, self::$displayCharset, 'UTF7-IMAP');
 		}
 
 		function decodeMimePart($_mimeMessage, $_encoding, $_charset = '')
 		{
 			// decode the part
-			if (self::$debug) error_log("bofelamimail::decodeMimePart with $_encoding and $_charset:".print_r($_mimeMessage,true));
+			if (self::$debug) error_log(__METHOD__."() with $_encoding and $_charset:".print_r($_mimeMessage,true));
 			switch (strtoupper($_encoding))
 			{
 				case 'BASE64':
@@ -483,7 +512,7 @@ class bofelamimail
 			}
 			else
 			{
-				return $GLOBALS['egw']->translation->decodeMailHeader($_string,self::$displayCharset);
+				return translation::decodeMailHeader($_string,self::$displayCharset);
 			}
 		}
 
@@ -700,7 +729,7 @@ class bofelamimail
 		*/
 		function encodeFolderName($_folderName)
 		{
-			return $GLOBALS['egw']->translation->convert($_folderName, 'UTF7-IMAP', self::$displayCharset);
+			return translation::convert($_folderName, 'UTF7-IMAP', self::$displayCharset);
 		}
 
 #		function encodeHeader($_string, $_encoding='q')
@@ -869,7 +898,7 @@ class bofelamimail
 					}
 				}
 				if($structure->partID != $_partID) {
-					error_log("bofelamimail::_getSubStructure(". __LINE__ .") partID's don't match");
+					error_log(__METHOD__."(". __LINE__ .") partID's don't match");
 					return false;
 				}
 			}
@@ -2352,7 +2381,7 @@ class bofelamimail
 					return $retValue;
 				}
 			} else {
-				error_log("bofelamimail::getHeaders -> retrieval of Message Details failed: ".print_r($headersNew,TRUE));
+				error_log(__METHOD__." -> retrieval of Message Details failed: ".print_r($headersNew,TRUE));
 				$retValue = array();
 				$retValue['info']['total']  = 0;
 				$retValue['info']['first']  = 0;
@@ -2867,9 +2896,9 @@ class bofelamimail
 		{
 			#echo __METHOD__." called; check for $_folder<br>";
 			// does the folder exist???
-			//error_log("bofelamimail::folderExists->Connected?".$this->icServer->_connected.", ".$_folder.", ".$forceCheck);
+			//error_log(__METHOD__."->Connected?".$this->icServer->_connected.", ".$_folder.", ".$forceCheck);
 			if ((!($this->icServer->_connected == 1)) && $forceCheck) {
-				#error_log("bofelamimail::folderExists->NotConnected and forceCheck");
+				#error_log(__METHOD__."->NotConnected and forceCheck");
 				//return false;
 				//try to connect
 				if (!$this->icServer->_connected) $this->openConnection();
@@ -3032,15 +3061,15 @@ class bofelamimail
 
 		function subscribe($_folderName, $_status)
 		{
-			if (self::$debug) error_log("bofelamimail::".($_status?"":"un")."subscribe:".$_folderName);
+			if (self::$debug) error_log("felamimail_bo::".($_status?"":"un")."subscribe:".$_folderName);
 			if($_status === true) {
 				if ( PEAR::isError($this->icServer->subscribeMailbox($_folderName))) {
-					error_log("bofelamimail::".($_status?"":"un")."subscribe:".$_folderName." failed");
+					error_log("felamimail_bo::".($_status?"":"un")."subscribe:".$_folderName." failed");
 					return false;
 				}
 			} else {
 				if ( PEAR::isError($this->icServer->unsubscribeMailbox($_folderName))) {
-					error_log("bofelamimail::".($_status?"":"un")."subscribe:".$_folderName." failed");
+					error_log("felamimail_bo::".($_status?"":"un")."subscribe:".$_folderName." failed");
 					return false;
 				}
 			}
@@ -3143,8 +3172,8 @@ class bofelamimail
 		* @return ISO-8859-1 / UTF7-IMAP encoded string
 		*/
 		function _encodeFolderName($_folderName) {
-			return $GLOBALS['egw']->translation->convert($_folderName, self::$displayCharset, 'ISO-8859-1');
-			#return $GLOBALS['egw']->translation->convert($_folderName, self::$displayCharset, 'UTF7-IMAP');
+			return translation::convert($_folderName, self::$displayCharset, 'ISO-8859-1');
+			#return translation::convert($_folderName, self::$displayCharset, 'UTF7-IMAP');
 		}
 
 		/**
@@ -3154,8 +3183,8 @@ class bofelamimail
 		* @return ISO-8859-1 / self::$displayCharset encoded string
 		*/
 		function _decodeFolderName($_folderName) {
-			return $GLOBALS['egw']->translation->convert($_folderName, self::$displayCharset, 'ISO-8859-1');
-			#return $GLOBALS['egw']->translation->convert($_folderName, 'UTF7-IMAP', self::$displayCharset);
+			return translation::convert($_folderName, self::$displayCharset, 'ISO-8859-1');
+			#return translation::convert($_folderName, 'UTF7-IMAP', self::$displayCharset);
 		}
 
 		/**
@@ -3310,10 +3339,10 @@ class bofelamimail
 		static function htmlspecialchars($_string, $_charset=false)
 		{
 			//setting the charset (if not given)
-			if ($_charset===false) $_charset = bofelamimail::$displayCharset;
+			if ($_charset===false) $_charset = self::$displayCharset;
 			$_stringORG = $_string;
 			$_string = @htmlspecialchars($_string,ENT_QUOTES,$_charset, false);
-			if (empty($_string) && !empty($_stringORG)) $_string = @htmlspecialchars($GLOBALS['egw']->translation->convert($_stringORG,bofelamimail::detect_encoding($_stringORG),$_charset),ENT_QUOTES | ENT_IGNORE,$_charset, false);
+			if (empty($_string) && !empty($_stringORG)) $_string = @htmlspecialchars(translation::convert($_stringORG,self::detect_encoding($_stringORG),$_charset),ENT_QUOTES | ENT_IGNORE,$_charset, false);
 			return $_string;
 		}
 
@@ -3327,10 +3356,10 @@ class bofelamimail
 		static function htmlentities($_string, $_charset=false)
 		{
 			//setting the charset (if not given)
-			if ($_charset===false) $_charset = bofelamimail::$displayCharset;
+			if ($_charset===false) $_charset = self::$displayCharset;
 			$_stringORG = $_string;
 			$_string = @htmlentities($_string,ENT_QUOTES,$_charset, false);
-			if (empty($_string) && !empty($_stringORG)) $_string = @htmlentities($GLOBALS['egw']->translation->convert($_stringORG,bofelamimail::detect_encoding($_stringORG),$_charset),ENT_QUOTES | ENT_IGNORE,$_charset, false);
+			if (empty($_string) && !empty($_stringORG)) $_string = @htmlentities(translation::convert($_stringORG,self::detect_encoding($_stringORG),$_charset),ENT_QUOTES | ENT_IGNORE,$_charset, false);
 			return $_string;
 		}
 
@@ -3578,7 +3607,7 @@ class bofelamimail
 							$attachments[$num] = array_merge($attachments[$num],$bofelamimail->getAttachment($uid, $attachment['partID']));
 							if (isset($attachments[$num]['charset'])) {
 								if ($attachments[$num]['charset']===false) $attachments[$num]['charset'] = self::detect_encoding($attachments[$num]['attachment']);
-								$GLOBALS['egw']->translation->convert($attachments[$num]['attachment'],$attachments[$num]['charset']);
+								translation::convert($attachments[$num]['attachment'],$attachments[$num]['charset']);
 							}
 							$attachments[$num]['type'] = $attachments[$num]['mimeType'];
 							$attachments[$num]['tmp_name'] = tempnam($GLOBALS['egw_info']['server']['temp_dir'],$GLOBALS['egw_info']['flags']['currentapp']."_");
@@ -3696,7 +3725,7 @@ class bofelamimail
 				if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = self::detect_encoding($bodyParts[$i]['body']);
 				// add line breaks to $bodyParts
 				//error_log(__METHOD__.__LINE__.' Charset:'.$bodyParts[$i]['charSet'].'->'.$bodyParts[$i]['body']);
-				$newBody  = $GLOBALS['egw']->translation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
+				$newBody  = translation::convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
 				//error_log(__METHOD__.__LINE__.' MimeType:'.$bodyParts[$i]['mimeType'].'->'.$newBody);
 				if ($bodyParts[$i]['mimeType'] == 'text/html') {
 					// convert HTML to text, as we dont want HTML in infologs

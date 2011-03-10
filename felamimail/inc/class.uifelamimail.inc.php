@@ -32,21 +32,21 @@ class uifelamimail
 			'redirectToPreferences' => True,
 			'redirectToEmailadmin' => True,
 		);
-		
+
 		var $mailbox;		// the current folder in use
 		var $startMessage;	// the first message to show
 		var $sort;		// how to sort the messages
 		var $moveNeeded;	// do we need to move some messages?
 
 		var $timeCounter;
-		
+
 		// the object storing the data about the incoming imap server
 		var $icServerID=0;
 		var $connectionStatus = false;
 		var $bofelamimail;
 		var $bofilter;
 		var $bopreferences;
-	
+
 		function uifelamimail()
 		{
 			//error_log(__METHOD__);
@@ -54,11 +54,11 @@ class uifelamimail
 			unset($GLOBALS['egw_info']['user']['preferences']['common']['auto_hide_sidebox']);
 			$this->timeCounter = microtime(true);
 
-			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
-			$this->bofelamimail     = CreateObject('felamimail.bofelamimail',$this->displayCharset,false);
+			$this->displayCharset	= translation::charset();
+			$this->bofelamimail     = felamimail_bo::getInstance(false);
 
 			$this->bofilter		= CreateObject('felamimail.bofilter',false);
-			$this->bopreferences	=& $this->bofelamimail->bopreferences; //CreateObject('felamimail.bopreferences');
+			$this->bopreferences	= $this->bofelamimail->bopreferences;
 			$this->preferences	=& $this->bofelamimail->mailPreferences;
 
 			if (is_object($this->preferences))
@@ -104,7 +104,7 @@ class uifelamimail
 		function redirectToPreferences ()
 		{
 			$this->display_app_header(false);
-			//appname is a $_GET parameter, so the passing as function parameter does not work 
+			//appname is a $_GET parameter, so the passing as function parameter does not work
 			ExecMethod('preferences.uisettings.index',array('appname'=>'felamimail'));
 			exit;
 		}
@@ -134,25 +134,25 @@ class uifelamimail
 			$messageID 	= $_GET['messageID'];
 			$partID 	= $_GET['partID'];
 			$attachment = $this->bofelamimail->getAttachment($messageID,$partID);
-			
+
 			$tmpfname = tempnam ($GLOBALS['egw_info']['server']['temp_dir'], "egw_");
 			$fp = fopen($tmpfname, "w");
 			fwrite($fp, $attachment['attachment']);
 			fclose($fp);
-			
+
 			$vcard = CreateObject('phpgwapi.vcard');
 			$entry = $vcard->in_file($tmpfname);
 			$entry['owner'] = $GLOBALS['egw_info']['user']['account_id'];
 			$entry['access'] = 'private';
 			$entry['tid'] = 'n';
-			
+
 			print quoted_printable_decode($entry['fn'])."<br>";
-			
+
 			unlink($tmpfname);
-			
+
 			$GLOBALS['egw']->common->egw_exit();
 		}
-		
+
 		function changeFilter()
 		{
 			error_log(__METHOD__." called from:".function_backtrace());
@@ -169,7 +169,7 @@ class uifelamimail
 			}
 			$this->viewMainScreen();
 		}
-		
+
 		function changeFolder()
 		{
 			// change folder
@@ -179,13 +179,13 @@ class uifelamimail
 			$this->bofelamimail->sessionData['activeFilter']= -1;
 
 			$this->bofelamimail->saveSessionData();
-			
+
 			$this->mailbox 		= $this->bofelamimail->sessionData['mailbox'];
 			$this->startMessage 	= $this->bofelamimail->sessionData['startMessage'];
 			$this->sort 		= $this->bofelamimail->sessionData['sort'];
-			
+
 			$this->connectionStatus = $this->bofelamimail->openConnection();
-			
+
 			$this->viewMainScreen();
 		}
 
@@ -197,10 +197,10 @@ class uifelamimail
 			{
 				$this->bofelamimail->sessionData['sort']	= $_GET["sort"];
 				$this->sort					= $_GET["sort"];
-	
+
 				$this->bofelamimail->saveSessionData();
 			}
-			
+
 			$this->viewMainScreen();
 		}
 
@@ -228,7 +228,7 @@ class uifelamimail
 			//_debug_array($alert_message);
 			//error_log(__METHOD__." called from:".function_backtrace());
 			$proceed = false;
-			if(is_array($_FILES["addFileName"])) 
+			if(is_array($_FILES["addFileName"]))
 			{
 				#phpinfo();
 				#error_log(print_r($_FILES,true));
@@ -295,7 +295,7 @@ class uifelamimail
 			$this->t->set_file(array("importMessage" => "importMessage.tpl"));
 
 			$this->t->set_block('importMessage','fileSelector','fileSelector');
-			$importID =bofelamimail::getRandomString();
+			$importID =felamimail_bo::getRandomString();
 
 			// prepare saving destination of imported message
 			$linkData = array
@@ -305,7 +305,7 @@ class uifelamimail
 			$this->t->set_var('folder_select_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			// messages that may be passed to the Form
-			if (isset($alert_message) && !empty($alert_message)) 
+			if (isset($alert_message) && !empty($alert_message))
 			{
 				$this->t->set_var('messages', implode('; ',$alert_message));
 			}
@@ -402,7 +402,7 @@ class uifelamimail
 			// check if formdata meets basic restrictions (in tmp dir, or vfs, mimetype, etc.)
 			try
 			{
-				$tmpFileName = bofelamimail::checkFileBasics($_formData,$importID);
+				$tmpFileName = felamimail_bo::checkFileBasics($_formData,$importID);
 			}
 			catch (egw_exception_wrong_userinput $e)
 			{
@@ -462,14 +462,14 @@ class uifelamimail
 			else
 			{
 				return $messageUid;
-			}			
+			}
 		}
 
 		/**
 		 * importMessageToMergeAndSend
 		 *
 		 * @param array $_formData Array with information of name, type, file and size
-		 * @param array $SendAndMergeTocontacts array of contact ids 
+		 * @param array $SendAndMergeTocontacts array of contact ids
 		 * @param string $_folder (passed by reference) will set the folder used. must be set with a folder, but will hold modifications if
 		 *					folder is modified
 		 * @param string $importID ID for the imported message, used by attachments to identify them unambiguously
@@ -478,7 +478,7 @@ class uifelamimail
 		function importMessageToMergeAndSend($_formData, $SendAndMergeTocontacts, &$_folder, $importID='')
 		{
 			$importfailed = false;
-			if (empty($SendAndMergeTocontacts)) 
+			if (empty($SendAndMergeTocontacts))
 			{
 				$importfailed = true;
 				$alert_msg .= lang("Import of message %1 failed. No Contacts to merge and send to specified.",$_formData['name']);
@@ -487,7 +487,7 @@ class uifelamimail
 			// check if formdata meets basic restrictions (in tmp dir, or vfs, mimetype, etc.)
 			try
 			{
-				$tmpFileName = bofelamimail::checkFileBasics($_formData,$importID);
+				$tmpFileName = felamimail_bo::checkFileBasics($_formData,$importID);
 			}
 			catch (egw_exception_wrong_userinput $e)
 			{
@@ -562,7 +562,7 @@ class uifelamimail
 			else
 			{
 				return $messageUid;
-			}			
+			}
 		}
 
 		function deleteMessage()
@@ -573,7 +573,7 @@ class uifelamimail
 			$message[] = $_GET["message"];
 			$mailfolder = NULL;
 			if (!empty($_GET['folder'])) $mailfolder  = base64_decode($_GET['folder']);
-	
+
 			$this->bofelamimail->deleteMessages($message,$mailfolder);
 
 			// set the url to open when refreshing
@@ -605,7 +605,7 @@ class uifelamimail
 			opener.location.href = '" .$refreshURL. "';
 			window.close();</script>";
 		}
-		
+
 		function display_app_header($includeFMStuff=true)
 		{
 			if ($includeFMStuff)
@@ -616,9 +616,9 @@ class uifelamimail
 				$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			}
 			$GLOBALS['egw']->common->egw_header();
-			
+
 			echo $GLOBALS['egw']->framework->navbar();
-		}	
+		}
 
 		function hookAdmin()
 		{
@@ -631,24 +631,24 @@ class uifelamimail
 				$GLOBALS['egw']->log->commit();
 				$GLOBALS['egw']->common->egw_exit();
 			}
-			
+
 			if(!empty($_POST['profileID']) && is_int(intval($_POST['profileID'])))
 			{
 				$profileID = intval($_POST['profileID']);
 				$this->bofelamimail->setEMailProfile($profileID);
 			}
-			
+
 			$boemailadmin = new emailadmin_bo();
-			
+
 			$profileList = $boemailadmin->getProfileList();
 			$profileID = $this->bofelamimail->getEMailProfile();
-			
+
 			$this->display_app_header();
-			
+
 			$this->t->set_file(array("body" => "selectprofile.tpl"));
 			$this->t->set_block('body','main');
 			$this->t->set_block('body','select_option');
-			
+
 			$this->t->set_var('lang_select_email_profile',lang('select emailprofile'));
 			$this->t->set_var('lang_site_configuration',lang('site configuration'));
 			$this->t->set_var('lang_save',lang('save'));
@@ -659,15 +659,15 @@ class uifelamimail
 				'menuaction'	=> 'felamimail.uifelamimail.hookAdmin'
 			);
 			$this->t->set_var('action_url',$GLOBALS['egw']->link('/index.php',$linkData));
-			
+
 			$linkData = array
 			(
 				'menuaction'	=> 'emailadmin.emailadmin_ui.listProfiles'
 			);
 			$this->t->set_var('lang_go_emailadmin', lang('use <a href="%1">EmailAdmin</a> to create profiles', $GLOBALS['egw']->link('/index.php',$linkData)));
-			
+
 			$this->t->set_var('back_url',$GLOBALS['egw']->link('/admin/index.php'));
-			
+
 			if(isset($profileList) && is_array($profileList))
 			{
 				foreach($profileList as $key => $value)
@@ -687,10 +687,10 @@ class uifelamimail
 					$this->t->parse('select_options','select_option',True);
 				}
 			}
-			
+
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
-			
+
 		}
 
 		function viewMainScreen()
@@ -732,13 +732,13 @@ class uifelamimail
 				}
 			}
 
-			if (empty($imapServer->host) && count($identities)==0 && $this->preferences->userDefinedAccounts) 
+			if (empty($imapServer->host) && count($identities)==0 && $this->preferences->userDefinedAccounts)
 			{
 				// redirect to new personal account
 				egw::redirect_link('/index.php',array('menuaction'=>'felamimail.uipreferences.editAccountData',
 					'accountID'=>"new",
 					'msg'	=> lang("There is no IMAP Server configured.")." - ".lang("Please configure access to an existing individual IMAP account."),
-				));	
+				));
 			}
 			$this->display_app_header();
 
@@ -762,7 +762,7 @@ class uifelamimail
 				}
 				if($this->preferences->userDefinedAccounts)
 						$errormessage .= "<br>".lang('or configure an valid IMAP Server connection using the Manage Accounts/Identities preference in the Sidebox Menu.');
-		
+
 				$this->t->set_var('connection_error_message', $errormessage);
 				$this->t->set_var('message', '&nbsp;');
 				$this->t->parse('header_rows','error_message',True);
@@ -773,7 +773,7 @@ class uifelamimail
 				exit;
 			}
 			$this->t->set_var('activeFolder',$urlMailbox);
-			$this->t->set_var('activeFolderB64',base64_encode($this->mailbox));	
+			$this->t->set_var('activeFolderB64',base64_encode($this->mailbox));
 			$this->t->set_var('oldMailbox',$urlMailbox);
 			$this->t->set_var('image_path',EGW_IMAGES);
 			#printf ("this->uifelamimail->viewMainScreen() Line 272: %s<br>",date("H:i:s",mktime()));
@@ -869,16 +869,16 @@ class uifelamimail
 			$this->t->set_var('refreshTime',$refreshTime*60*1000);
 			// other settings
 			$prefaskformove = intval($userPreferences['prefaskformove']) ? intval($userPreferences['prefaskformove']) : 0;
-			$this->t->set_var('prefaskformove',$prefaskformove);	
+			$this->t->set_var('prefaskformove',$prefaskformove);
 			$prefaskformultipleforward = intval($userPreferences['prefaskformultipleforward']) ? intval($userPreferences['prefaskformultipleforward']) : 0;
-			$this->t->set_var('prefaskformultipleforward',$prefaskformultipleforward);	
+			$this->t->set_var('prefaskformultipleforward',$prefaskformultipleforward);
 			#// set the url to open when refreshing
 			#$linkData = array
 			#(
 			#	'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
 			#);
 			#$this->t->set_var('refresh_url',$GLOBALS['egw']->link('/index.php',$linkData));
-			
+
 			// define the sort defaults
 			$dateSort	= '0';
 			$dateCSS	= 'text_small';
@@ -913,21 +913,21 @@ class uifelamimail
 
 			// sort by date
 			$this->t->set_var('css_class_date', $dateCSS);
-		
+
 			// sort by from
 			$this->t->set_var('css_class_from', $fromCSS);
-		
+
 			// sort by subject
 			$this->t->set_var('css_class_subject', $subjectCSS);
-			
+
 			// sort by size
 			$this->t->set_var('css_class_size', $sizeCSS);
-			
+
 			#_debug_array($this->bofelamimail->sessionData['messageFilter']);
 			if(!empty($this->bofelamimail->sessionData['messageFilter']['string'])) {
 				$this->t->set_var('quicksearch', $this->bofelamimail->sessionData['messageFilter']['string']);
 			}
-			
+
 			$defaultSearchType = (isset($this->bofelamimail->sessionData['messageFilter']['type']) ? $this->bofelamimail->sessionData['messageFilter']['type'] : 'quick');
 			$defaultSelectStatus = (isset($this->bofelamimail->sessionData['messageFilter']['status']) ? $this->bofelamimail->sessionData['messageFilter']['status'] : 'any');
 
@@ -941,7 +941,7 @@ class uifelamimail
 			);
 			$selectSearchType = html::select('searchType', $defaultSearchType, $searchTypes, false, "style='width:100%;' id='searchType' onchange='document.getElementById(\"quickSearch\").focus(); document.getElementById(\"quickSearch\").value=\"\" ;return false;'");
 			$this->t->set_var('select_search', $selectSearchType);
-			
+
 			$statusTypes = array(
 				'any'		=> 'any status',
 				'flagged'	=> 'flagged',
@@ -961,24 +961,24 @@ class uifelamimail
 				$headers = $this->bofelamimail->getHeaders($this->mailbox, $this->startMessage, $maxMessages, $this->sort, $this->sortReverse, $this->bofelamimail->sessionData['messageFilter']);
 
  				$headerCount = count($headers['header']);
-					
- 				// if there aren't any messages left (eg. after delete or move) 
- 				// adjust $this->startMessage  
+
+ 				// if there aren't any messages left (eg. after delete or move)
+ 				// adjust $this->startMessage
  				if ($headerCount==0 && $this->startMessage > $maxMessages) {
  					$this->startMessage = $this->startMessage - $maxMessages;
 					#$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
 					$headerCount = count($headers['header']);
 				}
-				
-				if ($this->bofelamimail->isSentFolder($this->mailbox) 
-					|| $this->bofelamimail->isDraftFolder($this->mailbox) 
+
+				if ($this->bofelamimail->isSentFolder($this->mailbox)
+					|| $this->bofelamimail->isDraftFolder($this->mailbox)
 					|| $this->bofelamimail->isTemplateFolder($this->mailbox)) {
 					$this->t->set_var('lang_from',lang("to"));
 				} else {
 					$this->t->set_var('lang_from',lang("from"));
 				}
 				$msg_icon_sm = $GLOBALS['egw']->common->image('felamimail','msg_icon_sm');
-				// determine how to display the current folder: as sent folder (to address visible) or normal (from address visible) 
+				// determine how to display the current folder: as sent folder (to address visible) or normal (from address visible)
 				$sentFolderFlag =$this->bofelamimail->isSentFolder($this->mailbox);
 				$folderType = 0;
 				if($sentFolderFlag ||
@@ -991,7 +991,7 @@ class uifelamimail
 				} elseif($this->bofelamimail->isTemplateFolder($this->mailbox)) {
 					$folderType = 3;
 				}
-					
+
 				$this->t->set_var('header_rows',
 					$uiwidgets->messageTable(
 						$headers,
@@ -1002,19 +1002,19 @@ class uifelamimail
 						($this->bofelamimail->sessionData['previewMessage']?$this->bofelamimail->sessionData['previewMessage']:0)
 					)
 				);
-				
+
 				$firstMessage = $headers['info']['first'];
 				$lastMessage = $headers['info']['last'];
 				$totalMessage = $headers['info']['total'];
-				$langTotal = lang("total");		
-			
+				$langTotal = lang("total");
+
 				$this->t->set_var('maxMessages',$i);
 				if($_GET["select_all"] == "select_all") {
 					$this->t->set_var('checkedCounter',$i);
 				} else {
 					$this->t->set_var('checkedCounter','0');
 				}
-			
+
 				// set the select all/nothing link
 				if($_GET["select_all"] == "select_all") {
 					// link to unselect all messages
@@ -1083,33 +1083,33 @@ class uifelamimail
 					break;
 			}
 			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
-			
+
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
 			echo $GLOBALS['egw']->framework->footer(false);
 		}
 
-		function array_merge_replace( $array, $newValues ) 
+		function array_merge_replace( $array, $newValues )
 		{
-			foreach ( $newValues as $key => $value ) 
+			foreach ( $newValues as $key => $value )
 			{
-				if ( is_array( $value ) ) 
+				if ( is_array( $value ) )
 				{
-					if ( !isset( $array[ $key ] ) ) 
+					if ( !isset( $array[ $key ] ) )
 					{
 						$array[ $key ] = array();
 					}
 					$array[ $key ] = $this->array_merge_replace( $array[ $key ], $value );
-				} 
-				else 
+				}
+				else
 				{
-					if ( isset( $array[ $key ] ) && is_array( $array[ $key ] ) ) 
+					if ( isset( $array[ $key ] ) && is_array( $array[ $key ] ) )
 					{
 						$array[ $key ][ 0 ] = $value;
-					} 
-					else 
+					}
+					else
 					{
-						if ( isset( $array ) && !is_array( $array ) ) 
+						if ( isset( $array ) && !is_array( $array ) )
 						{
 							$temp = $array;
 							$array = array();
@@ -1127,13 +1127,13 @@ class uifelamimail
 		{
 			$bytes /= 1024;
 			$type = 'k';
-			
+
 			if ($bytes / 1024 > 1)
 			{
 				$bytes /= 1024;
 				$type = 'M';
 			}
-			
+
 			if ($bytes < 10)
 			{
 				$bytes *= 10;
@@ -1142,10 +1142,10 @@ class uifelamimail
 			}
 			else
 				settype($bytes, 'integer');
-			
+
 			return $bytes . '&nbsp;' . $type ;
 		}
-		
+
 		function toggleFilter()
 		{
 			error_log(__METHOD__." called from:".function_backtrace());

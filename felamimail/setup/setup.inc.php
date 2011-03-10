@@ -29,11 +29,11 @@ $setup_info['felamimail']['hooks']['preferences'] = 'felamimail_hooks::preferenc
 $setup_info['felamimail']['hooks']['settings'] = 'felamimail_hooks::settings';
 $setup_info['felamimail']['hooks'][] = 'home';
 $setup_info['felamimail']['hooks']['sidebox_menu'] = 'felamimail_hooks::sidebox_menu';
-$setup_info['felamimail']['hooks']['addaccount']	= 'felamimail.bofelamimail.addAccount';
-$setup_info['felamimail']['hooks']['deleteaccount']	= 'felamimail.bofelamimail.deleteAccount';
-$setup_info['felamimail']['hooks']['editaccount']	= 'felamimail.bofelamimail.updateAccount';
-$setup_info['felamimail']['hooks']['edit_user']		= 'felamimail.bofelamimail.adminMenu';
-$setup_info['felamimail']['hooks']['verify_settings'] = 'felamimail.bofelamimail.forcePrefReload';
+$setup_info['felamimail']['hooks']['addaccount']	= 'felamimail.felamimail_bo.addAccount';
+$setup_info['felamimail']['hooks']['deleteaccount']	= 'felamimail.felamimail_bo.deleteAccount';
+$setup_info['felamimail']['hooks']['editaccount']	= 'felamimail.felamimail_bo.updateAccount';
+$setup_info['felamimail']['hooks']['edit_user']		= 'felamimail.felamimail_bo.adminMenu';
+$setup_info['felamimail']['hooks']['verify_settings'] = 'felamimail.felamimail_bo.forcePrefReload';
 $setup_info['felamimail']['hooks']['search_link'] = 'felamimail_hooks::search_link';
 
 /* Dependencies for this app to work */

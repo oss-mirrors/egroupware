@@ -84,8 +84,8 @@
 
 			$this->t 		= CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->displayCharset   = $GLOBALS['egw']->translation->charset();
-			$this->bofelamimail		= CreateObject('felamimail.bofelamimail',$this->displayCharset);
-			$this->bopreferences	= $this->bofelamimail->bopreferences; //CreateObject('felamimail.bopreferences');
+			$this->bofelamimail		= felamimail_bo::getInstance();
+			$this->bopreferences	= $this->bofelamimail->bopreferences;
 
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 
@@ -162,7 +162,7 @@
 			#$domain = "(http(s?):\/\/)*";
 			#$domain            .= "([$alnum]([-$alnum]*[$alnum]+)?)";
 			#$domain = "^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&%\$#\=~])*[^\.\,\)\(\s]$ ";
-			$domain = "(http(s?):\/\/)+([[:alpha:]][-[:alnum:]]*[[:alnum:]])(\.[[:alpha:]][-[:alnum:]]*[[:alpha:]])*(\.[[:alpha:]][-[:alnum:]]*[[:alpha:]])+";	
+			$domain = "(http(s?):\/\/)+([[:alpha:]][-[:alnum:]]*[[:alnum:]])(\.[[:alpha:]][-[:alnum:]]*[[:alpha:]])*(\.[[:alpha:]][-[:alnum:]]*[[:alpha:]])+";
 			#$dir = "(/[[:alpha:]][-[:alnum:]]*[[:alnum:]])*";
 			#$trailingslash  = "(\/?)";
 			#$page = "(/[[:alpha:]][-[:alnum:]]*\.[[:alpha:]]{3,5})?";
@@ -417,7 +417,7 @@
 			}
 
 
-			foreach($navbarImages as $buttonName => $buttonData) 
+			foreach($navbarImages as $buttonName => $buttonData)
 			{
 				$navbarButtons .= $uiWidgets->navbarButton($buttonName, $buttonData['action'], $buttonData['tooltip'], 'right');
 			}
@@ -464,10 +464,10 @@
 				$this->t->set_var("bcc_data_part",'');
 			}
 			$this->t->set_var("date_received",
-				@htmlspecialchars(bofelamimail::_strtotime($headers['DATE'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],true).' - '.bofelamimail::_strtotime($headers['DATE'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'),true),
+				@htmlspecialchars(felamimail_bo::_strtotime($headers['DATE'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],true).' - '.felamimail_bo::_strtotime($headers['DATE'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'),true),
 				ENT_QUOTES,$this->displayCharset));
 			//echo 'Envelope:'.preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT']).'#0<br>';
-			$subject = bofelamimail::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT']),false),
+			$subject = felamimail_bo::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT']),false),
                 $this->displayCharset);
 			$this->t->set_var("subject_data",$subject);
 
@@ -549,7 +549,7 @@
 							$windowName = 'displayAttachment_'. $this->uid;
 							$reg = '800x600';
 							// handle calendar/vcard
-							if (strtoupper($value['mimeType'])=='TEXT/CALENDAR') 
+							if (strtoupper($value['mimeType'])=='TEXT/CALENDAR')
 							{
 								$windowName = 'displayEvent_'. $this->uid;
 								$reg2 = egw_link::get_registry('calendar','view_popup');
@@ -753,7 +753,7 @@
 			$this->t->egroupware_hack = False;
 
 			$this->translate();
-			$subject = bofelamimail::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT']),false),
+			$subject = felamimail_bo::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT']),false),
                 $this->displayCharset);
             $this->t->set_var("subject_data",$subject);
 
@@ -824,7 +824,7 @@
 							$windowName = 'displayAttachment_'. $this->uid;
 							$reg = '800x600';
 							// handle calendar/vcard
-							if (strtoupper($value['mimeType'])=='TEXT/CALENDAR' || strtoupper($value['mimeType'])=='TEXT/X-VCALENDAR') 
+							if (strtoupper($value['mimeType'])=='TEXT/CALENDAR' || strtoupper($value['mimeType'])=='TEXT/X-VCALENDAR')
 							{
 								$windowName = 'displayEvent_'. $this->uid;
 								$reg2 = egw_link::get_registry('calendar','view_popup');
@@ -942,9 +942,9 @@
 		function display_app_header($printing = NULL)
 		{
 			if ($_GET['menuaction'] != 'felamimail.uidisplay.printMessage' &&
-				$_GET['menuaction'] != 'felamimail.uidisplay.displayBody' && 
+				$_GET['menuaction'] != 'felamimail.uidisplay.displayBody' &&
 				$_GET['menuaction'] != 'felamimail.uidisplay.displayAttachments' &&
-				empty($printing)) 
+				empty($printing))
 			{
 				egw_framework::validate_file('tabs','tabs');
 				egw_framework::validate_file('jscode','view_message','felamimail');
@@ -989,11 +989,11 @@
 					if($addressData['PERSONAL_NAME'] != 'NIL') {
 						$newSenderAddressORG = $newSenderAddress = $addressData['RFC822_EMAIL'] != 'NIL' ? $addressData['RFC822_EMAIL'] : $addressData['EMAIL'];
 						$decodedPersonalNameORG = $decodedPersonalName = $addressData['PERSONAL_NAME'];
-						if ($decode) 
+						if ($decode)
 						{
-							$newSenderAddress = bofelamimail::decode_header($newSenderAddressORG);
-							$decodedPersonalName = bofelamimail::decode_header($decodedPersonalName);
-							$addressData['EMAIL'] = bofelamimail::decode_header($addressData['EMAIL']);
+							$newSenderAddress = felamimail_bo::decode_header($newSenderAddressORG);
+							$decodedPersonalName = felamimail_bo::decode_header($decodedPersonalName);
+							$addressData['EMAIL'] = felamimail_bo::decode_header($addressData['EMAIL']);
 						}
 						$realName =  $decodedPersonalName;
 						// add mailaddress
@@ -1013,8 +1013,8 @@
 						);
 						$link = $GLOBALS['egw']->link('/index.php',$linkData);
 
-						$newSenderAddress = bofelamimail::htmlentities($newSenderAddress);
-						$realName = bofelamimail::htmlentities($realName);
+						$newSenderAddress = felamimail_bo::htmlentities($newSenderAddress);
+						$realName = felamimail_bo::htmlentities($realName);
 
 						$senderAddress .= sprintf('<a href="%s" title="%s">%s</a>',
 									$link,
@@ -1055,13 +1055,13 @@
 						}
 					} else {
 						$addrEMailORG = $addrEMail = $addressData['EMAIL'];
-						if ($decode) $addrEMail = bofelamimail::decode_header($addrEMail);
+						if ($decode) $addrEMail = felamimail_bo::decode_header($addrEMail);
 						$linkData = array (
 							'menuaction'	=> 'felamimail.uicompose.compose',
 							'send_to'	=> base64_encode($addressData['EMAIL'])
 						);
 						$link = $GLOBALS['egw']->link('/index.php',$linkData);
-						$senderEMail = bofelamimail::htmlentities($addrEMail);
+						$senderEMail = felamimail_bo::htmlentities($addrEMail);
 						$senderAddress .= sprintf('<a href="%s">%s</a>',
 									$link,$senderEMail);
 						//TODO: This uses old addressbook code, which should be removed in Version 1.4
@@ -1175,7 +1175,7 @@
 					// if there are not enough fields in the vcard (or the parser was unable to correctly parse the vcard (as of VERSION:3.0 created by MSO))
 					if ($contact || count($vcard)>2) $contact = $addressbook_vcal->addVCard($attachment['attachment'],$contact,true);
 					//error_log(__METHOD__.$contact);
-					if ((int)$contact > 0) 
+					if ((int)$contact > 0)
 					{
 						$vars = array(
 							'menuaction'	=> 'addressbook.addressbook_ui.edit',
@@ -1250,12 +1250,12 @@
 					'(TM)',
 					'(R)',
 				);
-				if(($singleBodyPart['mimeType'] == 'text/html' || $singleBodyPart['mimeType'] == 'text/plain') && 
-					strtoupper($singleBodyPart['charSet']) != 'UTF-8') 
+				if(($singleBodyPart['mimeType'] == 'text/html' || $singleBodyPart['mimeType'] == 'text/plain') &&
+					strtoupper($singleBodyPart['charSet']) != 'UTF-8')
 				{
 					$singleBodyPart['body'] = preg_replace($sar,$rar,$singleBodyPart['body']);
 				}
-				if ($singleBodyPart['charSet']===false) $singleBodyPart['charSet'] = bofelamimail::detect_encoding($singleBodyPart['body']);
+				if ($singleBodyPart['charSet']===false) $singleBodyPart['charSet'] = felamimail_bo::detect_encoding($singleBodyPart['body']);
 				$singleBodyPart['body'] = $GLOBALS['egw']->translation->convert(
 					$singleBodyPart['body'],
 					strtolower($singleBodyPart['charSet'])
@@ -1281,10 +1281,10 @@
 					// create links for websites
 					if ($modifyURI) $newBody = html::activate_links($newBody);
 					// redirect links for websites if you use no cookies
-					#if (!($GLOBALS['egw_info']['server']['usecookies'])) 
+					#if (!($GLOBALS['egw_info']['server']['usecookies']))
 					#	$newBody = preg_replace("/href=(\"|\')((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\(,\),\*,#,:,~,\+]+)(\"|\')/ie",
-					#		"'href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$4://$5$6'),ENT_QUOTES,\"$this->displayCharset\").'\"'", $newBody);	
-					
+					#		"'href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$4://$5$6'),ENT_QUOTES,\"$this->displayCharset\").'\"'", $newBody);
+
 					// create links for email addresses
 					if ($modifyURI) $this->parseEmail($newBody);
 					$newBody	= $this->highlightQuotes($newBody);
@@ -1293,7 +1293,7 @@
 					// since we do not display the message as HTML anymore we may want to insert good linebreaking (for visibility).
 					//error_log($newBody);
 					// dont break lines that start with > (&gt; as the text was processed with htmlentities before)
-					$newBody	= "<pre>".bofelamimail::wordwrap($newBody,90,"\n",'&gt;')."</pre>";
+					$newBody	= "<pre>".felamimail_bo::wordwrap($newBody,90,"\n",'&gt;')."</pre>";
 					//$newBody   = "<pre>".$newBody."</pre>";
 				}
 				else
@@ -1304,7 +1304,7 @@
 
 					// do the cleanup, set for the use of purifier
 					$usepurifier = true;
-					bofelamimail::getCleanHTML($newBody,$usepurifier);
+					felamimail_bo::getCleanHTML($newBody,$usepurifier);
 					// removes stuff between http and ?http
 					$Protocol = '(http:\/\/|(ftp:\/\/|https:\/\/))';    // only http:// gets removed, other protocolls are shown
 					$newBody = preg_replace('~'.$Protocol.'[^>]*\?'.$Protocol.'~sim','$1',$newBody); // removes stuff between http:// and ?http://
@@ -1343,7 +1343,7 @@
 							"'href=\"#\"'.' onclick=\"egw_openWindowCentered(\'$link&send_to='.base64_encode('$2').'\', \'compose\', 700, egw_getWindowOuterHeight());\"'", $newBody);
 //							"'href=\"$link&send_to='.base64_encode('$2').'\"'", $newBody);
 						//print "<pre>".htmlentities($newBody)."</pre><hr>";
-					}		
+					}
 					// replace emails within the text with clickable links.
 					$this->parseEmail($newBody);
 				}
@@ -1378,7 +1378,7 @@
 				if (isset($this->mailPreferences->preferences['draftFolder']) &&
 					$this->mailPreferences->preferences['draftFolder'] != 'none')
 				{
-					$folder = $this->mailPreferences->preferences['draftFolder']; 
+					$folder = $this->mailPreferences->preferences['draftFolder'];
 				}
 				else
 				{
@@ -1470,9 +1470,9 @@
 				$this->t->set_var("cc_data_part",'');
 			}
 			$this->t->set_var("date_data",
-				@htmlspecialchars(bofelamimail::_strtotime($headers['DATE'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],true).' - '.bofelamimail::_strtotime($headers['DATE'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'),true), ENT_QUOTES,$this->displayCharset));
+				@htmlspecialchars(felamimail_bo::_strtotime($headers['DATE'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],true).' - '.felamimail_bo::_strtotime($headers['DATE'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'),true), ENT_QUOTES,$this->displayCharset));
 			// link to go back to the message view. the link differs if the print was called from a normal viewing window, or from compose
-			$subject = bofelamimail::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters, '', $envelope['SUBJECT']),false), $this->displayCharset);
+			$subject = felamimail_bo::htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters, '', $envelope['SUBJECT']),false), $this->displayCharset);
 			$this->t->set_var("subject_data", $subject);
 			$this->t->set_var("full_subject_data", $subject);
 			$linkData = array (

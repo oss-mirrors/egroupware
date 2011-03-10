@@ -28,8 +28,8 @@ class uiwidgets
 			$template = CreateObject('phpgwapi.Template',common::get_tpl_dir('felamimail'));
 			$this->template = $template;
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
-			$this->charset = $GLOBALS['egw']->translation->charset();
-			$this->bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+			$this->charset = translation::charset();
+			$this->bofelamimail = felamimail_bo::getInstance();
 			if (!is_object($GLOBALS['egw']->html)) {
 				$GLOBALS['egw']->html = CreateObject('phpgwapi.html');
 			}
@@ -59,11 +59,11 @@ class uiwidgets
 		*/
 		function createHTMLFolder($_folders, $_selected, $_selectedFolderCount, $_topFolderName, $_topFolderDescription, $_divName, $_displayCheckBox, $_useDisplayCharset = false) {
 			$preferences = $this->bofelamimail->mailPreferences;
-			//_debug_array(bofelamimail::$autoFolders);
+			//_debug_array(felamimail_bo::$autoFolders);
 			$userDefinedFunctionFolders = array();
-			if (isset($preferences->preferences['trashFolder']) && 
+			if (isset($preferences->preferences['trashFolder']) &&
 				$preferences->preferences['trashFolder'] != 'none') $userDefinedFunctionFolders['Trash'] = $preferences->preferences['trashFolder'];
-			if (isset($preferences->preferences['sentFolder']) && 
+			if (isset($preferences->preferences['sentFolder']) &&
 				$preferences->preferences['sentFolder'] != 'none') $userDefinedFunctionFolders['Sent'] = $preferences->preferences['sentFolder'];
 			if (isset($preferences->preferences['draftFolder']) &&
 				$preferences->preferences['draftFolder'] != 'none') $userDefinedFunctionFolders['Drafts'] = $preferences->preferences['draftFolder'];
@@ -125,7 +125,7 @@ class uiwidgets
 			#_debug_array($allFolders);
 			foreach($allFolders as $longName => $obj) {
 				$messageCount = '';
-				if (in_array($obj->shortFolderName,bofelamimail::$autoFolders)) 
+				if (in_array($obj->shortFolderName,felamimail_bo::$autoFolders))
 				{
 					//echo $obj->shortFolderName.'<br>';
 					$image1 = $image2 = $image3 = "'MailFolder".$obj->shortFolderName.".png'";
@@ -329,7 +329,7 @@ class uiwidgets
 				$replace = '';
 
 				$header['subject'] = preg_replace($search,$replace,$header['subject']);
-				$headerSubject = bofelamimail::htmlentities($header['subject'],$this->charset);
+				$headerSubject = felamimail_bo::htmlentities($header['subject'],$this->charset);
 				$header['subject'] = $headerSubject;
 				// curly brackets get messed up by the template!
 				$header['subject'] = str_replace(array('{','}'),array('&#x7B;','&#x7D;'),$header['subject']);
@@ -356,14 +356,14 @@ class uiwidgets
 					$header['mimetype'] == 'text/calendar' ||
 					substr($header['mimetype'],0,11) == 'application' ||
 					substr($header['mimetype'],0,5) == 'audio' ||
-					substr($header['mimetype'],0,5) == 'video') 
+					substr($header['mimetype'],0,5) == 'video')
 				{
 					$image = html::image('felamimail','attach');
 					if (//$header['mimetype'] != 'multipart/mixed' &&
 						$header['mimetype'] != 'multipart/signed'
 					)
 					{
-						if ($this->bofelamimail->icServer->_connected != 1) 
+						if ($this->bofelamimail->icServer->_connected != 1)
 						{
 							$this->bofelamimail->openConnection(0); // connect to the current server
 							$this->bofelamimail->reopen($_folderName);
@@ -387,10 +387,10 @@ class uiwidgets
 
 				if ($_folderType > 0) {
 					// sent or drafts or template folder
-					$header2add = bofelamimail::htmlentities($header['to_address'],$this->charset);
+					$header2add = felamimail_bo::htmlentities($header['to_address'],$this->charset);
 					$header['to_address'] = $header2add;
 					if (!empty($header['to_name'])) {
-						$header2name = bofelamimail::htmlentities($header['to_name'],$this->charset);
+						$header2name = felamimail_bo::htmlentities($header['to_name'],$this->charset);
 						$header['to_name'] = $header2name;
 
 						$sender_name	= $header['to_name'];
@@ -400,10 +400,10 @@ class uiwidgets
 						$full_address	= $header['to_address'];
 					}
 				} else {
-					$header2add = bofelamimail::htmlentities($header['sender_address'],$this->charset);
+					$header2add = felamimail_bo::htmlentities($header['sender_address'],$this->charset);
 					$header['sender_address'] = $header2add;
 					if (!empty($header['sender_name'])) {
-						$header2name = bofelamimail::htmlentities($header['sender_name'],$this->charset);
+						$header2name = felamimail_bo::htmlentities($header['sender_name'],$this->charset);
 						$header['sender_name'] = $header2name;
 
 						$sender_name	= $header['sender_name'];
@@ -419,14 +419,14 @@ class uiwidgets
 
 				$this->t->set_var('message_counter', $i);
 				$this->t->set_var('message_uid', $header['uid']);
- 
-				if ($dateToday == bofelamimail::_strtotime($header['date'],'Y-m-d')) {
- 				    $this->t->set_var('date', bofelamimail::_strtotime($header['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'))); //$GLOBALS['egw']->common->show_date($header['date'],'H:i:s'));
+
+				if ($dateToday == felamimail_bo::_strtotime($header['date'],'Y-m-d')) {
+ 				    $this->t->set_var('date', felamimail_bo::_strtotime($header['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'))); //$GLOBALS['egw']->common->show_date($header['date'],'H:i:s'));
 				} else {
-					$this->t->set_var('date', bofelamimail::_strtotime($header['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']));
+					$this->t->set_var('date', felamimail_bo::_strtotime($header['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']));
 				}
-				$this->t->set_var('datetime', bofelamimail::_strtotime($header['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).
-												' - '.bofelamimail::_strtotime($header['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'))); 
+				$this->t->set_var('datetime', felamimail_bo::_strtotime($header['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).
+												' - '.felamimail_bo::_strtotime($header['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s')));
 
 				$this->t->set_var('size', $this->show_readable_size($header['size']));
 				// selecting the first message by default for preview
@@ -437,9 +437,9 @@ class uiwidgets
 					//$firstheader = $header;
 				}
 				// preview the message with the requested (messageToBePreviewed) uid
-				if ($messageToBePreviewed>0 
-					&& $GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0 
-					&& $messageToBePreviewed == $header['uid']) 
+				if ($messageToBePreviewed>0
+					&& $GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0
+					&& $messageToBePreviewed == $header['uid'])
 				{
 					//error_log(__METHOD__.$header['uid']);
 					$selecteduid = $header['uid'];
@@ -530,7 +530,7 @@ class uiwidgets
 						break;
 				}
 			}
-					
+
 			if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0)
 			{
 				$this->t->set_var('selected_style'.$selecteduid,'style="background-color:#ddddFF;"');
@@ -538,7 +538,7 @@ class uiwidgets
 				$this->t->set_var('selected_style'.$selecteduid,'');
 			}
 			//error_log(__METHOD__.__LINE__.' FolderType:'.$_folderType);
-			if ($firstheader && 
+			if ($firstheader &&
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0 &&
 				($_folderType==0 || $_folderType==1)) // only if not drafts or template folder
 			{
@@ -588,7 +588,7 @@ class uiwidgets
 				$flags = $this->bofelamimail->getFlags($headerData['uid']);
 				if ($this->bofelamimail->getNotifyFlags($headerData['uid']) === null)
 				{
-					$headers    = $this->bofelamimail->getMessageHeader($headerData['uid']); 
+					$headers    = $this->bofelamimail->getMessageHeader($headerData['uid']);
 					if ( isset($headers['DISPOSITION-NOTIFICATION-TO']) ) {
 						$sent_not = $this->bofelamimail->decode_header(trim($headers['DISPOSITION-NOTIFICATION-TO']));
 					} else if ( isset($headers['RETURN-RECEIPT-TO']) ) {
@@ -596,7 +596,7 @@ class uiwidgets
 					} else if ( isset($headers['X-CONFIRM-READING-TO']) ) {
 						$sent_not = $this->bofelamimail->decode_header(trim($headers['X-CONFIRM-READING-TO']));
 					} else $sent_not = "";
-					if ( $sent_not != "" && strpos( array2string($flags),'Seen')===false) 
+					if ( $sent_not != "" && strpos( array2string($flags),'Seen')===false)
 					{
 						$jscall= " onload='javascript:sendNotifyMS(".$headerData['uid'].")'";
 					}
@@ -656,7 +656,7 @@ class uiwidgets
 						lang('add to addressbook'),
 						lang('add to addressbook'));
 				}
-				
+
 				$linkData = array (
 					'menuaction'    => 'felamimail.uidisplay.display',
 					'showHeader'	=> 'false',
@@ -680,12 +680,12 @@ class uiwidgets
 					$headerData['mimetype'] == 'text/calendar' ||
 					substr($headerData['mimetype'],0,11) == 'application' ||
 					substr($headerData['mimetype'],0,5) == 'audio' ||
-					substr($headerData['mimetype'],0,5) == 'video') 
+					substr($headerData['mimetype'],0,5) == 'video')
 				{
 					$image = html::image('felamimail','attach');
 
-					$image = "<a name=\"subject_url\" href=\"#\" 
-						onclick=\"fm_readAttachments('".$GLOBALS['egw']->link('/index.php',$linkDataAttachments)."', '".$windowName."', this); return false;\" 
+					$image = "<a name=\"subject_url\" href=\"#\"
+						onclick=\"fm_readAttachments('".$GLOBALS['egw']->link('/index.php',$linkDataAttachments)."', '".$windowName."', this); return false;\"
 						title=\"".$headerData['subject']."\">".$image."</a>";
 					if (//$headerData['mimetype'] != 'multipart/mixed' &&
 						$header['mimetype'] != 'multipart/signed'
@@ -699,8 +699,8 @@ class uiwidgets
 				} else {
 					$image = '';
 				}
-				$subject = "<a name=\"subject_url\" href=\"#\" 
-						onclick=\"fm_readMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."', '".$windowName."', this); return false;\" 
+				$subject = "<a name=\"subject_url\" href=\"#\"
+						onclick=\"fm_readMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."', '".$windowName."', this); return false;\"
 						title=\"".$headerData['subject']."\">".$headerData['subject']."</a>";
 				$IFrameHeight = $GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight'];
 				$linkData = array (
@@ -713,8 +713,8 @@ class uiwidgets
 								<TR class=\"th\" style=\"width:100%;\">
 									<TD nowrap valign=\"top\" style=\"overflow:hidden;\">
 										".($_folderType > 0?lang('to'):lang('from')).':<b>'.$full_address.' '.($fromAddress?$fromAddress:'') .'</b><br> '.
-										lang('date').':<b>'.bofelamimail::_strtotime($headerData['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).
-                                                ' - '.bofelamimail::_strtotime($headerData['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'))."</b><br>
+										lang('date').':<b>'.felamimail_bo::_strtotime($headerData['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).
+                                                ' - '.felamimail_bo::_strtotime($headerData['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'))."</b><br>
 										".lang('subject').":<b>".$subject."</b>
 									</TD>
 									<td style=\"width:20px;\" align=\"right\">
@@ -896,7 +896,7 @@ class uiwidgets
 					'tooltip'	=> lang('print it'),
 				),
 			);
-			if ($GLOBALS['egw_info']['user']['apps']['infolog']) 
+			if ($GLOBALS['egw_info']['user']['apps']['infolog'])
 			{
 				list($i_width,$i_height) = explode('x',egw_link::get_registry('infolog','add_popup'));
 				$navbarImages['to_infolog'] = array(
@@ -926,7 +926,7 @@ class uiwidgets
 				$navbarButtons .= $this->navbarButton($buttonName, $buttonData['action'], $buttonData['tooltip']);
 			}
 			return $navbarButtons;
-		}			
+		}
 
 		/**
 		* create multiselectbox
@@ -975,7 +975,7 @@ class uiwidgets
 		{
 			$image = $GLOBALS['egw']->common->image('felamimail',$_imageName);
 			$float = $_float == 'right' ? 'right' : 'left';
-			$_toolTip = bofelamimail::htmlentities($_toolTip);
+			$_toolTip = felamimail_bo::htmlentities($_toolTip);
 			return "<div class='navButton' style='float:$float;' onmousedown='this.className=\"navButtonActive\";' onmouseup='this.className=\"navButtonHover\";' onmouseout='this.className=\"navButton\";'".( $_imageAction=='#'?"":"onclick=\"$_imageAction\"")."><img style='width:16px; height:16px;' class=\"sideboxstar\" title='$_toolTip' src='$image' ></div>";
 		}
 

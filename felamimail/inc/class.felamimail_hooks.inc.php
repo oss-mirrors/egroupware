@@ -45,7 +45,7 @@ class felamimail_hooks
 		{
 			$folderList = array();
 
-			$bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+			$bofelamimail = felamimail_bo::getInstance();
 			if($bofelamimail->openConnection()) {
 				$folderObjects = $bofelamimail->getFolderObjects(true, false);
 				foreach($folderObjects as $folderName => $folderInfo) {
@@ -56,7 +56,7 @@ class felamimail_hooks
 			}
 
 			$availableAutoFolders['none'] = lang('none, create all');
-			foreach(bofelamimail::$autoFolders as $aname) {
+			foreach(felamimail_bo::$autoFolders as $aname) {
 				$availableAutoFolders[$aname] = lang($aname);
 			}
 
@@ -485,7 +485,7 @@ class felamimail_hooks
 		$appname = 'felamimail';
 		$menu_title = $GLOBALS['egw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
 		$file = array();
-		$bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+		$bofelamimail = felamimail_bo::getInstance();
 		$preferences =& $bofelamimail->mailPreferences;
 		$showMainScreenStuff = false;
 		if(($_GET['menuaction'] == 'felamimail.uifelamimail.viewMainScreen' ||

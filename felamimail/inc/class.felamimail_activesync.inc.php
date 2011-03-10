@@ -12,10 +12,6 @@
  * @version $Id$
  */
 
-require_once (EGW_INCLUDE_ROOT.'/felamimail/inc/class.bofelamimail.inc.php');
-//require_once (EGW_INCLUDE_ROOT.'/felamimail/inc/class.uidisplay.inc.php');
-//require_once (EGW_INCLUDE_ROOT.'/phpgwapi/inc/class.egw_mailer.inc.php');
-
 /**
  * FMail activesync plugin
  *
@@ -29,9 +25,9 @@ class felamimail_activesync implements activesync_plugin_read
 	private $backend;
 
 	/**
-	 * Instance of bofelamimail
+	 * Instance of felamimail_bo
 	 *
-	 * @var bofelamimail
+	 * @var felamimail_bo
 	 */
 	private $mail;
 
@@ -97,7 +93,7 @@ class felamimail_activesync implements activesync_plugin_read
 		{
 			$this->account = $account;
 			// todo: tell fmail which account to use
-			$this->mail = new bofelamimail ("UTF-8",false);
+			$this->mail = felamimail_bo::getInstance(false);
 			//error_log(__METHOFD__.__LINE__.array2string($this->mail));
 			if (!$this->mail->openConnection(0,false))
 			{
@@ -183,8 +179,8 @@ class felamimail_activesync implements activesync_plugin_read
 			debugLog("IMAP-SendMail: Could not find Mail_mimeDecode.");
 			return false;
 		}
-		// initialize our bofelamimail
-		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+		// initialize our felamimail_bo
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
 		$activeMailProfile = $this->mail->mailPreferences->getIdentity(0);
 
 		// initialize the new egw_mailer object for sending
@@ -964,7 +960,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 		$this->splitID($folderid, $account, $folder);
 
-		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
 
 		$this->mail->reopen($folder);
 		$attachment = $this->mail->getAttachment($id,$part);
@@ -990,14 +986,14 @@ class felamimail_activesync implements activesync_plugin_read
 
 		$this->splitID($folderid, $account, $folder);
 
-		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
 
 		$this->mail->reopen($folder);
 		$att = $this->mail->getAttachment($id,$part);
 		$attachment = new SyncAirSyncBaseFileAttachment();
 		/*
 		debugLog(__METHOD__.__LINE__.array2string($att));
-		if ($arr['filename']=='error.txt' && stripos($arr['attachment'], 'bofelamimail::getAttachment failed') !== false)
+		if ($arr['filename']=='error.txt' && stripos($arr['attachment'], 'felamimail_bo::getAttachment failed') !== false)
 		{
 			return $attachment;
 		}
@@ -1055,7 +1051,7 @@ class felamimail_activesync implements activesync_plugin_read
 		$this->splitID($folderid, $account, $srcFolder);
 		$this->splitID($newfolderid, $account, $destFolder);
 		debugLog("IMAP-MoveMessage: (SourceFolder: '$srcFolder'  id: '$id'  DestFolder: '$destFolder' )");
-		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
 		$this->mail->reopen($destFolder);
 		$status = $this->mail->getFolderStatus($destFolder);
 		$uidNext = $status['uidnext'];
@@ -1256,7 +1252,7 @@ class felamimail_activesync implements activesync_plugin_read
 		if (is_numeric($account)) $type = 'felamimail';
 		if ($type != 'felamimail') return false;
 
-		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
 
 		$changes = array();
         debugLog("AlterPingChanges on $folderid ($folder) stat: ". $syncstate);
@@ -1312,7 +1308,7 @@ class felamimail_activesync implements activesync_plugin_read
 		debugLog(__METHOD__.__LINE__.' '.$folderid.'->'.$folder);
 		$_messageUID = (array)$id;
 
-		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
 		$rv = $this->mail->deleteMessages($_messageUID, $folder);
 		// this may be a bit rude, it may be sufficient that GetMessageList does not list messages flagged as deleted
 		if ($this->mail->mailPreferences->preferences['deleteOptions'] == 'mark_as_deleted')
@@ -1338,7 +1334,7 @@ class felamimail_activesync implements activesync_plugin_read
 		debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
 		$_messageUID = (array)$id;
 		$this->_connect($this->account);
-		if (!isset($this->mail)) $this->mail = new bofelamimail ("UTF-8",false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
 		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$_folderid);
 		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
 

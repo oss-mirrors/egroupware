@@ -31,8 +31,8 @@
 		function bocompose($_composeID = '', $_charSet = 'iso-8859-1')
 		{
 			$this->displayCharset	= strtolower($_charSet);
-			$this->bosignatures	= CreateObject('felamimail.felamimail_bosignatures');
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$this->bosignatures	= new felamimail_bosignatures();
+			$this->bofelamimail	= felamimail_bo::getInstance();
 			$this->bopreferences =& $this->bofelamimail->bopreferences;
 			$this->preferences	=& $this->bofelamimail->mailPreferences; // $this->bopreferences->getPreferences();
 			$this->preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
@@ -70,7 +70,7 @@
 			// check if formdata meets basic restrictions (in tmp dir, or vfs, mimetype, etc.)
 			try
 			{
-				$tmpFileName = bofelamimail::checkFileBasics($_formData,$this->composeID,false);
+				$tmpFileName = felamimail_bo::checkFileBasics($_formData,$this->composeID,false);
 			}
 			catch (egw_exception_wrong_userinput $e)
 			{
@@ -123,7 +123,7 @@
 		static function replaceEmailAdresses(&$text)
 		{
 			// replace emailaddresses eclosed in <> (eg.: <me@you.de>) with the emailaddress only (e.g: me@you.de)
-			bofelamimail::replaceEmailAdresses($text);
+			felamimail_bo::replaceEmailAdresses($text);
 			return 1;
 		}
 
@@ -132,7 +132,7 @@
 			$stripalltags = true;
 			// third param is stripalltags, we may not need that, if the source is already in ascii
 			if (!$sourceishtml) $stripalltags=false;
-			return bofelamimail::convertHTMLToText($_html,false,$stripalltags);
+			return felamimail_bo::convertHTMLToText($_html,false,$stripalltags);
 		}
 
 		function convertHTMLToTextTiny($_html)
@@ -195,7 +195,7 @@
 		{
 			$this->sessionData['to'] = array();
 
-			$bofelamimail =& $this->bofelamimail; //CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$bofelamimail = $this->bofelamimail;
 			$bofelamimail->openConnection();
 			$bofelamimail->reopen($_folder);
 
@@ -311,7 +311,7 @@
 						#$bodyParts[$i]['body'] = nl2br($bodyParts[$i]['body']);
 						$bodyParts[$i]['body'] = "<pre>".$bodyParts[$i]['body']."</pre>";
 					}
-					if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = bofelamimail::detect_encoding($bodyParts[$i]['body']);
+					if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = felamimail_bo::detect_encoding($bodyParts[$i]['body']);
 					$bodyParts[$i]['body'] = $GLOBALS['egw']->translation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
 					#error_log( "GetDraftData (HTML) CharSet:".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
 					$this->sessionData['body'] .= "<br>". $bodyParts[$i]['body'] ;
@@ -324,7 +324,7 @@
 					if($i>0) {
 						$this->sessionData['body'] .= "<hr>";
 					}
-					if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = bofelamimail::detect_encoding($bodyParts[$i]['body']);
+					if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = felamimail_bo::detect_encoding($bodyParts[$i]['body']);
 					$bodyParts[$i]['body'] = $GLOBALS['egw']->translation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
 					#error_log( "GetDraftData (Plain) CharSet".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
 					$this->sessionData['body'] .= "\r\n". $bodyParts[$i]['body'] ;
@@ -360,7 +360,7 @@
 			if  ($this->preferencesArray['message_forwarding'] == 'inline') {
 				$this->getReplyData('forward', $_icServer, $_folder, $_uid, $_partID);
 			}
-			$bofelamimail    =& $this->bofelamimail; //CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$bofelamimail    = $this->bofelamimail;
 			$bofelamimail->openConnection();
 			$bofelamimail->reopen($_folder);
 
@@ -410,7 +410,7 @@
 		 * @return string - a random number which is md5 encoded
 		 */
 		function getRandomString() {
-			return bofelamimail::getRandomString();
+			return felamimail_bo::getRandomString();
 		}
 
 		/**
@@ -428,7 +428,7 @@
 		{
 			$foundAddresses = array();
 
-			$bofelamimail    =& $this->bofelamimail; //CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$bofelamimail    = $this->bofelamimail;
 			$bofelamimail->openConnection();
 			$bofelamimail->reopen($_folder);
 
@@ -548,7 +548,7 @@
 			$bodyParts = $bofelamimail->getMessageBody($_uid, $this->preferencesArray['always_display'], $_partID);
 			//_debug_array($bodyParts);
 
-			$fromAddress = bofelamimail::htmlspecialchars($bofelamimail->decode_header(($headers['FROM'][0]['PERSONAL_NAME'] != 'NIL') ? $headers['FROM'][0]['RFC822_EMAIL'] : $headers['FROM'][0]['EMAIL']));
+			$fromAddress = felamimail_bo::htmlspecialchars($bofelamimail->decode_header(($headers['FROM'][0]['PERSONAL_NAME'] != 'NIL') ? $headers['FROM'][0]['RFC822_EMAIL'] : $headers['FROM'][0]['EMAIL']));
 
 			$toAddressA = array();
 			$toAddress = '';
@@ -557,7 +557,7 @@
 			}
 			if (count($toAddressA)>0)
 			{
-				$toAddress = bofelamimail::htmlspecialchars($bofelamimail->decode_header(implode(', ', $toAddressA)));
+				$toAddress = felamimail_bo::htmlspecialchars($bofelamimail->decode_header(implode(', ', $toAddressA)));
 				$toAddress = @htmlspecialchars(lang("to")).": ".$toAddress.($bodyParts['0']['mimeType'] == 'text/html'?"\r\n<br>":"\r\n");;
 			}
 			$ccAddressA = array();
@@ -567,14 +567,14 @@
 			}
 			if (count($ccAddressA)>0)
 			{
-				$ccAddress = bofelamimail::htmlspecialchars($bofelamimail->decode_header(implode(', ', $ccAddressA)));
+				$ccAddress = felamimail_bo::htmlspecialchars($bofelamimail->decode_header(implode(', ', $ccAddressA)));
 				$ccAddress = @htmlspecialchars(lang("cc")).": ".$ccAddress.($bodyParts['0']['mimeType'] == 'text/html'?"\r\n<br>":"\r\n");
 			}
 			if($bodyParts['0']['mimeType'] == 'text/html') {
 				$this->sessionData['body']	= "<br>&nbsp;\r\n<p>".'----------------'.lang("original message").'-----------------'."\r\n".'<br>'.
 					@htmlspecialchars(lang("from")).": ".$fromAddress."\r\n<br>".
 					$toAddress.$ccAddress.
-					@htmlspecialchars(lang("date").": ".$headers['DATE'],ENT_QUOTES | ENT_IGNORE,bofelamimail::$displayCharset, false)."\r\n<br>".
+					@htmlspecialchars(lang("date").": ".$headers['DATE'],ENT_QUOTES | ENT_IGNORE,felamimail_bo::$displayCharset, false)."\r\n<br>".
 					'----------------------------------------------------------'."\r\n</p>";
 				$this->sessionData['mimeType'] 	= 'html';
 				$this->sessionData['body']	.= '<blockquote type="cite">';
@@ -587,7 +587,7 @@
 						#$bodyParts[$i]['body'] = nl2br($bodyParts[$i]['body'])."<br>";
 						$bodyParts[$i]['body'] = "<pre>".$bodyParts[$i]['body']."</pre>";
 					}
-					if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = bofelamimail::detect_encoding($bodyParts[$i]['body']);
+					if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = felamimail_bo::detect_encoding($bodyParts[$i]['body']);
 					$this->sessionData['body'] .= "<br>".self::_getCleanHTML($GLOBALS['egw']->translation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']));
 					#error_log( "GetReplyData (HTML) CharSet:".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
 
@@ -599,7 +599,7 @@
                 $this->sessionData['body']  = " \r\n \r\n".'----------------'.lang("original message").'-----------------'."\r\n".
                     @htmlspecialchars(lang("from")).": ".$fromAddress."\r\n".
 					$toAddress.$ccAddress.
-					@htmlspecialchars(lang("date").": ".$headers['DATE'], ENT_QUOTES | ENT_IGNORE,bofelamimail::$displayCharset, false)."\r\n".
+					@htmlspecialchars(lang("date").": ".$headers['DATE'], ENT_QUOTES | ENT_IGNORE,felamimail_bo::$displayCharset, false)."\r\n".
                     '-------------------------------------------------'."\r\n \r\n ";
 
 				$this->sessionData['mimeType']	= 'plain';
@@ -610,7 +610,7 @@
 					}
 
 					// add line breaks to $bodyParts
-					if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = bofelamimail::detect_encoding($bodyParts[$i]['body']);
+					if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = felamimail_bo::detect_encoding($bodyParts[$i]['body']);
 					$newBody	= $GLOBALS['egw']->translation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
 					#error_log( "GetReplyData (Plain) CharSet:".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
 
@@ -648,7 +648,7 @@
 			static $nonDisplayAbleCharacters = array('[\016]','[\017]',
 					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
 					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
-			bofelamimail::getCleanHTML($_body);
+			felamimail_bo::getCleanHTML($_body);
 			$_body	= preg_replace($nonDisplayAbleCharacters, '', $_body);
 
 			return $_body;
@@ -686,7 +686,7 @@
 
 		function createMessage(&$_mailObject, $_formData, $_identity, $_signature = false)
 		{
-			$bofelamimail	=& $this->bofelamimail; //CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$bofelamimail	= $this->bofelamimail;
 			$_mailObject->PluginDir = EGW_SERVER_ROOT."/phpgwapi/inc/";
 			$activeMailProfile = $this->preferences->getIdentity(0);
 			$_mailObject->IsSMTP();
@@ -760,7 +760,7 @@
 			#$realCharset = mb_detect_encoding($_formData['body'] . 'a' , strtoupper($this->displayCharset).',UTF-8, ISO-8859-1');
 			#error_log("bocompose::createMessage:".$realCharset);
 			// this should never happen since we come from the edit dialog
-			if (bofelamimail::detect_qp($_formData['body'])) {
+			if (felamimail_bo::detect_qp($_formData['body'])) {
 				error_log("Error: bocompose::createMessage found QUOTED-PRINTABLE while Composing Message. Charset:$realCharset Message:".print_r($_formData['body'],true));
 				$_formData['body'] = preg_replace('/=\r\n/', '', $_formData['body']);
 				$_formData['body'] = quoted_printable_decode($_formData['body']);
@@ -780,7 +780,7 @@
 			{
 				$disableRuler = true;
 			}
-			$signature = bofelamimail::merge($signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
+			$signature = felamimail_bo::merge($signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
 			if($_formData['mimeType'] =='html') {
 				$_mailObject->IsHTML(true);
 				if(!empty($signature)) {
@@ -856,7 +856,7 @@
 
 		function saveAsDraft($_formData)
 		{
-			$bofelamimail	=& $this->bofelamimail; //CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$bofelamimail	= $this->bofelamimail;
 			$mail		= new egw_mailer();
 			$identity	= $this->preferences->getIdentity((int)$this->sessionData['identity']);
 			$flags = '\\Seen \\Draft';
@@ -915,7 +915,7 @@
 				}
 
 			} else {
-				error_log("bofelamimail::saveAsDraft->".lang("folder")." ". $savingDestination." ".lang("does not exist on IMAP Server."));
+				error_log("felamimail_bo::saveAsDraft->".lang("folder")." ". $savingDestination." ".lang("does not exist on IMAP Server."));
 				return false;
 			}
 			$bofelamimail->closeConnection();
@@ -924,7 +924,7 @@
 
 		function send($_formData)
 		{
-			$bofelamimail	=& $this->bofelamimail; //CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$bofelamimail	= $this->bofelamimail;
 			$mail 		= new egw_mailer();
 			$messageIsDraft	=  false;
 
@@ -1038,7 +1038,7 @@
 			#error_log("Number of Folders to move copy the message to:".count($folder));
 			if ((count($folder) > 0) || (isset($this->sessionData['uid']) && isset($this->sessionData['messageFolder']))
                 || (isset($this->sessionData['forwardFlag']) && isset($this->sessionData['sourceFolder']))) {
-				$bofelamimail =& $this->bofelamimail; //CreateObject('felamimail.bofelamimail');
+				$bofelamimail = $this->bofelamimail;
 				$bofelamimail->openConnection();
 				//$bofelamimail->reopen($this->sessionData['messageFolder']);
 				#error_log("(re)opened Connection");
@@ -1054,8 +1054,6 @@
 				}
 				$BCCmail='';
 				if (count($mailAddr)>0) $BCCmail = $mail->AddrAppend("Bcc",$mailAddr);
-				//$bofelamimail =& CreateObject('felamimail.bofelamimail');
-				//$bofelamimail->openConnection();
 				foreach($folder as $folderName) {
 					if($bofelamimail->isSentFolder($folderName)) {
 						$flags = '\\Seen';
@@ -1090,7 +1088,6 @@
 			if((isset($this->sessionData['uid']) && isset($this->sessionData['messageFolder']))
 				|| (isset($this->sessionData['forwardFlag']) && isset($this->sessionData['sourceFolder']))) {
 				// mark message as answered
-				//$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection();
 				$bofelamimail->reopen($this->sessionData['messageFolder']);
 				// if the draft folder is a starting part of the messages folder, the draft message will be deleted after the send

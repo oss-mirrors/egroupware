@@ -24,24 +24,24 @@
 
 		function uifilter()
 		{
-			
+
 			// get posted variables
 			$this->urlMailbox	= urldecode($_GET['mailbox']);
 			$this->startMessage	= $_GET['startMessage'];
 			$this->sort		= $_GET['sort'];
-			
-			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->urlMailbox);
-			$this->bofilter		=& CreateObject('felamimail.bofilter');
+
+			$this->bofelamimail	= felamimail_bo::getInstance();
+			$this->bofilter		= CreateObject('felamimail.bofilter');
 			$this->sessionData	= $this->bofelamimail->sessionData;
 
 			$this->t =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->t->set_unknowns('remove');
-			
+
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
 
 		}
-		
+
 		function display_app_header()
 		{
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
@@ -53,15 +53,15 @@
 		{
 			// display the header
 			$this->display_app_header();
-			
+
 			// initialize the template
 			$this->t->set_file(array("filterForm" => "filterForm.tpl"));
 			$this->t->set_block('filterForm','header');
 			$this->t->set_block('filterForm','filterrow');
-			
+
 			// translate most of the parts
 			$this->translate();
-			
+
 			switch($_GET['action'])
 			{
 				case "deleteFilter":
@@ -81,11 +81,11 @@
 					$this->t->set_var("subject",'');
 					$this->t->set_var("filter_checked",'');
 					break;
-					
+
 				case "editFilter":
 					$filterID = $_GET['filterID'];
 					$filterList = $this->bofilter->getFilterList();
-					
+
 														// set the default values for the sort links (sort by url)
 														$linkData = array
 														(
@@ -148,7 +148,7 @@
 					$this->t->set_var("subject",'');
 					$this->t->set_var("filter_checked",'');
 					break;
-					
+
 			}
 									$linkData = array
 									(
@@ -163,9 +163,9 @@
 			);
 			$link = $GLOBALS['egw']->link('/index.php',$linkData);
 			$this->t->set_var("link_noFilter",$link);
-			
+
 			$filterList = $this->bofilter->getFilterList();
-			
+
 			while(list($key,$value)=@each($filterList))
 			{
 				$this->t->set_var("id",$key);
@@ -204,9 +204,9 @@
 
 		function saveFilter()
 		{
-			
+
 		}
-		
+
 		function translate()
 		{
 			$this->t->set_var("lang_message_list",lang('Message List'));

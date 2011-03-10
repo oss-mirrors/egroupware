@@ -80,8 +80,8 @@
 				$this->bocompose   = CreateObject('felamimail.bocompose',$this->composeID,$this->displayCharset);
 			}
 			$this->t 		= CreateObject('phpgwapi.Template',EGW_APP_TPL);
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
-			$this->mailPreferences  =& $this->bofelamimail->mailPreferences;// ExecMethod('felamimail.bopreferences.getPreferences');
+			$this->bofelamimail	= felamimail_bo::getInstance();
+			$this->mailPreferences  =& $this->bofelamimail->mailPreferences;
 			$this->t->set_unknowns('remove');
 
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
@@ -421,7 +421,7 @@
 					foreach((array)$address_array as $addressObject) {
 						if ($addressObject->host == '.SYNTAX-ERROR.') continue;
 						$address = imap_rfc822_write_address($addressObject->mailbox,$addressObject->host,$addressObject->personal);
-						$address = bofelamimail::htmlentities($address, $this->displayCharset);
+						$address = felamimail_bo::htmlentities($address, $this->displayCharset);
 						$this->t->set_var('address', $address);
 						$this->t->parse('destinationRows','destination_row',True);
 						$destinationRows++;
@@ -443,7 +443,7 @@
 			$this->t->parse('destinationRows','destination_row',True);
 
 			// handle subject
-			$subject = bofelamimail::htmlentities($sessionData['subject'],$this->displayCharset);
+			$subject = felamimail_bo::htmlentities($sessionData['subject'],$this->displayCharset);
 			$this->t->set_var("subject",$subject);
 
 			if ($GLOBALS['egw_info']['user']['apps']['addressbook']) {
@@ -519,7 +519,7 @@
 					$before = ($disableRuler ?"\r\n\r\n":"\r\n\r\n-- \r\n");
 					$inbetween = "\r\n";
 				}
-				$sigText = bofelamimail::merge($signature->fm_signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
+				$sigText = felamimail_bo::merge($signature->fm_signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
 				$sessionData['body'] = $before.($sessionData['mimeType'] == 'html'?$sigText:$this->bocompose->convertHTMLToText($sigText)).$inbetween.$sessionData['body'];
 			}
 			// prepare body
@@ -773,7 +773,7 @@
 			egw_framework::validate_file('jscode','composeMessage','felamimail');
 			$GLOBALS['egw']->common->egw_header();
 
-			$bofelamimail		=& $this->bofelamimail; //CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$bofelamimail		= $this->bofelamimail;
 			$uiwidgets		= CreateObject('felamimail.uiwidgets');
 			$connectionStatus	= $bofelamimail->openConnection();
 
