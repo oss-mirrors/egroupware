@@ -472,12 +472,40 @@ function refreshFolderStatus(_nodeID,mode) {
 		if (mode == "forced") {mode2use = mode;}
 	}
 	var activeFolders = getTreeNodeOpenItems(nodeToRefresh,mode2use);
-	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshFolderList', activeFolders);
+	queueRefreshFolderList(activeFolders);
+//	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshFolderList', activeFolders);
 //	if (fm_previewMessageID>0)
 //	{
 //		//setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_updating_view +'</span>');
 //		//xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",fm_previewMessageID,fm_previewMessageFolderType);
 //	}
+}
+
+
+var felamimail_queuedFolders = [];
+var felamimail_queuedFoldersIndex = 0;
+
+/**
+ * Queues a refreshFolderList request for 1ms. Actually this will just execute the
+ * code after the calling script has finished.
+ */
+function queueRefreshFolderList(_folders)
+{
+	felamimail_queuedFolders.push(_folders);
+	felamimail_queuedFoldersIndex++;
+
+	// Copy idx onto the anonymous function scope
+	var idx = felamimail_queuedFoldersIndex;
+	window.setTimeout(function() {
+		if (idx == felamimail_queuedFoldersIndex)
+		{
+			var folders = felamimail_queuedFolders.join(",");
+			felamimail_queuedFoldersIndex = 0;
+			felamimail_queuedFolders = [];
+
+			egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshFolderList', folders);
+		}
+	}, 1);
 }
 
 function refreshView() {
