@@ -137,7 +137,7 @@ class soWikiPage
 			$read = array();
 			foreach($filter as $id)
 			{
-				$read[] = ($table ? $table.'.' : '') . 'wiki_readable LIKE "%,'.$id .'%" ';
+				$read[] = ($table ? $table.'.' : '') . 'wiki_readable '.$this->db->capabilities['case_insensitive_like']. ' "%,'.$id .'%" ';
 			}
 			$sql .= implode(' OR ', $read);
 			$sql .= ') ';
@@ -146,7 +146,7 @@ class soWikiPage
 		$sql .= ($readable ? ' OR ' : ' ') . ' (';
 		$write = array();
 		foreach($filter as $id) {
-			$write[] = ($table ? $table.'.' : ''). 'wiki_writable LIKE "%,'.$id.'%"';
+			$write[] = ($table ? $table.'.' : ''). 'wiki_writable ' . $this->db->capabilities['case_insensitive_like'] .' "%,'.$id.'%"';
 		}
 		$sql .= implode(' OR ', $write) . '))';
 
