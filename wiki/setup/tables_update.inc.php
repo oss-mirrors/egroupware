@@ -269,40 +269,18 @@ function wiki_upgrade1_6()
 
 function wiki_upgrade1_8()
 {
-	/* done by RefreshTable() anyway
 	$GLOBALS['egw_setup']->oProc->AlterColumn('egw_wiki_pages','wiki_readable',array(
 		'type' => 'varchar',
 		'precision' => '255',
 		'nullable' => False,
 		'default' => '0'
-	));*/
-	/* done by RefreshTable() anyway
+	));
+
 	$GLOBALS['egw_setup']->oProc->AlterColumn('egw_wiki_pages','wiki_writable',array(
 		'type' => 'varchar',
 		'precision' => '255',
 		'nullable' => False,
 		'default' => '0'
-	));*/
-	$GLOBALS['egw_setup']->oProc->RefreshTable('egw_wiki_pages',array(
-		'fd' => array(
-			'wiki_id' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0'),
-			'wiki_name' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
-			'wiki_lang' => array('type' => 'varchar','precision' => '5','nullable' => False,'default' => ''),
-			'wiki_version' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '1'),
-			'wiki_time' => array('type' => 'int','precision' => '4'),
-			'wiki_supercede' => array('type' => 'int','precision' => '4'),
-			'wiki_readable' => array('type' => 'varchar','precision' => '255','nullable' => False,'default' => '0'),
-			'wiki_writable' => array('type' => 'varchar','precision' => '255','nullable' => False,'default' => '0'),
-			'wiki_username' => array('type' => 'varchar','precision' => '80'),
-			'wiki_hostname' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
-			'wiki_comment' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
-			'wiki_title' => array('type' => 'varchar','precision' => '80'),
-			'wiki_body' => array('type' => 'longtext')
-		),
-		'pk' => array('wiki_id','wiki_name','wiki_lang','wiki_version'),
-		'fk' => array(),
-		'ix' => array('wiki_title',array('wiki_body','options' => array('mysql' => 'FULLTEXT','  mssql' => '','  pgsql' => '','  maxdb' => '','  sapdb' => ''))),
-		'uc' => array()
 	));
 
 	$sql = "UPDATE egw_wiki_pages
