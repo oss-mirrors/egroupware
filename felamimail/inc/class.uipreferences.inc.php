@@ -94,7 +94,7 @@
 					egw_framework::validate_file('tabs','tabs');
 					egw_framework::validate_file('jscode','editAccountData','felamimail');
 					$GLOBALS['egw']->js->set_onload('javascript:initEditAccountData();');
-					$GLOBALS['egw']->js->set_onload('javascript:initTabs();');
+					if ($_GET['menuaction'] == 'felamimail.uipreferences.editAccountData') $GLOBALS['egw']->js->set_onload('javascript:initTabs();');
 					break;
 
 				case 'felamimail.uipreferences.listSignatures':
