@@ -137,7 +137,7 @@ class soWikiPage
 			$read = array();
 			foreach($filter as $id)
 			{
-				$read[] = ($table ? $table.'.' : '') . 'wiki_readable '.$this->db->capabilities['case_insensitive_like']. ' "%,'.$id .'%" ';
+				$read[] = ($table ? $table.'.' : '') . 'wiki_readable '.$this->db->capabilities['case_insensitive_like']. ' "%,'.$id .',%" ';
 			}
 			$sql .= implode(' OR ', $read);
 			$sql .= ') ';
@@ -146,7 +146,7 @@ class soWikiPage
 		$sql .= ($readable ? ' OR ' : ' ') . ' (';
 		$write = array();
 		foreach($filter as $id) {
-			$write[] = ($table ? $table.'.' : ''). 'wiki_writable ' . $this->db->capabilities['case_insensitive_like'] .' "%,'.$id.'%"';
+			$write[] = ($table ? $table.'.' : ''). 'wiki_writable ' . $this->db->capabilities['case_insensitive_like'] .' "%,'.$id.',%"';
 		}
 		$sql .= implode(' OR ', $write) . '))';
 
@@ -302,8 +302,8 @@ class soWikiPage
 			$arr[$dbname] = $this->$name;
 		}
 		// Prepend , for easer LIKEing
-		$arr['wiki_readable'] = ','.implode(',',$arr['wiki_readable']);
-		$arr['wiki_writable'] = ','.implode(',',$arr['wiki_writable']);
+		$arr['wiki_readable'] = ','.implode(',',$arr['wiki_readable']).',';
+		$arr['wiki_writable'] = ','.implode(',',$arr['wiki_writable']).',';
 		if (is_null($arr['wiki_comment'])) $arr['wiki_comment'] = '';	// can not be null
 
 		if (empty($this->text))	unset($arr['wiki_body']);	// deleted / empty pages are written as SQL NULL

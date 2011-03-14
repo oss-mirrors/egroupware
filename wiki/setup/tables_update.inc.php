@@ -324,3 +324,12 @@ wiki_writable = (case wiki_writable
 	return $GLOBALS['setup_info']['wiki']['currentver'] = '1.9.001';
 }
 
+function wiki_upgrade1_9_001()
+{
+	$sql = "UPDATE egw_wiki_pages
+SET wiki_readable = concat(wiki_readable,','),
+wiki_writable = concat(wiki_writable,',')";
+	$GLOBALS['egw_setup']->oProc->query($sql, __LINE__, __FILE__);
+
+	return $GLOBALS['setup_info']['wiki']['currentver'] = '1.9.002';
+}
