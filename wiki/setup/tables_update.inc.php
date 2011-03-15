@@ -286,27 +286,27 @@ function wiki_upgrade1_8()
 	$sql = "UPDATE egw_wiki_pages
 SET wiki_readable = (
     case wiki_readable
-        WHEN 0 THEN ',_0'
-        WHEN 1 THEN ',_1'
-        WHEN 2 THEN ',_2'
-        ELSE concat(',', wiki_readable)
+        WHEN 0 THEN ',_0,'
+        WHEN 1 THEN ',_1,'
+        WHEN 2 THEN ',_2,'
+        ELSE ".$GLOBALS['egw_setup']->db->concat("','", 'wiki_readable', "','")."
     END),
 wiki_writable = (case wiki_writable
-        WHEN 0 THEN ',_0'
-        WHEN 1 THEN ',_1'
-        WHEN 2 THEN ',_2'
-        ELSE concat(',', wiki_writable)
+        WHEN 0 THEN ',_0,'
+        WHEN 1 THEN ',_1,'
+        WHEN 2 THEN ',_2,'
+        ELSE ".$GLOBALS['egw_setup']->db->concat("','", 'wiki_writable', "','")."
     END)";
 	$GLOBALS['egw_setup']->oProc->query($sql, __LINE__, __FILE__);
 
-	return $GLOBALS['setup_info']['wiki']['currentver'] = '1.9.001';
+	return $GLOBALS['setup_info']['wiki']['currentver'] = '1.9.002';
 }
 
 function wiki_upgrade1_9_001()
 {
 	$sql = "UPDATE egw_wiki_pages
-SET wiki_readable = concat(wiki_readable,','),
-wiki_writable = concat(wiki_writable,',')";
+SET wiki_readable = ".$GLOBALS['egw_setup']->db->concat('wiki_readable', "','").",
+wiki_writable = ".$GLOBALS['egw_setup']->db->concat('wiki_writable', "','");
 	$GLOBALS['egw_setup']->oProc->query($sql, __LINE__, __FILE__);
 
 	return $GLOBALS['setup_info']['wiki']['currentver'] = '1.9.002';
