@@ -137,7 +137,9 @@ class soWikiPage
 			$read = array();
 			foreach($filter as $id)
 			{
-				$read[] = ($table ? $table.'.' : '') . 'wiki_readable '.$this->db->capabilities['case_insensitive_like']. ' "%,'.$id .',%" ';
+				$read[] = ($table ? $table.'.' : '') . 'wiki_readable '.
+					$this->db->capabilities['case_insensitive_like'].' '.
+					$this->db->quote('%,'.str_replace('_','\\_',$id) .',%');
 			}
 			$sql .= implode(' OR ', $read);
 			$sql .= ') ';
@@ -145,8 +147,11 @@ class soWikiPage
 		// Writable implies readable
 		$sql .= ($readable ? ' OR ' : ' ') . ' (';
 		$write = array();
-		foreach($filter as $id) {
-			$write[] = ($table ? $table.'.' : ''). 'wiki_writable ' . $this->db->capabilities['case_insensitive_like'] .' "%,'.$id.',%"';
+		foreach($filter as $id)
+		{
+			$write[] = ($table ? $table.'.' : ''). 'wiki_writable ' .
+				$this->db->capabilities['case_insensitive_like'].' '.
+				$this->db->quote('%,'.str_replace('_','\\_',$id) .',%');
 		}
 		$sql .= implode(' OR ', $write) . '))';
 
@@ -279,9 +284,9 @@ class soWikiPage
 		{
 			$this->$name     = $this->db->f($dbname);
 		}
-		$this->readable = explode(',', $this->readable); 
+		$this->readable = explode(',', $this->readable);
 		if(!$this->readable[0]) unset($this->readable[0]);
-		$this->writable = explode(',', $this->writable); 
+		$this->writable = explode(',', $this->writable);
 		if(!$this->writable[0]) unset($this->writable[0]);
 		$this->exists   = 1;
 		$this->mutable  = $this->acl_check();
