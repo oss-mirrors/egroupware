@@ -1212,7 +1212,7 @@ class felamimail_bo
 				$structure = $this->_getSubStructure($structure, $_partID);
 			}
 			$filename = self::getFileNameFromStructure($structure);
-			$attachment = $this->icServer->getBodyPart($_uid, $_partID, true);
+			$attachment = $this->icServer->getBodyPart($_uid, $_partID, true, true);
 			if (PEAR::isError($attachment))
 			{
 				error_log(__METHOD__.__LINE__.' failed:'.$attachment->message);
@@ -1838,7 +1838,7 @@ class felamimail_bo
 			return ($CharsetFound ? $charSet : $CharsetFound);
 		}
 
-		function getMultipartAlternative($_uid, $_structure, $_htmlMode)
+		function getMultipartAlternative($_uid, $_structure, $_htmlMode, $_preserveSeen = false)
 		{
 			// a multipart/alternative has exactly 2 parts (text and html  OR  text and something else)
 			// sometimes there are 3 parts, when there is an ics/ical attached/included-> we want to show that
@@ -1868,9 +1868,9 @@ class felamimail_bo
 				case 'always_display':
 					if(is_object($partHTML)) {
 						if($partHTML->subType == 'RELATED') {
-							return $this->getMultipartRelated($_uid, $partHTML, $_htmlMode);
+							return $this->getMultipartRelated($_uid, $partHTML, $_htmlMode, $_preserveSeen);
 						} else {
-							return $this->getTextPart($_uid, $partHTML, $_htmlMode);
+							return $this->getTextPart($_uid, $partHTML, $_htmlMode, $_preserveSeen);
 						}
 					} elseif(is_object($partText) && $_htmlMode=='always_display') {
 						return $this->getTextPart($_uid, $partText);
@@ -1882,9 +1882,9 @@ class felamimail_bo
 						return $this->getTextPart($_uid, $partText);
 					} elseif(is_object($partHTML)) {
 						if($partHTML->type) {
-							return $this->getMultipartRelated($_uid, $partHTML, $_htmlMode);
+							return $this->getMultipartRelated($_uid, $partHTML, $_htmlMode, $_preserveSeen);
 						} else {
-							return $this->getTextPart($_uid, $partHTML, 'always_display');
+							return $this->getTextPart($_uid, $partHTML, 'always_display', $_preserveSeen);
 						}
 					}
 
@@ -1892,7 +1892,7 @@ class felamimail_bo
 
 				default:
 					if(is_object($partText)) {
-						return $this->getTextPart($_uid, $partText);
+						return $this->getTextPart($_uid, $partText, $_preserveSeen);
 					} else {
 						$bodyPart = array(
 							'body'		=> lang("no plain text part found"),
@@ -1907,7 +1907,7 @@ class felamimail_bo
 			return $bodyPart;
 		}
 
-		function getMultipartMixed($_uid, $_structure, $_htmlMode)
+		function getMultipartMixed($_uid, $_structure, $_htmlMode, $_preserveSeen = false)
 		{
 			if (self::$debug) echo __METHOD__."$_uid, $_htmlMode<br>";
 			$bodyPart = array();
@@ -1919,16 +1919,16 @@ class felamimail_bo
 					case 'MULTIPART':
 						switch($part->subType) {
 							case 'ALTERNATIVE':
-								$bodyPart[] = $this->getMultipartAlternative($_uid, $part->subParts, $_htmlMode);
+								$bodyPart[] = $this->getMultipartAlternative($_uid, $part->subParts, $_htmlMode, $_preserveSeen);
 								break;
 
 							case 'MIXED':
 							case 'SIGNED':
-								$bodyPart = array_merge($bodyPart, $this->getMultipartMixed($_uid, $part->subParts, $_htmlMode));
+								$bodyPart = array_merge($bodyPart, $this->getMultipartMixed($_uid, $part->subParts, $_htmlMode, $_preserveSeen));
 								break;
 
 							case 'RELATED':
-								$bodyPart = array_merge($bodyPart, $this->getMultipartRelated($_uid, $part->subParts, $_htmlMode));
+								$bodyPart = array_merge($bodyPart, $this->getMultipartRelated($_uid, $part->subParts, $_htmlMode, $_preserveSeen));
 								break;
 						}
 						break;
@@ -1939,7 +1939,7 @@ class felamimail_bo
 							case 'HTML':
 							case 'CALENDAR': // inline ics/ical files
 								if($part->disposition != 'ATTACHMENT') {
-									$bodyPart[] = $this->getTextPart($_uid, $part, $_htmlMode);
+									$bodyPart[] = $this->getTextPart($_uid, $part, $_htmlMode, $_preserveSeen);
 								}
 								break;
 						}
@@ -1947,7 +1947,7 @@ class felamimail_bo
 
 					case 'MESSAGE':
 						if($part->subType == 'delivery-status') {
-							$bodyPart[] = $this->getTextPart($_uid, $part);
+							$bodyPart[] = $this->getTextPart($_uid, $part, $_preserveSeen);
 						}
 						break;
 
@@ -1964,17 +1964,17 @@ class felamimail_bo
 			return $bodyPart;
 		}
 
-		function getMultipartRelated($_uid, $_structure, $_htmlMode)
+		function getMultipartRelated($_uid, $_structure, $_htmlMode, $_preserveSeen = false)
 		{
-			return $this->getMultipartMixed($_uid, $_structure, $_htmlMode);
+			return $this->getMultipartMixed($_uid, $_structure, $_htmlMode, $_preserveSeen);
 		}
 
-		function getTextPart($_uid, $_structure, $_htmlMode = '', $preserveSeen = false)
+		function getTextPart($_uid, $_structure, $_htmlMode = '', $_preserveSeen = false)
 		{
 			$bodyPart = array();
 			if (self::$debug) _debug_array(array($_structure,function_backtrace()));
 			$partID = $_structure->partID;
-			$mimePartBody = $this->icServer->getBodyPart($_uid, $partID, true, $preserveSeen);
+			$mimePartBody = $this->icServer->getBodyPart($_uid, $partID, true, $_preserveSeen);
 			if (PEAR::isError($mimePartBody))
 			{
 				error_log(__METHOD__.__LINE__.' failed:'.$mimePartBody->message);
@@ -2227,6 +2227,7 @@ class felamimail_bo
 
 		function getHeaders($_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse, $_filter, $_thisUIDOnly=null)
 		{
+			error_log (__METHOD__." START : ".  $_startMessage . " NUMBER : ". $_numberOfMessages . " REVERSE " . $_reverse);
 			//self::$debug=true;
 			$reverse = (bool)$_reverse;
 			// get the list of messages to fetch
@@ -2582,7 +2583,7 @@ class felamimail_bo
 			}
 		}
 
-		function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure = '', $preserveSeen = false)
+		function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure = '', $_preserveSeen = false)
 		{
 			if (self::$debug) echo __METHOD__."$_uid, $_htmlOptions, $_partID<br>";
 			if($_htmlOptions != '') {
@@ -2610,18 +2611,18 @@ class felamimail_bo
 				case 'MULTIPART':
 					switch($structure->subType) {
 						case 'ALTERNATIVE':
-							$bodyParts = array($this->getMultipartAlternative($_uid, $structure->subParts, $this->htmlOptions));
+							$bodyParts = array($this->getMultipartAlternative($_uid, $structure->subParts, $this->htmlOptions, $_preserveSeen));
 
 							break;
 
 						case 'MIXED':
 						case 'REPORT':
 						case 'SIGNED':
-							$bodyParts = $this->getMultipartMixed($_uid, $structure->subParts, $this->htmlOptions);
+							$bodyParts = $this->getMultipartMixed($_uid, $structure->subParts, $this->htmlOptions, $_preserveSeen);
 							break;
 
 						case 'RELATED':
-							$bodyParts = $this->getMultipartRelated($_uid, $structure->subParts, $this->htmlOptions);
+							$bodyParts = $this->getMultipartRelated($_uid, $structure->subParts, $this->htmlOptions, $_preserveSeen);
 							break;
 					}
 					return self::normalizeBodyParts($bodyParts);
@@ -2645,7 +2646,7 @@ class felamimail_bo
 							case 'HTML':
 							case 'PLAIN':
 							default:
-								$bodyPart = array($this->getTextPart($_uid, $structure, $this->htmlOptions, $preserveSeen));
+								$bodyPart = array($this->getTextPart($_uid, $structure, $this->htmlOptions, $_preserveSeen));
 						}
 					} else {
 						// what if the structure->disposition is attachment ,...
