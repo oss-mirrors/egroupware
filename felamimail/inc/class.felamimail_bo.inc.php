@@ -2227,7 +2227,6 @@ class felamimail_bo
 
 		function getHeaders($_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse, $_filter, $_thisUIDOnly=null)
 		{
-			error_log (__METHOD__." START : ".  $_startMessage . " NUMBER : ". $_numberOfMessages . " REVERSE " . $_reverse);
 			//self::$debug=true;
 			$reverse = (bool)$_reverse;
 			// get the list of messages to fetch
