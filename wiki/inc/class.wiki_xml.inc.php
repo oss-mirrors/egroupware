@@ -112,6 +112,7 @@ class wiki_xml extends wiki_bo
 		{
 			//echo "<pre>\n" . htmlentities($xml) . "\n</pre>\n";
 			echo $xml;
+			common::egw_exit();
 		}
 		return $xml;
 	}
