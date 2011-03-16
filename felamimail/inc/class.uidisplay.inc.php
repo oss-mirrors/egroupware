@@ -974,12 +974,21 @@
 
 			if ($print)
 			{
-				egw_framework::$header_done = false;
 				common::egw_header();
 			}
 			else
 			{
-				return $GLOBALS['egw']->framework->header();
+				if (is_a($GLOBALS['egw']->framework,'idots_framework'))
+				{
+					$idots_framework = $GLOBALS['egw']->framework;
+				}
+				else
+				{
+					include_once(EGW_INCLUDE_ROOT.'/phpgwapi/templates/idots/class.idots_framework.inc.php');
+					$idots_framework = new idots_framework();
+				}
+				egw_framework::$header_done = false;
+				return $idots_framework->header();
 			}
 		}
 
