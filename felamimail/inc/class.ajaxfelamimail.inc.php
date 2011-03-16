@@ -30,10 +30,23 @@ class ajaxfelamimail
 		// boolean if openConnection was successfull or not
 		var $_connectionStatus;
 
+		/**
+		 * Reference to felamimail_bo object
+		 *
+		 * @var felamimail_bo
+		 */
+		var $bofelamimail;
+		/**
+		 * Instance of uiwidgets
+		 *
+		 * @var uiwidgets
+		 */
+		var $uiwidgets;
+
 		function ajaxfelamimail()
 		{
 			if($this->_debug) error_log("ajaxfelamimail::ajaxfelamimail");
-			$this->charset		=  $GLOBALS['egw']->translation->charset();
+			$this->charset		=  translation::charset();
 			$this->bofelamimail	= felamimail_bo::getInstance();
 			$this->uiwidgets	= CreateObject('felamimail.uiwidgets');
 			$this->_connectionStatus = $this->bofelamimail->openConnection();
@@ -73,7 +86,7 @@ class ajaxfelamimail
 			$parentFolder = $this->_decodeEntityFolderName($_parentFolder);
 			$parentFolder = ($parentFolder == '--topfolder--' ? '' : $parentFolder);
 
-			$newSubFolder = $GLOBALS['egw']->translation->convert($_newSubFolder, $this->charset, 'UTF7-IMAP');
+			$newSubFolder = translation::convert($_newSubFolder, $this->charset, 'UTF7-IMAP');
 
 			if($this->_debug) error_log("ajaxfelamimail::addFolder($parentFolder, $newSubFolder)");
 
@@ -1014,7 +1027,7 @@ class ajaxfelamimail
 		{
 			if($this->_debug) error_log("ajaxfelamimail::renameFolder called as ($_oldFolderName, $_parentFolder, $_folderName)");
 			$oldFolderName = $this->_decodeEntityFolderName($_oldFolderName);
-			$folderName = $GLOBALS['egw']->translation->convert($this->_decodeEntityFolderName($_folderName), $this->charset, 'UTF7-IMAP');
+			$folderName = translation::convert($this->_decodeEntityFolderName($_folderName), $this->charset, 'UTF7-IMAP');
 			$parentFolder = $this->_decodeEntityFolderName($_parentFolder);
 			$parentFolder = ($_parentFolder == '--topfolder--' ? '' : $parentFolder);
 			if($this->_debug) error_log("ajaxfelamimail::renameFolder work with ($oldFolderName, $parentFolder, $folderName)");
@@ -1166,7 +1179,7 @@ class ajaxfelamimail
 					foreach(array($contact['email'],$contact['email_home']) as $email) {
 						if(!empty($email) && !isset($jsArray[$email])) {
 							$i++;
-							$str = $GLOBALS['egw']->translation->convert(trim($contact['n_fn'] ? $contact['n_fn'] : $contact['fn']).' <'.trim($email).'>',$this->charset,'utf-8');
+							$str = translation::convert(trim($contact['n_fn'] ? $contact['n_fn'] : $contact['fn']).' <'.trim($email).'>',$this->charset,'utf-8');
 							$innerHTML .= '<div class="inactiveResultRow" onmousedown="keypressed(13,1)" onmouseover="selectSuggestion('.($i-1).')">'.
 								htmlentities($str, ENT_QUOTES, 'utf-8').'</div>';
 							$jsArray[$email] = addslashes($str);
@@ -1342,7 +1355,7 @@ class ajaxfelamimail
 
 		function _encodeDisplayFolderName($_folderName)
 		{
-			$folderName = $GLOBALS['egw']->translation->convert($_folderName, 'UTF7-IMAP', $this->charset);
+			$folderName = translation::convert($_folderName, 'UTF7-IMAP', $this->charset);
 			$folderName = htmlspecialchars($folderName, ENT_QUOTES, $this->charset);
 
 			$search         = array('\\');
