@@ -340,7 +340,6 @@
 				$this->t->set_var('sentNotify','');
 				$this->t->set_var('lang_sendnotify','');
 			}
-			$this->bofelamimail->closeConnection();
 
 			$this->t->set_block('displayMsg','message_main');
 			$this->t->set_block('displayMsg','message_main_attachment');
@@ -482,6 +481,17 @@
 					'mailbox'	=>  base64_encode($this->mailbox)
 				);
 			$this->t->set_var('url_displayBody', $GLOBALS['egw']->link('/index.php',$linkData));
+
+			// if browser supports data uri: ie<8 does NOT and ie>=8 does NOT support html as content :-(
+			// --> use it to send the mail as data uri
+			if (!isset($_GET['printable']) && html::$user_agent != 'msie')
+			{
+				$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
+
+				$this->t->set_var('url_displayBody','data:text/html;charset=utf-8;base64,'.base64_encode(
+					$this->display_app_header(null,false).	// false = return content
+					$this->showBody($this->getdisplayableBody($bodyParts), false)));	// false = return content
+			}
 
 			// attachments
 			if(is_array($attachments) && count($attachments) > 0) {
@@ -939,7 +949,7 @@
 			exit;
 		}
 
-		function display_app_header($printing = NULL)
+		function display_app_header($printing = NULL, $print=true)
 		{
 			if ($_GET['menuaction'] != 'felamimail.uidisplay.printMessage' &&
 				$_GET['menuaction'] != 'felamimail.uidisplay.displayBody' &&
@@ -961,7 +971,16 @@
 				$GLOBALS['egw_info']['flags']['nofooter'] = true;
 			}
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
-			$GLOBALS['egw']->common->egw_header();
+
+			if ($print)
+			{
+				egw_framework::$header_done = false;
+				common::egw_header();
+			}
+			else
+			{
+				return $GLOBALS['egw']->framework->header();
+			}
 		}
 
 		static function emailAddressToHTML($_emailAddress, $_organisation='', $allwaysShowMailAddress=false, $showAddToAdrdessbookLink=true, $decode=true) {
