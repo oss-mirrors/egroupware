@@ -486,6 +486,7 @@
 			// --> use it to send the mail as data uri
 			if (!isset($_GET['printable']))
 			{
+/*
 				$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
 
 				$frameHtml = base64_encode(
@@ -494,6 +495,7 @@
 				$iframe_url = egw::link('/phpgwapi/js/egw_instant_load.html').'" onload="if (this.contentWindow && typeof this.contentWindow.egw_instant_load != \'undefined\') this.contentWindow.egw_instant_load(\''.$frameHtml.'\', true);';
 
 				$this->t->set_var('url_displayBody', $iframe_url);
+*/
 			}
 
 			// attachments

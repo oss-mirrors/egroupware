@@ -802,6 +802,7 @@ class uifelamimail
 			{
 				$this->t->set_var('vacation_warning','&nbsp;');
 			}
+			//error_log(__METHOD__.__LINE__.'->'.$this->connectionStatus);
 			// ui for the quotas
 			if($this->connectionStatus !== false) {
 				$quota = $this->bofelamimail->getQuotaRoot();
@@ -1071,7 +1072,6 @@ class uifelamimail
 				$this->t->parse('status_row','status_row_tpl',True);
 				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 				$this->bofelamimail->closeConnection();
-
 			}
 
 			switch($GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle']) {

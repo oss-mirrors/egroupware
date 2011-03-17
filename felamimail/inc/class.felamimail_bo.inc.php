@@ -2742,12 +2742,11 @@ class felamimail_bo
 		// return the qouta of the users INBOX
 		function getQuotaRoot()
 		{
-			if (!$this->icServer->_connected) $this->openConnection();
+			//if (!$this->icServer->_connected) $this->openConnection();
 
 			if(!$this->icServer->hasCapability('QUOTA')) {
 				return false;
 			}
-
 			$quota = $this->icServer->getStorageQuotaRoot('INBOX');
 			//error_log(__METHOD__.__LINE__.array2string($quota));
 			if(is_array($quota)) {
@@ -2949,16 +2948,16 @@ class felamimail_bo
 				$this->icServer->_connectionErrorObject->message .= $this->errorMessage .= $errormessage;
 				return false;
 			}
-			#error_log( "---------------------------open connection <br>");
-			#error_log(print_r($this->icServer,true));
+			//error_log( "---------------------------open connection ".function_backtrace());
+			//error_log(print_r($this->icServer,true));
 			if ($this->icServer->_connected == 1) {
 				$tretval = $this->icServer->selectMailbox($this->icServer->currentMailbox);
-				#error_log(__METHOD__." using existing Connection ".print_r($this->icServer->_connected,true));
+				//error_log(__METHOD__." using existing Connection ".print_r($this->icServer->_connected,true));
 			} else {
 				$tretval = $this->icServer->openConnection($_adminConnection);
-				#error_log(__METHOD__." open new Connection ".print_r($this->icServer->_connected,true));
+				//error_log(__METHOD__." open new Connection ".print_r($this->icServer->_connected,true));
 			}
-			#error_log(print_r($this->icServer->_connected,true));
+			//error_log(print_r($this->icServer->_connected,true));
 			return $tretval;
 		}
 
