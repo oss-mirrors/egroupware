@@ -1023,7 +1023,7 @@
 </script>";
 
 			// Compose the code for the onload event
-			$onload = "if (typeof $funcname != 'undefined'){ $funcname(this); }";
+			$onload = "if (typeof $funcname != 'undefined'){ $funcname(this); this.onload = function() {return false;}}";
 
 			// Return all the stuff
 			return array(

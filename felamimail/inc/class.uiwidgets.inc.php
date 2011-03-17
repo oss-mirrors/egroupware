@@ -723,6 +723,8 @@ class uiwidgets
 				if (!isset($_GET['printable']))
 				{
 					$uidisplay = CreateObject('felamimail.uidisplay');
+					$uidisplay->uid = $headerData['uid'];
+					$uidisplay->mailbox = $_folderName;
 					$mailData = $uidisplay->get_load_email_data($headerData['uid'], $partID);
 
 					$iframe_url = $mailData['src'];
