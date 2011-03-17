@@ -484,13 +484,16 @@
 
 			// if browser supports data uri: ie<8 does NOT and ie>=8 does NOT support html as content :-(
 			// --> use it to send the mail as data uri
-			if (!isset($_GET['printable']) && html::$user_agent != 'msie')
+			if (!isset($_GET['printable']))
 			{
 				$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
 
-				$this->t->set_var('url_displayBody','data:text/html;charset=utf-8;base64,'.base64_encode(
-					$this->display_app_header(null,false).	// false = return content
-					$this->showBody($this->getdisplayableBody($bodyParts), false)));	// false = return content
+				$frameHtml = base64_encode(
+					$this->get_email_header().
+					$this->showBody($this->getdisplayableBody($bodyParts), false));
+				$iframe_url = egw::link('/phpgwapi/js/egw_instant_load.html').'" onload="if (this.contentWindow && typeof this.contentWindow.egw_instant_load != \'undefined\') this.contentWindow.egw_instant_load(\''.$frameHtml.'\', true);"';
+
+				$this->t->set_var('url_displayBody', $iframe_url);
 			}
 
 			// attachments
@@ -949,7 +952,7 @@
 			exit;
 		}
 
-		function display_app_header($printing = NULL, $print=true)
+		function display_app_header($printing = NULL)
 		{
 			if ($_GET['menuaction'] != 'felamimail.uidisplay.printMessage' &&
 				$_GET['menuaction'] != 'felamimail.uidisplay.displayBody' &&
@@ -971,25 +974,25 @@
 				$GLOBALS['egw_info']['flags']['nofooter'] = true;
 			}
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
+			common::egw_header();
+		}
 
-			if ($print)
-			{
-				common::egw_header();
+		static function get_email_header()
+		{
+			return '
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+		<style>
+			body, td, textarea {
+				font-family: Verdana, Arial, Helvetica,sans-serif;
+				font-size: 11px;
 			}
-			else
-			{
-				if (is_a($GLOBALS['egw']->framework,'idots_framework'))
-				{
-					$idots_framework = $GLOBALS['egw']->framework;
-				}
-				else
-				{
-					include_once(EGW_INCLUDE_ROOT.'/phpgwapi/templates/idots/class.idots_framework.inc.php');
-					$idots_framework = new idots_framework();
-				}
-				egw_framework::$header_done = false;
-				return $idots_framework->header();
-			}
+		</style>
+	</head>
+	<body>
+';
 		}
 
 		static function emailAddressToHTML($_emailAddress, $_organisation='', $allwaysShowMailAddress=false, $showAddToAdrdessbookLink=true, $decode=true) {

@@ -719,14 +719,15 @@ class uiwidgets
 				$iframe_url = $GLOBALS['egw']->link('/index.php',$linkData);
 				// if browser supports data uri: ie<8 does NOT and ie>=8 does NOT support html as content :-(
 				// --> use it to send the mail as data uri
-				if (!isset($_GET['printable']) && html::$user_agent != 'msie')
+				if (!isset($_GET['printable']))
 				{
 					$bodyParts	= $this->bofelamimail->getMessageBody($headerData['uid'],'',$partID);
 					$uidisplay = CreateObject('felamimail.uidisplay');
 
-					$iframe_url = 'data:text/html;charset=utf-8;base64,'.base64_encode(
-						$uidisplay->display_app_header(null,false).	// false = return content
-						$uidisplay->showBody($uidisplay->getdisplayableBody($bodyParts), false));	// false = return content
+					$frameHtml = base64_encode(
+						$uidisplay->get_email_header().
+						$uidisplay->showBody($uidisplay->getdisplayableBody($bodyParts), false));
+					$iframe_url = egw::link('/phpgwapi/js/egw_instant_load.html').'" onload="if (this.contentWindow && typeof this.contentWindow.egw_instant_load != \'undefined\') this.contentWindow.egw_instant_load(\''.$frameHtml.'\', true);"';
 				}
 
 				//_debug_array($GLOBALS['egw']->link('/index.php',$linkData));
