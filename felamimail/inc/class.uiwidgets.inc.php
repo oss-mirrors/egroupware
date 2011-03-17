@@ -727,7 +727,7 @@ class uiwidgets
 					$frameHtml = base64_encode(
 						$uidisplay->get_email_header().
 						$uidisplay->showBody($uidisplay->getdisplayableBody($bodyParts), false));
-					$iframe_url = egw::link('/phpgwapi/js/egw_instant_load.html').'" onload="if (this.contentWindow && typeof this.contentWindow.egw_instant_load != \'undefined\') this.contentWindow.egw_instant_load(\''.$frameHtml.'\', true);"';
+					$iframe_url = egw::link('/phpgwapi/js/egw_instant_load.html').'" onload="if (this.contentWindow && typeof this.contentWindow.egw_instant_load != \'undefined\') this.contentWindow.egw_instant_load(\''.$frameHtml.'\', true);';
 				}
 
 				//_debug_array($GLOBALS['egw']->link('/index.php',$linkData));

@@ -491,7 +491,7 @@
 				$frameHtml = base64_encode(
 					$this->get_email_header().
 					$this->showBody($this->getdisplayableBody($bodyParts), false));
-				$iframe_url = egw::link('/phpgwapi/js/egw_instant_load.html').'" onload="if (this.contentWindow && typeof this.contentWindow.egw_instant_load != \'undefined\') this.contentWindow.egw_instant_load(\''.$frameHtml.'\', true);"';
+				$iframe_url = egw::link('/phpgwapi/js/egw_instant_load.html').'" onload="if (this.contentWindow && typeof this.contentWindow.egw_instant_load != \'undefined\') this.contentWindow.egw_instant_load(\''.$frameHtml.'\', true);';
 
 				$this->t->set_var('url_displayBody', $iframe_url);
 			}
