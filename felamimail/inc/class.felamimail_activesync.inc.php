@@ -1080,7 +1080,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 	private function fetchMessages($folderid, $cutoffdate=NULL, $_id=NULL)
 	{
-		$starttime = microtime (true);
+		if ($this->debugLevel>1) $starttime = microtime (true);
 		debugLog(__METHOD__.__LINE__);
 		$this->_connect($this->account);
 		$messagelist = array();
@@ -1088,7 +1088,7 @@ class felamimail_activesync implements activesync_plugin_read
 		$rv = $this->splitID($folderid,$account,$_folderName,$id);
 		if ($this->debugLevel>0) debugLog (__METHOD__.' for Folder:'.$_folderName.' Filter:'.array2string($_filter).' Ids:'.array2string($_id));
 		$rv_messages = $this->mail->getHeaders($_folderName, $_startMessage=1, $_numberOfMessages=9999999, $_sort=0, $_reverse=false, $_filter, $_id);
-		if ($_id == NULL)  error_log(__METHOD__." found :". count($rv_messages['header']));
+		if ($_id == NULL && $this->debugLevel>1)  error_log(__METHOD__." found :". count($rv_messages['header']));
 		//debugLog(__METHOD__.__LINE__.array2string($rv_messages));
 		foreach ((array)$rv_messages['header'] as $k => $vars)
 		{
@@ -1109,8 +1109,11 @@ class felamimail_activesync implements activesync_plugin_read
 			$messagelist[$vars['uid']] = $mess;
 			unset($mess);
 		}
-		$endtime = microtime(true) - $starttime;
-		error_log(__METHOD__. " time used : ".$endtime);
+		if ($this->debugLevel>1) 
+		{
+			$endtime = microtime(true) - $starttime;
+			error_log(__METHOD__. " time used : ".$endtime);
+		}
 		return $messagelist;
 	}
 
