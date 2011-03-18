@@ -1265,14 +1265,29 @@ class felamimail_bo
 			return $attachmentData;
 		}
 
-		// this function is based on a on "Building A PHP-Based Mail Client"
-		// http://www.devshed.com
-		// fetch a specific attachment from a message
+		/**
+		 * Fetch a specific attachment from a message by it's cid
+		 *
+		 * this function is based on a on "Building A PHP-Based Mail Client"
+		 * http://www.devshed.com
+		 *
+		 * @param string|int $_uid
+		 * @param string $_cid
+		 * @param string $_part
+		 * @return array with values for keys 'type', 'filename' and 'attachment'
+		 */
 		function getAttachmentByCID($_uid, $_cid, $_part)
 		{
+			// some static variables to avoid fetching the same mail multible times
+			static $uid,$part,$attachments,$structure;
+
+			if ($_uid != $uid || $_part != $part)
+			{
+				$attachments = $this->getMessageAttachments($uid=$_uid, $part=$_part);
+				$structure = null;
+			}
 			$partID = false;
 			#error_log("getAttachmentByCID:$_uid, $_cid, $_part");
-			$attachments = $this->getMessageAttachments($_uid, $_part);
 			foreach($attachments as $attachment) {
 				//error_log(print_r($attachment,true));
 				if(isset($attachment['cid']) && (strpos($attachment['cid'], $_cid) !== false || strpos($_cid, $attachment['cid']) !== false)) {
@@ -1288,9 +1303,12 @@ class felamimail_bo
 			}
 
 			// parse message structure
-			$structure = $this->icServer->getStructure($_uid, true);
-			$structure = $this->_getSubStructure($structure, $partID);
-			$filename = self::getFileNameFromStructure($structure);
+			if (is_null($structure))
+			{
+				$structure = $this->icServer->getStructure($_uid, true);
+			}
+			$part_structure = $this->_getSubStructure($structure, $partID);
+			$filename = self::getFileNameFromStructure($part_structure);
 			$attachment = $this->icServer->getBodyPart($_uid, $partID, true);
 			if (PEAR::isError($attachment))
 			{
@@ -1310,7 +1328,7 @@ class felamimail_bo
 						);
 			}
 
-			switch ($structure->encoding) {
+			switch ($part_structure->encoding) {
 				case 'BASE64':
 					// use imap_base64 to decode
 					$attachment = imap_base64($attachment);
@@ -1325,7 +1343,7 @@ class felamimail_bo
 			}
 
 			$attachmentData = array(
-				'type'		=> $structure->type .'/'. $structure->subType,
+				'type'		=> $part_structure->type .'/'. $part_structure->subType,
 				'filename'	=> $filename,
 				'attachment'	=> $attachment
 			);

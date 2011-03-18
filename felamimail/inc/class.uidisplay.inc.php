@@ -56,7 +56,17 @@
 
 		// the permanent id of the message
 		var $uid;
+		/**
+		 * Reference to felamimail_bo
+		 *
+		 * @var felamimail_bo
+		 */
 		var $bofelamimail;
+		/**
+		 * Reference to bopreference instance of felamimail_bo
+		 *
+		 * @var bopreferences
+		 */
 		var $bopreferences;
 
 		function uidisplay()
@@ -1389,19 +1399,7 @@
 					// create links for inline images
 					if ($modifyURI)
 					{
-						$linkData = array (
-							'menuaction'    => 'felamimail.uidisplay.displayImage',
-							'uid'		=> $this->uid,
-							'mailbox'	=> base64_encode($this->mailbox)
-						);
-						$imageURL = $GLOBALS['egw']->link('/index.php', $linkData);
-						if ($this->partID) {
-							$newBody = preg_replace("/src=(\"|\')cid:(.*)(\"|\')/iUe",
-								"'src=\"$imageURL&cid='.base64_encode('$2').'&partID='.urlencode($this->partID).'\"'", $newBody);
-						} else {
-							$newBody = preg_replace("/src=(\"|\')cid:(.*)(\"|\')/iUe",
-								"'src=\"$imageURL&cid='.base64_encode('$2').'&partID='.'\"'", $newBody);
-						}
+						$newBody = preg_replace_callback("/src=(\"|\')cid:(.*)(\"|\')/iU",array($this,'image_callback'),$newBody);
 					}
 
 					// create links for email addresses
@@ -1427,6 +1425,47 @@
 			$body = preg_replace($nonDisplayAbleCharacters,'',$body);
 
 			return $body;
+		}
+
+		/**
+		 * preg_replace callback to replace image cid url's
+		 *
+		 * @param array $matches matches from preg_replace("/src=(\"|\')cid:(.*)(\"|\')/iU",...)
+		 * @return string src attribute to replace
+		 */
+		function image_callback($matches)
+		{
+			static $cache = array();	// some caching, if mails containing the same image multiple times
+
+			$linkData = array (
+				'menuaction'    => 'felamimail.uidisplay.displayImage',
+				'uid'		=> $this->uid,
+				'mailbox'	=> base64_encode($this->mailbox),
+				'cid'		=> base64_encode($matches[2]),
+				'partId'	=> $this->partID,
+			);
+			$imageURL = $GLOBALS['egw']->link('/index.php', $linkData);
+
+			// to test without data uris, comment the if close incl. it's body
+			if (html::$user_agent != 'msie' || html::$ua_version >= 8)
+			{
+				if (!isset($cache[$imageURL]))
+				{
+					$attachment = $this->bofelamimail->getAttachmentByCID($this->uid, $matches[2], $this->partID);
+
+					// only use data uri for "smaller" images, as otherwise the first display of the mail takes to long
+					if (bytes($attachment['attachment']) < 8192)	// msie=8 allows max 32k data uris
+					{
+						$cache[$imageURL] = 'data:'.$attachment['type'].';base64,'.base64_encode($attachment['attachment']);
+					}
+					else
+					{
+						$cache[$imageURL] = $imageURL;
+					}
+				}
+				$imageURL = $cache[$imageURL];
+			}
+			return 'src="'.$imageURL.'"';
 		}
 
 		function printMessage($messageId = NULL, $callfromcompose = NULL)
