@@ -265,8 +265,8 @@ class Net_IMAP extends Net_IMAPProtocol {
     function getRawHeaders($msg_id, $part_id = '', $uidFetch = false)
     {
         if($part_id != '') {
-          $command = 'BODY.PEEK[' . $part_id . 'HEADER]';
-          $resp_command = 'BODY[' . $part_id . 'HEADER]';
+          $command = 'BODY.PEEK[' . $part_id . '.HEADER]';
+          $resp_command = 'BODY[' . $part_id . '.HEADER]';
         } else {
           $command = 'BODY.PEEK[HEADER]';
           $resp_command = 'BODY[HEADER]';
