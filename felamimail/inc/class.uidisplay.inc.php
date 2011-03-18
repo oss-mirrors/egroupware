@@ -1442,7 +1442,7 @@
 				'uid'		=> $this->uid,
 				'mailbox'	=> base64_encode($this->mailbox),
 				'cid'		=> base64_encode($matches[2]),
-				'partId'	=> $this->partID,
+				'partID'	=> $this->partID,
 			);
 			$imageURL = $GLOBALS['egw']->link('/index.php', $linkData);
 
