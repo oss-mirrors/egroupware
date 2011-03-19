@@ -1109,7 +1109,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$messagelist[$vars['uid']] = $mess;
 			unset($mess);
 		}
-		if ($this->debugLevel>1) 
+		if ($this->debugLevel>1)
 		{
 			$endtime = microtime(true) - $starttime;
 			error_log(__METHOD__. " time used : ".$endtime);
@@ -1471,5 +1471,16 @@ class felamimail_activesync implements activesync_plugin_read
 			throw new egw_exception_assertion_failed(__METHOD__."() called without this->_devid set!");
 		}
 		return STATE_DIR.'/'.strtolower($this->backend->_devid).'/'.$this->backend->_devid.'.hashes';
+	}
+
+	/**
+	 * Populates $settings for the preferences
+	 *
+	 * @param array|string $hook_data
+	 * @return array
+	 */
+	function settings($hook_data)
+	{
+		return array();
 	}
 }
