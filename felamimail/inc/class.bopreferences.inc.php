@@ -282,7 +282,9 @@
 				if (!empty($userPrefs['trash_folder']))
 					$userPrefs['move_to_trash'] 	= True;
 				if (!empty($userPrefs['sent_folder']))
-					$userPrefs['move_to_sent'] 	= True;
+				{
+					if (!isset($userPrefs['sendOptions']) || empty($userPrefs['sendOptions'])) $userPrefs['sendOptions'] = 'move_to_sent';
+				}
 
 				$userPrefs['signature']		= $userPrefs['email_sig'];
 

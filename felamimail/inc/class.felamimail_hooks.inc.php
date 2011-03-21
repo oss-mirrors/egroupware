@@ -162,6 +162,11 @@ class felamimail_hooks
 			'remove_immediately'	=> lang('remove immediately')
 		);
 
+		$sendOptions = array(
+			'move_to_sent'		=> lang('send message and move to send folder (if configured)'),
+			'send_only'	=> lang('only send message, do not copy a version of the message to the configured sent folder')
+		);
+
 		$composeOptions = array(
 			'html'     => lang('html'),
 			'text'   => lang('text/plain'),
@@ -381,6 +386,15 @@ class felamimail_hooks
 				'admin'  => False,
 				'default'=> 'move_to_trash',
 			),
+			'sendOptions' => array(
+				'type'   => 'select',
+				'label'  => 'when sending messages',
+				'name'   => 'sendOptions',
+				'values' => $sendOptions,
+				'xmlrpc' => True,
+				'admin'  => False,
+				'default'=> 'move_to_sent',
+			),
 		    'composeOptions' => array(
 		        'type'   => 'select',
 		        'label'  => 'start new messages with mime type plain/text or html?',
@@ -439,6 +453,15 @@ class felamimail_hooks
 		        'xmlrpc' => True,
 		        'admin'  => False,
 		    ),
+			'trustServersUnseenInfo' => array(
+				'type'   => 'select',
+				'label'  => 'trust servers SEEN / UNSEEN info when retrieving the folder status. (if you select no, we will search for the UNSEEN messages and count them ourselves)',
+				'name'   => 'trustServersUnseenInfo',
+				'values' => $no_yes,
+				'xmlrpc' => True,
+				'default'=> 1,
+				'admin'  => False,
+			),
 			'showAllFoldersInFolderPane' => array(
 				'type'   => 'select',
 				'label'  => 'show all Folders (subscribed AND unsubscribed) in Main Screen Folder Pane',

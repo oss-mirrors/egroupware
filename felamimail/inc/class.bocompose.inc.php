@@ -35,7 +35,8 @@
 			$this->bofelamimail	= felamimail_bo::getInstance();
 			$this->bopreferences =& $this->bofelamimail->bopreferences;
 			$this->preferences	=& $this->bofelamimail->mailPreferences; // $this->bopreferences->getPreferences();
-			$this->preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
+			// we should get away from this $this->preferences->preferences should hold the same info
+			$this->preferencesArray =& $this->preferences->preferences; //$GLOBALS['egw_info']['user']['preferences']['felamimail']; 
 			//force the default for the forwarding -> asmail
 			if (is_array($this->preferencesArray)) {
 				if (!array_key_exists('message_forwarding',$this->preferencesArray)
@@ -1026,6 +1027,7 @@
 			$folder = (array)$this->sessionData['folder'];
 			if(isset($this->preferences->preferences['sentFolder']) &&
 				$this->preferences->preferences['sentFolder'] != 'none' &&
+				$this->preferences->preferences['sendOptions'] != 'move_to_sent' &&
 				$messageIsDraft == false) {
 				$folder[] = $this->preferences->preferences['sentFolder'];
 			}

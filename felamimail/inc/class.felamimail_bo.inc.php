@@ -426,15 +426,13 @@ class felamimail_bo
 					case 'UNSEEN':
 						$imapFilter .= $criteria .' ';
 						break;
-
-					case 'BEFORE':
-					case 'ON':
-					case 'SINCE':
-						$imapFilter .= $criteria .' "'. date() .'" ';
-						break;
 				}
 			#}
-		#	error_log("Filter: $imapFilter");
+			if (isset($_criterias['range']) && !empty($_criterias['range']))
+			{
+				$imapFilter .= $_criterias['range'].' ';
+			}
+			#error_log("Filter: $imapFilter");
 			if($imapFilter == '') {
 				return 'ALL';
 			} else {
@@ -1467,7 +1465,9 @@ class felamimail_bo
 				$retValue['uidnext']		= $folderStatus['UIDNEXT'];
 				$retValue['uidvalidity']	= $folderStatus['UIDVALIDITY'];
 				$retValue['unseen']		= $folderStatus['UNSEEN'];
-				if ($retValue['unseen']==0) // some servers dont serve the UNSEEN information
+				if ($retValue['unseen']==0 && 
+					isset($this->mailPreferences->preferences['trustServersUnseenInfo']) && // some servers dont serve the UNSEEN information
+					$this->mailPreferences->preferences['trustServersUnseenInfo']==false)
 				{
 					$sortResult = $this->getSortedList($_folderName, $_sort=0, $_reverse=1, $_filter=array('status'=>'UNSEEN'));
 					$retValue['unseen'] = count($sortResult);
@@ -2124,7 +2124,7 @@ class felamimail_bo
 				$sortResult = $this->sessionData['folderStatus'][0][$_folderName]['sortResult'];
 
 			} else {
-				if (self::$debug) error_log(__METHOD__." USE NO CACHE");
+				if (self::$debug) error_log(__METHOD__." USE NO CACHE -> $_folderName :".array2string($_filter).function_backtrace());
 				$filter = $this->createIMAPFilter($_folderName, $_filter);
 				//_debug_array($filter);
 
@@ -2175,7 +2175,6 @@ class felamimail_bo
 					}
 					if (self::$debug) error_log(__METHOD__." using Filter:".print_r($filter,true)." ->".print_r($sortResult,true));
 				}
-
 				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity'] = $folderStatus['UIDVALIDITY'];
 				$this->sessionData['folderStatus'][0][$_folderName]['messages']	= $folderStatus['EXISTS'];
 				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	= $folderStatus['UIDNEXT'];
@@ -2255,6 +2254,13 @@ class felamimail_bo
 			#$this->icServer->setDebug(true);
 			if ($_thisUIDOnly === null)
 			{
+				if (($startMessage || $_numberOfMessages) && !isset($_filter['range']))
+				{
+					// this will not work we must calculate the range we want to retieve as e.g.: 0:20 retirieves the first 20 mails and sorts them 
+					// if sort capability is applied to the range fetched, not sort first and fetch the range afterwards
+					//$_filter['range'] ="$_startMessage:$_numberOfMessages";
+					//$_filter['range'] ="$_startMessage:*";
+				}
 				if (self::$debug) error_log(__METHOD__.__LINE__."$_folderName, $_sort, $_reverse, ".array2string($_filter).", $rByUid");
 				$sortResult = $this->getSortedList($_folderName, $_sort, $_reverse, $_filter, $rByUid);
 				if (self::$debug) error_log(__METHOD__.__LINE__.array2string($sortResult));
