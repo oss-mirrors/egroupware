@@ -91,11 +91,13 @@ synchronize this addressbook	syncml	en	Synchronize this addressbook
 synchronize this list	syncml	en	Synchronize this list
 synchronize this selection	syncml	en	Synchronize this selection
 syncml preferences	syncml	en	SyncML preferences
+syncml table consistency	syncml	en	SyncML Table Consistency
 syncronization calendars	syncml	en	Syncronization Calendars
 task (infolog)	syncml	en	Task (InfoLog)
 task synchronization options	syncml	en	Task Synchronization Options
 tasks	syncml	en	tasks
 the client and server data is unchanged (split brain).	syncml	en	The client and server data is unchanged (split brain).
+the consistency of the internal data structures is re-established.	syncml	en	The consistency of the internal data structures is re-established.
 the next two options will put the server in read only mode. if the client sends changes to the server, you can choose between:	syncml	en	The next two options will put the server in read only mode. If the client sends changes to the server, you can choose between:
 the second option relies on the client's cooperation, though. if it gets a change, the server will send its own version of the data back to the client. the client is supposed to roll back the changes this way.	syncml	en	The second option relies on the client's cooperation, though. If it gets a change, the server will send its own version of the data back to the client. The client is supposed to roll back the changes this way.
 the server reverts all client changes.	syncml	en	The server reverts all client changes.

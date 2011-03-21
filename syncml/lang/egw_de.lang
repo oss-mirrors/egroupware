@@ -55,7 +55,7 @@ if enabled, egroupware will ignore the mapping information of fromer sync-sessio
 if you select <b>duplicates</b> as conflict resolution, you may want to assign a certain <b>category</b> for these data items. if egroupware detects a collision, it will assign the old server item to the selected <i>conflict category</i> and replace the original item with the clients content.	syncml	de	Wenn Sie <b>Duplikate</b> als Konflikt Lösung gewählt haben, können Sie eine spezielle <b>Kategorie</b> für diese Daten einstellen. Wenn EGroupware eine Abweichung bzw. Konflikt erkannt hat, wird der alte Eintrag des Servers mit der gewählten <i>Konflikt Kategorie</i> belegt und der bestehende Servereintrag mit dem des Endgerätes überschrieben.
 ignore client	syncml	de	Endgerät ignorieren
 infolog conflict category	syncml	de	Infolog Konflikt Kategorie
-items are changed on both &mdash; server and client side &mdash; before the next synchronization, this is called a conflict situation. you can configure the conflict handling of egroupware for every target individually. there are three different ways to handle colliding client changes:<br>	syncml	de	Einträge werden auf beiden Seiten geändert &mdash; Server und Endgerät &mdash; Dies führt zu einer Konfliktsituation, die vor der nächsten Synchronisation durch entsprechnde Einstellungen gelöst werden sollte. Sie können die Behebung des Konflikts für jede EGroupware Anwendung individuell konfigurieren. Es gibt drei verschiedene Wege mit dieser Situationen umzugehen:<br>
+items are changed on both &mdash; server and client side &mdash; before the next synchronization, this is called a conflict situation. you can configure the conflict handling of egroupware for every target individually. there are three different ways to handle colliding client changes:<br>	syncml	de	Einträge werden auf beiden Seiten geändert — Server und Endgerät — Dies führt zu einer Konfliktsituation, die vor der nächsten Synchronisation durch entsprechnde Einstellungen gelöst werden sollte. Sie können die Behebung des Konflikts für jede EGroupware Anwendung individuell konfigurieren. Es gibt drei verschiedene Wege mit dieser Situationen umzugehen:<br>
 jobs	syncml	de	jobs
 merge data	syncml	de	Daten zusammenführen
 minimum accepted uid length	syncml	de	Minimale akzeptierte UID Länge
@@ -91,11 +91,13 @@ synchronize this addressbook	syncml	de	Dieses Adressbuch synchronisieren
 synchronize this list	syncml	de	Diese Verteilerliste synchronisieren
 synchronize this selection	syncml	de	Diese Auswahl synchronisieren
 syncml preferences	syncml	de	SyncML Einstellungen
+syncml table consistency	syncml	de	SyncML Tabellen Konsistenz
 syncronization calendars	syncml	de	Kalender Synchronisation
 task (infolog)	syncml	de	Aufgaben (Infolog)
 task synchronization options	syncml	de	Einstellungen für die Aufgaben Synchronisation
 tasks	syncml	de	tasks
 the client and server data is unchanged (split brain).	syncml	de	Die Daten auf dem Endgerät und auf dem Server werden nicht verändert (Getrennte Datenhaltung).
+the consistency of the internal data structures is re-established.	syncml	de	Die Konsistenz der internen Datenstruktur wurde wieder hergestellt.
 the next two options will put the server in read only mode. if the client sends changes to the server, you can choose between:	syncml	de	Die nächsten beiden Optionen versetzen den Server in einen 'nur lese' Modus, d.h. der Server nimmt keine Veränderungen vom Endgerät an. Wenn das Endgerät Daten zum Server sendet können Sie zwischen diesen Optionen wählen:
 the second option relies on the client's cooperation, though. if it gets a change, the server will send its own version of the data back to the client. the client is supposed to roll back the changes this way.	syncml	de	Die Variante Nr. 5 vertraut auf die zuverlässige Kooperation des Endgerätes. Sobald das Endgerät Änderungen an den Server sendet, verschickt der Server seinen aktuellen Datensatz zum Endgerät und zwingt dieses Gerät, die geänderten Daten anzunehmen.
 the server reverts all client changes.	syncml	de	Der Server nimmt die Änderungen des Endgerätes nicht an, sondern der Server sendet seinen aktuellen Datensatz an das Endgerät.
