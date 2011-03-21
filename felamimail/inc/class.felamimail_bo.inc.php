@@ -776,7 +776,7 @@ class felamimail_bo
 		 */
 		function flagMessages($_flag, $_messageUID,$_folder=NULL)
 		{
-			error_log("felamimail::bocompose::flagMessages " .$_flag);
+			//error_log(__METHOD__.__LINE__.'->' .$_flag);
 			if(!is_array($_messageUID)) {
 				#return false;
 				if ($_messageUID=='all')
