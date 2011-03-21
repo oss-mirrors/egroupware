@@ -48,6 +48,7 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 existing links	bookmarks	en	Existing links
 export	bookmarks	en	Export
 export bookmarks	common	en	Export Bookmarks
+export definitition to use for nextmatch export	bookmarks	en	Export definitition to use for nextmatch export
 export format	bookmarks	en	Export format
 fewer	bookmarks	en	Fewer
 filter by	bookmarks	en	Filter by
@@ -59,6 +60,7 @@ global categories	bookmarks	en	Global Categories
 highest	bookmarks	en	Highest
 history	bookmarks	en	History
 i thought you would be interested in the following link(s):	bookmarks	en	I thought you would be interested in the following link(s):
+if you specify an export definition, it will be used when you export	bookmarks	en	If you specify an export definition, it will be used when you export
 import bookmarks	common	en	Import bookmarks
 import under category	bookmarks	en	Import under category
 last modified	bookmarks	en	Last modified

@@ -8,6 +8,7 @@ added	bookmarks	de	Hinzugefügt
 all bookmarks	bookmarks	de	Alle Lesezeichen
 and	bookmarks	de	Und
 append this message to mailed bookmarks	bookmarks	de	Diese Nachricht an zu verschickende Lesezeichen anhängen.
+apply the action on the whole query, not only the shown bookmarks!!!	bookmarks	de	Wendet den Befehl auf die gesamte Abfrage an, NICHT nur auf die angezeigten Lesezeichen !!!?
 ascending	bookmarks	de	Absteigend
 book marks	common	de	Lesezeichen
 bookmark - %1	bookmarks	de	Lesezeichen - %1
@@ -36,7 +37,7 @@ created	bookmarks	de	Erstellt
 custom fields	bookmarks	de	Benutzerdefinierte Felder
 date added	bookmarks	de	Datum
 date changed	bookmarks	de	Datum geändert
-date last updated	bookmarks	de	Datum der letzten &Uuml;berarbeitung
+date last updated	bookmarks	de	Datum der letzten Überarbeitung
 date last visited	bookmarks	de	Datum des letzten Besuches
 default view for bookmarks	bookmarks	de	Standard Ansicht für Lesezeichen
 descending	bookmarks	de	Aufsteigend
@@ -47,6 +48,7 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 existing links	bookmarks	de	Bestehende Verknüpfungen
 export	bookmarks	de	Export
 export bookmarks	common	de	Lesezeichen exportieren
+export definitition to use for nextmatch export	bookmarks	de	Export Profil der Listenansicht (Disketten Symbol)
 export format	bookmarks	de	Export Format
 fewer	bookmarks	de	Weniger
 filter by	bookmarks	de	Filtern nach
@@ -58,6 +60,7 @@ global categories	bookmarks	de	Globale Kategorien
 highest	bookmarks	de	Höchste
 history	bookmarks	de	Historie
 i thought you would be interested in the following link(s):	bookmarks	de	Ich denke Sie könnten an den folgenden Links interessiert sein:
+if you specify an export definition, it will be used when you export	bookmarks	de	Wählen Sie eine Export Definition für den Export
 import bookmarks	common	de	Lesezeichen importieren
 import under category	bookmarks	de	Import unter der Kategoie
 last modified	bookmarks	de	Letzte Änderung
@@ -80,7 +83,7 @@ netscape bookmark filename is required!	bookmarks	de	Dateinamen der Netscape-Les
 netscape/mozilla	bookmarks	de	Netscape/Mozilla
 new	bookmark	de	Neu
 new bookmark	bookmarks	de	Neues Lesezeichen
-note: you can use bookmark files exported as html	bookmarks	en	Achtung: Sie können Lesezeichen nutzen, die als HTML-Datei exportiert wurden.
+note: you can use bookmark files exported as html	bookmarks	de	Achtung: Sie können Lesezeichen nutzen, die als HTML-Datei exportiert wurden.
 or	bookmarks	de	oder
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	de	Bitte <b>An E-Mail-Adresse</b>, <b>Betreff</b> and <b>Nachricht</b> ausfüllen!
 please select the categories to export	bookmarks	de	Bitte wählen Sie die zu exportierenden Kategorien
