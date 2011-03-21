@@ -113,6 +113,7 @@ display of html emails	felamimail	de	HTML-E-Mails anzeigen
 display only when no plain text is available	felamimail	de	nur anzeigen wenn kein Plain Text vorhanden ist
 display preferences	felamimail	de	Anzeige Einstellungen
 displaying html messages is disabled	felamimail	de	Die Anzeige von HTML-E-Mails ist deaktiviert.
+displaying plain messages is disabled	felamimail	de	Die Anzeige von reinen Text E-Mails ist deaktiviert.
 do it!	felamimail	de	Mach es!
 do not use sent	felamimail	de	Gesendete Objekte (Sent) nicht verwenden
 do not use trash	felamimail	de	Gelöschte Objekte (Trash) nicht verwenden
