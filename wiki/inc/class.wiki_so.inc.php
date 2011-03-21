@@ -489,11 +489,11 @@ class wiki_so	// DB-Layer
 			" GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_title,t1.wiki_body".
 			" HAVING t1.wiki_version=MAX(t2.wiki_version) AND (";
 
-		$search_in = $search_in ? explode(',',$search_in) : array('wiki_name','wiki_title','wiki_body');
+		$search_in = $search_in ? explode(',',$search_in) : array('t1.wiki_name','t1.wiki_title','t1.wiki_body');
 
 		if (!$this->db->capabilities['like_on_text'])
 		{
-			$search_in = array_intersect($search_in,array('wiki_name','wiki_title'));
+			$search_in = array_intersect($search_in,array('t1.wiki_name','t1.wiki_title'));
 		}
 
 		// Use so_sql's search builder for consistancy & extra features, like AND / OR
