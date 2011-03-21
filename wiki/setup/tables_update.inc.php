@@ -286,15 +286,15 @@ function wiki_upgrade1_8()
 	$sql = "UPDATE egw_wiki_pages
 SET wiki_readable = (
     case wiki_readable
-        WHEN 0 THEN ',_0,'
-        WHEN 1 THEN ',_1,'
-        WHEN 2 THEN ',_2,'
+        WHEN '0' THEN ',_0,'
+        WHEN '1' THEN ',_1,'
+        WHEN '2' THEN ',_2,'
         ELSE ".$GLOBALS['egw_setup']->db->concat("','", 'wiki_readable', "','")."
     END),
 wiki_writable = (case wiki_writable
-        WHEN 0 THEN ',_0,'
-        WHEN 1 THEN ',_1,'
-        WHEN 2 THEN ',_2,'
+        WHEN '0' THEN ',_0,'
+        WHEN '1' THEN ',_1,'
+        WHEN '2' THEN ',_2,'
         ELSE ".$GLOBALS['egw_setup']->db->concat("','", 'wiki_writable', "','")."
     END)";
 	$GLOBALS['egw_setup']->oProc->query($sql, __LINE__, __FILE__);
