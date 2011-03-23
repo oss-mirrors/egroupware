@@ -57,7 +57,7 @@ class uifelamimail
 			$this->displayCharset	= translation::charset();
 			$this->bofelamimail     = felamimail_bo::getInstance(false);
 
-			$this->bofilter		= CreateObject('felamimail.bofilter',false);
+			$this->bofilter		= new felamimail_bofilter(false);
 			$this->bopreferences	= $this->bofelamimail->bopreferences;
 			$this->preferences	=& $this->bofelamimail->mailPreferences;
 

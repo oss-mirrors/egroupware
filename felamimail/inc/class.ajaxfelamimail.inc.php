@@ -148,7 +148,7 @@ class ajaxfelamimail
 			$this->bofelamimail->restoreSessionData();
 			$this->bofelamimail->compressFolder($this->sessionData['mailbox']);
 
-			$bofilter = CreateObject('felamimail.bofilter');
+			$bofilter = new felamimail_bofilter();
 
 			$sortResult = $this->bofelamimail->getSortedList(
 				$this->sessionData['mailbox'],
@@ -777,7 +777,7 @@ class ajaxfelamimail
 		function quickSearch($_searchType, $_searchString, $_status)
 		{
 			// save the filter
-			$bofilter		= CreateObject('felamimail.bofilter');
+			$bofilter		= new felamimail_bofilter();
 
 			$filter['filterName']	= lang('Quicksearch');
 			$filter['type']		= $_searchType;

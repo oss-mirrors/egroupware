@@ -13,26 +13,39 @@
 	\***************************************************************************/
 	/* $Id$ */
 
-	class sofelamimail
+	class felamimail_sofilter
 	{
-		function sofelamimail()
-		{
-			#$this->bopreferences	=& CreateObject('felamimail.bopreferences');
-		}
+		var $filter_table = 'egw_felamimail_displayfilter';	// only reference to table-prefix
 
-		function fetchheader($_header)
+		function __construct()
 		{
-			$headerRows = explode("\n",$_header);
-			for($i=0;$i<count($headerRows);$i++)
-			{
-				if(preg_match("/^From:(.*)/i",$headerRows[$i],$matches))
-					$retValue['from'] = $matches[1];
-				if(preg_match("/^to:(.*)/i",$headerRows[$i],$matches))
-					$retValue['to'] = $matches[1];
-			}
+			$this->accountid	= $GLOBALS['egw_info']['user']['account_id'];
+			$this->db		= clone($GLOBALS['egw']->db);
+		}
+		
+		function saveFilter($_filterArray)
+		{
+			$this->db->insert($this->filter_table,array(
+					'fmail_filter_data' => serialize($_filterArray)
+				),array(
+					'fmail_filter_accountid' => $this->accountid
+				),__LINE__,__FILE__,'felamimail');
+
+			unset($this->sessionData['filter'][$_filterID]);
+		}
+		
+		function restoreFilter()
+		{
+			$this->db->select($this->filter_table,'fmail_filter_data',array(
+					'fmail_filter_accountid' => $this->accountid
+				),__LINE__,__FILE__,False,False,'felamimail');
 			
-			return $retValue;
+			
+			if ($this->db->next_record())
+			{
+				$filter = unserialize($this->db->f('fmail_filter_data'));
+				return $filter;
+			}
 		}
 	}
-
 ?>

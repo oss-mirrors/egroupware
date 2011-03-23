@@ -31,7 +31,7 @@
 			$this->sort		= $_GET['sort'];
 
 			$this->bofelamimail	= felamimail_bo::getInstance();
-			$this->bofilter		= CreateObject('felamimail.bofilter');
+			$this->bofilter		= new felamimail_bofilter();
 			$this->sessionData	= $this->bofelamimail->sessionData;
 
 			$this->t =& CreateObject('phpgwapi.Template',EGW_APP_TPL);

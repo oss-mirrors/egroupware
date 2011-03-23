@@ -144,7 +144,6 @@ class felamimail_bo
 			$this->accountid	= $GLOBALS['egw_info']['user']['account_id'];
 
 			$this->bopreferences	= CreateObject('felamimail.bopreferences',$_restoreSession);
-			//$this->sofelamimail	= new sofelamimail;
 
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			if ($this->mailPreferences) {
