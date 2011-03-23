@@ -1285,7 +1285,7 @@ class felamimail_bo
 				$structure = null;
 			}
 			$partID = false;
-			#error_log("getAttachmentByCID:$_uid, $_cid, $_part");
+			//error_log("getAttachmentByCID:$_uid, $_cid, $_part");
 			foreach($attachments as $attachment) {
 				//error_log(print_r($attachment,true));
 				if(isset($attachment['cid']) && (strpos($attachment['cid'], $_cid) !== false || strpos($_cid, $attachment['cid']) !== false)) {
@@ -1294,7 +1294,7 @@ class felamimail_bo
 				}
 			}
 
-			#error_log( "PARTID:$_cid $partID<bR>"); #exit;
+			//error_log( "Cid:$_cid PARTID:$partID<bR>"); #exit;
 
 			if($partID == false) {
 				return false;
@@ -2473,7 +2473,7 @@ class felamimail_bo
 			return $this->mailPreferences;
 		}
 
-		function getMessageAttachments($_uid, $_partID='', $_structure='')
+		function getMessageAttachments($_uid, $_partID='', $_structure='', $fetchEmbeddedImages=true)
 		{
 			if (self::$debug) echo __METHOD__."$_uid, $_partID<br>";
 
@@ -2510,7 +2510,9 @@ class felamimail_bo
 				{
 					$attachments = array_merge( $attachments, $wmattachments );
 				} else {
-					$attachments[] = $newAttachment;
+					if ( ($fetchEmbeddedImages && isset($newAttachment['cid']) && strlen($newAttachment['cid'])>0) || 
+						!isset($newAttachment['cid']) || 
+						empty($newAttachment['cid'])) $attachments[] = $newAttachment;
 				}
 				//$attachments[] = $newAttachment;
 
@@ -2548,7 +2550,7 @@ class felamimail_bo
 				{
 					if ($subPart->type == 'MULTIPART' && $subPart->subType == 'ALTERNATIVE')
 					{
-						$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart), $attachments);
+						$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart, $fetchEmbeddedImages), $attachments);
 					}
 					if (!($subPart->type=='TEXT' && $subPart->disposition =='INLINE' && $subPart->filename)) continue;
 				}
@@ -2560,7 +2562,7 @@ class felamimail_bo
 					$subPart->subType == 'SIGNED' ||
 					$subPart->subType == 'APPLEDOUBLE'))
 				{
-				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart), $attachments);
+				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart, $fetchEmbeddedImages), $attachments);
 				} else {
 					$newAttachment = array();
 					$newAttachment['name']		= self::getFileNameFromStructure($subPart);
@@ -2580,7 +2582,9 @@ class felamimail_bo
 					{
 						$attachments = array_merge( $attachments, $wmattachments );
 					} else {
-						$attachments[] = $newAttachment;
+						if ( ($fetchEmbeddedImages && isset($newAttachment['cid']) && strlen($newAttachment['cid'])>0) || 
+							!isset($newAttachment['cid']) || 
+							empty($newAttachment['cid'])) $attachments[] = $newAttachment;
 					}
 					//$attachments[] = $newAttachment;
 				}
@@ -3151,7 +3155,7 @@ class felamimail_bo
 					foreach ($s as $k=>$v) {
 						$cnt = strlen($v);
 						// only break long words within the wordboundaries,
-						// but it may destroy links, so we check for href and dont it if we find one
+						// but it may destroy links, so we check for href and dont do it if we find one
 						if($cnt > $allowedLength && stripos($v,'href=')===false && stripos($v,'onclick=')===false)
 						{
 							$v=wordwrap($v, $allowedLength, $cut, true);

@@ -54,6 +54,9 @@
 		// the non permanent id of the message
 		var $id;
 
+		// partid of the current mail to be displayed
+		var $partID;
+
 		// the permanent id of the message
 		var $uid;
 		/**
@@ -265,7 +268,7 @@
 
 		function display()
 		{
-			$partID		= $_GET['part'];
+			$partID		= $this->partID = $_GET['part'];
 			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
 
 			//$transformdate	=& CreateObject('felamimail.transformdate');
@@ -287,11 +290,11 @@
 			}
 			#_debug_array($headers);exit;
 			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid, $partID);
-			#_debug_array($rawheaders);exit;
-			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid, $partID);
-			#_debug_array($attachments); exit;
+			//_debug_array($rawheaders);exit;
+			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid, $partID, '',false);
+			//_debug_array($attachments); //exit;
 			$envelope	= $this->bofelamimail->getMessageEnvelope($this->uid, $partID,true);
-			#_debug_array($envelope); exit;
+			//_debug_array($envelope); exit;
 			// if not using iFrames, we need to retrieve the messageBody here
 			// by now this is a fixed value and controls the use/loading of the template and how the vars are set.
 			// Problem is: the iFrame Layout provides the scrollbars.
@@ -766,7 +769,7 @@ pre {
 				_debug_array($headers->backtrace[0]);
 				exit;
 			}
-			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid, $partID);
+			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid, $partID, '', true);
 			#_debug_array($attachments); exit;
 
 			$this->display_app_header();
@@ -1479,7 +1482,7 @@ pre {
 		function printMessage($messageId = NULL, $callfromcompose = NULL)
 		{
 			if (!empty($messageId) && empty($this->uid)) $this->uid = $messageId;
-			$partID		= $_GET['part'];
+			$partID	= $this->partID	= $_GET['part'];
 			if (!empty($_GET['folder'])) $this->mailbox  = base64_decode($_GET['folder']);
 
 			//$transformdate	=& CreateObject('felamimail.transformdate');
@@ -1508,7 +1511,7 @@ pre {
 #			_debug_array($headers);exit;
 			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid, $partID);
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
-			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid,$partID);
+			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid,$partID, '',true);
 #			_debug_array($nextMessage); exit;
 
 			$webserverURL	= $GLOBALS['egw_info']['server']['webserver_url'];
