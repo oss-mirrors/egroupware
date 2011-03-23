@@ -176,6 +176,10 @@ class wiki_bo extends wiki_so
 		$page->username = $set_host_user ? $GLOBALS['egw_info']['user']['account_lid'] : $values['username'];
 
 		$page->write();
+
+		// Check for notifications that need to be sent
+		$this->send_notifications($page);
+		
 		$GLOBALS['page'] = $page->as_array();	// we need this to track lang for new_link, sister_wiki, ...
 
 		if(!empty($values['category']))		// Editor asked page to be added to a category or categories.
@@ -368,5 +372,92 @@ class wiki_bo extends wiki_so
 			$content[$page['name']] = strip_tags($page['title']);
 		}
 		return $content;
+	}
+
+	/**
+	 * Send any notifications of a page change
+	 *
+	 * A user wants notifications if they set it in their preferences
+	 *
+	 * @param $page Page that changed
+	 */
+	function send_notifications($page)
+	{
+
+		$save_prefs = $GLOBALS['egw_info']['user'];
+		$values = array(
+			'Title'         =>      $page->title,
+			'Editor'	=>	common::display_fullname('','','',$GLOBALS['egw_info']['user']['account_id']),
+			'Summary'       =>      $page->comment,
+			'Category'      =>      $page->category,
+		);
+
+		// Need to get a list of people who want the change
+		$user_ids = array();
+		$notification = array();
+
+		// Find out who's involved
+		foreach(array('read'=>$page->readable, 'write' => $page->writable) as $name => $perm) {
+			$user_ids[$name] = array();
+			foreach($perm as $group)
+			{
+				if($group[0] == '_')
+				{
+					$filter = array(
+						'type'	=>	'accounts',
+					);
+					// Pseudo groups
+					switch($group) {
+						case WIKI_ACL_ADMIN:
+							$filter['app'] = 'admin';
+							// Fall through
+						case WIKI_ACL_USERS:
+						case WIKI_ACL_ALL:
+							$accounts = $GLOBALS['egw']->accounts->search($filter);
+							$user_ids[$name] += array_keys($accounts);
+							break;
+					}
+				} else {
+					$user_ids[$name] = array_merge($user_ids[$name], $GLOBALS['egw']->accounts->members($group, true));
+				}
+			}
+			$user_ids[$name] = array_unique($user_ids[$name]);
+		}
+		$id_list = array_unique(array_merge($user_ids['read'], $user_ids['write']));
+		
+		// Check to see if they want notification
+		foreach($id_list as $id)
+		{
+			$prefs = new preferences($id);
+			$data = $prefs->read_repository(false);
+			if(($data['wiki']['notification_read'] && in_array($id, $user_ids['read'])) || 
+					($data['wiki']['notification_write'] && in_array($id, $user_ids['write']))) {
+				$message = $prefs->parse_notify($data['wiki']['notification_message'], $values, true);
+				if(trim($message) != '') {
+					$notification[$message][] = $id;
+				}
+			}
+		}
+		if(count($notification) > 0) {
+			foreach($notification as $message => $ids) {
+				$n = new notifications();
+				//$n = CreateObject('notifications.notification');
+				$n->set_sender($GLOBALS['egw_info']['user']['account_id']);
+				$n->set_receivers($ids);
+				$n->set_subject($page->title);
+				$n->set_message($message . "\n");
+				$n->add_link($page->title, array(
+					'menuaction'	=>	'wiki.wiki_ui.view',
+					'lang'		=>	$page->lang,
+					'version'	=>	$page->version,
+					'page'		=>	$page->name
+				));
+				$n->send();
+				$n = null;
+			}
+		}
+
+		// Restore user environment
+		$GLOBALS['egw_info']['user'] = $save_prefs;
 	}
 }

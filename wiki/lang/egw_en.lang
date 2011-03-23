@@ -14,6 +14,7 @@ block	wiki	en	Block
 block / unblock hosts	common	en	Block / Unblock hosts
 blocked ip address ranges	wiki	en	Blocked IP address ranges
 cancel without saving	wiki	en	Cancel without saving
+change notification	wiki	en	Change Notification
 changed	wiki	en	Changed
 changes by last author	wiki	en	Changes by last author
 choose your current time here, so the server may figure out what time zone you are in.	wiki	en	Choose your current time here, so the server may figure out what time zone you are in.
@@ -51,12 +52,15 @@ history	wiki	en	history
 history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	en	History display should show <em>all</em> changes made by the latest author.  Otherwise, show only the last change made.
 history lists	wiki	en	History lists
 history of	wiki	en	History of
+if a page i have read access to is changed, send a notification	wiki	en	If a page I have read access to is changed, send a notification
+if a page i have write access to is changed, send a notification	wiki	en	If a page I have write access to is changed, send a notification
 interwikiprefix	admin	en	InterWikiPrefix
 invalid page name.	wiki	en	Invalid page name.
 load	wiki	en	Load
 loads the named page in the given language, all change so far get lost !!!	wiki	en	Loads the named page in the given language, all change so far get lost !!!
 lock / unlock pages	common	en	Lock / Unlock Pages
 locked	wiki	en	Locked
+message to send	wiki	en	Message to send
 name wiki home link	admin	en	name wiki home link
 newer	wiki	en	Newer
 no never	admin	en	No never
@@ -68,6 +72,7 @@ only if browser supports a richtext-editor	admin	en	Only if browser supports a r
 only on the first page	wiki	en	only on the first page
 page '%1' not found !!!	wiki	en	Page '%1' not found !!!
 path of the upload directory (has to be writable by the webserver!)	admin	en	Path of the upload directory (has to be writable by the webserver!)
+person who changed the page	wiki	en	Person who changed the page
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	en	Picture upload via richtext editor (leave the upload directory empty to disable the upload)
 please contact the %1administrator%2 for assistance.	wiki	en	Please contact the %1Administrator%2 for assistance.
 preview	wiki	en	Preview

@@ -77,6 +77,46 @@ class wiki_hooks
 				'admin'  => False,
 			)
 		);
+		
+		if ($GLOBALS['egw_info']['user']['apps']['notifications'])
+		{
+			$details = array(
+				'Title'		=>	lang('Title'),
+				'Summary'	=>	lang('Summary'),
+				'Category'	=>	lang('Category'),
+				'Editor'	=>	lang('Person who changed the page'),
+			);
+			$settings += array(
+				'notification_section' => array(
+					'type'   => 'subsection',
+					'title'  => 'Change Notification',
+				),
+				'notification_read' => array(
+					'type'	=> 'check',
+					'label'	=> 'Pages I have read access',
+					'name'	=> 'notification_read',
+					'help'	=> 'If a page I have read access to is changed, send a notification',
+					'default' => 0
+				),
+				'notification_write' => array(
+					'type'	=> 'check',
+					'label'	=> 'Pages I have write access',
+					'name'	=> 'notification_write',
+					'help'	=> 'If a page I have write access to is changed, send a notification',
+					'default' => 0
+				),
+				'notification_message' => array(
+					'type'	=> 'notify',
+					'label'	=> 'Message',
+					'name'	=> 'notification_message',
+					'help'	=> 'Message to send',
+					'rows'	=> 3,
+					'cols'	=> 50,
+					'values'	=> $details,
+					'default'	=> ''
+				)
+			);
+		}
 		if ($GLOBALS['egw_info']['user']['apps']['filemanager'])
 		{
 			$settings['upload_dir'] = array(
