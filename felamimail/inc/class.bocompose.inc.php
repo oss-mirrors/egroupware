@@ -1027,7 +1027,7 @@
 			$folder = (array)$this->sessionData['folder'];
 			if(isset($this->preferences->preferences['sentFolder']) &&
 				$this->preferences->preferences['sentFolder'] != 'none' &&
-				$this->preferences->preferences['sendOptions'] != 'move_to_sent' &&
+				$this->preferences->preferences['sendOptions'] != 'send_only' &&
 				$messageIsDraft == false) {
 				$folder[] = $this->preferences->preferences['sentFolder'];
 			}
