@@ -284,10 +284,8 @@ class soWikiPage
 		{
 			$this->$name     = $this->db->f($dbname);
 		}
-		$this->readable = explode(',', $this->readable);
-		if(!$this->readable[0]) unset($this->readable[0]);
-		$this->writable = explode(',', $this->writable);
-		if(!$this->writable[0]) unset($this->writable[0]);
+		$this->readable = explode(',', substr($this->readable, 1, -1));
+		$this->writable = explode(',', substr($this->writable, 1, -1));
 		$this->exists   = 1;
 		$this->mutable  = $this->acl_check();
 
