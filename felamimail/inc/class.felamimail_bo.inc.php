@@ -2106,7 +2106,7 @@ class felamimail_bo
 		* @param array $_filter the search filter
 		* @return bool
 		*/
-		function getSortedList($_folderName, $_sort, $_reverse, $_filter, &$resultByUid=true)
+		function getSortedList($_folderName, $_sort, &$_reverse, $_filter, &$resultByUid=true)
 		{
 			if(PEAR::isError($folderStatus = $this->icServer->examineMailbox($_folderName))) {
 				return false;
@@ -2117,6 +2117,7 @@ class felamimail_bo
 				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	=== $folderStatus['UIDNEXT'] &&
 				$this->sessionData['folderStatus'][0][$_folderName]['filter']	=== $_filter &&
 				$this->sessionData['folderStatus'][0][$_folderName]['sort']	=== $_sort &&
+				//$this->sessionData['folderStatus'][0][$_folderName]['reverse'] === $_reverse &&
 				!empty($this->sessionData['folderStatus'][0][$_folderName]['sortResult'])
 			) {
 				if (self::$debug) error_log(__METHOD__." USE CACHE");
@@ -2128,8 +2129,10 @@ class felamimail_bo
 				//_debug_array($filter);
 
 				if($this->icServer->hasCapability('SORT')) {
-					if (self::$debug) error_log(__METHOD__." Mailserver has SORT Capability");
-					$sortOrder = $this->_getSortString($_sort);
+					if (self::$debug) error_log(__METHOD__." Mailserver has SORT Capability, SortBy: $_sort Reverse: $_reverse");
+					$sortOrder = $this->_getSortString($_sort, $_reverse);
+					if ($_reverse && strpos($sortOrder,'REVERSE')!==false) $_reverse=false; // as we reversed the result already
+					if (self::$debug) error_log(__METHOD__." Mailserver runs SORT: SortBy: $sortOrder Filter: $filter");
 					if (!empty(self::$displayCharset)) {
 						$sortResult = $this->icServer->sort($sortOrder, strtoupper( self::$displayCharset ), $filter, $resultByUid);
 					}
@@ -2257,11 +2260,13 @@ class felamimail_bo
 				{
 					// this will not work we must calculate the range we want to retieve as e.g.: 0:20 retirieves the first 20 mails and sorts them 
 					// if sort capability is applied to the range fetched, not sort first and fetch the range afterwards
-					//$_filter['range'] ="$_startMessage:$_numberOfMessages";
+					$start = $_startMessage-1;
+					$end = $_startMessage-1+$_numberOfMessages;
+					//$_filter['range'] ="$start:$end";
 					//$_filter['range'] ="$_startMessage:*";
 				}
-				if (self::$debug) error_log(__METHOD__.__LINE__."$_folderName, $_sort, $_reverse, ".array2string($_filter).", $rByUid");
-				$sortResult = $this->getSortedList($_folderName, $_sort, $_reverse, $_filter, $rByUid);
+				if (self::$debug) error_log(__METHOD__.__LINE__."$_folderName, $_sort, $reverse, ".array2string($_filter).", $rByUid");
+				$sortResult = $this->getSortedList($_folderName, $_sort, $reverse, $_filter, $rByUid);
 				if (self::$debug) error_log(__METHOD__.__LINE__.array2string($sortResult));
 				#$this->icServer->setDebug(false);
 				#print "</pre>";
@@ -2277,7 +2282,7 @@ class felamimail_bo
 				$total = count($sortResult);
 				#_debug_array($sortResult);
 				#_debug_array(array_slice($sortResult, -5, -2));
-				#error_log("REVERSE: $reverse");
+				//error_log("REVERSE: $reverse");
 				if($reverse === true) {
 					$startMessage = $_startMessage-1;
 					if($startMessage > 0) {
@@ -2373,8 +2378,10 @@ class felamimail_bo
 				//self::$debug=false;
 				// sort the messages to the requested displayorder
 				if(is_array($retValue['header'])) {
+					$countMessages = false;
+					if (isset($_filter['range'])) $countMessages = $this->sessionData['folderStatus'][0][$_folderName]['messages'];
 					ksort($retValue['header']);
-					$retValue['info']['total']	= $total;
+					$retValue['info']['total']	= $countMessages ? $countMessages : $total;
 					$retValue['info']['first']	= $_startMessage;
 					$retValue['info']['last']	= $_startMessage + $count - 1 ;
 					return $retValue;
@@ -3203,8 +3210,9 @@ class felamimail_bo
 		* @param int _sort the integer sort order
 		* @return the ascii sort string
 		*/
-		function _getSortString($_sort)
+		function _getSortString($_sort, $_reverse=false)
 		{
+			$_reverse=false;
 			switch($_sort) {
 				case 2:
 					$retValue = 'FROM';
@@ -3221,7 +3229,7 @@ class felamimail_bo
 					break;
 			}
 
-			return $retValue;
+			return ($_reverse?'REVERSE ':'').$retValue;
 		}
 
 		function sendMDN($uid) {
