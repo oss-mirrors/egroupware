@@ -401,16 +401,20 @@ class wiki_bo extends wiki_so
 			$user_ids[$name] = array();
 			foreach($perm as $group)
 			{
+				$filter = array(
+					'type'	=>	'accounts',
+					'app'	=>	'wiki'
+				);
 				if($group[0] == '_')
 				{
-					$filter = array(
-						'type'	=>	'accounts',
-					);
 					// Pseudo groups
 					switch($group) {
 						case WIKI_ACL_ADMIN:
+							$accounts = $GLOBALS['egw']->accounts->search($filter);
 							$filter['app'] = 'admin';
-							// Fall through
+							$admins = $GLOBALS['egw']->accounts->search($filter);
+							$user_ids[$name] += array_intersect(array_keys($accounts), array_keys($admins));
+							break;
 						case WIKI_ACL_USERS:
 						case WIKI_ACL_ALL:
 							$accounts = $GLOBALS['egw']->accounts->search($filter);
@@ -418,7 +422,9 @@ class wiki_bo extends wiki_so
 							break;
 					}
 				} else {
-					$user_ids[$name] = array_merge($user_ids[$name], $GLOBALS['egw']->accounts->members($group, true));
+					$members = array_merge($user_ids[$name], $GLOBALS['egw']->accounts->members($group, true));
+					$accounts = $GLOBALS['egw']->accounts->search($filter);
+					$user_ids[$name] = array_intersect(array_keys($accounts), $members);
 				}
 			}
 			$user_ids[$name] = array_unique($user_ids[$name]);
