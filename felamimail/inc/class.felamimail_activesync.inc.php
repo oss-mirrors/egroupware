@@ -668,7 +668,7 @@ class felamimail_activesync implements activesync_plugin_read
 				if ($this->debugLevel>0) debugLog("airsyncbasebody!");
 				// fetch the body (try to gather data only once)
 				$bodyStruct = $this->mail->getMessageBody($id, 'html_only', '', '', true);
-				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' html_only Struct:'.array2string($bodyStruct));
+				if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__.' html_only Struct:'.array2string($bodyStruct));
 				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);//$this->ui->getdisplayableBody($bodyStruct,false);
 				if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' html_only:'.$body);
 			    if ($body != "" && (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
@@ -728,6 +728,8 @@ class felamimail_activesync implements activesync_plugin_read
 						// from
 						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($headers['FROM']):$headers['FROM']),'');
 						foreach((array)$address_array as $addressObject) {
+							//debugLog(__METHOD__.__LINE__.'Address to add (FROM):'.array2string($addressObject));
+							if ($addressObject->host == '.SYNTAX-ERROR.') continue;
 							$mailObject->From = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
 							$mailObject->FromName = $addressObject->personal;
 						}
@@ -735,16 +737,21 @@ class felamimail_activesync implements activesync_plugin_read
 						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($headers['TO']):$headers['TO']),'');
 						foreach((array)$address_array as $addressObject) {
 							//debugLog(__METHOD__.__LINE__.'Address to add (TO):'.array2string($addressObject));
+							if ($addressObject->host == '.SYNTAX-ERROR.') continue;
 							$mailObject->AddAddress($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
 						}
 						// CC
 						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($headers['CC']):$headers['CC']),'');
 						foreach((array)$address_array as $addressObject) {
+							//debugLog(__METHOD__.__LINE__.'Address to add (CC):'.array2string($addressObject));
+							if ($addressObject->host == '.SYNTAX-ERROR.') continue;
 							$mailObject->AddCC($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
 						}
 						//	AddReplyTo
 						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($headers['REPLY-TO']):$headers['REPLY-TO']),'');
 						foreach((array)$address_array as $addressObject) {
+							//debugLog(__METHOD__.__LINE__.'Address to add (ReplyTO):'.array2string($addressObject));
+							if ($addressObject->host == '.SYNTAX-ERROR.') continue;
 							$mailObject->AddReplyTo($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
 						}
 						$Header = $Body = ''; // we do not use Header and Body we use the MailObject
@@ -770,7 +777,8 @@ class felamimail_activesync implements activesync_plugin_read
 							    '</body>'.
 								'</html>';
 						$mailObject->Body = str_replace("\n","\r\n", str_replace("\r","",$html));
-						$mailObject->AltBody = $plainBody;
+						if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__." MIME Body (constructed)-> ".$mailObject->Body);
+						$mailObject->AltBody = empty($plainBody)?strip_tags($body):$plainBody;
 					}
 					if ($output->airsyncbasenativebodytype==1) { //plain
 						if ($this->debugLevel>0) debugLog("Plain Body with requested pref 4");

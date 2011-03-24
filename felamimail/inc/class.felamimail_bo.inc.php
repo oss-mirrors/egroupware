@@ -1876,7 +1876,7 @@ class felamimail_bo
 					$partHTML = $mimePart;
 				} elseif ($mimePart->type == 'MULTIPART' && $mimePart->subType == 'ALTERNATIVE' && is_array($mimePart->subParts)) {
 					//cascading multipartAlternative structure, assuming only the first one is to be used
-					return $this->getMultipartAlternative($_uid,$mimePart->subParts,$_htmlMode);
+					return $this->getMultipartAlternative($_uid,$mimePart->subParts,$_htmlMode, $_preserveSeen);
 				}
 			}
 			//error_log(__METHOD__.__LINE__.$_htmlMode);
@@ -1890,13 +1890,13 @@ class felamimail_bo
 							return $this->getTextPart($_uid, $partHTML, $_htmlMode, $_preserveSeen);
 						}
 					} elseif(is_object($partText) && $_htmlMode=='always_display') {
-						return $this->getTextPart($_uid, $partText);
+						return $this->getTextPart($_uid, $partText, $_htmlMode, $_preserveSeen);
 					}
 
 					break;
 				case 'only_if_no_text':
 					if(is_object($partText)) {
-						return $this->getTextPart($_uid, $partText);
+						return $this->getTextPart($_uid, $partText, $_htmlMode, $_preserveSeen);
 					} elseif(is_object($partHTML)) {
 						if($partHTML->type) {
 							return $this->getMultipartRelated($_uid, $partHTML, $_htmlMode, $_preserveSeen);
@@ -1909,7 +1909,7 @@ class felamimail_bo
 
 				default:
 					if(is_object($partText)) {
-						return $this->getTextPart($_uid, $partText, $_preserveSeen);
+						return $this->getTextPart($_uid, $partText, $_htmlMode, $_preserveSeen);
 					} else {
 						$bodyPart = array(
 							'body'		=> lang("no plain text part found"),
@@ -1964,7 +1964,7 @@ class felamimail_bo
 
 					case 'MESSAGE':
 						if($part->subType == 'delivery-status') {
-							$bodyPart[] = $this->getTextPart($_uid, $part, $_preserveSeen);
+							$bodyPart[] = $this->getTextPart($_uid, $part, $_htmlMode, $_preserveSeen);
 						}
 						break;
 
@@ -1998,16 +1998,23 @@ class felamimail_bo
 				return false;
 			}
 			//_debug_array($mimePartBody);
-			//error_log(__METHOD__.__LINE__.' '.$_htmlMode.' ->'.array2string($_structure).array2string($mimePartBody));
+			//error_log(__METHOD__.__LINE__.' UID:'.$_uid.' PartID:'.$partID.' HTMLMode:'.$_htmlMode.' ->'.array2string($_structure).array2string($mimePartBody));
+			if (empty($mimePartBody)) return array(
+					'body'		=> '',
+					'mimeType'  => ($_structure->type == 'TEXT' && $_structure->subType == 'HTML') ? 'text/html' : 'text/plain',
+					'charSet'   => self::$displayCharset,
+				);
 			//_debug_array(preg_replace('/PropertyFile___$/','',$this->decodeMimePart($mimePartBody, $_structure->encoding)));
 			if($_structure->subType == 'HTML' && $_htmlMode!= 'html_only' && $_htmlMode != 'always_display'  && $_htmlMode != 'only_if_no_text') {
 				$bodyPart = array(
+					'error'		=> 1,
 					'body'		=> lang("displaying html messages is disabled"),
 					'mimeType'	=> 'text/html',
 					'charSet'	=> self::$displayCharset,
 				);
 			} elseif ($_structure->subType == 'PLAIN' && $_htmlMode == 'html_only') {
 				$bodyPart = array(
+					'error'		=> 1,
 					'body'      => lang("displaying plain messages is disabled"),
 					'mimeType'  => 'text/plain', // make sure we do not return mimeType text/html
 					'charSet'   => self::$displayCharset,
@@ -3737,9 +3744,11 @@ class felamimail_bo
 			{
 				if (!isset($bodyParts[$i]['body'])) {
 					$bodyParts[$i]['body'] = self::getdisplayableBody($bofelamimail, $bodyParts[$i]);
-					$message .= $bodyParts[$i]['body'];
+					$message .= empty($bodyParts[$i]['body'])?'':$bodyParts[$i]['body'];
 					continue;
 				}
+				if (isset($bodyParts[$i]['error'])) continue;
+				if (empty($bodyParts[$i]['body'])) continue;
 				if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = self::detect_encoding($bodyParts[$i]['body']);
 				// add line breaks to $bodyParts
 				//error_log(__METHOD__.__LINE__.' Charset:'.$bodyParts[$i]['charSet'].'->'.$bodyParts[$i]['body']);
@@ -3748,8 +3757,10 @@ class felamimail_bo
 				if ($bodyParts[$i]['mimeType'] == 'text/html') {
 					// convert HTML to text, as we dont want HTML in infologs
 					$newBody = html::purify($newBody);
+					//error_log(__METHOD__.__LINE__.' after purify:'.$newBody);
 					if ($preserveHTML==false) $newBody = $bofelamimail->convertHTMLToText($newBody,true);
 					$bofelamimail->getCleanHTML($newBody); // new Body passed by reference
+					//error_log(__METHOD__.__LINE__.' after getClean:'.$newBody);
 					$message .= $newBody;
 					continue;
 				}
