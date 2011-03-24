@@ -550,7 +550,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$send = false;
 		}
 		$asf = ($send ? true:false); // initalize accordingly
-		if (($smartdata['saveinsentitems']==1 || !isset($smartdata['saveinsentitems'])) && $send==true)
+		if (($smartdata['saveinsentitems']==1 || !isset($smartdata['saveinsentitems'])) && $send==true && $this->mail->mailPreferences->preferences['sendOptions'] != 'send_only')
 		{
 		    $asf = false;
 		    if ($this->_sentID) {
