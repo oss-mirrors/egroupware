@@ -621,7 +621,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $mimesupport = 0)
 	{
-		debugLog (__METHOD__.__LINE__);
+		debugLog (__METHOD__.__LINE__.' FolderID:'.$folderid.' ID:'.$id.' TruncSize:'.$truncsize.' Bodypreference: '.array2string($bodypreference));
 		$stat = $this->StatMessage($folderid, $id);
 		if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($stat));
 		// StatMessage should reopen the folder in question, so we dont need folderids in the following statements.
@@ -634,7 +634,7 @@ class felamimail_activesync implements activesync_plugin_read
 			//$rawHeaders = $this->mail->getMessageRawHeader($id);
 			// simple style
 			// start AS12 Stuff (bodypreference === false) case = old behaviour
-			debugLog(__METHOD__.__LINE__.' Bodypreference: '.array2string($bodypreference));
+			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__. ' for message with ID:'.$id.' with headers:'.array2string($headers));
 			if ($bodypreference === false) {
 				$bodyStruct = $this->mail->getMessageBody($id, 'only_if_no_text', '', '', true);
 				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct);
@@ -716,6 +716,7 @@ class felamimail_activesync implements activesync_plugin_read
 						//$this->mail->parseRawMessageIntoMailObject($mailObject,$rawHeaders.$rawBody,$Header,$Body);
 						//debugLog(__METHOD__.__LINE__.array2string($headers));
 						// now force UTF-8
+						$mailObject->IsSMTP(); // needed to ensure the to part of the Header is Created too, when CreatingHeader
 						$mailObject->CharSet = 'utf-8';
 						$mailObject->Priority = $headers['PRIORITY'];
 						$mailObject->Encoding = 'quoted-printable'; // we use this by default
@@ -733,6 +734,7 @@ class felamimail_activesync implements activesync_plugin_read
 						// to
 						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($headers['TO']):$headers['TO']),'');
 						foreach((array)$address_array as $addressObject) {
+							//debugLog(__METHOD__.__LINE__.'Address to add (TO):'.array2string($addressObject));
 							$mailObject->AddAddress($addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : ''),$addressObject->personal);
 						}
 						// CC
@@ -807,6 +809,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 					$mailObject->SetMessageType();
 					$Header = $mailObject->CreateHeader();
+					//debugLog(__METHOD__.__LINE__.' MailObject-Header:'.array2string($Header));
 					$Body = trim($mailObject->CreateBody()); // philip thinks this is needed, so lets try if it does any good/harm
 					if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.' MailObject:'.array2string($mailObject));
 					if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__." Setting Mailobjectcontent to output:".$Header.$mailObject->LE.$mailObject->LE.$Body);
