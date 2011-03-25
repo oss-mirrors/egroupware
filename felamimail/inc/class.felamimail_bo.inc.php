@@ -1208,7 +1208,7 @@ class felamimail_bo
 			if($_partID != '') {
 				$structure = $this->_getSubStructure($structure, $_partID);
 			}
-			$filename = self::getFileNameFromStructure($structure);
+			$filename = $this->getFileNameFromStructure($structure, $_uid, $structure->partID);
 			$attachment = $this->icServer->getBodyPart($_uid, $_partID, true, true);
 			if (PEAR::isError($attachment))
 			{
@@ -1305,7 +1305,7 @@ class felamimail_bo
 				$structure = $this->icServer->getStructure($_uid, true);
 			}
 			$part_structure = $this->_getSubStructure($structure, $partID);
-			$filename = self::getFileNameFromStructure($part_structure);
+			$filename = $this->getFileNameFromStructure($part_structure, $_uid, $_uid, $part_structure->partID);
 			$attachment = $this->icServer->getBodyPart($_uid, $partID, true);
 			if (PEAR::isError($attachment))
 			{
@@ -2499,14 +2499,13 @@ class felamimail_bo
 					$structure = $this->_getSubStructure($structure, $_partID);
 				}
 			}
-
 			if (self::$debug) _debug_array($structure);
 			$attachments = array();
 			// this kind of messages contain only the attachment and no body
 			if($structure->type == 'APPLICATION' || $structure->type == 'AUDIO' || $structure->type == 'VIDEO' || $structure->type == 'IMAGE')
 			{
 				$newAttachment = array();
-				$newAttachment['name']		= self::getFileNameFromStructure($structure);
+				$newAttachment['name']		= $this->getFileNameFromStructure($structure,$_uid,$structure->partID);
 				$newAttachment['size']		= $structure->bytes;
 				$newAttachment['mimeType']	= $structure->type .'/'. $structure->subType;
 				$newAttachment['partID']	= $structure->partID;
@@ -2578,7 +2577,7 @@ class felamimail_bo
 				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart, $fetchEmbeddedImages), $attachments);
 				} else {
 					$newAttachment = array();
-					$newAttachment['name']		= self::getFileNameFromStructure($subPart);
+					$newAttachment['name']		= $this->getFileNameFromStructure($subPart,$_uid,$subPart->partID);
 					$newAttachment['size']		= $subPart->bytes;
 					$newAttachment['mimeType']	= $subPart->type .'/'. $subPart->subType;
 					$newAttachment['partID']	= $subPart->partID;
@@ -2608,8 +2607,9 @@ class felamimail_bo
 
 		}
 
-		static function getFileNameFromStructure(&$structure)
+		function getFileNameFromStructure(&$structure, $_uid = false, $partID = false)
 		{
+			if ( $_uid && $partID) error_log(__METHOD__.__LINE__.array2string($structure).' Uid:'.$_uid.' PartID:'.$partID.' -> '.array2string($this->icServer->getParsedHeaders($_uid, true, $partID, true)));
 			if(isset($structure->parameters['NAME'])) {
 				return rawurldecode(self::decode_header($structure->parameters['NAME']));
 			} elseif(isset($structure->dparameters['FILENAME'])) {
@@ -2619,6 +2619,43 @@ class felamimail_bo
 			} elseif ( isset($structure->filename) && !empty($structure->filename) && $structure->filename != 'NIL') {
 				return rawurldecode(self::decode_header($structure->filename));
 			} else {
+				if ( $_uid && $partID) 
+				{
+					$headers = $this->icServer->getParsedHeaders($_uid, true, $partID, true);
+					if ($headers)
+					{
+						if (!PEAR::isError($headers))
+						{
+							// simple parsing of the headers array for a usable name
+							//error_log( __METHOD__.__LINE__.array2string($headers));
+							foreach(array('CONTENT-TYPE','CONTENT-DISPOSITION') as $k => $v)
+							{
+								foreach(array('filename','name') as $sk => $n)
+								{
+									if (stripos($headers[$v],$n)!== false)
+									{
+										$buff = explode($n,$headers[$v]);
+										//error_log(__METHOD__.__LINE__.array2string($buff));
+										$namepart = array_pop($buff);
+										//error_log(__METHOD__.__LINE__.$namepart);
+										$fp = strpos($namepart,'"');
+										//error_log(__METHOD__.__LINE__.' Start:'.$fp);
+										if ($fp !== false)
+										{
+											$np = strpos($namepart,'"', $fp+1);
+											//error_log(__METHOD__.__LINE__.' End:'.$np);
+											if ($np !== false)
+											{
+												$name = trim(substr($namepart,$fp+1,$np-$fp-1));
+												if (!empty($name)) return $name;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 				return lang("unknown").($structure->subType ? ".".$structure->subType : "");
 			}
 		}
