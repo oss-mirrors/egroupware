@@ -310,6 +310,7 @@ class Net_IMAP extends Net_IMAPProtocol {
         if (PEAR::isError($ret=$this->getRawHeaders($msg_id, $part_id, $uidFetch))) {
             return $ret;
         }
+        if ($ret == 'NIL') return false; // no headers -> return false
 
         $raw_headers = rtrim($ret);
         $raw_headers = preg_replace("/\r\n[ \t]+/", ' ', $raw_headers); // Unfold headers
