@@ -60,6 +60,11 @@ class felamimail_activesync implements activesync_plugin_read
 	 */
 	private $account;
 
+	private $folders;
+
+	private $messages;
+
+
 	/**
 	 * debugLevel - enables more debug
 	 *
@@ -114,9 +119,6 @@ class felamimail_activesync implements activesync_plugin_read
 		unset($this->account);
 		unset($this->folders);
 	}
-
-	private $folders;
-	private $messages;
 
 	/**
 	 *  This function is analogous to GetMessageList.
@@ -1197,25 +1199,25 @@ class felamimail_activesync implements activesync_plugin_read
 		{
 			$folderObj->type = SYNC_FOLDER_TYPE_INBOX;
 		}
-		elseif($this->mail->isDraftFolder($folder))
+		elseif($this->mail->isDraftFolder($folder, false))
 		{
 			//debugLog(__METHOD__.' isDraft');
 			$folderObj->type = SYNC_FOLDER_TYPE_DRAFTS;
 			$folderObj->parentid = 0; // required by devices
 		}
-		elseif($this->mail->isTrashFolder($folder))
+		elseif($this->mail->isTrashFolder($folder, false))
 		{
 			$folderObj->type = SYNC_FOLDER_TYPE_WASTEBASKET;
 			$this->_wasteID = $folder;
 			$folderObj->parentid = 0; // required by devices
 		}
-		elseif($this->mail->isSentFolder($folder))
+		elseif($this->mail->isSentFolder($folder, false))
 		{
 			$folderObj->type = SYNC_FOLDER_TYPE_SENTMAIL;
 			$folderObj->parentid = 0; // required by devices
 			$this->_sentID = $folder;
 		}
-		elseif($this->mail->isOutbox($folder))
+		elseif($this->mail->isOutbox($folder, false))
 		{
 			//debugLog(__METHOD__.' isOutbox');
 			$folderObj->type = SYNC_FOLDER_TYPE_OUTBOX;

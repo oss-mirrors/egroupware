@@ -1464,7 +1464,7 @@ class felamimail_bo
 				$retValue['uidnext']		= $folderStatus['UIDNEXT'];
 				$retValue['uidvalidity']	= $folderStatus['UIDVALIDITY'];
 				$retValue['unseen']		= $folderStatus['UNSEEN'];
-				if ($retValue['unseen']==0 && 
+				if ($retValue['unseen']==0 &&
 					isset($this->mailPreferences->preferences['trustServersUnseenInfo']) && // some servers dont serve the UNSEEN information
 					$this->mailPreferences->preferences['trustServersUnseenInfo']==false)
 				{
@@ -2265,7 +2265,7 @@ class felamimail_bo
 			{
 				if (($startMessage || $_numberOfMessages) && !isset($_filter['range']))
 				{
-					// this will not work we must calculate the range we want to retieve as e.g.: 0:20 retirieves the first 20 mails and sorts them 
+					// this will not work we must calculate the range we want to retieve as e.g.: 0:20 retirieves the first 20 mails and sorts them
 					// if sort capability is applied to the range fetched, not sort first and fetch the range afterwards
 					$start = $_startMessage-1;
 					$end = $_startMessage-1+$_numberOfMessages;
@@ -2522,8 +2522,8 @@ class felamimail_bo
 				{
 					$attachments = array_merge( $attachments, $wmattachments );
 				} else {
-					if ( ($fetchEmbeddedImages && isset($newAttachment['cid']) && strlen($newAttachment['cid'])>0) || 
-						!isset($newAttachment['cid']) || 
+					if ( ($fetchEmbeddedImages && isset($newAttachment['cid']) && strlen($newAttachment['cid'])>0) ||
+						!isset($newAttachment['cid']) ||
 						empty($newAttachment['cid'])) $attachments[] = $newAttachment;
 				}
 				//$attachments[] = $newAttachment;
@@ -2594,8 +2594,8 @@ class felamimail_bo
 					{
 						$attachments = array_merge( $attachments, $wmattachments );
 					} else {
-						if ( ($fetchEmbeddedImages && isset($newAttachment['cid']) && strlen($newAttachment['cid'])>0) || 
-							!isset($newAttachment['cid']) || 
+						if ( ($fetchEmbeddedImages && isset($newAttachment['cid']) && strlen($newAttachment['cid'])>0) ||
+							!isset($newAttachment['cid']) ||
 							empty($newAttachment['cid'])) $attachments[] = $newAttachment;
 					}
 					//$attachments[] = $newAttachment;
@@ -2619,7 +2619,7 @@ class felamimail_bo
 			} elseif ( isset($structure->filename) && !empty($structure->filename) && $structure->filename != 'NIL') {
 				return rawurldecode(self::decode_header($structure->filename));
 			} else {
-				if ( $_uid && $partID) 
+				if ( $_uid && $partID)
 				{
 					$headers = $this->icServer->getParsedHeaders($_uid, true, $partID, true);
 					if ($headers)
@@ -2870,13 +2870,13 @@ class felamimail_bo
 	#		}
 	#	}
 
-		function isSentFolder($_folderName)
+		function isSentFolder($_folderNamei, $_checkexistance=TRUE)
 		{
 			if(empty($this->mailPreferences->preferences['sentFolder'])) {
 				return false;
 			}
 			// does the folder exist???
-			if (!self::folderExists($_folderName)) {
+			if ($_checkexistance && !self::folderExists($_folderName)) {
 				return false;
 			}
 
@@ -2890,25 +2890,25 @@ class felamimail_bo
 		/**
 		 * checks if the Outbox folder exists and is port of the foldername to be checked
 		 */
-		function isOutbox($_folderName)
+		function isOutbox($_folderName, $_checkexistance=TRUE)
 		{
 			if (stripos($_folderName, 'Outbox')===false) {
 				return false;
 			}
 			// does the folder exist???
-			if (!self::folderExists($_folderName)) {
+			if ($_checkexistance && !self::folderExists($_folderName)) {
 				return false;
 			}
 			return true;
 		}
 
-		function isDraftFolder($_folderName)
+		function isDraftFolder($_folderName, $_checkexistance=TRUE)
 		{
 			if(empty($this->mailPreferences->preferences['draftFolder'])) {
 				return false;
 			}
 			// does the folder exist???
-			if (!self::folderExists($_folderName)) {
+			if ($_checkexistance && !self::folderExists($_folderName)) {
 				return false;
 			}
 
@@ -2919,13 +2919,13 @@ class felamimail_bo
 			}
 		}
 
-		function isTrashFolder($_folderName)
+		function isTrashFolder($_folderName, $_checkexistance=TRUE)
 		{
 			if(empty($this->mailPreferences->preferences['trashFolder'])) {
 				return false;
 			}
 			// does the folder exist???
-			if (!self::folderExists($_folderName)) {
+			if ($_checkexistance && !self::folderExists($_folderName)) {
 				return false;
 			}
 
@@ -2936,13 +2936,13 @@ class felamimail_bo
 			}
 		}
 
-		function isTemplateFolder($_folderName)
+		function isTemplateFolder($_folderName, $_checkexistance=TRUE)
 		{
 			if(empty($this->mailPreferences->preferences['templateFolder'])) {
 				return false;
 			}
 			// does the folder exist???
-			if (!self::folderExists($_folderName)) {
+			if ($_checkexistance && !self::folderExists($_folderName)) {
 				return false;
 			}
 
