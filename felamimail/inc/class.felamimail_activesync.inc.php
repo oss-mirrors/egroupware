@@ -65,7 +65,7 @@ class felamimail_activesync implements activesync_plugin_read
 	 *
 	 * @var int
 	 */
-	private $debugLevel = 1;
+	private $debugLevel = 0;
 
 	/**
 	 * Constructor
@@ -901,9 +901,16 @@ class felamimail_activesync implements activesync_plugin_read
 				$output->messageclass = "IPM.Note.SMIME.MultipartSigned";
 			}
 			// start AS12 Stuff
-			$output->poommailflag = new SyncPoommailFlag();
-			$output->poommailflag->flagstatus = 0;
-			//$output->poommailflag->flagtype = 0;  // TODO : flagged flag
+			//$output->poommailflag = new SyncPoommailFlag();
+
+			if ($this->messages[$id]['flagged'] == 1)
+			{
+				$output->poommailflag = new SyncPoommailFlag();
+				$output->poommailflag->flagstatus = 2;
+				$output->poommailflag->flagtype = "Flag for Follow up";
+
+			}
+
 			$output->internetcpid = 65001;
 			$output->contentclass="urn:content-classes:message";
 			// end AS12 Stuff
@@ -1092,12 +1099,12 @@ class felamimail_activesync implements activesync_plugin_read
 	private function fetchMessages($folderid, $cutoffdate=NULL, $_id=NULL)
 	{
 		if ($this->debugLevel>1) $starttime = microtime (true);
-		debugLog(__METHOD__.__LINE__);
+		//debugLog(__METHOD__.__LINE__);
 		$this->_connect($this->account);
 		$messagelist = array();
 		if (!empty($cutoffdate)) $_filter = array('type'=>"SINCE",'string'=> date("d-M-Y", $cutoffdate));
 		$rv = $this->splitID($folderid,$account,$_folderName,$id);
-		if ($this->debugLevel>0) debugLog (__METHOD__.' for Folder:'.$_folderName.' Filter:'.array2string($_filter).' Ids:'.array2string($_id));
+		if ($this->debugLevel>1) debugLog (__METHOD__.' for Folder:'.$_folderName.' Filter:'.array2string($_filter).' Ids:'.array2string($_id));
 		$rv_messages = $this->mail->getHeaders($_folderName, $_startMessage=1, $_numberOfMessages=9999999, $_sort=0, $_reverse=false, $_filter, $_id);
 		if ($_id == NULL && $this->debugLevel>1)  error_log(__METHOD__." found :". count($rv_messages['header']));
 		//debugLog(__METHOD__.__LINE__.array2string($rv_messages));
@@ -1116,6 +1123,7 @@ class felamimail_activesync implements activesync_plugin_read
 			// outlook supports additional flags, set them to 0
 			$mess["olflags"] = 0;
 			if($vars["seen"]) $mess["flags"] = 1;
+			if($vars["flagged"]) $mess["olflags"] = 2;
 			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($mess));
 			$messagelist[$vars['uid']] = $mess;
 			unset($mess);
@@ -1345,12 +1353,33 @@ class felamimail_activesync implements activesync_plugin_read
 	 */
 	function SetReadFlag($folderid, $id, $flags)
 	{
-		debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
+		// debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
 		$_messageUID = (array)$id;
 		$this->_connect($this->account);
 		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
 		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$_folderid);
 		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
+
+		return $rv;
+	}
+
+	/**
+     	 * modify olflags (outlook style) flag of a message
+     	 *
+     	 * @param $folderid
+     	 * @param $id
+     	 * @param $flags
+    	 *
+    	 *
+     	 * @DESC The $flags parameter must contains the poommailflag Object
+     	 */
+	function ChangeMessageFlag($folderid, $id, $flags)
+	{
+		$_messageUID = (array)$id;
+		$this->_connect($this->account);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
+		$rv = $this->mail->flagMessages((($flags->flagstatus == 2) ? "flagged" : "unflagged"), $_messageUID,$_folderid);
+		debugLog("IMAP-SetFlaggedFlag -> set as " . (($flags->flagstatus == 2) ? "flagged" : "unflagged") . "-->". $rv);
 
 		return $rv;
 	}
