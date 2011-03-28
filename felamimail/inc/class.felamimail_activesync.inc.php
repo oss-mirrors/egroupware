@@ -830,29 +830,31 @@ class felamimail_activesync implements activesync_plugin_read
 					if ($this->debugLevel>0) debugLog("HTML Body with requested pref 2");
 					// Send HTML if requested and native type was html
 					$output->airsyncbasebody->type = 2;
+					$htmlbody = '<html>'.
+						'<head>'.
+						'<meta name="Generator" content="Z-Push">'.
+						'<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'.
+						'</head>'.
+						'<body>';
 					if ($output->airsyncbasenativebodytype==2)
 					{
 						// as we fetch html, and body is HTML, we may not need to handle this
+						$htmlbody .= $body;
 					}
 					else
 					{
 						// html requested but got only plaintext, so fake html
-						$body = '<html>'.
-							'<head>'.
-							'<meta name="Generator" content="Z-Push">'.
-							'<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'.
-							'</head>'.
-							'<body>'.
-							str_replace("\n","<BR>",str_replace("\r","<BR>", str_replace("\r\n","<BR>",$plainBody))).
-							'</body>'.
-							'</html>';
+						$htmlbody .= str_replace("\n","<BR>",str_replace("\r","<BR>", str_replace("\r\n","<BR>",$plainBody)));
 					}
+					$htmlbody .= '</body>'.
+							'</html>';
+
 					if(isset($bodypreference[2]["TruncationSize"]) && strlen($html) > $bodypreference[2]["TruncationSize"])
 					{
-						$body = utf8_truncate($body,$bodypreference[2]["TruncationSize"]);
+						$htmlbody = utf8_truncate($htmlbody,$bodypreference[2]["TruncationSize"]);
 						$output->airsyncbasebody->truncated = 1;
 					}
-					$output->airsyncbasebody->data = $body;
+					$output->airsyncbasebody->data = $htmlbody;
 				}
 				else
 				{
