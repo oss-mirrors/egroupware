@@ -358,7 +358,11 @@ class felamimail_bo
 				$HierarchyDelimiter = $this->getHierarchyDelimiter();
 				$newFolderName = $parent . $HierarchyDelimiter . $folderName;
 			}
-
+			if (self::folderExists($newFolderName))
+			{
+				error_log(__METHOD__.__LINE__." Folder $newFolderName already exists.");
+				return $newFolderName;
+			}
 			if ( PEAR::isError($this->icServer->createMailbox($newFolderName) ) ) {
 				return false;
 			}
@@ -1668,6 +1672,7 @@ class felamimail_bo
 									if ($GLOBALS['egw_info']['user']['apps']['activesync']) $createfolder = true;
 									break;
 							}
+							if ($createfolder && self::folderExists($folderName)) $createfolder = false;
 							if($createfolder === true && $this->createFolder('', $folderName, true)) {
 								$foldersNameSpace['personal']['all'][] = $folderName;
 								$foldersNameSpace['personal']['subscribed'][] = $folderName;
