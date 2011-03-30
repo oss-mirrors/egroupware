@@ -187,6 +187,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 		// initialize the new egw_mailer object for sending
 		$mailObject = new egw_mailer();
+		$mailObject->CharSet = 'utf-8'; // set charset always to utf-8
 		// default, should this be forced?
 		$mailObject->IsSMTP();
 		$mailObject->Sender  = $activeMailProfile->emailAddress;
@@ -203,7 +204,6 @@ class felamimail_activesync implements activesync_plugin_read
 		$mobj = new Mail_mimeDecode($mimeParams['input'], $mimeParams['crlf']);
 		$message = $mobj->decode($mimeParams, $mimeParams['crlf']);
 		//error_log(__METHOD__.__LINE__.array2string($message));
-		$mailObject->CharSet = 'utf-8'; // set charset always to utf-8
 		$mailObject->Priority = $message->headers['priority'];
 		$mailObject->Encoding = 'quoted-printable'; // we use this by default
 
