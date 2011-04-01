@@ -25,7 +25,6 @@ class felamimail_bo
 			'flagMessages'		=> True,
 		);
 
-		var $mbox;		// the mailbox identifier any function should use
 		static $debug = false; //true; // sometimes debuging is quite handy, to see things. check with the error log to see results
 		// define some constants
 		// message types
@@ -2842,39 +2841,6 @@ class felamimail_bo
 			}
 		}
 
-	#	function imapGetQuota($_username)
-	#	{
-	#		$quota_value = @imap_get_quota($this->mbox, "user.".$_username);
-	#
-	#		if(is_array($quota_value) && count($quota_value) > 0)
-	#		{
-	#			return array('limit' => $quota_value['limit']/1024);
-	#		}
-	#		else
-	#		{
-	#			return false;
-	#		}
-	#	}
-
-	#	function imap_get_quotaroot($_folderName)
-	#	{
-	#		return @imap_get_quotaroot($this->mbox, $_folderName);
-	#	}
-
-	#	function imapSetQuota($_username, $_quotaLimit)
-	#	{
-	#		if(is_numeric($_quotaLimit) && $_quotaLimit >= 0)
-	#		{
-	#			// enable quota
-	#			$quota_value = @imap_set_quota($this->mbox, "user.".$_username, $_quotaLimit*1024);
-	#		}
-	#		else
-	#		{
-	#			// disable quota
-	#			$quota_value = @imap_set_quota($this->mbox, "user.".$_username, -1);
-	#		}
-	#	}
-
 		function isSentFolder($_folderName, $_checkexistance=TRUE)
 		{
 			if(empty($this->mailPreferences->preferences['sentFolder'])) {
@@ -2987,6 +2953,28 @@ class felamimail_bo
 			} else {
 				return true;
 			}
+		}
+
+		/**
+		 * getFolderType - checks and returns the foldertype for a given nfolder
+		 * @param string $mailbox
+		 * @return int the folder Type 0 for Standard, 1 for Sent, 2 for draft, 3 for template
+		 */
+		function getFolderType($mailbox)
+		{
+			$sentFolderFlag =$this->isSentFolder($mailbox);
+			$folderType = 0;
+			if($sentFolderFlag ||
+				false !== in_array($mailbox,explode(',',$GLOBALS['egw_info']['user']['preferences']['felamimail']['messages_showassent_0'])))
+			{
+				$folderType = 1;
+				$sentFolderFlag=1;
+			} elseif($this->isDraftFolder($mailbox)) {
+				$folderType = 2;
+			} elseif($this->isTemplateFolder($mailbox)) {
+				$folderType = 3;
+			}
+			return $folderType;
 		}
 
 		function moveMessages($_foldername, $_messageUID, $deleteAfterMove=true, $currentFolder = Null, $returnUIDs = false)
@@ -3276,6 +3264,9 @@ class felamimail_bo
 			switch($_sort) {
 				case 2:
 					$retValue = 'FROM';
+					break;
+				case 4:
+					$retValue = 'TO';
 					break;
 				case 3:
 					$retValue = 'SUBJECT';

@@ -37,7 +37,11 @@ var MessageBuffer;
 var activeFolder			= '{activeFolder}';
 var activeFolderB64			= '{activeFolderB64}';
 var activityImagePath		= '{ajax-loader}';
+var test = '';
 
+var objectManager = null;
+var actionManager = null;
+var mailGrid = null;
 // how many row are selected currently
 var checkedCounter=0;
 
@@ -115,13 +119,6 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 
 		<TD valign="top" colspan="5">
 
-			<!-- Start Header MessageList -->
-
-			{messageListTableHeader}
-
-			<!-- End Header MessageList -->
-
-
 			<!-- Start MessageList -->
 
 			<form name="formMessageList" id="formMessageList">
@@ -139,12 +136,10 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 <!-- END main -->
 
 <!-- BEGIN message_table -->
-<div id="divMessageTableList" style="overflow:auto; height:{messagelist_height}; margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid Silver;">
-	<table id="tableMessageTableList" BORDER="0" style="width:98%; padding-left:2; table-layout: fixed;" cellspacing="0">
-		{message_rows}
-	</table>
+<div id="divMessageTableList" style="height:{messagelist_height}; margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid Silver;">
+
 </div>
-<span id="spanMessagePreview">
+<span id="spanMessagePreview" style="margin-left:5px; margin-right:5px;">
 	{IFrameForPreview}
 </span>
 <script type="text/javascript">
@@ -160,7 +155,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		var divMessageTableList = document.getElementById('divMessageTableList');
 		var iframe = document.getElementById('messageIFRAME');
 		var tdiframe = document.getElementById('tdmessageIFRAME');
-		var tableMessageTableList = document.getElementById('tableMessageTableList');
+		//var tableMessageTableList = document.getElementById('tableMessageTableList');
 		var iframeheight = felamimail_iframe_height;
 		if (isNaN(iframeheight)) iframeheight = 0;
 		if (typeof divMessageTableList != 'undefined' && divMessageTableList != null)
@@ -180,7 +175,8 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			   iframeheight the height of the message preview,
 			   divheight the end size height of the table outer div */
 			var tabnotavail = false;
-			var tableheight = $(tableMessageTableList).height();
+			var tableheight = 300; //$(tableMessageTableList).height();
+			if (mailGrid != null) tableheight = mailGrid.getDataHeight()+5;
 			if (tableheight == 0 || isNaN(tableheight)) // set defaults to compute with, if the property is not set
 			{
 				tabnotavail = true;
@@ -220,6 +216,8 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			//alert('divMessageList Height:'+divheight);
 			//alert('iframe height:'+iframeheight);
 			divMessageTableList.style.height = divheight + 'px';
+			if (mailGrid != null) mailGrid.resize($(divMessageTableList).outerWidth(), divheight);
+
 			if (typeof iframe != 'undefined' && typeof tdiframe != 'undefined' && iframe != null && tdiframe != null)
 			{
 				tdiframe.height = iframeheight;
@@ -261,70 +259,6 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 
 <!-- END status_row_tpl -->
 
-<!-- BEGIN header_row_felamimail -->
-	<tr id="row_{message_uid}" class="{row_css_class}" {selected_style{message_uid}} onMouseOver="javascript:onChangeColor(this,'in');" onMouseOut="javascript:onChangeColor(this,'out');">
-		<td class="mainscreenRow" width="20px" align="left" valign="top">
-			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}"
-			onclick="toggleFolderRadio(this, refreshTimeOut)" {row_selected}>
-		</td>
-		<td class="mainscreenRow" width="20px" align="center">
-			{image_url}
-		</td>
-		<td class="mainscreenRow" width="20px" align="center">
-			 {prio_image}{attachment_image}
-		</td>
-		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;"><nobr>
-			<a class="{row_css_class}" name="subject_url" href="#" 
-				onclick="fm_handleMessageClick(false, '{url_read_message}', '{preview_message_windowName}', this); return false;" 
-				ondblclick="fm_handleMessageClick(true, '{url_read_message}', '{read_message_windowName}', this); return false;" 
-				title="{full_subject}">{header_subject}</a>
-		</td>
-		<td class="mainscreenRow" width="95px" align="center">
-			<nobr><span style="font-size:10px" title="{datetime}">{date}</span>
-		</td>
-		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;" width="120px"><nobr>
-			<a class="{row_css_class}" href="#" onclick="{url_compose} return false;" title="{full_address}">{sender_name}</a>
-		</td>
-		<td colspan=2 align="right" class="mainscreenRow" width="40px">
-			<span style="font-size:10px">{size}</span>
-		</td>
-
-</tr>
-<!-- END header_row_felamimail -->
-
-<!-- BEGIN header_row_outlook -->
-	<tr id="row_{message_uid}" class="{row_css_class}" {selected_style{message_uid}} onMouseOver="javascript:onChangeColor(this,'in');" onMouseOut="javascript:onChangeColor(this,'out');" >
-		<td class="mainscreenRow" width="20px" align="left" valign="top">
-			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}"
-			onclick="toggleFolderRadio(this, refreshTimeOut)" {row_selected}>
-		</td>
-		<td class="mainscreenRow" width="20px" align="center">
-			{image_url}
-		</td>
-		<td class="mainscreenRow" width="20px" align="center">
-			 {prio_image}{attachment_image}
-		</td>
-		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;" width="117px"><nobr>
-			<a class="{row_css_class}" href="#" onclick="{url_compose} return false;" title="{full_address}">{sender_name}</a>
-		</td>
-		<td class="mainscreenRow" width="2px">
-		</td>
-		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;"><nobr>
-			<a class="{row_css_class}" name="subject_url" href="#" 
-				onclick="fm_handleMessageClick(false, '{url_read_message}', '{preview_message_windowName}', this); parentNode.parentNode.parentNode.style.fontWeight='normal'; return false;" 
-				ondblclick="fm_handleMessageClick(true, '{url_read_message}', '{read_message_windowName}', this); parentNode.parentNode.parentNode.style.fontWeight='normal'; return false;" 
-				title="{full_subject}">{header_subject}</a>
-		</td>
-		<td class="mainscreenRow" width="95px" align="center">
-			<nobr><span style="font-size:10px" title="{datetime}">{date}</span>
-		</td>
-		<td colspan=2 align="right" class="mainscreenRow" width="40px">
-			<span style="font-size:10px">{size}</span>
-		</td>
-
-</tr>
-<!-- END header_row_outlook -->
-
 <!-- BEGIN error_message -->
         <table style="width:100%;">
                 <tr>
@@ -361,64 +295,3 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 	</td>
 <!-- END subject_new_window -->
 
-<!-- BEGIN table_header_felamimail -->
-			<table WIDTH=100% BORDER="0" CELLSPACING="0" style="table-layout:fixed;">
-				<tr class="th" id="tableHeader">
-					<td width="20px" align="left">
-						<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">
-					</td>
-					<td width="20px" bgcolor="{th_bg}" align="center" class="text_small">
-						&nbsp;
-					</td>
-					<td width="20px" bgcolor="{th_bg}" align="center" class="text_small">
-						&nbsp;
-					</td>
-					<td bgcolor="{th_bg}" style="text-align:left;" class="{css_class_subject}">
-						<a href="#" onclick="changeSorting('subject', this); return false;">{lang_subject}</a>
-					</td>
-					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">
-						&nbsp;&nbsp;<a href="#" onclick="changeSorting('date', this); return false;">{lang_date}</a>
-					</td>
-					<td width="120px" bgcolor="{th_bg}" style="text-align:left;" class="{css_class_from}">
-						&nbsp;<a href="#" onclick="changeSorting('from', this); return false;"><span id='from_or_to'>{lang_from}</span></a>
-					</td>
-					<td width="40px" bgcolor="{th_bg}" align="right" class="{css_class_size}">
-						<a href="#" onclick="changeSorting('size', this); return false;">{lang_size}</a>&nbsp;
-					</td>
-					<td width="15px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
-						&nbsp;
-					</td>
-				</tr>
-			</table>
-<!-- END table_header_felamimail -->
-
-<!-- BEGIN table_header_outlook -->
-			<table WIDTH=100% BORDER="0" CELLSPACING="0" style="table-layout:fixed;">
-				<tr class="th" id="tableHeader">
-					<td width="20px" align="left">
-						<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">
-					</td>
-					<td width="20px" bgcolor="{th_bg}" align="center" class="text_small">
-						&nbsp;
-					</td>
-					<td width="20px" bgcolor="{th_bg}" align="center" class="text_small">
-						&nbsp;
-					</td>
-					<td width="120px" bgcolor="{th_bg}" style="text-align:left;" class="{css_class_from}">
-						&nbsp;<a href="javascript:changeSorting('from');"><span id='from_or_to'>{lang_from}</span></a>
-					</td>
-					<td bgcolor="{th_bg}" style="text-align:left;" class="{css_class_subject}">
-						<a href="javascript:changeSorting('subject');">{lang_subject}</a>
-					</td>
-					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">
-						&nbsp;&nbsp;<a href="javascript:changeSorting('date');">{lang_date}</a>
-					</td>
-					<td width="40px" bgcolor="{th_bg}" align="right" class="{css_class_size}">
-						<a href="javascript:changeSorting('size');">{lang_size}</a>&nbsp;
-					</td>
-					<td width="15px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
-						&nbsp;
-					</td>
-				</tr>
-			</table>
-<!-- END table_header_outlook -->

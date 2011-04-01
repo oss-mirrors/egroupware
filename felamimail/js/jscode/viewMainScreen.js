@@ -22,6 +22,38 @@ if (typeof fm_previewMessageFolderType == 'undefined') var fm_previewMessageFold
 // refresh time for mailboxview
 if (typeof refreshTimeOut == 'undefined') var refreshTimeOut = egw_appWindow('felamimail').refreshTimeOut;
 
+function egw_email_fetchDataProc(_elems, _columns, _callback, _context)
+{
+	var request = new egw_json_request("felamimail.uiwidgets.ajax_fetch_data",
+		[_elems, _columns]);
+	request.sendRequest(true, function(_data) {
+		_callback.call(_context, _data);
+	});
+}
+
+function egw_email_columnChangeProc(_set)
+{
+	var request = new egw_json_request("felamimail.uiwidgets.ajax_store_coldata",
+		[_set]);
+	request.sendRequest(true);
+}
+
+function mailGridGetSelected()
+{
+	// select messagesv from mailGrid
+	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
+	var messages = {};
+	// allSelected[i].id hält die id
+	// zurückseten iteration über allSelected (getSelectedObjects) und dann allSelected[i].setSelected(false);
+	if (allSelected.length>0) messages['msg'] = [];
+	for (var i=0; i<allSelected.length; i++) 
+	{
+		if (allSelected[i].id.length>0) messages['msg'][i] = allSelected[i].id;
+	}
+	// mailGrid.dataRoot.actionObject.getFocused()
+	return messages;
+}
+
 function parentRefreshListRowStyle(oldID, newID)
 {
 	var trElement;
@@ -55,11 +87,9 @@ function changeSorting(_sort, _aNode) {
 
 	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Change sorting ...</span>';
 	document.getElementById('divMessageList').innerHTML = '';
-	aTags = document.getElementById('tableHeader').getElementsByTagName('a');
-	aTags[0].style.fontWeight='normal';
-	aTags[1].style.fontWeight='normal';
-	aTags[2].style.fontWeight='normal';
-	aTags[3].style.fontWeight='normal';
+//	aTags = document.getElementById('gridHeaderSubject');
+//	alert(aTags);
+	//aTags.style.fontWeight='normal';
 	egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.changeSorting",_sort);
 	_aNode.style.fontWeight='bold';
 }
@@ -86,11 +116,7 @@ function deleteMessages(_messageList) {
 		document.getElementById('divMessageList').innerHTML = '';
 		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteMessages",_messageList);
 	} else {
-		for(i=0; i< document.forms.formMessageList.elements.length; i++) {
-			if(document.forms.formMessageList.elements[i].checked) {
-				document.forms.formMessageList.elements[i].checked = false;
-			}
-		}
+		mailGrid.dataRoot.actionObject.setAllSelected(false);
 	}
 }
 
@@ -163,11 +189,6 @@ function OnLoadingStart(_nodeID) {
 	return true; // if function not return true, operation will be stoped
 }
 
-//function OnLoadingEnd(_nodeID) {
-//	top.tree.setItemImage(_nodeID, 'folderClose.gif','folderOpen.gif');
-//	alert(_nodeID);
-//}
-
 function callNodeSelect(_nodeIDfc, mode) {
 	_nodeIDfc = _nodeIDfc.replace(/#ampersand#/g,"&amp;");
 	if (typeof prefAskForMove == 'undefined') prefAskForMove = egw_appWindow('felamimail').prefAskForMove; 
@@ -201,6 +222,7 @@ function onNodeSelect(_nodeID) {
 	if (typeof prefAskForMove == 'undefined') prefAskForMove = egw_appWindow('felamimail').prefAskForMove; 
 	var Check = CopyOrMove;
 	var actionPending = false;
+//	var formData = new Array();
 	if(top.tree.getUserData(_nodeID, 'folderName')) {
 		if(document.getElementsByName("folderAction")[0].value == "moveMessage") {
 			if (prefAskForMove == 1 || prefAskForMove == 2) 
@@ -228,7 +250,7 @@ function onNodeSelect(_nodeID) {
 					formData = 'all';
 				} else {
 					egw_appWindow('felamimail').resetMessageSelect();
-					formData = egw_appWindow('felamimail').xajax.getFormValues('formMessageList');
+					formData = egw_appWindow('felamimail').mailGridGetSelected();
 				}
 				if (actionPending == 'copy') 
 				{
@@ -247,11 +269,7 @@ function onNodeSelect(_nodeID) {
 				if (actionPending == false)
 				{
 					egw_appWindow('felamimail').resetMessageSelect();
-					for(i=0; i< document.forms.formMessageList.elements.length; i++) {
-						if(document.forms.formMessageList.elements[i].checked) {
-							document.forms.formMessageList.elements[i].checked = false;
-						}
-					}
+					mailGrid.dataRoot.actionObject.setAllSelected(false);
 				}
 			}
 		} else {
@@ -292,21 +310,51 @@ function selectFolderContent(inputBox, _refreshTimeOut) {
 	selectAll(inputBox, _refreshTimeOut);
 }
 
+function selectedGridChange(_selectAll) {
+	//alert('SelectedGridChange called');
+	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
+	// to check if checkbox is clicked in GridHeader call mailGrid.dataRoot.actionOject.getAllSelected(); // returns true or false
+	folderFunctions = document.getElementById("folderFunction");
+	if (allSelected.length>0 || _selectAll)
+	{
+		checkedCounter = allSelected.length;
+		while (folderFunctions.hasChildNodes()) {
+		    folderFunctions.removeChild(folderFunctions.lastChild);
+		}
+		//var textNode = document.createTextNode('{lang_move_message}');
+		//folderFunctions.appendChild(textNode);
+		var textNode = document.createTextNode(egw_appWindow('felamimail').lang_select_target_folder);
+		folderFunctions.appendChild(textNode);
+
+		document.getElementById("folderFunction").innerHTML=egw_appWindow('felamimail').lang_select_target_folder;
+		document.getElementsByName("folderAction")[0].value = "moveMessage";
+		fm_startTimerMessageListUpdate(1800000);
+	} else {
+		checkedCounter = 0;
+//		document.getElementById('messageCheckBox').checked = false;
+		document.getElementById('selectAllMessagesCheckBox').checked = false;
+		while (folderFunctions.hasChildNodes()) {
+		    folderFunctions.removeChild(folderFunctions.lastChild);
+		}
+		//var textNode = document.createTextNode('{egw_appWindow('felamimail').lang_change_folder}');
+		//folderFunctions.appendChild(textNode);
+		var textNode = document.createTextNode('');
+		folderFunctions.appendChild(textNode);
+		document.getElementsByName("folderAction")[0].value = "changeFolder";
+		fm_startTimerMessageListUpdate(refreshTimeOut);
+	}
+}
+
 function selectAll(inputBox, _refreshTimeOut) {
 	maxMessages = 0;
-
-	for (var i = 0; i < document.getElementsByTagName('input').length; i++) {
-		if(document.getElementsByTagName('input')[i].name == 'msg[]') {
-			//alert(document.getElementsByTagName('input')[i].name);
-			document.getElementsByTagName('input')[i].checked = inputBox.checked;
-			maxMessages++;
-		}
-	}
-
+	mailGrid.dataRoot.actionObject.setAllSelected(inputBox.checked);
+	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
+	
+	
 	folderFunctions = document.getElementById('folderFunction');
 
-	if(inputBox.checked) {
-		checkedCounter = maxMessages;
+	if(allSelected.length>0) {
+		checkedCounter = allSelected.length;
 		while (folderFunctions.hasChildNodes()) {
 		    folderFunctions.removeChild(folderFunctions.lastChild);
 		}
@@ -327,7 +375,7 @@ function selectAll(inputBox, _refreshTimeOut) {
 }
 
 function toggleFolderRadio(inputBox, _refreshTimeOut) {
-
+	//alert('toggleFolderRadio called');
 	folderFunctions = document.getElementById("folderFunction");
 	checkedCounter += (inputBox.checked) ? 1 : -1;
 	if (checkedCounter > 0) {
@@ -340,7 +388,7 @@ function toggleFolderRadio(inputBox, _refreshTimeOut) {
 		document.getElementsByName("folderAction")[0].value = "moveMessage";
 		fm_startTimerMessageListUpdate(1800000);
 	} else {
-		document.getElementById('messageCheckBox').checked = false;
+//		document.getElementById('messageCheckBox').checked = false;
 		document.getElementById('selectAllMessagesCheckBox').checked = false;
 		while (folderFunctions.hasChildNodes()) {
 		    folderFunctions.removeChild(folderFunctions.lastChild);
@@ -375,7 +423,7 @@ function flagMessages(_flag)
 	{
 		_messageList = 'all';
 	} else {
-	    _messageList = egw_appWindow('felamimail').xajax.getFormValues('formMessageList');
+		_messageList = egw_appWindow('felamimail').mailGridGetSelected();
 	}
 
 	//alert(_messageList);
@@ -387,18 +435,14 @@ function flagMessages(_flag)
 		document.getElementById('divMessageList').innerHTML = '';
 		fm_startTimerMessageListUpdate(refreshTimeOut);
 	} else {
-		for(i=0; i< document.forms.formMessageList.elements.length; i++) {
-			if(document.forms.formMessageList.elements[i].checked) {
-				document.forms.formMessageList.elements[i].checked = false;
-			}
-		}
+		mailGrid.dataRoot.actionObject.setAllSelected(false);
 	}
 }
 
 function resetMessageSelect()
 {
 	if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
-	document.getElementById('messageCheckBox').checked = false;
+//	document.getElementById('messageCheckBox').checked = false;
 	document.getElementById('selectAllMessagesCheckBox').checked = false;
 	checkedCounter = 0;
 	folderFunctions = document.getElementById('folderFunction');
@@ -520,7 +564,7 @@ function openComposeWindow(_url) {
 	var _messageList;
 	var sMessageList='';
 	var cbAllMessages = document.getElementById('selectAllMessagesCheckBox').checked;
-	var cbAllVisibleMessages = document.getElementById('messageCheckBox').checked;
+	var cbAllVisibleMessages = mailGrid.dataRoot.actionObject.getAllSelected();
 	if (typeof prefAskForMultipleForward == 'undefined') prefAskForMultipleForward = egw_appWindow('felamimail').prefAskForMultipleForward;
 	egw_appWindow('felamimail').resetMessageSelect();
 	// ask anyway if a whole page is selected
@@ -534,11 +578,11 @@ function openComposeWindow(_url) {
 	if ((cbAllMessages == true || cbAllVisibleMessages == true ) && Check == true)
 	{
 		//_messageList = 'all'; // all is not supported by now, only visibly selected messages are chosen
-		_messageList = egw_appWindow('felamimail').xajax.getFormValues('formMessageList');
+		_messageList = egw_appWindow('felamimail').mailGridGetSelected();
 	}
 	else
 	{
-		if (Check == true) _messageList = egw_appWindow('felamimail').xajax.getFormValues('formMessageList');
+		if (Check == true) _messageList = egw_appWindow('felamimail').mailGridGetSelected();
 	}
 	if (typeof _messageList != 'undefined')
 	{
@@ -564,11 +608,7 @@ function openComposeWindow(_url) {
 		//alert(sMessageList);
 		egw_openWindowCentered(_url+sMessageList,'compose',700,egw_getWindowOuterHeight());
 	}
-	for(i=0; i< document.forms.formMessageList.elements.length; i++) {
-		if(document.forms.formMessageList.elements[i].checked) {
-			document.forms.formMessageList.elements[i].checked = false;
-		}
-	}
+	mailGrid.dataRoot.actionObject.setAllSelected(false);
 }
 
 // timer functions
@@ -629,6 +669,7 @@ function fm_handleMessageClick(_double, _url, _windowName, _node)
 }
 
 function fm_readMessage(_url, _windowName, _node) {
+//alert('url to open'+_url);
 	var windowArray = _windowName.split('_');
 	var tableElement =_node.parentNode.parentNode.parentNode.parentNode;
 	var allRows = tableElement.getElementsByTagName("tr");
@@ -645,11 +686,25 @@ function fm_readMessage(_url, _windowName, _node) {
 		// refreshMessagePreview now also refreshes the folder state
 		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",windowArray[1],windowArray[2]);
 	} else {
+		var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
+		// allSelected[i].id hält die id
+		// zurückseten iteration über allSelected (getSelectedObjects) und dann allSelected[i].setSelected(false);
+		for (var i=0; i<allSelected.length; i++) 
+		{
+			if (allSelected[i].id.length>0) 
+			{
+				allSelected[i].setSelected(false);
+				allSelected[i].setFocused(true);
+			}
+		}
+
 		egw_openWindowCentered(_url, _windowName, 750, egw_getWindowOuterHeight());
 
 		// Refresh the folder state (count of unread emails)
 		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshFolder");
 	}
+//alert('after opening');
+	mailGrid.dataRoot.actionObject.setAllSelected(false);
 	trElement = _node.parentNode.parentNode.parentNode;
 	trElement.style.fontWeight='normal';
 	trElement.style.backgroundColor = "#ddddFF";

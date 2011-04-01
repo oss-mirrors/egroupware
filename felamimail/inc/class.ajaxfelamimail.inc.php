@@ -106,7 +106,7 @@ class ajaxfelamimail
 
 		function changeSorting($_sortBy)
 		{
-			if($this->_debug) error_log("ajaxfelamimail::changeSorting");
+			if($this->_debug) error_log("ajaxfelamimail::changeSorting:".$_sortBy.'#');
 			$this->sessionData['startMessage']	= 1;
 
 			$oldSort = $this->sessionData['sort'];
@@ -117,6 +117,9 @@ class ajaxfelamimail
 					break;
 				case 'from':
 					$this->sessionData['sort'] = SORTFROM;
+					break;
+				case 'to':
+					$this->sessionData['sort'] = SORTTO;
 					break;
 				case 'size':
 					$this->sessionData['sort'] = SORTSIZE;
@@ -509,7 +512,7 @@ class ajaxfelamimail
 				(array)$this->sessionData['messageFilter']
 			);
 
-			$headerTable = $this->uiwidgets->messageTable(
+			$headerTable = $this->uiwidgets->get_grid_js($listMode,$_folderName,$offset,$headers).$this->uiwidgets->messageTable(
 				$headers,
 				$listMode,
 				$_folderName,

@@ -618,7 +618,7 @@ class felamimail_hooks
 					'tooltip'	=> lang('mark selected as unflagged'),
 				),
 				'delete'		=> array(
-					'action'	=> "egw_appWindow('".$appname."').deleteMessages(egw_appWindow('".$appname."').xajax.getFormValues('formMessageList'))",
+					'action'	=> "egw_appWindow('".$appname."').deleteMessages(egw_appWindow('".$appname."').mailGridGetSelected())",
 					'tooltip'	=> lang('mark as deleted'),
 				),
 			);

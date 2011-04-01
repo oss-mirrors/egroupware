@@ -24,6 +24,8 @@ class uiwidgets
 		 * @var felamimail_bo
 		 */
 		var $bofelamimail;
+		var $_connectionStatus;
+		var $sessionData;
 		/**
 		 * Instance of template class for felamimail
 		 *
@@ -40,6 +42,8 @@ class uiwidgets
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
 			$this->charset = translation::charset();
 			$this->bofelamimail = felamimail_bo::getInstance();
+			$this->_connectionStatus = $this->bofelamimail->openConnection();
+			$this->sessionData	= $GLOBALS['egw']->session->appsession('session_data','felamimail');
 		}
 
 		function encodeFolderName($_folderName)
@@ -257,27 +261,360 @@ class uiwidgets
 			return '';
 		}
 
-		// $_folderType 0: normal imap folder 1: sent folder 2: draft folder 3: template folder
-		// $_rowStyle felamimail or outlook
-		function messageTable($_headers, $_folderType, $_folderName, $_readInNewWindow, $_rowStyle='felamimail',$messageToBePreviewed=0)
+		private function get_actions()
 		{
-			//error_log(__METHOD__.' preview Message:'.$messageToBePreviewed);
-			$this->t = CreateObject('phpgwapi.Template',EGW_APP_TPL);
-			$this->t->set_file(array("body" => 'mainscreen.tpl'));
-			$this->t->set_block('body','header_row_felamimail');
-			$this->t->set_block('body','header_row_outlook');
-			$this->t->set_block('body','message_table');
+			$actions =  array(
+				array(
+					"id" => "mark_flagged",
+					"caption" => lang('Mark selected as flagged'),
+					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'unread_flagged_small'),
+					"group" => 1,
+					"type" => "popup",
+					"onExecute" => "javaScript:mail_markFlagged",
+				),
+				array(
+					"id" => "mark_unflagged",
+					"caption" => lang('Mark selected as unflagged'),
+					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'read_flagged_small'),
+					"group" => 1,
+					"type" => "popup",
+					"onExecute" => "javaScript:mail_markUnflagged",
+				),
+				array(
+					"id" => "delete",
+					"caption" => lang('Mark as deleted'),
+					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'delete'),
+					"group" => 3,
+					"onExecute" => "javaScript:mail_delete",
+					"type" => "popup"
+				),
+				array(
+					"id" => "reply",
+					"caption" => lang('Reply'),
+					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'mail_reply'),
+					"group" => 0,
+					"onExecute" => "javaScript:mail_reply",
+					"allowOnMultiple" => false,
+					"type" => "popup"
+				),
+				array(
+					"id" => "reply_all",
+					"caption" => lang('Reply All'),
+					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'mail_replyall'),
+					"group" => 0,
+					"onExecute" => "javaScript:mail_replyAll",
+					"allowOnMultiple" => false,
+					"type" => "popup"
+				),
+				array(
+					"id" => "mark_read",
+					"caption" => lang('Mark selected as read'),
+					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'read_small'),
+					"group" => 2,
+					"type" => "popup",
+					"onExecute" => "javaScript:mail_markRead",
+				),
+				array(
+					"id" => "mark_unread",
+					"caption" => lang('Mark selected as unread'),
+					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'unread_small'),
+					"group" => 2,
+					"type" => "popup",
+					"onExecute" => "javaScript:mail_markUnread",
+				)
+			);
+
+			return $actions;
+		}
+
+		private function get_action_groups()
+		{
+			return array(
+				"mail" => array(
+					"mark_flagged", "mark_unflagged", "delete", "reply", "reply_all", "mark_read", "mark_unread"
+				)
+			);
+		}
+
+
+		function get_grid_js($foldertype,$_folderName,$offset=0,$headers=false,$getAllIds=false)
+		{
+			$js = '<script type="text/javascript">
+$(document).ready(function() {
+	// Create the base objects and feed them with data
+	actionManager = new egwActionManager();
+	actionManager.updateActions('.json_encode($this->get_actions()).');
+	objectManager = new egwActionObjectManager("baseObject", actionManager);
+
+	mailGrid = new egwGrid(document.getElementById("divMessageTableList"),
+		'.json_encode($this->get_columns_obj(true,$foldertype,$_folderName)->get_assoc()).', objectManager, egw_email_fetchDataProc,
+		egw_email_columnChangeProc, window);
+	mailGrid.setActionLinkGroups('.json_encode($this->get_action_groups()).');
+	mailGrid.selectedChangeCallback = selectedGridChange;
+	// get_all_ids is to retrieve all message uids. no pagination needed anymore
+';
+				if ($getAllIds === true)
+				{
+					$js .= '
+	mailGrid.dataRoot.loadData('.json_encode($this->get_all_ids($_folderName,$foldertype)).');
+';
+				}
+				else
+				{
+					$js .= '
+	mailGrid.dataRoot.loadData('.json_encode($this->get_range($_folderName,$foldertype,$offset,$uidOnly=false,$headers)).');
+';
+				}
+				$js .= '
+	mailGrid.reload();
+
+	egw_appWindow("felamimail").handleResize();
+	
+});
+</script>	';
+	// 
+			return $js;
+		}
+
+		/**
+		 * not used, as it fetches all data forv the given mailbox
+		 */
+		function get_all_ids($_folderName,$folderType,$headers=false)
+		{
+			//error_log(__METHOD__.__LINE__.' Data:'.array2string($_folderName));
+			$this->bofelamimail->restoreSessionData();
+			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			$previewMessage = $this->sessionData['previewMessage'];
+			if ($headers)
+			{
+				$sortResult = $headers;
+			}
+			else
+			{
+				$reverse = (bool)$this->sessionData['sortReverse'];
+				$sR = $this->bofelamimail->getSortedList(
+					$_folderName, 
+					$this->sessionData['sort'], 
+					$reverse, 
+					(array)$this->sessionData['messageFilter'], 
+					$rByUid=true
+				);
+				if($reverse === true) $sR = array_reverse($sR);
+				$sortResult = array();
+				foreach ($sR as $key => $v) $sortResult['header'][] = array('uid'=>$v);
+			}
+			//error_log(__METHOD__.__LINE__.' Data:'.array2string($sortResult));
+			//$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
+			return $this->header2gridelements($sortResult['header'],$cols, $uidOnly=true,$folderType,$dataForXMails=50,$previewMessage); 
+		}
+
+		function get_range($_folderName,$folderType,$offset,$uidOnly=false,$headers=false)
+		{
+			//error_log(__METHOD__.__LINE__.' Data:'.array2string($_folderName));
+			$this->bofelamimail->restoreSessionData();
+			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			$previewMessage = $this->sessionData['previewMessage'];
+			if ($headers)
+			{
+				$sortResult = $headers;
+			}
+			else
+			{
+				$sortResult = $this->bofelamimail->getHeaders(
+					$_folderName,
+					$offset,
+					$maxMessages,
+					$this->sessionData['sort'],
+					$this->sessionData['sortReverse'],
+					(array)$this->sessionData['messageFilter']
+				);
+			}
+			//error_log(__METHOD__.__LINE__.' Data:'.array2string($rvs));
+			$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
+			return $this->header2gridelements($sortResult['header'],$cols, $uidOnly,$folderType,$dataForXMails=50,$previewMessage); 
+		}
+
+		private static function get_columns_obj($load_userdata = true, $foldertype=0,$_folderName='')
+		{
+			$f_md5='';
+			if (!empty($_folderName)) $f_md5=md5($_folderName);
+			$obj = new egw_grid_columns('felamimail', 'mainview'.$f_md5); //app- and grid-name
+			switch($GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle']) {
+				case 'outlook':
+					$default_data = array(
+						array(
+							"id" => "check",
+							//"caption" => '<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">',
+							"type" => EGW_COL_TYPE_CHECKBOX,
+							//"width" => "20px",
+							"visibility" => EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+						),
+						array(
+							"id" => "status",
+							"caption" => '',
+							"width" => "20px",
+							"visibility" => EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+						),
+						array(
+							"id" => "attachments",
+							"caption" => '',
+							"width" => "20px",
+							"visibility" => EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+						),
+						array(
+							"id" => "toaddress", // sent or drafts or template folder means foldertype > 0, use to address instead of from
+							"caption" => '<a id="gridHeaderTo" href="#" onclick="changeSorting(\'to\', this); return false;">'.lang("to").'</a>',
+							"width" => "120px",
+							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_INVISIBLE:EGW_COL_VISIBILITY_VISIBLE)
+						),
+						array(
+							"id" => "fromaddress",// sent or drafts or template folder means foldertype > 0, use to address instead of from
+							"caption" => '<a id="gridHeaderFrom" href="#" onclick="changeSorting(\'from\', this); return false;">'.lang("from").'</a>',
+							"width" => "120px",
+							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_VISIBLE:EGW_COL_VISIBILITY_INVISIBLE)
+						),
+						array(
+							"id" => "subject",
+							"caption" => '<a id="gridHeaderSubject" href="#" onclick="changeSorting(\'subject\', this); return false;">'.lang("subject").'</a>',
+						),
+						array(
+							"id" => "date",
+							"width" => "95px",
+							"caption" => '<a id="gridHeaderDate" href="#" onclick="changeSorting(\'date\', this); return false;">'.lang("date").'</a>',
+						),
+						array(
+							"id" => "size",
+							"caption" => '<a id="gridHeaderSize" href="#" onclick="changeSorting(\'size\', this); return false;">'.lang("size").'</a>',
+							"width" => "40px",
+						),
+					);
+					break;
+				default:
+					$default_data = array(
+						array(
+							"id" => "check",
+							//"caption" => '<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">',
+							"type" => EGW_COL_TYPE_CHECKBOX,
+							//"width" => "20px",
+							"visibility" => EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+						),
+						array(
+							"id" => "status",
+							"caption" => '',
+							"width" => "20px",
+							"visibility" => EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+						),
+						array(
+							"id" => "attachments",
+							"caption" => '',
+							"width" => "20px",
+							"visibility" => EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+						),
+						array(
+							"id" => "subject",
+							"caption" => '<a id="gridHeaderSubject" href="#" onclick="changeSorting(\'subject\', this); return false;">'.lang("subject").'</a>',
+						),
+						array(
+							"id" => "date",
+							"width" => "95px",
+							"caption" => '<a id="gridHeaderDate" href="#" onclick="changeSorting(\'date\', this); return false;">'.lang("date").'</a>',
+						),
+						array(
+							"id" => "toaddress",// sent or drafts or template folder means foldertype > 0, use to address instead of from
+							"caption" => '<a id="gridHeaderTo" href="#" onclick="changeSorting(\'to\', this); return false;">'.lang("to").'</a>',
+							"width" => "120px",
+							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_VISIBLE:EGW_COL_VISIBILITY_INVISIBLE)
+						),
+						array(
+							"id" => "fromaddress",// sent or drafts or template folder means foldertype > 0, use to address instead of from
+							"caption" => '<a id="gridHeaderFrom" href="#" onclick="changeSorting(\'from\', this); return false;">'.lang("from").'</a>',
+							"width" => "120px",
+							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_INVISIBLE:EGW_COL_VISIBILITY_VISIBLE)
+						),
+						array(
+							"id" => "size",
+							"caption" => '<a id="gridHeaderSize" href="#" onclick="changeSorting(\'size\', this); return false;">'.lang("size").'</a>',
+							"width" => "40px",
+						),
+					);
+					break;
+			}
+			// Store the generated data structure inside the object
+			$obj->load_grid_data($default_data);
+
+			if ($load_userdata)
+			{
+				// Load the userdata
+				$obj->load_userdata();
+			}
+
+			return $obj;
+		}
+
+		/**
+		 * AJAX function for storing the column data
+		 */
+		public function ajax_store_coldata($data)
+		{
+			$this->bofelamimail->restoreSessionData();
+			$_folderName = $this->bofelamimail->sessionData['mailbox'];
+			$folderType = $this->bofelamimail->getFolderType($_folderName);
+			$obj = self::get_columns_obj(false,$folderType,$_foldername); 
+			$obj->store_userdata($data);
+		}
+
+		/**
+		 * Interface function for fetching the data requested by the grid view
+		 */
+		public function ajax_fetch_data($elements, $columns)
+		{
+			$response = egw_json_response::get();
+			error_log(__METHOD__.__LINE__.' Uids to fetch:'.array2string($elements).' Columns to fetch:'.array2string($columns));
+			$this->bofelamimail->restoreSessionData();
+			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			$_folderName = $this->bofelamimail->sessionData['mailbox'];
+			$folderType = $this->bofelamimail->getFolderType($_folderName);
+			$sortResult = $this->bofelamimail->getHeaders(
+				$_folderName,
+				$offset,
+				$maxMessages,
+				$this->sessionData['sort'],
+				$this->sessionData['sortReverse'],
+				(array)$this->sessionData['messageFilter'],
+				$elements
+			);
+			//error_log(__METHOD__.__LINE__.' Data:'.array2string($rvs));
+			$response->data($this->header2gridelements($sortResult['header'],$columns, false, $folderType, false));
+		}
+
+		public function header2gridelements($_headers, $cols, $uidOnly=false, $_folderType=0, $dataForXMails=false, $previewMessage=0)
+		{
 			$timestamp7DaysAgo =
 				mktime(date("H"), date("i"), date("s"), date("m"), date("d")-7, date("Y"));
 			$timestampNow =
 				mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"));
 			$dateToday = date("Y-m-d");
-
-
+			$rv = array();
 			$i=0;
 			$firstuid = null;
-			foreach((array)$_headers['header'] as $header)
+			foreach((array)$_headers as $header)
 			{
+				$i++;
+				//error_log(__METHOD__.array2string($header));
+				$result = array(
+					"id" => $header['uid'],
+					"group" => "mail", // activate the action links for mail objects
+				);
+				$message_uid = $header['uid'];
+
+				if ($dataForXMails && $i>$dataForXMails) $uidOnly=true; // only fetch the data for the first X Mails
+				if ($uidOnly)
+				{
+					$rv[] = $result;
+					continue;
+				}
+				$data = array();
+
 				//_debug_array($header);
 				#if($i<10) {$i++;continue;}
 				#if($i>20) {continue;} $i++;
@@ -295,39 +632,46 @@ class uiwidgets
 				if(!empty($header['deleted'])) $flags .= "D";
 				if(!empty($header['seen'])) $flags .= "S";
 
-				$this->t->set_var('row_text', '');
 
 				// the status icon
 				if($header['deleted']) {
-					$this->t->set_var('image_url',html::image('felamimail','kmmsgdel'));
+					$status = html::image('felamimail','kmmsgdel');
 				} elseif($header['recent']) {
-					$this->t->set_var('image_url',html::image('felamimail','kmmsgnew'));
+					$status = html::image('felamimail','kmmsgnew');
 				} elseif($header['forwarded']) {
-					$this->t->set_var('image_url',html::image('felamimail','kmmsgforwarded'));
+					$status = html::image('felamimail','kmmsgforwarded');
 				} elseif($header['answered']) {
-					$this->t->set_var('image_url',html::image('felamimail','kmmsgreplied'));
+					$status = html::image('felamimail','kmmsgreplied');
 				} elseif($header['seen']) {
-					$this->t->set_var('image_url',html::image('felamimail','kmmsgread'));
+					$status = html::image('felamimail','kmmsgread');
 				} else {
-					$this->t->set_var('image_url',html::image('felamimail','kmmsgunseen'));
+					$status = html::image('felamimail','kmmsgunseen');
 				}
+
+
+			//if (in_array("useraction", $cols))
+				$data["status"] = $status; // ein icon
 
 				// the css for this row
 				if($header['deleted']) {
-					$this->t->set_var('row_css_class','header_row_D');
+					$css_style = 'header_row_D';
 				} elseif($header['recent'] && !$header['seen']) {
-					$this->t->set_var('row_css_class','header_row_R');
+					$css_style = 'header_row_R';
 				} elseif($header['flagged']) {
 					if($header['seen']) {
-						$this->t->set_var('row_css_class','header_row_FS');
+						$css_style = 'header_row_FS';
 					} else {
-						$this->t->set_var('row_css_class','header_row_F');
+						$css_style = 'header_row_F';
 					}
 				} elseif($header['seen']) {
-					$this->t->set_var('row_css_class','header_row_S');
+					$css_style = 'header_row_S';
 				} else {
-					$this->t->set_var('row_css_class','header_row_');
+					$css_style = 'header_row_';
 				}
+				//if (in_array("check", $cols))
+				$data["check"] = $previewMessage==$header['uid'];// $row_selected; //TODO:checkbox true or false 
+				//$data["check"] ='<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="'.$message_uid.'"
+				//	onclick="toggleFolderRadio(this, refreshTimeOut)">';
 
 				// filter out undisplayable characters
 				$search = array('[\016]','[\017]',
@@ -344,16 +688,48 @@ class uiwidgets
 				if (!empty($header['subject'])) {
 					// make the subject shorter if it is to long
 					$fullSubject = $header['subject'];
-					#if(strlen($header['subject']) > $maxSubjectLength)
-					#{
-					#	$header['subject'] = substr($header['subject'],0,$maxSubjectLength)."...";
-					#}
-					$this->t->set_var('header_subject', $header['subject']);
+					$subject = $header['subject'];
 					#$this->t->set_var('attachments', $header['attachment']);
-					$this->t->set_var('full_subject', $fullSubject);
 				} else {
-					$this->t->set_var('header_subject', @htmlspecialchars('('. lang('no subject') .')', ENT_QUOTES, $this->charset));
+					$subject = @htmlspecialchars('('. lang('no subject') .')', ENT_QUOTES, $this->charset);
 				}
+
+				if($_folderType == 2 || $_folderType == 3) {
+					$linkData = array (
+						'menuaction'    => 'felamimail.uicompose.composeFromDraft',
+						'icServer'	=> 0,
+						'folder' 	=> base64_encode($_folderName),
+						'uid'		=> $header['uid'],
+						'id'		=> $header['id'],
+					);
+					$url_read_message = $GLOBALS['egw']->link('/index.php',$linkData);
+
+					$windowName = 'composeFromDraft_'.$header['uid'];
+					$read_message_windowName = $windowName;
+					$preview_message_windowName = $windowName;
+				} else {
+				#	_debug_array($header);
+					$linkData = array (
+						'menuaction'    => 'felamimail.uidisplay.display',
+						'showHeader'	=> 'false',
+						'mailbox'    => base64_encode($_folderName),
+						'uid'		=> $header['uid'],
+						'id'		=> $header['id'],
+					);
+					$url_read_message = $GLOBALS['egw']->link('/index.php',$linkData);
+
+					$windowName = ($_readInNewWindow == 1 ? 'displayMessage' : 'displayMessage_'.$header['uid']);
+
+					if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0) $windowName = 'MessagePreview_'.$header['uid'].'_'.$_folderType;
+
+					$preview_message_windowName = $windowName;
+				}
+
+			if (in_array("subject", $cols))
+				$data["subject"] = '<a class="'.$css_style.'" name="subject_url" href="#" 
+                onclick="fm_handleMessageClick(false, \''.$url_read_message.'\', \''.$preview_message_windowName.'\', this); return false;" 
+                ondblclick="fm_handleMessageClick(true, \''.$url_read_message.'\', \''.$read_message_windowName.'\', this); return false;" 
+                title="'.$fullSubject.'">'.$subject.'</a>';//$subject; // the mailsubject
 
 				//_debug_array($header);
 				if($header['mimetype'] == 'multipart/mixed' ||
@@ -378,9 +754,9 @@ class uiwidgets
 						$attachments = $this->bofelamimail->getMessageAttachments($header['uid']);
 						if (count($attachments)<1) $image = '&nbsp;';
 					}
-					$this->t->set_var('attachment_image', $image);
+					$attachmentFlag = $image;
 				} else {
-					$this->t->set_var('attachment_image', '&nbsp;');
+					$attachmentFlag ='&nbsp;';
 				}
 				// show priority flag
 				if ($header['priority'] < 3) {
@@ -390,52 +766,90 @@ class uiwidgets
 				} else {
 					$image = '';
 				}
-				$this->t->set_var('prio_image', $image);
+				if (in_array("attachments", $cols))
+					$data["attachments"] = $image.$attachmentFlag; // icon for attachments available
 
-				if ($_folderType > 0) {
-					// sent or drafts or template folder
-					$header2add = felamimail_bo::htmlentities($header['to_address'],$this->charset);
-					$header['to_address'] = $header2add;
-					if (!empty($header['to_name'])) {
-						$header2name = felamimail_bo::htmlentities($header['to_name'],$this->charset);
-						$header['to_name'] = $header2name;
-
-						$sender_name	= $header['to_name'];
-						$full_address	= $header['to_name'].' <'.$header['to_address'].'>';
-					} else {
-						$sender_name	= $header['to_address'];
-						$full_address	= $header['to_address'];
-					}
+				// sent or draft or template folder
+				if(!empty($header['to_name'])) {
+					list($mailbox, $host) = explode('@',$header['to_address']);
+					$senderAddress  = imap_rfc822_write_address($mailbox,
+							$host,
+							$header['to_name']);
 				} else {
-					$header2add = felamimail_bo::htmlentities($header['sender_address'],$this->charset);
-					$header['sender_address'] = $header2add;
-					if (!empty($header['sender_name'])) {
-						$header2name = felamimail_bo::htmlentities($header['sender_name'],$this->charset);
-						$header['sender_name'] = $header2name;
+					$senderAddress  = $header['to_address'];
+				}
+				$linkData = array
+				(
+					'menuaction'    => 'felamimail.uicompose.compose',
+					'send_to'	=> base64_encode($senderAddress)
+				);
+				$windowName = 'compose'.$header['uid'];
+				$compose_url = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());";
 
-						$sender_name	= $header['sender_name'];
-						$full_address	= $header['sender_name'].' <'.$header['sender_address'].'>';
-					} else {
-						$sender_name	= $header['sender_address'];
-						$full_address	= $header['sender_address'];
-					}
+				// sent or drafts or template folder means foldertype > 0, use to address instead of from
+				$header2add = felamimail_bo::htmlentities($header['to_address'],$this->charset);
+				$header['to_address'] = $header2add;
+				if (!empty($header['to_name'])) {
+					$header2name = felamimail_bo::htmlentities($header['to_name'],$this->charset);
+					$header['to_name'] = $header2name;
+
+					$sender_name	= $header['to_name'];
+					$full_address	= $header['to_name'].' <'.$header['to_address'].'>';
+				} else {
+					$sender_name	= $header['to_address'];
+					$full_address	= $header['to_address'];
+				}
+				if (in_array("toaddress", $cols))
+					$data["toaddress"] = '<nobr><a class="'.$css_style.'" href="#" onclick="'.$compose_url.' return false;" title="'.@htmlspecialchars($full_address, ENT_QUOTES | ENT_IGNORE, $this->charset,false).'">'.@htmlspecialchars($sender_name, ENT_QUOTES | ENT_IGNORE, $this->charset,false).'</a></nobr>';
+
+				//fromaddress
+				$header2add = felamimail_bo::htmlentities($header['sender_address'],$this->charset);
+				$header['sender_address'] = $header2add;
+				if (!empty($header['sender_name'])) {
+					$header2name = felamimail_bo::htmlentities($header['sender_name'],$this->charset);
+					$header['sender_name'] = $header2name;
+
+					$sender_name	= $header['sender_name'];
+					$full_address	= $header['sender_name'].' <'.$header['sender_address'].'>';
+				} else {
+					$sender_name	= $header['sender_address'];
+					$full_address	= $header['sender_address'];
+				}
+				if(!empty($header['sender_name'])) {
+					list($mailbox, $host) = explode('@',$header['sender_address']);
+					$senderAddress  = imap_rfc822_write_address($mailbox,
+							$host,
+							$header['sender_name']);
+				} else {
+					$senderAddress  = $header['sender_address'];
 				}
 
-				$this->t->set_var('sender_name', @htmlspecialchars($sender_name, ENT_QUOTES | ENT_IGNORE, $this->charset,false));
-				$this->t->set_var('full_address', @htmlspecialchars($full_address, ENT_QUOTES | ENT_IGNORE, $this->charset,false));
+				$linkData = array
+				(
+					'menuaction'    => 'felamimail.uicompose.compose',
+					'send_to'	=> base64_encode($senderAddress)
+				);
+				$windowName = 'compose'.$header['uid'];
+				$compose_url = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());";
+				if (in_array("fromaddress", $cols))
+					$data["fromaddress"] = '<nobr><a class="'.$css_style.'" href="#" onclick="'.$compose_url.' return false;" title="'.@htmlspecialchars($full_address, ENT_QUOTES | ENT_IGNORE, $this->charset,false).'">'.@htmlspecialchars($sender_name, ENT_QUOTES | ENT_IGNORE, $this->charset,false).'</a></nobr>';
 
-				$this->t->set_var('message_counter', $i);
-				$this->t->set_var('message_uid', $header['uid']);
+				//$this->t->set_var('message_counter', $i);
 
 				if ($dateToday == felamimail_bo::_strtotime($header['date'],'Y-m-d')) {
- 				    $this->t->set_var('date', felamimail_bo::_strtotime($header['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'))); //$GLOBALS['egw']->common->show_date($header['date'],'H:i:s'));
+ 				    $dateShort = felamimail_bo::_strtotime($header['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'));
 				} else {
-					$this->t->set_var('date', felamimail_bo::_strtotime($header['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']));
+					$dateShort = felamimail_bo::_strtotime($header['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']);
 				}
-				$this->t->set_var('datetime', felamimail_bo::_strtotime($header['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).
-												' - '.felamimail_bo::_strtotime($header['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s')));
+				$dateLong = felamimail_bo::_strtotime($header['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).
+												' - '.felamimail_bo::_strtotime($header['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'));
 
-				$this->t->set_var('size', $this->show_readable_size($header['size']));
+				if (in_array("date", $cols))
+					$data["date"] = '<nobr><span style="font-size:10px" title="'.$dateLong.'">'.$dateShort.'</span></nobr>';
+
+				if (in_array("size", $cols))
+					$data["size"] = $this->show_readable_size($header['size']); /// size
+
 				// selecting the first message by default for preview
 				if ($firstuid === null) // only use preview if there is a message selected, so selecting the first message by default is not used anymore
 				{
@@ -452,90 +866,51 @@ class uiwidgets
 					$selecteduid = $header['uid'];
 					$firstheader = $header;
 				}
-				if($_folderType == 2 || $_folderType == 3) {
-					$linkData = array (
-						'menuaction'    => 'felamimail.uicompose.composeFromDraft',
-						'icServer'	=> 0,
-						'folder' 	=> base64_encode($_folderName),
-						'uid'		=> $header['uid'],
-						'id'		=> $header['id'],
-					);
-					$this->t->set_var('url_read_message', $GLOBALS['egw']->link('/index.php',$linkData));
 
-					$windowName = 'composeFromDraft_'.$header['uid'];
-					$this->t->set_var('read_message_windowName', $windowName);
-					$this->t->set_var('preview_message_windowName', $windowName);
-				} else {
-				#	_debug_array($header);
-					$linkData = array (
-						'menuaction'    => 'felamimail.uidisplay.display',
-						'showHeader'	=> 'false',
-						'mailbox'    => base64_encode($_folderName),
-						'uid'		=> $header['uid'],
-						'id'		=> $header['id'],
-					);
-					$this->t->set_var('url_read_message', $GLOBALS['egw']->link('/index.php',$linkData));
-
-					$windowName = ($_readInNewWindow == 1 ? 'displayMessage' : 'displayMessage_'.$header['uid']);
-					$this->t->set_var('read_message_windowName', $windowName);
-
-					if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0) $windowName = 'MessagePreview_'.$header['uid'].'_'.$_folderType;
-
-					$this->t->set_var('preview_message_windowName', $windowName);
-				}
-
-				if($_folderType > 0) {
-					// sent or draft or template folder
-					if(!empty($header['to_name'])) {
-						list($mailbox, $host) = explode('@',$header['to_address']);
-						$senderAddress  = imap_rfc822_write_address($mailbox,
-								$host,
-								$header['to_name']);
-					} else {
-						$senderAddress  = $header['to_address'];
-					}
-				} else {
-					if(!empty($header['sender_name'])) {
-						list($mailbox, $host) = explode('@',$header['sender_address']);
-						$senderAddress  = imap_rfc822_write_address($mailbox,
-								$host,
-								$header['sender_name']);
-					} else {
-						$senderAddress  = $header['sender_address'];
-					}
-				}
-
-				$linkData = array
-				(
-					'menuaction'    => 'felamimail.uicompose.compose',
-					'send_to'	=> base64_encode($senderAddress)
-				);
-				$windowName = 'compose'.$header['uid'];
-				$this->t->set_var('url_compose',"egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());");
 				/*
-				$linkData = array
-				(
-					'menuaction'   		=> 'addressbook.addressbook_ui.edit',
-					'presets[email]'	=> urlencode($header['sender_address']),
-					'presets[n_given]'	=> urlencode($header['sender_name']),
-					'referer'		=> urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'])
-				);
 				//TODO: url_add_to_addressbook isn't in any of the templates.
 				//If you want to use it, you need to adopt syntax to the new addressbook (popup)
 				$this->t->set_var('url_add_to_addressbook',$GLOBALS['egw']->link('/index.php',$linkData));
 				*/
+				//$this->t->set_var('msg_icon_sm',$msg_icon_sm);
+
+				//$this->t->set_var('phpgw_images',EGW_IMAGES);
+				$result["data"] = $data;
+				$result["rowClass"] = $css_style;
+				$rv[] = $result;
+				//error_log(__METHOD__.__LINE__.array2string($result));
+			}
+			return $rv;
+		}
+
+		// $_folderType 0: normal imap folder 1: sent folder 2: draft folder 3: template folder
+		// $_rowStyle felamimail or outlook
+		function messageTable($_headers, $_folderType, $_folderName, $_readInNewWindow, $_rowStyle='felamimail',$messageToBePreviewed=0)
+		{
+			//error_log(__METHOD__.' preview Message:'.$messageToBePreviewed);
+			$this->t = CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			$this->t->set_file(array("body" => 'mainscreen.tpl'));
+
+			$this->t->set_block('body','message_table');
+
+			$i=0;
+			$firstuid = null;
+			foreach((array)$_headers['header'] as $header)
+			{
+				// preview the message with the requested (messageToBePreviewed) uid
+				if ($messageToBePreviewed>0
+					&& $GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0
+					&& $messageToBePreviewed == $header['uid'])
+				{
+					//error_log(__METHOD__.$header['uid']);
+					$selecteduid = $header['uid'];
+					$firstheader = $header;
+				}
 				$this->t->set_var('msg_icon_sm',$msg_icon_sm);
 
 				$this->t->set_var('phpgw_images',EGW_IMAGES);
 
-				switch($_rowStyle) {
-					case 'outlook':
-						$this->t->parse('message_rows','header_row_outlook',True);
-						break;
-					default:
-						$this->t->parse('message_rows','header_row_felamimail',True);
-						break;
-				}
+
 			}
 
 			if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0)

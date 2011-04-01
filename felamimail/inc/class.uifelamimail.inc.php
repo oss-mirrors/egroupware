@@ -612,7 +612,24 @@ class uifelamimail
 			{
 				// this call loads js and css for the treeobject
 				html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
+				egw_framework::validate_file('jquery','jquery-ui');
+				egw_framework::validate_file('dhtmlxtree','dhtmlxMenu/codebase/dhtmlxcommon');
+				egw_framework::validate_file('dhtmlxtree','dhtmlxMenu/codebase/dhtmlxmenu');
+				egw_framework::validate_file('dhtmlxtree','dhtmlxMenu/codebase/ext/dhtmlxmenu_ext');
+				egw_framework::validate_file('egw_action','egw_action');
+				egw_framework::validate_file('egw_action','egw_action_common');
+				egw_framework::validate_file('egw_action','egw_action_popup');
+				egw_framework::validate_file('egw_action','egw_action_dragdrop');
+				egw_framework::validate_file('egw_action','egw_menu');
+				egw_framework::validate_file('egw_action','egw_menu_dhtmlx');
+				egw_framework::validate_file('egw_action','egw_grid');
+				egw_framework::validate_file('egw_action','egw_grid_data');
+				egw_framework::validate_file('egw_action','egw_grid_view');
+				egw_framework::validate_file('egw_action','egw_grid_columns');
+				egw_framework::validate_file('egw_action','egw_stylesheet');
+
 				egw_framework::validate_file('jscode','viewMainScreen','felamimail');
+				egw_framework::includeCSS('/phpgwapi/js/egw_action/test/skins/dhtmlxmenu_egw.css');
 				$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			}
 			$GLOBALS['egw']->common->egw_header();
@@ -745,8 +762,6 @@ class uifelamimail
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
 			$this->t->set_block('body','main');
 			$this->t->set_block('body','status_row_tpl');
-			$this->t->set_block('body','table_header_felamimail');
-			$this->t->set_block('body','table_header_outlook');
 			$this->t->set_block('body','error_message');
 			$this->t->set_block('body','quota_block');
 			$this->t->set_block('body','subject_same_window');
@@ -980,19 +995,7 @@ class uifelamimail
 				}
 				$msg_icon_sm = $GLOBALS['egw']->common->image('felamimail','msg_icon_sm');
 				// determine how to display the current folder: as sent folder (to address visible) or normal (from address visible)
-				$sentFolderFlag =$this->bofelamimail->isSentFolder($this->mailbox);
-				$folderType = 0;
-				if($sentFolderFlag ||
-					false !== in_array($this->mailbox,explode(',',$GLOBALS['egw_info']['user']['preferences']['felamimail']['messages_showassent_0'])))
-				{
-					$folderType = 1;
-					$sentFolderFlag=1;
-				} elseif($this->bofelamimail->isDraftFolder($this->mailbox)) {
-					$folderType = 2;
-				} elseif($this->bofelamimail->isTemplateFolder($this->mailbox)) {
-					$folderType = 3;
-				}
-
+				$folderType = $this->bofelamimail->getFolderType($this->mailbox);
 				$this->t->set_var('header_rows',
 					$uiwidgets->messageTable(
 						$headers,
@@ -1071,21 +1074,18 @@ class uifelamimail
 				}
 				$this->t->parse('status_row','status_row_tpl',True);
 				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
-				$this->bofelamimail->closeConnection();
 			}
 
-			switch($GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle']) {
-				case 'outlook':
-					$this->t->parse('messageListTableHeader','table_header_outlook',True);
-					break;
-				default:
-					$this->t->parse('messageListTableHeader','table_header_felamimail',True);
-					break;
-			}
 			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
 			$this->t->parse("out","main");
-			print $this->t->get('out','main');
+			$neededSkript = "";
+			if($this->connectionStatus !== false)
+			{
+				$neededSkript = $uiwidgets->get_grid_js($folderType, $this->mailbox,$this->startMessage,$headers);
+				$this->bofelamimail->closeConnection();
+			}
+			print $neededSkript.$this->t->get('out','main');
 			echo $GLOBALS['egw']->framework->footer(false);
 		}
 
