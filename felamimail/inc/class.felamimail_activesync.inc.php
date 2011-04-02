@@ -621,7 +621,7 @@ class felamimail_activesync implements activesync_plugin_read
 		//return true;
 	}
 
-	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $mimesupport = 0)
+	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $optionbodypreference=false, $mimesupport = 0)
 	{
 		debugLog (__METHOD__.__LINE__.' FolderID:'.$folderid.' ID:'.$id.' TruncSize:'.$truncsize.' Bodypreference: '.array2string($bodypreference));
 		$stat = $this->StatMessage($folderid, $id);
@@ -1044,7 +1044,7 @@ class felamimail_activesync implements activesync_plugin_read
 	{
         $messages = $this->fetchMessages($folderid, NULL, (array)$id);
         $stat = array_shift($messages);
-        debugLog (__METHOD__."('$folderid','$id') returning ".array2string($stat));
+        //debugLog (__METHOD__."('$folderid','$id') returning ".array2string($stat));
         return $stat;
 	}
 
