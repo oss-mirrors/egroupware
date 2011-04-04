@@ -10,6 +10,9 @@
 	\***************************************************************************/
 	/* $Id$ */
 
+	/**
+	 * @link http://www.samba.org/samba/docs/man/Samba-HOWTO-Collection/passdb.html
+	 */
 	class sosambaadmin
 	{
 		function sosambaadmin()
