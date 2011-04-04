@@ -216,7 +216,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			//alert('divMessageList Height:'+divheight);
 			//alert('iframe height:'+iframeheight);
 			divMessageTableList.style.height = divheight + 'px';
-			if (mailGrid != null) mailGrid.resize($(divMessageTableList).outerWidth(), divheight);
+			if (mailGrid != null) mailGrid.resize($(divMessageTableList).outerWidth(), divheight-10);
 
 			if (typeof iframe != 'undefined' && typeof tdiframe != 'undefined' && iframe != null && tdiframe != null)
 			{

@@ -56,21 +56,24 @@ function mailGridGetSelected()
 
 function parentRefreshListRowStyle(oldID, newID)
 {
-	var trElement;
-	var aElements;
-	trElement = document.getElementById('row_'+oldID);
-	trElement.style.backgroundColor = "#FFFFFF";
-	trElement.style.fontWeight='normal';
-	aElements = trElement.getElementsByTagName("a");
-	aElements[0].style.fontWeight='normal';
-	aElements[1].style.fontWeight='normal';	
-	trElement = document.getElementById('row_'+newID);
-	trElement.style.backgroundColor = "#ddddFF";
-	trElement.style.fontWeight='normal';
-	aElements = trElement.getElementsByTagName("a");
-	aElements[0].style.fontWeight='normal';
-	aElements[1].style.fontWeight='normal';	
-
+	// the old implementation is not working anymore, so we use the gridObject for this
+	var allElements = mailGrid.dataRoot.actionObject.flatList();
+	for (var i=0; i<allElements.length; i++) 
+	{
+		if (allElements[i].id.length>0) 
+		{
+			if (oldID == allElements[i].id)
+			{
+				allElements[i].setSelected(false);
+				allElements[i].setFocused(false);
+			}
+			if (newID == allElements[i].id)
+			{
+				allElements[i].setSelected(false);
+				allElements[i].setFocused(true);
+			}
+		}
+	}
 }
 function setStatusMessage(_message) {
 	document.getElementById('messageCounter').innerHTML = '<table cellpadding="0" cellspacing="0"><tr><td><img src="'+ activityImagePath +'"></td><td>&nbsp;' + _message + '</td></tr></table>';
@@ -643,8 +646,14 @@ function fm_handleMessageClick(_double, _url, _windowName, _node)
 		// Unset the given message url - the timeout which was triggered in the
 		// click handler will now no longer call the fm_readMessage function
 		delete (felamimail_messageUrls[_url]);
-
-		fm_readMessage(_url, _windowName, _node);
+		window.setTimeout(function () {
+		if (typeof felamimail_messageUrls[_url] == "undefined")
+		{
+			fm_readMessage(_url, _windowName, _node);
+			//alert('fm_handleMessageClick:'+' is double');
+			}
+		}, felamimail_dblclick_speed);
+		//mailGrid.dataRoot.actionObject.setAllSelected(false);
 	}
 	else
 	{
@@ -662,8 +671,21 @@ function fm_handleMessageClick(_double, _url, _windowName, _node)
 				{
 					fm_readMessage(_url, _windowName, _node);
 					delete (felamimail_messageUrls[_url]);
+					//alert('fm_handleMessageClick:'+' is single');
 				}
 			}, felamimail_dblclick_speed);
+		}
+	}
+	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
+	// allSelected[i].id hält die id
+	// zurückseten iteration über allSelected (getSelectedObjects) und dann allSelected[i].setSelected(false);
+	for (var i=0; i<allSelected.length; i++) 
+	{
+		if (allSelected[i].id.length>0) 
+		{
+			allSelected[i].setSelected(false);
+			allSelected[i].setFocused(true);
+			//alert('fm_handleMessageClick:'+allSelected[i].id);
 		}
 	}
 }
@@ -686,24 +708,13 @@ function fm_readMessage(_url, _windowName, _node) {
 		// refreshMessagePreview now also refreshes the folder state
 		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",windowArray[1],windowArray[2]);
 	} else {
-		var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
-		// allSelected[i].id hält die id
-		// zurückseten iteration über allSelected (getSelectedObjects) und dann allSelected[i].setSelected(false);
-		for (var i=0; i<allSelected.length; i++) 
-		{
-			if (allSelected[i].id.length>0) 
-			{
-				allSelected[i].setSelected(false);
-				allSelected[i].setFocused(true);
-			}
-		}
 
 		egw_openWindowCentered(_url, _windowName, 750, egw_getWindowOuterHeight());
 
 		// Refresh the folder state (count of unread emails)
 		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshFolder");
 	}
-//alert('after opening');
+	//alert('after opening');
 	mailGrid.dataRoot.actionObject.setAllSelected(false);
 	trElement = _node.parentNode.parentNode.parentNode;
 	trElement.style.fontWeight='normal';

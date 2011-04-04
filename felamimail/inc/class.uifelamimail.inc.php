@@ -619,7 +619,7 @@ class uifelamimail
 				egw_framework::validate_file('egw_action','egw_action');
 				egw_framework::validate_file('egw_action','egw_action_common');
 				egw_framework::validate_file('egw_action','egw_action_popup');
-				egw_framework::validate_file('egw_action','egw_action_dragdrop');
+				//egw_framework::validate_file('egw_action','egw_action_dragdrop');
 				egw_framework::validate_file('egw_action','egw_menu');
 				egw_framework::validate_file('egw_action','egw_menu_dhtmlx');
 				egw_framework::validate_file('egw_action','egw_grid');

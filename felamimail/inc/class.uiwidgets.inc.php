@@ -369,7 +369,15 @@ $(document).ready(function() {
 	mailGrid.reload();
 
 	egw_appWindow("felamimail").handleResize();
-	
+	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
+	for (var i=0; i<allSelected.length; i++) 
+	{
+		if (allSelected[i].id.length>0) 
+		{
+			allSelected[i].setSelected(false);
+			allSelected[i].setFocused(true);
+		}
+	}
 });
 </script>	';
 	// 
@@ -405,7 +413,7 @@ $(document).ready(function() {
 			}
 			//error_log(__METHOD__.__LINE__.' Data:'.array2string($sortResult));
 			//$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
-			return $this->header2gridelements($sortResult['header'],$cols, $uidOnly=true,$folderType,$dataForXMails=50,$previewMessage); 
+			return $this->header2gridelements($sortResult['header'],$cols, $_folderName, $uidOnly=true,$folderType,$dataForXMails=50,$previewMessage); 
 		}
 
 		function get_range($_folderName,$folderType,$offset,$uidOnly=false,$headers=false)
@@ -431,7 +439,7 @@ $(document).ready(function() {
 			}
 			//error_log(__METHOD__.__LINE__.' Data:'.array2string($rvs));
 			$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
-			return $this->header2gridelements($sortResult['header'],$cols, $uidOnly,$folderType,$dataForXMails=50,$previewMessage); 
+			return $this->header2gridelements($sortResult['header'],$cols, $_folderName, $uidOnly,$folderType,$dataForXMails=50,$previewMessage); 
 		}
 
 		private static function get_columns_obj($load_userdata = true, $foldertype=0,$_folderName='')
@@ -584,10 +592,10 @@ $(document).ready(function() {
 				$elements
 			);
 			//error_log(__METHOD__.__LINE__.' Data:'.array2string($rvs));
-			$response->data($this->header2gridelements($sortResult['header'],$columns, false, $folderType, false));
+			$response->data($this->header2gridelements($sortResult['header'],$columns,$_folderName, false, $folderType, false));
 		}
 
-		public function header2gridelements($_headers, $cols, $uidOnly=false, $_folderType=0, $dataForXMails=false, $previewMessage=0)
+		public function header2gridelements($_headers, $cols, $_folderName, $uidOnly=false, $_folderType=0, $dataForXMails=false, $previewMessage=0)
 		{
 			$timestamp7DaysAgo =
 				mktime(date("H"), date("i"), date("s"), date("m"), date("d")-7, date("Y"));
@@ -725,11 +733,11 @@ $(document).ready(function() {
 					$preview_message_windowName = $windowName;
 				}
 
-			if (in_array("subject", $cols))
-				$data["subject"] = '<a class="'.$css_style.'" name="subject_url" href="#" 
-                onclick="fm_handleMessageClick(false, \''.$url_read_message.'\', \''.$preview_message_windowName.'\', this); return false;" 
-                ondblclick="fm_handleMessageClick(true, \''.$url_read_message.'\', \''.$read_message_windowName.'\', this); return false;" 
-                title="'.$fullSubject.'">'.$subject.'</a>';//$subject; // the mailsubject
+				if (in_array("subject", $cols))
+					$data["subject"] = '<a class="'.$css_style.'" name="subject_url" href="#" 
+						onclick="fm_handleMessageClick(false, \''.$url_read_message.'\', \''.$preview_message_windowName.'\', this); return false;" 
+						ondblclick="fm_handleMessageClick(true, \''.$url_read_message.'\', \''.$read_message_windowName.'\', this); return false;" 
+						title="'.$fullSubject.'">'.$subject.'</a>';//$subject; // the mailsubject
 
 				//_debug_array($header);
 				if($header['mimetype'] == 'multipart/mixed' ||
