@@ -548,7 +548,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$mailObject->Send();
 		}
 		catch(phpmailerException $e) {
-            debugLog("The email could not be sent. Last-SMTP-error: ". $e->getMessage());
+            		debugLog("The email could not be sent. Last-SMTP-error: ". $e->getMessage());
 			$send = false;
 		}
 		$asf = ($send ? true:false); // initalize accordingly
@@ -614,11 +614,20 @@ class felamimail_activesync implements activesync_plugin_read
 				//$this->mail->closeConnection();
 			}
 		}
-        // unset mimedecoder - free memory
+        	// unset mimedecoder - free memory
 		unset($message);
-        unset($mobj);
-        return ($send && $asf);
-		//return true;
+        	unset($mobj);
+
+		if ($send && $asf) 
+		{
+			return true;
+		}
+		else
+		{
+			debugLog(__METHOD__." returning 120 (MailSubmissionFailed)");
+			return 120;   //MAIL Submission failed, see MS-ASCMD
+		}
+
 	}
 
 	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $optionbodypreference=false, $mimesupport = 0)
