@@ -434,6 +434,7 @@ class wiki_bo extends wiki_so
 		// Check to see if they want notification
 		foreach($id_list as $id)
 		{
+			if($id = $GLOBALS['egw_info']['user']['account_id']) continue;
 			$prefs = new preferences($id);
 			$data = $prefs->read_repository(false);
 			if(($data['wiki']['notification_read'] && in_array($id, $user_ids['read'])) || 
