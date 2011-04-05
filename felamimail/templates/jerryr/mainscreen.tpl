@@ -123,7 +123,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			<!-- Start MessageList -->
 
 			<form name="formMessageList" id="formMessageList">
-			<div id="divMessageList" style="overflow:auto; height:auto; margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid #9f9f9f; border-top: 0px; background-color: white;">
+			<div id="divMessageList" style="margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid #9f9f9f; border-top: 0px; background-color: white;">
 				<!-- <table BORDER="0" style="width:98%; ppadding-left:2; table-layout: fixed;" cellspacing="100" cellpadding="100"> -->
 					{header_rows}
 				<!-- </table> -->
@@ -180,7 +180,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			   divheight the end size height of the table outer div */
 			var tabnotavail = false;
 			var tableheight = 300; //$(tableMessageTableList).height();
-			if (mailGrid != null) tableheight = mailGrid.getDataHeight()+5;
+			if (mailGrid != null) tableheight = mailGrid.getDataHeight();
 			if (tableheight == 0 || isNaN(tableheight)) // set defaults to compute with, if the property is not set
 			{
 				tabnotavail = true;
@@ -220,7 +220,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			//alert('divMessageList Height:'+divheight);
 			//alert('iframe height:'+iframeheight);
 			divMessageTableList.style.height = divheight + 'px';
-			if (mailGrid != null) mailGrid.resize($(divMessageTableList).outerWidth(), divheight-10);
+			if (mailGrid != null) mailGrid.resize($(divMessageTableList).outerWidth(), divheight-90);
 
 			if (typeof iframe != 'undefined' && typeof tdiframe != 'undefined' && iframe != null && tdiframe != null)
 			{

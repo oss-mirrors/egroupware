@@ -122,7 +122,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			<!-- Start MessageList -->
 
 			<form name="formMessageList" id="formMessageList">
-			<div id="divMessageList" style="overflow:auto; height:auto; margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid Silver;">
+			<div id="divMessageList" style="margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid Silver;">
 				<!-- <table BORDER="0" style="width:98%; ppadding-left:2; table-layout: fixed;" cellspacing="100" cellpadding="100"> -->
 					{header_rows}
 				<!-- </table> -->

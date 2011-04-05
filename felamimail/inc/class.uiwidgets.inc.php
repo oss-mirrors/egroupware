@@ -339,6 +339,7 @@ class uiwidgets
 
 		function get_grid_js($foldertype,$_folderName,$offset=0,$headers=false,$getAllIds=false)
 		{
+			//error_log(__METHOD__.__LINE__.array2string(array('Foldertype'=>$foldertype,'Foldername'=>$_folderName,'Offset'=>$offset,'getAllIds'=>$getAllIds)));
 			$js = '<script type="text/javascript">
 $(document).ready(function() {
 	// Create the base objects and feed them with data
@@ -381,6 +382,7 @@ $(document).ready(function() {
 });
 </script>	';
 	// 
+			//error_log(__METHOD__.__LINE__.$js);
 			return $js;
 		}
 
@@ -437,7 +439,7 @@ $(document).ready(function() {
 					(array)$this->sessionData['messageFilter']
 				);
 			}
-			//error_log(__METHOD__.__LINE__.' Data:'.array2string($rvs));
+			//error_log(__METHOD__.__LINE__.' Data:'.array2string($sortResult));
 			$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
 			return $this->header2gridelements($sortResult['header'],$cols, $_folderName, $uidOnly,$folderType,$dataForXMails=50,$previewMessage); 
 		}
@@ -473,13 +475,13 @@ $(document).ready(function() {
 							"id" => "toaddress", // sent or drafts or template folder means foldertype > 0, use to address instead of from
 							"caption" => '<a id="gridHeaderTo" href="#" onclick="changeSorting(\'to\', this); return false;">'.lang("to").'</a>',
 							"width" => "120px",
-							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_INVISIBLE:EGW_COL_VISIBILITY_VISIBLE)
+							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_VISIBLE:EGW_COL_VISIBILITY_INVISIBLE)
 						),
 						array(
 							"id" => "fromaddress",// sent or drafts or template folder means foldertype > 0, use to address instead of from
 							"caption" => '<a id="gridHeaderFrom" href="#" onclick="changeSorting(\'from\', this); return false;">'.lang("from").'</a>',
 							"width" => "120px",
-							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_VISIBLE:EGW_COL_VISIBILITY_INVISIBLE)
+							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_INVISIBLE:EGW_COL_VISIBILITY_VISIBLE)
 						),
 						array(
 							"id" => "subject",
@@ -749,6 +751,15 @@ $(document).ready(function() {
 					substr($header['mimetype'],0,5) == 'audio' ||
 					substr($header['mimetype'],0,5) == 'video')
 				{
+					$linkDataAttachments = array (
+						'menuaction'    => 'felamimail.uidisplay.displayAttachments',
+						'showHeader'	=> 'false',
+						'mailbox'    => base64_encode($_folderName),
+						'uid'		=> $header['uid'],
+						'id'		=> $header['id'],
+					);
+					$windowName =  'displayMessage_'.$header['uid'];
+
 					$image = html::image('felamimail','attach');
 					if (//$header['mimetype'] != 'multipart/mixed' &&
 						$header['mimetype'] != 'multipart/signed'
@@ -762,6 +773,10 @@ $(document).ready(function() {
 						$attachments = $this->bofelamimail->getMessageAttachments($header['uid']);
 						if (count($attachments)<1) $image = '&nbsp;';
 					}
+					if (count($attachments)>0) $image = "<a name=\"subject_url\" href=\"#\"
+						onclick=\"fm_handleAttachmentClick(false,'".$GLOBALS['egw']->link('/index.php',$linkDataAttachments)."', '".$windowName."', this); return false;\"
+						title=\"".$header['subject']."\">".$image."</a>";
+
 					$attachmentFlag = $image;
 				} else {
 					$attachmentFlag ='&nbsp;';
@@ -991,6 +1006,7 @@ $(document).ready(function() {
 						$jscall= "sendNotifyMS(".$headerData['uid']."); ";
 					}
 				}
+
 				//if (strpos( array2string($flags),'Seen')===false) $this->bofelamimail->flagMessages('read', $headerData['uid']);
 				if ($_folderType > 0) {
 					// sent or drafts or template folder
@@ -1109,12 +1125,11 @@ $(document).ready(function() {
 					$uidisplay->uid = $headerData['uid'];
 					$uidisplay->mailbox = $_folderName;
 					$mailData = $uidisplay->get_load_email_data($headerData['uid'], $partID);
-
 					$iframe_url = $mailData['src'];
 					$jscall .= $mailData['onload'];
 					$script = $mailData['script'];
+					unset($uidisplay);
 				}
-
 				//_debug_array($GLOBALS['egw']->link('/index.php',$linkData));
 				$IFRAMEBody = "<TABLE BORDER=\"1\" rules=\"rows\" style=\"table-layout:fixed;width:100%;\">
 								<TR class=\"th\" style=\"width:100%;\">

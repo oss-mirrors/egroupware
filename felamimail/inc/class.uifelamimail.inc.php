@@ -985,7 +985,7 @@ class uifelamimail
 					#$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
 					$headerCount = count($headers['header']);
 				}
-
+/*
 				if ($this->bofelamimail->isSentFolder($this->mailbox)
 					|| $this->bofelamimail->isDraftFolder($this->mailbox)
 					|| $this->bofelamimail->isTemplateFolder($this->mailbox)) {
@@ -993,19 +993,22 @@ class uifelamimail
 				} else {
 					$this->t->set_var('lang_from',lang("from"));
 				}
+*/
 				$msg_icon_sm = $GLOBALS['egw']->common->image('felamimail','msg_icon_sm');
 				// determine how to display the current folder: as sent folder (to address visible) or normal (from address visible)
 				$folderType = $this->bofelamimail->getFolderType($this->mailbox);
-				$this->t->set_var('header_rows',
-					$uiwidgets->messageTable(
+
+				
+				$messageTable =	$uiwidgets->messageTable(
 						$headers,
 						$folderType,
 						$this->mailbox,
 						$userPreferences['message_newwindow'],
 						$userPreferences['rowOrderStyle'],
-						($this->bofelamimail->sessionData['previewMessage']?$this->bofelamimail->sessionData['previewMessage']:0)
-					)
-				);
+						($this->bofelamimail->sessionData['previewMessage']?$this->bofelamimail->sessionData['previewMessage']:0));
+//error_log($messageTable);
+				$this->t->set_var('header_rows', $messageTable	);
+				
 
 				$firstMessage = $headers['info']['first'];
 				$lastMessage = $headers['info']['last'];

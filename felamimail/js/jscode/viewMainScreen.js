@@ -10,6 +10,10 @@ if (typeof activeFolder == 'undefined') var activeFolder			= egw_appWindow('fela
 if (typeof activeFolderB64 == 'undefined') var activeFolderB64			= egw_appWindow('felamimail').activeFolderB64;
 if (typeof activityImagePath == 'undefined') var activityImagePath		= egw_appWindow('felamimail').activityImagePath;
 
+if (typeof actionManager == 'undefined') var actionManager			= egw_appWindow('felamimail').actionManager;
+if (typeof objectManager == 'undefined') var objectManager			= egw_appWindow('felamimail').objectManager;
+if (typeof mailGrid == 'undefined') var mailGrid		= egw_appWindow('felamimail').mailGrid;
+
 // how many row are selected currently
 if (typeof checkedCounter == 'undefined') var checkedCounter=egw_appWindow('felamimail').checkedCounter;
 
@@ -725,8 +729,64 @@ function fm_readMessage(_url, _windowName, _node) {
 	aElements[1].style.fontWeight='normal';
 }
 
+/**
+ * Handles message clicks and distinguishes between double clicks and single clicks
+ */
+function fm_handleAttachmentClick(_double, _url, _windowName, _node)
+{
+	if (_double)
+	{
+		// Unset the given message url - the timeout which was triggered in the
+		// click handler will now no longer call the fm_readMessage function
+		delete (felamimail_messageUrls[_url]);
+		window.setTimeout(function () {
+		if (typeof felamimail_messageUrls[_url] == "undefined")
+		{
+			fm_readAttachments(_url, _windowName, _node);
+			//alert('fm_handleAttachmentClick:'+' is double');
+			}
+		}, felamimail_dblclick_speed);
+		//mailGrid.dataRoot.actionObject.setAllSelected(false);
+	}
+	else
+	{
+		// Check whether the given url is already queued. Only continue if this
+		// is not the case
+		if (typeof felamimail_messageUrls[_url] == "undefined")
+		{
+			// Queue the url
+			felamimail_messageUrls[_url] = true;
+
+			// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
+			// event doesn't occur in this time, trigger the single click function
+			window.setTimeout(function () {
+				if (typeof felamimail_messageUrls[_url] == "boolean")
+				{
+					fm_readAttachments(_url, _windowName, _node);
+					delete (felamimail_messageUrls[_url]);
+					//alert('fm_handleAttachmentClick:'+' is single');
+				}
+			}, felamimail_dblclick_speed);
+		}
+	}
+	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
+	// allSelected[i].id hält die id
+	// zurückseten iteration über allSelected (getSelectedObjects) und dann allSelected[i].setSelected(false);
+	for (var i=0; i<allSelected.length; i++) 
+	{
+		if (allSelected[i].id.length>0) 
+		{
+			allSelected[i].setSelected(false);
+			allSelected[i].setFocused(true);
+			//alert('fm_handleMessageClick:'+allSelected[i].id);
+		}
+	}
+}
+
 function fm_readAttachments(_url, _windowName, _node) {
 	egw_openWindowCentered(_url, _windowName, 750, 220);
+	egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshFolder");
+	mailGrid.dataRoot.actionObject.setAllSelected(false);
 }
 
 function fm_clearSearch() {
