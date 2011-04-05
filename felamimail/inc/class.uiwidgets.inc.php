@@ -456,7 +456,6 @@ $(document).ready(function() {
 							"id" => "check",
 							//"caption" => '<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">',
 							"type" => EGW_COL_TYPE_CHECKBOX,
-							//"width" => "20px",
 							"visibility" => EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
 						),
 						array(
@@ -486,6 +485,7 @@ $(document).ready(function() {
 						array(
 							"id" => "subject",
 							"caption" => '<a id="gridHeaderSubject" href="#" onclick="changeSorting(\'subject\', this); return false;">'.lang("subject").'</a>',
+							"visibility" => EGW_COL_VISIBILITY_ALWAYS
 						),
 						array(
 							"id" => "date",

@@ -863,6 +863,77 @@ function onChangeColor(el,direction)
 	return true;
 }
 
+
+function handleResize()
+{
+	var MIN_TABLE_HEIGHT = 100;
+	var MAX_TABLE_WHITESPACE = 25;
+
+	// Get the default iframe height, as it was set in the template
+	var IFRAME_HEIGHT = typeof felamimail_iframe_height == "number" ?
+		felamimail_iframe_height : 0;
+
+	// Calculate how many space is actually there for the whole mail view
+	var outerContainer = $('#divMessageList');
+	var viewportHeight = $(window).height();
+	var documentHeight = $("body").height();
+	var containerHeight = $(outerContainer).height();
+
+	var totalHeight = Math.max(0, viewportHeight - (documentHeight - containerHeight));
+
+	var resultIframeHeight = IFRAME_HEIGHT;
+	var resultGridHeight = 0;
+
+	// Check whether there is enough space for extending any of the objects
+	var remainingHeight = totalHeight - IFRAME_HEIGHT;
+	if (totalHeight - IFRAME_HEIGHT > 0)
+	{
+		// Get the height of the mailGrid content
+		var contentHeight = Math.max(MIN_TABLE_HEIGHT, mailGrid ? mailGrid.getDataHeight() : 0);
+
+		// Extend the gridHeight as much as possible
+		resultGridHeight = Math.max(MIN_TABLE_HEIGHT, Math.min(remainingHeight, contentHeight));
+
+		// Set the iframe height
+		resultIframeHeight = Math.max(IFRAME_HEIGHT, totalHeight - resultGridHeight);
+	}
+	else
+	{
+		// Size the grid as small as possible
+		resultGridHeight = MIN_TABLE_HEIGHT;
+	}
+
+	// Now apply the calculated sizes to the DOM elements
+
+	// Resize the grid
+	var divMessageTableList = document.getElementById('divMessageTableList');
+	if (divMessageTableList)
+	{
+		divMessageTableList.style.height = resultGridHeight + 'px';
+		if (mailGrid != null)
+		{
+			mailGrid.resize($(divMessageTableList).outerWidth(), resultGridHeight);
+		}
+	}
+
+	// Remove the border of the gray panel above the mail from the iframe height
+	resultIframeHeight -= 52;
+
+	// Resize the message table
+	var iframe = document.getElementById('messageIFRAME');
+	if (typeof iframe != 'undefined' && iframe)
+	{
+		iframe.height = resultIframeHeight;
+	}
+
+	var tdiframe = document.getElementById('tdmessageIFRAME');
+	if (tdiframe != 'undefined' && tdiframe)
+	{
+		tdiframe.height = resultIframeHeight;
+	}
+}
+
+
 // DIALOG BOXES by Michael Leigeber
 // global variables //
 var TIMER = 5;
@@ -997,3 +1068,4 @@ function fadeDialog(flag) {
     clearInterval(dialog.timer);
   }
 }
+
