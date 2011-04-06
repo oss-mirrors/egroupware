@@ -738,7 +738,7 @@ class felamimail_hooks
 						var wnd = egw_appWindow('".$appname."');
 						if (wnd && typeof wnd.refreshFolderStatus != 'undefined')
 						{
-							wnd.refreshFolderStatus();
+							window.setTimeout('wnd.refreshFolderStatus()',1500);
 						}
 					</script>",
 					'no_lang' => True,

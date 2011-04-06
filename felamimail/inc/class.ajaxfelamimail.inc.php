@@ -799,7 +799,7 @@ class ajaxfelamimail
 
 		function refreshMessagePreview($_messageID,$_folderType)
 		{
-
+			if ($this->_debug) error_log(__METHOD__.__LINE__.' MessageId:'.$_messageID.', FolderType:'.$_folderType);
 			$this->bofelamimail->restoreSessionData();
 			$headerData = $this->bofelamimail->getHeaders(
 				$this->sessionData['mailbox'],

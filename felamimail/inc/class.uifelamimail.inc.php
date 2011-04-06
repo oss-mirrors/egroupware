@@ -974,10 +974,13 @@ class uifelamimail
 				$this->t->set_var('message', '&nbsp;');
 				$this->t->parse('header_rows','error_message',True);
 			} else {
-				$headers = $this->bofelamimail->getHeaders($this->mailbox, $this->startMessage, $maxMessages, $this->sort, $this->sortReverse, $this->bofelamimail->sessionData['messageFilter']);
-
+				//$headers = $this->bofelamimail->getHeaders($this->mailbox, $this->startMessage, $maxMessages, $this->sort, $this->sortReverse, $this->bofelamimail->sessionData['messageFilter']);
+				$headers = array('header'=>array(),'info'=>array());
+				$folderStatus = $this->bofelamimail->getFolderStatus($this->mailbox);
+				$headers['info']['total'] = $folderStatus['messages'];
  				$headerCount = count($headers['header']);
-
+				
+				//_debug_array($folderStatus);
  				// if there aren't any messages left (eg. after delete or move)
  				// adjust $this->startMessage
  				if ($headerCount==0 && $this->startMessage > $maxMessages) {
@@ -985,29 +988,37 @@ class uifelamimail
 					#$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
 					$headerCount = count($headers['header']);
 				}
-/*
-				if ($this->bofelamimail->isSentFolder($this->mailbox)
-					|| $this->bofelamimail->isDraftFolder($this->mailbox)
-					|| $this->bofelamimail->isTemplateFolder($this->mailbox)) {
-					$this->t->set_var('lang_from',lang("to"));
-				} else {
-					$this->t->set_var('lang_from',lang("from"));
-				}
-*/
+
 				$msg_icon_sm = $GLOBALS['egw']->common->image('felamimail','msg_icon_sm');
 				// determine how to display the current folder: as sent folder (to address visible) or normal (from address visible)
-				$folderType = $this->bofelamimail->getFolderType($this->mailbox);
+				//$folderType = $this->bofelamimail->getFolderType($this->mailbox);
 
-				
+				$previewMessageId =($this->bofelamimail->sessionData['previewMessage']?$this->bofelamimail->sessionData['previewMessage']:0);
 				$messageTable =	$uiwidgets->messageTable(
 						$headers,
-						$folderType,
+						$folderType=0, // we dont need the FolderType here as we do not load any data anymore, we do that via xajax
 						$this->mailbox,
 						$userPreferences['message_newwindow'],
 						$userPreferences['rowOrderStyle'],
-						($this->bofelamimail->sessionData['previewMessage']?$this->bofelamimail->sessionData['previewMessage']:0));
-//error_log($messageTable);
-				$this->t->set_var('header_rows', $messageTable	);
+						0);
+				//error_log($messageTable);
+				$neededSkript = "";
+				//if ($previewMessageId > 0)
+				//{
+					$neededSkript = '<script type="text/javascript">
+$(document).ready(function() {
+	var wnd = egw_appWindow("felamimail");
+	if (wnd && typeof wnd.refresh != "undefined")
+	{
+		wnd.refresh();
+	}
+});
+</script>	';
+//wnd.xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",'.$previewMessageId.','.$folderType.');
+				//	$neededSkript = "";
+				//}
+				//error_log(__METHOD__.__LINE__.$neededSkript);
+				$this->t->set_var('header_rows', $neededSkript.$messageTable);
 				
 
 				$firstMessage = $headers['info']['first'];
@@ -1049,7 +1060,8 @@ class uifelamimail
 				}
 				$this->t->set_var('select_all_link',$selectLink);
 				$shortName='';
-				if ($folderStatus = $this->bofelamimail->getFolderStatus($this->mailbox)) $shortName =$folderStatus['shortDisplayName'];
+				//if ($folderStatus = $this->bofelamimail->getFolderStatus($this->mailbox)) $shortName =$folderStatus['shortDisplayName'];
+				if ($folderStatus) $shortName =$folderStatus['shortDisplayName']; // already fetched folderStatus earlier.
 				$addmessage = '';
 				if ($message)  $addmessage = ' <font color="red">'.implode('; ',$message).'</font> ';
 				$this->t->set_var('message','<b>'.$shortName.': </b>'.lang("Viewing messages")." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage $langTotal)".$addmessage);
@@ -1085,7 +1097,7 @@ class uifelamimail
 			$neededSkript = "";
 			if($this->connectionStatus !== false)
 			{
-				$neededSkript = $uiwidgets->get_grid_js($folderType, $this->mailbox,$this->startMessage,$headers);
+				//$neededSkript = $uiwidgets->get_grid_js($folderType, $this->mailbox,$this->startMessage,$headers);
 				$this->bofelamimail->closeConnection();
 			}
 			print $neededSkript.$this->t->get('out','main');

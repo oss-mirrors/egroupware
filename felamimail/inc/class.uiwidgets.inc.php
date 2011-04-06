@@ -341,6 +341,9 @@ class uiwidgets
 		{
 			//error_log(__METHOD__.__LINE__.array2string(array('Foldertype'=>$foldertype,'Foldername'=>$_folderName,'Offset'=>$offset,'getAllIds'=>$getAllIds)));
 			$js = '<script type="text/javascript">
+if (typeof objectManager == "undefined") var objectManager = null;
+if (typeof actionManager == "undefined") var actionManager = null;
+if (typeof mailGrid == "undefined") var mailGrid = null;
 $(document).ready(function() {
 	// Create the base objects and feed them with data
 	actionManager = new egwActionManager();
@@ -368,8 +371,12 @@ $(document).ready(function() {
 				}
 				$js .= '
 	mailGrid.reload();
-
-	egw_appWindow("felamimail").handleResize();
+	var wnd = egw_appWindow("felamimail");
+	if (wnd && typeof wnd.handleResize != "undefined")
+	{
+		wnd.handleResize();
+	}
+//alert("constructed grid, after resize"+mailGrid);
 	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
 	for (var i=0; i<allSelected.length; i++) 
 	{
@@ -381,7 +388,6 @@ $(document).ready(function() {
 	}
 });
 </script>	';
-	// 
 			//error_log(__METHOD__.__LINE__.$js);
 			return $js;
 		}
@@ -557,7 +563,7 @@ $(document).ready(function() {
 				// Load the userdata
 				$obj->load_userdata();
 			}
-
+			//error_log(__METHOD__.__LINE__.array2string($obj));
 			return $obj;
 		}
 
@@ -569,7 +575,7 @@ $(document).ready(function() {
 			$this->bofelamimail->restoreSessionData();
 			$_folderName = $this->bofelamimail->sessionData['mailbox'];
 			$folderType = $this->bofelamimail->getFolderType($_folderName);
-			$obj = self::get_columns_obj(false,$folderType,$_foldername); 
+			$obj = self::get_columns_obj(true,$folderType,$_foldername); 
 			$obj->store_userdata($data);
 		}
 

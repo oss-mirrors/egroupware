@@ -39,9 +39,6 @@ var activeFolderB64			= '{activeFolderB64}';
 var activityImagePath		= '{ajax-loader}';
 var test = '';
 
-var objectManager = null;
-var actionManager = null;
-var mailGrid = null;
 // how many row are selected currently
 var checkedCounter=0;
 
