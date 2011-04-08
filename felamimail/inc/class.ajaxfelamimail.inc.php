@@ -51,9 +51,9 @@ class ajaxfelamimail
 			$this->uiwidgets	= CreateObject('felamimail.uiwidgets');
 			$this->_connectionStatus = $this->bofelamimail->openConnection();
 
-			$this->sessionDataAjax	= $GLOBALS['egw']->session->appsession('ajax_session_data','felamimail');
-			$this->sessionData	= $GLOBALS['egw']->session->appsession('session_data','felamimail');
-
+			$this->sessionDataAjax	=& $GLOBALS['egw']->session->appsession('ajax_session_data','felamimail');
+			$this->sessionData	=& $GLOBALS['egw']->session->appsession('session_data','felamimail');
+			if (!is_array($this->sessionDataAjax)) $this->sessionDataAjax = array();
 			if(!isset($this->sessionDataAjax['folderName'])) {
 				$this->sessionDataAjax['folderName'] = 'INBOX';
 			}
@@ -167,10 +167,14 @@ class ajaxfelamimail
 			}
 
 			// $lastPage is the first message ID of the last page
-			if($messageCounter > $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) {
-				$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
+			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			if (isset($this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior']) && (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'] > 0)
+				$maxMessages = (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'];
+
+			if($messageCounter > $maxMessages) {
+				$lastPage = $messageCounter - ($messageCounter % $maxMessages) + 1;
 				if($lastPage > $messageCounter)
-					$lastPage -= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+					$lastPage -= $maxMessages;
 				if($this->sessionData['startMessage'] > $lastPage)
 					$this->sessionData['startMessage'] = $lastPage;
 			} else {
@@ -476,7 +480,7 @@ class ajaxfelamimail
 
 		function generateMessageList($_folderName,$modifyoffset=0)
 		{
-			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $_folderName,$modifyoffset");
+			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $_folderName,$modifyoffset".function_backtrace());
 			$response = new xajaxResponse();
 			$response->addScript("activeFolder = \"".$_folderName."\";");
 			$response->addScript("activeFolderB64 = \"".base64_encode($_folderName)."\";");
@@ -487,6 +491,7 @@ class ajaxfelamimail
 			$listMode = 0;
 
 			$this->bofelamimail->restoreSessionData();
+			//error_log($this->sessionData['previewMessage']);
 			if($this->bofelamimail->isSentFolder($_folderName) ||
 				false !== in_array($_folderName,explode(',',$GLOBALS['egw_info']['user']['preferences']['felamimail']['messages_showassent_0'])))
 			{
@@ -498,7 +503,9 @@ class ajaxfelamimail
 			}
 
 			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
-
+			if (isset($this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior']) && (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'] <> 0)
+				$maxMessages = (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'];
+			//if ($this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior']==NULL) error_log(__METHOD__.__LINE__.' MailPreferences:'.array2string($this->bofelamimail->mailPreferences));
 			$offset = $this->sessionData['startMessage'];
 			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $offset,$modifyoffset");
 			if ($modifyoffset != 0 && ($offset+$modifyoffset)>0) $offset = $offset+$modifyoffset;
@@ -506,13 +513,17 @@ class ajaxfelamimail
 			$headers = $this->bofelamimail->getHeaders(
 				$_folderName,
 				$offset,
-				$maxMessages,
+				($maxMessages>0?$maxMessages:1),
 				$this->sessionData['sort'],
 				$this->sessionData['sortReverse'],
-				(array)$this->sessionData['messageFilter']
+				(array)$this->sessionData['messageFilter'],
+				((int)$maxMessages<0 && $this->sessionData['previewMessage']?$this->sessionData['previewMessage']:null)
 			);
-
-			$headerTable = $this->uiwidgets->get_grid_js($listMode,$_folderName,$offset,$headers).$this->uiwidgets->messageTable(
+			$rowsFetched = 0;
+			if($this->_debug) error_log(__METHOD__.__LINE__.' MaxMessages:'.$maxMessages.' Offset:'.$offset.' Filter:'.array2string($this->sessionData['messageFilter']));
+			//error_log(__METHOD__.__LINE__.' Data:'.array2string($headers));
+			$headerJs = $this->uiwidgets->get_grid_js($listMode,$_folderName,$rowsFetched,$offset,false,($maxMessages>=0?false:true)).
+			$headerTable = $this->uiwidgets->messageTable(
 				$headers,
 				$listMode,
 				$_folderName,
@@ -520,10 +531,13 @@ class ajaxfelamimail
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle'],
 				$this->sessionData['previewMessage']
 			);
-
+			if($this->_debug) error_log(__METHOD__.__LINE__.' Rows fetched:'.$rowsFetched);
+			//error_log(__METHOD__.__LINE__.' HeaderJS:'.$headerJs);
+			//error_log(__METHOD__.__LINE__.' HeaderTable:'.$headerTable);
 			$firstMessage = (int)$headers['info']['first'];
 			$lastMessage  = (int)$headers['info']['last'];
 			$totalMessage = (int)$headers['info']['total'];
+			if ((int)$maxMessages<0) $totalMessage = $rowsFetched;
 			$shortName = '';
 			if($folderStatus = $this->bofelamimail->getFolderStatus($_folderName)) {
 				$shortName =$folderStatus['shortDisplayName'];
@@ -531,16 +545,10 @@ class ajaxfelamimail
 			if($totalMessage == 0) {
 				$response->addAssign("messageCounter", "innerHTML", '<b>'.$shortName.': </b>'.lang('no messages found...'));
 			} else {
-				$response->addAssign("messageCounter", "innerHTML", '<b>'.$shortName.': </b>'.lang('Viewing messages')." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage ".lang("total").')');
+				$response->addAssign("messageCounter", "innerHTML", '<b>'.$shortName.': </b>'.lang('Viewing messages').($maxMessages>0?" <b>$firstMessage</b> - <b>$lastMessage</b>":"")." ($totalMessage ".lang("total").')');
 			}
 
-			if($listMode) {
-				$response->addAssign("from_or_to", "innerHTML", lang('to'));
-			} else {
-				$response->addAssign("from_or_to", "innerHTML", lang('from'));
-			}
-
-			$response->addAssign("divMessageList", "innerHTML", $headerTable);
+			$response->addAssign("divMessageList", "innerHTML", $headerJs.$headerTable);
 
 			if($quota = $this->bofelamimail->getQuotaRoot()) {
 				if (isset($quota['usage']) && is_int($quota['usage']))
@@ -664,9 +672,13 @@ class ajaxfelamimail
 			);
 			$messageCounter = count($sortedList);
 
-			$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
+			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			if (isset($this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior']) && (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'] > 0)
+				$maxMessages = (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'];
+	
+			$lastPage = $messageCounter - ($messageCounter % $maxMessages) + 1;
 			if($lastPage > $messageCounter)
-				$lastPage -= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+				$lastPage -= $maxMessages;
 
 			$this->sessionData['startMessage'] = $lastPage;
 
@@ -1214,12 +1226,16 @@ class ajaxfelamimail
 			);
 			$messageCounter = count($sortedList);
 			// $lastPage is the first message ID of the last page
-			if($messageCounter > $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) {
-				$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
+			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			if (isset($this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior']) && (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'] > 0)
+				$maxMessages = (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'];
+
+			if($messageCounter > $maxMessages) {
+				$lastPage = $messageCounter - ($messageCounter % $maxMessages) + 1;
 				if($lastPage > $messageCounter) {
-					$lastPage -= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+					$lastPage -= $maxMessages;
 				}
-				$this->sessionData['startMessage'] += $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+				$this->sessionData['startMessage'] += $maxMessages;
 				if($this->sessionData['startMessage'] > $lastPage) {
 					$this->sessionData['startMessage'] = $lastPage;
 				}
@@ -1236,7 +1252,12 @@ class ajaxfelamimail
 
 		function skipPrevious()
 		{
-			$this->sessionData['startMessage']	-= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+
+			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			if (isset($this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior']) && (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'] > 0)
+				$maxMessages = (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'];
+
+			$this->sessionData['startMessage']	-= $maxMessages;
 			if($this->sessionData['startMessage'] < 1) {
 				$this->sessionData['startMessage'] = 1;
 			}

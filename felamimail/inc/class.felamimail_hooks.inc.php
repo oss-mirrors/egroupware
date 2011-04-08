@@ -135,7 +135,22 @@ class felamimail_hooks
 			'asmail' => lang('forward as attachment'),
 			'inline' => lang('forward inline'),
 		);
-
+		$gridViewBehavior = array(
+			'0' => lang('use common preferences max. messages'),
+			'5'	=> 5,
+			'10'=> 10,
+			'15'=> 15,
+			'20'=> 20,
+			'25'=> 25,
+			'50'=> 50,
+			'75'=> 75,
+			'100'=> 100,
+			'200'=> 200,
+			'250'=> 250,
+			'500'=> 500,
+			'999'=> 999,
+			'-1' => lang('show all messages'),
+		);
 		$sortOrder = array(
 			'0' => lang('date(newest first)'),
 			'1' => lang('date(oldest first)'),
@@ -317,6 +332,15 @@ class felamimail_hooks
 				'xmlrpc' => True,
 				'admin'  => False,
 				'default'=> 'felamimail',
+			),
+			'prefMailGridBehavior' => array(
+				'type'   => 'select',
+				'label'  => 'Mail Grid Behavior: how many messages should the mailgrid load? If you select all messages there will be no pagination for mail message list. (Beware, as some actions on all selected messages may be problematic depending on the amount of selected messages.)',
+				'name'   => 'prefMailGridBehavior',
+				'values' =>	$gridViewBehavior,
+				'xmlrpc' => True,
+				'admin'  => False,
+				'default'=> 0,
 			),
 			'PreViewFrameHeight' => array(
 				'type'   => 'input',

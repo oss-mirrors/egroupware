@@ -729,8 +729,10 @@ class uifelamimail
 			#_debug_array($imapServer);
 			if (is_object($preferences)) $activeIdentity =& $preferences->getIdentity(0);
 			#_debug_array($activeIdentity);
-			$maxMessages	=&  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
+			$maxMessages	=  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
 			if (empty($maxMessages)) $maxMessages = 30; // this seems to be the number off messages that fit the height of the folder tree
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['prefMailGridBehavior']) && (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['prefMailGridBehavior'] <> 0)
+				$maxMessages = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['prefMailGridBehavior'];
 			$userPreferences	=&  $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 
 			// retrieve data for/from user defined accounts
@@ -832,29 +834,37 @@ class uifelamimail
 				$this->t->set_var('quota_display','&nbsp;');
 			}
 			// navigation
-			$navbarImages = array(
-				'last'		=> array(
-					'action'	=> "jumpEnd(); return false;",
-					'tooltip'	=> '',
-				),
-				'right'			=> array(
-					'action'	=> "skipForward(); return false;",
-					'tooltip'	=> '',
-				),
-				'left'		=> array(
-					'action'	=> "skipPrevious(); return false;",
-					'tooltip'	=> '',
-				),
-				'first'			=> array(
-					'action'	=> "jumpStart(); return false;",
-					'tooltip'	=> '',
-				),
-			);
-			$navbarButtons  = '';
-			foreach($navbarImages as $buttonName => $buttonInfo) {
-				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip'],'right');
+			if ($maxMessages>0)
+			{
+				$navbarImages = array(
+					'last'		=> array(
+						'action'	=> "jumpEnd(); return false;",
+						'tooltip'	=> '',
+					),
+					'right'			=> array(
+						'action'	=> "skipForward(); return false;",
+						'tooltip'	=> '',
+					),
+					'left'		=> array(
+						'action'	=> "skipPrevious(); return false;",
+						'tooltip'	=> '',
+					),
+					'first'			=> array(
+						'action'	=> "jumpStart(); return false;",
+						'tooltip'	=> '',
+					),
+				);
+				$navbarButtons  = '';
+				foreach($navbarImages as $buttonName => $buttonInfo) {
+					$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip'],'right');
+				}
+			}
+			else
+			{
+				$navbarButtons = '';
 			}
 			$this->t->set_var('navbarButtonsRight',$navbarButtons);
+
 
 			// set the images
 			$listOfImages = array(
@@ -983,10 +993,8 @@ class uifelamimail
 				//_debug_array($folderStatus);
  				// if there aren't any messages left (eg. after delete or move)
  				// adjust $this->startMessage
- 				if ($headerCount==0 && $this->startMessage > $maxMessages) {
+ 				if ($maxMessages > 0 && $headerCount==0 && $this->startMessage > $maxMessages) {
  					$this->startMessage = $this->startMessage - $maxMessages;
-					#$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
-					$headerCount = count($headers['header']);
 				}
 
 				$msg_icon_sm = $GLOBALS['egw']->common->image('felamimail','msg_icon_sm');
@@ -994,6 +1002,7 @@ class uifelamimail
 				//$folderType = $this->bofelamimail->getFolderType($this->mailbox);
 
 				$previewMessageId =($this->bofelamimail->sessionData['previewMessage']?$this->bofelamimail->sessionData['previewMessage']:0);
+				//_debug_array($this->bofelamimail->sessionData['previewMessage']);
 				$messageTable =	$uiwidgets->messageTable(
 						$headers,
 						$folderType=0, // we dont need the FolderType here as we do not load any data anymore, we do that via xajax
@@ -1026,13 +1035,6 @@ $(document).ready(function() {
 				$totalMessage = $headers['info']['total'];
 				$langTotal = lang("total");
 
-				$this->t->set_var('maxMessages',$i);
-				if($_GET["select_all"] == "select_all") {
-					$this->t->set_var('checkedCounter',$i);
-				} else {
-					$this->t->set_var('checkedCounter','0');
-				}
-
 				// set the select all/nothing link
 				if($_GET["select_all"] == "select_all") {
 					// link to unselect all messages
@@ -1064,31 +1066,40 @@ $(document).ready(function() {
 				if ($folderStatus) $shortName =$folderStatus['shortDisplayName']; // already fetched folderStatus earlier.
 				$addmessage = '';
 				if ($message)  $addmessage = ' <font color="red">'.implode('; ',$message).'</font> ';
-				$this->t->set_var('message','<b>'.$shortName.': </b>'.lang("Viewing messages")." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage $langTotal)".$addmessage);
-				if($firstMessage > 1) {
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
-						'startMessage'	=> $this->startMessage - $maxMessages
-					);
-					$link = $GLOBALS['egw']->link('/index.php',$linkData);
-					$this->t->set_var('link_previous',"<a class=\"body_link\" href=\"$link\">".lang("previous")."</a>");
-				} else {
-					$this->t->set_var('link_previous',lang("previous"));
-				}
+				$this->t->set_var('message','<b>'.$shortName.': </b>'.lang("Viewing messages").($maxMessages>0?" <b>$firstMessage</b> - <b>$lastMessage</b>":"")." ($totalMessage $langTotal)".$addmessage);
+				if ($maxMessages>0)
+				{
+					if($firstMessage > 1) {
+						$linkData = array
+						(
+							'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
+							'startMessage'	=> $this->startMessage - $maxMessages
+						);
+						$link = $GLOBALS['egw']->link('/index.php',$linkData);
+						$this->t->set_var('link_previous',"<a class=\"body_link\" href=\"$link\">".lang("previous")."</a>");
+					} else {
+						$this->t->set_var('link_previous',lang("previous"));
+					}
 
-				if($totalMessage > $lastMessage) {
-					$linkData = array (
-						'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
-						'startMessage'	=> $this->startMessage + $maxMessages
-					);
-					$link = $GLOBALS['egw']->link('/index.php',$linkData);
-					$this->t->set_var('link_next',"<a class=\"body_link\" href=\"$link\">".lang("next")."</a>");
-				} else {
-					$this->t->set_var('link_next',lang("next"));
+					if($totalMessage > $lastMessage) {
+						$linkData = array (
+							'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
+							'startMessage'	=> $this->startMessage + $maxMessages
+						);
+						$link = $GLOBALS['egw']->link('/index.php',$linkData);
+						$this->t->set_var('link_next',"<a class=\"body_link\" href=\"$link\">".lang("next")."</a>");
+					} else {
+						$this->t->set_var('link_next',lang("next"));
+					}
+					$this->t->parse('status_row','status_row_tpl',True);
+					//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 				}
-				$this->t->parse('status_row','status_row_tpl',True);
-				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+				else
+				{
+					$this->t->set_var('link_previous',lang("previous"));
+					$this->t->set_var('link_next',lang("next"));
+					$this->t->parse('status_row','status_row_tpl',True);
+				}
 			}
 
 			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
@@ -1097,7 +1108,7 @@ $(document).ready(function() {
 			$neededSkript = "";
 			if($this->connectionStatus !== false)
 			{
-				//$neededSkript = $uiwidgets->get_grid_js($folderType, $this->mailbox,$this->startMessage,$headers);
+				//$neededSkript = $uiwidgets->get_grid_js($folderType, $this->mailbox,$rowsFetched,$this->startMessage,$headers);
 				$this->bofelamimail->closeConnection();
 			}
 			print $neededSkript.$this->t->get('out','main');

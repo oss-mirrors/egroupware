@@ -789,6 +789,67 @@ function fm_readAttachments(_url, _windowName, _node) {
 	mailGrid.dataRoot.actionObject.setAllSelected(false);
 }
 
+/**
+ * Handles message clicks and distinguishes between double clicks and single clicks
+ */
+function fm_handleComposeClick(_double, _url, _windowName, _node)
+{
+	if (_double)
+	{
+		// Unset the given message url - the timeout which was triggered in the
+		// click handler will now no longer call the fm_readMessage function
+		delete (felamimail_messageUrls[_url]);
+		window.setTimeout(function () {
+		if (typeof felamimail_messageUrls[_url] == "undefined")
+		{
+			fm_compose(_url, _windowName, _node);
+			//alert('fm_handleComposeClick:'+' is double');
+			}
+		}, felamimail_dblclick_speed);
+		//mailGrid.dataRoot.actionObject.setAllSelected(false);
+	}
+	else
+	{
+		// Check whether the given url is already queued. Only continue if this
+		// is not the case
+		if (typeof felamimail_messageUrls[_url] == "undefined")
+		{
+			// Queue the url
+			felamimail_messageUrls[_url] = true;
+
+			// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
+			// event doesn't occur in this time, trigger the single click function
+			window.setTimeout(function () {
+				if (typeof felamimail_messageUrls[_url] == "boolean")
+				{
+					fm_compose(_url, _windowName, _node);
+					delete (felamimail_messageUrls[_url]);
+					//alert('fm_handleComposeClick:'+' is single');
+				}
+			}, felamimail_dblclick_speed);
+		}
+	}
+	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
+	// allSelected[i].id hält die id
+	// zurückseten iteration über allSelected (getSelectedObjects) und dann allSelected[i].setSelected(false);
+	for (var i=0; i<allSelected.length; i++) 
+	{
+		if (allSelected[i].id.length>0) 
+		{
+			allSelected[i].setSelected(false);
+			allSelected[i].setFocused(true);
+			//alert('fm_handleMessageClick:'+allSelected[i].id);
+		}
+	}
+}
+
+function fm_compose(_url, _windowName, _node) {
+	egw_openWindowCentered(_url, _windowName, 700, egw_getWindowOuterHeight());
+	//egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshFolder");
+	mailGrid.dataRoot.actionObject.setAllSelected(false);
+}
+
+
 function fm_clearSearch() {
 	var inputQuickSearch = document.getElementById('quickSearch');
 	var status 	= document.getElementById('status').value;

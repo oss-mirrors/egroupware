@@ -105,10 +105,12 @@ class felamimail_bo
 		 */
 		public static function getInstance($_restoreSession=true, $_profileID=0)
 		{
+			//error_log(__METHOD__.__LINE__.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID);
 			if (!isset(self::$instances[$_profileID]))
 			{
 				self::$instances[$_profileID] = new felamimail_bo('utf-8',$_restoreSession,$_profileID);
 			}
+
 			return self::$instances[$_profileID];
 		}
 
