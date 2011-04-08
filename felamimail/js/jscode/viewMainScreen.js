@@ -933,6 +933,7 @@ function handleResize()
 	// Get the default iframe height, as it was set in the template
 	var IFRAME_HEIGHT = typeof felamimail_iframe_height == "number" ?
 		felamimail_iframe_height : 0;
+	if (isNaN(IFRAME_HEIGHT)) IFRAME_HEIGHT=0;
 
 	// Calculate how many space is actually there for the whole mail view
 	var outerContainer = $('#divMessageList');
@@ -963,7 +964,7 @@ function handleResize()
 		// Size the grid as small as possible
 		resultGridHeight = MIN_TABLE_HEIGHT;
 	}
-
+	if (IFRAME_HEIGHT==0) resultGridHeight = resultGridHeight -2;
 	// Now apply the calculated sizes to the DOM elements
 
 	// Resize the grid
