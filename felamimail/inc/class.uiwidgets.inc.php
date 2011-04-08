@@ -621,23 +621,30 @@ $(document).ready(function() {
 		public function ajax_fetch_data($elements, $columns)
 		{
 			$response = egw_json_response::get();
-			//error_log(__METHOD__.__LINE__.' Uids to fetch:'.array2string($elements).' Columns to fetch:'.array2string($columns));
-			$this->bofelamimail->restoreSessionData();
-			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
-			if (empty($maxMessages)) $maxMessages = 50;
-			$_folderName = $this->bofelamimail->sessionData['mailbox'];
-			$folderType = $this->bofelamimail->getFolderType($_folderName);
-			$sortResult = $this->bofelamimail->getHeaders(
-				$_folderName,
-				$offset,
-				$maxMessages,
-				$this->sessionData['sort'],
-				$this->sessionData['sortReverse'],
-				(array)$this->sessionData['messageFilter'],
-				$elements
-			);
-			//error_log(__METHOD__.__LINE__.' Data:'.array2string($rvs));
-			$response->data($this->header2gridelements($sortResult['header'],$columns,$_folderName, false, $folderType, false));
+			if (count($elements)>0)
+			{
+				//error_log(__METHOD__.__LINE__.' Uids to fetch:'.array2string($elements).' Columns to fetch:'.array2string($columns));
+				$this->bofelamimail->restoreSessionData();
+				$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+				if (empty($maxMessages)) $maxMessages = 50;
+				$_folderName = $this->bofelamimail->sessionData['mailbox'];
+				$folderType = $this->bofelamimail->getFolderType($_folderName);
+				$sortResult = $this->bofelamimail->getHeaders(
+					$_folderName,
+					$offset,
+					$maxMessages,
+					$this->sessionData['sort'],
+					$this->sessionData['sortReverse'],
+					(array)$this->sessionData['messageFilter'],
+					$elements
+				);
+				//error_log(__METHOD__.__LINE__.' Data:'.array2string($rvs));
+				$response->data($this->header2gridelements($sortResult['header'],$columns,$_folderName, false, $folderType, false));
+			}
+			else
+			{
+				$response->data(array());
+			}
 		}
 
 		public function header2gridelements($_headers, $cols, $_folderName, $uidOnly=false, $_folderType=0, $dataForXMails=false, $previewMessage=0)
