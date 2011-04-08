@@ -522,7 +522,7 @@ class ajaxfelamimail
 			$rowsFetched = 0;
 			if($this->_debug) error_log(__METHOD__.__LINE__.' MaxMessages:'.$maxMessages.' Offset:'.$offset.' Filter:'.array2string($this->sessionData['messageFilter']));
 			//error_log(__METHOD__.__LINE__.' Data:'.array2string($headers));
-			$headerJs = $this->uiwidgets->get_grid_js($listMode,$_folderName,$rowsFetched,$offset,false,($maxMessages>=0?false:true)).
+			$headerJs = $this->uiwidgets->get_grid_js($listMode,$_folderName,$rowsFetched,$offset,false,($maxMessages>=0?false:true));
 			$headerTable = $this->uiwidgets->messageTable(
 				$headers,
 				$listMode,
@@ -531,6 +531,7 @@ class ajaxfelamimail
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle'],
 				$this->sessionData['previewMessage']
 			);
+
 			if($this->_debug) error_log(__METHOD__.__LINE__.' Rows fetched:'.$rowsFetched);
 			//error_log(__METHOD__.__LINE__.' HeaderJS:'.$headerJs);
 			//error_log(__METHOD__.__LINE__.' HeaderTable:'.$headerTable);
