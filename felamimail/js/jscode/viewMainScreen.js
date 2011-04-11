@@ -933,16 +933,26 @@ function handleResize()
 	// Get the default iframe height, as it was set in the template
 	var IFRAME_HEIGHT = typeof felamimail_iframe_height == "number" ?
 		felamimail_iframe_height : 0;
-	if (isNaN(IFRAME_HEIGHT)) IFRAME_HEIGHT=0;
+	if (isNaN(IFRAME_HEIGHT) || IFRAME_HEIGHT<0) IFRAME_HEIGHT=0;
 
 	// Calculate how many space is actually there for the whole mail view
 	var outerContainer = $('#divMessageList');
+	var mainViewArea = $('#divMainView');
 	var viewportHeight = $(window).height();
 	var documentHeight = $("body").height();
 	var containerHeight = $(outerContainer).height();
-
-	var totalHeight = Math.max(0, viewportHeight - (documentHeight - containerHeight));
-
+	
+	var totalHeight = viewportHeight;
+	if ($(mainViewArea).offset().top == 0)
+	{
+		// if the mainViewArea offset from top is 0 we are in frameview, containerheight may/should be set decently
+		totalHeight = Math.max(0, viewportHeight - (documentHeight - containerHeight));
+	}
+	else
+	{
+		// containerHeight is not set with a decent height when in idots/jerryr, for this reason we use this to calculate the
+		totalHeight = Math.max(0, Math.min(documentHeight, viewportHeight)-$(mainViewArea).offset().top -100);
+	}
 	var resultIframeHeight = IFRAME_HEIGHT;
 	var resultGridHeight = 0;
 

@@ -58,6 +58,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 
 </script>
 
+<div id="divMainView">
 <TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; ">
 	<tr class="navbarBackground">
 		<td align="left" width="180px">
@@ -94,8 +95,8 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 </form>
 
 <input type="hidden" name="folderAction" id="folderAction" value="changeFolder">
-<INPUT TYPE=hidden NAME="oldMailbox" value="{oldMailbox}">
-<INPUT TYPE=hidden NAME="mailbox">
+<INPUT TYPE="hidden" NAME="oldMailbox" value="{oldMailbox}">
+<INPUT TYPE="hidden" NAME="mailbox">
 <TABLE  width="100%" cellpadding="0" cellspacing="0" border="0" style="height:100px;">
 	<tr style="height: 20px;">
 		<td nowrap>
@@ -130,6 +131,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		</TD>
 	</TR>
 </table>
+</div>
 <!-- END main -->
 
 <!-- BEGIN message_table -->
