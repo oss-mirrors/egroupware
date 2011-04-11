@@ -62,8 +62,8 @@ if($locking)                            // Locking/unlocking pages.
 {
 	if(empty($Save))                      // Not saving results; display form.
 	{
-		$GLOBALS['egw']->common->egw_header();
-	
+		common::egw_header();
+
 		$html = html_lock_start();
 		$pagelist = $pagestore->allpages();
 		foreach($pagelist as $page)
@@ -106,6 +106,7 @@ if($locking)                            // Locking/unlocking pages.
 }
 else if($blocking)                      // Blocking/unblocking IP addrs.
 {
+	common::egw_header();
 	if($Block || $Unblock)                // Block/unblock an address group.
 	{
 		if(!empty($Block))
@@ -134,7 +135,7 @@ else if($blocking)                      // Blocking/unblocking IP addrs.
 }
 else                                    // Display main menu for admin.
 {
-	$GLOBALS['egw']->common->egw_header();
+	common::egw_header();
 
 	template_admin(array('html' => html_url($AdminScript . '&locking=1',
 																					lang('Lock / unlock pages')) .
@@ -143,5 +144,3 @@ else                                    // Display main menu for admin.
 																					lang('Block / unblock hosts')) .
 																 html_newline()));
 }
-
-?>
