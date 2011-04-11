@@ -85,6 +85,7 @@ class wiki_hooks
 				'Summary'	=>	lang('Summary'),
 				'Category'	=>	lang('Category'),
 				'Editor'	=>	lang('Person who changed the page'),
+				'Content'	=>	lang('Page content'),
 			);
 			$settings += array(
 				'notification_section' => array(
@@ -105,6 +106,13 @@ class wiki_hooks
 					'help'	=> 'If a page I have write access to is changed, send a notification',
 					'default' => 0
 				),
+				'notification_regex' => array(
+					'type'	=> 'text',
+					'label'	=> 'Pages that match this regular expression',
+					'name'	=> 'notification_regex',
+					'help'	=> 'If a page title matches this regular expression, send a notification.  You can look at title, name, lang, text using name: regex',
+					'default' => ''
+				),
 				'notification_message' => array(
 					'type'	=> 'notify',
 					'label'	=> 'Message',
@@ -113,7 +121,9 @@ class wiki_hooks
 					'rows'	=> 3,
 					'cols'	=> 50,
 					'values'	=> $details,
-					'default'	=> ''
+					'default'	=> 'On $$Date$$ $$Editor$$ changed $$Title$$
+$$Summary$$
+$$Content$$'
 				)
 			);
 		}

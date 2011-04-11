@@ -54,6 +54,7 @@ history lists	wiki	en	History lists
 history of	wiki	en	History of
 if a page i have read access to is changed, send a notification	wiki	en	If a page I have read access to is changed, send a notification
 if a page i have write access to is changed, send a notification	wiki	en	If a page I have write access to is changed, send a notification
+if a page title matches this regular expression, send a notification.  you can look at title, name, lang, text using name: regex	wiki	en	If a page title matches this regular expression, send a notification.  You can look at title, name, lang, text using name: regex
 interwikiprefix	admin	en	InterWikiPrefix
 invalid page name.	wiki	en	Invalid page name.
 load	wiki	en	Load
@@ -71,6 +72,7 @@ on all pages	wiki	en	on all pages
 only if browser supports a richtext-editor	admin	en	Only if browser supports a richtext-editor
 only on the first page	wiki	en	only on the first page
 page '%1' not found !!!	wiki	en	Page '%1' not found !!!
+pages that match this regular expression	wiki	en	Pages that match this regular expression
 path of the upload directory (has to be writable by the webserver!)	admin	en	Path of the upload directory (has to be writable by the webserver!)
 person who changed the page	wiki	en	Person who changed the page
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	en	Picture upload via richtext editor (leave the upload directory empty to disable the upload)

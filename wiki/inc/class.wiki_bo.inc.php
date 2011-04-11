@@ -390,6 +390,7 @@ class wiki_bo extends wiki_so
 			'Editor'	=>	common::display_fullname('','','',$GLOBALS['egw_info']['user']['account_id']),
 			'Summary'       =>      $page->comment,
 			'Category'      =>      $page->category,
+			'Content'	=>	$page->text,
 		);
 
 		// Need to get a list of people who want the change
@@ -430,14 +431,27 @@ class wiki_bo extends wiki_so
 			$user_ids[$name] = array_unique($user_ids[$name]);
 		}
 		$id_list = array_unique(array_merge($user_ids['read'], $user_ids['write']));
-		
+
 		// Check to see if they want notification
 		foreach($id_list as $id)
 		{
-			if($id = $GLOBALS['egw_info']['user']['account_id']) continue;
+			if($id == $GLOBALS['egw_info']['user']['account_id']) continue;
 			$prefs = new preferences($id);
 			$data = $prefs->read_repository(false);
-			if(($data['wiki']['notification_read'] && in_array($id, $user_ids['read'])) || 
+			$regex = false;
+			if($data['wiki']['notification_regex']) {
+				// Break pseudo regexes (field: search) into real regexes
+				$regexes = self::parse_regex($data['wiki']['notification_regex']);
+_debug_array($regexes);
+				foreach($regexes as $field => $test) {
+					$regex = $regex || preg_match($test, $page->$field) == 1;
+echo $page->$field;
+echo $test . ': ' . (preg_match($test, $page->$field) == 1 ? "Match" : "No match") . '<br />';
+				}
+echo ($regex ? "Match" : "No match") . '<br />';
+			}
+			if(($regex && in_array($id, $user_ids['read'])) || 
+					($data['wiki']['notification_read'] && in_array($id, $user_ids['read'])) || 
 					($data['wiki']['notification_write'] && in_array($id, $user_ids['write']))) {
 				$message = $prefs->parse_notify($data['wiki']['notification_message'], $values, true);
 				if(trim($message) != '') {
@@ -466,5 +480,36 @@ class wiki_bo extends wiki_so
 
 		// Restore user environment
 		$GLOBALS['egw_info']['user'] = $save_prefs;
+	}
+
+	/**
+	 * Parse a pseudo-regex in the form of field: value (optional or)
+	 * into a real regex that can be used to search
+	 */
+	public static function parse_regex($in)
+	{
+		$regex = array();
+
+		if(strpos($in, ':') === false)
+		{
+			$regex['name'] = trim($in);
+		}
+		else
+		{
+			// Can only handle one field: pattern set
+			list($field, $in) = explode(':', $in, 2);
+			$regex[$field] = trim($in);
+		}
+
+		// Make sure there are delimiters
+		foreach($regex as $field => &$pattern)
+		{
+			if(substr($pattern,0,1) !== substr($pattern, -1) || !in_array(substr($pattern,0,1), array('/','#','~','@')))
+			{
+				$pattern = '/'.$pattern.'/';
+			}
+		}
+		
+		return $regex;
 	}
 }
