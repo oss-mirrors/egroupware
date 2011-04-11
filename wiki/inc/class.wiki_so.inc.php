@@ -890,7 +890,12 @@ class wiki_so	// DB-Layer
 
 		// Now check how many more actions we can perform.
 
-		$this->db->select($this->RtTbl,'wiki_rate_time,wiki_rate_viewLimit,wiki_rate_searchLimit,wiki_rate_editLimit',array(
+		$cols = explode(',','wiki_rate_time,wiki_rate_viewLimit,wiki_rate_searchLimit,wiki_rate_editLimit');
+		foreach($cols as &$col)
+		{
+			$col = $this->db->name_quote("`$col`");	// PostgreSQL requires mixed case names quoted!
+		}
+		$this->db->select($this->RtTbl,$cols,array(
 				'wiki_rate_ip' => $remote_addr
 			),__LINE__,__FILE__);
 
@@ -927,9 +932,9 @@ class wiki_so	// DB-Layer
 		// Record this action.
 
 		$this->db->insert($this->RtTbl,array(
-				'wiki_rate_viewLimit'	=> $result[1],
-				'wiki_rate_searchLimit'	=> $result[2],
-				'wiki_rate_editLimit'	=> $result[3],
+				'`wiki_rate_viewLimit`'	=> $result[1],	// PostgreSQL requires mixed case names quoted!
+				'`wiki_rate_searchLimit`'	=> $result[2],
+				'`wiki_rate_editLimit`'	=> $result[3],
 				'wiki_rate_time'		=> time(),
 			),array(
 				'wiki_rate_ip' => $remote_addr
