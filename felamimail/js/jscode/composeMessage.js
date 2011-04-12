@@ -128,6 +128,8 @@ function addAddressRow(_tableRow)
 //	inputElements[0].focus();
 
 	singleRowHeight = _tableRow.clientHeight;
+
+	if (singleRowHeight == 0) singleRowHeight = 20;
 	if(tableRows.length > 4) {
 		neededHeight = singleRowHeight*4;
 	} else {
@@ -160,6 +162,7 @@ function fm_compose_addAttachmentRow(_tableRow)
 //	inputElements[0].focus();
 
 	singleRowHeight = _tableRow.clientHeight;
+	if (singleRowHeight == 0) singleRowHeight = 20;
 	if(tableRows.length > 4) {
 		neededHeight = singleRowHeight*4;
 	} else {
