@@ -986,8 +986,15 @@ function handleResize()
 	var remainingHeight = totalHeight - IFRAME_HEIGHT;
 	if (totalHeight - IFRAME_HEIGHT > 0)
 	{
+		var gridHeight = 0;
+		if (mailGrid != null)
+		{
+			gridHeight = mailGrid.getDataHeight();
+			var allElements = mailGrid.dataRoot.actionObject.flatList();
+			gridHeight = gridHeight + (allElements.length*3) + 10;
+		}
 		// Get the height of the mailGrid content
-		var contentHeight = Math.max(MIN_TABLE_HEIGHT, mailGrid ? mailGrid.getDataHeight() : 0);
+		var contentHeight = Math.max(MIN_TABLE_HEIGHT, gridHeight);
 
 		// Extend the gridHeight as much as possible
 		resultGridHeight = Math.max(MIN_TABLE_HEIGHT, Math.min(remainingHeight, contentHeight));
