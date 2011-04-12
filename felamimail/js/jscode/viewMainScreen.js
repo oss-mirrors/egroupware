@@ -107,6 +107,32 @@ function compressFolder() {
 	egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.compressFolder");
 }
 
+function mail_markRead(_action, _elems)
+{
+	flagMessages('read');
+}
+
+function mail_markUnread(_action, _elems)
+{
+	flagMessages('unread');
+}
+
+function mail_markFlagged(_action, _elems)
+{
+	flagMessages('flagged');
+}
+
+function mail_markUnflagged(_action, _elems)
+{
+	flagMessages('unflagged');
+}
+
+function mail_delete(_action, _elems)
+{
+	messageList = mailGridGetSelected()
+	deleteMessages(messageList);
+}
+
 function deleteMessages(_messageList) {
 	var Check = true;
 	var cbAllMessages = document.getElementById('selectAllMessagesCheckBox').checked;

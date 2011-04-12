@@ -263,6 +263,12 @@ class uiwidgets
 
 		private function get_actions()
 		{
+			// dublicated from felamimail_hooks
+			$deleteOptions = array(
+				'move_to_trash'		=> lang('move to trash'),
+				'mark_as_deleted'	=> lang('mark as deleted'),
+				'remove_immediately'	=> lang('remove immediately')
+			);
 			$actions =  array(
 				array(
 					"id" => "mark_flagged",
@@ -282,28 +288,10 @@ class uiwidgets
 				),
 				array(
 					"id" => "delete",
-					"caption" => lang('Mark as deleted'),
+					"caption" => $deleteOptions[$this->bofelamimail->mailPreferences->preferences['deleteOptions']],
 					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'delete'),
 					"group" => 3,
 					"onExecute" => "javaScript:mail_delete",
-					"type" => "popup"
-				),
-				array(
-					"id" => "reply",
-					"caption" => lang('Reply'),
-					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'mail_reply'),
-					"group" => 0,
-					"onExecute" => "javaScript:mail_reply",
-					"allowOnMultiple" => false,
-					"type" => "popup"
-				),
-				array(
-					"id" => "reply_all",
-					"caption" => lang('Reply All'),
-					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'mail_replyall'),
-					"group" => 0,
-					"onExecute" => "javaScript:mail_replyAll",
-					"allowOnMultiple" => false,
 					"type" => "popup"
 				),
 				array(
@@ -323,6 +311,26 @@ class uiwidgets
 					"onExecute" => "javaScript:mail_markUnread",
 				)
 			);
+/*
+				array(
+					"id" => "reply",
+					"caption" => lang('Reply'),
+					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'mail_reply'),
+					"group" => 0,
+					"onExecute" => "javaScript:mail_reply",
+					"allowOnMultiple" => false,
+					"type" => "popup"
+				),
+				array(
+					"id" => "reply_all",
+					"caption" => lang('Reply All'),
+					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'mail_replyall'),
+					"group" => 0,
+					"onExecute" => "javaScript:mail_replyAll",
+					"allowOnMultiple" => false,
+					"type" => "popup"
+				),
+*/
 
 			return $actions;
 		}
@@ -331,9 +339,10 @@ class uiwidgets
 		{
 			return array(
 				"mail" => array(
-					"mark_flagged", "mark_unflagged", "delete", "reply", "reply_all", "mark_read", "mark_unread"
+					"mark_flagged", "mark_unflagged", "delete", "mark_read", "mark_unread"
 				)
 			);
+			//"reply", "reply_all",
 		}
 
 
