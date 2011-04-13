@@ -527,7 +527,7 @@ class uipolls
 		$poll_id = get_var('poll_id',array('GET','POST'));
 		$this->t->set_var('poll_id',$poll_id);
 
-		if($_POST['edit'])
+		if($_POST['submit'])
 		{
 			$question = trim($_POST['question']);
 			if (get_magic_quotes_gpc()) $question = stripslashes($question);
