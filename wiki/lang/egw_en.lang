@@ -54,7 +54,7 @@ history lists	wiki	en	History lists
 history of	wiki	en	History of
 if a page i have read access to is changed, send a notification	wiki	en	If a page I have read access to is changed, send a notification
 if a page i have write access to is changed, send a notification	wiki	en	If a page I have write access to is changed, send a notification
-if a page title matches this regular expression, send a notification.  you can look at title, name, lang, text using name: regex	wiki	en	If a page title matches this regular expression, send a notification.  You can look at title, name, lang, text using name: regex
+if a page title matches this regular expression, send a notification.  you can look at title, name, lang, text using name: regex	wiki	en	If a page title matches this regular expression, send a notification.  You can look at title, name, lang, text using name: pattern<br />Examples:<br />Matching a name: "name: Manual" matches every page with Manual in the name.  "name: ^Manual" matches every page where the name <em>starts</em> with Manual, but not OperationsManual.  "name: Infolog|Addressbook" matches any page where the name contains Infolog or Addressbook.  <br />Matching language: "lang: en|de" matches english and german pages.  <br />Advanced (regex): "text: \b(word1|word2|word3)(?:\W+\w+){1,6}?\W+(word1|word2|word3)\b" matches any page where any of the 3 words are 1 to 6 words apart.
 interwikiprefix	admin	en	InterWikiPrefix
 invalid page name.	wiki	en	Invalid page name.
 load	wiki	en	Load

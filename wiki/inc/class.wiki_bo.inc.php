@@ -442,18 +442,14 @@ class wiki_bo extends wiki_so
 			if($data['wiki']['notification_regex']) {
 				// Break pseudo regexes (field: search) into real regexes
 				$regexes = self::parse_regex($data['wiki']['notification_regex']);
-_debug_array($regexes);
 				foreach($regexes as $field => $test) {
 					$regex = $regex || preg_match($test, $page->$field) == 1;
-echo $page->$field;
-echo $test . ': ' . (preg_match($test, $page->$field) == 1 ? "Match" : "No match") . '<br />';
 				}
-echo ($regex ? "Match" : "No match") . '<br />';
 			}
 			if(($regex && in_array($id, $user_ids['read'])) || 
 					($data['wiki']['notification_read'] && in_array($id, $user_ids['read'])) || 
 					($data['wiki']['notification_write'] && in_array($id, $user_ids['write']))) {
-				$message = $prefs->parse_notify($data['wiki']['notification_message'], $values, true);
+				$message = $prefs->parse_notify(nl2br($data['wiki']['notification_message']), $values, true);
 				if(trim($message) != '') {
 					$notification[$message][] = $id;
 				}
