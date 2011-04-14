@@ -14,6 +14,10 @@
 /* CONFIGURATION HERE. */
 $params = array();
 $params["title"] = lang('eGroupware Chat');
+// set timeout to 1 Minute, as we experienced problems with random disconnects when runnig phpfreechat within a farm on different
+// machines. Timeout is usually set to 35000 (35s), and is used to determine if a user is still online or not (e.g.: by closing or crashing
+// his browser, or the phpfreechat window (without phpfreechat recieving the /quit command))
+$params["timeout"] = 60000;
 /* Make the channel list configurable (via an admin interface?). */
 $categories = new categories($GLOBALS['egw_info']['user']['account_id'],'phpfreechat');
 $channels = array();
