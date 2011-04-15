@@ -984,11 +984,14 @@ class uifelamimail
 				$this->t->set_var('message', '&nbsp;');
 				$this->t->parse('header_rows','error_message',True);
 			} else {
-				//$headers = $this->bofelamimail->getHeaders($this->mailbox, $this->startMessage, $maxMessages, $this->sort, $this->sortReverse, $this->bofelamimail->sessionData['messageFilter']);
-				$headers = array('header'=>array(),'info'=>array());
+				$previewMessageId =($this->bofelamimail->sessionData['previewMessage']?$this->bofelamimail->sessionData['previewMessage']:0);
+				$headers = $this->bofelamimail->getHeaders($this->mailbox, $this->startMessage, $maxMessages, $this->sort, $this->sortReverse, $this->bofelamimail->sessionData['messageFilter'],$previewMessageId);
+				//$headers = array('header'=>array(),'info'=>array());
+ 				$headerCount = count($headers['header']);
 				$folderStatus = $this->bofelamimail->getFolderStatus($this->mailbox);
 				$headers['info']['total'] = $folderStatus['messages'];
- 				$headerCount = count($headers['header']);
+				$headers['info']['first'] = $this->startMessage;
+				$headers['info']['last'] = ($headers['info']['total']>$maxMessages?$maxMessages:$headers['info']['total']);
 				
 				//_debug_array($folderStatus);
  				// if there aren't any messages left (eg. after delete or move)
@@ -1001,33 +1004,15 @@ class uifelamimail
 				// determine how to display the current folder: as sent folder (to address visible) or normal (from address visible)
 				//$folderType = $this->bofelamimail->getFolderType($this->mailbox);
 
-				$previewMessageId =($this->bofelamimail->sessionData['previewMessage']?$this->bofelamimail->sessionData['previewMessage']:0);
 				//_debug_array($this->bofelamimail->sessionData['previewMessage']);
 				$messageTable =	$uiwidgets->messageTable(
 						$headers,
-						$folderType=0, // we dont need the FolderType here as we do not load any data anymore, we do that via xajax
+						$folderType,
 						$this->mailbox,
 						$userPreferences['message_newwindow'],
 						$userPreferences['rowOrderStyle'],
-						0);
-				//error_log($messageTable);
-				$neededSkript = "";
-				//if ($previewMessageId > 0)
-				//{
-					$neededSkript = '<script type="text/javascript">
-$(document).ready(function() {
-	var wnd = egw_appWindow("felamimail");
-	if (wnd && typeof wnd.refresh != "undefined")
-	{
-		wnd.refresh();
-	}
-});
-</script>	';
-//wnd.xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",'.$previewMessageId.','.$folderType.');
-				//	$neededSkript = "";
-				//}
-				//error_log(__METHOD__.__LINE__.$neededSkript);
-				$this->t->set_var('header_rows', $neededSkript.$messageTable);
+						$previewMessageId);
+				$this->t->set_var('header_rows', $messageTable);
 				
 
 				$firstMessage = $headers['info']['first'];
@@ -1108,10 +1093,12 @@ $(document).ready(function() {
 			$neededSkript = "";
 			if($this->connectionStatus !== false)
 			{
-				//$neededSkript = $uiwidgets->get_grid_js($folderType, $this->mailbox,$rowsFetched,$this->startMessage,$headers);
+				$neededSkript = "<div id='skriptGridOnFirstLoad' name='skriptGridOnFirstLoad'>".
+									$uiwidgets->get_grid_js($folderType, $this->mailbox,$rowsFetched,$this->startMessage,false,($maxMessages>=0?false:true)).
+								"</div>";
 				$this->bofelamimail->closeConnection();
 			}
-			print $neededSkript.$this->t->get('out','main');
+			print $this->t->get('out','main').$neededSkript;
 			echo $GLOBALS['egw']->framework->footer(false);
 		}
 

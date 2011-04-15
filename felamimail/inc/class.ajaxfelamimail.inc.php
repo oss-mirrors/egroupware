@@ -551,6 +551,7 @@ class ajaxfelamimail
 			}
 
 			$response->addAssign("divMessageList", "innerHTML", $headerJs.$headerTable);
+			$response->addAssign("skriptGridOnFirstLoad","innerHTML","");
 
 			if($quota = $this->bofelamimail->getQuotaRoot()) {
 				if (isset($quota['usage']) && $quota['limit'] != 'NOT SET')
