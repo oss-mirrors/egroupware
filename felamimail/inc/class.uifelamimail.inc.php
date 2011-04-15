@@ -985,8 +985,14 @@ class uifelamimail
 				$this->t->parse('header_rows','error_message',True);
 			} else {
 				$previewMessageId =($this->bofelamimail->sessionData['previewMessage']?$this->bofelamimail->sessionData['previewMessage']:0);
-				$headers = $this->bofelamimail->getHeaders($this->mailbox, $this->startMessage, $maxMessages, $this->sort, $this->sortReverse, $this->bofelamimail->sessionData['messageFilter'],$previewMessageId);
-				//$headers = array('header'=>array(),'info'=>array());
+				if ($previewMessageId)
+				{
+					$headers = $this->bofelamimail->getHeaders($this->mailbox, $this->startMessage, $maxMessages, $this->sort, $this->sortReverse, $this->bofelamimail->sessionData['messageFilter'],($previewMessageId?$previewMessageId:null));
+				}
+				else
+				{
+					$headers = array('header'=>array(),'info'=>array());
+				}
  				$headerCount = count($headers['header']);
 				$folderStatus = $this->bofelamimail->getFolderStatus($this->mailbox);
 				$headers['info']['total'] = $folderStatus['messages'];
