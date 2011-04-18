@@ -30,6 +30,7 @@ $setup_info['phpfreechat']['note'] = '';
 $setup_info['phpfreechat']['tables']  = array('egw_phpfreechat');	// handled by pfc itself atm.
 
 $setup_info['phpfreechat']['hooks']['admin'] = 'phpfreechat_hooks::all_hooks';
+$setup_info['phpfreechat']['hooks']['tab_closed'] = 'phpfreechat_hooks::all_hooks';
 
 /* Dependencies for this app to work */
 $setup_info['phpfreechat']['depends'][] = array(

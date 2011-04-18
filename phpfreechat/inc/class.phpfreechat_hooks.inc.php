@@ -46,6 +46,54 @@ class phpfreechat_hooks
 		$location = is_array($args) ? $args['location'] : $args;
 		//echo "<p>admin_prefs_sidebox_hooks::all_hooks(".print_r($args,True).") appname='$appname', location='$location'</p>\n";
 
+		if ($location == 'tab_closed')
+		{
+			//error_log(__METHOD__.__LINE__.' Hook called:'.$location);
+			require_once(EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat/src/phpfreechat.class.php');
+			include(EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat_config.php');
+			$chat = new phpFreeChat($params);
+			// initialize the global config object
+			$c =& pfcGlobalConfig::Instance( $params );
+			//error_log(__METHOD__.__LINE__.array2string($c));
+			// need to initiate the user config object here because it uses sessions
+			$u =& pfcUserConfig::Instance();
+			$channel2name = $name2channel =array();
+			foreach ((array)$u->channels as $key => $values)
+			{
+				$channel2name[$values['recipient']] = $values['name'];
+				$name2channel[$values['recipient']] = $values['name'];
+			}
+			//error_log(__METHOD__.__LINE__.array2string($u));
+			$pfcContainer =& pfcContainer::Instance();
+
+			$nickid = $u->nickid;
+			$nick = $u->nick;
+			$cmd = "notice";
+			//error_log(__METHOD__.__LINE__.array2string($nickid));
+			// get the current user's channels list
+			$channels = array();
+			$ret2 = $pfcContainer->getMeta("nickid-to-channelid",$nickid);
+			//error_log(__METHOD__.__LINE__.array2string($ret2));
+			foreach($ret2["value"] as $userchan)
+			{
+				//error_log(__METHOD__.__LINE__.array2string($userchan));
+				$userchan = $pfcContainer->decode($userchan);
+				if ($userchan != 'SERVER')
+				{
+					// tell the others
+					$param = lang("%1 is leaving channel %2 by closing his chat window",$nick,(!empty($channel2name[$userchan])?$channel2name[$userchan]:$userchan));
+					$pfcContainer->write($userchan, $nick, $cmd, $param);
+					// disconnect the user from each joined channels
+					$pfcContainer->removeNick($userchan, $nickid);
+					$channels[] = $userchan;
+				}
+			}
+			// now disconnect the user from the server
+			// (order is important because the SERVER channel has timestamp informations)
+			$userchan = 'SERVER';
+			$du = $pfcContainer->removeNick($userchan, $nickid);
+		}
+
 		if ($GLOBALS['egw_info']['user']['apps']['preferences'] && $location != 'admin')
 		{
 			// future possible prefs
