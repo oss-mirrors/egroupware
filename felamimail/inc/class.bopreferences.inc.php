@@ -95,6 +95,7 @@
 			#_debug_array($accountData);
 
 			$icServer = CreateObject('emailadmin.defaultimap');
+			$icServer->ImapServerId	= $accountData['id'];
 			$icServer->encryption	= isset($accountData['ic_encryption']) ? $accountData['ic_encryption'] : 1;
 			$icServer->host		= $accountData['ic_hostname'];
 			$icServer->port 	= isset($accountData['ic_port']) ? $accountData['ic_port'] : 143;
@@ -112,6 +113,7 @@
 			if ($accountData['ic_templatefolder']) $icServer->templatefolder = $accountData['ic_templatefolder'];
 
 			$ogServer = CreateObject('emailadmin.defaultsmtp');
+			$ogServer->SmtpServerId	= $accountData['id'];
 			$ogServer->host		= $accountData['og_hostname'];
 			$ogServer->port		= isset($accountData['og_port']) ? $accountData['og_port'] : 25;
 			$ogServer->smtpAuth	= (bool)$accountData['og_smtpauth'];
@@ -143,6 +145,7 @@
 			foreach ($AllAccountData as $key => $accountData)
 			{
 				$icServer = CreateObject('emailadmin.defaultimap');
+				$icServer->ImapServerId	= $accountData['id'];
 				$icServer->encryption	= isset($accountData['ic_encryption']) ? $accountData['ic_encryption'] : 1;
 				$icServer->host		= $accountData['ic_hostname'];
 				$icServer->port 	= isset($accountData['ic_port']) ? $accountData['ic_port'] : 143;
@@ -160,6 +163,7 @@
 				if ($accountData['ic_templatefolder']) $icServer->templatefolder = $accountData['ic_templatefolder'];
 
 				$ogServer = CreateObject('emailadmin.defaultsmtp');
+				$ogServer->SmtpServerId	= $accountData['id'];
 				$ogServer->host		= $accountData['og_hostname'];
 				$ogServer->port		= isset($accountData['og_port']) ? $accountData['og_port'] : 25;
 				$ogServer->smtpAuth	= (bool)$accountData['og_smtpauth'];
@@ -210,7 +214,7 @@
 			if(!is_a($this->profileData,'ea_preferences')) {
 				$imapServerTypes	= $this->boemailadmin->getIMAPServerTypes();
 				$profileData		= $this->boemailadmin->getUserProfile('felamimail');
-
+				//error_log(__METHOD__.__LINE__.array2string($profileData));
 				if(!is_a($profileData, 'ea_preferences') || !is_a($profileData->ic_server[0], 'defaultimap')) {
 					return false;
 				}

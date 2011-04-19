@@ -553,6 +553,7 @@ class emailadmin_bo extends so_sql
 
 		if($data = $this->soemailadmin->getUserProfile($appName, $groups,$GLOBALS['egw_info']['user']['account_id']))
 		{
+			//error_log(__METHOD__.__LINE__.array2string($data));
 			$eaPreferences = CreateObject('emailadmin.ea_preferences');
 
 			// fetch the IMAP / incomming server data
@@ -565,6 +566,7 @@ class emailadmin_bo extends so_sql
 				include_once($file);
 			}
 			$icServer = new $icClass;
+			$icServer->ImapServerId	= $data['profileID']*-1;
 			$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes' ? 1 : (int)$data['imapTLSEncryption']);
 			$icServer->host		= $data['imapServer'];
 			$icServer->port 	= $data['imapPort'];
@@ -606,6 +608,7 @@ class emailadmin_bo extends so_sql
 				include_once($file);
 			}
 			$ogServer = new $ogClass($icServer->domainName);
+			$ogServer->SmtpServerId	= $data['profileID']*-1;
 			$ogServer->host		= $data['smtpServer'];
 			$ogServer->port		= $data['smtpPort'];
 			$ogServer->editForwardingAddress = ($data['editforwardingaddress'] == 'yes');

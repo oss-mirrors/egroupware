@@ -18,6 +18,13 @@
 		 */
 		const CAPABILITIES = 'default';
 
+		/**
+		 * SmtpServerId
+		 * 
+		 * @var int
+		 */
+		var $SmtpServerId;
+
 		var $smtpAuth = false;
 		
 		var $editForwardingAddress = false;		
