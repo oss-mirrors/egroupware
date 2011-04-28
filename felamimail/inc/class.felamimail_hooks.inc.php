@@ -716,39 +716,41 @@ class felamimail_hooks
 				//error_log(__METHOD__.__LINE__.array2string($imapServer));
 				// account select box
 				$selectedID = $bofelamimail->getIdentitiesWithAccounts($identities);
-
+				//error_log(__METHOD__.__LINE__.' SelectedID:'.$selectedID);
 				// if nothing valid is found return to user defined account definition
 				if (empty($imapServer->host) && count($identities)==0 && $preferences->userDefinedAccounts)
 				{
 					$showMainScreenStuff= false;
 					break;
 				}
+				//error_log(__METHOD__.__LINE__.array2string($preferences->identities));
 				$activeIdentity =& $preferences->getIdentity($icServerID);
+				//error_log(__METHOD__.__LINE__.' ActiveIdentity for profileID'.$icServerID.'->'.array2string($activeIdentity));
 				if ($imapServer->_connected != 1) $connectionStatus = $bofelamimail->openConnection($icServerID);
 				$folderObjects = $bofelamimail->getFolderObjects(true, false);
 				$folderStatus = $bofelamimail->getFolderStatus($mailbox);
 
 				// the data needed here are collected at the start of this function
-				if (!isset($activeIdentity->id) && $selectedID == 0) {
-					$identities[0] = $activeIdentity->realName.' '.$activeIdentity->organization.' <'.$activeIdentity->emailAddress.'>';
+				if (!isset($activeIdentity->id) && $selectedID == $icServerID) {
+					$identities[$icServerID] = $activeIdentity->realName.' '.$activeIdentity->organization.' <'.$activeIdentity->emailAddress.'>';
 				}
 				// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
 				if ($activeIdentity->id) {
 					$boemailadmin = new emailadmin_bo();
 					$defaultProfile = $boemailadmin->getUserProfile() ;
-					//_debug_array($defaultProfile);
+					//error_log(__METHOD__.__LINE__.array2string($defaultProfile));
 					$identitys =& $defaultProfile->identities;
 					$icServers =& $defaultProfile->ic_server;
 					foreach ($identitys as $tmpkey => $identity)
 					{
 						if (empty($icServers[$tmpkey]->host)) continue;
-						$identities[0] = $identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+						$identities[$identity->id] = $identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
 					}
 					//$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
 				}
 
 				$selectAccount = html::select('accountSelect', $selectedID, $identities, true, 'style="width:100%;" onchange="var appWindow=egw_appWindow(\''.$appname.'\');appWindow.changeActiveAccount(this);"');
-
+				//error_log(__METHOD__.__LINE__.$selectAccount);
 				$file[] = array(
 					'text' => "<div id=\"divAccountSelect\" style=\" width:100%;\">".$selectAccount."</div>",
 					'no_lang' => True,

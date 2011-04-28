@@ -643,6 +643,7 @@ class emailadmin_bo extends so_sql
 				$identity->realName	= $emailAddresses['name'];
 				$identity->default	= ($emailAddresses['type'] == 'default');
 				$identity->organization	= $data['organisationName'];
+				$identity->id = ($i==0?$data['profileID']*-1:$i);
 				// first identity found will be associated with the profileID
 				$eaPreferences->setIdentity($identity,($i==0?$data['profileID']*-1:$i));
 				$i++;

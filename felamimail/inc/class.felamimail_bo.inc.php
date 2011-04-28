@@ -1368,7 +1368,7 @@ class felamimail_bo
 		function getIdentitiesWithAccounts(&$identities)
 		{
 			// account select box
-			$selectedID = 0;
+			$selectedID = $this->profileID;
 			if($this->mailPreferences->userDefinedAccounts) $allAccountData = $this->bopreferences->getAllAccountData($this->mailPreferences);
 
 			if ($allAccountData) {

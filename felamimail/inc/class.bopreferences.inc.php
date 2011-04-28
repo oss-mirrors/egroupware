@@ -264,6 +264,9 @@
 						if(is_a($accountData['ogServer'],'defaultsmtp'))
 							$profileData->setOutgoingServer($accountData['ogServer'],$k);
 
+						if(is_a($accountData['identity'],'ea_identity')) 
+							$profileData->setIdentity($profileData->identities[$icProfileID],$k);
+
 						if($accountData['active']) 
 						{
 							// replace the global defined IMAP Server

@@ -64,6 +64,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 	private $messages;
 
+	static $profileID;
 
 	/**
 	 * debugLevel - enables more debug
@@ -80,6 +81,18 @@ class felamimail_activesync implements activesync_plugin_read
 	public function __construct(BackendEGW $backend)
 	{
 		$this->backend = $backend;
+		if (!isset($GLOBALS['egw_info']['user']['preferences']['activesync']['ActiveSyncProfileID']))
+		{
+			// globals preferences add appname varname value
+			$GLOBALS['egw']->preferences->add('activesync','ActiveSyncProfileID',0,'user');
+			// save prefs
+			$GLOBALS['egw']->preferences->save_repository(true);
+		}
+		if (is_null(self::$profileID)) self::$profileID =& egw_cache::getSession('felamimail','activeSyncProfileID');
+
+		if (isset($GLOBALS['egw_info']['user']['preferences']['activesync']['ActiveSyncProfileID']))
+			self::$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['activesync']['ActiveSyncProfileID'];
+
 	}
 
 	/**
@@ -98,9 +111,9 @@ class felamimail_activesync implements activesync_plugin_read
 		{
 			$this->account = $account;
 			// todo: tell fmail which account to use
-			$this->mail = felamimail_bo::getInstance(false);
-			//error_log(__METHOFD__.__LINE__.array2string($this->mail));
-			if (!$this->mail->openConnection(0,false))
+			$this->mail = felamimail_bo::getInstance(false,self::$profileID);
+			//error_log(__METHOD__.__LINE__.' with ProfileID:'.array2string(self::$profileID));
+			if (!$this->mail->openConnection(self::$profileID,false))
 			{
 				throw new egw_exception_not_found(__METHOD__."($account) can not open connection!");
 			}
@@ -182,8 +195,8 @@ class felamimail_activesync implements activesync_plugin_read
 			return false;
 		}
 		// initialize our felamimail_bo
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
-		$activeMailProfile = $this->mail->mailPreferences->getIdentity(0);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
+		$activeMailProfile = $this->mail->mailPreferences->getIdentity(self::$profilID);
 
 		// initialize the new egw_mailer object for sending
 		$mailObject = new egw_mailer();
@@ -991,7 +1004,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 		$this->splitID($folderid, $account, $folder);
 
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
 
 		$this->mail->reopen($folder);
 		$attachment = $this->mail->getAttachment($id,$part);
@@ -1017,7 +1030,7 @@ class felamimail_activesync implements activesync_plugin_read
 
 		$this->splitID($folderid, $account, $folder);
 
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false, self::$profileID);
 
 		$this->mail->reopen($folder);
 		$att = $this->mail->getAttachment($id,$part);
@@ -1082,7 +1095,7 @@ class felamimail_activesync implements activesync_plugin_read
 		$this->splitID($folderid, $account, $srcFolder);
 		$this->splitID($newfolderid, $account, $destFolder);
 		debugLog("IMAP-MoveMessage: (SourceFolder: '$srcFolder'  id: '$id'  DestFolder: '$destFolder' )");
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
 		$this->mail->reopen($destFolder);
 		$status = $this->mail->getFolderStatus($destFolder);
 		$uidNext = $status['uidnext'];
@@ -1287,7 +1300,7 @@ class felamimail_activesync implements activesync_plugin_read
 		if (is_numeric($account)) $type = 'felamimail';
 		if ($type != 'felamimail') return false;
 
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
 
 		$changes = array();
         debugLog("AlterPingChanges on $folderid ($folder) stat: ". $syncstate);
@@ -1343,7 +1356,7 @@ class felamimail_activesync implements activesync_plugin_read
 		debugLog(__METHOD__.__LINE__.' '.$folderid.'->'.$folder);
 		$_messageUID = (array)$id;
 
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
 		$rv = $this->mail->deleteMessages($_messageUID, $folder);
 		// this may be a bit rude, it may be sufficient that GetMessageList does not list messages flagged as deleted
 		if ($this->mail->mailPreferences->preferences['deleteOptions'] == 'mark_as_deleted')
@@ -1369,7 +1382,7 @@ class felamimail_activesync implements activesync_plugin_read
 		// debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
 		$_messageUID = (array)$id;
 		$this->_connect($this->account);
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
 		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$_folderid);
 		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
 
@@ -1390,7 +1403,7 @@ class felamimail_activesync implements activesync_plugin_read
 	{
 		$_messageUID = (array)$id;
 		$this->_connect($this->account);
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
 		$rv = $this->mail->flagMessages((($flags->flagstatus == 2) ? "flagged" : "unflagged"), $_messageUID,$_folderid);
 		debugLog("IMAP-SetFlaggedFlag -> set as " . (($flags->flagstatus == 2) ? "flagged" : "unflagged") . "-->". $rv);
 
