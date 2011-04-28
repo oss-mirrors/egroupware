@@ -2549,7 +2549,8 @@ class felamimail_bo
 				$newAttachment['size']      = $structure->bytes;
 				$newAttachment['mimeType']  = $structure->type .'/'. $structure->subType.';'.$structure->parameters['METHOD'];
 				$newAttachment['partID']    = $structure->partID;
-				$newAttachment['encoding']      = $structure->encoding;
+				$newAttachment['encoding']  = $structure->encoding;
+				$newAttachment['method']    = $structure->parameters['METHOD'];
 				$attachments[] = $newAttachment;
 			}
 			// this kind of message can have no attachments
@@ -2592,6 +2593,7 @@ class felamimail_bo
 					$newAttachment['mimeType']	= $subPart->type .'/'. $subPart->subType;
 					$newAttachment['partID']	= $subPart->partID;
 					$newAttachment['encoding']	= $subPart->encoding;
+					$newAttachment['method']    = $subPart->parameters['METHOD'];
 					// try guessing the mimetype, if we get the application/octet-stream
 					if (strtolower($newAttachment['mimeType']) == 'application/octet-stream') $newAttachment['mimeType'] = mime_magic::filename2mime($newAttachment['name']);
 

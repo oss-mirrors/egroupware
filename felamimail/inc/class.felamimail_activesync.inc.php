@@ -101,13 +101,13 @@ class felamimail_activesync implements activesync_plugin_read
 		}
 		else
 		{
-			foreach (array_keys((array)$identities) as $k => $ident) if ($k <0) self::$profileID = $k; 
+			foreach (array_keys((array)$identities) as $k => $ident) if ($k <0) self::$profileID = $k;
 			if ($identities[self::$profileID])
 			{
 				// everything failed, try first profile found
 				$keys = array_keys((array)$identities);
 				if (count($keys)>0) self::$profileID = array_shift($keys);
-				else self::$profileID = 0;				
+				else self::$profileID = 0;
 			}
 		}
 		if ($debugLevel>0) error_log(__METHOD__.'::'.__LINE__.' ProfileSelected:'.self::$profileID.' -> '.$identities[self::$profileID]);
@@ -718,7 +718,7 @@ class felamimail_activesync implements activesync_plugin_read
 		unset($message);
         	unset($mobj);
 
-		if ($send && $asf) 
+		if ($send && $asf)
 		{
 			return true;
 		}
@@ -1018,7 +1018,6 @@ class felamimail_activesync implements activesync_plugin_read
 				$output->poommailflag = new SyncPoommailFlag();
 				$output->poommailflag->flagstatus = 2;
 				$output->poommailflag->flagtype = "Flag for Follow up";
-
 			}
 
 			$output->internetcpid = 65001;
@@ -1033,6 +1032,14 @@ class felamimail_activesync implements activesync_plugin_read
 				foreach ($attachments as $key => $attach)
 				{
 					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Key:'.$key.'->'.array2string($attach));
+
+					if (strtolower($attach['mimeType']) == 'text/calendar' && strtolower($attach['method']) == 'request' &&
+						($output->meetingrequest = $this->meetingRequest(
+							$this->mail->getAttachment($id, $attach['partID']))))
+					{
+						$output->messageclass = "IPM.Schedule.Meeting.Request";
+						continue;	// do NOT add attachment as attachment
+					}
 					if(isset($output->_mapping['POOMMAIL:Attachments'])) {
 						$attachment = new SyncAttachment();
 					} else if(isset($output->_mapping['AirSyncBase:Attachments'])) {
@@ -1069,6 +1076,86 @@ class felamimail_activesync implements activesync_plugin_read
 			return $output;
 		}
 		return false;
+	}
+
+	/**
+	 * Generate meetingrequest from attachment array
+	 *
+	 * @param array $data with value for key 'attachment'
+	 * @return SyncMeetingRequest or null if calendar not installed or ical not parsable
+	 */
+	private function meetingRequest(array $data)
+	{
+		if (!class_exists('calendar_ical'))
+		{
+			debugLog(__METHOD__."(...) no EGroupware calendar installed!");
+			return null;
+		}
+		$ical = new calendar_ical();
+		if (!($events = $ical->icaltoegw($data['attachment'], '', 'utf-8')) || count($events) != 1)
+		{
+			debugLog(__METHOD__."(...) error parsing iCal!");
+			return null;
+		}
+		$event = array_shift($events);
+		debugLog(__METHOD__."(...) parsed as ".array2string($event));
+
+		$message = new SyncMeetingRequest();
+		// set timezone
+		try {
+			$as_tz = calendar_activesync::tz2as($event['tzid']);
+			$message->timezone = base64_encode(calendar_activesync::_getSyncBlobFromTZ($as_tz));
+		}
+		catch(Exception $e) {
+			// ignore exception, simply set no timezone, as it is optional
+		}
+		// copying timestamps (they are already read in servertime, so non tz conversation)
+		foreach(array(
+			'start' => 'starttime',
+			'end'   => 'endtime',
+			'created' => 'dtstamp',
+		) as $key => $attr)
+		{
+			if (!empty($event[$key])) $message->$attr = $event[$key];
+		}
+		if (($message->alldayevent = (int)calendar_bo::isWholeDay($event)))
+		{
+			++$message->endtime;	// EGw all-day-events are 1 sec shorter!
+		}
+		// copying strings
+		foreach(array(
+			'title' => 'subject',
+			'location' => 'location',
+		) as $key => $attr)
+		{
+			if (!empty($event[$key])) $message->$attr = $event[$key];
+		}
+		$message->organizer = $event['organizer'];
+
+		$message->sensitivity = $event['public'] ? 0 : 2;	// 0=normal, 1=personal, 2=private, 3=confidential
+
+		// busystatus=(0=free|1=tentative|2=busy|3=out-of-office), EGw has non_blocking=0|1
+		$message->busystatus = $event['non_blocking'] ? 0 : 2;
+
+		// ToDo: recurring events: InstanceType, RecurrenceId, Recurrences; ...
+		$message->instancetype = 0;	// 0=Single, 1=Master recurring, 2=Single recuring, 3=Exception
+
+		$message->responserequested = 1;	//0=No, 1=Yes
+		$message->disallownewtimeproposal = 1;	//1=forbidden, 0=allowed
+		//$message->messagemeetingtype;	// email2
+
+		// ToDo: alarme: Reminder
+
+		// convert UID to GlobalObjID
+		$message->globalobjid =
+			/* Bytes 1-16: */	'\0x04\0x00\0x00\0x00\0x82\0x00\0xE0\0x00\0x74\0xC5\0xB7\0x10\0x1A\0x82\0xE0\0x08'.
+			/* Bytes 17-20: */	'\0x00\0x00\0x00\0x00'.
+			/* Bytes 21-36: */	'\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00'.
+			/* Bytes 37-­40: */	pack('V',13+bytes($event['uid'])).	// binary length + 13 for next line and terminating \0x00
+			/* Bytes 41-­52: */	'vCal-­Uid'.'\0x01\0x00\0x00\0x00'.
+			$event['uid'].'\0x00';
+
+		return $message;
 	}
 
 	/**
@@ -1440,7 +1527,7 @@ class felamimail_activesync implements activesync_plugin_read
 		debugLog(__METHOD__.__LINE__.' '.$folderid.'->'.$folder);
 		$_messageUID = (array)$id;
 
-		$this->_connect($this->account); 
+		$this->_connect($this->account);
 		$rv = $this->mail->deleteMessages($_messageUID, $folder);
 		// this may be a bit rude, it may be sufficient that GetMessageList does not list messages flagged as deleted
 		if ($this->mail->mailPreferences->preferences['deleteOptions'] == 'mark_as_deleted')
@@ -1465,7 +1552,7 @@ class felamimail_activesync implements activesync_plugin_read
 	{
 		// debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
 		$_messageUID = (array)$id;
-		$this->_connect($this->account); 
+		$this->_connect($this->account);
 		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$_folderid);
 		error_log("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
 
