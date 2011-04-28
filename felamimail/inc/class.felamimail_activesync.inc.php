@@ -110,7 +110,7 @@ class felamimail_activesync implements activesync_plugin_read
 				else self::$profileID = 0;				
 			}
 		}
-		error_log(__METHOD__.'::'.__LINE__.' ProfileSelected:'.self::$profileID.' -> '.$identities[self::$profileID]);
+		if ($debugLevel>0) error_log(__METHOD__.'::'.__LINE__.' ProfileSelected:'.self::$profileID.' -> '.$identities[self::$profileID]);
 	}
 
 	/**
