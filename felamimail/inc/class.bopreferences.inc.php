@@ -232,7 +232,7 @@
 				$icServerKeys = array_keys((array)$profileData->ic_server); 
 				$icProfileID = array_shift($icServerKeys);
 				$ogServerKeys = array_keys((array)$profileData->og_server); 
-				$ogProfileID = array_shift($icServerKeys);
+				$ogProfileID = array_shift($ogServerKeys);
 
 				//error_log(__METHOD__.__LINE__.array2string($profileData));
 				if(!is_a($profileData, 'ea_preferences') || !is_a($profileData->ic_server[$icProfileID], 'defaultimap')) 
