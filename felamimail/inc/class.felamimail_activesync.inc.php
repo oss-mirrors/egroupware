@@ -197,6 +197,10 @@ class felamimail_activesync implements activesync_plugin_read
 				throw new egw_exception_not_found(__METHOD__."($account) can not open connection!");
 			}
 		}
+		else
+		{
+			if (!$this->mail->icServer->_connected) $this->mail->openConnection(self::$profileID,false);
+		}
 	}
 
 	/**
@@ -1437,7 +1441,7 @@ class felamimail_activesync implements activesync_plugin_read
 		debugLog(__METHOD__.__LINE__.' '.$folderid.'->'.$folder);
 		$_messageUID = (array)$id;
 
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
+		if (!isset($this->mail)) $this->_connect($this->account); //$this->mail = felamimail_bo::getInstance(false,self::$profileID);
 		$rv = $this->mail->deleteMessages($_messageUID, $folder);
 		// this may be a bit rude, it may be sufficient that GetMessageList does not list messages flagged as deleted
 		if ($this->mail->mailPreferences->preferences['deleteOptions'] == 'mark_as_deleted')
@@ -1462,8 +1466,7 @@ class felamimail_activesync implements activesync_plugin_read
 	{
 		// debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
 		$_messageUID = (array)$id;
-		$this->_connect($this->account);
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
+		if (!isset($this->mail)) $this->_connect($this->account); //$this->mail = felamimail_bo::getInstance(false,self::$profileID);
 		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$_folderid);
 		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
 
@@ -1471,20 +1474,19 @@ class felamimail_activesync implements activesync_plugin_read
 	}
 
 	/**
-     	 * modify olflags (outlook style) flag of a message
-     	 *
-     	 * @param $folderid
-     	 * @param $id
-     	 * @param $flags
-    	 *
-    	 *
-     	 * @DESC The $flags parameter must contains the poommailflag Object
-     	 */
+	 * modify olflags (outlook style) flag of a message
+	 *
+	 * @param $folderid
+	 * @param $id
+	 * @param $flags
+	 *
+	 *
+	 * @DESC The $flags parameter must contains the poommailflag Object
+	 */
 	function ChangeMessageFlag($folderid, $id, $flags)
 	{
 		$_messageUID = (array)$id;
-		$this->_connect($this->account);
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
+		if (!isset($this->mail)) $this->_connect($this->account);// $this->mail = felamimail_bo::getInstance(false,self::$profileID);
 		$rv = $this->mail->flagMessages((($flags->flagstatus == 2) ? "flagged" : "unflagged"), $_messageUID,$_folderid);
 		debugLog("IMAP-SetFlaggedFlag -> set as " . (($flags->flagstatus == 2) ? "flagged" : "unflagged") . "-->". $rv);
 
