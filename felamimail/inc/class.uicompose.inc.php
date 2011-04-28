@@ -683,10 +683,6 @@
 				}
 			}
 
-			if(!@is_object($GLOBALS['egw']->js))
-			{
-				$GLOBALS['egw']->js = CreateObject('phpgwapi.javascript');
-			}
 			// this call loads js and css for the treeobject
 			html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
 			egw_framework::validate_file('jscode','composeMessage','felamimail');
