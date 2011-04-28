@@ -46,10 +46,14 @@ class ajaxfelamimail
 		function ajaxfelamimail()
 		{
 			if($this->_debug) error_log("ajaxfelamimail::ajaxfelamimail");
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+					$this->imapServerID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
+
 			$this->charset		=  translation::charset();
-			$this->bofelamimail	= felamimail_bo::getInstance();
+			$this->bofelamimail	= felamimail_bo::getInstance(true,$this->imapServerID);
 			$this->uiwidgets	= CreateObject('felamimail.uiwidgets');
-			$this->_connectionStatus = $this->bofelamimail->openConnection();
+			$this->icServer = $this->bofelamimail->mailPreferences->getIncomingServer($this->imapServerID);
+			$this->_connectionStatus = $this->bofelamimail->openConnection($this->imapServerID);
 
 			$this->sessionDataAjax	=& $GLOBALS['egw']->session->appsession('ajax_session_data','felamimail');
 			$this->sessionData	=& $GLOBALS['egw']->session->appsession('session_data','felamimail');
@@ -57,8 +61,7 @@ class ajaxfelamimail
 			if(!isset($this->sessionDataAjax['folderName'])) {
 				$this->sessionDataAjax['folderName'] = 'INBOX';
 			}
-
-			$this->icServer = $this->bofelamimail->mailPreferences->getIncomingServer($this->imapServerID);
+	
 		}
 
 		function addACL($_accountName, $_aclData)
@@ -838,7 +841,7 @@ class ajaxfelamimail
 			$response->addScript("document.getElementById('messageCounter').innerHTML =MessageBuffer;");
 			//$response->addScript("document.getElementById('messageCounter').innerHTML ='';");
 			$response->addScript("fm_previewMessageID=".$headerData['uid'].";");
-			$response->addAssign('spanMessagePreview', 'innerHTML', $this->uiwidgets->updateMessagePreview($headerData,$_folderType, $this->sessionData['mailbox']));
+			$response->addAssign('spanMessagePreview', 'innerHTML', $this->uiwidgets->updateMessagePreview($headerData,$_folderType, $this->sessionData['mailbox'],$this->imapServerID));
 			$response->addScript('if (typeof handleResize != "undefined") handleResize();');
 
 			// Also refresh the folder status
@@ -891,7 +894,7 @@ class ajaxfelamimail
 			$GLOBALS['egw']->session->commit_session();
 
 			$response = new xajaxResponse();
-			if(!($this->_connectionStatus === true)) $this->_connectionStatus = $this->bofelamimail->openConnection();
+			if(!($this->_connectionStatus === true)) $this->_connectionStatus = $this->bofelamimail->openConnection($this->imapServerID);
 			if($this->_connectionStatus === true) {
 				//error_log("connected");
 				if (is_array($activeFolders)) {

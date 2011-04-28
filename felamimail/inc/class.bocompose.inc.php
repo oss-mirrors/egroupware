@@ -30,9 +30,12 @@
 
 		function bocompose($_composeID = '', $_charSet = 'iso-8859-1')
 		{
+			$profileID = 0;
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+					$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
 			$this->displayCharset	= strtolower($_charSet);
 			$this->bosignatures	= new felamimail_bosignatures();
-			$this->bofelamimail	= felamimail_bo::getInstance();
+			$this->bofelamimail	= felamimail_bo::getInstance(true,$profileID);
 			$this->bopreferences =& $this->bofelamimail->bopreferences;
 			$this->preferences	=& $this->bofelamimail->mailPreferences; // $this->bopreferences->getPreferences();
 			// we should get away from this $this->preferences->preferences should hold the same info

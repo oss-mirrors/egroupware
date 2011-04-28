@@ -80,7 +80,8 @@
 				$this->bocompose   = CreateObject('felamimail.bocompose',$this->composeID,$this->displayCharset);
 			}
 			$this->t 		= CreateObject('phpgwapi.Template',EGW_APP_TPL);
-			$this->bofelamimail	= felamimail_bo::getInstance();
+
+			$this->bofelamimail	=& $this->bocompose->bofelamimail;
 			$this->mailPreferences  =& $this->bofelamimail->mailPreferences;
 			$this->t->set_unknowns('remove');
 
@@ -149,7 +150,7 @@
 			if((bool)$_POST['saveAsDraft'] == true) {
 				$formData['isDraft'] = 1;
 				// save as draft
-				$folder = ($this->mailPreferences->ic_server[0]->draftfolder ? $this->mailPreferences->ic_server[0]->draftfolder : $this->mailPreferences->preferences['draftFolder']);
+				$folder = ($this->mailPreferences->ic_server[$this->bofelamimail->profileID]->draftfolder ? $this->mailPreferences->ic_server[$this->bofelamimail->profileID]->draftfolder : $this->mailPreferences->preferences['draftFolder']);
 				$this->bofelamimail->reopen($folder);
 				$status = $this->bofelamimail->getFolderStatus($folder);
 				//error_log(__METHOD__.__LINE__.array2string($status));
@@ -192,7 +193,7 @@
 				unset($_GET['forwardmails']);
 				$replyID = $_GET['reply_id'];
 				$replyIds = explode(',',$replyID);
-				$icServer = 0; //(int)$_GET['icServer'];
+				$icServer = $this->bofelamimail->profileID;
 				$folder = base64_decode($_GET['folder']);
 				//_debug_array(array('reply_id'=>$replyIds,'folder'=>$folder));
 				if (!empty($folder) && !empty($replyID) ) {
@@ -383,10 +384,12 @@
 			$allIdentities = $this->mailPreferences->getIdentity();
 			//_debug_array($allIdentities);
 			$defaultIdentity = 0;
+			$identities = array();
 			foreach($allIdentities as $key => $singleIdentity) {
 				#$identities[$singleIdentity->id] = $singleIdentity->realName.' <'.$singleIdentity->emailAddress.'>';
-				$identities[$key] = $singleIdentity->realName.' <'.$singleIdentity->emailAddress.'>';
-				if(!empty($singleIdentity->default)) {
+				if (array_search($singleIdentity->realName.' <'.$singleIdentity->emailAddress.'>',$identities)==false) $identities[$key] = $singleIdentity->realName.' <'.$singleIdentity->emailAddress.'>';
+				if(!empty($singleIdentity->default)) 
+				{
 					#$defaultIdentity = $singleIdentity->id;
 					$defaultIdentity = $key;
 					$sessionData['signatureID'] = (!empty($singleIdentity->signature) ? $singleIdentity->signature : $sessionData['signatureID']);
@@ -775,7 +778,7 @@
 
 			$bofelamimail		= $this->bofelamimail;
 			$uiwidgets		= CreateObject('felamimail.uiwidgets');
-			$connectionStatus	= $bofelamimail->openConnection();
+			$connectionStatus	= $bofelamimail->openConnection($bofelamimail->profileID);
 
 			$folderObjects = $bofelamimail->getFolderObjects(true,false);
 			$folderTree = $uiwidgets->createHTMLFolder

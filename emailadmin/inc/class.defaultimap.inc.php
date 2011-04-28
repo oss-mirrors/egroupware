@@ -405,6 +405,7 @@ class defaultimap extends Net_IMAP
 		if($this->hasCapability('NAMESPACE')) {
 			$nameSpace = $this->getNamespace();
 			if( PEAR::isError($nameSpace)) {
+				//error_log("emailadmin::defaultimap->getNameSpaces: called from->".function_backtrace());
 				if ($this->debug) error_log("emailadmin::defaultimap->getNameSpaces:".print_r($nameSpace,true));
 				$retrieveDefault = true;
 			} else {
@@ -504,6 +505,7 @@ class defaultimap extends Net_IMAP
 	function openConnection($_adminConnection=false) 
 	{
 		//error_log(__METHOD__.function_backtrace());
+		//error_log(__METHOD__.__LINE__.($_adminConnection?' Adminconnection':'').array2string($this));
 		unset($this->_connectionErrorObject);
 		
 		if($_adminConnection) {

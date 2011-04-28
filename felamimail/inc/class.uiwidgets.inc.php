@@ -26,6 +26,7 @@ class uiwidgets
 		var $bofelamimail;
 		var $_connectionStatus;
 		var $sessionData;
+		var $profileID = 0;
 		/**
 		 * Instance of template class for felamimail
 		 *
@@ -41,8 +42,11 @@ class uiwidgets
 			$this->template = new Template(common::get_tpl_dir('felamimail'));
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
 			$this->charset = translation::charset();
-			$this->bofelamimail = felamimail_bo::getInstance();
-			$this->_connectionStatus = $this->bofelamimail->openConnection();
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+				$this->profileID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
+
+			$this->bofelamimail = felamimail_bo::getInstance(true,$this->profileID);
+			$this->_connectionStatus = $this->bofelamimail->openConnection($this->profileID);
 			$this->sessionData	=& $GLOBALS['egw']->session->appsession('session_data','felamimail');
 		}
 
@@ -830,7 +834,7 @@ $(document).ready(function() {
 						{
 							if ($this->bofelamimail->icServer->_connected != 1)
 							{
-								$this->bofelamimail->openConnection(0); // connect to the current server
+								$this->bofelamimail->openConnection($this->profileID); // connect to the current server
 								$this->bofelamimail->reopen($_folderName);
 							}
 							$attachments = $this->bofelamimail->getMessageAttachments($header['uid']);
@@ -998,7 +1002,7 @@ $(document).ready(function() {
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0 &&
 				($_folderType==0 || $_folderType==1)) // only if not drafts or template folder
 			{
-				$IFRAMEBody =  $this->updateMessagePreview($firstheader,$_folderType,$_folderName);
+				$IFRAMEBody =  $this->updateMessagePreview($firstheader,$_folderType,$_folderName,$this->profileID);
 			}
 			else
 			{

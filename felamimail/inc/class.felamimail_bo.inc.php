@@ -105,12 +105,13 @@ class felamimail_bo
 		 */
 		public static function getInstance($_restoreSession=true, $_profileID=0)
 		{
-			//error_log(__METHOD__.__LINE__.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID);
+			//error_log(__METHOD__.__LINE__.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID.' called from:'.function_backtrace());
 			if (!isset(self::$instances[$_profileID]))
 			{
 				self::$instances[$_profileID] = new felamimail_bo('utf-8',$_restoreSession,$_profileID);
 			}
-
+			self::$instances[$_profileID]->profileID = $_profileID;
+			//error_log(__METHOD__.__LINE__.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID);
 			return self::$instances[$_profileID];
 		}
 
@@ -147,12 +148,15 @@ class felamimail_bo
 			$this->bopreferences	= CreateObject('felamimail.bopreferences',$_restoreSession);
 
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
+			//error_log(__METHOD__.__LINE__." ProfileID ".$this->profileID.' called from:'.function_backtrace());
 			if ($this->mailPreferences) {
 				$this->icServer = $this->mailPreferences->getIncomingServer($this->profileID);
+				if ($this->profileID != 0) $this->mailPreferences->setIncomingServer($this->icServer,0);
 				$this->ogServer = $this->mailPreferences->getOutgoingServer($this->profileID);
+				if ($this->profileID != 0) $this->mailPreferences->setOutgoingServer($this->ogServer,0);
 				$this->htmlOptions  = $this->mailPreferences->preferences['htmlOptions'];
 			}
-			#_debug_array($this->mailPreferences->preferences);
+			//_debug_array($this->mailPreferences->preferences);
 			$this->imapBaseDir	= '';
 
 			self::$displayCharset	= $_displayCharset;
@@ -263,15 +267,15 @@ class felamimail_bo
 		function addAccount($_hookValues)
 		{
 			if ($this->mailPreferences) {
-				$icServer = $this->mailPreferences->getIncomingServer(0);
+				$icServer = $this->mailPreferences->getIncomingServer($this->profileID);
 				if(is_a($icServer,'defaultimap')) {
 					// if not connected, try opening an admin connection
-					if (!$icServer->_connected) $this->openConnection(0,true);
+					if (!$icServer->_connected) $this->openConnection($this->profileID,true);
 					$icServer->addAccount($_hookValues);
 					if ($icServer->_connected) $this->closeConnection(); // close connection afterwards
 				}
 
-				$ogServer = $this->mailPreferences->getOutgoingServer(0);
+				$ogServer = $this->mailPreferences->getOutgoingServer($this->profileID);
 				if(is_a($ogServer,'defaultsmtp')) {
 					$ogServer->addAccount($_hookValues);
 				}
@@ -574,15 +578,15 @@ class felamimail_bo
 		function deleteAccount($_hookValues)
 		{
 			if ($this->mailPreferences) {
-				$icServer = $this->mailPreferences->getIncomingServer(0);
+				$icServer = $this->mailPreferences->getIncomingServer($this->profileID);
 				if(is_a($icServer,'defaultimap')) {
 					//try to connect with admin rights, when not connected
-					if (!$icServer->_connected) $this->openConnection(0,true);
+					if (!$icServer->_connected) $this->openConnection($this->profileID,true);
 					$icServer->deleteAccount($_hookValues);
 					if ($icServer->_connected) $this->closeConnection(); // close connection
 				}
 
-				$ogServer = $this->mailPreferences->getOutgoingServer(0);
+				$ogServer = $this->mailPreferences->getOutgoingServer($this->profileID);
 				if(is_a($ogServer,'defaultsmtp')) {
 					$ogServer->deleteAccount($_hookValues);
 				}
@@ -1417,7 +1421,7 @@ class felamimail_bo
 			if (self::$debug) error_log(__METHOD__." called with:".$_folderName);
 			$retValue = array();
 			$retValue['subscribed'] = false;
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
+			if(!$icServer = $this->mailPreferences->getIncomingServer($this->profileID)) {
 				if (self::$debug) error_log(__METHOD__." no Server found for Folder:".$_folderName);
 				return false;
 			}
@@ -2826,7 +2830,7 @@ class felamimail_bo
 		// return the qouta of the users INBOX
 		function getQuotaRoot()
 		{
-			//if (!$this->icServer->_connected) $this->openConnection();
+			//if (!$this->icServer->_connected) $this->openConnection($this->profileID);
 
 			if(!$this->icServer->hasCapability('QUOTA')) {
 				return false;
@@ -2941,13 +2945,13 @@ class felamimail_bo
 			// does the folder exist???
 			//error_log(__METHOD__."->Connected?".$this->icServer->_connected.", ".$_folder.", ".$forceCheck);
 			if ((!($this->icServer->_connected == 1)) && $forceCheck) {
-				//error_log(__METHOD__."->NotConnected and forceCheck");
+				//error_log(__METHOD__."->NotConnected and forceCheck with profile:".$this->profileID);
 				//return false;
 				//try to connect
-				if (!$this->icServer->_connected) $this->openConnection();
+				if (!$this->icServer->_connected) $this->openConnection($this->profileID,false);
 			}
 			if(is_a($this->icServer,'defaultimap')) $folderInfo[$_folder] = $this->icServer->mailboxExist($_folder);
-			//error_log(__METHOD__.__LINE__.' Folder Exists:'.$folderInfo[$_folder]);
+			//error_log(__METHOD__.__LINE__.' Folder Exists:'.$folderInfo[$_folder].function_backtrace());
 
 			if(is_a($folderInfo[$_folder], 'PEAR_Error') || $folderInfo[$_folder] !== true)
 			{
@@ -3012,6 +3016,7 @@ class felamimail_bo
 
 		function openConnection($_icServerID=0, $_adminConnection=false)
 		{
+			//error_log(__METHOD__.__LINE__.'->'.$_icServerID);
 			if (!is_object($this->mailPreferences))
 			{
 				error_log(__METHOD__." No Object for MailPreferences found.". function_backtrace());
@@ -3022,6 +3027,7 @@ class felamimail_bo
 				$this->errorMessage .= lang('No active IMAP server found!!');
 				return false;
 			}
+			//error_log(__METHOD__.__LINE__.'->'.array2string($this->icServer->ImapServerId));
 			if ($this->icServer && empty($this->icServer->host)) {
 				$errormessage = lang('No IMAP server host configured!!');
 				if ($GLOBALS['egw_info']['user']['apps']['emailadmin']) {
@@ -3036,10 +3042,10 @@ class felamimail_bo
 			//error_log(print_r($this->icServer,true));
 			if ($this->icServer->_connected == 1) {
 				$tretval = $this->icServer->selectMailbox($this->icServer->currentMailbox);
-				//error_log(__METHOD__." using existing Connection ".print_r($this->icServer->_connected,true));
+				//error_log(__METHOD__." using existing Connection ProfileID:".$_icServerID.' Status:'.print_r($this->icServer->_connected,true));
 			} else {
 				$tretval = $this->icServer->openConnection($_adminConnection);
-				//error_log(__METHOD__." open new Connection ".print_r($this->icServer->_connected,true));
+				//error_log(__METHOD__." open new Connection ProfileID:".$_icServerID.' Status:'.print_r($this->icServer->_connected,true));
 			}
 			//error_log(print_r($this->icServer->_connected,true));
 			return $tretval;

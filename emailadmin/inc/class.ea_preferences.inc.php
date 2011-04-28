@@ -15,7 +15,7 @@
 		// users identities
 		var $identities = array();
 		
-		// users incoming server(imap/pop3)
+		// users incoming server(imap)
 		var $ic_server = array();
 		
 		// users outgoing server(smtp)
@@ -30,38 +30,42 @@
 		// enable userdefined signatures
 		var $ea_user_defined_signatures = false;
 		
-		function getIdentity($_id = -1)
+		function getIdentity($_id = false)
 		{
-			if($_id != -1)
+			if($_id !== false)
 			{
 				return $this->identities[$_id];
 			}
 			else
 			{
+				//error_log(__METHOD__.__LINE__.' called with $_id=-1 ->'.function_backtrace());
 				return $this->identities;
 			}
 		}
 		
-		function getIncomingServer($_id = -1)
+		function getIncomingServer($_id = false)
 		{
-			if($_id != -1)
+			if($_id !== false)
 			{
+				//error_log(__METHOD__.__LINE__.' called with $_id='.$_id.' ->'.function_backtrace());
 				return $this->ic_server[$_id];
 			}
 			else
 			{
+				//error_log(__METHOD__.__LINE__.' called with $_id=false ->'.function_backtrace());
 				return $this->ic_server;
 			}
 		}
 		
-		function getOutgoingServer($_id = -1)
+		function getOutgoingServer($_id = false)
 		{
-			if($_id != -1)
+			if($_id !== false )
 			{
 				return $this->og_server[$_id];
 			}
 			else
 			{
+				//error_log(__METHOD__.__LINE__.' called with $_id=false ->'.function_backtrace());
 				return $this->og_server;
 			}
 		}
@@ -86,16 +90,17 @@
 			return $userEMailAdresses;
 		}
 
-		function setIdentity($_identityObject, $_id = -1)
+		function setIdentity($_identityObject, $_id = false)
 		{
 			if(is_a($_identityObject, 'ea_identity'))
 			{
-				if($_id != -1)
+				if($_id !== false)
 				{
 					$this->identities[$_id] = $_identityObject;
 				}
 				else
 				{
+					//error_log(__METHOD__.__LINE__.' called with $_id=false ->'.function_backtrace());
 					$this->identities[] = $_identityObject;
 				}
 
@@ -105,16 +110,17 @@
 			return false;
 		}
 		
-		function setIncomingServer($_serverObject, $_id = -1)
+		function setIncomingServer($_serverObject, $_id = false)
 		{
 			if(is_a($_serverObject, 'defaultimap'))
 			{
-				if($_id != -1)
+				if($_id !== false)
 				{
 					$this->ic_server[$_id] = $_serverObject;
 				}
 				else
 				{
+					//error_log(__METHOD__.__LINE__.' called with $_id=false ->'.function_backtrace());
 					$this->ic_server[] = $_serverObject;
 				}
 				
@@ -124,16 +130,17 @@
 			return false;
 		}
 
-		function setOutgoingServer($_serverObject, $_id = -1)
+		function setOutgoingServer($_serverObject, $_id = false)
 		{
 			if(is_a($_serverObject, 'defaultsmtp'))
 			{
-				if($_id != -1)
+				if($_id !== false)
 				{
 					$this->og_server[$_id] = $_serverObject;
 				}
 				else
 				{
+					//error_log(__METHOD__.__LINE__.' called with $_id=false ->'.function_backtrace());
 					$this->og_server[] = $_serverObject;
 				}
 				

@@ -224,7 +224,7 @@ class emailadmin_bo extends so_sql
 	var $smtpClass;				// holds the smtp class
 	var $tracking;				// holds the tracking object
 
-	function __construct($_profileID=-1,$_restoreSesssion=true)
+	function __construct($_profileID=false,$_restoreSesssion=true)
 	{
 		parent::__construct(self::APP,self::TABLE,null,'',true);
 
@@ -247,7 +247,7 @@ class emailadmin_bo extends so_sql
 			self::saveSessionData();
 		}
 		#_debug_array(self::$sessionData);	
-		if($_profileID >= 0)
+		if(!($_profileID === false))
 		{
 			$this->profileID	= $_profileID;
 
@@ -596,7 +596,7 @@ class emailadmin_bo extends so_sql
 				$icServer->username = $icServer->loginName = $GLOBALS['egw_info']['user']['account_email'];
 			}
 			if (method_exists($icServer,'init')) $icServer->init();
-			$eaPreferences->setIncomingServer($icServer);
+			$eaPreferences->setIncomingServer($icServer,(int)$icServer->ImapServerId);
 
 			// fetch the SMTP / outgoing server data
 			if (!class_exists($ogClass=$data['smtpType']))
@@ -633,8 +633,9 @@ class emailadmin_bo extends so_sql
 				}
 			}
 			if (method_exists($ogServer,'init')) $ogServer->init();
-			$eaPreferences->setOutgoingServer($ogServer);
+			$eaPreferences->setOutgoingServer($ogServer,(int)$ogServer->SmtpServerId);
 
+			$i=0;
 			foreach($ogServer->getAccountEmailAddress($GLOBALS['egw_info']['user']['account_lid']) as $emailAddresses)
 			{
 				$identity = CreateObject('emailadmin.ea_identity');
@@ -642,8 +643,9 @@ class emailadmin_bo extends so_sql
 				$identity->realName	= $emailAddresses['name'];
 				$identity->default	= ($emailAddresses['type'] == 'default');
 				$identity->organization	= $data['organisationName'];
-
-				$eaPreferences->setIdentity($identity);
+				// first identity found will be associated with the profileID
+				$eaPreferences->setIdentity($identity,($i==0?$data['profileID']*-1:$i));
+				$i++;
 			}
 
 			$eaPreferences->userDefinedAccounts		= ($data['userDefinedAccounts'] == 'yes');
@@ -666,12 +668,16 @@ class emailadmin_bo extends so_sql
 	{
 
 		if($userProfile = $this->getUserProfile('felamimail')) {
-			$icServer = $userProfile->getIncomingServer(0);
+			$icServerKeys = array_keys((array)$userProfile->ic_server); 
+			$profileID = array_shift($icServerKeys);
+			$icServer = $userProfile->getIncomingServer($profileID);
 			if(is_a($icServer, 'defaultimap') && $username = $GLOBALS['egw']->accounts->id2name($_accountID)) {
 				$icUserData = $icServer->getUserData($username);
 			}
 
-			$ogServer = $userProfile->getOutgoingServer(0);
+			$ogServerKeys = array_keys((array)$userProfile->og_server); 
+			$profileID = array_shift($ogServerKeys);
+			$ogServer = $userProfile->getOutgoingServer($profileID);
 			if(is_a($ogServer, 'defaultsmtp')) {
 				$ogUserData = $ogServer->getUserData($_accountID);
 			}
@@ -875,7 +881,10 @@ class emailadmin_bo extends so_sql
 	function saveUserData($_accountID, $_formData) {
 
 		if($userProfile = $this->getUserProfile('felamimail')) {
-			$ogServer = $userProfile->getOutgoingServer(0);
+			$profileKeys = array_keys((array)$userProfile); 
+			$profileID = array_shift($profileKeys);
+
+			$ogServer = $userProfile->getOutgoingServer($profileID);
 			if(is_a($ogServer, 'defaultsmtp')) {
 				$ogServer->setUserData($_accountID,
 					(array)$_formData['mailAlternateAddress'],
@@ -886,7 +895,7 @@ class emailadmin_bo extends so_sql
 				);
 			}
 
-			$icServer = $userProfile->getIncomingServer(0);
+			$icServer = $userProfile->getIncomingServer($profileID);
 			if(is_a($icServer, 'defaultimap') && $username = $GLOBALS['egw']->accounts->id2name($_accountID)) {
 				$icServer->setUserData($username, $_formData['quotaLimit']);
 			}

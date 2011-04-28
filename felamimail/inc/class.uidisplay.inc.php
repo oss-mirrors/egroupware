@@ -97,10 +97,13 @@
 
 			$this->t 		= CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->displayCharset   = $GLOBALS['egw']->translation->charset();
-			$this->bofelamimail		= felamimail_bo::getInstance();
-			$this->bopreferences	= $this->bofelamimail->bopreferences;
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+				$this->icServerID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
 
-			$this->mailPreferences	= $this->bopreferences->getPreferences();
+			$this->bofelamimail		= felamimail_bo::getInstance(true,$this->icServerID);
+			$this->bopreferences	=& $this->bofelamimail->bopreferences;
+
+			$this->mailPreferences	=& $this->bofelamimail->mailPreferences;//bopreferences->getPreferences();
 
 			$this->bofelamimail->openConnection($this->icServerID);
 

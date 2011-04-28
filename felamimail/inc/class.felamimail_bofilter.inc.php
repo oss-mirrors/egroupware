@@ -25,11 +25,8 @@
 		{
 			$this->accountid	= $GLOBALS['egw_info']['user']['account_id'];
 			
-			$this->bopreferences	=& CreateObject('felamimail.bopreferences',$_restoreSession);
-			//$this->sofelamimail	=& CreateObject('felamimail.sofelamimail');
 			$this->sofilter		= new felamimail_sofilter();
 			
-			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			$this->sessionData['activeFilter'] = "-1";
 			
 			if ($_restoreSession) $this->restoreSessionData();

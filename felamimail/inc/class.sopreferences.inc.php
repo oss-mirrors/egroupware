@@ -133,7 +133,10 @@
 			$where = array(
                 'fm_owner'          => $_accountID,
             );
-			if (!empty($_identity)) $where['fm_id'] = $_identity;
+			if (!empty($_identity))
+			{
+				$where['fm_id'] = $_identity;
+			}
 			$this->db->update($this->accounts_table,array(
 				'fm_active'			=> (bool)$_status,
 			), $where,__LINE__,__FILE__);	

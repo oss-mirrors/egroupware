@@ -89,8 +89,12 @@ class felamimail_hooks
 		{
 			$folderList = array();
 
-			$bofelamimail = felamimail_bo::getInstance();
-			if($bofelamimail->openConnection()) {
+			$profileID = 0;
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+				$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
+
+			$bofelamimail = felamimail_bo::getInstance($profileID);
+			if($bofelamimail->openConnection($profileID)) {
 				$folderObjects = $bofelamimail->getFolderObjects(true, false);
 				foreach($folderObjects as $folderName => $folderInfo) {
 					#_debug_array($folderData);
@@ -534,7 +538,12 @@ class felamimail_hooks
 		unset($GLOBALS['egw_info']['user']['preferences']['common']['auto_hide_sidebox']);
 		// Only Modify the $file and $title variables.....
 		$title = $appname = 'felamimail';
-		$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
+		$profileID = 0;
+		if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+			$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
+
+		$bofelamimail = felamimail_bo::getInstance($profileID);
+		$mailPreferences =& $bofelamimail->mailPreferences;
 
 		$file['Preferences'] = egw::link('/index.php','menuaction=preferences.uisettings.index&appname=' . $appname);
 
@@ -550,7 +559,7 @@ class felamimail_hooks
 		}
 		if (is_object($mailPreferences))
 		{
-			$icServer = $mailPreferences->getIncomingServer(0);
+			$icServer = $mailPreferences->getIncomingServer($profileID);
 
 			if($icServer->enableSieve) {
 				if(empty($mailPreferences->preferences['prefpreventeditfilterrules']) || $mailPreferences->preferences['prefpreventeditfilterrules'] == 0)
@@ -576,7 +585,11 @@ class felamimail_hooks
 		$appname = 'felamimail';
 		$menu_title = $GLOBALS['egw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
 		$file = array();
-		$bofelamimail = felamimail_bo::getInstance();
+		$profileID = 0;
+		if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+			$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
+
+		$bofelamimail = felamimail_bo::getInstance(true,$profileID);
 		$preferences =& $bofelamimail->mailPreferences;
 		$showMainScreenStuff = false;
 		if(($_GET['menuaction'] == 'felamimail.uifelamimail.viewMainScreen' ||
@@ -695,11 +708,12 @@ class felamimail_hooks
 			$mailbox 		= $bofelamimail->sessionData['mailbox'];
 			//_debug_array($mailbox);
 
-			$icServerID = $bofelamimail->profileID;
+			$icServerID = (int)$bofelamimail->profileID;
 			if (is_object($preferences))
 			{
 				// gather profile data
 				$imapServer =& $bofelamimail->icServer;
+				//error_log(__METHOD__.__LINE__.array2string($imapServer));
 				// account select box
 				$selectedID = $bofelamimail->getIdentitiesWithAccounts($identities);
 
@@ -722,7 +736,7 @@ class felamimail_hooks
 				if ($activeIdentity->id) {
 					$boemailadmin = new emailadmin_bo();
 					$defaultProfile = $boemailadmin->getUserProfile() ;
-					#_debug_array($defaultProfile);
+					//_debug_array($defaultProfile);
 					$identitys =& $defaultProfile->identities;
 					$icServers =& $defaultProfile->ic_server;
 					foreach ($identitys as $tmpkey => $identity)
@@ -730,7 +744,7 @@ class felamimail_hooks
 						if (empty($icServers[$tmpkey]->host)) continue;
 						$identities[0] = $identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
 					}
-					#$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
+					//$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
 				}
 
 				$selectAccount = html::select('accountSelect', $selectedID, $identities, true, 'style="width:100%;" onchange="var appWindow=egw_appWindow(\''.$appname.'\');appWindow.changeActiveAccount(this);"');
@@ -803,7 +817,7 @@ class felamimail_hooks
 				$file['Manage Folders']	= egw::link('/index.php',array('menuaction'=>'felamimail.uipreferences.listFolder'));
 			}
 
-			if (is_object($preferences)) $icServer = $preferences->getIncomingServer(0);
+			if (is_object($preferences)) $icServer = $preferences->getIncomingServer($profileID);
 			if(is_a($icServer, 'defaultimap')) {
 				if($icServer->enableSieve)
 				{

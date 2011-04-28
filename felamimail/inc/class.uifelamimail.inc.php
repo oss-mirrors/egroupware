@@ -41,7 +41,7 @@ class uifelamimail
 		var $timeCounter;
 
 		// the object storing the data about the incoming imap server
-		var $icServerID=0;
+		static $icServerID;
 		var $connectionStatus = false;
 		var $bofelamimail;
 		var $bofilter;
@@ -53,12 +53,25 @@ class uifelamimail
 			// no autohide of the sidebox, as we use it for folderlist now.
 			unset($GLOBALS['egw_info']['user']['preferences']['common']['auto_hide_sidebox']);
 			$this->timeCounter = microtime(true);
-
+			if (!isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID']))
+			{
+				// globals preferences add appname varname value
+				$GLOBALS['egw']->preferences->add('felamimail','ActiveProfileID',0,'user');
+				// save prefs
+				$GLOBALS['egw']->preferences->save_repository(true);
+			}
+			if (is_null(self::$icServerID)) self::$icServerID =& egw_cache::getSession('felamimail','activeProfileID');
+	 
 			$this->displayCharset	= translation::charset();
-			$this->bofelamimail     = felamimail_bo::getInstance(false);
+
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+				self::$icServerID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
+
+			//error_log(__METHOD__.'->'.self::$icServerID);
+			$this->bofelamimail     = felamimail_bo::getInstance(false,self::$icServerID);
 
 			$this->bofilter		= new felamimail_bofilter(false);
-			$this->bopreferences	= $this->bofelamimail->bopreferences;
+			$this->bopreferences=& $this->bofelamimail->bopreferences;
 			$this->preferences	=& $this->bofelamimail->mailPreferences;
 
 			if (is_object($this->preferences))
@@ -90,7 +103,7 @@ class uifelamimail
 
 			if($_GET['menuaction'] != 'felamimail.uifelamimail.hookAdmin' &&
 				 $_GET['menuaction'] != 'felamimail.uifelamimail.changeFolder') {
-				$this->connectionStatus = $this->bofelamimail->openConnection($this->icServerID);
+				$this->connectionStatus = $this->bofelamimail->openConnection(self::$icServerID);
 			}
 
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["row_on"];
@@ -230,8 +243,8 @@ class uifelamimail
 			$proceed = false;
 			if(is_array($_FILES["addFileName"]))
 			{
-				#phpinfo();
-				#error_log(print_r($_FILES,true));
+				//phpinfo();
+				//error_log(print_r($_FILES,true));
 				if($_FILES['addFileName']['error'] == $UPLOAD_ERR_OK) {
 					$proceed = true;
 					$formData['name']	= $_FILES['addFileName']['name'];
@@ -568,8 +581,6 @@ class uifelamimail
 		function deleteMessage()
 		{
 			//error_log(__METHOD__." called from:".function_backtrace());
-			$preferences		= ExecMethod('felamimail.bopreferences.getPreferences');
-
 			$message[] = $_GET["message"];
 			$mailfolder = NULL;
 			if (!empty($_GET['folder'])) $mailfolder  = base64_decode($_GET['folder']);
@@ -590,7 +601,6 @@ class uifelamimail
 
 		function undeleteMessage()
 		{	// only for messages marked as deleted
-			$preferences        = ExecMethod('felamimail.bopreferences.getPreferences');
 			$message[] = $_GET["message"];
 			$mailfolder = NULL;
 			if (!empty($_GET['folder'])) $mailfolder  = base64_decode($_GET['folder']);
@@ -718,17 +728,22 @@ class uifelamimail
 			unset($_GET["msg"]);
 			unset($_GET["message"]);
 			#printf ("this->uifelamimail->viewMainScreen() start: %s<br>",date("H:i:s",mktime()));
-			$bopreferences	=& $this->bopreferences;
 			$bofilter		=& $this->bofilter;
 			$uiwidgets		= CreateObject('felamimail.uiwidgets');
-
-			$preferences	=& $bopreferences->getPreferences();
+			// fetch the active account with prefs and identities
+			$preferences	=& $this->preferences;
 			$urlMailbox		=  urlencode($this->mailbox);
-
-			if (is_object($preferences)) $imapServer 	=& $preferences->getIncomingServer(0);
-			#_debug_array($imapServer);
-			if (is_object($preferences)) $activeIdentity =& $preferences->getIdentity(0);
-			#_debug_array($activeIdentity);
+			//_debug_array($preferences->preferences);
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+				self::$icServerID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
+			//_debug_array(self::$icServerID);
+			if (is_object($preferences)) $imapServer 	= $preferences->getIncomingServer(self::$icServerID);
+			//_debug_array($imapServer);
+			//_debug_array($preferences->preferences);
+			//error_log(__METHOD__.__LINE__.' ImapServerId:'.$imapServer->ImapServerId.' Prefs:'.array2string($preferences->preferences));
+			//error_log(__METHOD__.__LINE__.' ImapServerObject:'.array2string($imapServer));
+			if (is_object($preferences)) $activeIdentity =& $preferences->getIdentity(self::$icServerID);
+			//_debug_array($activeIdentity);
 			$maxMessages	=  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
 			if (empty($maxMessages)) $maxMessages = 30; // this seems to be the number off messages that fit the height of the folder tree
 			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['prefMailGridBehavior']) && (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['prefMailGridBehavior'] <> 0)
@@ -745,6 +760,7 @@ class uifelamimail
 					$icServer =& $accountData['icServer'];
 					//_debug_array($identity);
 					//_debug_array($icServer);
+					//error_log(__METHOD__.__LINE__.' Userdefined Profiles ImapServerId:'.$icServer->ImapServerId);
 					if (empty($icServer->host)) continue;
 					$identities[$identity->id]=$identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
 					if (!empty($identity->default)) $selectedID = $identity->id;
@@ -1057,7 +1073,7 @@ class uifelamimail
 				if ($folderStatus) $shortName =$folderStatus['shortDisplayName']; // already fetched folderStatus earlier.
 				$addmessage = '';
 				if ($message)  $addmessage = ' <font color="red">'.implode('; ',$message).'</font> ';
-				$this->t->set_var('message','<b>'.$shortName.': </b>'.lang("Viewing messages").($maxMessages>0?" <b>$firstMessage</b> - <b>$lastMessage</b>":"")." ($totalMessage $langTotal)".$addmessage);
+				$this->t->set_var('message','<b>'.$shortName.': </b>'.lang("Viewing messages").($maxMessages>0&&$lastMessage>0?" <b>$firstMessage</b> - <b>$lastMessage</b>":"")." ($totalMessage $langTotal)".$addmessage);
 				if ($maxMessages>0)
 				{
 					if($firstMessage > 1) {
