@@ -123,7 +123,7 @@ class felamimail_activesync implements activesync_plugin_read
 		$identities = array();
 		if (!isset($hook_data['setup']))
 		{
-			$this->_connect($account=0);
+			if (!$this->mail) $this->mail = felamimail_bo::getInstance(true,self::$profileID);
 			$selectedID = $this->mail->getIdentitiesWithAccounts($identities);
 			$activeIdentity =& $this->mail->mailPreferences->getIdentity(self::$profileID);
 			// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
