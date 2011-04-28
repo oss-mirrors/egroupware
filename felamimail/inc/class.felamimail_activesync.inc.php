@@ -81,19 +81,98 @@ class felamimail_activesync implements activesync_plugin_read
 	public function __construct(BackendEGW $backend)
 	{
 		$this->backend = $backend;
-		if (!isset($GLOBALS['egw_info']['user']['preferences']['activesync']['ActiveSyncProfileID']))
+		if (!isset($GLOBALS['egw_info']['user']['preferences']['activesync']['felamimail-ActiveSyncProfileID']))
 		{
 			// globals preferences add appname varname value
-			$GLOBALS['egw']->preferences->add('activesync','ActiveSyncProfileID',0,'user');
+			$GLOBALS['egw']->preferences->add('activesync','felamimail-ActiveSyncProfileID',0,'user');
 			// save prefs
 			$GLOBALS['egw']->preferences->save_repository(true);
 		}
 		if (is_null(self::$profileID)) self::$profileID =& egw_cache::getSession('felamimail','activeSyncProfileID');
 
-		if (isset($GLOBALS['egw_info']['user']['preferences']['activesync']['ActiveSyncProfileID']))
-			self::$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['activesync']['ActiveSyncProfileID'];
+		if (isset($GLOBALS['egw_info']['user']['preferences']['activesync']['felamimail-ActiveSyncProfileID']))
+			self::$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['activesync']['felamimail-ActiveSyncProfileID'];
 
+		$identities = $this->getAvailableProfiles();
+		//error_log(__METHOD__.__LINE__.array2string($identities));
+		if ($identities[self::$profileID])
+		{
+			// everything seems to be in order self::$profileID REMAINS UNCHANGED
+		}
+		else
+		{
+			foreach (array_keys((array)$identities) as $k => $ident) if ($k <0) self::$profileID = $k; 
+			if ($identities[self::$profileID])
+			{
+				// everything failed, try first profile found
+				$keys = array_keys((array)$identities);
+				if (count($keys)>0) self::$profileID = array_shift($keys);
+				else self::$profileID = 0;				
+			}
+		}
+		debugLog(__METHOD__.'::'.__LINE__.' ProfileSelected:'.self::$profileID.' -> '.$identities[self::$profileID]);
 	}
+
+	/**
+	 * fetches available Profiles
+	 *
+	 * @return array
+	 */
+	function getAvailableProfiles()
+	{
+		$identities = array();
+		if (!isset($hook_data['setup']))
+		{
+			$this->_connect($account=0);
+			$selectedID = $this->mail->getIdentitiesWithAccounts($identities);
+			$activeIdentity =& $this->mail->mailPreferences->getIdentity(self::$profileID);
+			// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
+			if ($activeIdentity->id) {
+				$boemailadmin = new emailadmin_bo();
+				$defaultProfile = $boemailadmin->getUserProfile() ;
+				//error_log(__METHOD__.__LINE__.array2string($defaultProfile));
+				$identitys =& $defaultProfile->identities;
+				$icServers =& $defaultProfile->ic_server;
+				foreach ($identitys as $tmpkey => $identity)
+				{
+					if (empty($icServers[$tmpkey]->host)) continue;
+					$identities[$identity->id] = $identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+				}
+				//$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
+			}
+		}
+		return $identities;
+	}
+
+	/**
+	 * Populates $settings for the preferences
+	 *
+	 * @param array|string $hook_data
+	 * @return array
+	 */
+	function settings($hook_data)
+	{
+		$identities = array();
+		if (!isset($hook_data['setup']))
+		{
+			$identities = $this->getAvailableProfiles();
+		}
+		$identities += array(
+			'G' => lang('Primary emailadmin Profile'),
+		);
+
+		$settings['felamimail-ActiveSyncProfileID'] = array(
+			'type'   => 'select',
+			'label'  => 'eMail Account to sync',
+			'name'   => 'felamimail-ActiveSyncProfileID',
+			'help'   => 'eMail Account to sync ',
+			'values' => $identities,
+			'xmlrpc' => True,
+			'admin'  => False,
+		);
+		return $settings;
+	}
+
 
 	/**
 	 * Open IMAP connection
@@ -1541,14 +1620,4 @@ class felamimail_activesync implements activesync_plugin_read
 		return STATE_DIR.'/'.strtolower($this->backend->_devid).'/'.$this->backend->_devid.'.hashes';
 	}
 
-	/**
-	 * Populates $settings for the preferences
-	 *
-	 * @param array|string $hook_data
-	 * @return array
-	 */
-	function settings($hook_data)
-	{
-		return array();
-	}
 }
