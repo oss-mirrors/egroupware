@@ -191,7 +191,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$this->account = $account;
 			// todo: tell fmail which account to use
 			$this->mail = felamimail_bo::getInstance(false,self::$profileID);
-			//error_log(__METHOD__.__LINE__.' with ProfileID:'.array2string(self::$profileID));
+			//error_log(__METHOD__.__LINE__.' create object with ProfileID:'.array2string(self::$profileID));
 			if (!$this->mail->openConnection(self::$profileID,false))
 			{
 				throw new egw_exception_not_found(__METHOD__."($account) can not open connection!");
@@ -199,8 +199,10 @@ class felamimail_activesync implements activesync_plugin_read
 		}
 		else
 		{
+			//error_log(__METHOD__.__LINE__." connect with profileID: ".self::$profileID);
 			if (!$this->mail->icServer->_connected) $this->mail->openConnection(self::$profileID,false);
 		}
+		//error_log(__METHOD__.__LINE__.' Connection Status for ProfileID:'.self::$profileID.'->'.$this->mail->icServer->_connected);
 	}
 
 	/**
@@ -801,10 +803,7 @@ class felamimail_activesync implements activesync_plugin_read
 				//if ($this->debugLevel>0) debugLog("MIME Body".$body);
 				$plainBody = preg_replace("/<style.*?<\/style>/is", "", (strlen($plainBody)?$plainBody:$body));
 				// remove all other html
-				$plainBody = preg_replace("/<br.*>/is","<br>",$plainBody);
-				$plainBody = preg_replace("/<br >/is","<br>",$plainBody);
-				$plainBody = preg_replace("/<br\/>/is","<br>",$plainBody);
-				$plainBody = str_replace("<br>","\r\n",$plainBody);
+				$plainBody = preg_replace("/<br.*>/is","\r\n",$plainBody);
 				$plainBody = strip_tags($plainBody);
 				if ($this->debugLevel>3 && $output->airsyncbasenativebodytype==1) debugLog(__METHOD__.__LINE__.' Plain Text:'.$plainBody);
 				//$body = str_replace("\n","\r\n", str_replace("\r","",$body)); // do we need that?
@@ -1441,7 +1440,7 @@ class felamimail_activesync implements activesync_plugin_read
 		debugLog(__METHOD__.__LINE__.' '.$folderid.'->'.$folder);
 		$_messageUID = (array)$id;
 
-		if (!isset($this->mail)) $this->_connect($this->account); //$this->mail = felamimail_bo::getInstance(false,self::$profileID);
+		$this->_connect($this->account); 
 		$rv = $this->mail->deleteMessages($_messageUID, $folder);
 		// this may be a bit rude, it may be sufficient that GetMessageList does not list messages flagged as deleted
 		if ($this->mail->mailPreferences->preferences['deleteOptions'] == 'mark_as_deleted')
@@ -1466,9 +1465,9 @@ class felamimail_activesync implements activesync_plugin_read
 	{
 		// debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
 		$_messageUID = (array)$id;
-		if (!isset($this->mail)) $this->_connect($this->account); //$this->mail = felamimail_bo::getInstance(false,self::$profileID);
+		$this->_connect($this->account); 
 		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$_folderid);
-		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
+		error_log("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
 
 		return $rv;
 	}
@@ -1486,7 +1485,7 @@ class felamimail_activesync implements activesync_plugin_read
 	function ChangeMessageFlag($folderid, $id, $flags)
 	{
 		$_messageUID = (array)$id;
-		if (!isset($this->mail)) $this->_connect($this->account);// $this->mail = felamimail_bo::getInstance(false,self::$profileID);
+		$this->_connect($this->account);
 		$rv = $this->mail->flagMessages((($flags->flagstatus == 2) ? "flagged" : "unflagged"), $_messageUID,$_folderid);
 		debugLog("IMAP-SetFlaggedFlag -> set as " . (($flags->flagstatus == 2) ? "flagged" : "unflagged") . "-->". $rv);
 
