@@ -2943,7 +2943,7 @@ class felamimail_bo
 			if (isset($folderInfo[$_folder])) return $folderInfo[$_folder];
 
 			// does the folder exist???
-			//error_log(__METHOD__."->Connected?".$this->icServer->_connected.", ".$_folder.", ".$forceCheck);
+			//error_log(__METHOD__."->Connected?".$this->icServer->_connected.", ".$_folder.", ".($forceCheck?' forceCheck activated':'dont check on server'));
 			if ((!($this->icServer->_connected == 1)) && $forceCheck) {
 				//error_log(__METHOD__."->NotConnected and forceCheck with profile:".$this->profileID);
 				//return false;

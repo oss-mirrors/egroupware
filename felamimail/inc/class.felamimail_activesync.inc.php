@@ -196,7 +196,7 @@ class felamimail_activesync implements activesync_plugin_read
 		}
 		// initialize our felamimail_bo
 		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
-		$activeMailProfile = $this->mail->mailPreferences->getIdentity(self::$profilID);
+		$activeMailProfile = $this->mail->mailPreferences->getIdentity(self::$profileID);
 
 		// initialize the new egw_mailer object for sending
 		$mailObject = new egw_mailer();
@@ -603,7 +603,9 @@ class felamimail_activesync implements activesync_plugin_read
 						$flags = '';
 					}
 					$asf = true;
-					if ($this->mail->folderExists($folderName,true)) {
+					//debugLog(__METHOD__.__LINE__.'->'.array2string($this->mail->icServer));
+					if (!$this->mail->icServer->_connected) $this->mail->openConnection(self::$profileID,false);
+					if ($this->mail->folderExists($folderName)) {
 						try
 						{
 							$this->mail->appendMessage($folderName,
