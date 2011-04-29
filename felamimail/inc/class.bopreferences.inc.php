@@ -270,12 +270,12 @@
 						if (empty($_profileID))
 						{
 							$setAsActive = $accountData['active'];
-							if($setAsActive) error_log(__METHOD__.__LINE__." Setting Profile with ID=$k (using Active Info) for ActiveProfile");
+							//if($setAsActive) error_log(__METHOD__.__LINE__." Setting Profile with ID=$k (using Active Info) for ActiveProfile");
 						}
 						else
 						{
 							$setAsActive = ($_profileID==$k);
-							if($setAsActive) error_log(__METHOD__.__LINE__." Setting Profile with ID=$_profileID for ActiveProfile");
+							//if($setAsActive) error_log(__METHOD__.__LINE__." Setting Profile with ID=$_profileID for ActiveProfile");
 						}
 						if($setAsActive) 
 						{
