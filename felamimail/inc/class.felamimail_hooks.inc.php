@@ -716,7 +716,9 @@ class felamimail_hooks
 				//error_log(__METHOD__.__LINE__.array2string($imapServer));
 				// account select box
 				$selectedID = $bofelamimail->getIdentitiesWithAccounts($identities);
-				//error_log(__METHOD__.__LINE__.' SelectedID:'.$selectedID);
+
+				if (empty($selectedID) && isset($imapServer->ImapServerId)) $selectedID = $imapServer->ImapServerId;
+				//error_log(__METHOD__.__LINE__.' SelectedID:'.$selectedID.' IcServerID:'.$imapServer->ImapServerId);
 				// if nothing valid is found return to user defined account definition
 				if (empty($imapServer->host) && count($identities)==0 && $preferences->userDefinedAccounts)
 				{
