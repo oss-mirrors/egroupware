@@ -214,9 +214,10 @@
 		 * getPreferences - fetches the active profile for a user
 		 *
 		 * @param boolean $getUserDefinedProfiles 
+		 * @param int $_profileID - use this profile to be set its prefs as active profile (0) 
 		 * @return object ea_preferences object with the active emailprofile set to ID = 0 
 		 */
-		function getPreferences($getUserDefinedProfiles=true)
+		function getPreferences($getUserDefinedProfiles=true,$_profileID=0)
 		{
 			if (isset($this->sessionData['profileData']) && is_a($this->sessionData['profileData'],'ea_preferences')) 
 			{
@@ -266,8 +267,17 @@
 
 						if(is_a($accountData['identity'],'ea_identity')) 
 							$profileData->setIdentity($profileData->identities[$icProfileID],$k);
-
-						if($accountData['active']) 
+						if (empty($_profileID))
+						{
+							$setAsActive = $accountData['active'];
+							if($setAsActive) error_log(__METHOD__.__LINE__." Setting Profile with ID=$k (using Active Info) for ActiveProfile");
+						}
+						else
+						{
+							$setAsActive = ($_profileID==$k);
+							if($setAsActive) error_log(__METHOD__.__LINE__." Setting Profile with ID=$_profileID for ActiveProfile");
+						}
+						if($setAsActive) 
 						{
 							// replace the global defined IMAP Server
 							if(is_a($accountData['icServer'],'defaultimap'))

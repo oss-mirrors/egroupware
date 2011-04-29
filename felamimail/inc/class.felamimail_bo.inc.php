@@ -110,6 +110,19 @@ class felamimail_bo
 			{
 				self::$instances[$_profileID] = new felamimail_bo('utf-8',$_restoreSession,$_profileID);
 			}
+			else
+			{
+				// make sure the prefs are up to date for the profile to load
+				self::$instances[$_profileID]->mailPreferences	= self::$instances[$_profileID]->bopreferences->getPreferences(true,$_profileID);
+				//error_log(__METHOD__.__LINE__." ReRead the Prefs for ProfileID ".$_profileID.' called from:'.function_backtrace());
+				if (self::$instances[$_profileID]->mailPreferences) {
+					self::$instances[$_profileID]->icServer = self::$instances[$_profileID]->mailPreferences->getIncomingServer($_profileID);
+					if ($_profileID != 0) self::$instances[$_profileID]->mailPreferences->setIncomingServer(self::$instances[$_profileID]->icServer,0);
+					self::$instances[$_profileID]->ogServer = self::$instances[$_profileID]->mailPreferences->getOutgoingServer($_profileID);
+					if ($_profileID != 0) self::$instances[$_profileID]->mailPreferences->setOutgoingServer(self::$instances[$_profileID]->ogServer,0);
+					self::$instances[$_profileID]->htmlOptions  = self::$instances[$_profileID]->mailPreferences->preferences['htmlOptions'];
+				}
+			}
 			self::$instances[$_profileID]->profileID = $_profileID;
 			//error_log(__METHOD__.__LINE__.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID);
 			return self::$instances[$_profileID];
@@ -147,7 +160,7 @@ class felamimail_bo
 
 			$this->bopreferences	= CreateObject('felamimail.bopreferences',$_restoreSession);
 
-			$this->mailPreferences	= $this->bopreferences->getPreferences();
+			$this->mailPreferences	= $this->bopreferences->getPreferences(true,$this->profileID);
 			//error_log(__METHOD__.__LINE__." ProfileID ".$this->profileID.' called from:'.function_backtrace());
 			if ($this->mailPreferences) {
 				$this->icServer = $this->mailPreferences->getIncomingServer($this->profileID);
