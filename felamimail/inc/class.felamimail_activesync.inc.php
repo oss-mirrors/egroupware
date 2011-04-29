@@ -1554,7 +1554,7 @@ class felamimail_activesync implements activesync_plugin_read
 		$_messageUID = (array)$id;
 		$this->_connect($this->account);
 		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$_folderid);
-		error_log("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
+		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
 
 		return $rv;
 	}
