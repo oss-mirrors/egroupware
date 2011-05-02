@@ -435,15 +435,15 @@ class wiki_bo extends wiki_so
 		// Check to see if they want notification
 		foreach($id_list as $id)
 		{
-			if($id == $GLOBALS['egw_info']['user']['account_id']) continue;
+			//if($id == $GLOBALS['egw_info']['user']['account_id']) continue;
 			$prefs = new preferences($id);
 			$data = $prefs->read_repository(false);
-			$regex = false;
+			$regex = true;
 			if($data['wiki']['notification_regex']) {
 				// Break pseudo regexes (field: search) into real regexes
 				$regexes = self::parse_regex($data['wiki']['notification_regex']);
 				foreach($regexes as $field => $test) {
-					$regex = $regex || preg_match($test, $page->$field) == 1;
+					$regex = $regex && preg_match($test, $page->$field) == 1;
 				}
 			}
 			if(($regex && in_array($id, $user_ids['read'])) || 
@@ -458,7 +458,6 @@ class wiki_bo extends wiki_so
 		if(count($notification) > 0) {
 			foreach($notification as $message => $ids) {
 				$n = new notifications();
-				//$n = CreateObject('notifications.notification');
 				$n->set_sender($GLOBALS['egw_info']['user']['account_id']);
 				$n->set_receivers($ids);
 				$n->set_subject($page->title);
@@ -485,16 +484,19 @@ class wiki_bo extends wiki_so
 	public static function parse_regex($in)
 	{
 		$regex = array();
-
 		if(strpos($in, ':') === false)
 		{
 			$regex['name'] = trim($in);
 		}
 		else
 		{
-			// Can only handle one field: pattern set
-			list($field, $in) = explode(':', $in, 2);
-			$regex[$field] = trim($in);
+			$fields = array('title','name','lang','text');
+			$pattern = '/('.implode('|',$fields).'):([^\n]*)/';
+			$patterns = array();
+			preg_match_all($pattern, $in, $patterns);
+			for($i = 0; $i < count($patterns[0]); $i++) {
+				$regex[$patterns[1][$i]] = trim($patterns[2][$i]);
+			}
 		}
 
 		// Make sure there are delimiters
