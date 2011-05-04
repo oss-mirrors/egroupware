@@ -227,7 +227,7 @@ class emailadmin_bo extends so_sql
 	function __construct($_profileID=false,$_restoreSesssion=true)
 	{
 		parent::__construct(self::APP,self::TABLE,null,'',true);
-
+		//error_log(__METHOD__.function_backtrace());
 		if (!is_object($GLOBALS['emailadmin_bo']))
 		{
 			$GLOBALS['emailadmin_bo'] = $this;
@@ -254,17 +254,24 @@ class emailadmin_bo extends so_sql
 			$this->profileData	= $this->getProfile($_profileID);
 
 			// try autoloading class, if that fails include it from emailadmin
-			if (!class_exists($class = self::$IMAPServerType[$this->profileData['imapType']]['classname']))
+			$class = self::$IMAPServerType[$this->profileData['imapType']]['classname'];
+			if (!empty($class))
 			{
-				include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$class.'.inc.php');
+				if (!class_exists($class))
+				{
+					include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$class.'.inc.php');
+				}
+				$this->imapClass	= new $class;
 			}
-			$this->imapClass	= new $class;
-
-			if (!class_exists($class = self::$SMTPServerType[$this->profileData['smtpType']]['classname']))
+			$class = self::$SMTPServerType[$this->profileData['smtpType']]['classname'];
+			if (!empty($class))
 			{
-				include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$class.'.inc.php');
+				if (!class_exists($class))
+				{
+					include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$class.'.inc.php');
+				}
+				$this->smtpClass	= new $class;
 			}
-			$this->smtpClass	= new $class;
 		}
 		$this->tracking = new emailadmin_tracking($this);
 	}

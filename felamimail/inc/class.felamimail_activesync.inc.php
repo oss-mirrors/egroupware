@@ -92,8 +92,9 @@ class felamimail_activesync implements activesync_plugin_read
 
 		if (isset($GLOBALS['egw_info']['user']['preferences']['activesync']['felamimail-ActiveSyncProfileID']))
 			self::$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['activesync']['felamimail-ActiveSyncProfileID'];
-
-		$identities = $this->getAvailableProfiles();
+		$params =null;
+		if (isset($GLOBALS['egw_setup'])) $params['setup']=true;
+		$identities = $this->getAvailableProfiles($params);
 		//error_log(__METHOD__.__LINE__.array2string($identities));
 		if ($identities[self::$profileID])
 		{
@@ -118,10 +119,10 @@ class felamimail_activesync implements activesync_plugin_read
 	 *
 	 * @return array
 	 */
-	function getAvailableProfiles()
+	function getAvailableProfiles($params = null)
 	{
 		$identities = array();
-		if (!isset($hook_data['setup']))
+		if (!isset($params['setup']))
 		{
 			if (!$this->mail) $this->mail = felamimail_bo::getInstance(true,self::$profileID);
 			$selectedID = $this->mail->getIdentitiesWithAccounts($identities);
@@ -155,7 +156,7 @@ class felamimail_activesync implements activesync_plugin_read
 		$identities = array();
 		if (!isset($hook_data['setup']))
 		{
-			$identities = $this->getAvailableProfiles();
+			$identities = $this->getAvailableProfiles($hook_data);
 		}
 		$identities += array(
 			'G' => lang('Primary emailadmin Profile'),
