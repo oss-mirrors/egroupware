@@ -953,9 +953,9 @@ class felamimail_bo
 				// actual allowed tags and attributes
 				$config->set('URI.AllowedSchemes', array('http'=>true, 'https'=>true, 'ftp'=>true, 'file'=>true, 'mailto' => true, 'cid'=>true));
 				$config->set('AutoFormat.RemoveEmpty', true);
-				$config->set('HTML.Allowed', 'br,p[align],b,i,u,s,em,pre,tt,strong,strike,center,div[align],hr[class|style],'.
+				$config->set('HTML.Allowed', 'br,p[class|align],b,i,u,s,em,pre,tt,strong,strike,center,div[class|align],hr[class|style],'.
 							'font[size|color],'.
-							'ul[type],ol[type|start],li,'.
+							'ul[class|type],ol[class|type|start],li,'.
 							'h1,h2,h3,'.
 							'span[class|style],'.
 							'table[class|border|cellpadding|cellspacing|width|style|align|bgcolor|align],'.
@@ -965,8 +965,8 @@ class felamimail_bo
 							'tr[class|style|align|bgcolor|align|valign],'.
 							'td[class|colspan|rowspan|width|style|align|bgcolor|align|valign|nowrap],'.
 							'th[class|colspan|rowspan|width|style|align|bgcolor|align|valign|nowrap],'.
-							'a[href|target|name|title],'.
-							'img[src|alt|title]');
+							'a[class|href|target|name|title],'.
+							'img[class|src|alt|title]');
 				$DisableExternalResources = true;
 				if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs']) $DisableExternalResources = false;
 				$config->set('URI.DisableExternalResources',$DisableExternalResources);
@@ -1026,6 +1026,7 @@ class felamimail_bo
 				#);
 				$kses->AddHTML(
 					'p', array(
+						"class"		=> array('maxlen' => 20),
 						'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
 					)
 				);
@@ -1055,13 +1056,14 @@ class felamimail_bo
 				);
 				$kses->AddHTML(
 					"div",array(
-				#		'class' => array(),
+						"class"		=> array('maxlen' => 20),
 						'align' => array('maxlen' => 10)
 					)
 				);
 				$kses->AddHTML("ul");
 				$kses->AddHTML(
 					"ol",array(
+						"class"		=> array('maxlen' => 20),
 						"type"	=> array('maxlen' => 20)
 					)
 				);
@@ -1081,6 +1083,7 @@ class felamimail_bo
 				$kses->AddHTML("select");
 				$kses->AddHTML(
 					"option",array(
+						"class"		=> array('maxlen' => 20),
 						"value" => array('maxlen' => 45),
 						"selected" => array()
 					)
@@ -1088,6 +1091,7 @@ class felamimail_bo
 
 				$kses->AddHTML(
 					"a", array(
+						"class"		=> array('maxlen' => 20),
 						"href" 		=> array('maxlen' => 348, 'minlen' => 10),
 						"name" 		=> array('minlen' => 2),
 						'target'	=> array('maxlen' => 10)
@@ -1096,6 +1100,7 @@ class felamimail_bo
 
 				$kses->AddHTML(
 					"pre", array(
+						"class"		=> array('maxlen' => 20),
 						"wrap" => array('maxlen' => 10)
 					)
 				);
@@ -2400,7 +2405,29 @@ class felamimail_bo
 						if($headerObject['TO'][0]['PERSONAL_NAME'] != 'NIL') {
 							$retValue['header'][$sortOrder[$uid]]['to_name'] = self::decode_header($headerObject['TO'][0]['PERSONAL_NAME']);
 						}
-
+						if (count($headerObject['TO'])>1)
+						{
+							$ki=0;
+							foreach($headerObject['TO'] as $k => $add)
+							{
+								if ($k==0) continue;
+								//error_log(__METHOD__.__LINE__."-> $k:".array2string($add));
+								if($add['HOST_NAME'] != 'NIL')
+								{
+									$retValue['header'][$sortOrder[$uid]]['additional_to_addresses'][$ki]['address'] = self::decode_header($add['EMAIL']);
+								}
+								else
+								{
+									$retValue['header'][$sortOrder[$uid]]['additional_to_addresses'][$ki]['address'] = self::decode_header($add['MAILBOX_NAME']);
+								}
+								if($headerObject['TO'][$k]['PERSONAL_NAME'] != 'NIL')
+								{
+									$retValue['header'][$sortOrder[$uid]]['additional_to_addresses'][$ki]['name'] = self::decode_header($add['PERSONAL_NAME']);
+								}
+								//error_log(__METHOD__.__LINE__.array2string($retValue['header'][$sortOrder[$uid]]['additional_to_addresses'][$ki]));
+								$ki++;
+							}
+						}
 					}
 
 					$count++;

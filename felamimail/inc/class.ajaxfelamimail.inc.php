@@ -829,14 +829,36 @@ class ajaxfelamimail
 				$_messageID
 			);
 			$headerData = $headerData['header'][0];
+			//error_log(__METHOD__.__LINE__.print_r($headerData,true));
 			foreach ($headerData as $key => $val)
 			{
-				$headerData[$key] = felamimail_bo::htmlentities($val);
+				if (is_array($val))
+				{
+					foreach($val as $ik => $ival)
+					{
+						//error_log(__METHOD__.__LINE__.print_r($ival,true));
+						if (is_array($ival))
+						{
+							foreach($ival as $jk => $jval)
+							{
+								$headerData[$key][$ik][$jk] = felamimail_bo::htmlentities($jval);
+							}
+						}
+						else
+						{
+							$headerData[$key][$ik] = felamimail_bo::htmlentities($ival);
+						}
+					}
+				}
+				else
+				{
+					$headerData[$key] = felamimail_bo::htmlentities($val);
+				}
 			}
 			$headerData['subject'] = $this->bofelamimail->decode_subject($headerData['subject'],false);
 			$this->sessionData['previewMessage'] = $headerData['uid'];
 			$this->saveSessionData();
-			//error_log(print_r($headerData,true));
+			//error_log(__METHOD__.__LINE__.print_r($headerData,true));
 			$response = new xajaxResponse();
 			$response->addScript("document.getElementById('messageCounter').innerHTML =MessageBuffer;");
 			//$response->addScript("document.getElementById('messageCounter').innerHTML ='';");

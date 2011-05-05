@@ -1042,6 +1042,7 @@ $(document).ready(function() {
 			// IFrame for Preview ....
 			if ($headerData['uid'] && $GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0)
 			{
+				//error_log(__METHOD__.__LINE__.array2string($headerData).function_backtrace());
 				$jscall ='';
 				$this->bofelamimail->openConnection($_icServer);
 				$this->bofelamimail->reopen($_folderName);
@@ -1064,58 +1065,73 @@ $(document).ready(function() {
 
 				//if (strpos( array2string($flags),'Seen')===false) $this->bofelamimail->flagMessages('read', $headerData['uid']);
 				if ($_folderType > 0) {
+					$addtoaddresses='';
 					// sent or drafts or template folder
 					if (!empty($headerData['to_name'])) {
-						$sender_name	= $headerData['to_name'];
-						$sender_address = $headerData['to_address'];
-						$full_address	= $headerData['to_name'].' &lt;'.$headerData['to_address'].'&gt;';
+						$sender_names[0]	= $headerData['to_name'];
+						$sender_addresses[0] = $headerData['to_address'];
+						$full_addresses[0]	= $headerData['to_name'].' &lt;'.$headerData['to_address'].'&gt;';
 					} else {
-						$sender_name	= $headerData['to_address'];
-						$sender_address = $headerData['to_address'];
-						$full_address	= $headerData['to_address'];
+						$sender_names[0]	= $headerData['to_address'];
+						$sender_addresses[0] = $headerData['to_address'];
+						$full_addresses[0]	= $headerData['to_address'];
+					}
+					if (!empty($headerData['additional_to_addresses']))
+					{
+						foreach ($headerData['additional_to_addresses'] as $k => $addset)
+						{
+							$sender_names[]	= (!empty($headerData['additional_to_addresses'][$k]['name'])?$headerData['additional_to_addresses'][$k]['name']:$headerData['additional_to_addresses'][$k]['address']);
+							$sender_addresses[] = $headerData['additional_to_addresses'][$k]['address'];
+							$full_addresses[]	= (!empty($headerData['additional_to_addresses'][$k]['name'])?$headerData['additional_to_addresses'][$k]['name'].' &lt;':'').$headerData['additional_to_addresses'][$k]['address'].(!empty($headerData['additional_to_addresses'][$k]['name'])?'&gt;':'');
+						}
 					}
 				} else {
 					if (!empty($headerData['sender_name'])) {
-						$sender_name	= $headerData['sender_name'];
-						$sender_address = $headerData['sender_address'];
-						$full_address	= $headerData['sender_name'].' &lt;'.$headerData['sender_address'].'&gt;';
+						$sender_names[0]	= $headerData['sender_name'];
+						$sender_addresses[0] = $headerData['sender_address'];
+						$full_addresses[0]	= $headerData['sender_name'].' &lt;'.$headerData['sender_address'].'&gt;';
 					} else {
-						$sender_name	= $headerData['sender_address'];
-						$sender_address = $headerData['sender_address'];
-						$full_address	= $headerData['sender_address'];
+						$sender_names[0]	= $headerData['sender_address'];
+						$sender_addresses[0] = $headerData['sender_address'];
+						$full_addresses[0]	= $headerData['sender_address'];
 					}
 				}
 
 				//$fromAddress   = uidisplay::emailAddressToHTML(array('PERSONAL_NAME'=>$sender_name,'EMAIL'=>$sender_address,'RFC822_EMAIL'=>$full_address),'');
 				if ($GLOBALS['egw_info']['user']['apps']['addressbook']) {
-					$addresslinkData = array (
-						'menuaction'		=> 'addressbook.addressbook_ui.edit',
-						'presets[email]'	=> $sender_address,
-						'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
-					);
-					$decodedPersonalName = $sender_name;
-					if (!empty($decodedPersonalName)) {
-						if($spacePos = strrpos($decodedPersonalName, ' ')) {
-							$addresslinkData['presets[n_family]']	= substr($decodedPersonalName, $spacePos+1);
-							$addresslinkData['presets[n_given]'] 	= substr($decodedPersonalName, 0, $spacePos);
-						} else {
-							$addresslinkData['presets[n_family]']	= $decodedPersonalName;
+					foreach ($sender_names as $k => $sender_name)
+					{
+						//error_log(__METHOD__.__LINE__.' '.$k.'->'.$sender_name);
+						$sender_address = $sender_addresses[$k];
+						$addresslinkData = array (
+							'menuaction'		=> 'addressbook.addressbook_ui.edit',
+							'presets[email]'	=> $sender_address,
+							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
+						);
+						$decodedPersonalName = $sender_name;
+						if (!empty($decodedPersonalName)) {
+							if($spacePos = strrpos($decodedPersonalName, ' ')) {
+								$addresslinkData['presets[n_family]']	= substr($decodedPersonalName, $spacePos+1);
+								$addresslinkData['presets[n_given]'] 	= substr($decodedPersonalName, 0, $spacePos);
+							} else {
+								$addresslinkData['presets[n_family]']	= $decodedPersonalName;
+							}
+							$addresslinkData['presets[n_fn]']	= $decodedPersonalName;
 						}
-						$addresslinkData['presets[n_fn]']	= $decodedPersonalName;
-					}
 
-					$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$addresslinkData);
-					$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
-					$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
-					$fromAddress .= sprintf('<a href="%s" onClick="%s">
-						<img src="%s" width="10" height="8" border="0"
-						align="absmiddle" alt="%s"
-						title="%s"></a>',
-						$urlAddToAddressbook,
-						$onClick,
-						$image,
-						lang('add to addressbook'),
-						lang('add to addressbook'));
+						$urlAddToAddressbook =  $GLOBALS['egw']->link('/index.php',$addresslinkData);
+						$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
+						$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
+						$fromAddress .= ($k>0?', ':''). $full_addresses[$k].''. sprintf('<a href="%s" onClick="%s">
+							<img src="%s" width="10" height="8" border="0"
+							align="absmiddle" alt="%s"
+							title="%s"></a>',
+							$urlAddToAddressbook,
+							$onClick,
+							$image,
+							lang('add to addressbook'),
+							lang('add to addressbook'));
+					}
 				}
 
 				$linkData = array (
@@ -1189,7 +1205,7 @@ $(document).ready(function() {
 				$IFRAMEBody = "<TABLE BORDER=\"1\" rules=\"rows\" style=\"table-layout:fixed;width:100%;\">
 								<TR class=\"th\" style=\"width:100%;\">
 									<TD nowrap valign=\"top\" style=\"overflow:hidden;\">
-										".($_folderType > 0?lang('to'):lang('from')).':<b>'.$full_address.' '.($fromAddress?$fromAddress:'') .'</b><br> '.
+										".($_folderType > 0?lang('to'):lang('from')).':'.'<b>'.($fromAddress?$fromAddress:'') .'</b><br> '.
 										lang('date').':<b>'.felamimail_bo::_strtotime($headerData['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).
                                                 ' - '.felamimail_bo::_strtotime($headerData['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'))."</b><br>
 										".lang('subject').":<b>".$subject."</b>
