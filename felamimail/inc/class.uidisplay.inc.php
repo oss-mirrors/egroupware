@@ -1005,6 +1005,9 @@ pre {
 			// http://code.google.com/p/browsersec/wiki/Part1#Cascading_stylesheets
 			$css = preg_replace('/(javascript|expession|-moz-binding)/i','',$additionalStyle);
 			felamimail_bo::replaceTagsCompletley($css,'script'); // Strip out script that may be included
+			// we need this, as styledefinitions are enclosed with curly brackets; and template stuuff tries to replace everything between curly brackets that is having no horizontal whitespace
+			$css = str_replace(':',': ',$css); 
+			//error_log(__METHOD__.__LINE__.$css);
 			// TODO: we may have to strip urls and maybe comments and ifs
 			return '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
