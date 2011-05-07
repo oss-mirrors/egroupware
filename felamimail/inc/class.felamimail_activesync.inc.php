@@ -1,10 +1,10 @@
 <?php
 /**
- * EGroupware: ActiveSync access: FMail plugin
+ * EGroupware: eSync: FMail plugin
  *
  * @link http://www.egroupware.org
  * @package felamimail
- * @subpackage activesync
+ * @subpackage esync
  * @author Ralf Becker <rb@stylite.de>
  * @author Klaus Leithoff <kl@stylite.de>
  * @author Philip Herbert <philip@knauber.de>
@@ -13,7 +13,7 @@
  */
 
 /**
- * FMail activesync plugin
+ * FMail eSync plugin
  *
  * Plugin creates a device specific file to map alphanumeric folder names to nummeric id's.
  */
