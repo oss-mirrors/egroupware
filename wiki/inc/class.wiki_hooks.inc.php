@@ -110,6 +110,8 @@ class wiki_hooks
 					'type'	=> 'text',
 					'label'	=> 'Pages that match this regular expression',
 					'name'	=> 'notification_regex',
+					'rows'	=> 6,
+					'cols'	=> 50,
 					'help'	=> 'If a page title matches this regular expression, send a notification.  You can look at title, name, lang, text using name: regex',
 					'default' => ''
 				),
@@ -118,7 +120,7 @@ class wiki_hooks
 					'label'	=> 'Message',
 					'name'	=> 'notification_message',
 					'help'	=> 'Message to send',
-					'rows'	=> 3,
+					'rows'	=> 6,
 					'cols'	=> 50,
 					'values'	=> $details,
 					'default'	=> 'On $$Date$$ $$Editor$$ changed $$Title$$

@@ -430,7 +430,7 @@ class wiki_bo extends wiki_so
 							$admins = $GLOBALS['egw']->accounts->search($filter);
 							$user_ids[$name] += array_intersect(array_keys($accounts), array_keys($admins));
 							break;
-						case WIKI_ACL_USERS:
+						case WIKI_ACL_USER:
 						case WIKI_ACL_ALL:
 							$accounts = $GLOBALS['egw']->accounts->search($filter);
 							$user_ids[$name] += array_keys($accounts);
@@ -449,7 +449,7 @@ class wiki_bo extends wiki_so
 		// Check to see if they want notification
 		foreach($id_list as $id)
 		{
-			//if($id == $GLOBALS['egw_info']['user']['account_id']) continue;
+			if($id == $GLOBALS['egw_info']['user']['account_id']) continue;
 			$prefs = new preferences($id);
 			$data = $prefs->read_repository(false);
 			$regex = true;
