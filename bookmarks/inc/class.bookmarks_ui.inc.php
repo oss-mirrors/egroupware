@@ -199,7 +199,6 @@
 			}
 
 			$bookmark = $this->bo->read($bm_id);
-
 			if (!$bookmark[EGW_ACL_EDIT])
 			{
 				$this->bo->error_msg = lang('Bookmark not editable');

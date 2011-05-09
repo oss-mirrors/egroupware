@@ -106,6 +106,12 @@
 
 			// Add in permissions
 			foreach($rows as $key => $row) {
+				$favicon = egw_link::vfs_path('bookmarks', $row['id'], 'favicon.ico', true);
+				if(egw_vfs::is_dir(egw_link::vfs_path('bookmarks',$row['id'])) && egw_vfs::stat($favicon))
+				{
+					$bookmark['favicon'] = 'vfs://'.$favicon;
+				}
+
 				foreach(array(EGW_ACL_EDIT => 'edit', EGW_ACL_DELETE => 'delete') as $required => $field) {
 					$readonlys[$field."[{$row['id']}]"] = !$this->check_perms2($row['owner'], $row['access'], $required);
 				}
@@ -117,6 +123,13 @@
 		function read($id)
 		{
 			$bookmark = $this->so->read($id);
+
+			$favicon = egw_link::vfs_path('bookmarks', $id, 'favicon.ico', true);
+			if(egw_vfs::is_dir(egw_link::vfs_path('bookmarks',$id)) && egw_vfs::stat($favicon))
+			{
+				$bookmark['favicon'] = 'vfs://'.$favicon;
+			}
+
 			foreach(array(EGW_ACL_READ,EGW_ACL_EDIT,EGW_ACL_DELETE) as $required)
 			{
 				$bookmark[$required] = $this->check_perms2($bookmark['owner'],$bookmark['access'],$required);
@@ -180,6 +193,7 @@
 				if ($bm_id)
 				{
 					$this->msg .= lang('Bookmark created successfully.');
+					$this->fetch_favicon($values['favicon'], $bm_id);
 					return $bm_id;
 				}
 			}
@@ -195,6 +209,7 @@
 			{
 				// Update favicon
 				$values['favicon'] = $this->get_favicon($values['url']);
+				$this->fetch_favicon($values['favicon'], $id);
 
 				// Log history
 				$this->track($values, $this->read($id));
@@ -619,6 +634,29 @@
 
 			// You could also fallback on getFavicon by Jason Cartwright
 			//return 'http://getfavicon.appspot.com/' . $site_url;
+		}
+
+		/**
+		 * Fetch a favicon from remote server, and store it in vfs
+		 */
+		private function fetch_favicon($url, $id)
+		{
+			if (ini_get('allow_url_fopen') != '1') return false;
+			if($url == $GLOBALS['egw']->common->image('bookmarks', 'no_favicon')) return false;
+			if( $file = fopen($url, 'r'))
+			{
+				$tmpname = tempnam($GLOBALS['egw_info']['server']['temp_dir'], 'favicon_');
+				copy($url, $tmpname);
+				$path_info = parse_url($url);
+				$path_info = pathinfo($path_info['path']);
+				egw_link::attach_file('bookmarks',$id, array(
+					'name'		=> 'favicon.ico', //$path_info['basename'],
+					'tmp_name'	=> $tmpname
+				));
+			}
+			fclose($file);
+			
+			return false;
 		}
 
 		function _debug($s)
