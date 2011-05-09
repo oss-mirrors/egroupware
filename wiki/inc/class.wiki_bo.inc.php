@@ -393,6 +393,20 @@ class wiki_bo extends wiki_so
 			'Content'	=>	$page->text,
 		);
 
+		if(substr($page->text, 0, 6) != '<html>')
+		{
+			$text = $page->text;
+			// remove pictures
+			$text = preg_replace('/egw:[a-z]+\\/[a-z.-]+ /i','',$text);
+			// replace freelinks with their title
+			$text = preg_replace('/\\(\\([^|]*\\|? ?([^)]+)\\)\\)/','\\1',$text);
+			// remove some formatting and the title itself
+			$text = str_replace(array('= '.$page->title.' =','=','#','*',"'''","''",'----'),'',$text);
+			// remove html tags
+			$text = strip_tags($text);
+			$values['Content'] = nl2br($text);
+		}
+
 		// Need to get a list of people who want the change
 		$user_ids = array();
 		$notification = array();
