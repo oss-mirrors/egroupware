@@ -270,7 +270,7 @@ class felamimail_bo
 		function setACL($_folderName, $_accountName, $_acl, $_recursive=false)
 		{
 			//$_recursive=true;
-			//error_log(__METHOD__.__LINE__.'-> called with:'."$_folderName, $_accountName, $_acl");
+			//error_log(__METHOD__.__LINE__.'-> called with:'."$_folderName, $_accountName, $_acl, $_recursive");
 			if ( PEAR::isError($this->icServer->setACL($_folderName, $_accountName, $_acl)) ) {
 				return false;
 			}
@@ -3272,14 +3272,15 @@ class felamimail_bo
 
 		function updateSingleACL($_folderName, $_accountName, $_aclType, $_aclStatus,$_recursive=false)
 		{
+			//error_log(__METHOD__.__LINE__." $_folderName, $_accountName, $_aclType, $_aclStatus,$_recursive");
 			$userACL = $this->getIMAPACL($_folderName, $_accountName);
 
-			if($_aclStatus == 'true') {
+			if($_aclStatus == 'true' || $_aclStatus == 1) {
 				if(strpos($userACL, $_aclType) === false) {
 					$userACL .= $_aclType;
 					$this->setACL($_folderName, $_accountName, $userACL, $_recursive);
 				}
-			} elseif($_aclStatus == 'false') {
+			} elseif($_aclStatus == 'false' || empty($_aclStatus)) {
 				if(strpos($userACL, $_aclType) !== false) {
 					$userACL = str_replace($_aclType,'',$userACL);
 					$this->setACL($_folderName, $_accountName, $userACL, $_recursive);

@@ -1307,6 +1307,7 @@ class ajaxfelamimail
 		 */
 		function updateACL($_user, $_acl)
 		{
+			//error_log(__METHOD__.__LINE__." called with: $_user, $_acl");
 			// not sure this one is used / called anymore
 			if ($_acl == 'custom') {
 				$response = new xajaxResponse();
