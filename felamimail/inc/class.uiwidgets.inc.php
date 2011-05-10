@@ -545,7 +545,7 @@ $(document).ready(function() {
 						array(
 							"id" => "date",
 							"width" => "95px",
-							"caption" => '<a id="gridHeaderDate" href="#" onclick="changeSorting(\'date\', this); return false;">'.lang("date").'</a>',
+							"caption" => '<a id="gridHeaderDate" href="#" onclick="changeSorting(\'date\', this); return false;" title="'.lang("Date Received").'">'.lang("date").'</a>',
 						),
 						array(
 							"id" => "size",
@@ -582,7 +582,7 @@ $(document).ready(function() {
 						array(
 							"id" => "date",
 							"width" => "95px",
-							"caption" => '<a id="gridHeaderDate" href="#" onclick="changeSorting(\'date\', this); return false;">'.lang("date").'</a>',
+							"caption" => '<a id="gridHeaderDate" href="#" onclick="changeSorting(\'date\', this); return false;" title="'.lang("Date Received").'">'.lang("date").'</a>',
 						),
 						array(
 							"id" => "toaddress",// sent or drafts or template folder means foldertype > 0, use to address instead of from
@@ -1196,6 +1196,7 @@ $(document).ready(function() {
 					$uidisplay->uid = $headerData['uid'];
 					$uidisplay->mailbox = $_folderName;
 					$mailData = $uidisplay->get_load_email_data($headerData['uid'], $partID);
+					//error_log(__METHOD__.__LINE__.array2string($mailData));
 					$iframe_url = $mailData['src'];
 					$jscall .= $mailData['onload'];
 					$script = $mailData['script'];
