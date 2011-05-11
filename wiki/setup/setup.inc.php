@@ -37,6 +37,14 @@ $setup_info['wiki']['hooks'][] = 'config_validate';
 $setup_info['wiki']['hooks']['settings'] = 'wiki_hooks::settings';
 $setup_info['wiki']['hooks']['search_link'] = 'wiki_hooks::search_link';
 
+// Setup
+$setup_info['wiki']['check_install'] = array(
+	'Text_Diff'	=> array(
+		'func'	=> 'pear_check',
+		'from'	=> 'Wiki (diff in notifications)'
+	)
+);
+
 /* Dependencies for this app to work */
 $setup_info['wiki']['depends'][] = array
 (

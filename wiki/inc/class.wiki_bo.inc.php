@@ -14,6 +14,7 @@
 global $ParseEngine,$DiffEngine,$DisplayEngine,$ConvertEngine,$SaveMacroEngine,$ViewMacroEngine;
 global $UpperPtn,$LowerPtn,$AlphaPtn,$LinkPtn,$UrlPtn,$InterwikiPtn,$MaxNesting,$MaxHeading,$MinEntries,$DayLimit;
 global $EditBase,$ViewBase,$HistoryBase,$FindBase,$FindScript;
+global $TempDir, $DiffCmd;
 
 require_once(EGW_INCLUDE_ROOT.'/wiki/lib/defaults.php');
 if (is_object($GLOBALS['egw']->translation) && $GLOBALS['egw']->translation->charset() == 'iso-8859-1')	// allow all iso-8859-1 extra-chars
@@ -39,6 +40,10 @@ require_once(EGW_INCLUDE_ROOT.'/wiki/parse/html.php');
 require_once(EGW_INCLUDE_ROOT.'/wiki/parse/save.php');
 
 require_once(EGW_INCLUDE_ROOT.'/wiki/lib/category.php');
+require_once(EGW_INCLUDE_ROOT.'/wiki/lib/diff.php');
+
+@include_once('Text/Diff.php');
+@include_once('Text/Diff/Renderer/inline.php');
 
 class wiki_bo extends wiki_so
 {
@@ -383,7 +388,28 @@ class wiki_bo extends wiki_so
 	 */
 	function send_notifications($page)
 	{
+		// For computing difference
+		$old_page = clone($page);
+		$old_page->version--;
+		$old_page->read();
 
+		// Nicer formatting for wiki-text pages
+		if(substr($page->text, 0, 6) != '<html>')
+		{
+			foreach(array($old_page, $page) as $_page) {
+				$text = $_page->text;
+				// remove pictures
+				$text = preg_replace('/egw:[a-z]+\\/[a-z.-]+ /i','',$text);
+				// replace freelinks with their title
+				$text = preg_replace('/\\(\\([^|]*\\|? ?([^)]+)\\)\\)/','\\1',$text);
+				// remove some formatting and the title itself
+				$text = str_replace(array('= '.$page->title.' =','=','#','*',"'''","''",'----'),'',$text);
+				// remove html tags
+				$text = strip_tags($text);
+				$_page->text = nl2br($text);
+			}
+		}
+		
 		$save_prefs = $GLOBALS['egw_info']['user'];
 		$values = array(
 			'Title'         =>      $page->title,
@@ -393,20 +419,19 @@ class wiki_bo extends wiki_so
 			'Content'	=>	$page->text,
 		);
 
-		if(substr($page->text, 0, 6) != '<html>')
-		{
-			$text = $page->text;
-			// remove pictures
-			$text = preg_replace('/egw:[a-z]+\\/[a-z.-]+ /i','',$text);
-			// replace freelinks with their title
-			$text = preg_replace('/\\(\\([^|]*\\|? ?([^)]+)\\)\\)/','\\1',$text);
-			// remove some formatting and the title itself
-			$text = str_replace(array('= '.$page->title.' =','=','#','*',"'''","''",'----'),'',$text);
-			// remove html tags
-			$text = strip_tags($text);
-			$values['Content'] = nl2br($text);
+		// Get difference
+		if(class_exists('Text_Diff_Renderer_inline')) {
+			// PEAR gives nice inline diff
+			$diff     = new Text_Diff('auto', array(explode("\n",$old_page->text), explode("\n",$page->text)));
+			$renderer = new Text_Diff_Renderer_inline();
+			$values['Content'] = '<style>ins {color:green;} del {color:red}</style>'. htmlspecialchars_decode($renderer->render($diff));
 		}
 
+		// Fall back to whatever wiki can come up with
+		$diff = diff_compute($page->text, $old_page->text);
+		$diff = diff_parse($diff);
+		$values['Diff'] = parseText($diff,$GLOBALS['DiffEngine'],$values['Title']);
+		
 		// Need to get a list of people who want the change
 		$user_ids = array();
 		$notification = array();
