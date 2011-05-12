@@ -15,6 +15,7 @@
 
 	/* $Id$ */
 
+	require_once('class.ico.inc.php');
 	class bookmarks_bo extends bo_tracking
 	{
 		var $so;
@@ -105,11 +106,13 @@
 			$count = $this->so->get_rows($query, $rows, $readonlys);
 
 			// Add in permissions
-			foreach($rows as $key => $row) {
-				$favicon = egw_link::vfs_path('bookmarks', $row['id'], 'favicon.ico', true);
-				if(egw_vfs::is_dir(egw_link::vfs_path('bookmarks',$row['id'])) && egw_vfs::stat($favicon))
+			foreach($rows as $key => &$row) {
+				$favicon = egw_link::vfs_path('bookmarks', $row['id'], 'favicon.png', true);
+
+				//if(egw_vfs::is_dir(egw_link::vfs_path('bookmarks',$row['id'])) && egw_vfs::stat($favicon))
+				if(@egw_vfs::stat($favicon))
 				{
-					$bookmark['favicon'] = 'vfs://'.$favicon;
+					$row['favicon'] = 'vfs://'.$favicon;
 				}
 
 				foreach(array(EGW_ACL_EDIT => 'edit', EGW_ACL_DELETE => 'delete') as $required => $field) {
@@ -124,8 +127,9 @@
 		{
 			$bookmark = $this->so->read($id);
 
-			$favicon = egw_link::vfs_path('bookmarks', $id, 'favicon.ico', true);
+			$favicon = egw_link::vfs_path('bookmarks', $id, 'favicon.png', true);
 			if(egw_vfs::is_dir(egw_link::vfs_path('bookmarks',$id)) && egw_vfs::stat($favicon))
+			//if(egw_vfs::stat($favicon))
 			{
 				$bookmark['favicon'] = 'vfs://'.$favicon;
 			}
@@ -572,8 +576,7 @@
 		*/
 		public function get_favicon($site_url) {
 
-			// Preset favicon to a fallback
-			$favicon = $GLOBALS['egw']->common->image('bookmarks', 'bad_url');
+			$favicon = false;
 
 			$headers = @get_headers($site_url, true);
 			if($headers == false || strpos('404', $headers[0])) return $favicon;
@@ -629,7 +632,6 @@
 			}
 
 
-			$favicon = $GLOBALS['egw']->common->image('bookmarks', 'no_favicon');
 			return $favicon;
 
 			// You could also fallback on getFavicon by Jason Cartwright
@@ -643,18 +645,38 @@
 		{
 			if (ini_get('allow_url_fopen') != '1') return false;
 			if($url == $GLOBALS['egw']->common->image('bookmarks', 'no_favicon')) return false;
-			if( $file = fopen($url, 'r'))
+
+			if($url == false)
 			{
-				$tmpname = tempnam($GLOBALS['egw_info']['server']['temp_dir'], 'favicon_');
-				copy($url, $tmpname);
-				$path_info = parse_url($url);
-				$path_info = pathinfo($path_info['path']);
-				egw_link::attach_file('bookmarks',$id, array(
-					'name'		=> 'favicon.ico', //$path_info['basename'],
-					'tmp_name'	=> $tmpname
-				));
+				$bookmark = $this->read($id);
+				// Google's favicon generator (gives PNGs)
+				// Doesn't always work, according to some (misses <link />)
+				$url_info = parse_url($bookmark['url']);
+				$url = 'http://www.google.com/s2/favicons?domain='.$url_info['host'];
 			}
-			fclose($file);
+			$tmpname = tempnam($GLOBALS['egw_info']['server']['temp_dir'], 'favicon_');
+
+			$path_info = parse_url($url);
+			$path_info = pathinfo($path_info['path']);
+			$headers = @get_headers($url, true);
+
+			if($headers['Content-Type'] == 'image/png') {
+				copy($url, $tmpname);
+			} else {
+				$ico = new ico($url);
+				$ico->SetBackgroundTransparent(true);
+				if(!($r=$ico->GetIcon(0)))
+				{
+					return false;
+				}
+
+				imagepng($r, $tmpname);
+			}
+			egw_link::attach_file('bookmarks',$id, array(
+				'name'		=> 'favicon.png',
+				'tmp_name'	=> $tmpname
+			));
+			unlink($tmpname);
 			
 			return false;
 		}
