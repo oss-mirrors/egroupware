@@ -17,7 +17,7 @@
  *
  * Plugin creates a device specific file to map alphanumeric folder names to nummeric id's.
  */
-class felamimail_activesync implements activesync_plugin_read
+class felamimail_activesync implements activesync_plugin_write, activesync_pluging_sendmail, activesync_plugin_meeting_response
 {
 	/**
 	 * var BackendEGW
@@ -647,7 +647,7 @@ class felamimail_activesync implements activesync_plugin_read
 			$mailObject->Send();
 		}
 		catch(phpmailerException $e) {
-            		debugLog("The email could not be sent. Last-SMTP-error: ". $e->getMessage());
+            debugLog("The email could not be sent. Last-SMTP-error: ". $e->getMessage());
 			$send = false;
 		}
 		$asf = ($send ? true:false); // initalize accordingly
@@ -717,7 +717,7 @@ class felamimail_activesync implements activesync_plugin_read
 		}
         	// unset mimedecoder - free memory
 		unset($message);
-        	unset($mobj);
+        unset($mobj);
 
 		if ($send && $asf)
 		{
@@ -731,6 +731,13 @@ class felamimail_activesync implements activesync_plugin_read
 
 	}
 
+	/**
+	 *
+	 * For meeting requests (iCal attachments with method='request') we call calendar plugin with iCal to get SyncMeetingRequest object,
+	 * and do NOT return the attachment itself!
+	 *
+	 * @see activesync_plugin_read::GetMessage()
+	 */
 	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $optionbodypreference=false, $mimesupport = 0)
 	{
 		debugLog (__METHOD__.__LINE__.' FolderID:'.$folderid.' ID:'.$id.' TruncSize:'.$truncsize.' Bodypreference: '.array2string($bodypreference));
@@ -1034,9 +1041,11 @@ class felamimail_activesync implements activesync_plugin_read
 				{
 					if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Key:'.$key.'->'.array2string($attach));
 
+					// pass meeting requests to calendar plugin
 					if (strtolower($attach['mimeType']) == 'text/calendar' && strtolower($attach['method']) == 'request' &&
-						($output->meetingrequest = $this->meetingRequest(
-							$this->mail->getAttachment($id, $attach['partID']))))
+						isset($GLOBALS['egw_info']['user']['apps']['calendar']) &&
+						($attachment = $this->mail->getAttachment($id, $attach['partID'])) &&
+						($output->meetingrequest = calendar_activesync::meetingRequest($attachment['attachment'])))
 					{
 						$output->messageclass = "IPM.Schedule.Meeting.Request";
 						continue;	// do NOT add attachment as attachment
@@ -1080,83 +1089,45 @@ class felamimail_activesync implements activesync_plugin_read
 	}
 
 	/**
-	 * Generate meetingrequest from attachment array
+	 * Process response to meeting request
 	 *
-	 * @param array $data with value for key 'attachment'
-	 * @return SyncMeetingRequest or null if calendar not installed or ical not parsable
+	 * fmail plugin only extracts the iCal attachment and let's calendar plugin deal with adding it
+	 *
+	 * @see BackendDiff::MeetingResponse()
+	 * @param int|string $requestid uid of mail with meeting request, or < 0 for cal_id or string with iCal
+	 * @param string $folderid folder of meeting request mail
+	 * @param int $response 1=accepted, 2=tentative, 3=decline
+	 * @return int|boolean id of calendar item, false on error
 	 */
-	private function meetingRequest(array $data)
+	function MeetingResponse($requestid, $folderid, $response)
 	{
-		if (!class_exists('calendar_ical'))
+		if (!($requestid > 0)) return null;	// let calendar plugin handle it's own meeting requests
+
+		if (!class_exists('calendar_activesync'))
 		{
 			debugLog(__METHOD__."(...) no EGroupware calendar installed!");
 			return null;
 		}
-		$ical = new calendar_ical();
-		if (!($events = $ical->icaltoegw($data['attachment'], '', 'utf-8')) || count($events) != 1)
+		if (!$stat = $this->StatMessage($folderid, $requestid))
 		{
-			debugLog(__METHOD__."(...) error parsing iCal!");
-			return null;
+			debugLog(__METHOD__."($requestid, '$folderid', $response) returning FALSE (can NOT stat message)");
+			return false;
 		}
-		$event = array_shift($events);
-		debugLog(__METHOD__."(...) parsed as ".array2string($event));
-
-		$message = new SyncMeetingRequest();
-		// set timezone
-		try {
-			$as_tz = calendar_activesync::tz2as($event['tzid']);
-			$message->timezone = base64_encode(calendar_activesync::_getSyncBlobFromTZ($as_tz));
-		}
-		catch(Exception $e) {
-			// ignore exception, simply set no timezone, as it is optional
-		}
-		// copying timestamps (they are already read in servertime, so non tz conversation)
-		foreach(array(
-			'start' => 'starttime',
-			'end'   => 'endtime',
-			'created' => 'dtstamp',
-		) as $key => $attr)
+		$ret = false;
+		foreach($this->mail->getMessageAttachments($id) as $key => $attach)
 		{
-			if (!empty($event[$key])) $message->$attr = $event[$key];
+			if (strtolower($attach['mimeType']) == 'text/calendar' && strtolower($attach['method']) == 'request' &&
+				($attachment = $this->mail->getAttachment($id, $attach['partID'])))
+			{
+				// calling backend again with iCal attachment, to let calendar add the event
+				if (($ret = $this->backend->MeetingResponse($attachment['attachment'], $folderid, $response, &$calendarid)))
+				{
+					$ret = $calendarid;
+				}
+				break;
+			}
 		}
-		if (($message->alldayevent = (int)calendar_bo::isWholeDay($event)))
-		{
-			++$message->endtime;	// EGw all-day-events are 1 sec shorter!
-		}
-		// copying strings
-		foreach(array(
-			'title' => 'subject',
-			'location' => 'location',
-		) as $key => $attr)
-		{
-			if (!empty($event[$key])) $message->$attr = $event[$key];
-		}
-		$message->organizer = $event['organizer'];
-
-		$message->sensitivity = $event['public'] ? 0 : 2;	// 0=normal, 1=personal, 2=private, 3=confidential
-
-		// busystatus=(0=free|1=tentative|2=busy|3=out-of-office), EGw has non_blocking=0|1
-		$message->busystatus = $event['non_blocking'] ? 0 : 2;
-
-		// ToDo: recurring events: InstanceType, RecurrenceId, Recurrences; ...
-		$message->instancetype = 0;	// 0=Single, 1=Master recurring, 2=Single recuring, 3=Exception
-
-		$message->responserequested = 1;	//0=No, 1=Yes
-		$message->disallownewtimeproposal = 1;	//1=forbidden, 0=allowed
-		//$message->messagemeetingtype;	// email2
-
-		// ToDo: alarme: Reminder
-
-		// convert UID to GlobalObjID
-		$message->globalobjid =
-			/* Bytes 1-16: */	'\0x04\0x00\0x00\0x00\0x82\0x00\0xE0\0x00\0x74\0xC5\0xB7\0x10\0x1A\0x82\0xE0\0x08'.
-			/* Bytes 17-20: */	'\0x00\0x00\0x00\0x00'.
-			/* Bytes 21-36: */	'\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00\0x00'.
-			/* Bytes 37-­40: */	pack('V',13+bytes($event['uid'])).	// binary length + 13 for next line and terminating \0x00
-			/* Bytes 41-­52: */	'vCal-­Uid'.'\0x01\0x00\0x00\0x00'.
-			$event['uid'].'\0x00';
-
-		return $message;
+		return $ret;
 	}
 
 	/**
