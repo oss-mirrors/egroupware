@@ -17,7 +17,7 @@
  *
  * Plugin creates a device specific file to map alphanumeric folder names to nummeric id's.
  */
-class felamimail_activesync implements activesync_plugin_write, activesync_pluging_sendmail, activesync_plugin_meeting_response
+class felamimail_activesync implements activesync_plugin_write, activesync_plugin_sendmail, activesync_plugin_meeting_response
 {
 	/**
 	 * var BackendEGW
@@ -1529,6 +1529,37 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
 
 		return $rv;
+	}
+
+	/**
+	 *  Creates or modifies a folder
+     *
+     * @param $id of the parent folder
+     * @param $oldid => if empty -> new folder created, else folder is to be renamed
+     * @param $displayname => new folder name (to be created, or to be renamed to)
+     * @param type => folder type, ignored in IMAP
+     *
+     * @return stat | boolean false on error
+     *
+     */
+    public function ChangeFolder($id, $oldid, $displayname, $type)
+	{
+		return false;
+	}
+
+    /**
+     * Deletes (really delete) a Folder
+     *
+     * @param $parentid of the folder to delete
+     * @param $id of the folder to delete
+     *
+     * @return
+     * @TODO check what is to be returned
+     *
+     */
+    public function DeleteFolder($parentid, $id)
+	{
+		return false;
 	}
 
 	/**
