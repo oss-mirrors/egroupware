@@ -1120,7 +1120,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 				($attachment = $this->mail->getAttachment($id, $attach['partID'])))
 			{
 				// calling backend again with iCal attachment, to let calendar add the event
-				if (($ret = $this->backend->MeetingResponse($attachment['attachment'], $folderid, $response, &$calendarid)))
+				if (($ret = $this->backend->MeetingResponse($attachment['attachment'], $folderid, $response, $calendarid)))
 				{
 					$ret = $calendarid;
 				}
@@ -1533,32 +1533,32 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 
 	/**
 	 *  Creates or modifies a folder
-     *
-     * @param $id of the parent folder
-     * @param $oldid => if empty -> new folder created, else folder is to be renamed
-     * @param $displayname => new folder name (to be created, or to be renamed to)
-     * @param type => folder type, ignored in IMAP
-     *
-     * @return stat | boolean false on error
-     *
-     */
-    public function ChangeFolder($id, $oldid, $displayname, $type)
+	 *
+	 * @param string $id of the parent folder
+	 * @param string $oldid => if empty -> new folder created, else folder is to be renamed
+	 * @param string $displayname => new folder name (to be created, or to be renamed to)
+	 * @param string $type folder type, ignored in IMAP
+	 *
+	 * @return array|boolean stat array or false on error
+	 */
+	public function ChangeFolder($id, $oldid, $displayname, $type)
 	{
+		debugLog(__METHOD__."('$id', '$oldid', '$displayname', $type) NOT supported!");
 		return false;
 	}
 
-    /**
-     * Deletes (really delete) a Folder
-     *
-     * @param $parentid of the folder to delete
-     * @param $id of the folder to delete
-     *
-     * @return
-     * @TODO check what is to be returned
-     *
-     */
-    public function DeleteFolder($parentid, $id)
+	/**
+	 * Deletes (really delete) a Folder
+	 *
+	 * @param string $parentid of the folder to delete
+	 * @param string $id of the folder to delete
+	 *
+	 * @return
+	 * @TODO check what is to be returned
+	 */
+	public function DeleteFolder($parentid, $id)
 	{
+		debugLog(__METHOD__."('$parentid', '$id') NOT supported!");
 		return false;
 	}
 
