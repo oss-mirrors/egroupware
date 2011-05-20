@@ -203,6 +203,10 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 			//error_log(__METHOD__.__LINE__." connect with profileID: ".self::$profileID);
 			if (!$this->mail->icServer->_connected) $this->mail->openConnection(self::$profileID,false);
 		}
+		$this->_wasteID = $this->mail->getTrashFolder(false);
+		//error_log(__METHOD__.__LINE__.' TrashFolder:'.$this->_wasteID);
+		$this->_sentID = $this->mail->getSentFolder(false);
+		//error_log(__METHOD__.__LINE__.' SentFolder:'.$this->_sentID);
 		//error_log(__METHOD__.__LINE__.' Connection Status for ProfileID:'.self::$profileID.'->'.$this->mail->icServer->_connected);
 	}
 
@@ -271,6 +275,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
      */
 	public function SendMail($rfc822, $smartdata=array(), $protocolversion = false)
 	{
+		//$this->debugLevel=3;
 		if ($protocolversion < 14.0)
     		debugLog("IMAP-SendMail: " . (isset($rfc822) ? $rfc822 : ""). "task: ".(isset($smartdata['task']) ? $smartdata['task'] : "")." itemid: ".(isset($smartdata['itemid']) ? $smartdata['itemid'] : "")." folder: ".(isset($smartdata['folderid']) ? $smartdata['folderid'] : ""));
 		if ($this->debugLevel>0) debugLog("IMAP-Sendmail: Smartdata = ".array2string($smartdata));
@@ -415,6 +420,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 			// we decode the body ourself
 			$message->body = $this->mail->decodeMimePart($message->body,($message->headers['content-transfer-encoding']?$message->headers['content-transfer-encoding']:'base64'));
 			$mailObject->Body = $body = $message->body;
+			$simpleBodyType = ($message->ctype_secondary=='html'?'text/html':'text/plain');
 			if ($this->debugLevel>0) debugLog("IMAP-Sendmail: fetched simple body as ".($message->ctype_secondary=='html'?'html':'text'));
 		}
 		//error_log(__METHOD__.__LINE__.array2string($mailObject));
@@ -464,9 +470,11 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		    if ($bodyBUFF != "" && (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
 				// may be html
 				if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with html_only):'.$bodyBUFF);
+				$mailObject->IsHTML(true);
 			} else {
 				// plain text Message
 				if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text:');
+				$mailObject->IsHTML(false);
 				$bodyStruct = $this->mail->getMessageBody($uid,'never_display');//'never_display');
 				$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
 
@@ -475,6 +483,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 			}
 
 			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Body -> '.$bodyBUFF);
+			if (isset($simpleBodyType) && $simpleBodyType == 'text/plain' && $mailObject->ContentType == 'text/html') $body=nl2br($body);
             // receive only body
             $body .= $bodyBUFF;
 			$mailObject->Encoding = 'base64';
@@ -599,10 +608,10 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		$sigText = $this->mail->merge($signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
 		if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Signature to use:'.$sigText);
 		$body .= $before.($mailObject->ContentType=='text/html'?$sigText:$this->mail->convertHTMLToText($sigText));
-//debugLog(__METHOD__.__LINE__.' -> '.$body);
+		//debugLog(__METHOD__.__LINE__.' -> '.$body);
 		// remove carriage-returns from body, set the body of the mailObject
 		if (trim($body) =='' && trim($mailObject->Body)==''/* && $attachmentNames*/) $body .= ($attachmentNames?$attachmentNames:lang('no text body supplied, check attachments for message text')); // to avoid failure on empty messages with attachments
-//debugLog(__METHOD__.__LINE__.' -> '.$body);
+		//debugLog(__METHOD__.__LINE__.' -> '.$body);
 		$mailObject->Body = $body ;//= str_replace("\r\n", "\n", $body); // if there is a <pre> this needs \r\n so DO NOT replace them
 		if ($mailObject->ContentType=='text/html') $mailObject->AltBody = $this->mail->convertHTMLToText($body);
 
@@ -718,6 +727,8 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
         	// unset mimedecoder - free memory
 		unset($message);
         unset($mobj);
+
+		//$this->debugLevel=0;
 
 		if ($send && $asf)
 		{
@@ -1359,7 +1370,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		$folderObj->serverid = $id;
 		$folderObj->parentid = $this->getParentID($account,$folder);
 		$folderObj->displayname = $fmailFolder->shortDisplayName;
-
+		if ($this->debugLevel>1) debugLog(__METHOD__.__LINE__." ID: $id, Account:$account, Folder:$folder");
 		// get folder-type
 		foreach($this->folders as $inbox => $fmailFolder) break;
 		if ($folder == $inbox)
@@ -1376,6 +1387,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		{
 			$folderObj->type = SYNC_FOLDER_TYPE_WASTEBASKET;
 			$this->_wasteID = $folder;
+			//error_log(__METHOD__.__LINE__.' TrashFolder:'.$this->_wasteID);
 			$folderObj->parentid = 0; // required by devices
 		}
 		elseif($this->mail->isSentFolder($folder, false))
@@ -1383,6 +1395,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 			$folderObj->type = SYNC_FOLDER_TYPE_SENTMAIL;
 			$folderObj->parentid = 0; // required by devices
 			$this->_sentID = $folder;
+			//error_log(__METHOD__.__LINE__.' SentFolder:'.$this->_sentID);
 		}
 		elseif($this->mail->isOutbox($folder, false))
 		{
@@ -1475,6 +1488,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 	 * are always handled as real deletes and will be sent to your importer as a DELETE
 	 */
 	function GetWasteBasket() {
+		$this->_connect($this->account);
 		return $this->_wasteID;
 	}
 
