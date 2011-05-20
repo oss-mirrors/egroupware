@@ -2944,6 +2944,32 @@ class felamimail_bo
 			}
 		}
 
+		function getTrashFolder($_checkexistance=TRUE)
+		{
+			if(empty($this->mailPreferences->preferences['trashFolder'])) {
+				return false;
+			}
+			$_folderName = $this->mailPreferences->preferences['trashFolder'];
+			// does the folder exist???
+			if ($_checkexistance && !self::folderExists($_folderName)) {
+				return false;
+			}
+			return $_folderName;
+		}
+
+		function getSentFolder($_checkexistance=TRUE)
+		{
+			if(empty($this->mailPreferences->preferences['sentFolder'])) {
+				return false;
+			}
+			$_folderName = $this->mailPreferences->preferences['sentFolder'];
+			// does the folder exist???
+			if ($_checkexistance && !self::folderExists($_folderName)) {
+				return false;
+			}
+			return $_folderName;
+		}
+
 		function isSentFolder($_folderName, $_checkexistance=TRUE)
 		{
 			if(empty($this->mailPreferences->preferences['sentFolder'])) {
@@ -4099,7 +4125,7 @@ class felamimail_bo
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
 						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML);
-if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
+						if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
 						$mailObject->Body = ($isHTML==false?$mailObject->Body:'').$part->body;
 						$mailObject->AltBody .= $part->body;
 					}
@@ -4110,7 +4136,7 @@ if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['co
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
 						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML);
-if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
+						if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
 						$mailObject->Body = ($isHTML?$mailObject->Body:'').$part->body;
 						$alternatebodyneeded = true;
 						$isHTML=true;
@@ -4126,7 +4152,7 @@ if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['co
 						//error_log(__METHOD__.__LINE__.' Add String Attachment.');
 						$attachmentnumber++;
 						//echo $part->headers['content-transfer-encoding'].'#<br>';
-if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
+						if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
 						$mailObject->AddStringAttachment($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
 														 ($part->ctype_parameters['name']?$part->ctype_parameters['name']:'noname_'.$attachmentnumber),
 														 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'),
