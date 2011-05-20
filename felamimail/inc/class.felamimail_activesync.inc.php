@@ -275,7 +275,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
      */
 	public function SendMail($rfc822, $smartdata=array(), $protocolversion = false)
 	{
-		//$this->debugLevel=3;
+//$this->debugLevel=3;
 		if ($protocolversion < 14.0)
     		debugLog("IMAP-SendMail: " . (isset($rfc822) ? $rfc822 : ""). "task: ".(isset($smartdata['task']) ? $smartdata['task'] : "")." itemid: ".(isset($smartdata['itemid']) ? $smartdata['itemid'] : "")." folder: ".(isset($smartdata['folderid']) ? $smartdata['folderid'] : ""));
 		if ($this->debugLevel>0) debugLog("IMAP-Sendmail: Smartdata = ".array2string($smartdata));
@@ -540,9 +540,11 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 				if ($bodyBUFF != "" && (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
 					// may be html
 					if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with html_only)');
+					$mailObject->IsHTML(true);
 				} else {
 					// plain text Message
 					if ($this->debugLevel>0) debugLog("MIME Body".' Type:plain, fetch text:');
+					$mailObject->IsHTML(false);
 					$bodyStruct = $this->mail->getMessageBody($uid,'never_display');//'never_display');
 					$bodyBUFF = $this->mail->getdisplayableBody($this->mail,$bodyStruct);//$this->ui->getdisplayableBody($bodyStruct,false);
 
@@ -580,6 +582,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 					}
 				}
             }
+			if (isset($simpleBodyType) && $simpleBodyType == 'text/plain' && $mailObject->ContentType == 'text/html') $body=nl2br($body);
 			$mailObject->Encoding = 'base64';
         } // end forward
 
@@ -728,7 +731,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		unset($message);
         unset($mobj);
 
-		//$this->debugLevel=0;
+//$this->debugLevel=0;
 
 		if ($send && $asf)
 		{
@@ -751,6 +754,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 	 */
 	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $optionbodypreference=false, $mimesupport = 0)
 	{
+//$this->debugLevel=3;
 		debugLog (__METHOD__.__LINE__.' FolderID:'.$folderid.' ID:'.$id.' TruncSize:'.$truncsize.' Bodypreference: '.array2string($bodypreference));
 		$stat = $this->StatMessage($folderid, $id);
 		if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($stat));
@@ -1091,7 +1095,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 					}
 				}
 			}
-
+//$this->debugLevel=0;
 			// end handle Attachments
 			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($output));
 			return $output;
@@ -1487,7 +1491,9 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 	 * as moves and are sent to your backend as a move. If it returns FALSE, then deletes
 	 * are always handled as real deletes and will be sent to your importer as a DELETE
 	 */
-	function GetWasteBasket() {
+	function GetWasteBasket() 
+	{
+		debugLog(__METHOD__.__LINE__.' called.');
 		$this->_connect($this->account);
 		return $this->_wasteID;
 	}
