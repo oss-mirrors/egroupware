@@ -144,12 +144,6 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 </span>
 <script type="text/javascript">
 	var felamimail_iframe_height = parseInt("{messagelist_height}".replace(/px/g,""));
-
-	//Resize the elements on document ready
-	$(window).ready(handleResize);
-
-	//Assign the handle resize
-	$(window).resize(handleResize);
 </script>
 <!-- END message_table -->
 

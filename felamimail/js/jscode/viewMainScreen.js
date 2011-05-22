@@ -1,30 +1,34 @@
-if (typeof CopyOrMove == 'undefined') var CopyOrMove = egw_appWindow('felamimail').CopyOrMove;
-if (typeof prefAskForMove == 'undefined') var prefAskForMove = egw_appWindow('felamimail').prefAskForMove; 
-if (typeof prefAskForMultipleForward == 'undefined') var prefAskForMultipleForward = egw_appWindow('felamimail').prefAskForMove; 
-if (typeof sURL == 'undefined') var sURL = window.sURL;
+/*$(document).ready(function() {
+	if (typeof CopyOrMove == 'undefined'
+		var CopyOrMove = egw_appWindow('felamimail').CopyOrMove;
+	if (typeof prefAskForMove == 'undefined')
+		var prefAskForMove = egw_appWindow('felamimail').prefAskForMove; 
+	if (typeof prefAskForMultipleForward == 'undefined') var prefAskForMultipleForward = egw_appWindow('felamimail').prefAskForMove; 
+	if (typeof sURL == 'undefined') var sURL = window.sURL;
 
-if (typeof copyingMessages == 'undefined') var MessageBuffer;
-// global vars to store server and active folder info
-//var activeServerID			= '{activeServerID}';
-if (typeof activeFolder == 'undefined') var activeFolder			= egw_appWindow('felamimail').activeFolder;
-if (typeof activeFolderB64 == 'undefined') var activeFolderB64			= egw_appWindow('felamimail').activeFolderB64;
-if (typeof activityImagePath == 'undefined') var activityImagePath		= egw_appWindow('felamimail').activityImagePath;
+	if (typeof copyingMessages == 'undefined') var MessageBuffer;
+	// global vars to store server and active folder info
+	//var activeServerID			= '{activeServerID}';
+	if (typeof activeFolder == 'undefined') var activeFolder			= egw_appWindow('felamimail').activeFolder;
+	if (typeof activeFolderB64 == 'undefined') var activeFolderB64			= egw_appWindow('felamimail').activeFolderB64;
+	if (typeof activityImagePath == 'undefined') var activityImagePath		= egw_appWindow('felamimail').activityImagePath;
 
-if (typeof actionManager == 'undefined') var actionManager			= egw_appWindow('felamimail').actionManager;
-if (typeof objectManager == 'undefined') var objectManager			= egw_appWindow('felamimail').objectManager;
-if (typeof mailGrid == 'undefined') var mailGrid		= egw_appWindow('felamimail').mailGrid;
+	if (typeof actionManager == 'undefined') var actionManager			= egw_appWindow('felamimail').actionManager;
+	if (typeof objectManager == 'undefined') var objectManager			= egw_appWindow('felamimail').objectManager;
+	if (typeof mailGrid == 'undefined') var mailGrid		= egw_appWindow('felamimail').mailGrid;
 
-// how many row are selected currently
-if (typeof checkedCounter == 'undefined') var checkedCounter=egw_appWindow('felamimail').checkedCounter;
+	// how many row are selected currently
+	if (typeof checkedCounter == 'undefined') var checkedCounter=egw_appWindow('felamimail').checkedCounter;
 
-// the refreshtimer objects
-if (typeof aktiv == 'undefined') var aktiv = window.aktiv;
-if (typeof fm_timerFolderStatus == 'undefined') var fm_timerFolderStatus = egw_appWindow('felamimail').fm_timerFolderStatus;
-if (typeof fm_previewMessageID == 'undefined') var fm_previewMessageID = egw_appWindow('felamimail').fm_previewMessageID;
-if (typeof fm_previewMessageFolderType == 'undefined') var fm_previewMessageFolderType = egw_appWindow('felamimail').fm_previewMessageFolderType;
+	// the refreshtimer objects
+	if (typeof aktiv == 'undefined') var aktiv = window.aktiv;
+	if (typeof fm_timerFolderStatus == 'undefined') var fm_timerFolderStatus = egw_appWindow('felamimail').fm_timerFolderStatus;
+	if (typeof fm_previewMessageID == 'undefined') var fm_previewMessageID = egw_appWindow('felamimail').fm_previewMessageID;
+	if (typeof fm_previewMessageFolderType == 'undefined') var fm_previewMessageFolderType = egw_appWindow('felamimail').fm_previewMessageFolderType;
+});
 
 // refresh time for mailboxview
-if (typeof refreshTimeOut == 'undefined') var refreshTimeOut = egw_appWindow('felamimail').refreshTimeOut;
+if (typeof refreshTimeOut == 'undefined') var refreshTimeOut = egw_appWindow('felamimail').refreshTimeOut;*/
 
 function egw_email_fetchDataProc(_elems, _columns, _callback, _context)
 {
@@ -965,7 +969,7 @@ function handleResize()
 	var outerContainer = $('#divMessageList');
 	var mainViewArea = $('#divMainView');
 	var viewportHeight = $(window).height();
-	var documentHeight = $("body").height();
+	var documentHeight =  $("body").height() == 0 ? $(document).height() : $("body").height();
 	var containerHeight = $(outerContainer).height();
 	
 	var totalHeight = viewportHeight;
@@ -977,7 +981,7 @@ function handleResize()
 	else
 	{
 		// containerHeight is not set with a decent height when in idots/jerryr, for this reason we use this to calculate the
-		totalHeight = Math.max(0, Math.min(documentHeight, viewportHeight)-$(mainViewArea).offset().top -100);
+		totalHeight = Math.max(0, Math.min(documentHeight, viewportHeight)-$(mainViewArea).offset().top - 100);
 	}
 	var resultIframeHeight = IFRAME_HEIGHT;
 	var resultGridHeight = 0;

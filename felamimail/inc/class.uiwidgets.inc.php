@@ -358,6 +358,7 @@ if (typeof objectManager == "undefined") var objectManager = null;
 if (typeof actionManager == "undefined") var actionManager = null;
 if (typeof mailGrid == "undefined") var mailGrid = null;
 $(document).ready(function() {
+	$(window).resize(handleResize);
 	// Create the base objects and feed them with data
 	actionManager = new egwActionManager();
 	actionManager.updateActions('.json_encode($this->get_actions()).');

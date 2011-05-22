@@ -255,7 +255,7 @@ A.header_row_FAS, A.header_row_FS
 	font-family : Arial;
 }
 
-body
+/*body
 {
     background-image:url(../default/images/body-background.png);;
 }
@@ -264,7 +264,7 @@ body
 {
 	FONT-SIZE: 12px;
 	font-family : Arial;
-}
+}*/
 
 TR.sieveRowActive
 {

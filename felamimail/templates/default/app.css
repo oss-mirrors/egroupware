@@ -225,6 +225,8 @@ A.header_row_FAS, A.header_row_FS
 	font-family : Arial;
 }
 
+/*
+-- Why is felamimail changing the appereance of the whole egroupware page? - Commented that code out (andreas) 
 body
 {
     background-image:url(images/body-background.png);;
@@ -235,6 +237,7 @@ body
 	FONT-SIZE: 12px;
 	font-family : Arial;
 }
+*/
 
 TR.sieveRowActive
 {
