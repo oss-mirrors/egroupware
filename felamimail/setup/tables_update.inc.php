@@ -13,7 +13,7 @@ function felamimail_upgrade0_8_2()
 {
 	$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_felamimail_cache','to_name',array('type' => 'varchar', 'precision' => 120));
 	$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_felamimail_cache','to_address',array('type' => 'varchar', 'precision' => 120));
-	
+
 	$GLOBALS['setup_info']['felamimail']['currentver'] = '0.8.3';
 	return $GLOBALS['setup_info']['felamimail']['currentver'];
 }
@@ -22,7 +22,7 @@ function felamimail_upgrade0_8_3()
 {
 
 	$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_felamimail_cache','attachments',array('type' => 'varchar', 'precision' => 120));
-	
+
 	$GLOBALS['setup_info']['felamimail']['currentver'] = '0.8.4';
 	return $GLOBALS['setup_info']['felamimail']['currentver'];
 }
@@ -436,7 +436,7 @@ function felamimail_upgrade1_4()
 		'type' => 'int',
 		'precision' => '4'
 	));
- 
+
 	return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.5.001';
 }
 
@@ -490,7 +490,7 @@ function felamimail_upgrade1_5_002()
 	));
 	$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_og_smtpauth',array(
 		'type' => 'bool',
-	)); 
+	));
 	return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.5.003';
 }
 
@@ -516,4 +516,13 @@ function felamimail_upgrade1_6_001()
 function felamimail_upgrade1_7_001()
 {
 	return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.8';
+}
+
+
+/**
+ * Setting new index url with "&ajax=true" appended (via setup.inc.php)
+ */
+function felamimail_upgrade1_8()
+{
+	return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.9';
 }
