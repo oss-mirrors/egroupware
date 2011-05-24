@@ -497,7 +497,7 @@ class emailadmin_bo extends so_sql
 	}
 
 	/**
-	 * Get a list of supported SMTP servers
+	 * Get a list of supported IMAP servers
 	 * 
 	 * Calls hook "imap_server_types" to allow applications to supply own server-types
 	 * 
@@ -888,10 +888,10 @@ class emailadmin_bo extends so_sql
 
 	function saveUserData($_accountID, $_formData) {
 
-		if($userProfile = $this->getUserProfile('felamimail')) {
-			$profileKeys = array_keys((array)$userProfile); 
-			$profileID = array_shift($profileKeys);
-
+		if($userProfile = $this->getUserProfile('felamimail')) 
+		{
+			$ogServerKeys = array_keys((array)$userProfile->og_server); 
+			$profileID = array_shift($ogServerKeys);
 			$ogServer = $userProfile->getOutgoingServer($profileID);
 			if(is_a($ogServer, 'defaultsmtp')) {
 				$ogServer->setUserData($_accountID,
@@ -903,6 +903,8 @@ class emailadmin_bo extends so_sql
 				);
 			}
 
+			$icServerKeys = array_keys((array)$userProfile->ic_server); 
+			$profileID = array_shift($icServerKeys);
 			$icServer = $userProfile->getIncomingServer($profileID);
 			if(is_a($icServer, 'defaultimap') && $username = $GLOBALS['egw']->accounts->id2name($_accountID)) {
 				$icServer->setUserData($username, $_formData['quotaLimit']);
