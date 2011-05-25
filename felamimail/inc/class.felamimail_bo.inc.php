@@ -4113,8 +4113,10 @@ class felamimail_bo
 				$alternatebodyneeded = false;
 				foreach($structure->parts as $part)
 				{
-					//error_log(__METHOD__.__LINE__.' Structure Content Type:'.$structure->ctype_primary.'/'.$structure->ctype_secondary);
-					//error_log(__METHOD__.__LINE__.array2string($part));
+					//error_log(__METHOD__.__LINE__.' Structure Content Type:'.$structure->ctype_primary.'/'.$structure->ctype_secondary.' Decoding:'.($decode?'on':'off'));
+					//error_log(__METHOD__.__LINE__.' '.$structure->ctype_primary.'/'.$structure->ctype_secondary.' => '.$part->ctype_primary.'/'.$part->ctype_secondary);
+					//error_log(__METHOD__.__LINE__.' Part:'.array2string($part));
+					$partFetched = false;
 					//echo __METHOD__.__LINE__.$structure->ctype_primary.'/'.$structure->ctype_secondary.'<br>';
 					if ($part->headers['content-transfer-encoding']) $mailObject->Encoding = $part->headers['content-transfer-encoding'];
 					$mailObject->IsHTML($part->ctype_secondary=='html'?true:false);
@@ -4125,9 +4127,11 @@ class felamimail_bo
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
 						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML);
-						if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
-						$mailObject->Body = ($isHTML==false?$mailObject->Body:'').$part->body;
-						$mailObject->AltBody .= $part->body;
+						$bodyPart = $part->body;
+						if ($decode) $bodyPart = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
+						$mailObject->Body = ($isHTML==false?$mailObject->Body:'').$bodyPart;
+						$mailObject->AltBody .= $bodyPart;
+						$partFetched = true;
 					}
 					if (($structure->ctype_secondary=='alternative'||
 						 $structure->ctype_secondary=='mixed' ||
@@ -4136,28 +4140,45 @@ class felamimail_bo
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
 						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML);
-						if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
-						$mailObject->Body = ($isHTML?$mailObject->Body:'').$part->body;
+						$bodyPart = $part->body;
+						if ($decode) $bodyPart = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
+						$mailObject->Body = ($isHTML?$mailObject->Body:'').$bodyPart;
 						$alternatebodyneeded = true;
 						$isHTML=true;
+						$partFetched = true;
 					}
-					if (($structure->ctype_secondary=='mixed' || $structure->ctype_secondary=='signed') && $part->ctype_primary=='multipart')
+					if (($structure->ctype_secondary=='mixed' || 
+						 $structure->ctype_secondary=='alternative' || 
+						 $structure->ctype_secondary=='signed') && $part->ctype_primary=='multipart')
 					{
-						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
-						$this->createBodyFromStructure($mailObject, $part, $parenttype=null);
+						//error_log( __METHOD__.__LINE__." Recursion to fetch subparts:".$part->ctype_primary.'/'.$part->ctype_secondary);
+						$this->createBodyFromStructure($mailObject, $part, $parenttype=null, $decode);
 					}
-					//error_log(__METHOD__.__LINE__.$structure->ctype_secondary.'/'.$part->ctype_primary.'->'.array2string($part));
-					if (($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart') || trim($part->disposition) == 'attachment')
+					//error_log(__METHOD__.__LINE__.$structure->ctype_primary.'/'.$structure->ctype_secondary.' => '.$part->ctype_primary.'/'.$part->ctype_secondary.' Part:'.array2string($part));
+					if (($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart') || trim($part->disposition) == 'attachment' || trim($part->disposition) == 'inline')
 					{
-						//error_log(__METHOD__.__LINE__.' Add String Attachment.');
+						//error_log(__METHOD__.__LINE__.$structure->ctype_secondary.'=>'.$part->ctype_primary.'/'.$part->ctype_secondary.'->'.array2string($part));
 						$attachmentnumber++;
 						//echo $part->headers['content-transfer-encoding'].'#<br>';
 						if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
-						$mailObject->AddStringAttachment($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
+						if (trim($part->disposition)=='attachment' || trim($part->disposition) == 'inline')
+						{
+							//error_log(__METHOD__.__LINE__.' Add String '.($part->disposition=='attachment'?'Attachment':'Part').' of type:'.$part->ctype_primary.'/'.$part->ctype_secondary);
+							$mailObject->AddStringAttachment($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
 														 ($part->ctype_parameters['name']?$part->ctype_parameters['name']:'noname_'.$attachmentnumber),
 														 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'),
 														 $part->ctype_primary.'/'.$part->ctype_secondary
 														);
+						}
+						if (!(trim($part->disposition)=='attachment' || trim($part->disposition) == 'inline') && $partFetched==false)
+						{
+							//error_log(__METHOD__.__LINE__.' Add String '.($part->disposition=='attachment'?'Attachment':'Part').' of type:'.$part->ctype_primary.'/'.$part->ctype_secondary.' Body:'.$part->body);
+							$mailObject->AddStringPart($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
+														 ($part->ctype_parameters['name']?$part->ctype_parameters['name']:'noname_'.$attachmentnumber),
+														 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'),
+														 $part->ctype_primary.'/'.$part->ctype_secondary
+														);
+						}
 					}
 				}
 				if ($alternatebodyneeded == false) $mailObject->AltBody = '';
