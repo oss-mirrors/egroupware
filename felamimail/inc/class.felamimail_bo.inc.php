@@ -253,7 +253,7 @@ class felamimail_bo
 
 		function getFolderPrefixFromNamespace($nameSpace, $folderName)
 		{
-			foreach($nameSpace as $type => $singleNameSpace) 
+			foreach($nameSpace as $type => $singleNameSpace)
 			{
 				if($type == 'personal' && substr($singleNameSpace[2]['name'],0,strlen($folderName))==$folderName && ($singleNameSpace[2]['name'] == '#mh/' || count($nameSpace) == 1) && $this->icServer->mailboxExist('Mail')) {
 					// uw-imap server with mailbox prefix or dovecot maybe
@@ -2591,7 +2591,7 @@ class felamimail_bo
 			return $this->mailPreferences;
 		}
 
-		function getMessageAttachments($_uid, $_partID='', $_structure='', $fetchEmbeddedImages=true)
+		function getMessageAttachments($_uid, $_partID='', $_structure='', $fetchEmbeddedImages=true, $fetchTextCalendar=false)
 		{
 			if (self::$debug) echo __METHOD__."$_uid, $_partID<br>";
 
@@ -2683,9 +2683,9 @@ class felamimail_bo
 				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart, $fetchEmbeddedImages), $attachments);
 				} else {
 					//error_log(__METHOD__.__LINE__.array2string($subPart));
-					if ($subPart->type == 'TEXT' && 
-						$subPart->subType == 'CALENDAR' && 
-						$subPart->parameters['METHOD'] && 
+					if (!$fetchTextCalendar && $subPart->type == 'TEXT' &&
+						$subPart->subType == 'CALENDAR' &&
+						$subPart->parameters['METHOD'] &&
 						$subPart->disposition !='ATTACHMENT') continue;
 					$newAttachment = array();
 					$newAttachment['name']		= $this->getFileNameFromStructure($subPart,$_uid,$subPart->partID);

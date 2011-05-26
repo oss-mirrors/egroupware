@@ -1047,8 +1047,8 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 			$output->contentclass="urn:content-classes:message";
 			// end AS12 Stuff
 
-			// start handle Attachments
-			$attachments = $this->mail->getMessageAttachments($id);
+			// start handle Attachments (include text/calendar multiplar alternative)
+			$attachments = $this->mail->getMessageAttachments($id, $_partID='', $_structure='', $fetchEmbeddedImages=true, $fetchTextCalendar=true);
 			if (is_array($attachments) && count($attachments)>0)
 			{
 				debugLog(__METHOD__.__LINE__.' gather Attachments for MessageID:'.$id.' found:'.count($attachments));
@@ -1123,17 +1123,19 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 			debugLog(__METHOD__."(...) no EGroupware calendar installed!");
 			return null;
 		}
-		if (!$stat = $this->StatMessage($folderid, $requestid))
+		if (!($requestid > 0) || !($stat = $this->StatMessage($folderid, $requestid)))
 		{
 			debugLog(__METHOD__."($requestid, '$folderid', $response) returning FALSE (can NOT stat message)");
 			return false;
 		}
 		$ret = false;
-		foreach($this->mail->getMessageAttachments($requestid) as $key => $attach)
+		foreach($this->mail->getMessageAttachments($requestid, $_partID='', $_structure='', $fetchEmbeddedImages=true, $fetchTextCalendar=true) as $key => $attach)
 		{
 			if (strtolower($attach['mimeType']) == 'text/calendar' && strtolower($attach['method']) == 'request' &&
 				($attachment = $this->mail->getAttachment($requestid, $attach['partID'])))
 			{
+				debugLog(__METHOD__."($requestid, '$folderid', $response) iCal found, calling now backend->MeetingResponse('$attachment[attachment]')");
+
 				// calling backend again with iCal attachment, to let calendar add the event
 				if (($ret = $this->backend->MeetingResponse($attachment['attachment'], $folderid, $response, $calendarid)))
 				{
