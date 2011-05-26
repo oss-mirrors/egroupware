@@ -378,7 +378,7 @@ class felamimail_bo
 		}
 
 		function closeConnection() {
-			$this->icServer->disconnect();
+			if ($icServer->_connected) $this->icServer->disconnect();
 		}
 
 		/**
@@ -2682,6 +2682,11 @@ class felamimail_bo
 				{
 				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart, $fetchEmbeddedImages), $attachments);
 				} else {
+					//error_log(__METHOD__.__LINE__.array2string($subPart));
+					if ($subPart->type == 'TEXT' && 
+						$subPart->subType == 'CALENDAR' && 
+						$subPart->parameters['METHOD'] && 
+						$subPart->disposition !='ATTACHMENT') continue;
 					$newAttachment = array();
 					$newAttachment['name']		= $this->getFileNameFromStructure($subPart,$_uid,$subPart->partID);
 					$newAttachment['size']		= $subPart->bytes;
