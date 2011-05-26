@@ -1129,10 +1129,10 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 			return false;
 		}
 		$ret = false;
-		foreach($this->mail->getMessageAttachments($id) as $key => $attach)
+		foreach($this->mail->getMessageAttachments($requestid) as $key => $attach)
 		{
 			if (strtolower($attach['mimeType']) == 'text/calendar' && strtolower($attach['method']) == 'request' &&
-				($attachment = $this->mail->getAttachment($id, $attach['partID'])))
+				($attachment = $this->mail->getAttachment($requestid, $attach['partID'])))
 			{
 				// calling backend again with iCal attachment, to let calendar add the event
 				if (($ret = $this->backend->MeetingResponse($attachment['attachment'], $folderid, $response, $calendarid)))
@@ -1142,6 +1142,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 				break;
 			}
 		}
+		debugLog(__METHOD__."($requestid, '$folderid', $response) returning ".array2string($ret));
 		return $ret;
 	}
 
@@ -1491,7 +1492,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 	 * as moves and are sent to your backend as a move. If it returns FALSE, then deletes
 	 * are always handled as real deletes and will be sent to your importer as a DELETE
 	 */
-	function GetWasteBasket() 
+	function GetWasteBasket()
 	{
 		debugLog(__METHOD__.__LINE__.' called.');
 		$this->_connect($this->account);
