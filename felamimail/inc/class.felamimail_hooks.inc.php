@@ -613,7 +613,7 @@ class felamimail_hooks
 		{
 			// action links that are mostly static and dont need any connection and additional classes ...
 			$file += array(
-				'felamimail'		=> egw::link('/ajax_exec','menuaction=felamimail.uifelamimail.viewMainScreen'),
+				'felamimail'		=> egw::link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen&ajax=true'),
 			);
 
 			// standard compose link
