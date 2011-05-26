@@ -97,7 +97,7 @@
 
 			$this->t 		= CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->displayCharset   = $GLOBALS['egw']->translation->charset();
-			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID']))
 				$this->icServerID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
 
 			$this->bofelamimail		= felamimail_bo::getInstance(true,$this->icServerID);
@@ -698,7 +698,14 @@ pre {
 	white-space: pre-wrap; /* Mozilla, since 1999 */
 	white-space: -pre-wrap; /* Opera 4-6 */
 	white-space: -o-pre-wrap; /* Opera 7 */
-	width: 99%; 
+	width: 99%;
+}
+blockquote[type=cite] {
+	margin: 0;
+	border-left: 2px solid blue;
+	padding-left: 10px;
+	margin-left: 0;
+	color: blue;
 }
 </style>
 <div style="height:100%;width:100%; background-color:white; padding:0px; margin:0px;"><table width="100%" style="table-layout:fixed"><tr><td class="td_display">';
@@ -1006,7 +1013,7 @@ pre {
 			$css = preg_replace('/(javascript|expession|-moz-binding)/i','',$additionalStyle);
 			felamimail_bo::replaceTagsCompletley($css,'script'); // Strip out script that may be included
 			// we need this, as styledefinitions are enclosed with curly brackets; and template stuuff tries to replace everything between curly brackets that is having no horizontal whitespace
-			$css = str_replace(':',': ',$css); 
+			$css = str_replace(':',': ',$css);
 			//error_log(__METHOD__.__LINE__.$css);
 			// TODO: we may have to strip urls and maybe comments and ifs
 			return '
@@ -1029,7 +1036,7 @@ pre {
 		{
 			$bodyParts	= $this->bofelamimail->getMessageBody($uid, '', $partID);
 			//error_log(__METHOD__.__LINE__.array2string($bodyParts));
-			
+
 			// Compose the content of the frame
 			$frameHtml =
 				$this->get_email_header($this->getStyles($bodyParts)).
