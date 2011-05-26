@@ -4182,7 +4182,7 @@ class felamimail_bo
 						$attachmentnumber++;
 						//echo $part->headers['content-transfer-encoding'].'#<br>';
 						if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
-						if (trim($part->disposition)=='attachment' || trim($part->disposition) == 'inline')
+						if ((trim($part->disposition)=='attachment' || trim($part->disposition) == 'inline') && $partFetched==false)
 						{
 							//error_log(__METHOD__.__LINE__.' Add String '.($part->disposition=='attachment'?'Attachment':'Part').' of type:'.$part->ctype_primary.'/'.$part->ctype_secondary);
 							$mailObject->AddStringAttachment($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
