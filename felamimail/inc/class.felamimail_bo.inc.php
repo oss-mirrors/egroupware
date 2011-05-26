@@ -4152,6 +4152,22 @@ class felamimail_bo
 						$isHTML=true;
 						$partFetched = true;
 					}
+					if (($structure->ctype_secondary=='alternative'||
+						 $structure->ctype_secondary=='mixed' ||
+						 $structure->ctype_secondary=='signed' ) &&
+						$part->ctype_primary=='text' && $part->ctype_secondary=='calendar' && $part->body)
+					{
+						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' BodyPart:'.array2string($part));
+						$bodyPart = $part->body;
+						if ($decode) $bodyPart = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
+						$mailObject->AltExtended = $bodyPart;
+						// "text/calendar; charset=utf-8; name=meeting.ics; method=REQUEST"
+						// [ctype_parameters] => Array([charset] => utf-8[name] => meeting.ics[method] => REQUEST)
+						$mailObject->AltExtendedContentType = $part->ctype_primary.'/'.$part->ctype_secondary.';'.
+							($part->ctype_parameters['name']?' name='.$part->ctype_parameters['name'].';':'').
+							($part->ctype_parameters['method']?' method='.$part->ctype_parameters['method'].'':'');
+						$partFetched = true;
+					}
 					if (($structure->ctype_secondary=='mixed' || 
 						 $structure->ctype_secondary=='alternative' || 
 						 $structure->ctype_secondary=='signed') && $part->ctype_primary=='multipart')
