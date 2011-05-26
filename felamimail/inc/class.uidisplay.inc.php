@@ -1036,7 +1036,19 @@ blockquote[type=cite] {
 		{
 			$bodyParts	= $this->bofelamimail->getMessageBody($uid, '', $partID);
 			//error_log(__METHOD__.__LINE__.array2string($bodyParts));
-
+			$meetingRequest = false;
+			$attachments    = $this->bofelamimail->getMessageAttachments($uid, $partID, '',false,true);
+			foreach ((array)$attachments as $key => $attach)
+			{
+				if (strtolower($attach['mimeType']) == 'text/calendar' && strtolower($attach['method']) == 'request' &&
+					isset($GLOBALS['egw_info']['user']['apps']['calendar']) &&
+					($attachment = $this->bofelamimail->getAttachment($uid, $attach['partID'])))
+				{
+					$meetingRequest = $attachment['attachment'];
+					return array("src"=>egw::link('/index.php',array('menuaction'=>'calendar.calendar_uiforms.edit',
+																'ical'=>$meetingRequest)));
+				}
+			}
 			// Compose the content of the frame
 			$frameHtml =
 				$this->get_email_header($this->getStyles($bodyParts)).
