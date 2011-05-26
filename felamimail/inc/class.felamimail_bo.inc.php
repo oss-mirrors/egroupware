@@ -4176,17 +4176,21 @@ class felamimail_bo
 						$this->createBodyFromStructure($mailObject, $part, $parenttype=null, $decode);
 					}
 					//error_log(__METHOD__.__LINE__.$structure->ctype_primary.'/'.$structure->ctype_secondary.' => '.$part->ctype_primary.'/'.$part->ctype_secondary.' Part:'.array2string($part));
-					if (($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart') || trim($part->disposition) == 'attachment' || trim($part->disposition) == 'inline')
+					if ($part->body && (($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart') || 
+						trim($part->disposition) == 'attachment' || 
+						trim($part->disposition) == 'inline'))
 					{
 						//error_log(__METHOD__.__LINE__.$structure->ctype_secondary.'=>'.$part->ctype_primary.'/'.$part->ctype_secondary.'->'.array2string($part));
 						$attachmentnumber++;
+						$filename = trim(($part->ctype_parameters['name']?$part->ctype_parameters['name']:$part->d_parameters['filename']));
+						if (strlen($filename)==0) $filename = 'noname_'.$attachmentnumber;
 						//echo $part->headers['content-transfer-encoding'].'#<br>';
 						if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
 						if ((trim($part->disposition)=='attachment' || trim($part->disposition) == 'inline') && $partFetched==false)
 						{
 							//error_log(__METHOD__.__LINE__.' Add String '.($part->disposition=='attachment'?'Attachment':'Part').' of type:'.$part->ctype_primary.'/'.$part->ctype_secondary);
 							$mailObject->AddStringAttachment($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
-														 ($part->ctype_parameters['name']?$part->ctype_parameters['name']:'noname_'.$attachmentnumber),
+														 $filename,
 														 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'),
 														 $part->ctype_primary.'/'.$part->ctype_secondary
 														);
@@ -4195,7 +4199,7 @@ class felamimail_bo
 						{
 							//error_log(__METHOD__.__LINE__.' Add String '.($part->disposition=='attachment'?'Attachment':'Part').' of type:'.$part->ctype_primary.'/'.$part->ctype_secondary.' Body:'.$part->body);
 							$mailObject->AddStringPart($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
-														 ($part->ctype_parameters['name']?$part->ctype_parameters['name']:'noname_'.$attachmentnumber),
+														 $filename,
 														 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'),
 														 $part->ctype_primary.'/'.$part->ctype_secondary
 														);
