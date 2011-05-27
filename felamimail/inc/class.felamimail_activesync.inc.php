@@ -275,7 +275,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
      */
 	public function SendMail($rfc822, $smartdata=array(), $protocolversion = false)
 	{
-//$this->debugLevel=3;
+		//$this->debugLevel=3;
 		if ($protocolversion < 14.0)
     		debugLog("IMAP-SendMail: " . (isset($rfc822) ? $rfc822 : ""). "task: ".(isset($smartdata['task']) ? $smartdata['task'] : "")." itemid: ".(isset($smartdata['itemid']) ? $smartdata['itemid'] : "")." folder: ".(isset($smartdata['folderid']) ? $smartdata['folderid'] : ""));
 		if ($this->debugLevel>0) debugLog("IMAP-Sendmail: Smartdata = ".array2string($smartdata));
@@ -288,6 +288,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		// initialize our felamimail_bo
 		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
 		$activeMailProfile = $this->mail->mailPreferences->getIdentity(self::$profileID);
+		if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__.' ProfileID:'.self::$profileID.' ActiveMailProfile:'.array2string($activeMailProfile));
 
 		// initialize the new egw_mailer object for sending
 		$mailObject = new egw_mailer();
@@ -435,7 +436,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
     	    if ($this->debugLevel>0) debugLog("IMAP-Sendmail: use_orgbody = false");
 			$body = $mailObject->Body;
 		}
-		//error_log(__METHOD__.__LINE__.array2string($mailObject));
+   	    if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__.' MailAttachments:'.array2string($mailObject->GetAttachments()));
 		// as we use our mailer (phpmailer) it is detecting / setting the mimetype by itself while creating the mail
     	if (isset($smartdata['replacemime']) && $smartdata['replacemime'] == true &&
     	    isset($message->ctype_primary)) {
@@ -484,10 +485,10 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 
 			if ($this->debugLevel>0) debugLog(__METHOD__.__LINE__.' Body -> '.$bodyBUFF);
 			if (isset($simpleBodyType) && $simpleBodyType == 'text/plain' && $mailObject->ContentType == 'text/html') $body=nl2br($body);
-            // receive only body
-            $body .= $bodyBUFF;
+			// receive only body
+			$body .= $bodyBUFF;
 			$mailObject->Encoding = 'base64';
-        }
+		}
 
 		// how to forward and other prefs
 		$preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
@@ -584,9 +585,10 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
             }
 			if (isset($simpleBodyType) && $simpleBodyType == 'text/plain' && $mailObject->ContentType == 'text/html') $body=nl2br($body);
 			$mailObject->Encoding = 'base64';
-        } // end forward
+		} // end forward
 
 		// add signature!! -----------------------------------------------------------------
+		if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__.' ActiveMailProfile:'.array2string($activeMailProfile));
 		$presetSig = (!empty($activeMailProfile->signature) ? $activeMailProfile->signature : -1); // thats the default
 		$disableRuler = false;
 
@@ -650,6 +652,8 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 				'ContentType'=>$mailObject->ContentType,
 			)));
 		}
+   	    if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__.' MailAttachments:'.array2string($mailObject->GetAttachments()));
+
 		// set a higher timeout for big messages
 		@set_time_limit(120);
 
@@ -731,7 +735,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		unset($message);
         unset($mobj);
 
-//$this->debugLevel=0;
+		//$this->debugLevel=0;
 
 		if ($send && $asf)
 		{
@@ -754,7 +758,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 	 */
 	public function GetMessage($folderid, $id, $truncsize, $bodypreference=false, $optionbodypreference=false, $mimesupport = 0)
 	{
-//$this->debugLevel=3;
+		//$this->debugLevel=4;
 		debugLog (__METHOD__.__LINE__.' FolderID:'.$folderid.' ID:'.$id.' TruncSize:'.$truncsize.' Bodypreference: '.array2string($bodypreference));
 		$stat = $this->StatMessage($folderid, $id);
 		if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($stat));
@@ -801,6 +805,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 				$output->airsyncbasebody = new SyncAirSyncBaseBody();
 				if ($this->debugLevel>0) debugLog("airsyncbasebody!");
 				// fetch the body (try to gather data only once)
+				$css ='';
 				$bodyStruct = $this->mail->getMessageBody($id, 'html_only', '', '', true);
 				if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__.' html_only Struct:'.array2string($bodyStruct));
 				$body = $this->mail->getdisplayableBody($this->mail,$bodyStruct,true);//$this->ui->getdisplayableBody($bodyStruct,false);
@@ -808,6 +813,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 			    if ($body != "" && (is_array($bodyStruct) && $bodyStruct[0]['mimeType']=='text/html')) {
 					// may be html
 					if ($this->debugLevel>0) debugLog("MIME Body".' Type:html (fetched with html_only)');
+					$css = $this->mail->getStyles($bodyStruct);
 					$output->airsyncbasenativebodytype=2;
 				} else {
 					// plain text Message
@@ -902,6 +908,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 	    					    '<head>'.
 						        '<meta name="Generator" content="Z-Push">'.
 						        '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'.
+								$css.
 							    '</head>'.
 							    '<body>'.
 						        str_replace("\n","<BR>",str_replace("\r","", str_replace("\r\n","<BR>",$body))).
@@ -963,6 +970,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 						'<head>'.
 						'<meta name="Generator" content="Z-Push">'.
 						'<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'.
+						$css.
 						'</head>'.
 						'<body>';
 					if ($output->airsyncbasenativebodytype==2)
@@ -1095,7 +1103,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 					}
 				}
 			}
-//$this->debugLevel=0;
+			//$this->debugLevel=0;
 			// end handle Attachments
 			if ($this->debugLevel>3) debugLog(__METHOD__.__LINE__.array2string($output));
 			return $output;
