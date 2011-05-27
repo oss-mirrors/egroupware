@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<overlay>
+	<template id="bookmarks.list.row" template="" lang="" group="0" version="1.7.001">
+		<grid width="100%">
+			<columns>
+				<column/>
+				<column width="*"/>
+				<column width="1px"/>
+				<column width="50em"/>
+				<column disabled="@no_customfields"/>
+				<column width="10%"/>
+				<column width="10%"/>
+				<column width="1%"/>
+			</columns>
+			<rows>
+				<row class="th" valign="bottom">
+					<description/>
+					<vbox>
+						<nextmatch-sortheader label="Name" id="bm_name"/>
+						<nextmatch-sortheader label="Description" id="bm_desc"/>
+					</vbox>
+					<vbox>
+						<nextmatch-header label="Category" id="category"/>
+						<nextmatch-sortheader label="Rating" id="bm_rating"/>
+					</vbox>
+					<nextmatch-header label="Keywords" id="bm_keywords"/>
+					<nextmatch-customfields id="customfields"/>
+					<vbox options="0,0">
+						<nextmatch-sortheader label="Last visited" id="visited"/>
+						<nextmatch-sortheader label="Total visits" id="bm_visits"/>
+					</vbox>
+					<vbox options="0,0">
+						<nextmatch-sortheader label="Created" id="added"/>
+						<nextmatch-sortheader label="Last modified" id="updated"/>
+					</vbox>
+					<hbox align="center" class="noPrint">
+						<description align="center" value="Actions"/>
+						<button align="right" statustext="Check all" label="Check all" id="check_all" needed="1" onclick="toggle_all(this.form,form::name('checked[]')); return false;" image="check"/>
+					</hbox>
+				</row>
+				<row class="row">
+					<image align="center" label="$row_cont[name]" src="${row}[favicon]" options="$row_cont[url]" class="favicon"/>
+					<vbox>
+						<hbox options="0,0">
+							<description value="${row_cont[stripped_name]}" options=",bookmarks.bookmarks_ui.redirect&amp;bm_id=${row_cont[id]},,,_blank"/>
+						</hbox>
+						<description id="${row}[desc]"/>
+					</vbox>
+					<vbox>
+						<menulist>
+							<menupopup type="select-cat" id="${row}[category]" readonly="true"/>
+						</menulist>
+						<image statustext="Rating of this site" src="bar-{$row_cont[rating]}"/>
+					</vbox>
+					<description id="${row}[keywords]"/>
+					<customfields-list id="$row" class="customfields"/>
+					<vbox>
+						<date-time id="${row}[visited]" readonly="true"/>
+						<description id="${row}[visits]" no_lang="1"/>
+					</vbox>
+					<vbox options="0,0">
+						<menulist>
+							<menupopup type="select-account" id="${row}[owner]" readonly="true"/>
+						</menulist>
+						<date-time id="${row}[added]" readonly="true" class="noWrap"/>
+						<date-time id="${row}[updated]" readonly="true" class="noBreak"/>
+					</vbox>
+					<hbox options="0" class="noPrint">
+						<image src="view" options="bookmarks.bookmarks_ui.view&amp;bm_id=${row_cont[id]}"/>
+						<button label="Edit" id="edit[${row_cont[id]}]" image="edit"/>
+						<button id="delete[{$row_cont[id]}]" onclick="var str = egw::lang('Delete');  if( confirm(str + ' {$row_cont[stripped_name]}?')) { return submitit(eTemplate, this.id);} return false;" image="delete"/>
+						<image src="mail" options="bookmarks.bookmarks_ui.mail&amp;bm_id=${row_cont[id]}"/>
+						<checkbox id="checked[]" options="$row_cont[id]"/>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+	</template>
+	<template id="bookmarks.list" template="" lang="" group="0" version="1.7.001">
+		<grid width="100%">
+			<columns>
+				<column/>
+				<column/>
+			</columns>
+			<rows>
+				<row disabled="!@msg">
+					<description align="center" id="msg" span="all" class="message"/>
+					<description/>
+				</row>
+				<row>
+					<nextmatch id="nextmatch" options="bookmarks.list.row" span="all"/>
+				</row>
+				<row>
+					<button label="add" id="add"/>
+					<hbox align="right">
+						<checkbox disabled="true" statustext="Apply the action on the whole query, NOT only the shown bookmarks!!!" label="whole query" id="use_all" onchange="if (this.checked==true &amp;&amp; !confirm('Apply the action on the whole query, NOT only the shown bookmarks!!!')) this.checked=false;"/>
+						<menulist>
+							<menupopup statustext="Select an action" id="action" no_lang="1" onchange="1" options="Select an action..."/>
+						</menulist>
+						<button statustext="Check all" label="Check all" id="check_all" needed="1" onclick="toggle_all(this.form,form::name('nextmatch[rows][checked][]')); return false;" image="arrow_ltr" class="checkAllArrow"/>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+	</template>
+</overlay>
