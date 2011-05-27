@@ -3915,6 +3915,39 @@ class felamimail_bo
 		}
 
 		/**
+		 * getStyles - extracts the styles from the given bodyparts
+		 * @param array $bodyParts  with the bodyparts
+		 * @return string a preformatted string with the mails converted to text
+		 */
+		static function &getStyles($_bodyParts)
+		{
+			$style = '';
+			if (empty($_bodyParts)) return "";
+			foreach((array)$_bodyParts as $singleBodyPart) {
+				if (!isset($singleBodyPart['body'])) {
+					$singleBodyPart['body'] = self::getStyles($singleBodyPart);
+					$style .= $singleBodyPart['body'];
+					continue;
+				}
+				$ct = preg_match_all('#<style(?:\s.*)?>(.+)</style>#isU', $singleBodyPart['body'], $newStyle);
+				if ($ct>0)
+				{
+					//error_log(__METHOD__.__LINE__.array2string($newStyle[0]));
+					$style .= implode('',$newStyle[0]);
+				}
+			}
+			// CSS Security
+			// http://code.google.com/p/browsersec/wiki/Part1#Cascading_stylesheets
+			$css = preg_replace('/(javascript|expession|-moz-binding)/i','',$style);
+			felamimail_bo::replaceTagsCompletley($css,'script'); // Strip out script that may be included
+			// we need this, as styledefinitions are enclosed with curly brackets; and template stuuff tries to replace everything between curly brackets that is having no horizontal whitespace
+			$css = str_replace(':',': ',$css);
+			//error_log(__METHOD__.__LINE__.$css);
+			// TODO: we may have to strip urls and maybe comments and ifs
+			return $css;
+		}
+
+		/**
 		 * getdisplayableBody - creates the bodypart of the email as textual representation
 		 * @param object $bofelamimail the bofelamimailobject to be used
 		 * @param array $bodyParts  with the bodyparts
@@ -3937,6 +3970,8 @@ class felamimail_bo
 				$newBody  = translation::convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
 				//error_log(__METHOD__.__LINE__.' MimeType:'.$bodyParts[$i]['mimeType'].'->'.$newBody);
 				if ($bodyParts[$i]['mimeType'] == 'text/html') {
+					// as translation::convert reduces \r\n to \n and purifier eats \n -> peplace it with a single space
+					$newBody = str_replace("\n"," ",$newBody); 
 					// convert HTML to text, as we dont want HTML in infologs
 					$newBody = html::purify($newBody);
 					//error_log(__METHOD__.__LINE__.' after purify:'.$newBody);
@@ -3952,24 +3987,8 @@ class felamimail_bo
 				//error_log(__METHOD__.__LINE__.' Body(after strip tags):'.$newBody);
 				$newBody = htmlspecialchars_decode($newBody,ENT_QUOTES);
 				//error_log(__METHOD__.__LINE__.' Body (after hmlspc_decode):'.$newBody);
-				$message = $newBody;
+				$message .= $newBody;
 				//continue;
-/* // ToDo only break lines that are way longer then we accept
-				$newBodyA  = explode("\n",$newBody);
-				error_log(__METHOD__.__LINE__.' Body (after explode):'.array2string($newBodyA));
-				// create it new, with good line breaks
-				reset($newBodyA);
-				while(list($key,$value) = @each($newBodyA))
-				{
-					if (trim($value) != '') {
-						#if ($value != "\r") $value .= "\n";
-					} else {
-						// if you want to strip all empty lines uncomment the following
-						#continue;
-					}
-					$message .= $bofelamimail->wordwrap($value,75,"\n");
-				}
-*/
 			}
 			return $message;
 		}

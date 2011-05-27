@@ -1008,14 +1008,6 @@ blockquote[type=cite] {
 		static function get_email_header($additionalStyle='')
 		{
 			//error_log(__METHOD__.__LINE__.$additionalStyle);
-			// CSS Security
-			// http://code.google.com/p/browsersec/wiki/Part1#Cascading_stylesheets
-			$css = preg_replace('/(javascript|expession|-moz-binding)/i','',$additionalStyle);
-			felamimail_bo::replaceTagsCompletley($css,'script'); // Strip out script that may be included
-			// we need this, as styledefinitions are enclosed with curly brackets; and template stuuff tries to replace everything between curly brackets that is having no horizontal whitespace
-			$css = str_replace(':',': ',$css);
-			//error_log(__METHOD__.__LINE__.$css);
-			// TODO: we may have to strip urls and maybe comments and ifs
 			return '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -1051,7 +1043,7 @@ blockquote[type=cite] {
 			}
 			// Compose the content of the frame
 			$frameHtml =
-				$this->get_email_header($this->getStyles($bodyParts)).
+				$this->get_email_header($this->bofelamimail->getStyles($bodyParts)).
 				$this->showBody($this->getdisplayableBody($bodyParts), false);
 
 			// Calculate the hash of that E-Mail for function identification
@@ -1326,26 +1318,6 @@ blockquote[type=cite] {
 
 			$GLOBALS['egw']->common->egw_exit();
 			exit;
-		}
-
-		function &getStyles($_bodyParts)
-		{
-			$style = '';
-			if (empty($_bodyParts)) return "";
-			foreach((array)$_bodyParts as $singleBodyPart) {
-				if (!isset($singleBodyPart['body'])) {
-					$singleBodyPart['body'] = $this->getStyles($singleBodyPart);
-					$style .= $singleBodyPart['body'];
-					continue;
-				}
-				$ct = preg_match_all('#<style(?:\s.*)?>(.+)</style>#isU', $singleBodyPart['body'], $newStyle);
-				if ($ct>0)
-				{
-					//error_log(__METHOD__.__LINE__.array2string($newStyle[0]));
-					$style .= implode('',$newStyle[0]);
-				}
-			}
-			return $style;
 		}
 
 		function &getdisplayableBody($_bodyParts,$modifyURI=true)
