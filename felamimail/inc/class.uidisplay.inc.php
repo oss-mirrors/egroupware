@@ -1036,9 +1036,10 @@ blockquote[type=cite] {
 					isset($GLOBALS['egw_info']['user']['apps']['calendar']) &&
 					($attachment = $this->bofelamimail->getAttachment($uid, $attach['partID'])))
 				{
-					$meetingRequest = $attachment['attachment'];
-					return array("src"=>egw::link('/index.php',array('menuaction'=>'calendar.calendar_uiforms.edit',
-																'ical'=>$meetingRequest)));
+					return array("src"=>egw::link('/index.php',array(
+						'menuaction' => 'calendar.calendar_uiforms.meeting',
+						'ical' => $attachment['attachment'],
+					)));
 				}
 			}
 			// Compose the content of the frame
