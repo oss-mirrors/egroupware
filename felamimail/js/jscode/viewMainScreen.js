@@ -1178,3 +1178,66 @@ function fadeDialog(flag) {
   }
 }
 
+function felamimail_transform_foldertree() {
+	// Get the top level element for the felamimail tree
+	var treeObj = objectManager.getObjectById("felamimail_folderTree");
+	if (treeObj == null) {
+		// Add a new container to the object manager which will hold the tree
+		// objects
+		treeObj = objectManager.addObject("felamimail_folderTree", 
+			null, EGW_AO_FLAG_IS_CONTAINER);
+	}
+
+	// Delete all old objects
+	treeObj.clear();
+
+	// Go over the folder list
+	for (var key in felamimail_folders) {
+		var folderName = felamimail_folders[key];
+
+		// Add a new action object to the object manager
+		var obj = treeObj.addObject(folderName,
+			new dhtmlxtreeItemAOI(tree, folderName));
+		obj.updateActionLinks(["drop_copy_mail", "drop_move_mail"]);
+	}
+}
+
+function mail_dragStart(_action, _senders) {
+	//TODO 
+	return $("<div class=\"ddhelper\">" + _senders.length + " Mails selected </div>")
+}
+
+function mail_getFormData(_actionObjects) {
+	var messages = {};
+	if (_actionObjects.length>0)
+	{
+		messages['msg'] = [];
+	}
+
+	for (var i = 0; i < _actionObjects.length; i++) 
+	{
+		if (_actionObjects[i].id.length>0)
+		{
+			messages['msg'][i] = _actionObjects[i].id;
+		}
+	}
+
+	return messages;
+}
+
+function mail_move(_action, _senders, _target) {
+	// TODO: Write move/copy function which cares about doing the same stuff
+	// as the "onNodeSelect" function!
+	egw_appWindow('felamimail').xajax_doXMLHTTP(
+		"felamimail.ajaxfelamimail.moveMessages", _target.id,
+		mail_getFormData(_senders));
+}
+
+function mail_copy(_action, _senders, _target) {
+	// TODO: Write move/copy function which cares about doing the same stuff
+	// as the "onNodeSelect" function!
+	egw_appWindow('felamimail').xajax_doXMLHTTP(
+		"felamimail.ajaxfelamimail.copyMessages", _target.id,
+		mail_getFormData(_senders));
+}
+

@@ -118,6 +118,7 @@ class uiwidgets
 	}
 }";
 			$folder_tree_new .= "var tree=new dhtmlXTreeObject('$_divName','100%','100%',0);";
+			$folder_tree_new .= "var felamimail_folders=[];";
 			$folder_tree_new .= "tree.parentObject.style.overflow=\"auto\";";
 			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');";
 			if($_displayCheckBox) {
@@ -206,12 +207,18 @@ class uiwidgets
 				if($_displayCheckBox) {
 					$folder_tree_new .= "tree.setCheck('$folderName','".(int)$obj->subscribed."');";
 				}
+				$folder_tree_new .= "felamimail_folders.push('$folderName');";
+
 			}
 
 			$selected = @htmlspecialchars($_selected, ENT_QUOTES, $this->charset);
 			#$selected = base64_encode($_selected);
 
-			$folder_tree_new.= "tree.closeAllItems(0);tree.openItem('$selected');</script>";
+			$folder_tree_new.= "tree.closeAllItems(0);tree.openItem('$selected');";
+
+			$folder_tree_new .= "if (typeof felamimail_transform_foldertree == 'function') {
+				felamimail_transform_foldertree();
+			}</script>";
 
 			return $folder_tree_new;
 		}
@@ -313,6 +320,28 @@ class uiwidgets
 					"group" => 2,
 					"type" => "popup",
 					"onExecute" => "javaScript:mail_markUnread",
+				),
+				array(
+					"id" => "drag_mail",
+					"dragType" => "mail",
+					"type" => "drag",
+					"onExecute" => "javaScript:mail_dragStart",
+				),
+				array(
+					"id" => "drop_move_mail",
+					"type" => "drop",
+					"acceptedTypes" => "mail",
+					"iconUrl" => $GLOBALS['egw']->common->image('filemanager', 'editcut'),
+					"caption" => lang("Move mails here"),
+					"onExecute" => "javaScript:mail_move"
+				),
+				array(
+					"id" => "drop_copy_mail",
+					"type" => "drop",
+					"acceptedTypes" => "mail",
+					"iconUrl" => $GLOBALS['egw']->common->image('filemanager', 'editcopy'),
+					"caption" => lang("Copy mails here"),
+					"onExecute" => "javaScript:mail_copy"
 				)
 			);
 /*
@@ -343,7 +372,7 @@ class uiwidgets
 		{
 			return array(
 				"mail" => array(
-					"mark_flagged", "mark_unflagged", "delete", "mark_read", "mark_unread"
+					"mark_flagged", "mark_unflagged", "delete", "mark_read", "mark_unread", "drag_mail"
 				)
 			);
 			//"reply", "reply_all",
@@ -400,6 +429,9 @@ $(document).ready(function() {
 			allSelected[i].setFocused(true);
 		}
 	}
+
+	// Enable drag_drop for the folder tree (is also called whenever the foldertree gets refreshed)
+	felamimail_transform_foldertree();
 });
 </script>	';
 			//error_log(__METHOD__.__LINE__.' Rows fetched:'.$rowsFetched);
@@ -743,7 +775,9 @@ $(document).ready(function() {
 					$css_style = 'header_row_';
 				}
 				//if (in_array("check", $cols))
-				$data["check"] = $previewMessage==$header['uid'];// $row_selected; //TODO:checkbox true or false 
+				// don't overwrite check with "false" as this forces the grid to
+				// deselect the row - sending "0" doesn't do that
+				$data["check"] = $previewMessage == $header['uid'] ? true : 0;// $row_selected; //TODO:checkbox true or false 
 				//$data["check"] ='<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="'.$message_uid.'"
 				//	onclick="toggleFolderRadio(this, refreshTimeOut)">';
 
