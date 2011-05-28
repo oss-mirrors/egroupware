@@ -41,6 +41,11 @@ class uimanual extends wiki_ui
 		}
 		$this->wiki_id = (int) $this->manual_config['manual_wiki_id'];
 
+		// use https to not get page contains unsave content warnings
+		if ($_SERVER['HTTPS'] && $this->manual_config[manual_remote_egw_url] == 'http://manual.egroupware.org/egroupware')
+		{
+			$this->manual_config[manual_remote_egw_url] = 'https://manual.egroupware.org/egroupware';
+		}
 		// set a language given in the URL as session preference
 		if ($this->manual_config['manual_allow_anonymous'] && isset($_REQUEST['lang']) && preg_match('/^[a-z]{2}(-[a-z]{2})?$/',$_REQUEST['lang']) &&
 			$_REQUEST['lang'] != $GLOBALS['egw_info']['user']['preferences']['common']['lang'])
