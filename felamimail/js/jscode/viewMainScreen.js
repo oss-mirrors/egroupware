@@ -1179,6 +1179,10 @@ function fadeDialog(flag) {
 }
 
 function felamimail_transform_foldertree() {
+	if (typeof objectManager == 'undefined' || objectManager == null) {
+		return;
+	}
+
 	// Get the top level element for the felamimail tree
 	var treeObj = objectManager.getObjectById("felamimail_folderTree");
 	if (treeObj == null) {
