@@ -276,23 +276,26 @@
 
 			if($content['add']) {
 				$GLOBALS['egw']->redirect_link('/index.php', array('menuaction' => 'bookmarks.bookmarks_ui.create'));
-			} elseif ($content['nextmatch']['rows']) { 
-				if($content['nextmatch']['rows']['edit']) {
-					$bm_id = key($content['nextmatch']['rows']['edit']);
+			} elseif ($content['nm']['rows']) { 
+				if($content['nm']['rows']['edit']) {
+					$bm_id = key($content['nm']['rows']['edit']);
 					$GLOBALS['egw']->redirect_link('/index.php', array(
 						'menuaction'	=>	'bookmarks.bookmarks_ui.edit',
 						'bm_id'		=>	$bm_id
 					));
-				} elseif($content['nextmatch']['rows']['delete']) {
-					$bm_id = key($content['nextmatch']['rows']['delete']);
+				} elseif($content['nm']['rows']['delete']) {
+					$bm_id = key($content['nm']['rows']['delete']);
 					$this->bo->delete($bm_id);
 				}
 			} 
-			if ($content['action']) {
-				switch ($content['action']) {
+			if($content['action']) {
+				$content['nm']['nm_action'] = $conent['action'];
+			}
+			if ($content['nm']['nm_action']) {
+				switch ($content['nm']['nm_action']) {
 					case 'delete':
 						$i = 0;
-						foreach($content['nextmatch']['rows']['checked'] as $id) {
+						foreach($content['nm']['selected'] as $id) {
 							if ($this->bo->delete($id))
 							{
 								$i++;
@@ -300,26 +303,30 @@
 						}
 						$this->bo->msg = lang('%1 bookmarks have been deleted',$i);
 						break;
-					case 'mail':
-						$this->mail(array('bm_id' => $content['nextmatch']['rows']['checked']));
+					case 'mailto':
+						$this->mail(array('bm_id' => $content['nm']['selected']));
 						break;
 				}
 			}
 
-			$values['nextmatch'] = $GLOBALS['egw']->session->appsession('_list', 'bookmarks');
-			if(!is_array($values['nextmatch'])) {
-				$values['nextmatch'] = array(
+			$values['nm'] = $GLOBALS['egw']->session->appsession('_list', 'bookmarks');
+			if(!is_array($values['nm'])) {
+				$values['nm'] = array(
 					'get_rows'	=>	'bookmarks.bookmarks_ui.get_rows',
 					'template'	=>	'bookmarks.list.row',
 					'no_filter'	=>	True,
 					'no_filter2'	=>	True,
+					'row_id'	=>	'bm_id',
+					'default_cols'	=>	'!legacy_actions',  // switch legacy actions column and row off by default
 				);
 			}
+			$values['nm']['actions'] = $this->get_actions();
+
 			if($bm_cat) {
-				$values['nextmatch']['cat_id'] = $bm_cat;
+				$values['nm']['cat_id'] = $bm_cat;
 			}
 			if($_GET['search']) {
-				$values['nextmatch']['search'] = $_GET['search'];
+				$values['nm']['search'] = $_GET['search'];
 			}
 
 			$sel_options['action']['mail'] = lang('Mail');
@@ -333,7 +340,7 @@
 		}
 
 		/**
-		* Callback for nextmatch widget
+		* Callback for nm widget
 		* 
 		* @param &$query Search parameters
 		* @param &$rows Results
@@ -364,6 +371,53 @@
 			$query['total'] = $this->bo->get_rows($query, $rows, $readonlys);
 			
 			return $query['total'];
+		}
+
+		/**
+		* Get actions for nextmatch context menu
+		*
+		* @return array see nextmatch_widget::egw_actions()
+		*/
+		protected function get_actions()
+		{
+			$actions = array(
+			'view' => array(
+				'caption' => 'View',
+				'default' => true,
+				'allowOnMultiple' => false,
+				'url' => 'menuaction=bookmarks.bookmarks_ui.view&bm_id=$id',
+				'popup' => egw_link::get_registry('bookmarks', 'view_popup'),
+				'group' => $group=1,
+			),
+			'edit' => array(
+				'caption' => 'Edit',
+				'allowOnMultiple' => false,
+				'url' => 'menuaction=bookmarks.bookmarks_ui.edit&bm_id=$id',
+				'popup' => egw_link::get_registry('bookmarks', 'add_popup'),
+				'group' => $group,
+				'disableClass' => 'rowNoEdit',
+			),
+			'add' => array(
+				'caption' => 'Add',
+				'url' => 'menuaction=bookmarks.bookmarks_ui.create',
+				'popup' => egw_link::get_registry('bookmarks', 'add_popup'),
+				'group' => $group,
+			),
+			'mailto' => array(
+				'caption' => 'Mail',
+				'allowOnMultiple' => true,
+				'icon'	=> 'mail',
+				'group' => $group,
+			),
+			'delete' => array(
+				'caption' => 'Delete',
+				'confirm' => 'Delete this entry',
+				'confirm_multiple' => 'Delete these entries',
+				'group' => ++$group,
+				'disableClass' => 'rowNoDelete',
+			),
+			);
+			return $actions;
 		}
 
 		/**
