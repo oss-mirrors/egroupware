@@ -2646,6 +2646,7 @@ class felamimail_bo
 				$newAttachment['partID']    = $structure->partID;
 				$newAttachment['encoding']  = $structure->encoding;
 				$newAttachment['method']    = $structure->parameters['METHOD'];
+				$newAttachment['charset']   = $structure->parameters['CHARSET'];
 				$attachments[] = $newAttachment;
 			}
 			// this kind of message can have no attachments
@@ -2682,7 +2683,6 @@ class felamimail_bo
 				{
 				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart, $fetchEmbeddedImages), $attachments);
 				} else {
-					//error_log(__METHOD__.__LINE__.array2string($subPart));
 					if (!$fetchTextCalendar && $subPart->type == 'TEXT' &&
 						$subPart->subType == 'CALENDAR' &&
 						$subPart->parameters['METHOD'] &&
@@ -2694,6 +2694,7 @@ class felamimail_bo
 					$newAttachment['partID']	= $subPart->partID;
 					$newAttachment['encoding']	= $subPart->encoding;
 					$newAttachment['method']    = $subPart->parameters['METHOD'];
+					$newAttachment['charset']   = $subPart->parameters['CHARSET'];
 					// try guessing the mimetype, if we get the application/octet-stream
 					if (strtolower($newAttachment['mimeType']) == 'application/octet-stream') $newAttachment['mimeType'] = mime_magic::filename2mime($newAttachment['name']);
 
@@ -3971,7 +3972,7 @@ class felamimail_bo
 				//error_log(__METHOD__.__LINE__.' MimeType:'.$bodyParts[$i]['mimeType'].'->'.$newBody);
 				if ($bodyParts[$i]['mimeType'] == 'text/html') {
 					// as translation::convert reduces \r\n to \n and purifier eats \n -> peplace it with a single space
-					$newBody = str_replace("\n"," ",$newBody); 
+					$newBody = str_replace("\n"," ",$newBody);
 					// convert HTML to text, as we dont want HTML in infologs
 					$newBody = html::purify($newBody);
 					//error_log(__METHOD__.__LINE__.' after purify:'.$newBody);
@@ -4187,16 +4188,16 @@ class felamimail_bo
 							($part->ctype_parameters['method']?' method='.$part->ctype_parameters['method'].'':'');
 						$partFetched = true;
 					}
-					if (($structure->ctype_secondary=='mixed' || 
-						 $structure->ctype_secondary=='alternative' || 
+					if (($structure->ctype_secondary=='mixed' ||
+						 $structure->ctype_secondary=='alternative' ||
 						 $structure->ctype_secondary=='signed') && $part->ctype_primary=='multipart')
 					{
 						//error_log( __METHOD__.__LINE__." Recursion to fetch subparts:".$part->ctype_primary.'/'.$part->ctype_secondary);
 						$this->createBodyFromStructure($mailObject, $part, $parenttype=null, $decode);
 					}
 					//error_log(__METHOD__.__LINE__.$structure->ctype_primary.'/'.$structure->ctype_secondary.' => '.$part->ctype_primary.'/'.$part->ctype_secondary.' Part:'.array2string($part));
-					if ($part->body && (($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart') || 
-						trim($part->disposition) == 'attachment' || 
+					if ($part->body && (($structure->ctype_secondary=='mixed' && $part->ctype_primary!='multipart') ||
+						trim($part->disposition) == 'attachment' ||
 						trim($part->disposition) == 'inline'))
 					{
 						//error_log(__METHOD__.__LINE__.$structure->ctype_secondary.'=>'.$part->ctype_primary.'/'.$part->ctype_secondary.'->'.array2string($part));

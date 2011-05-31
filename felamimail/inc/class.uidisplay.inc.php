@@ -1036,9 +1036,14 @@ blockquote[type=cite] {
 					isset($GLOBALS['egw_info']['user']['apps']['calendar']) &&
 					($attachment = $this->bofelamimail->getAttachment($uid, $attach['partID'])))
 				{
+					egw_cache::setSession('calendar', 'ical', array(
+						'charset' => $attach['charset'] ? $attach['charset'] : 'utf-8',
+						'attachment' => $attachment['attachment'],
+						'method' => $attach['method'],
+					));
 					return array("src"=>egw::link('/index.php',array(
 						'menuaction' => 'calendar.calendar_uiforms.meeting',
-						'ical' => $attachment['attachment'],
+						'ical' => 'session',
 					)));
 				}
 			}
