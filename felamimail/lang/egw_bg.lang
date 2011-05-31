@@ -271,7 +271,7 @@ messages	felamimail	bg	съобщения
 mon	felamimail	bg	Пон
 move	felamimail	bg	премести
 move messages	felamimail	bg	премести съобщенията
-move selected to	felamimail	bg	премести избраните в
+move to	felamimail	bg	премести избраните в
 move to trash	felamimail	bg	Премести в Кошчето
 moving messages to	felamimail	bg	преместване на съобщенията в
 name	felamimail	bg	Име

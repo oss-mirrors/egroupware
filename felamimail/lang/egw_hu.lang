@@ -286,7 +286,7 @@ mon	felamimail	hu	Hé
 move	felamimail	hu	Mozgat
 move folder	felamimail	hu	mappa mozgatása
 move messages	felamimail	hu	üzenetek mozgatása
-move selected to	felamimail	hu	kijelöltek mozgatása
+move to	felamimail	hu	kijelöltek mozgatása
 move to trash	felamimail	hu	Szemetesbe mozgatás
 moving messages to	felamimail	hu	üzenetek mozgatása
 name	felamimail	hu	Név

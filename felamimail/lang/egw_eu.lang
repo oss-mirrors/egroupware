@@ -202,7 +202,7 @@ messages	felamimail	eu	mezuak
 mon	felamimail	eu	Astelehena
 move	felamimail	eu	mugitu
 move messages	felamimail	eu	mugitu mezuak
-move selected to	felamimail	eu	mugitu hautatuak
+move to	felamimail	eu	mugitu hautatuak
 move to trash	felamimail	eu	Mugitu Zakarra karpetara
 moving messages to	felamimail	eu	mezua mugitu hona
 name	felamimail	eu	Izena

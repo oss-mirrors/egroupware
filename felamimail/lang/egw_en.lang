@@ -70,6 +70,7 @@ connection dropped by imap server.	felamimail	en	Connection dropped by IMAP serv
 contact not found!	felamimail	en	Contact not found!
 contains	felamimail	en	contains
 copy or move messages?	felamimail	en	Copy or Move Messages?
+copy to	felamimail	en	Copy to
 copying messages to	felamimail	en	copying messages to
 could not append message:	felamimail	en	Could not append Message:
 could not complete request. reason given: %s	felamimail	en	Could not complete request. Reason Given: %s
@@ -294,6 +295,7 @@ manage emailfilter / vacation	preferences	en	Manage EMailfilter / Vacation
 manage folders	common	en	Manage Folders
 manage sieve	common	en	Manage Sieve scripts
 manage signatures	felamimail	en	Manage Signatures
+mark as	felamimail	en	Mark as
 mark as deleted	felamimail	en	Mark as deleted
 mark messages as	felamimail	en	Mark selected messages as
 mark selected as flagged	felamimail	en	Mark selected as flagged
@@ -311,7 +313,7 @@ move	felamimail	en	Move
 move folder	felamimail	en	move folder
 move messages	felamimail	en	move messages
 move messages?	felamimail	en	Move Messages?
-move selected to	felamimail	en	move selected to
+move to	felamimail	en	Move to
 move to trash	felamimail	en	Move to trash
 moving messages to	felamimail	en	moving messages to
 name	felamimail	en	Name
@@ -409,7 +411,7 @@ save	felamimail	en	Save
 save all	felamimail	en	Save all
 save as draft	felamimail	en	save as draft
 save as infolog	felamimail	en	save as infolog
-save as tracker	felamimail	en	Save as tracker
+save as ticket	felamimail	en	Save as ticket
 save changes	felamimail	en	save changes
 save message to disk	felamimail	en	save message to disk
 save of message %1 failed. could not save message to folder %2 due to: %3	felamimail	en	Save of message %1 failed. Could not save message to folder %2 due to: %3

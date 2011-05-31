@@ -300,7 +300,7 @@ move	felamimail	es-es	mover
 move folder	felamimail	es-es	mover carpeta
 move messages	felamimail	es-es	mover mensajes
 move messages?	felamimail	es-es	¿Mover mensajes?
-move selected to	felamimail	es-es	mover los seleccionados a
+move to	felamimail	es-es	mover los seleccionados a
 move to trash	felamimail	es-es	Mover a la papelera
 moving messages to	felamimail	es-es	mover mensajes a
 name	felamimail	es-es	Nombre

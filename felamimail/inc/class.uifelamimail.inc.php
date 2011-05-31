@@ -61,10 +61,10 @@ class uifelamimail
 				$GLOBALS['egw']->preferences->save_repository(true);
 			}
 			if (is_null(self::$icServerID)) self::$icServerID =& egw_cache::getSession('felamimail','activeProfileID');
-	 
+
 			$this->displayCharset	= translation::charset();
 
-			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID']))
 				self::$icServerID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
 
 			//error_log(__METHOD__.'->'.self::$icServerID);
@@ -735,7 +735,7 @@ class uifelamimail
 			$preferences	=& $this->preferences;
 			$urlMailbox		=  urlencode($this->mailbox);
 			//_debug_array($preferences->preferences);
-			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID']))
 				self::$icServerID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
 			//_debug_array(self::$icServerID);
 			if (is_object($preferences)) $imapServer 	= $preferences->getIncomingServer(self::$icServerID);
@@ -1015,7 +1015,7 @@ class uifelamimail
 				$headers['info']['total'] = $folderStatus['messages'];
 				$headers['info']['first'] = $this->startMessage;
 				$headers['info']['last'] = ($headers['info']['total']>$maxMessages?$maxMessages:$headers['info']['total']);
-				
+
 				//_debug_array($folderStatus);
  				// if there aren't any messages left (eg. after delete or move)
  				// adjust $this->startMessage
@@ -1036,7 +1036,7 @@ class uifelamimail
 						$userPreferences['rowOrderStyle'],
 						$previewMessageId);
 				$this->t->set_var('header_rows', $messageTable);
-				
+
 
 				$firstMessage = $headers['info']['first'];
 				$lastMessage = $headers['info']['last'];

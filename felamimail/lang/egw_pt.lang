@@ -203,7 +203,7 @@ messages	felamimail	pt	Mensagens
 mon	felamimail	pt	Seg
 move	felamimail	pt	Mover
 move messages	felamimail	pt	Mover mensagens
-move selected to	felamimail	pt	Mover mensagens seleccionadas para
+move to	felamimail	pt	Mover mensagens seleccionadas para
 move to trash	felamimail	pt	Mover para o lixo
 moving messages to	felamimail	pt	A mover mensagens para
 name	felamimail	pt	Nome

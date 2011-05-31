@@ -61,9 +61,10 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 <div id="divMainView">
 <TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; ">
 	<tr class="navbarBackground">
-		<td align="left" width="180px">
+		<td align="left" width="100px">
 			<div class="parentDIV">
-				<label><input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="selectAllMessagesCheckBox" onclick="selectFolderContent(this, refreshTimeOut)"> {lang_mark_all_messages}</label>
+				<label style="display: none"><input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="selectAllMessagesCheckBox" onclick="selectFolderContent(this, refreshTimeOut)"> {lang_mark_all_messages}</label>
+				<button style="height: 20px; margin: 2px; margin-left: 5px; border-radius: 4px; background-image: url(phpgwapi/templates/idots/images/new.png); background-repeat: no-repeat; padding-left: 22px; padding-right: 5px;" onclick="egw_appWindow('felamimail').openComposeWindow(egw_webserverUrl+'/index.php?menuaction=felamimail.uicompose.compose')">{lang_compose}</button>
 			</div>
 		</td>
 		<td align="right" width="90px">

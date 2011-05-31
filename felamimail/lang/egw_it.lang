@@ -196,7 +196,7 @@ messages	felamimail	it	messaggi
 mon	felamimail	it	Lun
 move	felamimail	it	sposta
 move messages	felamimail	it	sposta messaggi
-move selected to	felamimail	it	sposta selezionato in
+move to	felamimail	it	sposta selezionato in
 move to trash	felamimail	it	Sposta nel cestino
 moving messages to	felamimail	it	spostamento messaggi in
 name	felamimail	it	Nome

@@ -31,7 +31,7 @@ message list	felamimail	ja	メッセージ一覧
 message highlighting	felamimail	ja	メッセージ強調表示
 move	felamimail	ja	移動
 move & follow	felamimail	ja	移動と選択
-move selected to:	felamimail	ja	選択メッセージ移動先
+move to:	felamimail	ja	選択メッセージ移動先
 must be unique	felamimail	ja	重複しない値を入力
 new	felamimail	ja	新規作成
 new name:	felamimail	ja	新しいフォルダ名：

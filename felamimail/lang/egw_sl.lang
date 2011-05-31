@@ -298,7 +298,7 @@ move	felamimail	sl	Premakni
 move folder	felamimail	sl	Premakni mapo
 move messages	felamimail	sl	Premakni sporočila
 move messages?	felamimail	sl	Premaknem sporočila?
-move selected to	felamimail	sl	Premakni označeno v
+move to	felamimail	sl	Premakni označeno v
 move to trash	felamimail	sl	Premakni v smeti
 moving messages to	felamimail	sl	Premikanje sporočila v
 name	felamimail	sl	Ime

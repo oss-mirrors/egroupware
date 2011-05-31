@@ -243,7 +243,7 @@ messages	felamimail	pl	wiadomości
 mon	felamimail	pl	Pon
 move	felamimail	pl	przenieś
 move messages	felamimail	pl	przenieś wiadomości
-move selected to	felamimail	pl	przenieś wiadomości do
+move to	felamimail	pl	przenieś wiadomości do
 move to trash	felamimail	pl	przenieś do kosza
 moving messages to	felamimail	pl	przenoszę wiadomości do
 name	felamimail	pl	Nazwa

@@ -196,7 +196,7 @@ messages	felamimail	no	meldinger
 mon	felamimail	no	Man
 move	felamimail	no	flytt
 move messages	felamimail	no	flytt meldinger
-move selected to	felamimail	no	flytt valgt til
+move to	felamimail	no	flytt valgt til
 move to trash	felamimail	no	Flytt til søppelkurv
 moving messages to	felamimail	no	Flytter meldinger til
 name	felamimail	no	Navn

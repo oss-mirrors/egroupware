@@ -245,7 +245,7 @@ messages	felamimail	zh-tw	訊息
 mon	felamimail	zh-tw	一
 move	felamimail	zh-tw	移動
 move messages	felamimail	zh-tw	移動訊息
-move selected to	felamimail	zh-tw	移動選取的到
+move to	felamimail	zh-tw	移動選取的到
 move to trash	felamimail	zh-tw	移到垃圾桶
 moving messages to	felamimail	zh-tw	移動信件到
 name	felamimail	zh-tw	名稱

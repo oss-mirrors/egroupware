@@ -252,7 +252,7 @@ messages	felamimail	zh	邮件
 mon	felamimail	zh	一
 move	felamimail	zh	移动
 move messages	felamimail	zh	移动邮件
-move selected to	felamimail	zh	将选定邮件移至
+move to	felamimail	zh	将选定邮件移至
 move to trash	felamimail	zh	移动至回收站
 moving messages to	felamimail	zh	移动邮件到
 name	felamimail	zh	名称

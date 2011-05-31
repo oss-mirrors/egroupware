@@ -42,7 +42,7 @@ class uiwidgets
 			$this->template = new Template(common::get_tpl_dir('felamimail'));
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
 			$this->charset = translation::charset();
-			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID']))
 				$this->profileID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
 
 			$this->bofelamimail = felamimail_bo::getInstance(true,$this->profileID);
@@ -272,116 +272,184 @@ class uiwidgets
 			return '';
 		}
 
-		private function get_actions()
+		private function get_actions(array &$action_links=array())
 		{
 			// dublicated from felamimail_hooks
-			$deleteOptions = array(
-				'move_to_trash'		=> lang('move to trash'),
-				'mark_as_deleted'	=> lang('mark as deleted'),
-				'remove_immediately'	=> lang('remove immediately')
+			static $deleteOptions = array(
+				'move_to_trash'		=> 'move to trash',
+				'mark_as_deleted'	=> 'mark as deleted',
+				'remove_immediately' =>	'remove immediately',
 			);
+			// todo: real hierarchical folder list
+			$folders = array(
+				'INBOX' => 'INBOX',
+				'Drafts' => 'Drafts',
+				'Sent' => 'Sent',
+			);
+
 			$actions =  array(
-				array(
-					"id" => "mark_flagged",
-					"caption" => lang('Mark selected as flagged'),
-					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'unread_flagged_small'),
-					"group" => 1,
-					"type" => "popup",
-					"onExecute" => "javaScript:mail_markFlagged",
+				'open' => array(
+					'caption' => lang('Open'),
+					'group' => ++$group,
+					'onExecute' => 'javaScript:mail_open',
+					'allowOnMultiple' => false,
+					'default' => true,
 				),
-				array(
-					"id" => "mark_unflagged",
-					"caption" => lang('Mark selected as unflagged'),
-					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'read_flagged_small'),
-					"group" => 1,
-					"type" => "popup",
-					"onExecute" => "javaScript:mail_markUnflagged",
+				'compose' => array(
+					'caption' => 'Compose',
+					'icon' => 'new',
+					'group' => $group,
+					'onExecute' => 'javaScript:mail_compose',
+					'allowOnMultiple' => false,
 				),
-				array(
-					"id" => "delete",
-					"caption" => $deleteOptions[$this->bofelamimail->mailPreferences->preferences['deleteOptions']],
-					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'delete'),
-					"group" => 3,
-					"onExecute" => "javaScript:mail_delete",
-					"type" => "popup"
+				'reply' => array(
+					'caption' => 'Reply',
+					'icon' => 'mail_reply',
+					'group' => ++$group,
+					'onExecute' => 'javaScript:mail_compose',
+					'allowOnMultiple' => false,
 				),
-				array(
-					"id" => "mark_read",
-					"caption" => lang('Mark selected as read'),
-					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'read_small'),
-					"group" => 2,
-					"type" => "popup",
-					"onExecute" => "javaScript:mail_markRead",
+				'reply_all' => array(
+					'caption' => 'Reply All',
+					'icon' => 'mail_replyall',
+					'group' => $group,
+					'onExecute' => 'javaScript:mail_compose',
+					'allowOnMultiple' => false,
 				),
-				array(
-					"id" => "mark_unread",
-					"caption" => lang('Mark selected as unread'),
-					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'unread_small'),
-					"group" => 2,
-					"type" => "popup",
-					"onExecute" => "javaScript:mail_markUnread",
+				'forward' => array(
+					'caption' => 'Forward',
+					'icon' => 'mail_forward',
+					'group' => $group,
+					'onExecute' => 'javaScript:mail_compose',
 				),
-				array(
-					"id" => "drag_mail",
-					"dragType" => "mail",
-					"type" => "drag",
-					"onExecute" => "javaScript:mail_dragStart",
+				'composeasnew' => array(
+					'caption' => 'Compose as new',
+					'icon' => 'new',
+					'group' => $group,
+					'onExecute' => 'javaScript:mail_compose',
+					'allowOnMultiple' => false,
 				),
-				array(
-					"id" => "drop_move_mail",
-					"type" => "drop",
-					"acceptedTypes" => "mail",
-					"iconUrl" => $GLOBALS['egw']->common->image('filemanager', 'editcut'),
-					"caption" => lang("Move mails here"),
-					"onExecute" => "javaScript:mail_move"
+				'infolog' => array(
+					'caption' => 'InfoLog',
+					'hint' => 'Save as InfoLog',
+					'icon' => 'infolog/navbar',
+					'group' => ++$group,
+					'onExecute' => 'javaScript:mail_infolog',
+					'allowOnMultiple' => false,
 				),
-				array(
-					"id" => "drop_copy_mail",
-					"type" => "drop",
-					"acceptedTypes" => "mail",
-					"iconUrl" => $GLOBALS['egw']->common->image('filemanager', 'editcopy'),
-					"caption" => lang("Copy mails here"),
-					"onExecute" => "javaScript:mail_copy"
-				)
+				'tracker' => array(
+					'caption' => 'Tracker',
+					'hint' => 'Save as ticket',
+					'group' => $group,
+					'icon' => 'tracker/navbar',
+					'onExecute' => 'javaScript:mail_tracker',
+					'allowOnMultiple' => false,
+				),
+				'print' => array(
+					'caption' => 'Print',
+					'group' => ++$group,
+					'onExecute' => 'javaScript:mail_print',
+					'allowOnMultiple' => false,
+				),
+				'save' => array(
+					'caption' => 'Save',
+					'hint' => 'Save message to disk',
+					'group' => $group,
+					'icon' => 'fileexport',
+					'onExecute' => 'javaScript:mail_save',
+					'allowOnMultiple' => false,
+				),
+				'header' => array(
+					'caption' => 'Header',
+					'hint' => 'View header lines',
+					'group' => $group,
+					'icon' => 'kmmsgread',
+					'onExecute' => 'javaScript:mail_header',
+					'allowOnMultiple' => false,
+				),
+				'select_all' => array(
+					'caption' => 'Select all',
+					'checkbox' => true,
+					'hint' => 'All messages in folder',
+					'group' => ++$group,
+				),
+				'mark' => array(
+					'caption' => 'Mark as',
+					'icon' => 'read_small',
+					'group' => $group,
+					'children' => array(
+						'flagged' => array(
+							'caption' => 'Flagged',
+							'icon' => 'unread_flagged_small',
+							'onExecute' => 'javaScript:mail_flag',
+						),
+						'unflagged' => array(
+							'caption' => 'Unflagged',
+							'icon' => 'read_flagged_small',
+							'onExecute' => 'javaScript:mail_flag',
+						),
+						'read' => array(
+							'caption' => 'Read',
+							'icon' => 'read_small',
+							'onExecute' => 'javaScript:mail_flag',
+						),
+						'unread' => array(
+							'caption' => 'Unread',
+							'icon' => 'unread_small',
+							'onExecute' => 'javaScript:mail_flag',
+						),
+					),
+				),
+				'move' => array(
+					'caption' => 'Move to',
+					'group' => $group,
+					'icon' => 'move',
+					'children' => $folders,
+					'prefix' => 'move_',
+					'onExecute' => 'javaScript:mail_move_or_copy',
+				),
+				'copy' => array(
+					'caption' => 'Copy to',
+					'group' => $group,
+					'icon' => 'copy',
+					'children' => $folders,
+					'prefix' => 'copy_',
+					'onExecute' => 'javaScript:mail_move_or_copy',
+				),
+				'delete' => array(
+					'caption' => 'Delete',
+					'hint' => $deleteOptions[$this->bofelamimail->mailPreferences->preferences['deleteOptions']],
+					'group' => ++$group,
+					'onExecute' => 'javaScript:mail_delete',
+				),
+				'drag_mail' => array(
+					'dragType' => 'mail',
+					'type' => 'drag',
+					'onExecute' => 'javaScript:mail_dragStart',
+				),
+				'drop_move_mail' => array(
+					'type' => 'drop',
+					'acceptedTypes' => 'mail',
+					'icon' => 'filemanager/editcut',
+					'caption' => 'Move mails here',
+					'onExecute' => 'javaScript:mail_move'
+				),
+				'drop_copy_mail' => array(
+					'type' => 'drop',
+					'acceptedTypes' => 'mail',
+					'icon' => 'filemanager/editcopy',
+					'caption' => 'Copy mails here',
+					'onExecute' => 'javaScript:mail_copy'
+				),
 			);
-/*
-				array(
-					"id" => "reply",
-					"caption" => lang('Reply'),
-					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'mail_reply'),
-					"group" => 0,
-					"onExecute" => "javaScript:mail_reply",
-					"allowOnMultiple" => false,
-					"type" => "popup"
-				),
-				array(
-					"id" => "reply_all",
-					"caption" => lang('Reply All'),
-					"iconUrl" => $GLOBALS['egw']->common->image('felamimail', 'mail_replyall'),
-					"group" => 0,
-					"onExecute" => "javaScript:mail_replyAll",
-					"allowOnMultiple" => false,
-					"type" => "popup"
-				),
-*/
 
-			return $actions;
+			return nextmatch_widget::egw_actions($actions, 'felamimail', '', $action_links);
 		}
-
-		private function get_action_groups()
-		{
-			return array(
-				"mail" => array(
-					"mark_flagged", "mark_unflagged", "delete", "mark_read", "mark_unread", "drag_mail"
-				)
-			);
-			//"reply", "reply_all",
-		}
-
 
 		function get_grid_js($foldertype,$_folderName,&$rowsFetched,$offset=0,$headers=false,$getAllIds=false)
 		{
 			//error_log(__METHOD__.__LINE__.array2string(array('Foldertype'=>$foldertype,'Foldername'=>$_folderName,'Offset'=>$offset,'getAllIds'=>$getAllIds)));
+			$action_links=array();
 			$js = '<script type="text/javascript">
 if (typeof objectManager == "undefined") var objectManager = null;
 if (typeof actionManager == "undefined") var actionManager = null;
@@ -390,16 +458,18 @@ $(document).ready(function() {
 	$(window).resize(handleResize);
 	// Create the base objects and feed them with data
 	actionManager = new egwActionManager();
-	actionManager.updateActions('.json_encode($this->get_actions()).');
+	actionManager.updateActions('.json_encode($actions=$this->get_actions($action_links)).');
 	objectManager = new egwActionObjectManager("baseObject", actionManager);
 
 	mailGrid = new egwGrid(document.getElementById("divMessageTableList"),
 		'.json_encode($this->get_columns_obj(true,$foldertype,$_folderName)->get_assoc()).', objectManager, egw_email_fetchDataProc,
 		egw_email_columnChangeProc, window);
-	mailGrid.setActionLinkGroups('.json_encode($this->get_action_groups()).');
+	mailGrid.setActionLinkGroups('.json_encode(array('mail' => $action_links)).');
 	mailGrid.selectedChangeCallback = selectedGridChange;
 	// get_all_ids is to retrieve all message uids. no pagination needed anymore
 ';
+error_log(array2string($actions));
+error_log(array2string($action_links));
 				if ($getAllIds === true)
 				{
 					$js .= '
@@ -421,9 +491,9 @@ $(document).ready(function() {
 	}
 //alert("constructed grid, after resize"+mailGrid);
 	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
-	for (var i=0; i<allSelected.length; i++) 
+	for (var i=0; i<allSelected.length; i++)
 	{
-		if (allSelected[i].id.length>0) 
+		if (allSelected[i].id.length>0)
 		{
 			allSelected[i].setSelected(false);
 			allSelected[i].setFocused(true);
@@ -454,10 +524,10 @@ $(document).ready(function() {
 			{
 				$reverse = (bool)$this->sessionData['sortReverse'];
 				$sR = $this->bofelamimail->getSortedList(
-					$_folderName, 
-					$this->sessionData['sort'], 
-					$reverse, 
-					(array)$this->sessionData['messageFilter'], 
+					$_folderName,
+					$this->sessionData['sort'],
+					$reverse,
+					(array)$this->sessionData['messageFilter'],
 					$rByUid=true
 				);
 				if($reverse === true) $sR = array_reverse((array)$sR);
@@ -491,7 +561,7 @@ $(document).ready(function() {
 			$rowsFetched = count($sortResult['header']);
 			//error_log(__METHOD__.__LINE__.' Data:'.array2string($sortResult));
 			$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
-			return $this->header2gridelements($sortResult['header'],$cols, $_folderName, $uidOnly=false,$folderType,$dataForXMails=50,$previewMessage); 
+			return $this->header2gridelements($sortResult['header'],$cols, $_folderName, $uidOnly=false,$folderType,$dataForXMails=50,$previewMessage);
 		}
 
 		function get_range($_folderName,$folderType,&$rowsFetched,$offset,$uidOnly=false,$headers=false)
@@ -529,7 +599,7 @@ $(document).ready(function() {
 			$rowsFetched = count($sortResult['header']);
 			//error_log(__METHOD__.__LINE__.' Data:'.array2string($sortResult));
 			$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
-			return $this->header2gridelements($sortResult['header'],$cols, $_folderName, $uidOnly,$folderType,$dataForXMails=50,$previewMessage); 
+			return $this->header2gridelements($sortResult['header'],$cols, $_folderName, $uidOnly,$folderType,$dataForXMails=50,$previewMessage);
 		}
 
 		private static function get_columns_obj($load_userdata = true, $foldertype=0,$_folderName='')
@@ -657,7 +727,7 @@ $(document).ready(function() {
 			$this->bofelamimail->restoreSessionData();
 			$_folderName = $this->bofelamimail->sessionData['mailbox'];
 			$folderType = $this->bofelamimail->getFolderType($_folderName);
-			$obj = self::get_columns_obj(true,$folderType,$_foldername); 
+			$obj = self::get_columns_obj(true,$folderType,$_foldername);
 			$obj->store_userdata($data);
 		}
 
@@ -777,7 +847,7 @@ $(document).ready(function() {
 				//if (in_array("check", $cols))
 				// don't overwrite check with "false" as this forces the grid to
 				// deselect the row - sending "0" doesn't do that
-				$data["check"] = $previewMessage == $header['uid'] ? true : 0;// $row_selected; //TODO:checkbox true or false 
+				$data["check"] = $previewMessage == $header['uid'] ? true : 0;// $row_selected; //TODO:checkbox true or false
 				//$data["check"] ='<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="'.$message_uid.'"
 				//	onclick="toggleFolderRadio(this, refreshTimeOut)">';
 
@@ -835,9 +905,9 @@ $(document).ready(function() {
 						$preview_message_windowName = $windowName;
 					}
 
-					$data["subject"] = '<a class="'.$css_style.'" name="subject_url" href="#" 
-						onclick="fm_handleMessageClick(false, \''.$url_read_message.'\', \''.$preview_message_windowName.'\', this); return false;" 
-						ondblclick="fm_handleMessageClick(true, \''.$url_read_message.'\', \''.$read_message_windowName.'\', this); return false;" 
+					$data["subject"] = '<a class="'.$css_style.'" name="subject_url" href="#"
+						onclick="fm_handleMessageClick(false, \''.$url_read_message.'\', \''.$preview_message_windowName.'\', this); return false;"
+						ondblclick="fm_handleMessageClick(true, \''.$url_read_message.'\', \''.$read_message_windowName.'\', this); return false;"
 						title="'.$fullSubject.'">'.$subject.'</a>';//$subject; // the mailsubject
 				}
 
@@ -1421,7 +1491,7 @@ $(document).ready(function() {
 
 			//print email
 			$navbarImages = array(
-				'fileprint' => array(
+				'print' => array(
 					'action'	=> ($_forceNewWindow ? "egw_openWindowCentered('$printURL','forward_".$_headerData['uid']."',".$fm_width.",".$fm_height.");": "window.location.href = '$printURL'"),
 					'tooltip'	=> lang('print it'),
 				),
@@ -1438,12 +1508,12 @@ $(document).ready(function() {
 				list($i_width,$i_height) = explode('x',egw_link::get_registry('tracker','add_popup'));
 				$navbarImages['to_tracker'] = array(
 					'action'    => "egw_openWindowCentered('$to_trackerURL','_blank',".$i_width.",".$i_height.")",
-					'tooltip'   => lang('save as tracker'));
+					'tooltip'   => lang('Save as ticket'));
 			}
 			// save email as
 			$navbarImages['fileexport'] = array(
 				'action'	=> ($_forceNewWindow ? "window.open('$saveMessageURL','_blank','dependent=yes,width=100,height=100,scrollbars=yes,status=yes')": "window.location.href = '$saveMessageURL'"),
-				'tooltip'	=> lang('save message to disk'),
+				'tooltip'	=> lang('Save message to disk'),
 			);
 
 			// view header lines

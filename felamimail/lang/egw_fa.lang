@@ -201,7 +201,7 @@ messages	felamimail	fa	پیام
 mon	felamimail	fa	دوشنبه
 move	felamimail	fa	انتقال دادن
 move messages	felamimail	fa	انتقال پیامها
-move selected to	felamimail	fa	انتقال انتخاب شده ها به
+move to	felamimail	fa	انتقال انتخاب شده ها به
 move to trash	felamimail	fa	انتقال به بازیافت
 moving messages to	felamimail	fa	در حال انتقال پیامها به
 name	felamimail	fa	نام

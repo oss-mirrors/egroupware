@@ -300,7 +300,7 @@ move	felamimail	sk	presunúť
 move folder	felamimail	sk	presunúť priečinok
 move messages	felamimail	sk	presunúť správy
 move messages?	felamimail	sk	Presunúť správy?
-move selected to	felamimail	sk	presunúť vybrané do
+move to	felamimail	sk	presunúť vybrané do
 move to trash	felamimail	sk	Presunúť do Odpadkového koša
 moving messages to	felamimail	sk	presúvam správy do
 name	felamimail	sk	Meno

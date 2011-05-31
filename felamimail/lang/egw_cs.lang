@@ -300,7 +300,7 @@ move	felamimail	cs	přesunout
 move folder	felamimail	cs	přesunout složku
 move messages	felamimail	cs	přesunout zprávy
 move messages?	felamimail	cs	Přesunout zprávy?
-move selected to	felamimail	cs	přesunout vybrané (kam)
+move to	felamimail	cs	přesunout vybrané (kam)
 move to trash	felamimail	cs	Přesunout do koše
 moving messages to	felamimail	cs	přesouvám zprávy do
 name	felamimail	cs	Jméno

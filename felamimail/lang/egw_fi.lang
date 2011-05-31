@@ -300,7 +300,7 @@ move	felamimail	fi	Siirrä
 move folder	felamimail	fi	Siirrä kansio
 move messages	felamimail	fi	Siirrä viesti(t)
 move messages?	felamimail	fi	Siirretäänkö viestit?
-move selected to	felamimail	fi	Siirrä valitut:
+move to	felamimail	fi	Siirrä valitut:
 move to trash	felamimail	fi	Siirrä roskakoriin
 moving messages to	felamimail	fi	Siirretään viestejä
 name	felamimail	fi	Nimi

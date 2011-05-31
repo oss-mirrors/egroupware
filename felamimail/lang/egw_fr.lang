@@ -249,7 +249,7 @@ messages	felamimail	fr	Messages
 mon	felamimail	fr	Lun
 move	felamimail	fr	Déplacer
 move messages	felamimail	fr	Déplacer les messages
-move selected to	felamimail	fr	Déplacer le choix vers
+move to	felamimail	fr	Déplacer le choix vers
 move to trash	felamimail	fr	Déplacer vers la Corbeille
 moving messages to	felamimail	fr	Déplacer les messages vers
 name	felamimail	fr	Nom

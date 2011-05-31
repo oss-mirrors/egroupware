@@ -172,7 +172,7 @@ messages	felamimail	lv	vēstules
 mon	felamimail	lv	Pr
 move	felamimail	lv	pārvietot
 move messages	felamimail	lv	pārvietot vēstules
-move selected to	felamimail	lv	pārvietot atlasītās uz
+move to	felamimail	lv	pārvietot atlasītās uz
 move to trash	felamimail	lv	Pārvietot uz atkritumiem
 moving messages to	felamimail	lv	vēstules tiek pārvietoti uz
 name	felamimail	lv	Vārds

@@ -60,8 +60,8 @@ close all	felamimail	de	Schließe alle
 close this page	felamimail	de	Diese Seite schließen
 close window	felamimail	de	Fenster schließen
 color	felamimail	de	Farbe
-compose	felamimail	de	E-Mail schreiben
-compose as new	felamimail	de	als neue Nachricht verwenden
+compose	felamimail	de	Verfassen
+compose as new	felamimail	de	Als neu bearbeiten
 compress folder	felamimail	de	Ordner komprimieren
 condition	felamimail	de	Bedingung
 configuration	felamimail	de	Konfiguration
@@ -70,6 +70,7 @@ connection dropped by imap server.	felamimail	de	Verbindung von IMAP Server been
 contact not found!	felamimail	de	Kontakt nicht gefunden!
 contains	felamimail	de	enthält
 copy or move messages?	felamimail	de	Nachrichten kopieren oder Verschieben?
+copy to	felamimail	de	Kopieren in
 copying messages to	felamimail	de	kopiere Nachrichten in folgenden Ordner
 could not append message:	felamimail	de	Konnte die Nachricht nicht hinzufügen:
 could not complete request. reason given: %s	felamimail	de	Konnte Anfrage nicht beenden. Grund: %s
@@ -294,6 +295,7 @@ manage emailfilter / vacation	preferences	de	Verwalten der E-Mail-Filter und Abw
 manage folders	common	de	Ordner verwalten
 manage sieve	common	de	Sieve-Scripte verwalten
 manage signatures	felamimail	de	Signaturen verwalten
+mark as	felamimail	de	Markieren als
 mark as deleted	felamimail	de	als gelöscht markieren
 mark messages as	felamimail	de	ausgewählte Nachrichten markieren als
 mark selected as flagged	felamimail	de	ausgewählte Nachrichten markieren
@@ -311,7 +313,7 @@ move	felamimail	de	Verschieben
 move folder	felamimail	de	Ordner verschieben
 move messages	felamimail	de	Nachrichten verschieben
 move messages?	felamimail	de	Nachrichten verschieben?
-move selected to	felamimail	de	verschieben nach
+move to	felamimail	de	Verschieben in
 move to trash	felamimail	de	in den Papierkorb verschieben
 moving messages to	felamimail	de	verschiebe Nachrichten nach
 name	felamimail	de	Name
@@ -409,7 +411,7 @@ save	felamimail	de	Speichern
 save all	felamimail	de	Alle speichern
 save as draft	felamimail	de	als Entwurf speichern
 save as infolog	felamimail	de	Als Infolog speichern
-save as tracker	felamimail	de	Als Verfolgungsqueue Eintrag speichern
+save as ticket	felamimail	de	Als Ticket speichern
 save changes	felamimail	de	Änderungen speichern
 save message to disk	felamimail	de	Nachricht speichern
 save of message %1 failed. could not save message to folder %2 due to: %3	felamimail	de	Das speichern der Nachricht %1 schlug fehl. Sie konnte nicht im Ordner %2 abgelegt werden. Grund: %3

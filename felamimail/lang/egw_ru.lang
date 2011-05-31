@@ -269,7 +269,7 @@ messages	felamimail	ru	сообщения
 mon	felamimail	ru	Пнд
 move	felamimail	ru	переместить
 move messages	felamimail	ru	переместить сообщения
-move selected to	felamimail	ru	переместить выбранное в
+move to	felamimail	ru	переместить выбранное в
 move to trash	felamimail	ru	Переместить в корзину
 moving messages to	felamimail	ru	Перемещение сообщений в
 name	felamimail	ru	Имя

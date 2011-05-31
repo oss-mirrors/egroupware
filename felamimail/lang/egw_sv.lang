@@ -244,7 +244,7 @@ messages	felamimail	sv	Meddelanden
 mon	felamimail	sv	Mån
 move	felamimail	sv	Flytta
 move messages	felamimail	sv	Flytta meddelanden
-move selected to	felamimail	sv	Flytta valda till
+move to	felamimail	sv	Flytta valda till
 move to trash	felamimail	sv	Flytta till Borttaget
 moving messages to	felamimail	sv	Flyttar meddelanden till
 name	felamimail	sv	Namn

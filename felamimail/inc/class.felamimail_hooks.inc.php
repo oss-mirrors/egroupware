@@ -90,7 +90,7 @@ class felamimail_hooks
 			$folderList = array();
 
 			$profileID = 0;
-			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID']))
 				$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
 
 			$bofelamimail = felamimail_bo::getInstance($profileID);
@@ -539,7 +539,7 @@ class felamimail_hooks
 		// Only Modify the $file and $title variables.....
 		$title = $appname = 'felamimail';
 		$profileID = 0;
-		if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+		if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID']))
 			$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
 
 		$bofelamimail = felamimail_bo::getInstance($profileID);
@@ -586,7 +586,7 @@ class felamimail_hooks
 		$menu_title = $GLOBALS['egw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
 		$file = array();
 		$profileID = 0;
-		if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+		if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID']))
 			$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
 
 		$bofelamimail = felamimail_bo::getInstance(true,$profileID);
@@ -623,84 +623,6 @@ class felamimail_hooks
 			$file += array(
 				'Compose' => "javascript:egw_openWindowCentered2('".egw::link('/index.php', $linkData,false)."','compose',700,750,'no','$appname');",
 			);
-		}
-		// buttons
-		if($showMainScreenStuff) {
-
-			// some buttons
-			$linkData = array (
-				'menuaction'    => 'felamimail.uicompose.compose'
-			);
-			$urlCompose = "egw_appWindow('".$appname."').openComposeWindow('".egw::link('/index.php',$linkData,false)."');";
-
-			$navbarImages = array(
-				'new'			=> array(
-					'action'	=> $urlCompose,
-					'tooltip'	=> lang('compose'),
-				),
-				'read_small'		=> array(
-					'action'	=> "egw_appWindow('".$appname."').flagMessages('read')",
-					'tooltip'	=> lang('mark selected as read'),
-				),
-				'unread_small'		=> array(
-					'action'	=> "egw_appWindow('".$appname."').flagMessages('unread')",
-					'tooltip'	=> lang('mark selected as unread'),
-				),
-				'unread_flagged_small'	=> array(
-					'action'	=> "egw_appWindow('".$appname."').flagMessages('flagged')",
-					'tooltip'	=> lang('mark selected as flagged'),
-				),
-				'read_flagged_small'	=> array(
-					'action'	=> "egw_appWindow('".$appname."').flagMessages('unflagged')",
-					'tooltip'	=> lang('mark selected as unflagged'),
-				),
-				'delete'		=> array(
-					'action'	=> "egw_appWindow('".$appname."').deleteMessages(egw_appWindow('".$appname."').mailGridGetSelected())",
-					'tooltip'	=> lang('mark as deleted'),
-				),
-			);
-
-			foreach($navbarImages as $buttonName => $buttonInfo) {
-				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip']);
-			}
-			$file[] = array(
-				'text' => "<TABLE WIDTH=\"100%\" CELLPADDING=\"0\" CELLSPACING=\"0\" style=\"border: solid #aaaaaa 1px; border-right: solid black 1px; \">
-							<tr class=\"navbarBackground\">
-								<td align=\"right\" width=\"100%\">".$navbarButtons."</td>
-							</tr>
-						   </table>",
-				'no_lang' => True,
-				'link' => False,
-				'icon' => False,
-			);
-		}
-
-		// empty trash (if available -> move to trash )
-		if($preferences->preferences['deleteOptions'] == 'move_to_trash')
-		{
-			$file += Array(
-				'_NewLine_'	=> '', // give a newline
-				'empty trash'	=> "javascript:egw_appWindow('".$appname."').emptyTrash();",
-			);
-		}
-		if($preferences->preferences['deleteOptions'] == 'mark_as_deleted')
-		{
-			$file += Array(
-				'_NewLine_'		=> '', // give a newline
-				'compress folder'	=> "javascript:egw_appWindow('".$appname."').compressFolder();",
-			);
-		}
-		// import Message link - only when the required library is available
-		if ((@include_once 'Mail/mimeDecode.php') !== false)
-		{
-			$linkData = array(
-				'menuaction' => 'felamimail.uifelamimail.importMessage',
-			);
-
-			$file += array(
-				'import message' => "javascript:egw_openWindowCentered2('".egw::link('/index.php', $linkData,false)."','import',700,125,'no','$appname');",
-			);
-
 		}
 		// select account box, treeview, we use a whileloop as we may want to break out
 		while($showMainScreenStuff) {
@@ -757,7 +679,7 @@ class felamimail_hooks
 					'text' => "<div id=\"divAccountSelect\" style=\" width:100%;\">".$selectAccount."</div>",
 					'no_lang' => True,
 					'link' => False,
-					//'icon' => False,
+					'icon' => False,
 				);
 				// show foldertree
 				//_debug_array($folderObjects);
@@ -789,6 +711,84 @@ class felamimail_hooks
 				);
 			}
 			break; // kill the while loop as we need only one go
+		}
+		// buttons
+		if($showMainScreenStuff) {
+
+			// some buttons
+			$linkData = array (
+				'menuaction'    => 'felamimail.uicompose.compose'
+			);
+			$urlCompose = "egw_appWindow('".$appname."').openComposeWindow('".egw::link('/index.php',$linkData,false)."');";
+
+			$navbarImages = array(
+				'new'			=> array(
+					'action'	=> $urlCompose,
+					'tooltip'	=> lang('compose'),
+				),
+				'read_small'		=> array(
+					'action'	=> "egw_appWindow('".$appname."').flagMessages('read')",
+					'tooltip'	=> lang('mark selected as read'),
+				),
+				'unread_small'		=> array(
+					'action'	=> "egw_appWindow('".$appname."').flagMessages('unread')",
+					'tooltip'	=> lang('mark selected as unread'),
+				),
+				'unread_flagged_small'	=> array(
+					'action'	=> "egw_appWindow('".$appname."').flagMessages('flagged')",
+					'tooltip'	=> lang('mark selected as flagged'),
+				),
+				'read_flagged_small'	=> array(
+					'action'	=> "egw_appWindow('".$appname."').flagMessages('unflagged')",
+					'tooltip'	=> lang('mark selected as unflagged'),
+				),
+				'delete'		=> array(
+					'action'	=> "egw_appWindow('".$appname."').deleteMessages(egw_appWindow('".$appname."').mailGridGetSelected())",
+					'tooltip'	=> lang('mark as deleted'),
+				),
+			);
+
+			foreach($navbarImages as $buttonName => $buttonInfo) {
+				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip']);
+			}
+			/*$file[] = array(
+				'text' => "<TABLE WIDTH=\"100%\" CELLPADDING=\"0\" CELLSPACING=\"0\" style=\"border: solid #aaaaaa 1px; border-right: solid black 1px; \">
+							<tr class=\"navbarBackground\">
+								<td align=\"right\" width=\"100%\">".$navbarButtons."</td>
+							</tr>
+						   </table>",
+				'no_lang' => True,
+				'link' => False,
+				'icon' => False,
+			);*/
+		}
+
+		// empty trash (if available -> move to trash )
+		if($preferences->preferences['deleteOptions'] == 'move_to_trash')
+		{
+			$file += Array(
+				'_NewLine_'	=> '', // give a newline
+				'empty trash'	=> "javascript:egw_appWindow('".$appname."').emptyTrash();",
+			);
+		}
+		if($preferences->preferences['deleteOptions'] == 'mark_as_deleted')
+		{
+			$file += Array(
+				'_NewLine_'		=> '', // give a newline
+				'compress folder'	=> "javascript:egw_appWindow('".$appname."').compressFolder();",
+			);
+		}
+		// import Message link - only when the required library is available
+		if ((@include_once 'Mail/mimeDecode.php') !== false)
+		{
+			$linkData = array(
+				'menuaction' => 'felamimail.uifelamimail.importMessage',
+			);
+
+			$file += array(
+				'import message' => "javascript:egw_openWindowCentered2('".egw::link('/index.php', $linkData,false)."','import',700,125,'no','$appname');",
+			);
+
 		}
 		// display them all
 		display_sidebox($appname,$menu_title,$file);

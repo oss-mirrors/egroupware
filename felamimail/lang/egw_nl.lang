@@ -273,7 +273,7 @@ messages	felamimail	nl	berichten
 mon	felamimail	nl	Maa
 move	felamimail	nl	verplaatsen
 move messages	felamimail	nl	berichten verplaatsen
-move selected to	felamimail	nl	geselecteerde verplaatsen naar
+move to	felamimail	nl	geselecteerde verplaatsen naar
 move to trash	felamimail	nl	Verplaatsen naar prullenmand
 moving messages to	felamimail	nl	berichten verplaatsen naar
 name	felamimail	nl	Naam

@@ -200,7 +200,7 @@ messages	felamimail	ca	missatges
 mon	felamimail	ca	Dl
 move	felamimail	ca	moure
 move messages	felamimail	ca	moure missatges
-move selected to	felamimail	ca	moure els seleccionats a
+move to	felamimail	ca	moure els seleccionats a
 move to trash	felamimail	ca	Moure a la paperera
 moving messages to	felamimail	ca	movent missatges a
 name	felamimail	ca	Nom

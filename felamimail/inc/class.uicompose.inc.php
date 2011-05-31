@@ -144,7 +144,7 @@
 				}
 				$uidisplay   = CreateObject('felamimail.uidisplay');
 				$uidisplay->printMessage($messageUid, $formData['printit']);
-				//$GLOBALS['egw']->link('/index.php',array('menuaction' => 'felamimail.uidisplay.printMessage','uid'=>$messageUid));
+				//egw::link('/index.php',array('menuaction' => 'felamimail.uidisplay.printMessage','uid'=>$messageUid));
 				return;
 			}
 			if((bool)$_POST['saveAsDraft'] == true) {
@@ -182,7 +182,7 @@
 				}
 			}
 
-			#$GLOBALS['egw']->common->egw_exit();
+			#common::egw_exit();
 			print "<script type=\"text/javascript\">window.close();</script>";
 		}
 
@@ -319,7 +319,7 @@
 			$this->t->set_var("mySigID",($presetSig ? $presetSig : $sessionData['signatureID']));
 
 			if ($GLOBALS['egw_info']['user']['apps']['addressbook']) {
-				$this->t->set_var("link_addressbook",$GLOBALS['egw']->link('/index.php',array(
+				$this->t->set_var("link_addressbook",egw::link('/index.php',array(
 					'menuaction' => 'addressbook.addressbook_ui.emailpopup',
 				)));
 			} else {
@@ -331,14 +331,14 @@
 			(
 				'menuaction'	=> 'felamimail.uicompose.selectFolder',
 			);
-			$this->t->set_var('folder_select_url',$GLOBALS['egw']->link('/index.php',$linkData));
+			$this->t->set_var('folder_select_url',egw::link('/index.php',$linkData));
 
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uicompose.fileSelector',
 				'composeid'	=> $this->composeID
 			);
-			$this->t->set_var('file_selector_url',$GLOBALS['egw']->link('/index.php',$linkData));
+			$this->t->set_var('file_selector_url',egw::link('/index.php',$linkData));
 
 			$this->t->set_var('vfs_selector_url',egw::link('/index.php',array(
 				'menuaction' => 'filemanager.filemanager_select.select',
@@ -351,7 +351,7 @@
 			{
 				$this->t->set_var('vfs_attach_button','
 				<button class="menuButton" type="button" onclick="fm_compose_displayVfsSelector();" title="'.htmlspecialchars(lang('filemanager')).'">
-					<img src="'.$GLOBALS['egw']->common->image('filemanager','navbar').'" height="18">
+					<img src="'.common::image('filemanager','navbar').'" height="18">
 				</button>');
 			}
 			else
@@ -363,7 +363,7 @@
 				'menuaction'	=> 'felamimail.uicompose.action',
 				'composeid'	=> $this->composeID
 			);
-			$this->t->set_var("link_action",$GLOBALS['egw']->link('/index.php',$linkData));
+			$this->t->set_var("link_action",egw::link('/index.php',$linkData));
 			$this->t->set_var('folder_name',$this->bofelamimail->sessionData['mailbox']);
 			$this->t->set_var('compose_id',$this->composeID);
 			// the editorobject is needed all the time (since we use CKEDITOR3
@@ -388,7 +388,7 @@
 			foreach($allIdentities as $key => $singleIdentity) {
 				#$identities[$singleIdentity->id] = $singleIdentity->realName.' <'.$singleIdentity->emailAddress.'>';
 				if (array_search($singleIdentity->realName.' <'.$singleIdentity->emailAddress.'>',$identities)==false) $identities[$key] = $singleIdentity->realName.' <'.$singleIdentity->emailAddress.'>';
-				if(!empty($singleIdentity->default)) 
+				if(!empty($singleIdentity->default))
 				{
 					#$defaultIdentity = $singleIdentity->id;
 					$defaultIdentity = $key;
@@ -399,14 +399,14 @@
 			$this->t->set_var('select_from', $selectFrom);
 			//error_log(__METHOD__.__LINE__.' DefaultIdentity:'.array2string($identities[($presetId ? $presetId : $defaultIdentity)]));
 			// navbar(, kind of)
-			$this->t->set_var('img_clear_left', $GLOBALS['egw']->common->image('felamimail','clear_left'));
-			$this->t->set_var('img_fileopen', $GLOBALS['egw']->common->image('phpgwapi','fileopen'));
-			$this->t->set_var('img_mail_send', $GLOBALS['egw']->common->image('felamimail','mail_send'));
-			$this->t->set_var('img_attach_file', $GLOBALS['egw']->common->image('felamimail','attach'));
-			$this->t->set_var('ajax-loader', $GLOBALS['egw']->common->image('felamimail','ajax-loader'));
-			$this->t->set_var('img_fileexport', $GLOBALS['egw']->common->image('felamimail','fileexport'));
+			$this->t->set_var('img_clear_left', common::image('felamimail','clear_left'));
+			$this->t->set_var('img_fileopen', common::image('phpgwapi','fileopen'));
+			$this->t->set_var('img_mail_send', common::image('felamimail','mail_send'));
+			$this->t->set_var('img_attach_file', common::image('felamimail','attach'));
+			$this->t->set_var('ajax-loader', common::image('felamimail','ajax-loader'));
+			$this->t->set_var('img_fileexport', common::image('felamimail','fileexport'));
 			// prepare print url/button
-			$this->t->set_var('img_print_it', $GLOBALS['egw']->common->image('felamimail','fileprint'));
+			$this->t->set_var('img_print_it', common::image('felamimail','print'));
 			$this->t->set_var('lang_print_it', lang('print it'));
 			$this->t->set_var('print_it', $printURL);
 			// from, to, cc, replyto
@@ -451,7 +451,7 @@
 
 			if ($GLOBALS['egw_info']['user']['apps']['addressbook']) {
 				$this->t->set_var('addressbookButton','<button class="menuButton" type="button" onclick="addybook();" title="'.lang('addressbook').'">
-                    <img src="'.$GLOBALS['egw']->common->image('phpgwapi/templates/phpgw_website','users').'">
+                    <img src="'.common::image('phpgwapi/templates/phpgw_website','users').'">
                 </button>');
 			} else {
 				$this->t->set_var('addressbookButton','');
@@ -567,7 +567,7 @@
 			// attachments
 			if (is_array($sessionData['attachments']) && count($sessionData['attachments']) > 0)
 			{
-				$imgClearLeft	=  $GLOBALS['egw']->common->image('felamimail','clear_left');
+				$imgClearLeft	=  common::image('felamimail','clear_left');
 				foreach((array)$sessionData['attachments'] as $id => $attachment) {
 					$tempArray = array (
 						'1' => $attachment['name'], '.1' => 'width="40%"',
@@ -613,7 +613,7 @@
 			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 
-			$GLOBALS['egw']->common->egw_header();
+			common::egw_header();
 		}
 
 		/**
@@ -686,7 +686,7 @@
 			// this call loads js and css for the treeobject
 			html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
 			egw_framework::validate_file('jscode','composeMessage','felamimail');
-			$GLOBALS['egw']->common->egw_header();
+			common::egw_header();
 
 			#$uiwidgets		=& CreateObject('felamimail.uiwidgets');
 
@@ -700,12 +700,12 @@
 				'menuaction'	=> 'felamimail.uicompose.fileSelector',
 				'composeid'	=> $this->composeID
 			);
-			$this->t->set_var('file_selector_url', $GLOBALS['egw']->link('/index.php',$linkData));
+			$this->t->set_var('file_selector_url', egw::link('/index.php',$linkData));
 
 			$maxUploadSize = ini_get('upload_max_filesize');
 			$this->t->set_var('max_uploadsize', $maxUploadSize);
 
-			$this->t->set_var('ajax-loader', $GLOBALS['egw']->common->image('felamimail','ajax-loader'));
+			$this->t->set_var('ajax-loader', common::image('felamimail','ajax-loader'));
 
 			$this->t->pparse("out","fileSelector");
 		}
@@ -758,7 +758,7 @@
 			{
 				echo $attachmentData['attachment'];
 			}
-			$GLOBALS['egw']->common->egw_exit();
+			common::egw_exit();
 			exit;
 
 		}
@@ -770,7 +770,7 @@
 			html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
 
 			egw_framework::validate_file('jscode','composeMessage','felamimail');
-			$GLOBALS['egw']->common->egw_header();
+			common::egw_header();
 
 			$bofelamimail		= $this->bofelamimail;
 			$uiwidgets		= CreateObject('felamimail.uiwidgets');

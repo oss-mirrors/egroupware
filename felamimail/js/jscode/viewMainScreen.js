@@ -111,26 +111,125 @@ function compressFolder() {
 	egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.compressFolder");
 }
 
-function mail_markRead(_action, _elems)
+/**
+ * Open a single message
+ * 
+ * @param _action
+ * @param _elems _elems[0].id is the row-id
+ */
+function mail_open(_action, _elems)
 {
-	flagMessages('read');
+	alert('mail_open('+_elems[0].id+')');
+
+	var url = window.egw_webserverUrl+'/index.php?';
+	url += 'menuaction=felamimail.uidisplay.display';	// todo compose for Draft folder
+	url += '&mailbox=mailbox=SU5CT1g%3D';	// todo folder
+	url += '&uid='+_elems[0].id;
+	
+	fm_readMessage(url, '', _elems[0].iface.getDOMNode());
+	//fm_handleMessageClick(true, 'https://ralfsmacbook.local/egroupware/index.php?menuaction=felamimail.uidisplay.display&showHeader=false&mailbox=SU5CT1g%3D&uid=100272&id=21287', '', this); return false;	
 }
 
-function mail_markUnread(_action, _elems)
+/**
+ * Compose, reply or forward a message
+ * 
+ * @param _action _action.id is 'compose', 'composeasnew', 'reply', 'reply_all' or 'forward' (forward can be multiple messages)
+ * @param _elems _elems[0].id is the row-id
+ */
+function mail_compose(_action, _elems)
 {
-	flagMessages('unread');
+	alert('mail_'+_action.id+'('+_elems[0].id+')');
 }
 
-function mail_markFlagged(_action, _elems)
+/**
+ * Print a message
+ * 
+ * @param _action
+ * @param _elems _elems[0].id is the row-id
+ */
+function mail_print(_action, _elems)
 {
-	flagMessages('flagged');
+	alert('mail_print('+_elems[0].id+')');
 }
 
-function mail_markUnflagged(_action, _elems)
+/**
+ * Save a message
+ * 
+ * @param _action
+ * @param _elems _elems[0].id is the row-id
+ */
+function mail_save(_action, _elems)
 {
-	flagMessages('unflagged');
+	alert('mail_save('+_elems[0].id+')');
 }
 
+/**
+ * View header of a message
+ * 
+ * @param _action
+ * @param _elems _elems[0].id is the row-id
+ */
+function mail_header(_action, _elems)
+{
+	alert('mail_header('+_elems[0].id+')');
+}
+
+/**
+ * Flag mail as 'read', 'unread', 'flagged' or 'unflagged'
+ * 
+ * @param _action _action.id is 'read', 'unread', 'flagged' or 'unflagged'
+ * @param _elems
+ */
+function mail_flag(_action, _elems)
+{
+	flagMessages(_action.id);
+}
+
+/**
+ * Move or copy (multiple) messages
+ * 
+ * @param _action _action.id is 'move' or 'copy'
+ * @param _elems
+ */
+function mail_move_or_copy(_action, _elems)
+{
+	var ids = "";
+	for (var i = 0; i < _elems.length; i++)
+	{
+		ids += (i > 0 ? ',' : '') + _elems[i].id;
+	}
+	
+	alert('mail_'+_action.id+'('+ids+')');
+}
+
+/**
+ * Save message as InfoLog
+ * 
+ * @param _action
+ * @param _elems _elems[0].id is the row-id
+ */
+function mail_infolog(_action, _elems)
+{
+	alert('mail_infolog('+_elems[0].id+')');
+}
+
+/**
+ * Save message as ticket
+ * 
+ * @param _action _action.id is 'read', 'unread', 'flagged' or 'unflagged'
+ * @param _elems
+ */
+function mail_tracker(_action, _elems)
+{
+	alert('mail_tracker('+_elems[0].id+')');
+}
+
+/**
+ * Delete mails
+ * 
+ * @param _action
+ * @param _elems
+ */
 function mail_delete(_action, _elems)
 {
 	messageList = mailGridGetSelected()
