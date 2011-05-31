@@ -406,7 +406,7 @@ class uiwidgets
 					'icon' => 'move',
 					'children' => $folders,
 					'prefix' => 'move_',
-					'onExecute' => 'javaScript:mail_move_or_copy',
+					'onExecute' => 'javaScript:mail_move',
 				),
 				'copy' => array(
 					'caption' => 'Copy to',
@@ -414,7 +414,7 @@ class uiwidgets
 					'icon' => 'copy',
 					'children' => $folders,
 					'prefix' => 'copy_',
-					'onExecute' => 'javaScript:mail_move_or_copy',
+					'onExecute' => 'javaScript:mail_copy',
 				),
 				'delete' => array(
 					'caption' => 'Delete',
@@ -430,15 +430,15 @@ class uiwidgets
 				'drop_move_mail' => array(
 					'type' => 'drop',
 					'acceptedTypes' => 'mail',
-					'icon' => 'filemanager/editcut',
-					'caption' => 'Move mails here',
+					'icon' => 'move',
+					'caption' => 'Move to',
 					'onExecute' => 'javaScript:mail_move'
 				),
 				'drop_copy_mail' => array(
 					'type' => 'drop',
 					'acceptedTypes' => 'mail',
-					'icon' => 'filemanager/editcopy',
-					'caption' => 'Copy mails here',
+					'icon' => 'copy',
+					'caption' => 'Copy to',
 					'onExecute' => 'javaScript:mail_copy'
 				),
 			);

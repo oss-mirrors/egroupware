@@ -186,23 +186,6 @@ function mail_flag(_action, _elems)
 }
 
 /**
- * Move or copy (multiple) messages
- * 
- * @param _action _action.id is 'move' or 'copy'
- * @param _elems
- */
-function mail_move_or_copy(_action, _elems)
-{
-	var ids = "";
-	for (var i = 0; i < _elems.length; i++)
-	{
-		ids += (i > 0 ? ',' : '') + _elems[i].id;
-	}
-	
-	alert('mail_'+_action.id+'('+ids+')');
-}
-
-/**
  * Save message as InfoLog
  * 
  * @param _action
@@ -1301,7 +1284,7 @@ function felamimail_transform_foldertree() {
 		// Add a new action object to the object manager
 		var obj = treeObj.addObject(folderName,
 			new dhtmlxtreeItemAOI(tree, folderName));
-		obj.updateActionLinks(["drop_copy_mail", "drop_move_mail"]);
+		obj.updateActionLinks(["drop_move_mail", "drop_copy_mail"]);
 	}
 }
 
@@ -1328,19 +1311,37 @@ function mail_getFormData(_actionObjects) {
 	return messages;
 }
 
+/**
+ * Move (multiple) messages to given folder
+ * 
+ * @param _action _action.id is 'drop_move_mail' or 'move_'+folder
+ * @param _senders selected messages
+ * @param _target drop-target, if _action.id = 'drop_move_mail'
+ */
 function mail_move(_action, _senders, _target) {
+	var target = _action.id == 'drop_move_mail' ? _target.id : _action.id.substr(5);
+	var messages = mail_getFormData(_senders);
+	alert('mail_move('+messages.msg.join(',')+' --> '+target+')');
 	// TODO: Write move/copy function which cares about doing the same stuff
 	// as the "onNodeSelect" function!
 	egw_appWindow('felamimail').xajax_doXMLHTTP(
-		"felamimail.ajaxfelamimail.moveMessages", _target.id,
-		mail_getFormData(_senders));
+		"felamimail.ajaxfelamimail.moveMessages", target, messages);
 }
 
+/**
+ * Copy (multiple) messages to given folder
+ * 
+ * @param _action _action.id is 'drop_copy_mail' or 'copy_'+folder
+ * @param _senders selected messages
+ * @param _target drop-target, if _action.id = 'drop_copy_mail'
+ */
 function mail_copy(_action, _senders, _target) {
+	var target = _action.id == 'drop_copy_mail' ? _target.id : _action.id.substr(5);
+	var messages = mail_getFormData(_senders);
+	alert('mail_copy('+messages.msg.join(',')+' --> '+target+')');
 	// TODO: Write move/copy function which cares about doing the same stuff
 	// as the "onNodeSelect" function!
 	egw_appWindow('felamimail').xajax_doXMLHTTP(
-		"felamimail.ajaxfelamimail.copyMessages", _target.id,
-		mail_getFormData(_senders));
+		"felamimail.ajaxfelamimail.copyMessages", target, messages);
 }
 
