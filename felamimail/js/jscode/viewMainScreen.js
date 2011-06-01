@@ -211,7 +211,12 @@ function mail_compose(_action, _elems)
  */
 function mail_print(_action, _elems)
 {
-	alert('mail_print('+_elems[0].id+')');
+	var url = window.egw_webserverUrl+'/index.php?';
+	url += 'menuaction=felamimail.uidisplay.printMessage';	// todo compose for Draft folder
+	//url += '&icServer='+egw_appWindow('felamimail').activeServerID;
+	url += '&mailbox='+egw_appWindow('felamimail').activeFolderB64;
+	url += '&uid='+_elems[0].id;
+	egw_openWindowCentered(url,'print_'+_elems[0].id,700,egw_getWindowOuterHeight());
 }
 
 /**
@@ -222,7 +227,14 @@ function mail_print(_action, _elems)
  */
 function mail_save(_action, _elems)
 {
-	alert('mail_save('+_elems[0].id+')');
+	//alert('mail_save('+_elems[0].id+')');
+	var url = window.egw_webserverUrl+'/index.php?';
+	url += 'menuaction=felamimail.uidisplay.saveMessage';	// todo compose for Draft folder
+	//url += '&icServer='+egw_appWindow('felamimail').activeServerID;
+	url += '&mailbox='+egw_appWindow('felamimail').activeFolderB64;
+	url += '&uid='+_elems[0].id;
+	//window.open(url,'_blank','dependent=yes,width=100,height=100,scrollbars=yes,status=yes')
+	document.location = url;
 }
 
 /**
@@ -233,7 +245,13 @@ function mail_save(_action, _elems)
  */
 function mail_header(_action, _elems)
 {
-	alert('mail_header('+_elems[0].id+')');
+	//alert('mail_header('+_elems[0].id+')');
+	var url = window.egw_webserverUrl+'/index.php?';
+	url += 'menuaction=felamimail.uidisplay.displayHeader';	// todo compose for Draft folder
+	//url += '&icServer='+egw_appWindow('felamimail').activeServerID;
+	url += '&mailbox='+egw_appWindow('felamimail').activeFolderB64;
+	url += '&uid='+_elems[0].id;
+	mail_displayHeaderLines(url);
 }
 
 /**
@@ -255,7 +273,13 @@ function mail_flag(_action, _elems)
  */
 function mail_infolog(_action, _elems)
 {
-	alert('mail_infolog('+_elems[0].id+')');
+	//alert('mail_infolog('+_elems[0].id+')');
+	var url = window.egw_webserverUrl+'/index.php?';
+	url += 'menuaction=infolog.infolog_ui.import_mail';	// todo compose for Draft folder
+	//url += '&icServer='+egw_appWindow('felamimail').activeServerID;
+	url += '&mailbox='+egw_appWindow('felamimail').activeFolderB64;
+	url += '&uid='+_elems[0].id;
+	egw_openWindowCentered(url,'import_mail_'+_elems[0].id,_action.data.width,_action.data.height);
 }
 
 /**
@@ -266,7 +290,13 @@ function mail_infolog(_action, _elems)
  */
 function mail_tracker(_action, _elems)
 {
-	alert('mail_tracker('+_elems[0].id+')');
+	//alert('mail_tracker('+_elems[0].id+')');
+	var url = window.egw_webserverUrl+'/index.php?';
+	url += 'menuaction=tracker.tracker_ui.import_mail';	// todo compose for Draft folder
+	//url += '&icServer='+egw_appWindow('felamimail').activeServerID;
+	url += '&mailbox='+egw_appWindow('felamimail').activeFolderB64;
+	url += '&uid='+_elems[0].id;
+	egw_openWindowCentered(url,'import_tracker_'+_elems[0].id,_action.data.width,_action.data.height);
 }
 
 /**
@@ -305,7 +335,7 @@ function displayMessage(_url,_windowName) {
 	egw_openWindowCentered(_url, _windowName, 850, egw_getWindowOuterHeight());
 }
 
-function fm_displayHeaderLines(_url) {
+function mail_displayHeaderLines(_url) {
 	egw_openWindowCentered(_url,'fm_display_headerLines','700','600',window.outerWidth/2,window.outerHeight/2);
 }
 

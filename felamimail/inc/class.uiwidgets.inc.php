@@ -329,22 +329,6 @@ class uiwidgets
 					'onExecute' => 'javaScript:mail_compose',
 					'allowOnMultiple' => false,
 				),
-				'infolog' => array(
-					'caption' => 'InfoLog',
-					'hint' => 'Save as InfoLog',
-					'icon' => 'infolog/navbar',
-					'group' => ++$group,
-					'onExecute' => 'javaScript:mail_infolog',
-					'allowOnMultiple' => false,
-				),
-				'tracker' => array(
-					'caption' => 'Tracker',
-					'hint' => 'Save as ticket',
-					'group' => $group,
-					'icon' => 'tracker/navbar',
-					'onExecute' => 'javaScript:mail_tracker',
-					'allowOnMultiple' => false,
-				),
 				'print' => array(
 					'caption' => 'Print',
 					'group' => ++$group,
@@ -367,12 +351,14 @@ class uiwidgets
 					'onExecute' => 'javaScript:mail_header',
 					'allowOnMultiple' => false,
 				),
+/*
 				'select_all' => array(
 					'caption' => 'Select all',
 					'checkbox' => true,
 					'hint' => 'All messages in folder',
 					'group' => ++$group,
 				),
+*/
 				'mark' => array(
 					'caption' => 'Mark as',
 					'icon' => 'read_small',
@@ -442,6 +428,34 @@ class uiwidgets
 					'onExecute' => 'javaScript:mail_copy'
 				),
 			);
+			// save as tracker, save as infolog, as this are actions that are either available for all, or not, we do that for all and not via css-class disabling
+			if ($GLOBALS['egw_info']['user']['apps']['infolog'] || $GLOBALS['egw_info']['user']['apps']['tracker']) $group++;
+			if ($GLOBALS['egw_info']['user']['apps']['infolog'])
+			{
+				$actions += array('infolog' => array(
+					'caption' => 'InfoLog',
+					'hint' => 'Save as InfoLog',
+					'icon' => 'infolog/navbar',
+					'group' => $group,
+					'onExecute' => 'javaScript:mail_infolog',
+					'url' => 'menuaction=infolog.infolog_ui.import_mail',
+					'popup' => egw_link::get_registry('infolog', 'add_popup'),
+					'allowOnMultiple' => false,
+				));
+			}
+			if ($GLOBALS['egw_info']['user']['apps']['tracker'])
+			{
+				$actions += array('tracker' => array(
+					'caption' => 'Tracker',
+					'hint' => 'Save as ticket',
+					'group' => $group,
+					'icon' => 'tracker/navbar',
+					'onExecute' => 'javaScript:mail_tracker',
+					'url' => 'menuaction=tracker.tracker_ui.import_mail',
+					'popup' => egw_link::get_registry('tracker', 'add_popup'),
+					'allowOnMultiple' => false,
+				));
+			}
 
 			return nextmatch_widget::egw_actions($actions, 'felamimail', '', $action_links);
 		}
@@ -468,8 +482,8 @@ $(document).ready(function() {
 	mailGrid.selectedChangeCallback = selectedGridChange;
 	// get_all_ids is to retrieve all message uids. no pagination needed anymore
 ';
-error_log(array2string($actions));
-error_log(array2string($action_links));
+//error_log(array2string($actions));
+//error_log(array2string($action_links));
 				if ($getAllIds === true)
 				{
 					$js .= '
@@ -1490,7 +1504,7 @@ error_log(array2string($action_links));
 			//print email
 			$navbarImages = array(
 				'print' => array(
-					'action'	=> ($_forceNewWindow ? "egw_openWindowCentered('$printURL','forward_".$_headerData['uid']."',".$fm_width.",".$fm_height.");": "window.location.href = '$printURL'"),
+					'action'	=> ($_forceNewWindow ? "egw_openWindowCentered('$printURL','print_".$_headerData['uid']."',".$fm_width.",".$fm_height.");": "window.location.href = '$printURL'"),
 					'tooltip'	=> lang('print it'),
 				),
 			);
@@ -1510,13 +1524,13 @@ error_log(array2string($action_links));
 			}
 			// save email as
 			$navbarImages['fileexport'] = array(
-				'action'	=> ($_forceNewWindow ? "window.open('$saveMessageURL','_blank','dependent=yes,width=100,height=100,scrollbars=yes,status=yes')": "window.location.href = '$saveMessageURL'"),
+				'action'	=> "document.location='$saveMessageURL';",//"($_forceNewWindow ? "window.open('$saveMessageURL','_blank','dependent=yes,width=100,height=100,scrollbars=yes,status=yes')": "window.location.href = '$saveMessageURL'"),
 				'tooltip'	=> lang('Save message to disk'),
 			);
 
 			// view header lines
 			$navbarImages['kmmsgread'] = array(
-				'action'	=> "fm_displayHeaderLines('$viewHeaderURL')",
+				'action'	=> "mail_displayHeaderLines('$viewHeaderURL')",
 				'tooltip'	=> lang('view header lines'),
 			);
 

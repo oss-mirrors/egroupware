@@ -2390,6 +2390,7 @@ class felamimail_bo
 			$headersNew = $this->icServer->getSummary($queryString, $rByUid);
 			if ($headersNew == null)
 			{
+				if (self::$debug) error_log(__METHOD__.__LINE__."Uid->$queryString, ByUID? $rByUid");
 				// message retrieval via uid failed try one by one via message number
 				$rByUid = false;
 				foreach($sortResult as $k => $v)
