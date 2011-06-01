@@ -489,6 +489,12 @@ class ajaxfelamimail
 			$response->addScript("activeServerID=".$this->imapServerID.";");
 			$response->addScript("activeFolder = \"".$_folderName."\";");
 			$response->addScript("activeFolderB64 = \"".base64_encode($_folderName)."\";");
+			$draftFolder = $this->bofelamimail->getDraftFolder(false);
+			$response->addScript("draftFolder = \"".($draftFolder?$draftFolder:'')."\";");
+			$response->addScript("draftFolderB64 = \"".($draftFolder?base64_encode($draftFolder):'')."\";");
+			$templateFolder = $this->bofelamimail->getTemplateFolder(false);
+			$response->addScript("templateFolder = \"".($templateFolder?$templateFolder:'')."\";");
+			$response->addScript("templateFolderB64 = \"".($templateFolder?base64_encode($templateFolder):'')."\";");
 			if($this->_connectionStatus === false) {
 				return $response->getXML();
 			}

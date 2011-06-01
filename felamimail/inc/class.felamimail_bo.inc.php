@@ -2951,6 +2951,32 @@ class felamimail_bo
 			}
 		}
 
+		function getDraftFolder($_checkexistance=TRUE)
+		{
+			if(empty($this->mailPreferences->preferences['draftFolder'])) {
+				return false;
+			}
+			$_folderName = $this->mailPreferences->preferences['draftFolder'];
+			// does the folder exist???
+			if ($_checkexistance && !self::folderExists($_folderName)) {
+				return false;
+			}
+			return $_folderName;
+		}
+
+		function getTemplateFolder($_checkexistance=TRUE)
+		{
+			if(empty($this->mailPreferences->preferences['templateFolder'])) {
+				return false;
+			}
+			$_folderName = $this->mailPreferences->preferences['templateFolder'];
+			// does the folder exist???
+			if ($_checkexistance && !self::folderExists($_folderName)) {
+				return false;
+			}
+			return $_folderName;
+		}
+
 		function getTrashFolder($_checkexistance=TRUE)
 		{
 			if(empty($this->mailPreferences->preferences['trashFolder'])) {

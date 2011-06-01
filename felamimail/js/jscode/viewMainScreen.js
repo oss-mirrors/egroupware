@@ -120,14 +120,20 @@ function compressFolder() {
 function mail_open(_action, _elems)
 {
 	//alert('mail_open('+_elems[0].id+')');
+	if (activeFolderB64 == draftFolderB64 || activeFolderB64 == templateFolderB64)
+	{
+		_action.id='composefromdraft';
+		mail_compose(_action,_elems);
+	}
+	else
+	{
+		var url = window.egw_webserverUrl+'/index.php?';
+		url += 'menuaction=felamimail.uidisplay.display';	// todo compose for Draft folder
+		url += '&mailbox='+egw_appWindow('felamimail').activeFolderB64;
+		url += '&uid='+_elems[0].id;
 
-	var url = window.egw_webserverUrl+'/index.php?';
-	url += 'menuaction=felamimail.uidisplay.display';	// todo compose for Draft folder
-	url += '&mailbox='+egw_appWindow('felamimail').activeFolderB64;
-	url += '&uid='+_elems[0].id;
-
-	fm_readMessage(url, 'displayMessage_'+_elems[0].id, _elems[0].iface.getDOMNode());
-	//fm_handleMessageClick(true, 'https://ralfsmacbook.local/egroupware/index.php?menuaction=felamimail.uidisplay.display&showHeader=false&mailbox=SU5CT1g%3D&uid=100272&id=21287', '', this); return false;	
+		fm_readMessage(url, 'displayMessage_'+_elems[0].id, _elems[0].iface.getDOMNode());
+	}
 }
 
 /**
@@ -160,6 +166,14 @@ function mail_compose(_action, _elems)
 		{
 			mail_compose('forward',_elems);
 		}
+	}
+	if (_action.id == 'composefromdraft')
+	{
+		url += 'menuaction=felamimail.uicompose.composeFromDraft';	// todo compose for Draft folder
+		url += '&icServer='+egw_appWindow('felamimail').activeServerID;
+		url += '&folder='+egw_appWindow('felamimail').activeFolderB64;
+		url += '&uid='+_elems[0].id;
+		egw_openWindowCentered(url,'composeasnew_'+_elems[0].id,700,egw_getWindowOuterHeight());
 	}
 	if (_action.id == 'composeasnew')
 	{
@@ -931,7 +945,7 @@ function fm_readMessage(_url, _windowName, _node) {
 	}
 	//alert('after opening');
 	mailGrid.dataRoot.actionObject.setAllSelected(false);
-	trElement = _node.parentNode.parentNode.parentNode;
+	trElement = _node;//.parentNode.parentNode.parentNode;
 	trElement.style.fontWeight='normal';
 	trElement.style.backgroundColor = "#ddddFF";
 

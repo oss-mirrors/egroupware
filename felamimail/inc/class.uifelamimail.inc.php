@@ -809,6 +809,12 @@ class uifelamimail
 			$this->t->set_var('activeServerID',self::$icServerID);
 			$this->t->set_var('activeFolder',$urlMailbox);
 			$this->t->set_var('activeFolderB64',base64_encode($this->mailbox));
+			$draftFolder = $this->bofelamimail->getDraftFolder(false);
+			$this->t->set_var('draftFolder',($draftFolder?$draftFolder:''));
+			$this->t->set_var('draftFolderB64',($draftFolder?base64_encode($draftFolder):''));
+			$templateFolder = $this->bofelamimail->getTemplateFolder(false);
+			$this->t->set_var('templateFolder',($templateFolder?$templateFolder:''));
+			$this->t->set_var('templateFolderB64',($templateFolder?base64_encode($templateFolder):''));
 			$this->t->set_var('oldMailbox',$urlMailbox);
 			$this->t->set_var('image_path',EGW_IMAGES);
 			#printf ("this->uifelamimail->viewMainScreen() Line 272: %s<br>",date("H:i:s",mktime()));

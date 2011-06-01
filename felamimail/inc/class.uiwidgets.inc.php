@@ -329,6 +329,26 @@ class uiwidgets
 					'onExecute' => 'javaScript:mail_compose',
 					'allowOnMultiple' => false,
 				),
+				'infolog' => array(
+					'caption' => 'InfoLog',
+					'hint' => 'Save as InfoLog',
+					'icon' => 'infolog/navbar',
+					'group' => ++$group,
+					'onExecute' => 'javaScript:mail_infolog',
+					'url' => 'menuaction=infolog.infolog_ui.import_mail',
+					'popup' => egw_link::get_registry('infolog', 'add_popup'),
+					'allowOnMultiple' => false,
+				),
+				'tracker' => array(
+					'caption' => 'Tracker',
+					'hint' => 'Save as ticket',
+					'group' => $group,
+					'icon' => 'tracker/navbar',
+					'onExecute' => 'javaScript:mail_tracker',
+					'url' => 'menuaction=tracker.tracker_ui.import_mail',
+					'popup' => egw_link::get_registry('tracker', 'add_popup'),
+					'allowOnMultiple' => false,
+				),
 				'print' => array(
 					'caption' => 'Print',
 					'group' => ++$group,
@@ -346,7 +366,7 @@ class uiwidgets
 				'header' => array(
 					'caption' => 'Header',
 					'hint' => 'View header lines',
-					'group' => $group,
+					'group' => ++$group,
 					'icon' => 'kmmsgread',
 					'onExecute' => 'javaScript:mail_header',
 					'allowOnMultiple' => false,
@@ -429,32 +449,13 @@ class uiwidgets
 				),
 			);
 			// save as tracker, save as infolog, as this are actions that are either available for all, or not, we do that for all and not via css-class disabling
-			if ($GLOBALS['egw_info']['user']['apps']['infolog'] || $GLOBALS['egw_info']['user']['apps']['tracker']) $group++;
-			if ($GLOBALS['egw_info']['user']['apps']['infolog'])
+			if (!isset($GLOBALS['egw_info']['user']['apps']['infolog']))
 			{
-				$actions += array('infolog' => array(
-					'caption' => 'InfoLog',
-					'hint' => 'Save as InfoLog',
-					'icon' => 'infolog/navbar',
-					'group' => $group,
-					'onExecute' => 'javaScript:mail_infolog',
-					'url' => 'menuaction=infolog.infolog_ui.import_mail',
-					'popup' => egw_link::get_registry('infolog', 'add_popup'),
-					'allowOnMultiple' => false,
-				));
+				unset($actions['infolog']);
 			}
-			if ($GLOBALS['egw_info']['user']['apps']['tracker'])
+			if (!isset($GLOBALS['egw_info']['user']['apps']['tracker']))
 			{
-				$actions += array('tracker' => array(
-					'caption' => 'Tracker',
-					'hint' => 'Save as ticket',
-					'group' => $group,
-					'icon' => 'tracker/navbar',
-					'onExecute' => 'javaScript:mail_tracker',
-					'url' => 'menuaction=tracker.tracker_ui.import_mail',
-					'popup' => egw_link::get_registry('tracker', 'add_popup'),
-					'allowOnMultiple' => false,
-				));
+				unset($actions['tracker']);
 			}
 
 			return nextmatch_widget::egw_actions($actions, 'felamimail', '', $action_links);
