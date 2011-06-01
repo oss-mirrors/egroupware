@@ -541,8 +541,25 @@ function selectedGridChange(_selectAll) {
 
 	// Update message preview with first selected message
 	// ToDo: only if the selected message changes or better with the focused message
-	if (allSelected.length) {
-		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",allSelected[0].id,'');
+	if (allSelected.length && fm_previewMessageID != allSelected[0].id) {
+		if (allSelected.length == 1)
+		{
+			MessageBuffer ='';
+			fm_previewMessageFolderType = 0;
+			if (activeFolderB64 == draftFolderB64) fm_previewMessageFolderType = 2;
+			if (activeFolderB64 == templateFolderB64) fm_previewMessageFolderType = 3;
+			//mail_parentRefreshListRowStyle(allSelected[0].id,allSelected[0].id);
+			if (fm_previewMessageFolderType < 2 )
+			{
+				if (document.getElementById('messageCounter')) {
+					if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
+				}
+
+				setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_updating_view +'</span>');
+				egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",allSelected[0].id,fm_previewMessageFolderType);
+			}
+			//fm_startTimerMessageListUpdate(refreshTimeOut);
+		}
 	}
 	return;
 	// to check if checkbox is clicked in GridHeader call mailGrid.dataRoot.actionOject.getAllSelected(); // returns true or false
@@ -928,7 +945,8 @@ function fm_readMessage(_url, _windowName, _node) {
 		allRows[i].style.backgroundColor = "#FFFFFF";
 	}
 	if (windowArray[0] == 'MessagePreview')
-	{
+	{// not called anymore
+/*
 		//document.getElementById('spanMessagePreview').innerHTML = '';
 		if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
 		egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_updating_view +'</span>');
@@ -936,6 +954,7 @@ function fm_readMessage(_url, _windowName, _node) {
 		fm_previewMessageFolderType = windowArray[2];
 		// refreshMessagePreview now also refreshes the folder state
 		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",windowArray[1],windowArray[2]);
+*/
 	} else {
 
 		egw_openWindowCentered(_url, _windowName, 750, egw_getWindowOuterHeight());
