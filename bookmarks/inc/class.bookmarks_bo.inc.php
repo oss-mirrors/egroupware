@@ -162,7 +162,7 @@
 		function check_perms2($owner,$access,$required)
 		{
 			return ($owner == $GLOBALS['egw_info']['user']['account_id']) ||
-				($access == 'public' && ($this->grants[$owner] & $required));
+				($access == 'public' && $required == EGW_ACL_READ) || ($this->grants[$owner] & $required);
 		}
 
 		function check_perms($id, $required)
