@@ -684,7 +684,7 @@ error_log(array2string($action_links));
 						),
 						array(
 							"id" => "date",
-							"width" => "95px",
+							"width" => "105px",
 							"caption" => '<a id="gridHeaderDate" href="#" onclick="changeSorting(\'date\', this); return false;" title="'.lang("Date Received").'">'.lang("date").'</a>',
 						),
 						array(
@@ -1037,12 +1037,10 @@ error_log(array2string($action_links));
 					if ($dateToday == felamimail_bo::_strtotime($header['date'],'Y-m-d')) {
 	 				    $dateShort = felamimail_bo::_strtotime($header['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'));
 					} else {
-						$dateShort = felamimail_bo::_strtotime($header['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']);
+						$dateShort = felamimail_bo::_strtotime($header['date'],str_replace('Y','y',$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).' '.
+							($GLOBALS['egw_info']['user']['preferences']['common']['timeformat'] == 12 ? 'h:i a' : 'H:i'));
 					}
-					$dateLong = felamimail_bo::_strtotime($header['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']).
-													' - '.felamimail_bo::_strtotime($header['date'],($GLOBALS['egw_info']['user']['preferences']['common']['timeformat']==12?'h:i:s a':'H:i:s'));
-
-					$data["date"] = '<nobr><span style="font-size:10px" title="'.$dateLong.'">'.$dateShort.'</span></nobr>';
+					$data["date"] = $dateShort;//'<nobr><span style="font-size:10px" title="'.$dateLong.'">'.$dateShort.'</span></nobr>';
 				}
 
 				if (in_array("size", $cols))
