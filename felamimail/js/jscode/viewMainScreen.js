@@ -548,17 +548,8 @@ function selectedGridChange(_selectAll) {
 			fm_previewMessageFolderType = 0;
 			if (activeFolderB64 == draftFolderB64) fm_previewMessageFolderType = 2;
 			if (activeFolderB64 == templateFolderB64) fm_previewMessageFolderType = 3;
-			//mail_parentRefreshListRowStyle(allSelected[0].id,allSelected[0].id);
-			if (fm_previewMessageFolderType < 2 )
-			{
-				if (document.getElementById('messageCounter')) {
-					if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
-				}
-
-				setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_updating_view +'</span>');
-				egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",allSelected[0].id,fm_previewMessageFolderType);
-			}
 			//fm_startTimerMessageListUpdate(refreshTimeOut);
+			fm_readMessage('','MessagePreview_'+allSelected[0].id+'_'+fm_previewMessageFolderType,allSelected[0].iface.getDOMNode());
 		}
 	}
 	return;
@@ -944,19 +935,14 @@ function fm_readMessage(_url, _windowName, _node) {
 	for(i=0; i< allRows.length; i++) {
 		allRows[i].style.backgroundColor = "#FFFFFF";
 	}
-	if (windowArray[0] == 'MessagePreview')
-	{// not called anymore
-/*
-		//document.getElementById('spanMessagePreview').innerHTML = '';
+	if (windowArray[0] == 'MessagePreview') {
 		if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
 		egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_updating_view +'</span>');
 		fm_previewMessageID = windowArray[1];
 		fm_previewMessageFolderType = windowArray[2];
 		// refreshMessagePreview now also refreshes the folder state
 		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",windowArray[1],windowArray[2]);
-*/
 	} else {
-
 		egw_openWindowCentered(_url, _windowName, 750, egw_getWindowOuterHeight());
 
 		// Refresh the folder state (count of unread emails)
@@ -964,13 +950,11 @@ function fm_readMessage(_url, _windowName, _node) {
 	}
 	//alert('after opening');
 	mailGrid.dataRoot.actionObject.setAllSelected(false);
-	trElement = _node;//.parentNode.parentNode.parentNode;
-	trElement.style.fontWeight='normal';
-	trElement.style.backgroundColor = "#ddddFF";
+	_node.style.fontWeight='normal';
+	_node.style.backgroundColor = "#ddddFF";
 
-	aElements = trElement.getElementsByTagName("a");
+	var aElements = _node.getElementsByTagName("a");
 	aElements[0].style.fontWeight='normal';
-	aElements[1].style.fontWeight='normal';
 }
 
 /**
@@ -1418,7 +1402,7 @@ function felamimail_transform_foldertree() {
 			// Add a new action object to the object manager
 			var obj = treeObj.addObject(folderName,
 				new dhtmlxtreeItemAOI(tree, folderName));
-			obj.updateActionLinks(["drop_move_mail", "drop_copy_mail"]);
+			obj.updateActionLinks(["drop_move_mail", "drop_copy_mail", "drop_cancel"]);
 		}
 	}
 }
@@ -1456,7 +1440,7 @@ function mail_getFormData(_actionObjects) {
 function mail_move(_action, _senders, _target) {
 	var target = _action.id == 'drop_move_mail' ? _target.id : _action.id.substr(5);
 	var messages = mail_getFormData(_senders);
-	alert('mail_move('+messages.msg.join(',')+' --> '+target+')');
+	//alert('mail_move('+messages.msg.join(',')+' --> '+target+')');
 	// TODO: Write move/copy function which cares about doing the same stuff
 	// as the "onNodeSelect" function!
 	if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
@@ -1477,7 +1461,7 @@ function mail_move(_action, _senders, _target) {
 function mail_copy(_action, _senders, _target) {
 	var target = _action.id == 'drop_copy_mail' ? _target.id : _action.id.substr(5);
 	var messages = mail_getFormData(_senders);
-	alert('mail_copy('+messages.msg.join(',')+' --> '+target+')');
+	//alert('mail_copy('+messages.msg.join(',')+' --> '+target+')');
 	// TODO: Write move/copy function which cares about doing the same stuff
 	// as the "onNodeSelect" function!
 	if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
@@ -1486,4 +1470,3 @@ function mail_copy(_action, _senders, _target) {
 	egw_appWindow('felamimail').xajax_doXMLHTTP(
 		"felamimail.ajaxfelamimail.copyMessages", target, messages);
 }
-

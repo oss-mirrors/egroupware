@@ -456,6 +456,11 @@ class uiwidgets
 					'caption' => 'Copy to',
 					'onExecute' => 'javaScript:mail_copy'
 				),
+				'drop_cancel' => array(
+					'caption' => 'Cancel',
+					'acceptedTypes' => 'mail',
+					'type' => 'drop',
+				),
 			);
 			// save as tracker, save as infolog, as this are actions that are either available for all, or not, we do that for all and not via css-class disabling
 			if (!isset($GLOBALS['egw_info']['user']['apps']['infolog']))

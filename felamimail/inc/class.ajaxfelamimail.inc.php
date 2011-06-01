@@ -46,7 +46,7 @@ class ajaxfelamimail
 		function ajaxfelamimail()
 		{
 			if($this->_debug) error_log("ajaxfelamimail::ajaxfelamimail");
-			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) 
+			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID']))
 					$this->imapServerID = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
 
 			$this->charset		=  translation::charset();
@@ -61,7 +61,7 @@ class ajaxfelamimail
 			if(!isset($this->sessionDataAjax['folderName'])) {
 				$this->sessionDataAjax['folderName'] = 'INBOX';
 			}
-	
+
 		}
 
 		function addACL($_accountName, $_aclData, $_recursive=false)
@@ -464,6 +464,13 @@ class ajaxfelamimail
 				if($this->_debug) error_log(__METHOD__."-> No messages selected.");
 			}
 
+			// unset preview, as refresh would mark message again read
+			if ($_flag == 'unread' && in_array($this->sessionData['previewMessage'], $_messageList['msg']))
+			{
+				unset($this->sessionData['previewMessage']);
+				$this->saveSessionData();
+			}
+
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 
@@ -688,7 +695,7 @@ class ajaxfelamimail
 			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
 			if (isset($this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior']) && (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'] > 0)
 				$maxMessages = (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'];
-	
+
 			$lastPage = $messageCounter - ($messageCounter % $maxMessages) + 1;
 			if($lastPage > $messageCounter)
 				$lastPage -= $maxMessages;
