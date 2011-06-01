@@ -384,6 +384,7 @@
 			$actions = array(
 			'visit' => array(
 				'caption' => 'Visit',
+				'icon' => 'no_favicon',
 				'default' => true,
 				'allowOnMultiple' => false,
 				'url' => 'menuaction=bookmarks.bookmarks_ui.redirect&bm_id=$id',
