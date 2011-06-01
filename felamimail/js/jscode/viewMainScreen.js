@@ -119,7 +119,7 @@ function compressFolder() {
  */
 function mail_open(_action, _elems)
 {
-	alert('mail_open('+_elems[0].id+')');
+	//alert('mail_open('+_elems[0].id+')');
 
 	var url = window.egw_webserverUrl+'/index.php?';
 	url += 'menuaction=felamimail.uidisplay.display';	// todo compose for Draft folder
@@ -432,6 +432,13 @@ function selectFolderContent(inputBox, _refreshTimeOut) {
 function selectedGridChange(_selectAll) {
 	//alert('SelectedGridChange called');
 	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
+
+	// Update message preview with first selected message
+	// ToDo: only if the selected message changes or better with the focused message
+	if (allSelected.length) {
+		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",allSelected[0].id,'');
+	}
+	return;
 	// to check if checkbox is clicked in GridHeader call mailGrid.dataRoot.actionOject.getAllSelected(); // returns true or false
 	folderFunctions = document.getElementById("folderFunction");
 	if (allSelected.length>0 || _selectAll)

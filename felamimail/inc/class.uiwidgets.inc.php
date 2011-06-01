@@ -664,7 +664,7 @@ error_log(array2string($action_links));
 							//"caption" => '<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">',
 							"type" => EGW_COL_TYPE_CHECKBOX,
 							//"width" => "20px",
-							"visibility" => EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+							"visibility" => EGW_COL_VISIBILITY_INVISIBLE,	//EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
 						),
 						array(
 							"id" => "status",
@@ -905,10 +905,10 @@ error_log(array2string($action_links));
 						$preview_message_windowName = $windowName;
 					}
 
-					$data["subject"] = '<a class="'.$css_style.'" name="subject_url" href="#"
+					$data["subject"] = /*'<a class="'.$css_style.'" name="subject_url" href="#"
 						onclick="fm_handleMessageClick(false, \''.$url_read_message.'\', \''.$preview_message_windowName.'\', this); return false;"
 						ondblclick="fm_handleMessageClick(true, \''.$url_read_message.'\', \''.$read_message_windowName.'\', this); return false;"
-						title="'.$fullSubject.'">'.$subject.'</a>';//$subject; // the mailsubject
+						title="'.$fullSubject.'">'.$subject.'</a>';//*/ $subject; // the mailsubject
 				}
 
 				//_debug_array($header);
