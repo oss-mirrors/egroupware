@@ -295,13 +295,14 @@ class uiwidgets
 					'allowOnMultiple' => false,
 					'default' => true,
 				),
+				/* not necessary, as it's now a prominent button
 				'compose' => array(
 					'caption' => 'Compose',
 					'icon' => 'new',
 					'group' => $group,
 					'onExecute' => 'javaScript:mail_compose',
 					'allowOnMultiple' => false,
-				),
+				),*/
 				'reply' => array(
 					'caption' => 'Reply',
 					'icon' => 'mail_reply',
@@ -366,7 +367,7 @@ class uiwidgets
 				'header' => array(
 					'caption' => 'Header',
 					'hint' => 'View header lines',
-					'group' => ++$group,
+					'group' => $group,
 					'icon' => 'kmmsgread',
 					'onExecute' => 'javaScript:mail_header',
 					'allowOnMultiple' => false,
@@ -382,7 +383,7 @@ class uiwidgets
 				'mark' => array(
 					'caption' => 'Mark as',
 					'icon' => 'read_small',
-					'group' => $group,
+					'group' => ++$group,
 					'children' => array(
 						'flagged' => array(
 							'caption' => 'Flagged',
@@ -404,8 +405,15 @@ class uiwidgets
 							'icon' => 'unread_small',
 							'onExecute' => 'javaScript:mail_flag',
 						),
+						'undelete' => array(
+							'caption' => 'Undelete',
+							'icon' => 'revert',
+							'onExecute' => 'javaScript:mail_flag',
+							//'enableClass' => 'rowDeleted',	// not yet used - gives no error on not deleted messages
+						),
 					),
 				),
+/*
 				'move' => array(
 					'caption' => 'Move to',
 					'group' => $group,
@@ -422,6 +430,7 @@ class uiwidgets
 					'prefix' => 'copy_',
 					'onExecute' => 'javaScript:mail_copy',
 				),
+*/
 				'delete' => array(
 					'caption' => 'Delete',
 					'hint' => $deleteOptions[$this->bofelamimail->mailPreferences->preferences['deleteOptions']],
