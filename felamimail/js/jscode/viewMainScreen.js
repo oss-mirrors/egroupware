@@ -1410,13 +1410,16 @@ function felamimail_transform_foldertree() {
 	treeObj.clear();
 
 	// Go over the folder list
-	for (var key in felamimail_folders) {
-		var folderName = felamimail_folders[key];
+	if (felamimail_folders.length >0)
+	{
+		for (var key in felamimail_folders) {
+			var folderName = felamimail_folders[key];
 
-		// Add a new action object to the object manager
-		var obj = treeObj.addObject(folderName,
-			new dhtmlxtreeItemAOI(tree, folderName));
-		obj.updateActionLinks(["drop_move_mail", "drop_copy_mail"]);
+			// Add a new action object to the object manager
+			var obj = treeObj.addObject(folderName,
+				new dhtmlxtreeItemAOI(tree, folderName));
+			obj.updateActionLinks(["drop_move_mail", "drop_copy_mail"]);
+		}
 	}
 }
 
@@ -1456,6 +1459,10 @@ function mail_move(_action, _senders, _target) {
 	alert('mail_move('+messages.msg.join(',')+' --> '+target+')');
 	// TODO: Write move/copy function which cares about doing the same stuff
 	// as the "onNodeSelect" function!
+	if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
+	egw_appWindow('felamimail').setStatusMessage(egw_appWindow('felamimail').movingMessages +' <span style="font-weight: bold;">'+ target +'</span>');
+	document.getElementById('divMessageList').innerHTML = '';
+
 	egw_appWindow('felamimail').xajax_doXMLHTTP(
 		"felamimail.ajaxfelamimail.moveMessages", target, messages);
 }
@@ -1473,6 +1480,9 @@ function mail_copy(_action, _senders, _target) {
 	alert('mail_copy('+messages.msg.join(',')+' --> '+target+')');
 	// TODO: Write move/copy function which cares about doing the same stuff
 	// as the "onNodeSelect" function!
+	if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
+	egw_appWindow('felamimail').setStatusMessage(egw_appWindow('felamimail').copyingMessages +' <span style="font-weight: bold;">'+ target +'</span>');
+	document.getElementById('divMessageList').innerHTML = '';
 	egw_appWindow('felamimail').xajax_doXMLHTTP(
 		"felamimail.ajaxfelamimail.copyMessages", target, messages);
 }
