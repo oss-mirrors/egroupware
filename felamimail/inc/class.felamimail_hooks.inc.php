@@ -727,23 +727,23 @@ class felamimail_hooks
 					'tooltip'	=> lang('compose'),
 				),
 				'read_small'		=> array(
-					'action'	=> "egw_appWindow('".$appname."').flagMessages('read')",
+					'action'	=> "egw_appWindow('".$appname."').mail_flagMessages('read')",
 					'tooltip'	=> lang('mark selected as read'),
 				),
 				'unread_small'		=> array(
-					'action'	=> "egw_appWindow('".$appname."').flagMessages('unread')",
+					'action'	=> "egw_appWindow('".$appname."').mail_flagMessages('unread')",
 					'tooltip'	=> lang('mark selected as unread'),
 				),
 				'unread_flagged_small'	=> array(
-					'action'	=> "egw_appWindow('".$appname."').flagMessages('flagged')",
+					'action'	=> "egw_appWindow('".$appname."').mail_flagMessages('flagged')",
 					'tooltip'	=> lang('mark selected as flagged'),
 				),
 				'read_flagged_small'	=> array(
-					'action'	=> "egw_appWindow('".$appname."').flagMessages('unflagged')",
+					'action'	=> "egw_appWindow('".$appname."').mail_flagMessages('unflagged')",
 					'tooltip'	=> lang('mark selected as unflagged'),
 				),
 				'delete'		=> array(
-					'action'	=> "egw_appWindow('".$appname."').deleteMessages(egw_appWindow('".$appname."').mailGridGetSelected())",
+					'action'	=> "egw_appWindow('".$appname."').mail_deleteMessages(egw_appWindow('".$appname."').mailGridGetSelected())",
 					'tooltip'	=> lang('mark as deleted'),
 				),
 			);

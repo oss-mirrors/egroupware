@@ -62,7 +62,7 @@ function mailGridGetSelected()
 	return messages;
 }
 
-function parentRefreshListRowStyle(oldID, newID)
+function mail_parentRefreshListRowStyle(oldID, newID)
 {
 	// the old implementation is not working anymore, so we use the gridObject for this
 	var allElements = mailGrid.dataRoot.actionObject.flatList();
@@ -92,7 +92,7 @@ function sendNotifyMS (uid) {
 	egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.sendNotify",uid,ret);	
 }
 
-function changeSorting(_sort, _aNode) {
+function mail_changeSorting(_sort, _aNode) {
 
 	egw_appWindow('felamimail').resetMessageSelect();
 
@@ -123,10 +123,10 @@ function mail_open(_action, _elems)
 
 	var url = window.egw_webserverUrl+'/index.php?';
 	url += 'menuaction=felamimail.uidisplay.display';	// todo compose for Draft folder
-	url += '&mailbox=mailbox=SU5CT1g%3D';	// todo folder
+	url += '&mailbox='+egw_appWindow('felamimail').activeFolderB64;
 	url += '&uid='+_elems[0].id;
-	
-	fm_readMessage(url, '', _elems[0].iface.getDOMNode());
+
+	fm_readMessage(url, 'displayMessage_'+_elems[0].id, _elems[0].iface.getDOMNode());
 	//fm_handleMessageClick(true, 'https://ralfsmacbook.local/egroupware/index.php?menuaction=felamimail.uidisplay.display&showHeader=false&mailbox=SU5CT1g%3D&uid=100272&id=21287', '', this); return false;	
 }
 
@@ -138,7 +138,69 @@ function mail_open(_action, _elems)
  */
 function mail_compose(_action, _elems)
 {
-	alert('mail_'+_action.id+'('+_elems[0].id+')');
+	var idsToProcess = '';
+	var multipleIds = false;
+	if (_elems.length > 1) multipleIds = true;
+	//for (var i=0; i<_elems.length; i++)
+	//{
+	//	if (i>0) idsToProcess += ',';
+	//	idsToProcess += _elems[i].id;
+	//}
+	//alert('mail_'+_action.id+'('+idsToProcess+')');
+	var url = window.egw_webserverUrl+'/index.php?';
+	if (_action.id == 'compose')
+	{
+		if (multipleIds == false)
+		{
+			mail_parentRefreshListRowStyle(_elems[0].id,_elems[0].id);
+			url += 'menuaction=felamimail.uicompose.compose';	// todo compose for Draft folder
+			mail_openComposeWindow(url)
+		}
+		else
+		{
+			mail_compose('forward',_elems);
+		}
+	}
+	if (_action.id == 'composeasnew')
+	{
+		url += 'menuaction=felamimail.uicompose.composeAsNew';	// todo compose for Draft folder
+		url += '&icServer='+egw_appWindow('felamimail').activeServerID;
+		url += '&folder='+egw_appWindow('felamimail').activeFolderB64;
+		url += '&reply_id='+_elems[0].id;
+		egw_openWindowCentered(url,'composeasnew_'+_elems[0].id,700,egw_getWindowOuterHeight());
+	}
+	if (_action.id == 'reply')
+	{
+		url += 'menuaction=felamimail.uicompose.reply';	// todo compose for Draft folder
+		url += '&icServer='+egw_appWindow('felamimail').activeServerID;
+		url += '&folder='+egw_appWindow('felamimail').activeFolderB64;
+		url += '&reply_id='+_elems[0].id;
+		egw_openWindowCentered(url,'reply_'+_elems[0].id,700,egw_getWindowOuterHeight());
+	}
+	if (_action.id == 'reply_all')
+	{
+		url += 'menuaction=felamimail.uicompose.replyAll';	// todo compose for Draft folder
+		url += '&icServer='+egw_appWindow('felamimail').activeServerID;
+		url += '&folder='+egw_appWindow('felamimail').activeFolderB64;
+		url += '&reply_id='+_elems[0].id;
+		egw_openWindowCentered(url,'replyAll_'+_elems[0].id,700,egw_getWindowOuterHeight());
+	}
+	if (_action.id == 'forward')
+	{
+		if (multipleIds)
+		{
+			url += 'menuaction=felamimail.uicompose.compose';	// todo compose for Draft folder
+			mail_openComposeWindow(url)
+		}
+		else
+		{
+			url += 'menuaction=felamimail.uicompose.forward';	// todo compose for Draft folder
+			url += '&icServer='+egw_appWindow('felamimail').activeServerID;
+			url += '&folder='+egw_appWindow('felamimail').activeFolderB64;
+			url += '&reply_id='+_elems[0].id;
+			egw_openWindowCentered(url,'forward_'+_elems[0].id,700,egw_getWindowOuterHeight());
+		}
+	}
 }
 
 /**
@@ -182,7 +244,7 @@ function mail_header(_action, _elems)
  */
 function mail_flag(_action, _elems)
 {
-	flagMessages(_action.id);
+	mail_flagMessages(_action.id);
 }
 
 /**
@@ -216,10 +278,10 @@ function mail_tracker(_action, _elems)
 function mail_delete(_action, _elems)
 {
 	messageList = mailGridGetSelected()
-	deleteMessages(messageList);
+	mail_deleteMessages(messageList);
 }
 
-function deleteMessages(_messageList) {
+function mail_deleteMessages(_messageList) {
 	var Check = true;
 	var cbAllMessages = document.getElementById('selectAllMessagesCheckBox').checked;
 
@@ -538,7 +600,7 @@ function extendedSearch(_selectBox) {
 	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.extendedSearch',_selectBox.options[_selectBox.selectedIndex].value);
 }
 
-function flagMessages(_flag)
+function mail_flagMessages(_flag)
 {
 	var Check=true;
 	var _messageList;
@@ -684,7 +746,7 @@ function refreshView() {
 	document.getElementById('messageCounter').innerHTML = MessageBuffer;
 }
 
-function openComposeWindow(_url) {
+function mail_openComposeWindow(_url) {
 	var Check=true;
 	var alreadyAsked=false;
 	var _messageList;

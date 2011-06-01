@@ -806,6 +806,7 @@ class uifelamimail
 				echo $GLOBALS['egw']->framework->footer(false);
 				exit;
 			}
+			$this->t->set_var('activeServerID',self::$icServerID);
 			$this->t->set_var('activeFolder',$urlMailbox);
 			$this->t->set_var('activeFolderB64',base64_encode($this->mailbox));
 			$this->t->set_var('oldMailbox',$urlMailbox);

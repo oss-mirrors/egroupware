@@ -630,29 +630,29 @@ error_log(array2string($action_links));
 						),
 						array(
 							"id" => "toaddress", // sent or drafts or template folder means foldertype > 0, use to address instead of from
-							"caption" => '<a id="gridHeaderTo" href="#" onclick="changeSorting(\'to\', this); return false;">'.lang("to").'</a>',
+							"caption" => '<a id="gridHeaderTo" href="#" onclick="mail_changeSorting(\'to\', this); return false;">'.lang("to").'</a>',
 							"width" => "120px",
 							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_VISIBLE:EGW_COL_VISIBILITY_INVISIBLE)
 						),
 						array(
 							"id" => "fromaddress",// sent or drafts or template folder means foldertype > 0, use to address instead of from
-							"caption" => '<a id="gridHeaderFrom" href="#" onclick="changeSorting(\'from\', this); return false;">'.lang("from").'</a>',
+							"caption" => '<a id="gridHeaderFrom" href="#" onclick="mail_changeSorting(\'from\', this); return false;">'.lang("from").'</a>',
 							"width" => "120px",
 							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_INVISIBLE:EGW_COL_VISIBILITY_VISIBLE)
 						),
 						array(
 							"id" => "subject",
-							"caption" => '<a id="gridHeaderSubject" href="#" onclick="changeSorting(\'subject\', this); return false;">'.lang("subject").'</a>',
+							"caption" => '<a id="gridHeaderSubject" href="#" onclick="mail_changeSorting(\'subject\', this); return false;">'.lang("subject").'</a>',
 							"visibility" => EGW_COL_VISIBILITY_ALWAYS
 						),
 						array(
 							"id" => "date",
 							"width" => "95px",
-							"caption" => '<a id="gridHeaderDate" href="#" onclick="changeSorting(\'date\', this); return false;" title="'.lang("Date Received").'">'.lang("date").'</a>',
+							"caption" => '<a id="gridHeaderDate" href="#" onclick="mail_changeSorting(\'date\', this); return false;" title="'.lang("Date Received").'">'.lang("date").'</a>',
 						),
 						array(
 							"id" => "size",
-							"caption" => '<a id="gridHeaderSize" href="#" onclick="changeSorting(\'size\', this); return false;">'.lang("size").'</a>',
+							"caption" => '<a id="gridHeaderSize" href="#" onclick="mail_changeSorting(\'size\', this); return false;">'.lang("size").'</a>',
 							"width" => "40px",
 						),
 					);
@@ -680,28 +680,28 @@ error_log(array2string($action_links));
 						),
 						array(
 							"id" => "subject",
-							"caption" => '<a id="gridHeaderSubject" href="#" onclick="changeSorting(\'subject\', this); return false;">'.lang("subject").'</a>',
+							"caption" => '<a id="gridHeaderSubject" href="#" onclick="mail_changeSorting(\'subject\', this); return false;">'.lang("subject").'</a>',
 						),
 						array(
 							"id" => "date",
 							"width" => "105px",
-							"caption" => '<a id="gridHeaderDate" href="#" onclick="changeSorting(\'date\', this); return false;" title="'.lang("Date Received").'">'.lang("date").'</a>',
+							"caption" => '<a id="gridHeaderDate" href="#" onclick="mail_changeSorting(\'date\', this); return false;" title="'.lang("Date Received").'">'.lang("date").'</a>',
 						),
 						array(
 							"id" => "toaddress",// sent or drafts or template folder means foldertype > 0, use to address instead of from
-							"caption" => '<a id="gridHeaderTo" href="#" onclick="changeSorting(\'to\', this); return false;">'.lang("to").'</a>',
+							"caption" => '<a id="gridHeaderTo" href="#" onclick="mail_changeSorting(\'to\', this); return false;">'.lang("to").'</a>',
 							"width" => "120px",
 							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_VISIBLE:EGW_COL_VISIBILITY_INVISIBLE)
 						),
 						array(
 							"id" => "fromaddress",// sent or drafts or template folder means foldertype > 0, use to address instead of from
-							"caption" => '<a id="gridHeaderFrom" href="#" onclick="changeSorting(\'from\', this); return false;">'.lang("from").'</a>',
+							"caption" => '<a id="gridHeaderFrom" href="#" onclick="mail_changeSorting(\'from\', this); return false;">'.lang("from").'</a>',
 							"width" => "120px",
 							"visibility" =>  ($foldertype>0?EGW_COL_VISIBILITY_INVISIBLE:EGW_COL_VISIBILITY_VISIBLE)
 						),
 						array(
 							"id" => "size",
-							"caption" => '<a id="gridHeaderSize" href="#" onclick="changeSorting(\'size\', this); return false;">'.lang("size").'</a>',
+							"caption" => '<a id="gridHeaderSize" href="#" onclick="mail_changeSorting(\'size\', this); return false;">'.lang("size").'</a>',
 							"width" => "40px",
 						),
 					);
