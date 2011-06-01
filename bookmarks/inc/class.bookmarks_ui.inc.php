@@ -138,12 +138,13 @@
 			$this->bo->save_session_data($this->location_info);
 
 			if(!$bookmark['url']) $bookmark['url'] = 'http://';
+			if(!$bookmark['access']) $bookmark['access'] = 'public';
 
 			$bookmark['msg'] = $this->app_messages();
 
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('New Bookmark');
 			$this->templ->read('bookmarks.add');
-			$this->templ->exec('bookmarks.bookmarks_ui.create', $bookmark);
+			$this->templ->exec('bookmarks.bookmarks_ui.create', $bookmark, array(), array(), array(), 2);
 		}
 
 		/**
@@ -165,18 +166,20 @@
 			{
 				$bm_id = $content['bm_id'];
 			}
-			//if the user cancelled we go back to the view we came from
+			//if the user cancelled we close popup
 			if ($content['cancel'] || !isset($bm_id))
 			{
 				unset($this->location_info['returnto2']);
+				echo "<html><body><script>window.close();</script></body></html>\n";
 				$this->init();
-				return;
+				common::egw_exit();
 			}
-			//delete bookmark and go back to view we came from
+			//delete bookmark and close popup
 			if($content['delete']) {
 				unset($this->location_info['returnto2']);
+				echo "<html><body><script>window.close();</script></body></html>\n";
 				$this->init();
-				return;
+				common::egw_exit();
 			}
 			//if we redirect to edit categories, we remember form values and try to come back to edit
 			if ($content['edit_category'])
@@ -192,6 +195,7 @@
 				{
 					if($content['save']) {
 						unset($this->location_info['returnto2']);
+						echo "<html><body><script>window.close();</script></body></html>\n";
 						$this->init();
 						return;
 					}
@@ -201,10 +205,7 @@
 			$bookmark = $this->bo->read($bm_id);
 			if (!$bookmark[EGW_ACL_EDIT])
 			{
-				$this->bo->error_msg = lang('Bookmark not editable');
-				unset($this->location_info['returnto2']);
-				$this->init();
-				return;
+				return $this->view($content);
 			}
 
 			//if we come back from editing categories we restore form values
@@ -253,7 +254,7 @@
 
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Edit Bookmark - %1', $bookmark['stripped_name']);
 			$this->templ->read('bookmarks.edit');
-			$this->templ->exec('bookmarks.bookmarks_ui.edit', $bookmark, $sel_options, $readonlys, $persist);
+			$this->templ->exec('bookmarks.bookmarks_ui.edit', $bookmark, $sel_options, $readonlys, $persist, 2);
 		}
 
 		/**
@@ -381,16 +382,15 @@
 		protected function get_actions()
 		{
 			$actions = array(
-			'view' => array(
-				'caption' => 'View',
+			'visit' => array(
+				'caption' => 'Visit',
 				'default' => true,
 				'allowOnMultiple' => false,
-				'url' => 'menuaction=bookmarks.bookmarks_ui.view&bm_id=$id',
-				'popup' => egw_link::get_registry('bookmarks', 'view_popup'),
+				'url' => 'menuaction=bookmarks.bookmarks_ui.redirect&bm_id=$id',
 				'group' => $group=1,
 			),
 			'edit' => array(
-				'caption' => 'Edit',
+				'caption' => 'Open',
 				'allowOnMultiple' => false,
 				'url' => 'menuaction=bookmarks.bookmarks_ui.edit&bm_id=$id',
 				'popup' => egw_link::get_registry('bookmarks', 'add_popup'),
@@ -567,7 +567,6 @@
 			}
 
 			$bookmark = $this->bo->read($bm_id);
-
 			if (!$bookmark[EGW_ACL_READ])
 			{
 				$this->bo->error_msg = lang('Bookmark not readable');
@@ -609,7 +608,7 @@
 			$bookmark['msg'] = $this->app_messages($this->t);
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Bookmark - %1', $bookmark['stripped_name']);
 			$this->templ->read('bookmarks.edit');
-			$this->templ->exec('bookmarks.bookmarks_ui.view', $bookmark, $sel_options, $readonlys, $persist);
+			$this->templ->exec('bookmarks.bookmarks_ui.view', $bookmark, $sel_options, $readonlys, $persist, 2);
 		}
 
 		/**
@@ -698,11 +697,31 @@
 						'url'  => $bookmark['url']
 					);
 				}
-				$message = lang('I thought you would be interested in the following link(s):')."\n";
+				$message = lang('I thought you would be interested in the following link(s):')."<br />\n";
 				while (list(,$link) = @each($links))
 				{
-					$message .= sprintf("%s - %s\n",$link['name'],$link['url']);
+					$message .= sprintf("%s - %s<br />\n",$link['name'],$link['url']);
 				}
+			}
+
+			if($GLOBALS['egw_info']['user']['apps']['felamimail']) {
+				$link = egw::link('/index.php',egw_link::add('felamimail',
+					$GLOBALS['egw_info']['flags']['currentapp'],
+					$GLOBALS['egw_info']['flags']['currentid'])+
+					array(
+						'preset[to]' => $to,
+						'preset[subject]' => $subject,
+						'preset[body]' => $message
+					)
+				);
+				$popup = egw_link::is_popup('felamimail','add');
+				list($w,$h) = explode('x',$popup);
+				$action = "egw_openWindowCentered2('$link','_blank',$w,$h,'yes','$app');";
+				egw_framework::set_onload($action);
+
+				unset($this->location_info['returnto2']);
+				$this->init();
+				return;
 			}
 
 			$data = $content + array(
