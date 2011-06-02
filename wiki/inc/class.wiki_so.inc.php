@@ -443,6 +443,7 @@ class wiki_so	// DB-Layer
 			$lang = $lang ? $lang : @$name['lang'];
 			$name = @$name['name'] ? $name['name'] : @$name['title'];
 		}
+		$name = htmlspecialchars_decode($name);
 		$page = new soWikiPage($this->db,$this->PgTbl,$name,$lang,$this->wiki_id,$this->debug);
 
 		if (!$this->colNames) $this->colNames = $page->column2names();
