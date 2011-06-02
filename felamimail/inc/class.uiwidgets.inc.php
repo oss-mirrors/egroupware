@@ -480,15 +480,15 @@ class uiwidgets
 			//error_log(__METHOD__.__LINE__.array2string(array('Foldertype'=>$foldertype,'Foldername'=>$_folderName,'Offset'=>$offset,'getAllIds'=>$getAllIds)));
 			$action_links=array();
 			$js = '<script type="text/javascript">
-if (typeof objectManager == "undefined") var objectManager = null;
-if (typeof actionManager == "undefined") var actionManager = null;
 if (typeof mailGrid == "undefined") var mailGrid = null;
 $(document).ready(function() {
 	$(window).resize(handleResize);
 	// Create the base objects and feed them with data
-	actionManager = new egwActionManager();
+	var actionManager = egw_getActionManager("felamimail");
+	var objectManager = egw_getObjectManager("felamimail");
+
+	// Load the felamimail actions
 	actionManager.updateActions('.json_encode($actions=$this->get_actions($action_links)).');
-	objectManager = new egwActionObjectManager("baseObject", actionManager);
 
 	mailGrid = new egwGrid(document.getElementById("divMessageTableList"),
 		'.json_encode($this->get_columns_obj(true,$foldertype,$_folderName)->get_assoc()).', objectManager, egw_email_fetchDataProc,

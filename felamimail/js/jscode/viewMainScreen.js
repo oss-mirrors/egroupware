@@ -1377,7 +1377,10 @@ function fadeDialog(flag) {
 }
 
 function felamimail_transform_foldertree() {
-	if (typeof objectManager == 'undefined' || objectManager == null) {
+	// Get the felamimail object manager, but do not create it!
+	var objectManager = egw_getObjectManager('felamimail', false);
+
+	if (!objectManager) {
 		return;
 	}
 
