@@ -36,7 +36,7 @@
 					</vbox>
 					<hbox align="center" class="noPrint">
 						<nextmatch-header align="center" label="Actions" id="legacy_actions"/>
-						<button align="right" statustext="Check all" label="Check all" id="check_all" needed="1" onclick="toggle_all(this.form,form::name('checked[]')); return false;" image="check"/>
+						<button align="right" statustext="Check all" label="Check all" id="check_all" needed="1" onclick="egw_globalObjectManager.getObjectById('bookmarks.list.row').toggleAllSelected(); return false;" image="check"/>
 					</hbox>
 				</row>
 				<row class="row">
@@ -67,8 +67,8 @@
 						<date-time id="${row}[updated]" readonly="true" class="noBreak"/>
 					</vbox>
 					<hbox options="0" class="noPrint">
-						<image src="view" options="bookmarks.bookmarks_ui.view&amp;bm_id=${row_cont[id]}"/>
-						<button label="Edit" id="edit[${row_cont[id]}]" image="edit"/>
+						<button id="view" onclick="window.open(egw::link('/index.php','menuaction=bookmarks.bookmarks_ui.view&amp;bm_id={$row_cont[id]}'),'_blank','dependent=yes,width=600,height=300,scrollbars=yes,status=yes'); return false;" image="view"/>
+						<button label="Edit" id="edit[${row_cont[id]}]" onclick="window.open(egw::link('/index.php','menuaction=bookmarks.bookmarks_ui.edit&amp;bm_id=$row_cont[id]'),'_blank','dependent=yes,width=600,height=300,scrollbars=yes,status=yes'); return false;" image="edit"/>
 						<button id="delete[{$row_cont[id]}]" onclick="var str = egw::lang('Delete');  if( confirm(str + ' {$row_cont[stripped_name]}?')) { return submitit(eTemplate, this.id);} return false;" image="delete"/>
 						<image src="mail" options="bookmarks.bookmarks_ui.mail&amp;bm_id=${row_cont[id]}"/>
 						<checkbox id="checked[]" options="$row_cont[id]"/>
@@ -94,8 +94,8 @@
 				<row disabled="!@nm[selectcols]=/legacy_actions/">
 					<button label="add" id="add"/>
 					<hbox align="right">
-						<buttononly statustext="Select action" label="Select action" id="legacy_actions" onclick="if (!egw_objectManager.executeActionImplementation(this, 'popup')) alert(egw::lang('You need to select some entries first!')); return false;;"/>
-						<button statustext="Check all" label="Check all" id="check_all" needed="1" onclick="egw_objectManager.toggleAllSelected(); return false;" image="arrow_ltr" class="checkAllArrow"/>
+						<buttononly statustext="Select action" label="Select action" id="legacy_actions" onclick="if (!egw_globalObjectManager.getObjectById('bookmarks.list.row').executeActionImplementation(this, 'popup')) alert(egw::lang('You need to select some entries first!')); return false;;"/>
+						<button statustext="Check all" label="Check all" id="check_all" needed="1" onclick="egw_globalObjectManager.getObjectById('bookmarks.list.row').toggleAllSelected(); return false;" image="arrow_ltr" class="checkAllArrow"/>
 					</hbox>
 				</row>
 			</rows>
