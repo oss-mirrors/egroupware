@@ -33,6 +33,12 @@ class uiwidgets
 		 * @var Template
 		 */
 		var $template;
+		/**
+		 * Use a preview pane: depends on preference and NOT using a mobile browser
+		 *
+		 * @var boolean
+		 */
+		var $use_preview = false;
 
 		/**
 		 * Constructor
@@ -48,6 +54,7 @@ class uiwidgets
 			$this->bofelamimail = felamimail_bo::getInstance(true,$this->profileID);
 			$this->_connectionStatus = $this->bofelamimail->openConnection($this->profileID);
 			$this->sessionData	=& $GLOBALS['egw']->session->appsession('session_data','felamimail');
+			$this->use_preview = !html::$ua_mobile && $GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight'] > 0;
 		}
 
 		function encodeFolderName($_folderName)
@@ -929,7 +936,7 @@ $(document).ready(function() {
 
 						$windowName = ($_readInNewWindow == 1 ? 'displayMessage' : 'displayMessage_'.$header['uid']);
 
-						if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0) $windowName = 'MessagePreview_'.$header['uid'].'_'.$_folderType;
+						if ($this->use_preview) $windowName = 'MessagePreview_'.$header['uid'].'_'.$_folderType;
 
 						$preview_message_windowName = $windowName;
 					}
@@ -1109,7 +1116,7 @@ $(document).ready(function() {
 				//error_log(__METHOD__.__LINE__.array2string($header));
 				// preview the message with the requested (messageToBePreviewed) uid
 				if ($messageToBePreviewed>0
-					&& $GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0
+					&& $this->use_preview
 					&& $messageToBePreviewed == $header['uid'])
 				{
 					//error_log(__METHOD__.$header['uid']);
@@ -1123,7 +1130,7 @@ $(document).ready(function() {
 
 			}
 
-			if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0)
+			if ($this->use_preview)
 			{
 				$this->t->set_var('selected_style'.$selecteduid,'style="background-color:#ddddFF;"');
 			} else {
@@ -1131,14 +1138,14 @@ $(document).ready(function() {
 			}
 			//error_log(__METHOD__.__LINE__.' FolderType:'.$_folderType);
 			if ($firstheader &&
-				$GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0 &&
+				$this->use_preview &&
 				($_folderType==0 || $_folderType==1)) // only if not drafts or template folder
 			{
 				$IFRAMEBody =  $this->updateMessagePreview($firstheader,$_folderType,$_folderName,$this->profileID);
 			}
 			else
 			{
-				if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0)
+				if ($this->use_preview)
 				{
 					$IFRAMEBody = "<TABLE BORDER=\"1\" rules=\"rows\" style=\"table-layout:fixed;width:100%;\">
 								<TR class=\"th\" style=\"width:100%;\">
@@ -1162,7 +1169,7 @@ $(document).ready(function() {
 			}
 
 			$this->t->set_var('IFrameForPreview',$IFRAMEBody);
-			$this->t->set_var('messagelist_height',($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0 ? ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']).'px':'auto'));
+			$this->t->set_var('messagelist_height',($this->use_preview ? ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']).'px':'auto'));
 
 			$this->t->parse("out","message_table");
 
@@ -1172,7 +1179,7 @@ $(document).ready(function() {
 		function updateMessagePreview($headerData,$_folderType,$_folderName,$_icServer=0)
 		{
 			// IFrame for Preview ....
-			if ($headerData['uid'] && $GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']>0)
+			if ($headerData['uid'] && $this->use_preview)
 			{
 				//error_log(__METHOD__.__LINE__.array2string($headerData).function_backtrace());
 				$jscall ='';
