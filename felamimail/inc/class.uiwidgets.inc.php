@@ -865,21 +865,20 @@ $(document).ready(function() {
 				$data["status"] = $status; // ein icon
 
 				// the css for this row
-				if($header['deleted']) {
-					$css_style = 'header_row_D';
-				} elseif($header['recent'] && !$header['seen']) {
-					$css_style = 'header_row_R';
-				} elseif($header['flagged']) {
-					if($header['seen']) {
-						$css_style = 'header_row_FS';
-					} else {
-						$css_style = 'header_row_F';
-					}
-				} elseif($header['seen']) {
-					$css_style = 'header_row_S';
-				} else {
-					$css_style = 'header_row_';
+				$css_styles = array();
+				if ($header['deleted']) {
+					$css_styles[] = 'deleted';
 				}
+				if ($header['recent']) {
+					$css_styles[] = 'recent';
+				}
+				if ($header['flagged']) {
+					$css_styles[] = 'flagged';
+				}
+				if (!$header['seen']) {
+					$css_styles[] = 'unseen';
+				}
+
 				//if (in_array("check", $cols))
 				// don't overwrite check with "false" as this forces the grid to
 				// deselect the row - sending "0" doesn't do that
@@ -1032,7 +1031,7 @@ $(document).ready(function() {
 						$sender_name	= $header['to_address'];
 						$full_address	= $header['to_address'];
 					}
-					$data["toaddress"] = "<nobr><a class=\"".$css_style."\" href=\"#\" onclick=\"fm_handleComposeClick(false,'".$GLOBALS['egw']->link('/index.php',$linkData)."', '".$windowName."', this); return false;\" title=\"".@htmlspecialchars($full_address, ENT_QUOTES | ENT_IGNORE, $this->charset,false)."\">".@htmlspecialchars($sender_name, ENT_QUOTES | ENT_IGNORE, $this->charset,false)."</a></nobr>";
+					$data["toaddress"] = "<nobr><a href=\"#\" onclick=\"fm_handleComposeClick(false,'".$GLOBALS['egw']->link('/index.php',$linkData)."', '".$windowName."', this); return false;\" title=\"".@htmlspecialchars($full_address, ENT_QUOTES | ENT_IGNORE, $this->charset,false)."\">".@htmlspecialchars($sender_name, ENT_QUOTES | ENT_IGNORE, $this->charset,false)."</a></nobr>";
 				}
 
 				//fromaddress
@@ -1066,7 +1065,7 @@ $(document).ready(function() {
 					);
 					$windowName = 'compose'.$header['uid'];
 
-					$data["fromaddress"] = "<nobr><a class=\"".$css_style."\" href=\"#\" onclick=\"fm_handleComposeClick(false,'".$GLOBALS['egw']->link('/index.php',$linkData)."', '".$windowName."', this); return false;\" title=\"".@htmlspecialchars($full_address, ENT_QUOTES | ENT_IGNORE, $this->charset,false)."\">".@htmlspecialchars($sender_name, ENT_QUOTES | ENT_IGNORE, $this->charset,false)."</a></nobr>";
+					$data["fromaddress"] = "<nobr><a href=\"#\" onclick=\"fm_handleComposeClick(false,'".$GLOBALS['egw']->link('/index.php',$linkData)."', '".$windowName."', this); return false;\" title=\"".@htmlspecialchars($full_address, ENT_QUOTES | ENT_IGNORE, $this->charset,false)."\">".@htmlspecialchars($sender_name, ENT_QUOTES | ENT_IGNORE, $this->charset,false)."</a></nobr>";
 				}
 				if (in_array("date", $cols))
 				{
@@ -1092,7 +1091,7 @@ $(document).ready(function() {
 
 				//$this->t->set_var('phpgw_images',EGW_IMAGES);
 				$result["data"] = $data;
-				$result["rowClass"] = $css_style;
+				$result["rowClass"] = implode(' ', $css_styles);
 				$rv[] = $result;
 				//error_log(__METHOD__.__LINE__.array2string($result));
 			}

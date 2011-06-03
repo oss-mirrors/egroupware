@@ -1,35 +1,3 @@
-/*$(document).ready(function() {
-	if (typeof CopyOrMove == 'undefined'
-		var CopyOrMove = egw_appWindow('felamimail').CopyOrMove;
-	if (typeof prefAskForMove == 'undefined')
-		var prefAskForMove = egw_appWindow('felamimail').prefAskForMove; 
-	if (typeof prefAskForMultipleForward == 'undefined') var prefAskForMultipleForward = egw_appWindow('felamimail').prefAskForMove; 
-	if (typeof sURL == 'undefined') var sURL = window.sURL;
-
-	if (typeof copyingMessages == 'undefined') var MessageBuffer;
-	// global vars to store server and active folder info
-	//var activeServerID			= '{activeServerID}';
-	if (typeof activeFolder == 'undefined') var activeFolder			= egw_appWindow('felamimail').activeFolder;
-	if (typeof activeFolderB64 == 'undefined') var activeFolderB64			= egw_appWindow('felamimail').activeFolderB64;
-	if (typeof activityImagePath == 'undefined') var activityImagePath		= egw_appWindow('felamimail').activityImagePath;
-
-	if (typeof actionManager == 'undefined') var actionManager			= egw_appWindow('felamimail').actionManager;
-	if (typeof objectManager == 'undefined') var objectManager			= egw_appWindow('felamimail').objectManager;
-	if (typeof mailGrid == 'undefined') var mailGrid		= egw_appWindow('felamimail').mailGrid;
-
-	// how many row are selected currently
-	if (typeof checkedCounter == 'undefined') var checkedCounter=egw_appWindow('felamimail').checkedCounter;
-
-	// the refreshtimer objects
-	if (typeof aktiv == 'undefined') var aktiv = window.aktiv;
-	if (typeof fm_timerFolderStatus == 'undefined') var fm_timerFolderStatus = egw_appWindow('felamimail').fm_timerFolderStatus;
-	if (typeof fm_previewMessageID == 'undefined') var fm_previewMessageID = egw_appWindow('felamimail').fm_previewMessageID;
-	if (typeof fm_previewMessageFolderType == 'undefined') var fm_previewMessageFolderType = egw_appWindow('felamimail').fm_previewMessageFolderType;
-});
-
-// refresh time for mailboxview
-if (typeof refreshTimeOut == 'undefined') var refreshTimeOut = egw_appWindow('felamimail').refreshTimeOut;*/
-
 function egw_email_fetchDataProc(_elems, _columns, _callback, _context)
 {
 	var request = new egw_json_request("felamimail.uiwidgets.ajax_fetch_data",
@@ -870,89 +838,90 @@ function fm_startTimerMessageListUpdate(_refreshTimeOut) {
 	}
 }
 
-var felamimail_messageUrls = {};
-var felamimail_dblclick_speed = 300;
+var felamimail_queuedMessage = null;
+var felamimail_rm_timeout = 300;
 
-/**
- * Handles message clicks and distinguishes between double clicks and single clicks
- */
-function fm_handleMessageClick(_double, _url, _windowName, _node)
-{
-	if (_double)
+function fm_msg_addClass(_id, _class) {
+	// Set the opened message read
+	var dataObject = mailGrid.dataRoot.getElementById(_id);
+	if (dataObject)
 	{
-		// Unset the given message url - the timeout which was triggered in the
-		// click handler will now no longer call the fm_readMessage function
-		delete (felamimail_messageUrls[_url]);
-		window.setTimeout(function () {
-		if (typeof felamimail_messageUrls[_url] == "undefined")
-		{
-			fm_readMessage(_url, _windowName, _node);
-			//alert('fm_handleMessageClick:'+' is double');
-			}
-		}, felamimail_dblclick_speed);
-		//mailGrid.dataRoot.actionObject.setAllSelected(false);
+		dataObject.addClass(_class);
 	}
-	else
-	{
-		// Check whether the given url is already queued. Only continue if this
-		// is not the case
-		if (typeof felamimail_messageUrls[_url] == "undefined")
-		{
-			// Queue the url
-			felamimail_messageUrls[_url] = true;
+}
 
-			// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
-			// event doesn't occur in this time, trigger the single click function
-			window.setTimeout(function () {
-				if (typeof felamimail_messageUrls[_url] == "boolean")
-				{
-					fm_readMessage(_url, _windowName, _node);
-					delete (felamimail_messageUrls[_url]);
-					//alert('fm_handleMessageClick:'+' is single');
-				}
-			}, felamimail_dblclick_speed);
-		}
-	}
-	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
-	// allSelected[i].id hält die id
-	// zurückseten iteration über allSelected (getSelectedObjects) und dann allSelected[i].setSelected(false);
-	for (var i=0; i<allSelected.length; i++) 
+function fm_msg_removeClass(_id, _class) {
+	// Set the opened message read
+	var dataObject = mailGrid.dataRoot.getElementById(_id);
+	if (dataObject)
 	{
-		if (allSelected[i].id.length>0) 
-		{
-			allSelected[i].setSelected(false);
-			allSelected[i].setFocused(true);
-			//alert('fm_handleMessageClick:'+allSelected[i].id);
-		}
+		dataObject.removeClass(_class);
 	}
 }
 
 function fm_readMessage(_url, _windowName, _node) {
-//alert('url to open'+_url);
+
 	var windowArray = _windowName.split('_');
-	var tableElement =_node.parentNode.parentNode.parentNode.parentNode;
-	var allRows = tableElement.getElementsByTagName("tr");
-	for(i=0; i< allRows.length; i++) {
-		allRows[i].style.backgroundColor = "#FFFFFF";
-	}
-	if (windowArray[0] == 'MessagePreview') {
-		if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
-		egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_updating_view +'</span>');
-		fm_previewMessageID = windowArray[1];
-		fm_previewMessageFolderType = windowArray[2];
-		// refreshMessagePreview now also refreshes the folder state
-		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",windowArray[1],windowArray[2]);
+
+	if (windowArray[0] == 'MessagePreview')
+	{
+		// Check whether this mail has not already be queued and the message
+		// preview is actuall displayed
+		if (felamimail_queuedMessage != windowArray[1] && !isNaN(felamimail_iframe_height)) {
+
+			// Set the url as queueud
+			felamimail_queuedMessage = windowArray[1];
+
+			// Wait felamimail_rm_timeout seconds before opening the email in the
+			// preview iframe
+			window.setTimeout(function() {
+				// Abort if another mail should be displayed
+				if (windowArray[1] != felamimail_queuedMessage)
+				{
+					return false;
+				}
+
+				// Copy the old status message TODO. Make this an own function
+				if (document.getElementById('messageCounter').innerHTML.search(
+					eval('/'+egw_appWindow('felamimail').lang_updating_view+'/')) < 0 )
+				{
+					MessageBuffer = document.getElementById('messageCounter').innerHTML;
+				}
+
+				// Set the "updating view" message
+				egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_updating_view +'</span>');
+
+				fm_previewMessageID = windowArray[1];
+				fm_previewMessageFolderType = windowArray[2];
+				// refreshMessagePreview now also refreshes the folder state
+				egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview", windowArray[1], windowArray[2]);
+
+				felamimail_queuedMessage = null;
+
+				fm_msg_removeClass(windowArray[1], 'unseen');
+
+			}, felamimail_rm_timeout);
+		}
 	} else {
+		// Remove the url which shall be opened as we do not want to open this
+		// message in the preview window
+		if (felamimail_queuedMessage == windowArray[1]) {
+			// Wait a short moment as the code above might be executed after
+			// an double click
+			window.setTimeout(function() {
+				felamimail_queuedMessage = null;
+			}, 100);
+		}
+
 		egw_openWindowCentered(_url, _windowName, 750, egw_getWindowOuterHeight());
 
 		// Refresh the folder state (count of unread emails)
 		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshFolder");
-	}
-	//alert('after opening');
-	mailGrid.dataRoot.actionObject.setAllSelected(false);
-	_node.style.fontWeight='normal';
-	_node.style.backgroundColor = "#ddddFF";
 
+		fm_msg_removeClass(windowArray[1], 'unseen');
+	}
+
+	// TODO class
 	var aElements = _node.getElementsByTagName("a");
 	aElements[0].style.fontWeight='normal';
 }
@@ -1099,60 +1068,6 @@ function changeActiveAccount(_accountSelection)
 	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.changeActiveAccount',_accountSelection.value);
 }
 
-// stuff to change row background color
-function HexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
-function HexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
-function HexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
-function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
-function RGBtoHex(R,G,B) {return toHex(R)+toHex(G)+toHex(B)}
-function toHex(N) {
- if (N==null) return "00";
- N=parseInt(N); if (N==0 || isNaN(N)) return "00";
- N=Math.max(0,N); N=Math.min(N,255); N=Math.round(N);
- return "0123456789ABCDEF".charAt((N-N%16)/16)
-      + "0123456789ABCDEF".charAt(N%16);
-}
-function compareColor(colorA, colorB)
-{
-	var cA = colorA.search(/#/);
-	var cA2C = colorA;
-	var cB2C = colorB;
-	if (cA != -1)
-	{
-		cA2C = "rgb("+HexToR(colorA)+", "+HexToG(colorA)+", "+HexToB(colorA)+")";
-	}
-	var cB = colorB.search(/#/);
-	if (cB != -1)
-	{
-		cB2C = "rgb("+HexToR(colorB)+", "+HexToG(colorB)+", "+HexToB(colorB)+")";
-	}
-	if (cA2C == cB2C) 
-	{
-		//alert("match:"+colorA+cA2C+" == "+colorB+cB2C);
-		return true;
-	}
-	else
-	{
-		//alert("not match:"+colorA+cA2C+" == "+colorB+cB2C);
-		return false;
-	}
-}
-function onChangeColor(el,direction)
-{
-	if (!compareColor(el.style.backgroundColor,"#ddddFF") && !compareColor(el.style.backgroundColor,"#eeeddd"))
-	{
-		if (direction == 'in') el.style.backgroundColor="#dddddd";
-		if (direction == 'out') el.style.backgroundColor="#FFFFFF";
-	}
-	else
-	{
-		if (direction == 'in') el.style.backgroundColor="#eeeddd";
-		if (direction == 'out') el.style.backgroundColor="#ddddFF";
-	}
-	return true;
-}
-
-
 function handleResize()
 {
 	var MIN_TABLE_HEIGHT = 100;
@@ -1166,6 +1081,12 @@ function handleResize()
 	// Calculate how many space is actually there for the whole mail view
 	var outerContainer = $('#divMessageList');
 	var mainViewArea = $('#divMainView');
+
+	// Exit if the felamimail containers do not exist
+	if (!outerContainer || !mainViewArea) {
+		return;
+	}
+
 	var viewportHeight = $(window).height();
 	var documentHeight =  $("body").height() == 0 ? $(document).height() : $("body").height();
 	var containerHeight = $(outerContainer).height();
@@ -1473,3 +1394,4 @@ function mail_copy(_action, _senders, _target) {
 	egw_appWindow('felamimail').xajax_doXMLHTTP(
 		"felamimail.ajaxfelamimail.copyMessages", target, messages);
 }
+
