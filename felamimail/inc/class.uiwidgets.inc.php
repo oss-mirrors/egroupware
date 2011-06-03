@@ -845,24 +845,7 @@ $(document).ready(function() {
 				if(!empty($header['seen'])) $flags .= "S";
 
 
-				// the status icon
-				if($header['deleted']) {
-					$status = html::image('felamimail','kmmsgdel');
-				} elseif($header['recent']) {
-					$status = html::image('felamimail','kmmsgnew');
-				} elseif($header['forwarded']) {
-					$status = html::image('felamimail','kmmsgforwarded');
-				} elseif($header['answered']) {
-					$status = html::image('felamimail','kmmsgreplied');
-				} elseif($header['seen']) {
-					$status = html::image('felamimail','kmmsgread');
-				} else {
-					$status = html::image('felamimail','kmmsgunseen');
-				}
-
-
-				//if (in_array("useraction", $cols)) // no way to disable that column as it is forced
-				$data["status"] = $status; // ein icon
+				$data["status"] = "<span class=\"status_img\"></span>";
 
 				// the css for this row
 				$css_styles = array("mail");
@@ -877,6 +860,12 @@ $(document).ready(function() {
 				}
 				if (!$header['seen']) {
 					$css_styles[] = 'unseen';
+				}
+				if ($header['answered']) {
+					$css_styles[] = 'replied';
+				}
+				if ($header['forwarded']) {
+					$css_styles[] = 'forwarded';
 				}
 
 				//if (in_array("check", $cols))
@@ -1016,7 +1005,7 @@ $(document).ready(function() {
 						'menuaction'    => 'felamimail.uicompose.compose',
 						'send_to'	=> base64_encode($senderAddress)
 					);
-					$windowName = 'compose'.$header['uid'];
+					$windowName = 'compose_'.$header['uid'];
 
 					// sent or drafts or template folder means foldertype > 0, use to address instead of from
 					$header2add = felamimail_bo::htmlentities($header['to_address'],$this->charset);
@@ -1063,7 +1052,7 @@ $(document).ready(function() {
 						'menuaction'    => 'felamimail.uicompose.compose',
 						'send_to'	=> base64_encode($senderAddress)
 					);
-					$windowName = 'compose'.$header['uid'];
+					$windowName = 'compose_'.$header['uid'];
 
 					$data["fromaddress"] = "<nobr><a href=\"#\" onclick=\"fm_handleComposeClick(false,'".$GLOBALS['egw']->link('/index.php',$linkData)."', '".$windowName."', this); return false;\" title=\"".@htmlspecialchars($full_address, ENT_QUOTES | ENT_IGNORE, $this->charset,false)."\">".@htmlspecialchars($sender_name, ENT_QUOTES | ENT_IGNORE, $this->charset,false)."</a></nobr>";
 				}

@@ -761,9 +761,13 @@ function queueRefreshFolderList(_folders)
 }
 
 function refreshView() {
-	if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
-	document.mainView.submit();
-	document.getElementById('messageCounter').innerHTML = MessageBuffer;
+	if (typeof framework == 'undefined') {
+		if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
+		document.mainView.submit();
+		document.getElementById('messageCounter').innerHTML = MessageBuffer;
+	} else {
+		framework.getApplicationByName('felamimail').browser.reload();
+	}
 }
 
 function mail_openComposeWindow(_url) {
@@ -838,8 +842,9 @@ function fm_startTimerMessageListUpdate(_refreshTimeOut) {
 	}
 }
 
-var felamimail_queuedMessage = null;
-var felamimail_rm_timeout = 300;
+var felamimail_queuedMessages = [];
+var felamimail_rm_timeout = 400;
+var felamimail_doubleclick_timeout = 300;
 
 function fm_msg_addClass(_id, _class) {
 	// Set the opened message read
@@ -862,21 +867,22 @@ function fm_msg_removeClass(_id, _class) {
 function fm_readMessage(_url, _windowName, _node) {
 
 	var windowArray = _windowName.split('_');
+	var msgId = windowArray[1];
 
 	if (windowArray[0] == 'MessagePreview')
 	{
 		// Check whether this mail has not already be queued and the message
 		// preview is actuall displayed
-		if (felamimail_queuedMessage != windowArray[1] && !isNaN(felamimail_iframe_height)) {
+		if (typeof felamimail_queuedMessages[msgId] == 'undefined' && !isNaN(felamimail_iframe_height)) {
 
 			// Set the url as queueud
-			felamimail_queuedMessage = windowArray[1];
+			felamimail_queuedMessages[msgId] = true;
 
 			// Wait felamimail_rm_timeout seconds before opening the email in the
 			// preview iframe
 			window.setTimeout(function() {
 				// Abort if another mail should be displayed
-				if (windowArray[1] != felamimail_queuedMessage)
+				if (typeof felamimail_queuedMessages[msgId] == 'undefined')
 				{
 					return false;
 				}
@@ -896,7 +902,7 @@ function fm_readMessage(_url, _windowName, _node) {
 				// refreshMessagePreview now also refreshes the folder state
 				egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview", windowArray[1], windowArray[2]);
 
-				felamimail_queuedMessage = null;
+				delete(felamimail_queuedMessages[msgId]);
 
 				fm_msg_removeClass(windowArray[1], 'unseen');
 
@@ -905,12 +911,12 @@ function fm_readMessage(_url, _windowName, _node) {
 	} else {
 		// Remove the url which shall be opened as we do not want to open this
 		// message in the preview window
-		if (felamimail_queuedMessage == windowArray[1]) {
-			// Wait a short moment as the code above might be executed after
+		if (typeof felamimail_queuedMessages[msgId] != 'undefined') {
+			// Wait a short moment as the code above might be executed again after
 			// an double click
 			window.setTimeout(function() {
-				felamimail_queuedMessage = null;
-			}, 100);
+				delete(felamimail_queuedMessages[msgId]);
+			}, 0);
 		}
 
 		egw_openWindowCentered(_url, _windowName, 750, egw_getWindowOuterHeight());
@@ -920,10 +926,6 @@ function fm_readMessage(_url, _windowName, _node) {
 
 		fm_msg_removeClass(windowArray[1], 'unseen');
 	}
-
-	// TODO class
-	var aElements = _node.getElementsByTagName("a");
-	aElements[0].style.fontWeight='normal';
 }
 
 /**
@@ -931,52 +933,24 @@ function fm_readMessage(_url, _windowName, _node) {
  */
 function fm_handleAttachmentClick(_double, _url, _windowName, _node)
 {
-	if (_double)
-	{
-		// Unset the given message url - the timeout which was triggered in the
-		// click handler will now no longer call the fm_readMessage function
-		delete (felamimail_messageUrls[_url]);
-		window.setTimeout(function () {
-		if (typeof felamimail_messageUrls[_url] == "undefined")
-		{
-			fm_readAttachments(_url, _windowName, _node);
-			//alert('fm_handleAttachmentClick:'+' is double');
-			}
-		}, felamimail_dblclick_speed);
-		//mailGrid.dataRoot.actionObject.setAllSelected(false);
-	}
-	else
-	{
-		// Check whether the given url is already queued. Only continue if this
-		// is not the case
-		if (typeof felamimail_messageUrls[_url] == "undefined")
-		{
-			// Queue the url
-			felamimail_messageUrls[_url] = true;
+	var msgId = _windowName.split('_')[1];
 
-			// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
-			// event doesn't occur in this time, trigger the single click function
-			window.setTimeout(function () {
-				if (typeof felamimail_messageUrls[_url] == "boolean")
-				{
-					fm_readAttachments(_url, _windowName, _node);
-					delete (felamimail_messageUrls[_url]);
-					//alert('fm_handleAttachmentClick:'+' is single');
-				}
-			}, felamimail_dblclick_speed);
-		}
-	}
-	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
-	// allSelected[i].id hält die id
-	// zurückseten iteration über allSelected (getSelectedObjects) und dann allSelected[i].setSelected(false);
-	for (var i=0; i<allSelected.length; i++) 
+	// Check whether the given url is already queued. Only continue if this
+	// is not the case
+	if (typeof felamimail_queuedMessages[msgId] == "undefined")
 	{
-		if (allSelected[i].id.length>0) 
-		{
-			allSelected[i].setSelected(false);
-			allSelected[i].setFocused(true);
-			//alert('fm_handleMessageClick:'+allSelected[i].id);
-		}
+		// Queue the url
+		felamimail_queuedMessages[msgId] = true;
+
+		// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
+		// event doesn't occur in this time, trigger the single click function
+		window.setTimeout(function () {
+			if (typeof felamimail_queuedMessages[msgId] != "undefined")
+			{
+				fm_readAttachments(_url, _windowName, _node);
+				delete (felamimail_queuedMessages[msgId]);
+			}
+		}, felamimail_doubleclick_timeout);
 	}
 }
 
@@ -991,52 +965,24 @@ function fm_readAttachments(_url, _windowName, _node) {
  */
 function fm_handleComposeClick(_double, _url, _windowName, _node)
 {
-	if (_double)
-	{
-		// Unset the given message url - the timeout which was triggered in the
-		// click handler will now no longer call the fm_readMessage function
-		delete (felamimail_messageUrls[_url]);
-		window.setTimeout(function () {
-		if (typeof felamimail_messageUrls[_url] == "undefined")
-		{
-			fm_compose(_url, _windowName, _node);
-			//alert('fm_handleComposeClick:'+' is double');
-			}
-		}, felamimail_dblclick_speed);
-		//mailGrid.dataRoot.actionObject.setAllSelected(false);
-	}
-	else
-	{
-		// Check whether the given url is already queued. Only continue if this
-		// is not the case
-		if (typeof felamimail_messageUrls[_url] == "undefined")
-		{
-			// Queue the url
-			felamimail_messageUrls[_url] = true;
+	var msgId = _windowName.split('_')[1];
 
-			// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
-			// event doesn't occur in this time, trigger the single click function
-			window.setTimeout(function () {
-				if (typeof felamimail_messageUrls[_url] == "boolean")
-				{
-					fm_compose(_url, _windowName, _node);
-					delete (felamimail_messageUrls[_url]);
-					//alert('fm_handleComposeClick:'+' is single');
-				}
-			}, felamimail_dblclick_speed);
-		}
-	}
-	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
-	// allSelected[i].id hält die id
-	// zurückseten iteration über allSelected (getSelectedObjects) und dann allSelected[i].setSelected(false);
-	for (var i=0; i<allSelected.length; i++) 
+	// Check whether the given url is already queued. Only continue if this
+	// is not the case
+	if (typeof felamimail_queuedMessages[msgId] == "undefined")
 	{
-		if (allSelected[i].id.length>0) 
-		{
-			allSelected[i].setSelected(false);
-			allSelected[i].setFocused(true);
-			//alert('fm_handleMessageClick:'+allSelected[i].id);
-		}
+		// Queue the url
+		felamimail_queuedMessages[msgId] = true;
+
+		// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
+		// event doesn't occur in this time, trigger the single click function
+		window.setTimeout(function () {
+			if (typeof felamimail_queuedMessages[msgId] != "undefined")
+			{
+				fm_compose(_url, _windowName, _node);
+				delete (felamimail_queuedMessages[msgId]);
+			}
+		}, felamimail_doubleclick_timeout);
 	}
 }
 
@@ -1318,7 +1264,7 @@ function felamimail_transform_foldertree() {
 	treeObj.clear();
 
 	// Go over the folder list
-	if (felamimail_folders.length >0)
+	if (typeof felamimail_folders != 'undefined' && felamimail_folders.length > 0)
 	{
 		for (var key in felamimail_folders) {
 			var folderName = felamimail_folders[key];
