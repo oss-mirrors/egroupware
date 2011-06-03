@@ -865,7 +865,7 @@ $(document).ready(function() {
 				$data["status"] = $status; // ein icon
 
 				// the css for this row
-				$css_styles = array();
+				$css_styles = array("mail");
 				if ($header['deleted']) {
 					$css_styles[] = 'deleted';
 				}
