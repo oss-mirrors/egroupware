@@ -238,7 +238,7 @@
 
 			// Set up custom fields
 			if(count(config::get_customfields('bookmarks',true)) == 0) {
-				$readonly[$tabs]['custom'] = true;
+				$readonlys[self::$tabs]['custom'] = true;
 			}
 
 			// Set up history
