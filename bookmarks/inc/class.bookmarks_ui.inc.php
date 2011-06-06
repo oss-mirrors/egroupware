@@ -387,7 +387,9 @@
 				'icon' => 'no_favicon',
 				'default' => true,
 				'allowOnMultiple' => false,
+				'nm_action' => 'location',
 				'url' => 'menuaction=bookmarks.bookmarks_ui.redirect&bm_id=$id',
+				'target' => '_blank',
 				'group' => $group=1,
 			),
 			'edit' => array(

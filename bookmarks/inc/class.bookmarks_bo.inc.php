@@ -115,9 +115,9 @@
 					$row['favicon'] = 'vfs://'.$favicon;
 				}
 
-				foreach(array(EGW_ACL_EDIT => 'edit', EGW_ACL_DELETE => 'delete') as $required => $field) {
-					$readonlys[$field."[{$row['id']}]"] = !$this->check_perms2($row['owner'], $row['access'], $required);
-				}
+				$readonlys["edit[{$row['id']}]"] = !$this->check_perms2($row['owner'], $row['access'], EGW_ACL_READ) && 
+					!$this->check_perms2($row['owner'], $row['access'], EGW_ACL_EDIT);
+				$readonlys["delete[{$row['id']}]"] = !$this->check_perms2($row['owner'], $row['access'], EGW_ACL_DELETE);
 			}
 
 			return $count;
