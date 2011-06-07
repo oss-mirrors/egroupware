@@ -1,26 +1,28 @@
 %1 group	polls	en	%1 group
-actions	polls	en	actions
+actions	polls	en	Actions
 add answer to poll	polls	en	Add answer to poll
 add answers	polls	en	Add answers
 add new poll question	polls	en	Add new poll question
 add questions	polls	en	Add questions
 administrators	polls	en	Administrators
+allow users to change their vote	polls	en	Allow users to change their vote
 allow users to vote more then once	polls	en	Allow users to vote more than once
 allways use latest poll	polls	en	Allways use latest poll
 answer	polls	en	Answer
 answer has been added to poll	polls	en	Answer has been added to poll
 answer has been updated	polls	en	Answer has been updated
 answers	polls	en	Answers
-are you sure want to delete this answer ?	polls	en	Are you sure want to delete this answer ?
-are you sure want to delete this question ?	polls	en	Are you sure want to delete this question ?
-current poll	polls	en	Current Poll
+are you sure want to delete this answer ?	polls	en	Are you sure want to delete this answer?
+are you sure want to delete this question ?	polls	en	Are you sure want to delete this question?
+change vote	polls	en	Change vote
+current poll	polls	en	Current poll
 edit answer	polls	en	Edit answer
 edit poll question	polls	en	Edit poll question
-egroupware users (non-anonymous)	polls	en	eGroupWare users (non-anonymous)
+egroupware users (non-anonymous)	polls	en	EGroupware users
 enter poll question	polls	en	Enter poll question
 everyone incl. anonymous users	polls	en	Everyone incl. anonymous users
-new poll has been added.  you should now add some answers for this poll	polls	en	New poll has been added.  You should now add some answers for this poll
-noone	polls	en	Noone
+new poll has been added.  you should now add some answers for this poll	polls	en	New poll has been added. You should now add answers for this poll.
+noone	polls	en	No-one
 poll question	polls	en	Poll question
 poll votable by	polls	en	Poll votable by
 polls	common	en	Polls
@@ -36,10 +38,10 @@ show questions	common	en	Show questions
 this module displays polls.	polls	en	This module displays polls.
 total votes	polls	en	Total
 view poll	polls	en	View poll
-view results	polls	en	View Results
+view results	polls	en	View results
 vote	polls	en	Vote
-voting booth admin	admin	en	Voting Booth
-voting booth administration	polls	en	Voting Booth Administration
+voting booth admin	admin	en	Voting booth
+voting booth administration	polls	en	Voting booth administration
 what to show	polls	en	What to show
 which poll	polls	en	Which poll
-you are not (yet) allowed view the result of this vote.	polls	en	You are not (yet) allowed view the result of this vote.
+you are not (yet) allowed view the result of this vote.	polls	en	You are not allowed view the result of this vote.
