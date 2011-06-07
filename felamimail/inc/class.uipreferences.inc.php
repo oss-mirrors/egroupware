@@ -320,6 +320,22 @@
 				$identity =& $accountData['identity'];
 				//_debug_array($identity);
 			}
+			else
+			{
+				$this->t->set_var('identity[realName]','');
+				$this->t->set_var('identity[organization]','');
+				$this->t->set_var('identity[emailAddress]','');
+				$this->t->set_var('identity[signature]',-1);
+				$this->t->set_var('ic[host]','');
+				$this->t->set_var('ic[port]',143);
+				$this->t->set_var('ic[username]','');
+				$this->t->set_var('ic[password]','');
+				$this->t->set_var('ic[sievePort]','');
+				$this->t->set_var('og[host]','');
+				$this->t->set_var('og[port]',25);
+				$this->t->set_var('og[username]','');
+				$this->t->set_var('og[password]','');
+			}
 
 			if ($icServer) {
 				foreach($icServer as $key => $value) {
