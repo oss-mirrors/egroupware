@@ -650,7 +650,8 @@ $(document).ready(function() {
 							"id" => "check",
 							//"caption" => '<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">',
 							"type" => EGW_COL_TYPE_CHECKBOX,
-							"visibility" => EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+							//"width" => "20px",
+							"visibility" => EGW_COL_VISIBILITY_INVISIBLE,// EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
 						),
 						array(
 							"id" => "status",
