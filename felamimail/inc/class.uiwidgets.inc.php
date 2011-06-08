@@ -813,6 +813,7 @@ $(document).ready(function() {
 			foreach((array)$_headers as $header)
 			{
 				$i++;
+
 				//error_log(__METHOD__.array2string($header));
 				$result = array(
 					"id" => $header['uid'],
@@ -847,20 +848,23 @@ $(document).ready(function() {
 
 
 				$data["status"] = "<span class=\"status_img\"></span>";
+				//error_log(__METHOD__.array2string($header).' Flags:'.$flags);
 
 				// the css for this row
+				$is_recent=false;
 				$css_styles = array("mail");
 				if ($header['deleted']) {
 					$css_styles[] = 'deleted';
 				}
-				if ($header['recent']) {
+				if ($header['recent'] && !($header['deleted'] || $header['seen'] || $header['answered'] || $header['forwarded'])) {
 					$css_styles[] = 'recent';
+					$is_recent=true;
 				}
 				if ($header['flagged']) {
 					$css_styles[] = 'flagged';
 				}
 				if (!$header['seen']) {
-					$css_styles[] = 'unseen';
+					if (!$is_recent) $css_styles[] = 'unseen'; // different status image for recent
 				}
 				if ($header['answered']) {
 					$css_styles[] = 'replied';
@@ -868,7 +872,7 @@ $(document).ready(function() {
 				if ($header['forwarded']) {
 					$css_styles[] = 'forwarded';
 				}
-
+				//error_log(__METHOD__.array2string($css_styles));
 				//if (in_array("check", $cols))
 				// don't overwrite check with "false" as this forces the grid to
 				// deselect the row - sending "0" doesn't do that
