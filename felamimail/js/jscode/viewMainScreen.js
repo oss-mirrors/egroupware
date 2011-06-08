@@ -30,6 +30,21 @@ function mailGridGetSelected()
 	return messages;
 }
 
+function mail_enabledByClass(_action, _senders, _target)
+{
+//alert('enableByClass:'+_action.data.enableClass);
+//alert($(_target.iface.getDOMNode()).hasClass(_action.data.enableClass));
+	return $(_target.iface.getDOMNode()).hasClass(_action.data.enableClass);
+}
+
+function mail_disabledByClass(_action, _senders, _target)
+{
+// as there only is an enabled attribute, we must negate the result (we find the class -> we return false to set enabled to false)
+//alert('disableByClass:'+_action.data.disableClass);
+//alert(!$(_target.iface.getDOMNode()).hasClass(_action.data.disableClass));
+	return !$(_target.iface.getDOMNode()).hasClass(_action.data.disableClass);
+}
+
 function mail_parentRefreshListRowStyle(oldID, newID)
 {
 	// the old implementation is not working anymore, so we use the gridObject for this

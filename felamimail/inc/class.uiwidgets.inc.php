@@ -396,27 +396,36 @@ class uiwidgets
 							'caption' => 'Flagged',
 							'icon' => 'unread_flagged_small',
 							'onExecute' => 'javaScript:mail_flag',
+							'disableClass' => 'flagged',
+							'enabled' => "javaScript:mail_disabledByClass",
 						),
 						'unflagged' => array(
 							'caption' => 'Unflagged',
 							'icon' => 'read_flagged_small',
 							'onExecute' => 'javaScript:mail_flag',
+							'enableClass' => 'flagged',
+							'enabled' => "javaScript:mail_enabledByClass",
 						),
 						'read' => array(
 							'caption' => 'Read',
 							'icon' => 'read_small',
 							'onExecute' => 'javaScript:mail_flag',
+							//'enableClass' => 'unseen',
+							//'enabled' => "javaScript:mail_enabledByClass",
 						),
 						'unread' => array(
 							'caption' => 'Unread',
 							'icon' => 'unread_small',
 							'onExecute' => 'javaScript:mail_flag',
+							//'disableClass' => 'unseen',
+							//'enabled' => "javaScript:mail_disabledByClass",
 						),
 						'undelete' => array(
 							'caption' => 'Undelete',
 							'icon' => 'revert',
 							'onExecute' => 'javaScript:mail_flag',
-							//'enableClass' => 'rowDeleted',	// not yet used - gives no error on not deleted messages
+							'enableClass' => 'deleted',
+							'enabled' => "javaScript:mail_enabledByClass",
 						),
 					),
 				),
@@ -662,7 +671,7 @@ $(document).ready(function() {
 						array(
 							"id" => "attachments",
 							"caption" => '',
-							"width" => "20px",
+							"width" => "26px",
 							"visibility" => EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
 						),
 						array(
@@ -712,7 +721,7 @@ $(document).ready(function() {
 						array(
 							"id" => "attachments",
 							"caption" => '',
-							"width" => "20px",
+							"width" => "26px",
 							"visibility" => EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
 						),
 						array(
@@ -864,7 +873,7 @@ $(document).ready(function() {
 					$css_styles[] = 'flagged';
 				}
 				if (!$header['seen']) {
-					if (!$is_recent) $css_styles[] = 'unseen'; // different status image for recent
+					$css_styles[] = 'unseen'; // different status image for recent // solved via css !important
 				}
 				if ($header['answered']) {
 					$css_styles[] = 'replied';
