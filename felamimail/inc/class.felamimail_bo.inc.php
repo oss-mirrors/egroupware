@@ -2726,7 +2726,7 @@ class felamimail_bo
 			static $namecounter;
 			if (is_null($namecounter)) $namecounter = 0;
 	
-			if ( $_uid && $partID) error_log(__METHOD__.__LINE__.array2string($structure).' Uid:'.$_uid.' PartID:'.$partID.' -> '.array2string($this->icServer->getParsedHeaders($_uid, true, $partID, true)));
+			//if ( $_uid && $partID) error_log(__METHOD__.__LINE__.array2string($structure).' Uid:'.$_uid.' PartID:'.$partID.' -> '.array2string($this->icServer->getParsedHeaders($_uid, true, $partID, true)));
 			if(isset($structure->parameters['NAME'])) {
 				return rawurldecode(self::decode_header($structure->parameters['NAME']));
 			} elseif(isset($structure->dparameters['FILENAME'])) {
