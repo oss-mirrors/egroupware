@@ -1361,15 +1361,29 @@ class felamimail_bo
 				$structure = null;
 			}
 			$partID = false;
-			//error_log("getAttachmentByCID:$_uid, $_cid, $_part");
-			foreach($attachments as $attachment) {
+			//list($cidname,$cidrest) = explode('@',$_cid,2);
+			//error_log("getAttachmentByCID:$_uid ($cidname -> $cidrest), $_cid, $_part");
+			foreach($attachments as $attachment)
+			{
 				//error_log(print_r($attachment,true));
-				if(isset($attachment['cid']) && (strpos($attachment['cid'], $_cid) !== false || strpos($_cid, $attachment['cid']) !== false)) {
+				if(isset($attachment['cid']) && (strpos($attachment['cid'], $_cid) !== false || strpos($_cid, $attachment['cid']) !== false))
+				{
 					$partID = $attachment['partID'];
 					break;
 				}
 			}
-
+			if ($partID == false)
+			{
+				foreach($attachments as $attachment)
+				{
+					// if the former did not match try matching the cid to the name of the attachment
+					if(isset($attachment['cid']) && isset($attachment['name']) && (strpos($attachment['name'], $_cid) !== false || strpos($_cid, $attachment['name']) !== false))
+					{
+						$partID = $attachment['partID'];
+						break;
+					}
+				}
+			}
 			//error_log( "Cid:$_cid PARTID:$partID<bR>"); #exit;
 
 			if($partID == false) {
