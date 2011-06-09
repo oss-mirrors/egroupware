@@ -2723,7 +2723,10 @@ class felamimail_bo
 
 		function getFileNameFromStructure(&$structure, $_uid = false, $partID = false)
 		{
-			//if ( $_uid && $partID) error_log(__METHOD__.__LINE__.array2string($structure).' Uid:'.$_uid.' PartID:'.$partID.' -> '.array2string($this->icServer->getParsedHeaders($_uid, true, $partID, true)));
+			static $namecounter;
+			if (is_null($namecounter)) $namecounter = 0;
+	
+			if ( $_uid && $partID) error_log(__METHOD__.__LINE__.array2string($structure).' Uid:'.$_uid.' PartID:'.$partID.' -> '.array2string($this->icServer->getParsedHeaders($_uid, true, $partID, true)));
 			if(isset($structure->parameters['NAME'])) {
 				return rawurldecode(self::decode_header($structure->parameters['NAME']));
 			} elseif(isset($structure->dparameters['FILENAME'])) {
@@ -2770,7 +2773,8 @@ class felamimail_bo
 						}
 					}
 				}
-				return lang("unknown").($structure->subType ? ".".$structure->subType : "");
+				$namecounter++;
+				return lang("unknown").$namecounter.($structure->subType ? ".".$structure->subType : "");
 			}
 		}
 
