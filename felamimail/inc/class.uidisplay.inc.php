@@ -1408,6 +1408,12 @@ blockquote[type=cite] {
 
 					// create links for email addresses
 					if ($modifyURI) $this->parseEmail($newBody);
+					// create links for inline images
+					if ($modifyURI)
+					{
+						$newBody = preg_replace_callback("/\[cid:(.*)\]/iU",array($this,'image_callback_plain'),$newBody);
+					}
+
 					$newBody	= $this->highlightQuotes($newBody);
 					// to display a mailpart of mimetype plain/text, may be better taged as preformatted
 					#$newBody	= nl2br($newBody);
@@ -1508,6 +1514,47 @@ blockquote[type=cite] {
 				$imageURL = $cache[$imageURL];
 			}
 			return 'src="'.$imageURL.'"';
+		}
+
+		/**
+		 * preg_replace callback to replace image cid url's
+		 *
+		 * @param array $matches matches from preg_replace("/src=(\"|\')cid:(.*)(\"|\')/iU",...)
+		 * @return string src attribute to replace
+		 */
+		function image_callback_plain($matches)
+		{
+			static $cache = array();	// some caching, if mails containing the same image multiple times
+			//error_log(__METHOD__.__LINE__.array2string($matches));
+			$linkData = array (
+				'menuaction'    => 'felamimail.uidisplay.displayImage',
+				'uid'		=> $this->uid,
+				'mailbox'	=> base64_encode($this->mailbox),
+				'cid'		=> base64_encode($matches[1]),
+				'partID'	=> $this->partID,
+			);
+			$imageURL = $GLOBALS['egw']->link('/index.php', $linkData);
+
+			// to test without data uris, comment the if close incl. it's body
+			if (html::$user_agent != 'msie' || html::$ua_version >= 8)
+			{
+				if (!isset($cache[$imageURL]))
+				{
+					$attachment = $this->bofelamimail->getAttachmentByCID($this->uid, $matches[1], $this->partID);
+
+					// only use data uri for "smaller" images, as otherwise the first display of the mail takes to long
+					if (bytes($attachment['attachment']) < 8192)	// msie=8 allows max 32k data uris
+					{
+						$cache[$imageURL] = 'data:'.$attachment['type'].';base64,'.base64_encode($attachment['attachment']);
+					}
+					else
+					{
+						$cache[$imageURL] = $imageURL;
+					}
+				}
+				$imageURL = $cache[$imageURL];
+			}
+			return '<img src="'.$imageURL.'" />';
 		}
 
 		function printMessage($messageId = NULL, $callfromcompose = NULL)

@@ -1354,6 +1354,9 @@ class felamimail_bo
 		{
 			// some static variables to avoid fetching the same mail multible times
 			static $uid,$part,$attachments,$structure;
+			//error_log("getAttachmentByCID:$_uid, $_cid, $_part");
+
+			if(empty($_cid)) return false;
 
 			if ($_uid != $uid || $_part != $part)
 			{
@@ -1361,8 +1364,6 @@ class felamimail_bo
 				$structure = null;
 			}
 			$partID = false;
-			//list($cidname,$cidrest) = explode('@',$_cid,2);
-			//error_log("getAttachmentByCID:$_uid ($cidname -> $cidrest), $_cid, $_part");
 			foreach($attachments as $attachment)
 			{
 				//error_log(print_r($attachment,true));
