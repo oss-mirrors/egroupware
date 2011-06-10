@@ -1,5 +1,5 @@
 %1 entries deleted.	emailadmin	en	%1 entries deleted.
-account '%1' not found !!!	emailadmin	en	Account '%1' not found !!!
+account '%1' not found !!!	emailadmin	en	Account '%1' not found!
 active templates	emailadmin	en	Active templates
 add new email address:	emailadmin	en	Add new email address:
 add profile	emailadmin	en	Add profile
@@ -47,7 +47,7 @@ entry saved	emailadmin	en	Entry saved
 error connecting to imap server. %s : %s.	emailadmin	en	Error connecting to IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	en	Error connecting to IMAP server: [%s] %s.
 error deleting entry!	emailadmin	en	Error deleting entry!
-error saving the entry!!!	emailadmin	en	Error saving the entry!!!
+error saving the entry!!!	emailadmin	en	Error saving the entry!
 filtered by account	emailadmin	en	Filtered by account
 filtered by group	emailadmin	en	Filtered by group
 forward also to	emailadmin	en	Forward also to

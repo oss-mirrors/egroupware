@@ -7,10 +7,10 @@ add questions	polls	en	Add questions
 administrators	polls	en	Administrators
 allow users to change their vote	polls	en	Allow users to change their vote
 allow users to vote more then once	polls	en	Allow users to vote more than once
-allways use latest poll	polls	en	Allways use latest poll
+allways use latest poll	polls	en	Always use latest poll
 answer	polls	en	Answer
-answer has been added to poll	polls	en	Answer has been added to poll
-answer has been updated	polls	en	Answer has been updated
+answer has been added to poll	polls	en	Answer has been added to poll.
+answer has been updated	polls	en	Answer has been updated.
 answers	polls	en	Answers
 are you sure want to delete this answer ?	polls	en	Are you sure want to delete this answer?
 are you sure want to delete this question ?	polls	en	Are you sure want to delete this question?
@@ -22,14 +22,14 @@ egroupware users (non-anonymous)	polls	en	EGroupware users
 enter poll question	polls	en	Enter poll question
 everyone incl. anonymous users	polls	en	Everyone incl. anonymous users
 new poll has been added.  you should now add some answers for this poll	polls	en	New poll has been added. You should now add answers for this poll.
-noone	polls	en	No-one
+noone	polls	en	No one
 poll question	polls	en	Poll question
 poll votable by	polls	en	Poll votable by
 polls	common	en	Polls
-question has been updated	polls	en	Question has been updated
+question has been updated	polls	en	Question has been updated.
 result visible to	polls	en	Result visible to
 select current poll	polls	en	Select current poll
-settings updated	polls	en	Settings updated
+settings updated	polls	en	Settings updated.
 show answers	polls	en	Show answers
 show bullet if allowed to vote and result else	polls	en	Show bullet if allowed to vote and result else
 show only the ballot	polls	en	Show only the ballot

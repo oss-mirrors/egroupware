@@ -31,13 +31,13 @@ and	felamimail	en	And
 any of	felamimail	en	Any of
 any status	felamimail	en	Any status
 anyone	felamimail	en	Anyone
-as a subfolder of	felamimail	en	As a subfolder of
+as a subfolder of	felamimail	en	As a sub folder of
 attach	felamimail	en	Attach
 attachments	felamimail	en	Attachments
 authentication required	felamimail	en	Authentication required
 auto refresh folder list	felamimail	en	Auto refresh folder list
 back to folder	felamimail	en	Back to folder
-bad login name or password.	felamimail	en	Bad login name or password
+bad login name or password.	felamimail	en	Bad login name or password!
 bad or malformed request. server responded: %s	felamimail	en	Bad or malformed request. Server responded: %s
 bad request: %s	felamimail	en	Bad request: %s
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	en	Based upon given criteria, incoming messages can have different background colors in the message list. This helps to easily distinguish who the messages are from, especially for mailing lists.
@@ -115,8 +115,8 @@ display messages in multiple windows	felamimail	en	Display messages in multiple 
 display of html emails	felamimail	en	Display HTML emails
 display only when no plain text is available	felamimail	en	Display only when no plain text is available
 display preferences	felamimail	en	Display preferences
-displaying html messages is disabled	felamimail	en	Displaying HTML messages is disabled
-displaying plain messages is disabled	felamimail	en	Displaying plain messages is disabled
+displaying html messages is disabled	felamimail	en	Displaying HTML messages is disabled.
+displaying plain messages is disabled	felamimail	en	Displaying plain messages is disabled.
 do it!	felamimail	en	Do it!
 do not use sent	felamimail	en	Do not use Sent
 do not use trash	felamimail	en	Do not use Trash
@@ -171,17 +171,17 @@ enter your sieve server hostname or ip address	admin	en	Enter your SIEVE server 
 enter your sieve server port	admin	en	Enter your SIEVE server port
 enter your smtp server hostname or ip address	admin	en	Enter your SMTP server hostname or IP address
 enter your smtp server port	admin	en	Enter your SMTP server port
-entry saved	felamimail	en	Entry saved
+entry saved	felamimail	en	Entry saved.
 error	felamimail	en	ERROR
-error connecting to imap serv	felamimail	en	Error connecting to IMAP server
+error connecting to imap serv	felamimail	en	Error connecting to IMAP server.
 error connecting to imap server. %s : %s.	felamimail	en	Error connecting to IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	felamimail	en	Error connecting to IMAP server: [%s] %s.
 error creating rule while trying to use forward/redirect.	felamimail	en	Error creating rule while trying to use forward/redirect.
-error opening	felamimail	en	Error opening
+error opening	felamimail	en	Error opening!
 error saving %1!	felamimail	en	Error saving %1!
 error:	felamimail	en	Error:
-error: could not save message as draft	felamimail	en	Error: Could not save message as draft
-error: could not save rule	felamimail	en	Error: Could not save rule
+error: could not save message as draft	felamimail	en	Error: Could not save message as draft.
+error: could not save rule	felamimail	en	Error: Could not save rule.
 error: could not send message.	felamimail	en	Error: Could not send message.
 error: message could not be displayed.	felamimail	en	ERROR: Message could not be displayed.
 event details follow	felamimail	en	Event details follow
@@ -192,7 +192,7 @@ extended	felamimail	en	Extended
 felamimail	common	en	eMail
 file into	felamimail	en	File into
 file rejected, no %2. is:%1	felamimail	en	File rejected, no %2. Is:%1
-filemanager	felamimail	en	Filemanager
+filemanager	felamimail	en	File Manager
 files	felamimail	en	Files
 filter active	felamimail	en	Filter active
 filter name	felamimail	en	Filter name
@@ -270,7 +270,7 @@ incoming mail server(imap)	felamimail	en	Incoming mail server (IMAP)
 index order	felamimail	en	Index order
 info	felamimail	en	Info
 insert the signature at top of the new (or reply) message when opening compose dialog (you may not be able to switch signatures)	felamimail	en	Insert the signature at top of the new message when opening compose dialog.
-invalid user name or password	felamimail	en	Invalid user name or password
+invalid user name or password	felamimail	en	Invalid user name or password!
 javascript	felamimail	en	JavaScript
 jumping to end	felamimail	en	Jumping to end
 jumping to start	felamimail	en	Jumping to start
@@ -333,17 +333,17 @@ no folders	felamimail	en	No folders
 no folders found	felamimail	en	No folders found
 no folders were found to subscribe to!	felamimail	en	No folders were found to subscribe to!
 no folders were found to unsubscribe from!	felamimail	en	No folders were found to unsubscribe from!
-no highlighting is defined	felamimail	en	No highlighting is defined
+no highlighting is defined	felamimail	en	No highlighting is defined!
 no imap server host configured!!	felamimail	en	No IMAP server host configured!
 no message returned.	felamimail	en	No message returned.
 no messages found...	felamimail	en	No messages found...
 no messages selected, or lost selection. changing to folder	felamimail	en	No messages selected or lost the selection. Changing to folder
 no messages were selected.	felamimail	en	No messages were selected.
-no plain text part found	felamimail	en	No plain text part found
-no previous message	felamimail	en	No previous messages
+no plain text part found	felamimail	en	No plain text part found.
+no previous message	felamimail	en	No previous messages.
 no recipient address given!	felamimail	en	No recipient address given!
-no signature	felamimail	en	No signature
-no stationery	felamimail	en	No stationery
+no signature	felamimail	en	No signature!
+no stationery	felamimail	en	No stationery!
 no subject given!	felamimail	en	No subject given!
 no supported imap authentication method could be found.	felamimail	en	No supported IMAP authentication method could be found.
 no text body supplied, check attachments for message text	felamimail	en	No text body supplied, check attachments for message text
@@ -500,7 +500,7 @@ unexpected response from server to digest-md5 response.	felamimail	en	Unexpected
 unexpected response from server to login command.	felamimail	en	Unexpected response from server to LOGIN command.
 unflagged	felamimail	en	Unflagged
 unknown err	felamimail	en	Unknown error
-unknown error	felamimail	en	Unknown error
+unknown error	felamimail	en	Unknown error!
 unknown imap response from the server. server responded: %s	felamimail	en	Unknown IMAP response from the server. %s
 unknown sender	felamimail	en	Unknown sender
 unknown user or password incorrect.	felamimail	en	Unknown user or incorrect password
@@ -508,12 +508,12 @@ unread	common	en	Unread
 unseen	felamimail	en	Unseen
 unselect all	felamimail	en	Unselect all
 unsubscribe	felamimail	en	Unsubscribe
-unsubscribed	felamimail	en	Unsubscribed
+unsubscribed	felamimail	en	Unsubscribed.
 unsubscribed successfully!	felamimail	en	Unsubscribed successfully!
 up	felamimail	en	Up
-updating message status	felamimail	en	Updating message status
-updating view	felamimail	en	Updating view
-use <a href="%1">emailadmin</a> to create profiles	felamimail	en	Use <a href="%1">eMailAdmin</a> to create profiles
+updating message status	felamimail	en	Updating message status.
+updating view	felamimail	en	Updating view.
+use <a href="%1">emailadmin</a> to create profiles	felamimail	en	Use <a href="%1">eMailAdmin</a> to create profiles.
 use a signature	felamimail	en	Use signature
 use a signature?	felamimail	en	Use signature
 use addresses	felamimail	en	Use addresses
@@ -521,7 +521,7 @@ use common preferences max. messages	felamimail	en	Use common preferences max. m
 use custom identities	felamimail	en	Use custom identities
 use custom settings	felamimail	en	Use custom settings
 use regular expressions	felamimail	en	Use regular expressions
-use smtp auth	admin	en	Use SMTP auth
+use smtp auth	admin	en	Use SMTP authentication
 users can define their own emailaccounts	admin	en	Users can define their own email accounts
 vacation notice	common	en	Vacation notice
 vacation notice is active	felamimail	en	Vacation notice is active
