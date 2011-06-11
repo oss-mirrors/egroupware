@@ -366,3 +366,20 @@ function emailadmin_upgrade1_9_001()
 	));
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.002';
 }
+
+function emailadmin_upgrade1_9_002()
+{
+	// convert serialized stationery templates setting to eTemplate store style
+	foreach($GLOBALS['egw_setup']->db->query('SELECT ea_profile_id,ea_stationery_active_templates FROM egw_emailadmin
+		WHERE ea_stationery_active_templates IS NOT NULL',__LINE__,__FILE__) as $row)
+	{
+		if(is_array(($templates=unserialize($row['ea_stationery_active_templates']))))
+		{
+			$GLOBALS['egw_setup']->db->query('UPDATE egw_emailadmin SET ea_stationery_active_templates="'.implode(',',$templates).'"'
+				.' WHERE ea_profile_id='.(int)$row['ea_profile_id'],__LINE__,__FILE__);
+		}
+		unset($templates);
+	}
+	
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.003';
+}
