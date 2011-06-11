@@ -818,6 +818,7 @@ function setSupportedFields($content)
 				'URL;WORK'      => array('url'),
 				'URL;HOME'	=> array('url_home'),
 				'PHOTO'		=> array('jpegphoto'),
+				'NICKNAME'		=> array('label'),
 	);
 
 	$defaultFields[12] = array(	// Synthesis 4 iPhone
@@ -925,7 +926,7 @@ function setSupportedFields($content)
 				'UID'       			=> array('uid'),
 	);
 
-	$defaultFields[16] = array(	// funambol: iphone, blackberry
+	$defaultFields[16] = array(	// funambol: iphone, blackberry, android
 				'ADR;WORK'      => array('','','adr_one_street','adr_one_locality','adr_one_region',
 											'adr_one_postalcode','adr_one_countryname'),
 				'ADR;HOME'      => array('','','adr_two_street','adr_two_locality','adr_two_region',
@@ -949,6 +950,7 @@ function setSupportedFields($content)
 				'URL;WORK'      => array('url'),
 				'URL;HOME'	=> array('url_home'),
 				'PHOTO'		=> array('jpegphoto'),
+				'NICKNAME'		=> array('label'),
 	);
 
 	switch ($productManufacturer)
@@ -1049,6 +1051,19 @@ function setSupportedFields($content)
 			{
 				default:
 					$supportedFields = $defaultFields[0];
+				break;
+			}
+			break;
+			
+		case 'samsung':
+			switch ($productName)
+			{
+				case 'GT-S5830':
+					$supportedFields = $defaultFields[16];
+					break;
+				default:
+					error_log('Unknown Samsung device "'. $deviceInfo['model'] . '", assuming same as "Galaxy"');
+					$supportedFields = $defaultFields[16];
 				break;
 			}
 			break;
