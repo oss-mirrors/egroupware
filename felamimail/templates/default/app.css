@@ -42,8 +42,13 @@ div.inactivetab{ display:none; }
 .quoted4 { color:#000099; }
 .quoted5 { color:#bb6600; }
 
-tr.mail div,
+tr.mail div {
+	cursor: default;
+	white-space: nowrap;
+}
+
 tr.mail a {
+	cursor: pointer;
 	white-space: nowrap;
 }
 
