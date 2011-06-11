@@ -1062,7 +1062,7 @@ function setSupportedFields($content)
 					$supportedFields = $defaultFields[16];
 					break;
 				default:
-					error_log('Unknown Samsung device "'. $deviceInfo['model'] . '", assuming same as "Galaxy"');
+					error_log('Unknown Samsung device "'. $deviceInfo['model'] . '", assuming same as "GT-S5830"');
 					$supportedFields = $defaultFields[16];
 				break;
 			}
