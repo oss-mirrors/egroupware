@@ -627,6 +627,7 @@ class uifelamimail
 				egw_framework::validate_file('dhtmlxtree','dhtmlxMenu/codebase/dhtmlxmenu');
 				egw_framework::validate_file('dhtmlxtree','dhtmlxMenu/codebase/ext/dhtmlxmenu_ext');
 				egw_framework::validate_file('egw_action','egw_action');
+				egw_framework::validate_file('egw_action','egw_keymanager');
 				egw_framework::validate_file('egw_action','egw_action_common');
 				egw_framework::validate_file('egw_action','egw_action_popup');
 				egw_framework::validate_file('egw_action','egw_action_dragdrop');

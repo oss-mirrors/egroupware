@@ -858,6 +858,7 @@ function fm_startTimerMessageListUpdate(_refreshTimeOut) {
 }
 
 var felamimail_queuedMessages = [];
+var felamimail_readMessage = null;
 var felamimail_rm_timeout = 400;
 var felamimail_doubleclick_timeout = 300;
 
@@ -892,12 +893,14 @@ function fm_readMessage(_url, _windowName, _node) {
 
 			// Set the url as queueud
 			felamimail_queuedMessages[msgId] = true;
+			felamimail_readMessage = msgId;
 
 			// Wait felamimail_rm_timeout seconds before opening the email in the
 			// preview iframe
 			window.setTimeout(function() {
 				// Abort if another mail should be displayed
-				if (typeof felamimail_queuedMessages[msgId] == 'undefined')
+				if (typeof felamimail_queuedMessages[msgId] == 'undefined' ||
+				    felamimail_readMessage != msgId)
 				{
 					return false;
 				}
