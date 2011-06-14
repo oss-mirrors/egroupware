@@ -1572,7 +1572,7 @@ class felamimail_bo
 					isset($this->mailPreferences->preferences['trustServersUnseenInfo']) && // some servers dont serve the UNSEEN information
 					$this->mailPreferences->preferences['trustServersUnseenInfo']==false)
 				{
-					$sortResult = $this->getSortedList($_folderName, $_sort=0, $_reverse=1, $_filter=array('status'=>'UNSEEN'));
+					$sortResult = $this->getSortedList($_folderName, $_sort=0, $_reverse=1, $_filter=array('status'=>'UNSEEN'),$byUid=true,false);
 					$retValue['unseen'] = count($sortResult);
 				}
 			}
@@ -2218,25 +2218,26 @@ class felamimail_bo
 		* @param array $_filter the search filter
 		* @return bool
 		*/
-		function getSortedList($_folderName, $_sort, &$_reverse, $_filter, &$resultByUid=true)
+		function getSortedList($_folderName, $_sort, &$_reverse, $_filter, &$resultByUid=true, $setSession=true)
 		{
+			//ToDo: FilterSpecific Cache
 			if(PEAR::isError($folderStatus = $this->icServer->examineMailbox($_folderName))) {
 				return false;
 			}
-			if(is_array($this->sessionData['folderStatus'][0][$_folderName]) &&
-				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity']	=== $folderStatus['UIDVALIDITY'] &&
-				$this->sessionData['folderStatus'][0][$_folderName]['messages']	=== $folderStatus['EXISTS'] &&
-				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	=== $folderStatus['UIDNEXT'] &&
-				$this->sessionData['folderStatus'][0][$_folderName]['filter']	=== $_filter &&
-				$this->sessionData['folderStatus'][0][$_folderName]['sort']	=== $_sort &&
+			if(is_array($this->sessionData['folderStatus'][$this->profileID][$_folderName]) &&
+				$this->sessionData['folderStatus'][$this->profileID][$_folderName]['uidValidity']	=== $folderStatus['UIDVALIDITY'] &&
+				$this->sessionData['folderStatus'][$this->profileID][$_folderName]['messages']	=== $folderStatus['EXISTS'] &&
+				$this->sessionData['folderStatus'][$this->profileID][$_folderName]['uidnext']	=== $folderStatus['UIDNEXT'] &&
+				$this->sessionData['folderStatus'][$this->profileID][$_folderName]['filter']	=== $_filter &&
+				$this->sessionData['folderStatus'][$this->profileID][$_folderName]['sort']	=== $_sort &&
 				//$this->sessionData['folderStatus'][0][$_folderName]['reverse'] === $_reverse &&
-				!empty($this->sessionData['folderStatus'][0][$_folderName]['sortResult'])
+				!empty($this->sessionData['folderStatus'][$this->profileID][$_folderName]['sortResult'])
 			) {
-				if (self::$debug) error_log(__METHOD__." USE CACHE");
-				$sortResult = $this->sessionData['folderStatus'][0][$_folderName]['sortResult'];
+				if (self::$debug) error_log(__METHOD__." USE CACHE for Profile:". $this->profileID." Folder:".$_folderName);
+				$sortResult = $this->sessionData['folderStatus'][$this->profileID][$_folderName]['sortResult'];
 
 			} else {
-				if (self::$debug) error_log(__METHOD__." USE NO CACHE -> $_folderName :".array2string($_filter).function_backtrace());
+				if (self::$debug) error_log(__METHOD__." USE NO CACHE for Profile:". $this->profileID." Folder:".$_folderName." Filter:".array2string($_filter).function_backtrace());
 				$filter = $this->createIMAPFilter($_folderName, $_filter);
 				//_debug_array($filter);
 
@@ -2259,7 +2260,7 @@ class felamimail_bo
 								$sortResult = $this->icServer->search($filter, $resultByUid);
 								if (PEAR::isError($sortResult))
 								{
-									$sortResult = $this->sessionData['folderStatus'][0][$_folderName]['sortResult'];
+									$sortResult = $this->sessionData['folderStatus'][$this->profileID][$_folderName]['sortResult'];
 								}
 							}
 						}
@@ -2289,15 +2290,21 @@ class felamimail_bo
 					}
 					if (self::$debug) error_log(__METHOD__." using Filter:".print_r($filter,true)." ->".print_r($sortResult,true));
 				}
-				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity'] = $folderStatus['UIDVALIDITY'];
-				$this->sessionData['folderStatus'][0][$_folderName]['messages']	= $folderStatus['EXISTS'];
-				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	= $folderStatus['UIDNEXT'];
-				$this->sessionData['folderStatus'][0][$_folderName]['filter']	= $_filter;
-				$this->sessionData['folderStatus'][0][$_folderName]['sortResult'] = $sortResult;
-				$this->sessionData['folderStatus'][0][$_folderName]['sort']	= $_sort;
+				if ($setSession)
+				{
+					$this->sessionData['folderStatus'][$this->profileID][$_folderName]['uidValidity'] = $folderStatus['UIDVALIDITY'];
+					$this->sessionData['folderStatus'][$this->profileID][$_folderName]['messages']	= $folderStatus['EXISTS'];
+					$this->sessionData['folderStatus'][$this->profileID][$_folderName]['uidnext']	= $folderStatus['UIDNEXT'];
+					$this->sessionData['folderStatus'][$this->profileID][$_folderName]['filter']	= $_filter;
+					$this->sessionData['folderStatus'][$this->profileID][$_folderName]['sortResult'] = $sortResult;
+					$this->sessionData['folderStatus'][$this->profileID][$_folderName]['sort']	= $_sort;
+				}
 			}
-			$this->sessionData['folderStatus'][0][$_folderName]['reverse'] 	= $_reverse;
-			$this->saveSessionData();
+			if ($setSession)
+			{
+				$this->sessionData['folderStatus'][$this->profileID][$_folderName]['reverse'] 	= $_reverse;
+				$this->saveSessionData();
+			}
 
 			return $sortResult;
 		}
@@ -2519,7 +2526,7 @@ class felamimail_bo
 				// sort the messages to the requested displayorder
 				if(is_array($retValue['header'])) {
 					$countMessages = false;
-					if (isset($_filter['range'])) $countMessages = $this->sessionData['folderStatus'][0][$_folderName]['messages'];
+					if (isset($_filter['range'])) $countMessages = $this->sessionData['folderStatus'][$this->profileID][$_folderName]['messages'];
 					ksort($retValue['header']);
 					$retValue['info']['total']	= $countMessages ? $countMessages : $total;
 					$retValue['info']['first']	= $_startMessage;
