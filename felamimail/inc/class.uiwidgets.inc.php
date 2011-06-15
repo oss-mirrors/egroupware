@@ -667,7 +667,7 @@ $(document).ready(function() {
 					$default_data = array(
 						array(
 							"id" => "check",
-							"caption" => '<label style="display: none">'.lang('Selection').'</label>',
+							"caption" => lang('Selection'),
 							"type" => EGW_COL_TYPE_CHECKBOX,
 							//"width" => "20px",
 							"visibility" => EGW_COL_VISIBILITY_VISIBLE,// EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
@@ -717,7 +717,7 @@ $(document).ready(function() {
 					$default_data = array(
 						array(
 							"id" => "check",
-							"caption" => '<label style="display: none">'.lang('Selection').'</label>', 
+							"caption" => lang('Selection'), 
 							"type" => EGW_COL_TYPE_CHECKBOX,
 							//"width" => "20px",
 							"visibility" => EGW_COL_VISIBILITY_VISIBLE,	//EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
@@ -737,6 +737,7 @@ $(document).ready(function() {
 						array(
 							"id" => "subject",
 							"caption" => '<a id="gridHeaderSubject" href="#" onclick="mail_changeSorting(\'subject\', this); return false;">'.lang("subject").'</a>',
+							"visibility" => EGW_COL_VISIBILITY_ALWAYS,
 						),
 						array(
 							"id" => "date",
