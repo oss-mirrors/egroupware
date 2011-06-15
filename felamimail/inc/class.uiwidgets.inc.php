@@ -521,6 +521,10 @@ $(document).ready(function() {
 		egw_email_columnChangeProc, window);
 	mailGrid.setActionLinkGroups('.json_encode(array('mail' => $action_links)).');
 	mailGrid.selectedChangeCallback = selectedGridChange;
+	mailGrid.setSelectmode('.
+		($GLOBALS['egw_info']['user']['preferences']['common']['select_mode'] ?
+			$GLOBALS['egw_info']['user']['preferences']['common']['select_mode']
+			:'EGW_SELECTMODE_DEFAULT').');
 	// get_all_ids is to retrieve all message uids. no pagination needed anymore
 ';
 //error_log(array2string($actions));
@@ -659,9 +663,10 @@ $(document).ready(function() {
 
 		private static function get_columns_obj($load_userdata = true, $foldertype=0,$_folderName='')
 		{
+			// This code does not work correctly, as foldername may not be set when storing the column data
 			$f_md5='';
 			if (!empty($_folderName)) $f_md5=md5($_folderName);
-			$obj = new egw_grid_columns('felamimail', 'mainview'.$f_md5); //app- and grid-name
+			$obj = new egw_grid_columns('felamimail', 'mainview'/*.$f_md5*/); //app- and grid-name
 			switch($GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle']) {
 				case 'outlook':
 					$default_data = array(
