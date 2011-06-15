@@ -129,6 +129,7 @@ function mail_compose(_action, _elems)
 {
 	var idsToProcess = '';
 	var multipleIds = false;
+
 	if (_elems.length > 1) multipleIds = true;
 	//for (var i=0; i<_elems.length; i++)
 	//{
@@ -141,8 +142,8 @@ function mail_compose(_action, _elems)
 	{
 		if (multipleIds == false)
 		{
-			mail_parentRefreshListRowStyle(_elems[0].id,_elems[0].id);
-			url += 'menuaction=felamimail.uicompose.compose';	// todo compose for Draft folder
+			if (_elems.length == 1) mail_parentRefreshListRowStyle(_elems[0].id,_elems[0].id);
+			url += 'menuaction=felamimail.uicompose.compose';
 			mail_openComposeWindow(url)
 		}
 		else
@@ -152,7 +153,7 @@ function mail_compose(_action, _elems)
 	}
 	if (_action.id == 'composefromdraft')
 	{
-		url += 'menuaction=felamimail.uicompose.composeFromDraft';	// todo compose for Draft folder
+		url += 'menuaction=felamimail.uicompose.composeFromDraft';
 		url += '&icServer='+egw_appWindow('felamimail').activeServerID;
 		url += '&folder='+egw_appWindow('felamimail').activeFolderB64;
 		url += '&uid='+_elems[0].id;
@@ -160,7 +161,7 @@ function mail_compose(_action, _elems)
 	}
 	if (_action.id == 'composeasnew')
 	{
-		url += 'menuaction=felamimail.uicompose.composeAsNew';	// todo compose for Draft folder
+		url += 'menuaction=felamimail.uicompose.composeAsNew';
 		url += '&icServer='+egw_appWindow('felamimail').activeServerID;
 		url += '&folder='+egw_appWindow('felamimail').activeFolderB64;
 		url += '&reply_id='+_elems[0].id;
@@ -168,7 +169,7 @@ function mail_compose(_action, _elems)
 	}
 	if (_action.id == 'reply')
 	{
-		url += 'menuaction=felamimail.uicompose.reply';	// todo compose for Draft folder
+		url += 'menuaction=felamimail.uicompose.reply';
 		url += '&icServer='+egw_appWindow('felamimail').activeServerID;
 		url += '&folder='+egw_appWindow('felamimail').activeFolderB64;
 		url += '&reply_id='+_elems[0].id;
@@ -176,7 +177,7 @@ function mail_compose(_action, _elems)
 	}
 	if (_action.id == 'reply_all')
 	{
-		url += 'menuaction=felamimail.uicompose.replyAll';	// todo compose for Draft folder
+		url += 'menuaction=felamimail.uicompose.replyAll';
 		url += '&icServer='+egw_appWindow('felamimail').activeServerID;
 		url += '&folder='+egw_appWindow('felamimail').activeFolderB64;
 		url += '&reply_id='+_elems[0].id;
@@ -186,12 +187,12 @@ function mail_compose(_action, _elems)
 	{
 		if (multipleIds)
 		{
-			url += 'menuaction=felamimail.uicompose.compose';	// todo compose for Draft folder
+			url += 'menuaction=felamimail.uicompose.compose';
 			mail_openComposeWindow(url)
 		}
 		else
 		{
-			url += 'menuaction=felamimail.uicompose.forward';	// todo compose for Draft folder
+			url += 'menuaction=felamimail.uicompose.forward';
 			url += '&icServer='+egw_appWindow('felamimail').activeServerID;
 			url += '&folder='+egw_appWindow('felamimail').activeFolderB64;
 			url += '&reply_id='+_elems[0].id;
@@ -785,13 +786,18 @@ function refreshView() {
 	}
 }
 
-function mail_openComposeWindow(_url) {
+function mail_openComposeWindow(_url,forwardByCompose) {
 	var Check=true;
 	var alreadyAsked=false;
 	var _messageList;
 	var sMessageList='';
 	var cbAllMessages = document.getElementById('selectAllMessagesCheckBox').checked;
 	var cbAllVisibleMessages = mailGrid.dataRoot.actionObject.getAllSelected();
+	if (typeof forwardByCompose == 'undefined') forwardByCompose = true;
+	if (forwardByCompose == false)
+	{
+		cbAllMessages = cbAllVisibleMessages = Check = false;
+	}
 	if (typeof prefAskForMultipleForward == 'undefined') prefAskForMultipleForward = egw_appWindow('felamimail').prefAskForMultipleForward;
 	egw_appWindow('felamimail').resetMessageSelect();
 	// ask anyway if a whole page is selected
@@ -1034,12 +1040,13 @@ function changeActiveAccount(_accountSelection)
 
 function handleResize()
 {
-	var MIN_TABLE_HEIGHT = 100;
+	var MIN_TABLE_HEIGHT = typeof felamimail_messagelist_height == "number" ? felamimail_messagelist_height : 100;
+	if (isNaN(MIN_TABLE_HEIGHT) || MIN_TABLE_HEIGHT<0) MIN_TABLE_HEIGHT = 100;
+
 	var MAX_TABLE_WHITESPACE = 25;
 
 	// Get the default iframe height, as it was set in the template
-	var IFRAME_HEIGHT = typeof felamimail_iframe_height == "number" ?
-		felamimail_iframe_height : 0;
+	var IFRAME_HEIGHT = typeof felamimail_iframe_height == "number" ? felamimail_iframe_height : 0;
 	if (isNaN(IFRAME_HEIGHT) || IFRAME_HEIGHT<0) IFRAME_HEIGHT=0;
 
 	// Calculate how many space is actually there for the whole mail view

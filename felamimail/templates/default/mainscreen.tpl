@@ -68,7 +68,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<td align="left" width="100px">
 			<div class="parentDIV">
 				<label style="display: none"><input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="selectAllMessagesCheckBox" onclick="selectFolderContent(this, refreshTimeOut)"> {lang_mark_all_messages}</label>
-				<button style="height: 20px; margin: 2px; margin-left: 5px; border-radius: 4px; background-image: url(phpgwapi/templates/idots/images/new.png); background-repeat: no-repeat; padding-left: 22px; padding-right: 5px;" onclick="egw_appWindow('felamimail').mail_openComposeWindow(egw_webserverUrl+'/index.php?menuaction=felamimail.uicompose.compose')">{lang_compose}</button>
+				<button style="height: 20px; margin: 2px; margin-left: 5px; border-radius: 4px; background-image: url(phpgwapi/templates/idots/images/new.png); background-repeat: no-repeat; padding-left: 22px; padding-right: 5px;" onclick="egw_appWindow('felamimail').mail_openComposeWindow(egw_webserverUrl+'/index.php?menuaction=felamimail.uicompose.compose',false)">{lang_compose}</button>
 			</div>
 		</td>
 		<td align="right" width="90px">
@@ -148,7 +148,8 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 	{IFrameForPreview}
 </span>
 <script type="text/javascript">
-	var felamimail_iframe_height = parseInt("{messagelist_height}".replace(/px/g,""));
+	var felamimail_iframe_height = parseInt("{previewiframe_height}".replace(/px/g,""));
+	var felamimail_messagelist_height = parseInt("{messagelist_height}".replace(/px/g,""));
 </script>
 <!-- END message_table -->
 

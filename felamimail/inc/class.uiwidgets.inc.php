@@ -39,6 +39,7 @@ class uiwidgets
 		 * @var boolean
 		 */
 		var $use_preview = false;
+		var $messageListMinHeight = 100;
 
 		/**
 		 * Constructor
@@ -54,7 +55,16 @@ class uiwidgets
 			$this->bofelamimail = felamimail_bo::getInstance(true,$this->profileID);
 			$this->_connectionStatus = $this->bofelamimail->openConnection($this->profileID);
 			$this->sessionData	=& $GLOBALS['egw']->session->appsession('session_data','felamimail');
-			$this->use_preview = !html::$ua_mobile && $GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight'] > 0;
+			$previewFrameHeight = -1;
+			if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight'] &&
+				stripos($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight'],',') !== false)
+			{
+				list($previewFrameHeight, $messageListHeight) = explode(',',$GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']);
+				$previewFrameHeight = trim($previewFrameHeight);
+				$messageListHeight = trim($messageListHeight);
+				if (!empty($messageListHeight) && $messageListHeight>$this->messageListMinHeight) $this->messageListMinHeight = $messageListHeight;
+			}
+			$this->use_preview = !html::$ua_mobile && ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight'] > 0 || $previewFrameHeight > 0);
 		}
 
 		function encodeFolderName($_folderName)
@@ -657,10 +667,10 @@ $(document).ready(function() {
 					$default_data = array(
 						array(
 							"id" => "check",
-							//"caption" => '<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">',
+							"caption" => '<label style="display: none">'.lang('Selection').'</label>',
 							"type" => EGW_COL_TYPE_CHECKBOX,
 							//"width" => "20px",
-							"visibility" => EGW_COL_VISIBILITY_INVISIBLE,// EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+							"visibility" => EGW_COL_VISIBILITY_VISIBLE,// EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
 						),
 						array(
 							"id" => "status",
@@ -707,10 +717,10 @@ $(document).ready(function() {
 					$default_data = array(
 						array(
 							"id" => "check",
-							//"caption" => '<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">',
+							"caption" => '<label style="display: none">'.lang('Selection').'</label>', 
 							"type" => EGW_COL_TYPE_CHECKBOX,
 							//"width" => "20px",
-							"visibility" => EGW_COL_VISIBILITY_INVISIBLE,	//EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+							"visibility" => EGW_COL_VISIBILITY_VISIBLE,	//EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
 						),
 						array(
 							"id" => "status",
@@ -1139,6 +1149,23 @@ $(document).ready(function() {
 				$this->t->set_var('selected_style'.$selecteduid,'');
 			}
 			//error_log(__METHOD__.__LINE__.' FolderType:'.$_folderType);
+			if ($this->use_preview)
+			{
+				if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight'] &&
+					stripos($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight'],',') !== false)
+				{
+					list($previewFrameHeight, $messageListHeight) = explode(',',$GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']);
+					$previewFrameHeight = trim($previewFrameHeight);
+					$messageListHeight = trim($messageListHeight);
+					if (empty($messageListHeight)) $messageListHeight = $this->messageListMinHeight;
+				}
+				else
+				{
+					$previewFrameHeight = $GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight'];
+					$messageListHeight = 100; // old default for minimum height
+				}
+			}
+			
 			if ($firstheader &&
 				$this->use_preview &&
 				($_folderType==0 || $_folderType==1)) // only if not drafts or template folder
@@ -1158,7 +1185,7 @@ $(document).ready(function() {
 									</TD>
 								</TR>
 								<TR>
-									<TD nowrap id=\"tdmessageIFRAME\" valign=\"top\" height=\"".$GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']."\">
+									<TD nowrap id=\"tdmessageIFRAME\" valign=\"top\" height=\"".$previewFrameHeight."\">
 										&nbsp;
 									</TD>
 								</TR>
@@ -1171,7 +1198,9 @@ $(document).ready(function() {
 			}
 
 			$this->t->set_var('IFrameForPreview',$IFRAMEBody);
-			$this->t->set_var('messagelist_height',($this->use_preview ? ($GLOBALS['egw_info']['user']['preferences']['felamimail']['PreViewFrameHeight']).'px':'auto'));
+			//$this->t->set_var('messagelist_height',($this->use_preview ? ($messageListHeight).'px':'auto'));
+			$this->t->set_var('messagelist_height',($this->use_preview ? ($messageListHeight).'px':$this->messageListMinHeight.'px'));
+			$this->t->set_var('previewiframe_height',($this->use_preview ? ($previewFrameHeight).'px':'0px'));
 
 			$this->t->parse("out","message_table");
 
