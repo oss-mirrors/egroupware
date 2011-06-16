@@ -5,6 +5,7 @@ add answers	polls	fi	Lisää vastauksia
 add new poll question	polls	fi	Lisää uusi kysymys äänestykseen
 add questions	polls	fi	Lisää kysymyksiä
 administrators	polls	fi	Ylläpitäjät
+allow users to change their vote	polls	fi	Kaikki käyttäjät voivat vaihtaa äänensä
 allow users to vote more then once	polls	fi	Salli käyttäjien vastata useasti äänestykseen
 allways use latest poll	polls	fi	Käytä aina viimeisintä äänestystä
 answer	polls	fi	Vastaus
@@ -13,6 +14,7 @@ answer has been updated	polls	fi	Vastaus on päivitetty
 answers	polls	fi	Vastaukset
 are you sure want to delete this answer ?	polls	fi	Haluatko varmasti poistaa tämän vastauksen ?
 are you sure want to delete this question ?	polls	fi	Haluatko varmasti poistaa tämän kysymyksen ?
+change vote	polls	fi	Vaihda ääni
 current poll	polls	fi	Nykyinen äänestys
 edit answer	polls	fi	Muokkaa vastausta
 edit poll question	polls	fi	Muokkaa kysymystä

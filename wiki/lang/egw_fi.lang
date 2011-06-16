@@ -1,4 +1,4 @@
-(don't offer the possibility)	admin	fi	(ei tarjoa mahdollisuutta)
+(don't offer the possibility)	admin	fi	Älä tarjoa mahdollisuutta
 <em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	fi	<em>Mutta</em> näyttää vähintään viimeisimmät muutokset ja lähetyslistat:
 add document to category	wiki	fi	Lisää tiedosto kategoriaan
 added	wiki	fi	Lisätty
@@ -14,6 +14,7 @@ block	wiki	fi	Estä
 block / unblock hosts	common	fi	Estä / älä estä isäntää
 blocked ip address ranges	wiki	fi	Estä IP osoitteet
 cancel without saving	wiki	fi	Keskeytä tallentamatta
+change notification	wiki	fi	Muuta huomautusviestiä
 changed	wiki	fi	Muutettu
 changes by last author	wiki	fi	Muutokset julkaisijan mukaan
 choose your current time here, so the server may figure out what time zone you are in.	wiki	fi	Valitse nykyinen aikasi, että palvelin voi päätellä millä aikavyöhykkeellä olet.
@@ -21,6 +22,10 @@ columns	wiki	fi	Sarakkeet
 compute difference	wiki	fi	Laske eroavaisuudet
 converts the page to richtext	wiki	fi	Muunnetaan sivu RTF muotoon
 current version	wiki	fi	Käytössä oleva versio
+default read permission	wiki	fi	Oletus lukuoikeudet
+default read permissions for creating a new page	preferences	fi	Oletus lukuoikeudet kun uusi sivu lisätään
+default write permission	preferences	fi	Oletus kirjoitusoikeudet
+default write permissions for creating a new page	preferences	fi	Oletus kirjoitusoikeudet kun uusi sivu lisätään
 deleted	wiki	fi	Poistettu
 deletes this page	wiki	fi	Poista tämä sivu
 difference between versions	wiki	fi	Erot versioiden välillä
@@ -47,12 +52,15 @@ history	wiki	fi	Historia
 history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	fi	Historia näyttää <em>kaikki</em> omistajan tekemät muutokset. Muuten vain viimeiset muutokset.
 history lists	wiki	fi	Historia lista
 history of	wiki	fi	Historia
+if a page i have read access to is changed, send a notification	wiki	fi	Huomauta, jos sivua johon minulla on lukuoikeus muutetaan.
+if a page i have write access to is changed, send a notification	wiki	fi	Huomauta, jos sivua johon minulla on kirjoitusoikeus muutetaan.
 interwikiprefix	admin	fi	InterWikiPrefix
 invalid page name.	wiki	fi	Virheellinen sivun nimi
 load	wiki	fi	Lataa
 loads the named page in the given language, all change so far get lost !!!	wiki	fi	Ladataan nimetty sivu annetulla kielellä, kaikki tähänastiset muutokset menetetään !!!
 lock / unlock pages	common	fi	Lukittu / lukitsematon sivu
 locked	wiki	fi	Lukittu
+message to send	wiki	fi	Lähetettävä viesti
 name wiki home link	admin	fi	Wikin etusivun nimi
 newer	wiki	fi	Uudempi
 no never	admin	fi	Ei, ei koskaan
@@ -63,7 +71,12 @@ on all pages	wiki	fi	Kaikilta sivuilta
 only if browser supports a richtext-editor	admin	fi	Vain, jos selain tukee richtext-editoria
 only on the first page	wiki	fi	Vain ensimmäiseltä sivulta
 page '%1' not found !!!	wiki	fi	Sivua '%1' ei löydy !!!
+page content	wiki	fi	Sisältö
+pages i have read access	wiki	fi	Sivut, joihin on lukuoikeus
+pages i have write access	wiki	fi	Sivut, joihin on kirjoitusoikeus
+pages that match this regular expression	wiki	fi	Sivut, jotka sisältävät hakusanoja
 path of the upload directory (has to be writable by the webserver!)	admin	fi	Lataus hakemiston polku (palvelimella pitää olla kirjoitusoikeus)
+person who changed the page	wiki	fi	Henkilö joka editoi sivua
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	fi	Kuvien lataus richtext -editoriin (jätä tyhjäksi jos haluat estää kuvien lataamisen)
 please contact the %1administrator%2 for assistance.	wiki	fi	Ota yhteyttä %1 ylläpitäjään %2
 preview	wiki	fi	Esikatselu

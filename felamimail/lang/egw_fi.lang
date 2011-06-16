@@ -1,9 +1,9 @@
 %1 is not writable by you!	felamimail	fi	%1, sinulla ei ole oikeutta kirjoittaa!
-(no subject)	felamimail	fi	(ei aihetta)
-(only cc/bcc)	felamimail	fi	(vain kopio/piilokopio)
-(separate multiple addresses by comma)	felamimail	fi	(erottele osoitteet pilkulla)
-(unknown sender)	felamimail	fi	(tuntematon lähettäjä)
-3paneview: if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here (300 seems to be a good working value). the preview will be displayed at the end of the message list on demand (click).	felamimail	fi	3PaneView: Jos haluat sähköpostin esinäkymän klikkaamalla otsikkoa/aihetta, aseta viestilistan ja esinäkymän korkeus (300 on melko hyvä arvo). Esinäkymä näytetään viestilistan alapuolella.
+(no subject)	felamimail	fi	Ei aihetta
+(only cc/bcc)	felamimail	fi	Vain kopio/piilokopio
+(separate multiple addresses by comma)	felamimail	fi	Erottele osoitteet pilkulla
+(unknown sender)	felamimail	fi	Tuntematon lähettäjä
+3paneview: if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here (300 seems to be a good working value). the preview will be displayed at the end of the message list on demand (click).	felamimail	fi	3PaneView: Jos haluat sähköpostin esinäkymän klikkaamalla otsikkoa/aihetta, aseta viestilistan ja esinäkymän korkeus esim. 300
 aborted	felamimail	fi	Keskeytetty
 activate	felamimail	fi	Aktivoi
 activate script	felamimail	fi	Aktiivinen skripti
@@ -52,6 +52,7 @@ cc	felamimail	fi	Kopio
 change folder	felamimail	fi	Vaihda kansiota
 check message against next rule also	felamimail	fi	Tarkista viesti myös seuraavaa sääntöä vastaan
 checkbox	felamimail	fi	Valintaruutu
+choose from vfs	felamimail	fi	Valitse tiedostonhallinnasta
 clear search	felamimail	fi	Tyhjennä haku
 click here to log back in.	felamimail	fi	Kirjaudu uudelleen
 click here to return to %1	felamimail	fi	Takaisin %1
@@ -69,6 +70,7 @@ connection dropped by imap server.	felamimail	fi	Yhteys IMAP palvelimeen katkesi
 contact not found!	felamimail	fi	Yhteystietoa ei löytynyt!
 contains	felamimail	fi	Sisältää
 copy or move messages?	felamimail	fi	Kopioisaanko vai siirretäänkö viestit?
+copy to	felamimail	fi	Kopio
 copying messages to	felamimail	fi	Viestejä kopioidaan
 could not complete request. reason given: %s	felamimail	fi	Pyyntöä ei voitu toteuttaa. Syynä oli: %s
 could not import message:	felamimail	fi	Tuonti epäonnistui:
@@ -86,8 +88,9 @@ dark gray	felamimail	fi	Tummanharmaa
 dark green	felamimail	fi	Tummanvihreä
 dark magenta	felamimail	fi	Tumma purppura
 dark yellow	felamimail	fi	Tummankeltainen
-date(newest first)	felamimail	fi	Päivämäärä (uusin ensin)
-date(oldest first)	felamimail	fi	Päivämäärä (vanhin ensin)
+date received	felamimail	fi	Päivämäärä - vastaanotettu
+date(newest first)	felamimail	fi	Päivämäärä - uusin ensin
+date(oldest first)	felamimail	fi	Päivämäärä - vanhin ensin
 days	felamimail	fi	päivä
 deactivate script	felamimail	fi	Ota skripti pois käytöstä
 default	felamimail	fi	Oletus
@@ -115,11 +118,13 @@ do it!	felamimail	fi	Tee se!
 do not use sent	felamimail	fi	Älä käytä Lähetetyt-kansiota
 do not use trash	felamimail	fi	Älä käytä Roskakoria
 do not validate certificate	felamimail	fi	Älä tarkista sertifikaattia
+do you really want to attach the selected messages to the new mail?	felamimail	fi	Haluatko varmasti liittää tiedostot?
 do you really want to delete the '%1' folder?	felamimail	fi	Oletko varma että haluat poistaa kansion '%1'
 do you really want to delete the selected accountsettings and the assosiated identity.	felamimail	fi	Haluatko varmasti poistaa valitut tiliasetukset ja Identiteetin?
 do you really want to delete the selected signatures?	felamimail	fi	Haluatko varmasti poistaa valitut allekirjoitukset?
 do you really want to move or copy the selected messages to folder:	felamimail	fi	Haluatko varmasti siirtää tai kopioida valitsemasi viestit kansioon:
 do you really want to move the selected messages to folder:	felamimail	fi	Haluatko varmasti siirtää valitsemasi viestit kansioon:
+do you want to be asked for confirmation before attaching selected messages to new mail?	felamimail	fi	haluatko, että sinulta varmistetaan asia ennenkuin liität tiedostoja?
 do you want to be asked for confirmation before moving selected messages to another folder?	felamimail	fi	Haluatko, että sinulta varmistetaan asia ennenkuin siirrät valitut viestit toiseen kansioon?
 do you want to prevent the editing/setup for forwarding of mails via settings (, even if sieve is enabled)?	felamimail	fi	Haluatko estää välitettävän (Forwarding) sähköpostin muokkauksen/käyttöönoton, (vaikka SIEVE on käytössä)?
 do you want to prevent the editing/setup of filter rules (, even if sieve is enabled)?	felamimail	fi	Haluatko estää suodatinsääntöjen (Filter rules) muokkauksen/käyttöönoton, (vaikka SIEVE on käytössä)?
@@ -174,6 +179,7 @@ error saving %1!	felamimail	fi	Virhe tallennettaessa %1!
 error:	felamimail	fi	Virhe:
 error: could not save message as draft	felamimail	fi	Virhe: Viestiä ei voitu tallentaa luonnoksena.
 error: could not save rule	felamimail	fi	Virhe: Sääntöä ei voitu tallentaa
+error: could not send message.	felamimail	fi	Virhe: Viestiä ei voitu lähettää.
 error: message could not be displayed.	felamimail	fi	Virhe: Viestiä ei voida näyttää.
 event details follow	felamimail	fi	Tapahtuman yksityiskohdat
 every	felamimail	fi	Joka
@@ -212,7 +218,6 @@ forward to	felamimail	fi	Välitä:
 forward to address	felamimail	fi	Välitä osoitteeseen
 forwarding	felamimail	fi	Hallitse viestien välityksiä
 found	felamimail	fi	Löytyi
-fri	felamimail	fi	Pe
 from	felamimail	fi	Lähettäjä
 from(a->z)	felamimail	fi	A:sta Z:taan
 from(z->a)	felamimail	fi	Z:sta A:han
@@ -250,7 +255,12 @@ imaps encryption only	felamimail	fi	Vain IMAPS -salaus
 import	felamimail	fi	Tuonti
 import mail	felamimail	fi	Tuo sähköposteja
 import message	felamimail	fi	Tuo sähköpostiviesti
-in	felamimail	fi	sisältää
+import of message %1 failed. could not save message to folder %2 due to: %3	felamimail	fi	Viestin %1 tuonti epäonnistui. Viestiä ei voitu tallentaa kansioon %2. Syy: %3
+import of message %1 failed. destination folder %2 does not exist.	felamimail	fi	Viestin %1 tuonti epäonnistui. Kohdekansiota %1 ei löytynyt.
+import of message %1 failed. destination folder not set.	felamimail	fi	Viestin %1 tuonti epäonnistui. kohdekansiota ei asetettu.
+import of message %1 failed. no contacts to merge and send to specified.	felamimail	fi	Viestin %1 tuonti epäonnistui. Kontaktia ei ole asetettu.
+importance	felamimail	fi	Tärkeys
+in	felamimail	fi	Sisältää
 inbox	felamimail	fi	Saapuneet
 incoming mail server(imap)	felamimail	fi	Saapuvan sähköpostin palvelin (IMAP)
 index order	felamimail	fi	Indeksijärjestys
@@ -282,6 +292,7 @@ manage emailfilter / vacation	preferences	fi	Hallitse sähköpostisuodatinta / L
 manage folders	common	fi	Hallitse kansioita
 manage sieve	common	fi	Hallitse SIEVE skriptejä
 manage signatures	felamimail	fi	Hallitse allekirjoituksia
+mark as	felamimail	fi	Merkitse
 mark as deleted	felamimail	fi	Merkitse poistetuksi
 mark messages as	felamimail	fi	Merkitse valitut viestit
 mark selected as flagged	felamimail	fi	Merkitse tunnuksella
@@ -295,11 +306,11 @@ max uploadsize	felamimail	fi	Suurin latauskoko
 message highlighting	felamimail	fi	Viestien korostus
 message list	felamimail	fi	Viestilista
 messages	felamimail	fi	Viestiä
-mon	felamimail	fi	Ma
 move	felamimail	fi	Siirrä
 move folder	felamimail	fi	Siirrä kansio
 move messages	felamimail	fi	Siirrä viesti(t)
 move messages?	felamimail	fi	Siirretäänkö viestit?
+move selected to	felamimail	fi	Siirrä valitut
 move to	felamimail	fi	Siirrä valitut:
 move to trash	felamimail	fi	Siirrä roskakoriin
 moving messages to	felamimail	fi	Siirretään viestejä
@@ -361,6 +372,7 @@ port	felamimail	fi	Portti
 posting	felamimail	fi	Postitus
 previous	felamimail	fi	Edellinen
 previous message	felamimail	fi	Edellinen viesti
+primary emailadmin profile	felamimail	fi	Ensisijainen sähköpostiprofiili
 print it	felamimail	fi	Tulosta
 print this page	felamimail	fi	Tulosta tämä sivu
 printview	felamimail	fi	Tulostuksen esikatselu
@@ -389,29 +401,36 @@ return to options page	felamimail	fi	Takaisin asetukset -sivulle
 right	felamimail	fi	Oikea
 row order style	felamimail	fi	Rivijärjestyksen muotoilu
 rule	felamimail	fi	Sääntö
-sat	felamimail	fi	La
 save	felamimail	fi	Tallenna
 save all	felamimail	fi	Tallenna kaikki
 save as draft	felamimail	fi	Tallenna luonnoksena
 save as infolog	felamimail	fi	Tallenna InfoLogina
+save as ticket	felamimail	fi	Tallenna reklamaationa
+save as tracker	felamimail	fi	Tallenna reklamaationa
 save changes	felamimail	fi	Tallenna muutokset
 save message to disk	felamimail	fi	Tallenna viesti levylle
+save of message %1 failed. could not save message to folder %2 due to: %3	felamimail	fi	Viestin %1 tallennus epäonnistui. Viestiä ei voitu tallentaa kansioon %2. Syy: %3
+save:	felamimail	fi	Tallenna:
 script name	felamimail	fi	Skriptin nimi
 script status	felamimail	fi	Skriptin tila
 search	felamimail	fi	Etsi
 search for	felamimail	fi	Etsi
 select	felamimail	fi	Valitse
+select a message to switch on its preview (click on subject)	felamimail	fi	Valitse viesti esinäkymään
 select all	felamimail	fi	Valitse kaikki
 select emailprofile	felamimail	fi	Valitse sähköpostin profiili
 select folder	felamimail	fi	Valitse kansio
 select your mail server type	admin	fi	Valitse (posti)palvelimesi tyyppi
 send	felamimail	fi	Lähetä
 send a reject message	felamimail	fi	Lähetä kieltäytymisviesti
+send message and move to send folder (if configured)	felamimail	fi	Lähetä viesti ja siirrä Lähetetyt kansioon
+sender	felamimail	fi	Lähettäjä
 sent	felamimail	fi	Lähetetyt
 sent folder	felamimail	fi	Lähetetyt kansio
 server supports mailfilter(sieve)	felamimail	fi	Palvelin tukee sähköpostin suodatusta (SIEVE)
 set as default	felamimail	fi	Aseta oletukseksi
 show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	fi	Näytä kaikki kansiot (tilatut ja tilaamattomat) sähköpostivalikossa.
+show all messages	felamimail	fi	Näytä kaikki viestit
 show header	felamimail	fi	Näytä ylätunniste
 show new messages on main screen	felamimail	fi	Näytä uudet viestit etusivulla
 sieve script name	felamimail	fi	SIEVE skriptin nimi
@@ -436,7 +455,7 @@ submit	felamimail	fi	Lähetä
 subscribe	felamimail	fi	Tilaa
 subscribed	felamimail	fi	Tilattu
 subscribed successfully!	felamimail	fi	Tilattu onnistuneesti!
-sun	felamimail	fi	Su
+switching of signatures failed	felamimail	fi	Allekirjoituksen vaihto epäonnistui
 system signature	felamimail	fi	Yleinen allekirjoitus
 table of contents	felamimail	fi	Sisältö
 template folder	felamimail	fi	Mallipohjat -kansio
@@ -452,7 +471,6 @@ then	felamimail	fi	TAI
 there is no imap server configured.	felamimail	fi	IMAP palvelinta ei ole konfiguroitu
 this folder is empty	felamimail	fi	Kansio on tyhjä
 this php has no imap support compiled in!!	felamimail	fi	Tällä PHP:llä ei ole IMAP -tukea!!
-thu	felamimail	fi	To
 to	felamimail	fi	Kenelle:
 to mail sent to	felamimail	fi	Kenelle posti lähetetään:
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	fi	Käyttääksesi TLS yhteyttä, sinulla pitää olla PHP 5.1.0 tai uudempi versio.
@@ -461,7 +479,6 @@ translation server	felamimail	fi	Käännöspalvelin
 trash	felamimail	fi	Roskakori
 trash fold	felamimail	fi	Roskakori -kansio
 trash folder	felamimail	fi	Roskakori -kansio
-tue	felamimail	fi	Ti
 type	felamimail	fi	Tyyppi
 unexpected response from server to authenticate command.	felamimail	fi	Odottamaton vastaus palvelimelta AUTHENTICATE komentoon.
 unexpected response from server to digest-md5 response.	felamimail	fi	Odottamaton vastaus palvelimen Digest-MD5 vastaukselta.
@@ -500,8 +517,8 @@ view message	felamimail	fi	Näytä viesti
 viewing full header	felamimail	fi	Näytetään kaikki ylätunnisterivit
 viewing message	felamimail	fi	Viestien katselu
 viewing messages	felamimail	fi	Viestien katselu
-wed	felamimail	fi	Ke
 when deleting messages	felamimail	fi	Kun poistetaan viestejä
+when sending messages	felamimail	fi	Kun lähetetään viestejä
 which folders (additional to the sent folder) should be displayed using the sent folder view schema	felamimail	fi	Minkä kansioiden (Lähetetyt-kansion lisäksi) tulisi käyttää Sent Folder View Schemaa?
 which folders - in general - should not be automatically created, if not existing	felamimail	fi	Mitä kansioita -yleisesti ottaen - EI pitäisi automaattisesti luoda, jos ne eivät ole jo olemassa?
 with message	felamimail	fi	Vastausviesti
@@ -510,6 +527,7 @@ wrap incoming text at	felamimail	fi	Aseta rivinleveydeksi
 writing	felamimail	fi	Kirjoitetaan
 wrote	felamimail	fi	Kirjoitettu
 yes, offer copy option	felamimail	fi	Kyllä, tarjoa kopiointimahdollisuutta
+you can either choose to save as infolog or tracker, not both.	felamimail	fi	Voit tallentaa joko InfoLogina tai reklamaationa, et molempina!
 you can use %1 for the above start-date and %2 for the end-date.	felamimail	fi	Käytä aloituspäivälle %1 ja lopetuspäivälle %1.
 you have received a new message on the	felamimail	fi	Uusi viesti kansiossa:
 your message to %1 was displayed.	felamimail	fi	Viesti henkilölle %1 esitetty
