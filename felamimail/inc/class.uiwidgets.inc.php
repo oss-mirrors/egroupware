@@ -620,6 +620,7 @@ $(document).ready(function() {
 			$rowsFetched = count($sortResult['header']);
 			//error_log(__METHOD__.__LINE__.' Data:'.array2string($sortResult));
 			$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
+			if ($GLOBALS['egw_info']['user']['preferences']['common']['select_mode']=='EGW_SELECTMODE_TOGGLE') unset($cols[0]);
 			return $this->header2gridelements($sortResult['header'],$cols, $_folderName, $uidOnly=false,$folderType,$dataForXMails=50,$previewMessage);
 		}
 
@@ -658,6 +659,7 @@ $(document).ready(function() {
 			$rowsFetched = count($sortResult['header']);
 			//error_log(__METHOD__.__LINE__.' Data:'.array2string($sortResult));
 			$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
+			if ($GLOBALS['egw_info']['user']['preferences']['common']['select_mode']=='EGW_SELECTMODE_TOGGLE') unset($cols[0]);
 			return $this->header2gridelements($sortResult['header'],$cols, $_folderName, $uidOnly,$folderType,$dataForXMails=50,$previewMessage);
 		}
 
@@ -667,15 +669,16 @@ $(document).ready(function() {
 			if (!empty($_folderName)) $f_md5=md5($_folderName);
 			if (empty($_folderName)) error_log(__METHOD__.__LINE__.' Empty FolderName:'.$_folderName.' ->'.$f_md5.' backtrace:'.function_backtrace());
 			$obj = new egw_grid_columns('felamimail', 'mainview'.$f_md5); //app- and grid-name
+			//error_log(__METHOD__.__LINE__.'SelectMode:'.$GLOBALS['egw_info']['user']['preferences']['common']['select_mode']);
 			switch($GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle']) {
 				case 'outlook':
 					$default_data = array(
 						array(
 							"id" => "check",
-							"caption" => lang('Selection'),
+							"caption" => lang('Selection'), 
 							"type" => EGW_COL_TYPE_CHECKBOX,
 							//"width" => "20px",
-							"visibility" => EGW_COL_VISIBILITY_VISIBLE,// EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+							"visibility" => EGW_COL_VISIBILITY_INVISIBLE,
 						),
 						array(
 							"id" => "status",
@@ -725,7 +728,7 @@ $(document).ready(function() {
 							"caption" => lang('Selection'), 
 							"type" => EGW_COL_TYPE_CHECKBOX,
 							//"width" => "20px",
-							"visibility" => EGW_COL_VISIBILITY_VISIBLE,	//EGW_COL_VISIBILITY_ALWAYS_NOSELECT,
+							"visibility" => EGW_COL_VISIBILITY_INVISIBLE,
 						),
 						array(
 							"id" => "status",
@@ -769,6 +772,8 @@ $(document).ready(function() {
 					);
 					break;
 			}
+			// unset the check column if not needed for usability e.g.: TOGGLE mode
+			if ($GLOBALS['egw_info']['user']['preferences']['common']['select_mode']=='EGW_SELECTMODE_TOGGLE') unset($default_data[0]);
 			// Store the generated data structure inside the object
 			$obj->load_grid_data($default_data);
 
@@ -901,7 +906,7 @@ $(document).ready(function() {
 				//if (in_array("check", $cols))
 				// don't overwrite check with "false" as this forces the grid to
 				// deselect the row - sending "0" doesn't do that
-				$data["check"] = $previewMessage == $header['uid'] ? true : 0;// $row_selected; //TODO:checkbox true or false
+				if (in_array("check", $cols)) $data["check"] = $previewMessage == $header['uid'] ? true : 0;// $row_selected; //TODO:checkbox true or false
 				//$data["check"] ='<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="'.$message_uid.'"
 				//	onclick="toggleFolderRadio(this, refreshTimeOut)">';
 
