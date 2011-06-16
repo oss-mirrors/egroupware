@@ -663,10 +663,10 @@ $(document).ready(function() {
 
 		private static function get_columns_obj($load_userdata = true, $foldertype=0,$_folderName='')
 		{
-			// This code does not work correctly, as foldername may not be set when storing the column data
 			$f_md5='';
 			if (!empty($_folderName)) $f_md5=md5($_folderName);
-			$obj = new egw_grid_columns('felamimail', 'mainview'/*.$f_md5*/); //app- and grid-name
+			if (empty($_folderName)) error_log(__METHOD__.__LINE__.' Empty FolderName:'.$_folderName.' ->'.$f_md5.' backtrace:'.function_backtrace());
+			$obj = new egw_grid_columns('felamimail', 'mainview'.$f_md5); //app- and grid-name
 			switch($GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle']) {
 				case 'outlook':
 					$default_data = array(
@@ -789,7 +789,7 @@ $(document).ready(function() {
 			$this->bofelamimail->restoreSessionData();
 			$_folderName = $this->bofelamimail->sessionData['mailbox'];
 			$folderType = $this->bofelamimail->getFolderType($_folderName);
-			$obj = self::get_columns_obj(true,$folderType,$_foldername);
+			$obj = self::get_columns_obj(true,$folderType,$_folderName);
 			$obj->store_userdata($data);
 		}
 
