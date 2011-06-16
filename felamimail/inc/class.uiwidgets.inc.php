@@ -516,6 +516,12 @@ $(document).ready(function() {
 	// Load the felamimail actions
 	actionManager.updateActions('.json_encode($actions=$this->get_actions($action_links)).');
 
+	// Remove any old mailGrid actionObject instance
+	if (mailGrid != null)
+	{
+		mailGrid.dataRoot.actionObject.remove();
+	}
+
 	mailGrid = new egwGrid(document.getElementById("divMessageTableList"),
 		'.json_encode($this->get_columns_obj(true,$foldertype,$_folderName)->get_assoc()).', objectManager, egw_email_fetchDataProc,
 		egw_email_columnChangeProc, window);
