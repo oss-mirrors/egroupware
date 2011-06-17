@@ -599,7 +599,14 @@ class ajaxfelamimail
 			$response->addScript("egw_topWindow().tree.selectItem('".$_folderName. "',false);");
 
 			if($this->_debug) error_log('generateMessageList done');
-
+			if ($this->sessionData['previewMessage']>0) 
+			{
+				$response->addScript('mail_focusGridElement('.$this->sessionData['previewMessage'].');');
+			}
+			else
+			{
+				$response->addScript('mail_focusGridElement();');
+			}
 			$response->addScript('if (typeof handleResize != "undefined") handleResize();');
 
 			return $response->getXML();

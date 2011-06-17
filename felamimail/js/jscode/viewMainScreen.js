@@ -77,7 +77,7 @@ function sendNotifyMS (uid) {
 
 function mail_changeSorting(_sort, _aNode) {
 
-	egw_appWindow('felamimail').resetMessageSelect();
+	mail_resetMessageSelect();
 
 	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Change sorting ...</span>';
 	document.getElementById('divMessageList').innerHTML = '';
@@ -313,7 +313,7 @@ function mail_deleteMessages(_messageList) {
 	var Check = true;
 	var cbAllMessages = document.getElementById('selectAllMessagesCheckBox').checked;
 
-	egw_appWindow('felamimail').resetMessageSelect();
+	mail_resetMessageSelect();
 
 	if (cbAllMessages == true) Check = confirm(egw_appWindow('felamimail').lang_confirm_all_messages);
 	if (cbAllMessages == true && Check == true)
@@ -455,10 +455,10 @@ function onNodeSelect(_nodeID) {
 			{
 				if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
 				if (document.getElementById('selectAllMessagesCheckBox').checked == true) {
-					egw_appWindow('felamimail').resetMessageSelect();
+					mail_resetMessageSelect();
 					formData = 'all';
 				} else {
-					egw_appWindow('felamimail').resetMessageSelect();
+					mail_resetMessageSelect();
 					formData = egw_appWindow('felamimail').mailGridGetSelected();
 				}
 				if (actionPending == 'copy') 
@@ -477,12 +477,12 @@ function onNodeSelect(_nodeID) {
 			} else {
 				if (actionPending == false)
 				{
-					egw_appWindow('felamimail').resetMessageSelect();
+					mail_resetMessageSelect();
 					mailGrid.dataRoot.actionObject.setAllSelected(false);
 				}
 			}
 		} else {
-			egw_appWindow('felamimail').resetMessageSelect();
+			mail_resetMessageSelect();
 			egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">' + egw_appWindow('felamimail').lang_loading + ' ' + top.tree.getUserData(_nodeID, 'folderName') + '</span>');
 			document.getElementById('divMessageList').innerHTML = '';
 			egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.updateMessageView",_nodeID);
@@ -497,7 +497,7 @@ function quickSearch() {
 	var searchString;
 	var status;
 
-	egw_appWindow('felamimail').resetMessageSelect();
+	mail_resetMessageSelect();
 	//disable select allMessages in Folder Checkbox, as it is not implemented for filters
 	document.getElementById('selectAllMessagesCheckBox').disabled  = true;
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">' + egw_appWindow('felamimail').lang_updating_view + '</span>');
@@ -511,6 +511,35 @@ function quickSearch() {
 	if (searchString+'grrr###'+status == 'grrr###any') document.getElementById('selectAllMessagesCheckBox').disabled  = false;
 
 	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.quickSearch', searchType, searchString, status);
+
+}
+
+function mail_focusGridElement(_uid)
+{
+//alert('mail_focusGridElement'+_uid);
+	var allElements = mailGrid.dataRoot.actionObject.flatList();
+	if (allElements.length>0) 
+	{
+		allElements[0].setFocused(true);
+		if (typeof _uid == 'undefined')
+		{
+			allElements[0].setFocused(true);
+		}
+		else
+		{
+			for (var i=0; i<allElements.length; i++) 
+			{
+				if (allElements[i].id.length>0) 
+				{
+					if (_uid == allElements[i].id)
+					{
+						allElements[i].setFocused(true);
+						i = allElements.length;
+					}
+				}
+			}
+		}
+	}
 }
 
 function selectFolderContent(inputBox, _refreshTimeOut) {
@@ -522,10 +551,19 @@ function selectFolderContent(inputBox, _refreshTimeOut) {
 function selectedGridChange(_selectAll) {
 	//alert('SelectedGridChange called');
 	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
-
+	var pmID;
+	if (typeof fm_previewMessageID == 'undefined')
+	{
+		pmID = -1;
+	}
+	else
+	{
+		pmID = fm_previewMessageID;
+	}
+	//if (allSelected.length) alert(allSelected.length+' prevMessage:'+pmID+' != '+allSelected[0].id);
 	// Update message preview with first selected message
 	// ToDo: only if the selected message changes or better with the focused message
-	if (allSelected.length && fm_previewMessageID != allSelected[0].id) {
+	if (allSelected.length && pmID != allSelected[0].id) {
 		if (allSelected.length == 1)
 		{
 			MessageBuffer ='';
@@ -537,36 +575,6 @@ function selectedGridChange(_selectAll) {
 		}
 	}
 	return;
-	// to check if checkbox is clicked in GridHeader call mailGrid.dataRoot.actionOject.getAllSelected(); // returns true or false
-	folderFunctions = document.getElementById("folderFunction");
-	if (allSelected.length>0 || _selectAll)
-	{
-		checkedCounter = allSelected.length;
-		while (folderFunctions.hasChildNodes()) {
-		    folderFunctions.removeChild(folderFunctions.lastChild);
-		}
-		//var textNode = document.createTextNode('{lang_move_message}');
-		//folderFunctions.appendChild(textNode);
-		var textNode = document.createTextNode(egw_appWindow('felamimail').lang_select_target_folder);
-		folderFunctions.appendChild(textNode);
-
-		document.getElementById("folderFunction").innerHTML=egw_appWindow('felamimail').lang_select_target_folder;
-		document.getElementsByName("folderAction")[0].value = "moveMessage";
-		fm_startTimerMessageListUpdate(1800000);
-	} else {
-		checkedCounter = 0;
-//		document.getElementById('messageCheckBox').checked = false;
-		document.getElementById('selectAllMessagesCheckBox').checked = false;
-		while (folderFunctions.hasChildNodes()) {
-		    folderFunctions.removeChild(folderFunctions.lastChild);
-		}
-		//var textNode = document.createTextNode('{egw_appWindow('felamimail').lang_change_folder}');
-		//folderFunctions.appendChild(textNode);
-		var textNode = document.createTextNode('');
-		folderFunctions.appendChild(textNode);
-		document.getElementsByName("folderAction")[0].value = "changeFolder";
-		fm_startTimerMessageListUpdate(refreshTimeOut);
-	}
 }
 
 function selectAll(inputBox, _refreshTimeOut) {
@@ -625,7 +633,7 @@ function toggleFolderRadio(inputBox, _refreshTimeOut) {
 }
 
 function extendedSearch(_selectBox) {
-	egw_appWindow('felamimail').resetMessageSelect();
+	mail_resetMessageSelect();
 	//disable select allMessages in Folder Checkbox, as it is not implemented for filters
 	document.getElementById('selectAllMessagesCheckBox').disabled  = true;
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">Applying filter '+_selectBox.options[_selectBox.selectedIndex].text+'</span>');
@@ -641,7 +649,7 @@ function mail_flagMessages(_flag)
 	var Check=true;
 	var _messageList;
 	var cbAllMessages = document.getElementById('selectAllMessagesCheckBox').checked;
-    egw_appWindow('felamimail').resetMessageSelect();
+    mail_resetMessageSelect();
 	if (cbAllMessages == true) Check = confirm(egw_appWindow('felamimail').lang_confirm_all_messages);
 	if (cbAllMessages == true && Check == true)
 	{
@@ -663,7 +671,7 @@ function mail_flagMessages(_flag)
 	}
 }
 
-function resetMessageSelect()
+function mail_resetMessageSelect()
 {
 	if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
 //	document.getElementById('messageCheckBox').checked = false;
@@ -680,7 +688,7 @@ function resetMessageSelect()
 
 function skipForward()
 {
-	egw_appWindow('felamimail').resetMessageSelect();
+	mail_resetMessageSelect();
 
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_skipping_forward +'</span>');
 	document.getElementById('divMessageList').innerHTML = '';
@@ -689,7 +697,7 @@ function skipForward()
 }
 
 function skipPrevious() {
-	egw_appWindow('felamimail').resetMessageSelect();
+	mail_resetMessageSelect();
 
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_skipping_previous +'</span>');
 	document.getElementById('divMessageList').innerHTML = '';
@@ -698,7 +706,7 @@ function skipPrevious() {
 }
 
 function jumpEnd() {
-	egw_appWindow('felamimail').resetMessageSelect();
+	mail_resetMessageSelect();
 
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_jumping_to_end +'</span>');
 	document.getElementById('divMessageList').innerHTML = '';
@@ -707,7 +715,7 @@ function jumpEnd() {
 }
 
 function jumpStart() {
-	egw_appWindow('felamimail').resetMessageSelect();
+	mail_resetMessageSelect();
 
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_jumping_to_start +'</span>');
 	document.getElementById('divMessageList').innerHTML = '';
@@ -720,7 +728,7 @@ var searchesPending=0;
 function refresh() {
 	//searchesPending++;
 	//document.title=searchesPending;
-	egw_appWindow('felamimail').resetMessageSelect();
+	mail_resetMessageSelect();
 	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshMessageList');
 	if (fm_previewMessageID>0)
 	{
@@ -799,7 +807,7 @@ function mail_openComposeWindow(_url,forwardByCompose) {
 		cbAllMessages = cbAllVisibleMessages = Check = false;
 	}
 	if (typeof prefAskForMultipleForward == 'undefined') prefAskForMultipleForward = egw_appWindow('felamimail').prefAskForMultipleForward;
-	egw_appWindow('felamimail').resetMessageSelect();
+	mail_resetMessageSelect();
 	// ask anyway if a whole page is selected
 	//if (cbAllMessages == true || cbAllVisibleMessages == true) Check = confirm(egw_appWindow('felamimail').lang_confirm_all_messages); // not supported
 	if (cbAllMessages == true || cbAllVisibleMessages == true)

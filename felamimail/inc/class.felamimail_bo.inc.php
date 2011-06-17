@@ -1739,7 +1739,8 @@ class felamimail_bo
 					} else {
 						$foldersToCheck = self::$autoFolders;
 					}
-					#echo "foldersToCheck:";_debug_array($foldersToCheck);
+					//error_log(__METHOD__.__LINE__." foldersToCheck:".array2string($foldersToCheck));
+					//error_log(__METHOD__.__LINE__." foldersToCheck:".array2string( $this->mailPreferences->preferences['sentFolder']));
 					foreach($foldersToCheck as $personalFolderName) {
 						$folderName = (!empty($personalPrefix)) ? $folderPrefix.$personalFolderName : $personalFolderName;
 						if(!is_array($foldersNameSpace['personal']['all']) || !in_array($folderName, $foldersNameSpace['personal']['all'])) {
@@ -1755,6 +1756,7 @@ class felamimail_bo
 										$createfolder=false;
 									break;
 								case 'Sent': //] => Gesendet
+									// ToDo: we may need more sophistcated checking here
 									if ($this->mailPreferences->preferences['sentFolder'] && $this->mailPreferences->preferences['sentFolder']=='none')
 										$createfolder=false;
 									break;
