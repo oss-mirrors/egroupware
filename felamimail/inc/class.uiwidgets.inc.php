@@ -408,6 +408,7 @@ class uiwidgets
 							'onExecute' => 'javaScript:mail_flag',
 							'disableClass' => 'flagged',
 							'enabled' => "javaScript:mail_disabledByClass",
+							'shortcut' => egw_keymanager::shortcut(EGW_KEY_F, true, true),
 						),
 						'unflagged' => array(
 							'caption' => 'Unflagged',
@@ -415,6 +416,7 @@ class uiwidgets
 							'onExecute' => 'javaScript:mail_flag',
 							'enableClass' => 'flagged',
 							'enabled' => "javaScript:mail_enabledByClass",
+							'shortcut' => egw_keymanager::shortcut(EGW_KEY_U, true, true),
 						),
 						'read' => array(
 							'caption' => 'Read',
@@ -462,6 +464,7 @@ class uiwidgets
 					'hint' => $deleteOptions[$this->bofelamimail->mailPreferences->preferences['deleteOptions']],
 					'group' => ++$group,
 					'onExecute' => 'javaScript:mail_delete',
+					'shortcut' => egw_keymanager::shortcut(EGW_KEY_DELETE)
 				),
 				'drag_mail' => array(
 					'dragType' => 'mail',
