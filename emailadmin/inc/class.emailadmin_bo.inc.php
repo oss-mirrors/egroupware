@@ -295,6 +295,47 @@ class emailadmin_bo extends so_sql
 		$content = $this->data;
 		$old = $this->read($content);
 		$this->data = $content;
+		if ((!isset($this->data['ea_appname']) || empty($this->data['ea_appname']) ) &&
+			(!isset($this->data['ea_group']) || empty($this->data['ea_group']) ) &&
+			(!isset($this->data['ea_user']) || empty($this->data['ea_user']) ) &&
+			(isset($this->data['ea_active']) && !empty($this->data['ea_active']) && $this->data['ea_active'] ))
+		{
+			//error_log(__METHOD__.__LINE__.' Content to save:'.array2string($this->data));
+			$new_config = array();
+			foreach(array(
+					'ea_imap_server'    => 'mail_server',
+					'ea_imap_type'      => 'mail_server_type',
+					'ea_imap_login_type' => 'mail_login_type',
+					'ea_default_domain' => 'mail_suffix',
+					'ea_smtp_server'    => 'smtp_server',
+					'ea_smtp_port'      => 'smpt_port',
+				)+($this->data['ea_smtp_auth']=='yes' ? array( //ToDo: if no, we may have to reset config values for that too?
+					'ea_smtp_auth_username' => 'smtp_auth_user',
+					'ea_smtp_auth_password' => 'smtp_auth_passwd',
+				) : array()) as $ea_name => $config_name)
+			{
+				if (isset($this->data[$ea_name]))
+				{
+					if ($ea_name != 'ea_imap_type')
+					{
+						$new_config[$config_name] = $this->data[$ea_name];
+					}
+					else	// imap type, no pop3 code anymore
+					{
+						$new_config[$config_name] = 'imap'.($this->data['ea_imap_tsl_encryption'] ? 's' : '');
+					}
+				}
+			}
+			if (count($new_config))
+			{
+				foreach($new_config as $name => $value)
+				{
+					//error_log(__METHOD__.__LINE__.' Saving to config:'."$name,$value,phpgwapi");
+					config::save_value($name,$value,'phpgwapi');
+				}
+				//echo "<p>eGW configuration update: ".print_r($new_config,true)."</p>\n";
+			}
+		}
 		if (!($result = parent::save()))
 		{
 			$GLOBALS['egw']->contenthistory->updateTimeStamp('emailadmin_profiles', $this->data['ea_profile_id'], $old === false ? 'add' : 'modify', time());
