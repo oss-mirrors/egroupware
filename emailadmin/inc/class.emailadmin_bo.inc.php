@@ -385,7 +385,7 @@ class emailadmin_bo extends so_sql
 	{
 		if (!(is_array(self::$sessionData) && (count(self::$sessionData)>0))) $this->restoreSessionData();
 		if (is_array(self::$sessionData) && (count(self::$sessionData)>0) && self::$sessionData['profile'][$_profileID]) {
-			#error_log("sessionData Restored for Profile $_profileID <br>");
+			//error_log("sessionData Restored for Profile $_profileID <br>");
 			return self::$sessionData['profile'][$_profileID]; 
 		} 
 		$profileData = $this->soemailadmin->getProfileList($_profileID);
@@ -740,23 +740,24 @@ class emailadmin_bo extends so_sql
 	{
 		if (($profiles = $this->soemailadmin->getProfileList(0,true)))
 		{
+			//error_log(__METHOD__.__LINE__.' Found profile 2 merge');
 			$profile = array_shift($profiles);
 		}
 		else
 		{
+			//error_log(__METHOD__.__LINE__.' Create profile 4 merge');
 			$profile = array(
 				'smtpType' => 'defaultsmtp',
 				'description' => 'default profile (created by setup)',
-				'ea_appname' => '',
-				'ea_group' => 0,
-				'ea_user' => 0,
+				//'ea_appname' => '', // default is null, and expected to be null if empty
+				//'ea_group' => 0,
+				//'ea_user' => 0,
 				'ea_active' => 1,
 			);
 
-                if (empty($settings['mail_server'])) $profile['userDefinedAccounts'] = 'yes';
+			if (empty($settings['mail_server'])) $profile['userDefinedAccounts'] = 'yes';
 			if (empty($settings['mail_server'])) $profile['userDefinedIdentities'] == 'yes';
-                if (empty($settings['mail_server'])) $profile['ea_user_defined_signatures'] == 'yes';
-
+			if (empty($settings['mail_server'])) $profile['ea_user_defined_signatures'] == 'yes';
 		}
 		foreach($to_parse = array(
 			'mail_server' => 'imapServer',
@@ -805,7 +806,7 @@ class emailadmin_bo extends so_sql
 		}
 		// merge the other not processed values unchanged
 		$profile = array_merge($profile,array_diff_assoc($settings,$to_parse));
-
+		//error_log(__METHOD__.__LINE__.' Profile to Save:'.array2string($profile).' Profile to Parse:'.array2string($to_parse));
 		$this->soemailadmin->updateProfile($profile);
 		self::$sessionData['profile'] = array();
 		$this->saveSessionData();

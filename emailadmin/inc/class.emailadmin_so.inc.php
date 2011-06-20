@@ -286,9 +286,9 @@
 			}
 			elseif ($_defaultProfile)
 			{
-				$where['ea_appname'] = '';
-				$where['ea_group'] = 0;
-				$where['ea_user'] = 0;
+				$where[] = "(ea_appname ='' or ea_appname is NULL)";
+				$where[] = "(ea_group=0 or ea_group is NULL)";
+				$where[] = "(ea_user =0 or ea_user is NULL)";
 			}
 			elseif ($_appName)
 			{
@@ -302,6 +302,7 @@
 			{
 				$where['ea_user'] = (int) $_accountID;
 			}
+			//error_log(__METHOD__.__LINE__.' Where Condition:'.array2string($where).' Backtrace:'.function_backtrace());
 			$this->db->select($this->table,'*',$where, __LINE__,__FILE__,false,(int) $_profileID ? '' : 'ORDER BY ea_order');
 
 			$serverList = false;
