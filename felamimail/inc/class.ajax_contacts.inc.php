@@ -12,7 +12,7 @@
 	* option) any later version.                                                *
 	\***************************************************************************/
 
-	/* $Id: class.ajaxfelamimail.inc.php 21848 2006-06-15 21:50:59Z ralfbecker $ */
+	/* $Id: class.ajax_contacts.inc.php 21848 2006-06-15 21:50:59Z ralfbecker $ */
 
 	class ajax_contacts {
 		function ajax_contacts() {
