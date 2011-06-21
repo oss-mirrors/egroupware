@@ -501,7 +501,7 @@ class felamimail_bo
 			{
 				$imapFilter .= $_criterias['range'].' ';
 			}
-			#error_log("Filter: $imapFilter");
+			//error_log("Filter: $imapFilter");
 			if($imapFilter == '') {
 				return 'ALL';
 			} else {
@@ -2365,7 +2365,7 @@ class felamimail_bo
 			}
 		}
 
-		function getHeaders($_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse, $_filter, $_thisUIDOnly=null)
+		function getHeaders($_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse, $_filter, $_thisUIDOnly=null, $_cacheResult=true)
 		{
 			//self::$debug=true;
 			$reverse = (bool)$_reverse;
@@ -2387,7 +2387,8 @@ class felamimail_bo
 					//$_filter['range'] ="$_startMessage:*";
 				}
 				if (self::$debug) error_log(__METHOD__.__LINE__."$_folderName, $_sort, $reverse, ".array2string($_filter).", $rByUid");
-				$sortResult = $this->getSortedList($_folderName, $_sort, $reverse, $_filter, $rByUid);
+
+				$sortResult = $this->getSortedList($_folderName, $_sort, $reverse, $_filter, $rByUid, $_cacheResult);
 				if (self::$debug) error_log(__METHOD__.__LINE__.array2string($sortResult));
 				#$this->icServer->setDebug(false);
 				#print "</pre>";
