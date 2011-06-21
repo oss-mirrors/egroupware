@@ -464,7 +464,6 @@ class uiwidgets
 					'hint' => $deleteOptions[$this->bofelamimail->mailPreferences->preferences['deleteOptions']],
 					'group' => ++$group,
 					'onExecute' => 'javaScript:mail_delete',
-					'shortcut' => egw_keymanager::shortcut(EGW_KEY_DELETE)
 				),
 				'drag_mail' => array(
 					'dragType' => 'mail',
@@ -684,7 +683,7 @@ $(document).ready(function() {
 					$default_data = array(
 						array(
 							"id" => "check",
-							"caption" => lang('Selection'), 
+							"caption" => lang('Selection'),
 							"type" => EGW_COL_TYPE_CHECKBOX,
 							//"width" => "20px",
 							"visibility" => EGW_COL_VISIBILITY_INVISIBLE,
@@ -734,7 +733,7 @@ $(document).ready(function() {
 					$default_data = array(
 						array(
 							"id" => "check",
-							"caption" => lang('Selection'), 
+							"caption" => lang('Selection'),
 							"type" => EGW_COL_TYPE_CHECKBOX,
 							//"width" => "20px",
 							"visibility" => EGW_COL_VISIBILITY_INVISIBLE,
@@ -1185,7 +1184,7 @@ $(document).ready(function() {
 					$messageListHeight = 100; // old default for minimum height
 				}
 			}
-			
+
 			if ($firstheader &&
 				$this->use_preview &&
 				($_folderType==0 || $_folderType==1)) // only if not drafts or template folder
