@@ -1026,6 +1026,10 @@ blockquote[type=cite] {
 
 		function get_load_email_data($uid, $partID)
 		{
+			// seems to be needed, as if we open a mail from notification popup that is
+			// located in a different folder, we experience: could not parse message
+			$this->bofelamimail->reopen($this->mailbox);
+
 			$bodyParts	= $this->bofelamimail->getMessageBody($uid, '', $partID);
 			//error_log(__METHOD__.__LINE__.array2string($bodyParts));
 			$meetingRequest = false;

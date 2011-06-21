@@ -3281,8 +3281,8 @@ class felamimail_bo
 
 		function reopen($_foldername)
 		{
-			#error_log( "------------------------reopen-<br>");
-			#error_log(print_r($this->icServer->_connected,true));
+			//error_log( "------------------------reopen-<br>");
+			//error_log(print_r($this->icServer->_connected,true));
 			if ($this->icServer->_connected == 1) {
 				$tretval = $this->icServer->selectMailbox($_foldername);
 			} else {
