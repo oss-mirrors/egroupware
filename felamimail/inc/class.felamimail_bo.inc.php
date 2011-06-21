@@ -2739,6 +2739,7 @@ class felamimail_bo
 					if(isset($subPart->cid)) {
 						$newAttachment['cid']	= $subPart->cid;
 					}
+
 					# if the new attachment is a winmail.dat, we have to decode that first
 					if ( $newAttachment['name'] == 'winmail.dat' &&
 						( $wmattachments = $this->decode_winmail( $_uid, $newAttachment['partID'] ) ) )
@@ -2747,7 +2748,7 @@ class felamimail_bo
 					} else {
 						if ( ($fetchEmbeddedImages && isset($newAttachment['cid']) && strlen($newAttachment['cid'])>0) ||
 							!isset($newAttachment['cid']) ||
-							empty($newAttachment['cid'])) $attachments[] = $newAttachment;
+							empty($newAttachment['cid']) || $newAttachment['cid'] == 'NIL') $attachments[] = $newAttachment;
 					}
 					//$attachments[] = $newAttachment;
 				}
