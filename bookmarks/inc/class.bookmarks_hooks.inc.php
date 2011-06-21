@@ -67,7 +67,7 @@ class bookmarks_hooks
 			$file = array(
 				'Preferences'	=> $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname='.$appname),
 				'Grant Access'    => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uiaclprefs.index&acl_app='.$appname),
-				'Edit Categories' => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=' . $appname . '&cats_level=True&global_cats=True')
+				'Edit Categories' => $GLOBALS['egw']->link('/index.php','menuaction=preferences.preferences_categories_ui.index&cats_app=' . $appname . '&cats_level=True&global_cats=True')
 			);
 			if ($location == 'preferences')
 			{
@@ -83,7 +83,7 @@ class bookmarks_hooks
 		{
 			$file = Array(
 				'Site Configuration' => egw::link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
-				'Global Categories' => egw::link('/index.php','menuaction=admin.uicategories.index&appname=' . $appname),
+				'Global Categories' => egw::link('/index.php','menuaction=admin.admin_categories.index&appname=' . $appname),
 				'Custom fields' => egw::link('/index.php','menuaction=admin.customfields.edit&appname=' . $appname),
 			);
 			if ($location == 'admin')

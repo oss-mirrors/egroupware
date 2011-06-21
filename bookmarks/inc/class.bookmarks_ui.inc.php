@@ -100,7 +100,7 @@
 			if ($content['edit_category'])
 			{
 				$this->bo->grab_form_values($this->location_info['returnto'],'create',$bookmark);
-				$GLOBALS['egw']->redirect($GLOBALS['egw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&cats_level=True&global_cats=True'));
+				$GLOBALS['egw']->redirect($GLOBALS['egw']->link('/index.php','menuaction=preferences.preferences_categories_ui.index&cats_app=bookmarks&cats_level=True&global_cats=True'));
 			}
 			//save bookmark
 			if ($content['save'])
@@ -186,7 +186,7 @@
 			{
 				unset($content['edit_category']);
 				$this->bo->grab_form_values($this->location_info['returnto'],'edit',$content);
-				$GLOBALS['egw']->redirect($GLOBALS['egw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&cats_level=True&global_cats=True'));
+				$GLOBALS['egw']->redirect($GLOBALS['egw']->link('/index.php','menuaction=preferences.preferences_categories_ui.index&cats_app=bookmarks&cats_level=True&global_cats=True'));
 			}
 			//save bookmark and go to list interface
 			if ($content['save'] || $content['apply'])
@@ -565,7 +565,7 @@
 			}
 			if ($content['edit_category'] )
 			{
-				$GLOBALS['egw']->redirect_link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&cats_level=True&global_cats=True');
+				$GLOBALS['egw']->redirect_link('/index.php','menuaction=preferences.preferences_categories_ui.index&cats_app=bookmarks&cats_level=True&global_cats=True');
 				return;
 			}
 
