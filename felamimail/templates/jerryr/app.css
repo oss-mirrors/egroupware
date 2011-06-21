@@ -73,8 +73,13 @@ div.inactivetab{ display:none; }
 .quoted5 { color:#bb6600; }
 
 
-tr.mail div,
+tr.mail div {
+	cursor: default;
+	white-space: nowrap;
+}
+
 tr.mail a {
+	cursor: pointer;
 	white-space: nowrap;
 }
 
