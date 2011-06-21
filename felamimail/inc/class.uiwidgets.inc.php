@@ -1505,11 +1505,22 @@ $(document).ready(function() {
 					'action'	=> ($_forceNewWindow ? "egw_openWindowCentered('$forwardURL','forward_".$_headerData['uid']."',".$fm_width.",".$fm_height.");": "window.location.href = '$forwardURL'"),
 					'tooltip'	=> lang('forward'),
 				),
+				'revert'	=> array(
+					'action'	=> ($_forceNewWindow ? "window.open('$deleteURL','_blank','dependent=yes,width=100,height=100,toolbar=no,scrollbars=no,status=no')": "window.location.href = '$deleteURL'"),
+					'tooltip'	=> ($_headerData['deleted']?lang('undelete'):lang('delete')),
+				),
 				'delete'	=> array(
 					'action'	=> ($_forceNewWindow ? "window.open('$deleteURL','_blank','dependent=yes,width=100,height=100,toolbar=no,scrollbars=no,status=no')": "window.location.href = '$deleteURL'"),
 					'tooltip'	=> ($_headerData['deleted']?lang('undelete'):lang('delete')),
 				),
 			);
+			// display only the correct icon: revert on deleted messages, delete on all others
+			if ($_headerData['deleted']) 
+			{
+				unset($navbarImages['delete']);
+			} else {
+				unset($navbarImages['revert']);
+			}
 			foreach($navbarImages as $buttonName => $buttonInfo) {
 				$navbarButtons .= $this->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip']);
 			}
