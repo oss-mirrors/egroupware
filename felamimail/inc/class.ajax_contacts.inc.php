@@ -24,13 +24,13 @@
 			if ($GLOBALS['egw_info']['user']['apps']['addressbook']) {
 				if (method_exists($GLOBALS['egw']->contacts,'search')) {
 					// 1.3+
+					$showAccounts = true;
+					if ($GLOBALS['egw_info']['user']['preferences']['addressbook']['hide_accounts']) $showAccounts=false;
 					$contacts = $GLOBALS['egw']->contacts->search(array(
 						'n_fn'       => $_searchString,
 						'email'      => $_searchString,
 						'email_home' => $_searchString,
-					),array('n_fn','email','email_home'),'n_fn','','%',false,'OR',array(0,100));
-					$showAccounts = true;
-					if ($GLOBALS['egw_info']['user']['preferences']['addressbook']['hide_accounts']) $showAccounts=false;
+					),array('n_fn','email','email_home'),'n_fn','','%',false,'OR',array(0,100),($showAccounts?array():array('account_id' => null)));
 					// additionally search the accounts, if the contact storage is not the account storage
 					if ($showAccounts &&
 						$GLOBALS['egw_info']['server']['account_repository'] == 'ldap' &&
