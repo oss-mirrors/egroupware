@@ -351,6 +351,7 @@ on behalf of	felamimail	fi	Puolesta
 one address is not valid	felamimail	fi	Yksi osoite ei kelpaa
 only inbox	felamimail	fi	Vain Saapuneet
 only one window	felamimail	fi	Vain yksi ikkuna
+only send message, do not copy a version of the message to the configured sent folder	felamimail	fi	Ainoastaan lähetä viesti, älä kopoi sitä Lähetetyt-kansioon
 only unseen	felamimail	fi	Vain avaamattomat
 open all	felamimail	fi	Avaa kaikki
 options	felamimail	fi	Asetukset
@@ -370,6 +371,7 @@ please select the number of days to wait between responses	felamimail	fi	Valitse
 please supply the message to send with auto-responses	felamimail	fi	Anna viesti joka lähetetään automaattisella vastauksella
 port	felamimail	fi	Portti
 posting	felamimail	fi	Postitus
+preview disabled for folder:	felamimail	fi	Esinäkymä otettu pois kansiosta:
 previous	felamimail	fi	Edellinen
 previous message	felamimail	fi	Edellinen viesti
 primary emailadmin profile	felamimail	fi	Ensisijainen sähköpostiprofiili
@@ -462,7 +464,6 @@ template folder	felamimail	fi	Mallipohjat -kansio
 templates	felamimail	fi	Mallipohjat
 text only	felamimail	fi	Vain tekstiä
 text/plain	felamimail	fi	Pelkkä teksti
-the action will be applied to all messages of the current folder.ndo you want to proceed?	felamimail	fi	Toiminto koskee kaikkeja viestejä tässä kansiossa. Haluatko varmasti jatkaa?
 the connection to the imap server failed!!	felamimail	fi	Yhteys IMAP palvelimeen epäonnistui!!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	fi	IMAP palvelin ei tue valittua tunnistustapaa. Ota yhteyttä järjestelmän ylläpitäjään.
 the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	fi	Viestin lähettäjä haluaa vahvistuksen, että olet saanut tämän viestin. Haluatko lähettää sen?
@@ -502,6 +503,7 @@ use <a href="%1">emailadmin</a> to create profiles	felamimail	fi	Käytä <a href
 use a signature	felamimail	fi	Käytä allekirjoitusta
 use a signature?	felamimail	fi	Käytetäänkö allekirjoitusta?
 use addresses	felamimail	fi	Käytä osoitteita
+use common preferences max. messages	felamimail	fi	Käytä asetusten maximi määrää
 use custom identities	felamimail	fi	Käytä muokattuja identiteettejä
 use custom settings	felamimail	fi	Käytä muokattuja (lisä-) asetuksia
 use regular expressions	felamimail	fi	Käytä tavanomaisia ilmaisuja
