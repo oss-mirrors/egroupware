@@ -2377,7 +2377,7 @@ class felamimail_bo
 			#$this->icServer->setDebug(true);
 			if ($_thisUIDOnly === null)
 			{
-				if (($startMessage || $_numberOfMessages) && !isset($_filter['range']))
+				if (($_startMessage || $_numberOfMessages) && !isset($_filter['range']))
 				{
 					// this will not work we must calculate the range we want to retieve as e.g.: 0:20 retirieves the first 20 mails and sorts them
 					// if sort capability is applied to the range fetched, not sort first and fetch the range afterwards
@@ -4039,6 +4039,20 @@ class felamimail_bo
 				//error_log(__METHOD__.__LINE__.' Charset:'.$bodyParts[$i]['charSet'].'->'.$bodyParts[$i]['body']);
 				$newBody  = translation::convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
 				//error_log(__METHOD__.__LINE__.' MimeType:'.$bodyParts[$i]['mimeType'].'->'.$newBody);
+				/*
+				// in a way, this tests if we are having real utf-8 (the displayCharset) by now; we should if charsets reported (or detected) are correct
+				if (strtoupper(self::$displayCharset) == 'UTF-8')
+				{
+					$test = json_encode($newBody);
+					//error_log(__METHOD__.__LINE__.'#'.$test.'# ->'.strlen($newBody).' Error:'.json_last_error());
+					if (json_last_error() != JSON_ERROR_NONE && strlen($newBody)>0) 
+					{
+						// this should not be needed, unless something fails with charset detection/ wrong charset passed
+						error_log(__METHOD__.__LINE__.' Charset Reported:'.$bodyParts[$i]['charSet'].' Carset Detected:'.felamimail_bo::detect_encoding($bodyParts[$i]['body']));
+						$newBody = utf8_encode($newBody);
+					}
+				}
+				*/
 				if ($bodyParts[$i]['mimeType'] == 'text/html') {
 					// as translation::convert reduces \r\n to \n and purifier eats \n -> peplace it with a single space
 					$newBody = str_replace("\n"," ",$newBody);
