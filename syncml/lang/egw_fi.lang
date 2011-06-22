@@ -1,19 +1,3 @@
-./calendar	syncml	fi	./calendar
-./caltasks	syncml	fi	./caltasks
-./card	syncml	fi	./card
-./contacts	syncml	fi	./contacts
-./events	syncml	fi	./events
-./jobs	syncml	fi	./jobs
-./notes	syncml	fi	./notes
-./scal	syncml	fi	./scal
-./scard	syncml	fi	./scard
-./sifcalendar	syncml	fi	./sifcalendar
-./sifcontacts	syncml	fi	./sifcontacts
-./sifnotes	syncml	fi	./sifnotes
-./siftasks	syncml	fi	./siftasks
-./snote	syncml	fi	./snote
-./stask	syncml	fi	./stask
-./tasks	syncml	fi	./tasks
 <li>the client wins and overwrites the server data.</li><li>the server wins and overwrites the client data (default). </li><li>duplicate entries are created from both versions.</li>	syncml	fi	<li>Laite voittaa ja kirjoittaa palvelimelle.</li><li>Palvelin voittaa ja kirjoittaa laitteelle (oletus). </li><li>Tuplamerkinnät luodaan molemmista versioista.</li>
 a duplicate infolog entry from a synchronization conflict will be assigned to this category.	syncml	fi	Synkronoinnista aiheutunut Tehtävienhallinnan tuplamerkintä lisätään kategoriaan
 accepted	syncml	fi	Hyväksytty
