@@ -604,7 +604,7 @@ $(document).ready(function() {
 					// fetch first 50 headers
 					$sortResultwH = $this->bofelamimail->getHeaders(
 						$_folderName,
-						$offset,
+						$offset=0,
 						$maxMessages=50,
 						$this->sessionData['sort'],
 						$reverse,
@@ -814,15 +814,16 @@ $(document).ready(function() {
 			$response = egw_json_response::get();
 			if (count($elements)>0)
 			{
-				//error_log(__METHOD__.__LINE__.' Uids to fetch:'.array2string($elements).' Columns to fetch:'.array2string($columns));
+				//error_log(__METHOD__.__LINE__.' Uids to fetch:'.count($elements).'->'.array2string($elements).' Columns to fetch:'.array2string($columns));
 				$this->bofelamimail->restoreSessionData();
-				$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
-				if (empty($maxMessages)) $maxMessages = 50;
+				//$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+				$maxMessages = count($elements);
+				//if (empty($maxMessages)) $maxMessages = 50;
 				$_folderName = $this->bofelamimail->sessionData['mailbox'];
 				$folderType = $this->bofelamimail->getFolderType($_folderName);
 				$sortResult = $this->bofelamimail->getHeaders(
 					$_folderName,
-					$offset,
+					$offset=0,
 					$maxMessages,
 					$this->sessionData['sort'],
 					$this->sessionData['sortReverse'],
