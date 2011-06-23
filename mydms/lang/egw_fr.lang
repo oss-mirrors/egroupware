@@ -45,8 +45,6 @@ mime type	mydms	fr	Type Mime
 move document	mydms	fr	déplacez le document
 move folder	mydms	fr	déplacez le répertoire
 mydms	common	fr	mydms
-notifications	mydms	fr	Notifications
-notifications
 permission	mydms	fr	permission
 select folder	mydms	fr	sélectionner un répertoire
 select target folder	mydms	fr	sélectionner le répertoire cible
