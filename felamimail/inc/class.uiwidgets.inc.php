@@ -654,18 +654,57 @@ $(document).ready(function() {
 				}
 				else
 				{
-					$sortResult = $this->bofelamimail->getHeaders(
+					$sRToFetch = null;
+					$reverse = (bool)$this->sessionData['sortReverse'];
+					//error_log(__METHOD__.__LINE__.' maxMessages:'.$maxMessages.' Offset:'.$offset);
+					if ($maxMessages > 75)
+					{
+						$sR = $this->bofelamimail->getSortedList(
+							$_folderName,
+							$this->sessionData['sort'],
+							$reverse,
+							(array)$this->sessionData['messageFilter'],
+							$rByUid=true
+						);
+						if($reverse === true) $sR = array_reverse((array)$sR);
+						$sR = array_slice($sR,$offset,$maxMessages); // we need only $maxMessages of uids
+						$sRToFetch = array_slice($sR,0,50); // we fetch only the headers of a subset of the fetched uids
+						error_log(__METHOD__.__LINE__.' Rows fetched (UID only):'.count($sR).' Data:'.array2string($sR));
+						$maxMessages = 50;
+					}
+					$sortResult = array();
+					// fetch headers
+					$sortResultwH = $this->bofelamimail->getHeaders(
 						$_folderName,
 						$offset,
 						$maxMessages,
 						$this->sessionData['sort'],
-						$this->sessionData['sortReverse'],
-						(array)$this->sessionData['messageFilter']
+						$reverse,
+						(array)$this->sessionData['messageFilter'],
+						$sRToFetch
 					);
+					if (is_array($sR) && count($sR)>0)
+					{
+						foreach ((array)$sR as $key => $v)
+						{
+							if (array_key_exists($key,(array)$sortResultwH['header'])==true)
+							{
+								$sortResult['header'][] = $sortResultwH['header'][$key];
+							}
+							else
+							{
+								$sortResult['header'][] = array('uid'=>$v);
+							}
+						}
+					}
+					else
+					{
+						$sortResult = $sortResultwH;
+					}
 				}
 			}
 			$rowsFetched = count($sortResult['header']);
-			//error_log(__METHOD__.__LINE__.' Data:'.array2string($sortResult));
+			//error_log(__METHOD__.__LINE__.' Rows fetched:'.$rowsFetched.' Data:'.array2string($sortResult));
 			$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
 			if ($GLOBALS['egw_info']['user']['preferences']['common']['select_mode']=='EGW_SELECTMODE_TOGGLE') unset($cols[0]);
 			return $this->header2gridelements($sortResult['header'],$cols, $_folderName, $uidOnly,$folderType,$dataForXMails=50,$previewMessage);
