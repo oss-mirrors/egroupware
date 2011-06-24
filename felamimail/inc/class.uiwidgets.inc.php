@@ -667,7 +667,7 @@ $(document).ready(function() {
 							$rByUid=true
 						);
 						if($reverse === true) $sR = array_reverse((array)$sR);
-						$sR = array_slice($sR,$offset,$maxMessages); // we need only $maxMessages of uids
+						$sR = array_slice($sR,($offset==1?0:$offset),$maxMessages); // we need only $maxMessages of uids
 						$sRToFetch = array_slice($sR,0,50); // we fetch only the headers of a subset of the fetched uids
 						//error_log(__METHOD__.__LINE__.' Rows fetched (UID only):'.count($sR).' Data:'.array2string($sR));
 						$maxMessages = 50;
