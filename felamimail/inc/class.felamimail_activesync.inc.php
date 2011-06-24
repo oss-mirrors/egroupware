@@ -80,30 +80,50 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 	 */
 	public function __construct(BackendEGW $backend)
 	{
+		//$this->debugLevel=2;
 		$this->backend = $backend;
 		if (!isset($GLOBALS['egw_info']['user']['preferences']['activesync']['felamimail-ActiveSyncProfileID']))
 		{
+			if ($this->debugLevel>1) error_log(__METHOD__.__LINE__.' Noprefs set: using 0 as default');
 			// globals preferences add appname varname value
 			$GLOBALS['egw']->preferences->add('activesync','felamimail-ActiveSyncProfileID',0,'user');
 			// save prefs
 			$GLOBALS['egw']->preferences->save_repository(true);
 		}
-		if (is_null(self::$profileID)) self::$profileID =& egw_cache::getSession('felamimail','activeSyncProfileID');
+		if ($this->debugLevel>1) error_log(__METHOD__.__LINE__.' ActiveProfileID:'.array2string(self::$profileID));
 
+		if (is_null(self::$profileID))
+		{
+			if ($this->debugLevel>1) error_log(__METHOD__.__LINE__.' self::ProfileID isNUll:'.array2string(self::$profileID));
+			self::$profileID =& egw_cache::getSession('felamimail','activeSyncProfileID');
+			if ($this->debugLevel>1) error_log(__METHOD__.__LINE__.' ActiveProfileID (after reading Cache):'.array2string(self::$profileID));
+		}
 		if (isset($GLOBALS['egw_info']['user']['preferences']['activesync']['felamimail-ActiveSyncProfileID']))
-			self::$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['activesync']['felamimail-ActiveSyncProfileID'];
+		{
+			if ($this->debugLevel>1) error_log(__METHOD__.__LINE__.' Pref for ProfileID:'.array2string($GLOBALS['egw_info']['user']['preferences']['activesync']['felamimail-ActiveSyncProfileID']));
+			if ($GLOBALS['egw_info']['user']['preferences']['activesync']['felamimail-ActiveSyncProfileID'] == 'G') 
+			{
+				self::$profileID = 'G'; // this should trigger the fetch of the first negative profile (or if no negative profile is available the firstb there is)
+			}
+			else 
+			{
+				self::$profileID = (int)$GLOBALS['egw_info']['user']['preferences']['activesync']['felamimail-ActiveSyncProfileID'];
+			}
+		}
+		if ($this->debugLevel>1) error_log(__METHOD__.__LINE__.' Profile Selected (after reading Prefs):'.array2string(self::$profileID));
 		$params =null;
 		if (isset($GLOBALS['egw_setup'])) $params['setup']=true;
 		$identities = $this->getAvailableProfiles($params);
 		//error_log(__METHOD__.__LINE__.array2string($identities));
-		if ($identities[self::$profileID])
+		if (array_key_exists(self::$profileID,$identities))
 		{
 			// everything seems to be in order self::$profileID REMAINS UNCHANGED
 		}
 		else
 		{
-			foreach (array_keys((array)$identities) as $k => $ident) if ($k <0) self::$profileID = $k;
-			if ($identities[self::$profileID])
+			foreach (array_keys((array)$identities) as $k => $ident) if ($ident <0) self::$profileID = $ident;
+			if ($this->debugLevel>1) error_log(__METHOD__.__LINE__.' Profile Selected (after trying to fetch DefaultProfile):'.array2string(self::$profileID));
+			if (!array_key_exists(self::$profileID,$identities))
 			{
 				// everything failed, try first profile found
 				$keys = array_keys((array)$identities);
@@ -111,7 +131,8 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 				else self::$profileID = 0;
 			}
 		}
-		if ($debugLevel>0) error_log(__METHOD__.'::'.__LINE__.' ProfileSelected:'.self::$profileID.' -> '.$identities[self::$profileID]);
+		if ($this->debugLevel>0) error_log(__METHOD__.'::'.__LINE__.' ProfileSelected:'.self::$profileID.' -> '.$identities[self::$profileID]);
+		//$this->debugLevel=0;
 	}
 
 	/**
@@ -124,11 +145,11 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		$identities = array();
 		if (!isset($params['setup']))
 		{
-			if (!$this->mail) $this->mail = felamimail_bo::getInstance(true,self::$profileID);
+			if (!$this->mail) $this->mail = felamimail_bo::getInstance(true,(self::$profileID=='G'?0:self::$profileID));
 			$selectedID = $this->mail->getIdentitiesWithAccounts($identities);
-			$activeIdentity =& $this->mail->mailPreferences->getIdentity(self::$profileID);
+			$activeIdentity =& $this->mail->mailPreferences->getIdentity((self::$profileID=='G'?0:self::$profileID));
 			// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
-			if ($activeIdentity->id) {
+			if ($activeIdentity->id || self::$profileID == 'G') {
 				$boemailadmin = new emailadmin_bo();
 				$defaultProfile = $boemailadmin->getUserProfile() ;
 				//error_log(__METHOD__.__LINE__.array2string($defaultProfile));
