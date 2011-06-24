@@ -344,7 +344,7 @@ class felamimail_hooks
 				'values' =>	$gridViewBehavior,
 				'xmlrpc' => True,
 				'admin'  => False,
-				'default'=> 0,
+				'default'=> 50,
 			),
 			'PreViewFrameHeight' => array(
 				'type'   => 'input',
