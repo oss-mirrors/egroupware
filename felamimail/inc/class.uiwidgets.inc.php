@@ -636,7 +636,7 @@ $(document).ready(function() {
 		{
 			//error_log(__METHOD__.__LINE__.' Data:'.array2string($_folderName));
 			$this->bofelamimail->restoreSessionData();
-			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			$maxMessages = 50; // match the hardcoded setting for data retrieval as inital value
 			if (isset($this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior']) && (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'] <> 0)
 				$maxMessages = (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'];
 			$previewMessage = $this->sessionData['previewMessage'];

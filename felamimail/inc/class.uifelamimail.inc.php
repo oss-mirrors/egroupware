@@ -746,8 +746,7 @@ class uifelamimail
 			//error_log(__METHOD__.__LINE__.' ImapServerObject:'.array2string($imapServer));
 			if (is_object($preferences)) $activeIdentity =& $preferences->getIdentity(self::$icServerID);
 			//_debug_array($activeIdentity);
-			$maxMessages	=  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
-			if (empty($maxMessages)) $maxMessages = 30; // this seems to be the number off messages that fit the height of the folder tree
+			$maxMessages	=  50;
 			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['prefMailGridBehavior']) && (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['prefMailGridBehavior'] <> 0)
 				$maxMessages = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['prefMailGridBehavior'];
 			$userPreferences	=&  $GLOBALS['egw_info']['user']['preferences']['felamimail'];
