@@ -408,7 +408,7 @@ class uiwidgets
 							'onExecute' => 'javaScript:mail_flag',
 							//'disableClass' => 'flagged',
 							//'enabled' => "javaScript:mail_disabledByClass",
-							'shortcut' => egw_keymanager::shortcut(EGW_KEY_F, true, true),
+							'shortcut' => egw_keymanager::shortcut(egw_keymanager::F, true, true),
 						),
 						'unflagged' => array(
 							'caption' => 'Unflagged',
@@ -416,7 +416,7 @@ class uiwidgets
 							'onExecute' => 'javaScript:mail_flag',
 							//'enableClass' => 'flagged',
 							//'enabled' => "javaScript:mail_enabledByClass",
-							'shortcut' => egw_keymanager::shortcut(EGW_KEY_U, true, true),
+							'shortcut' => egw_keymanager::shortcut(egw_keymanager::U, true, true),
 						),
 						'read' => array(
 							'caption' => 'Read',
