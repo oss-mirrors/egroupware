@@ -871,6 +871,7 @@ function fm_startTimerMessageListUpdate(_refreshTimeOut) {
 }
 
 var felamimail_readMessage = null;
+var felamimail_abortView = false;
 var felamimail_rm_timeout = 400;
 var felamimail_doubleclick_timeout = 300;
 
@@ -893,6 +894,8 @@ function fm_msg_removeClass(_id, _class) {
 }
 
 function fm_readMessage(_url, _windowName, _node) {
+	if (felamimail_abortView)
+		return;
 
 	var windowArray = _windowName.split('_');
 	var msgId = windowArray[1];
@@ -909,7 +912,7 @@ function fm_readMessage(_url, _windowName, _node) {
 			// preview iframe
 			window.setTimeout(function() {
 				// Abort if another mail should be displayed
-				if (felamimail_readMessage == msgId)
+				if (felamimail_readMessage == msgId && !felamimail_abortView)
 				{
 					// Copy the old status message
 					// TODO. Make this an own function
@@ -937,16 +940,21 @@ function fm_readMessage(_url, _windowName, _node) {
 			}, felamimail_rm_timeout);
 		}
 	} else {
-		// Remove the url which shall be opened as we do not want to open this
-		// message in the preview window
-		window.felamimail_readMessage = null;
+		window.setTimeout(function() {
 
-		egw_openWindowCentered(_url, _windowName, 750, egw_getWindowOuterHeight());
+			if (!felamimail_abortView) {
+				// Remove the url which shall be opened as we do not want to open this
+				// message in the preview window
+				window.felamimail_readMessage = null;
 
-		// Refresh the folder state (count of unread emails)
-		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshFolder");
+				egw_openWindowCentered(_url, _windowName, 750, egw_getWindowOuterHeight());
 
-		fm_msg_removeClass(windowArray[1], 'unseen');
+				// Refresh the folder state (count of unread emails)
+				egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshFolder");
+
+				fm_msg_removeClass(windowArray[1], 'unseen');
+			}
+		}, 0);
 	}
 }
 
@@ -958,13 +966,17 @@ function fm_handleAttachmentClick(_double, _url, _windowName, _node)
 	var msgId = _windowName.split('_')[1];
 
 	felamimail_readMessage = msgId;
+	felamimail_abortView = true;
 
 	// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
 	// event doesn't occur in this time, trigger the single click function
 	window.setTimeout(function () {
-		if (msgId != felamimail_readMessage)
+		if (msgId == felamimail_readMessage)
 		{
 			fm_readAttachments(_url, _windowName, _node);
+			window.setTimeout(function() {
+				felamimail_abortView = false;
+			}, 100);
 		}
 	}, felamimail_doubleclick_timeout);
 }
@@ -975,22 +987,28 @@ function fm_readAttachments(_url, _windowName, _node) {
 	mailGrid.dataRoot.actionObject.setAllSelected(false);
 }
 
+
 /**
  * Handles message clicks and distinguishes between double clicks and single clicks
  */
+
 function fm_handleComposeClick(_double, _url, _windowName, _node)
 {
 	var msgId = _windowName.split('_')[1];
 
 	// Queue the url
 	felamimail_readMessage = msgId;
+	felamimail_abortView = true;
 
 	// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
 	// event doesn't occur in this time, trigger the single click function
 	window.setTimeout(function () {
-		if (felamimail_readMessage != msgId)
+		if (felamimail_readMessage == msgId)
 		{
 			fm_compose(_url, _windowName, _node);
+			window.setTimeout(function() {
+				felamimail_abortView = false;
+			}, 100);
 		}
 	}, felamimail_doubleclick_timeout);
 }
