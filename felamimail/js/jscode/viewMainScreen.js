@@ -1299,8 +1299,8 @@ function felamimail_transform_foldertree() {
 	// Go over the folder list
 	if (typeof felamimail_folders != 'undefined' && felamimail_folders.length > 0)
 	{
-		for (var key in felamimail_folders) {
-			var folderName = felamimail_folders[key];
+		for (var i = 0; i < felamimail_folders.length; i++) {
+			var folderName = felamimail_folders[i];
 
 			// Add a new action object to the object manager
 			var obj = treeObj.addObject(folderName,
