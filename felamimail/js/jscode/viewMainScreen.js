@@ -548,33 +548,43 @@ function selectFolderContent(inputBox, _refreshTimeOut) {
 	selectAll(inputBox, _refreshTimeOut);
 }
 
+/**
+ * fm_previewMessageID is internally used to save the currently used message
+ * id. The preview function won't be called for a particular message if
+ * fm_previewMessageID is set to it.
+ */
+var fm_previewMessageID = null;
+
 function selectedGridChange(_selectAll) {
-	//alert('SelectedGridChange called');
-	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
-	var pmID;
-	if (typeof fm_previewMessageID == 'undefined')
+	// Get the currently focused object
+	var focused = mailGrid.dataRoot.actionObject.getFocusedObject();
+
+	if (focused)
 	{
-		pmID = -1;
-	}
-	else
-	{
-		pmID = fm_previewMessageID;
-	}
-	//if (allSelected.length) alert(allSelected.length+' prevMessage:'+pmID+' != '+allSelected[0].id);
-	// Update message preview with first selected message
-	// ToDo: only if the selected message changes or better with the focused message
-	if (allSelected.length && pmID != allSelected[0].id) {
-		if (allSelected.length == 1)
-		{
-			MessageBuffer ='';
-			fm_previewMessageFolderType = 0;
-			if (activeFolderB64 == draftFolderB64) fm_previewMessageFolderType = 2;
-			if (activeFolderB64 == templateFolderB64) fm_previewMessageFolderType = 3;
-			//fm_startTimerMessageListUpdate(refreshTimeOut);
-			fm_readMessage('','MessagePreview_'+allSelected[0].id+'_'+fm_previewMessageFolderType,allSelected[0].iface.getDOMNode());
+		// Get all currently selected object - we don't want to do a preview
+		// if more than one message is selected.
+		var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
+
+		if (allSelected.length > 0 && fm_previewMessageID != focused.id) {
+			if (allSelected.length == 1)
+			{
+				MessageBuffer ='';
+
+				fm_previewMessageFolderType = 0;
+				if (activeFolderB64 == draftFolderB64) fm_previewMessageFolderType = 2;
+				if (activeFolderB64 == templateFolderB64) fm_previewMessageFolderType = 3;
+
+				// Call the preview function for this message. Set fm_previewMessageID
+				// to the id of this item, so that this function won't be called
+				// again for the same item.
+				fm_previewMessageID = focused.id;
+
+				fm_readMessage('', 'MessagePreview_'+focused.id+'_'+fm_previewMessageFolderType,
+					focused.iface.getDOMNode());
+			}
 		}
+		return;
 	}
-	return;
 }
 
 function selectAll(inputBox, _refreshTimeOut) {
@@ -730,12 +740,7 @@ function refresh() {
 	//document.title=searchesPending;
 	mail_resetMessageSelect();
 	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshMessageList');
-	if (fm_previewMessageID>0)
-	{
-		//setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_updating_view +'</span>');
-		//xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",fm_previewMessageID,fm_previewMessageFolderType);
-	}
-}     
+}
 
 function refreshFolderStatus(_nodeID,mode) {
 	var nodeToRefresh = 0;
@@ -749,12 +754,6 @@ function refreshFolderStatus(_nodeID,mode) {
 	}
 	var activeFolders = getTreeNodeOpenItems(nodeToRefresh,mode2use);
 	queueRefreshFolderList(activeFolders);
-//	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshFolderList', activeFolders);
-//	if (fm_previewMessageID>0)
-//	{
-//		//setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_updating_view +'</span>');
-//		//xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview",fm_previewMessageID,fm_previewMessageFolderType);
-//	}
 }
 
 
@@ -871,7 +870,6 @@ function fm_startTimerMessageListUpdate(_refreshTimeOut) {
 	}
 }
 
-var felamimail_queuedMessages = [];
 var felamimail_readMessage = null;
 var felamimail_rm_timeout = 400;
 var felamimail_doubleclick_timeout = 300;
@@ -903,53 +901,45 @@ function fm_readMessage(_url, _windowName, _node) {
 	{
 		// Check whether this mail has not already be queued and the message
 		// preview is actuall displayed
-		if (typeof felamimail_queuedMessages[msgId] == 'undefined' && !isNaN(felamimail_iframe_height)) {
+		if (!isNaN(felamimail_iframe_height)) {
 
-			// Set the url as queueud
-			felamimail_queuedMessages[msgId] = true;
-			felamimail_readMessage = msgId;
+			window.felamimail_readMessage = msgId;
 
 			// Wait felamimail_rm_timeout seconds before opening the email in the
 			// preview iframe
 			window.setTimeout(function() {
 				// Abort if another mail should be displayed
-				if (typeof felamimail_queuedMessages[msgId] == 'undefined' ||
-				    felamimail_readMessage != msgId)
+				if (felamimail_readMessage == msgId)
 				{
-					return false;
+					// Copy the old status message
+					// TODO. Make this an own function
+					if (document.getElementById('messageCounter').innerHTML.search(
+						eval('/'+egw_appWindow('felamimail').lang_updating_view+'/')) < 0 )
+					{
+						MessageBuffer = document.getElementById('messageCounter').innerHTML;
+					}
+
+					// Set the "updating view" message
+					egw_appWindow('felamimail').setStatusMessage(
+						'<span style="font-weight: bold;">' + egw_appWindow('felamimail').lang_updating_view + '</span>');
+
+					fm_previewMessageFolderType = windowArray[2];
+
+					// refreshMessagePreview now also refreshes the folder state
+					egw_appWindow('felamimail').xajax_doXMLHTTP(
+						"felamimail.ajaxfelamimail.refreshMessagePreview",
+						windowArray[1], windowArray[2]);
+
+					// Mark the message as read
+					fm_msg_removeClass(windowArray[1], 'unseen');
 				}
-
-				// Copy the old status message TODO. Make this an own function
-				if (document.getElementById('messageCounter').innerHTML.search(
-					eval('/'+egw_appWindow('felamimail').lang_updating_view+'/')) < 0 )
-				{
-					MessageBuffer = document.getElementById('messageCounter').innerHTML;
-				}
-
-				// Set the "updating view" message
-				egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_updating_view +'</span>');
-
-				fm_previewMessageID = windowArray[1];
-				fm_previewMessageFolderType = windowArray[2];
-				// refreshMessagePreview now also refreshes the folder state
-				egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshMessagePreview", windowArray[1], windowArray[2]);
-
-				delete(felamimail_queuedMessages[msgId]);
-
-				fm_msg_removeClass(windowArray[1], 'unseen');
 
 			}, felamimail_rm_timeout);
 		}
 	} else {
 		// Remove the url which shall be opened as we do not want to open this
 		// message in the preview window
-		if (typeof felamimail_queuedMessages[msgId] != 'undefined') {
-			// Wait a short moment as the code above might be executed again after
-			// an double click
-			window.setTimeout(function() {
-				delete(felamimail_queuedMessages[msgId]);
-			}, 0);
-		}
+		window.felamimail_readMessage = null;
 
 		egw_openWindowCentered(_url, _windowName, 750, egw_getWindowOuterHeight());
 
@@ -967,23 +957,16 @@ function fm_handleAttachmentClick(_double, _url, _windowName, _node)
 {
 	var msgId = _windowName.split('_')[1];
 
-	// Check whether the given url is already queued. Only continue if this
-	// is not the case
-	if (typeof felamimail_queuedMessages[msgId] == "undefined")
-	{
-		// Queue the url
-		felamimail_queuedMessages[msgId] = true;
+	felamimail_readMessage = msgId;
 
-		// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
-		// event doesn't occur in this time, trigger the single click function
-		window.setTimeout(function () {
-			if (typeof felamimail_queuedMessages[msgId] != "undefined")
-			{
-				fm_readAttachments(_url, _windowName, _node);
-				delete (felamimail_queuedMessages[msgId]);
-			}
-		}, felamimail_doubleclick_timeout);
-	}
+	// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
+	// event doesn't occur in this time, trigger the single click function
+	window.setTimeout(function () {
+		if (msgId != felamimail_readMessage)
+		{
+			fm_readAttachments(_url, _windowName, _node);
+		}
+	}, felamimail_doubleclick_timeout);
 }
 
 function fm_readAttachments(_url, _windowName, _node) {
@@ -999,23 +982,17 @@ function fm_handleComposeClick(_double, _url, _windowName, _node)
 {
 	var msgId = _windowName.split('_')[1];
 
-	// Check whether the given url is already queued. Only continue if this
-	// is not the case
-	if (typeof felamimail_queuedMessages[msgId] == "undefined")
-	{
-		// Queue the url
-		felamimail_queuedMessages[msgId] = true;
+	// Queue the url
+	felamimail_readMessage = msgId;
 
-		// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
-		// event doesn't occur in this time, trigger the single click function
-		window.setTimeout(function () {
-			if (typeof felamimail_queuedMessages[msgId] != "undefined")
-			{
-				fm_compose(_url, _windowName, _node);
-				delete (felamimail_queuedMessages[msgId]);
-			}
-		}, felamimail_doubleclick_timeout);
-	}
+	// Wait "felamimail_dblclick_speed" milliseconds. Only if the doubleclick
+	// event doesn't occur in this time, trigger the single click function
+	window.setTimeout(function () {
+		if (felamimail_readMessage != msgId)
+		{
+			fm_compose(_url, _windowName, _node);
+		}
+	}, felamimail_doubleclick_timeout);
 }
 
 function fm_compose(_url, _windowName, _node) {

@@ -556,7 +556,7 @@ $(document).ready(function() {
 	{
 		wnd.handleResize();
 	}
-//alert("constructed grid, after resize"+mailGrid);
+
 	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
 	for (var i=0; i<allSelected.length; i++)
 	{
