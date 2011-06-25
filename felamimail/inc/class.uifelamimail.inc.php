@@ -625,7 +625,6 @@ class uifelamimail
 				egw_framework::validate_file('jquery','jquery-ui');
 				egw_framework::validate_file('dhtmlxtree','dhtmlxMenu/codebase/dhtmlxcommon');
 				egw_framework::validate_file('dhtmlxtree','dhtmlxMenu/codebase/dhtmlxmenu');
-				egw_framework::validate_file('dhtmlxtree','dhtmlxMenu/codebase/ext/dhtmlxmenu_ext');
 				egw_framework::validate_file('egw_action','egw_action');
 				egw_framework::validate_file('egw_action','egw_keymanager');
 				egw_framework::validate_file('egw_action','egw_action_common');
@@ -639,6 +638,9 @@ class uifelamimail
 				egw_framework::validate_file('egw_action','egw_grid_view');
 				egw_framework::validate_file('egw_action','egw_grid_columns');
 				egw_framework::validate_file('egw_action','egw_stylesheet');
+
+				// The ext stuff has to be loaded at the end
+				egw_framework::validate_file('dhtmlxtree','dhtmlxMenu/codebase/ext/dhtmlxmenu_ext');
 
 				egw_framework::validate_file('jscode','viewMainScreen','felamimail');
 				egw_framework::includeCSS('/phpgwapi/js/egw_action/test/skins/dhtmlxmenu_egw.css');
