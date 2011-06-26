@@ -1369,3 +1369,9 @@ function mail_copy(_action, _senders, _target) {
 		"felamimail.ajaxfelamimail.copyMessages", target, messages);
 }
 
+function mail_cleanup() {
+	var objectManager = egw_getObjectManager("felamimail");
+	objectManager.clear();
+	mailGrid = null;
+	$("#divMessageTableList").children().remove();
+}

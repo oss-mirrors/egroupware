@@ -510,19 +510,15 @@ class uiwidgets
 			$js = '<script type="text/javascript">
 if (typeof mailGrid == "undefined") var mailGrid = null;
 $(document).ready(function() {
-	$(window).resize(handleResize);
+	// Cleanup any old instance
+	mail_cleanup();
+
 	// Create the base objects and feed them with data
 	var actionManager = egw_getActionManager("felamimail");
 	var objectManager = egw_getObjectManager("felamimail");
 
 	// Load the felamimail actions
 	actionManager.updateActions('.json_encode($actions=$this->get_actions($action_links)).');
-
-	// Remove any old mailGrid actionObject instance
-	if (mailGrid != null)
-	{
-		mailGrid.dataRoot.actionObject.remove();
-	}
 
 	mailGrid = new egwGrid(document.getElementById("divMessageTableList"),
 		'.json_encode($this->get_columns_obj(true,$foldertype,$_folderName)->get_assoc()).', objectManager, egw_email_fetchDataProc,

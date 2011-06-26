@@ -493,6 +493,7 @@ class ajaxfelamimail
 		{
 			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $_folderName,$modifyoffset".function_backtrace());
 			$response = new xajaxResponse();
+			$response->addScript("mail_cleanup()");
 			$response->addScript("activeServerID=".$this->imapServerID.";");
 			$response->addScript("activeFolder = \"".$_folderName."\";");
 			$response->addScript("activeFolderB64 = \"".base64_encode($_folderName)."\";");
