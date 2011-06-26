@@ -551,6 +551,7 @@ $(document).ready(function() {
 	if (wnd && typeof wnd.handleResize != "undefined")
 	{
 		wnd.handleResize();
+		$(window).resize(handleResize);
 	}
 
 	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
