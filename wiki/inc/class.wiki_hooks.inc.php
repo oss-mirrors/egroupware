@@ -77,7 +77,8 @@ class wiki_hooks
 				'admin'  => False,
 			)
 		);
-		
+	
+/* Needs testing	
 		if ($GLOBALS['egw_info']['user']['apps']['notifications'])
 		{
 			$details = array(
@@ -129,6 +130,7 @@ $$Content$$'
 				)
 			);
 		}
+*/
 		if ($GLOBALS['egw_info']['user']['apps']['filemanager'])
 		{
 			$settings['upload_dir'] = array(

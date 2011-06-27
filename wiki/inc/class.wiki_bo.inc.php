@@ -183,7 +183,8 @@ class wiki_bo extends wiki_so
 		$page->write();
 
 		// Check for notifications that need to be sent
-		$this->send_notifications($page);
+		// Needs testing
+		//$this->send_notifications($page);
 		
 		$GLOBALS['page'] = $page->as_array();	// we need this to track lang for new_link, sister_wiki, ...
 
