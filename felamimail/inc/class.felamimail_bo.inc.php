@@ -2368,6 +2368,8 @@ class felamimail_bo
 		function getHeaders($_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse, $_filter, $_thisUIDOnly=null, $_cacheResult=true)
 		{
 			//self::$debug=true;
+			if (self::$debug) error_log(__METHOD__.__LINE__.function_backtrace());
+			if (self::$debug) error_log(__METHOD__.__LINE__."$_folderName,$_startMessage, $_numberOfMessages, $_sort, $reverse, ".array2string($_filter).", $_thisUIDOnly");
 			$reverse = (bool)$_reverse;
 			// get the list of messages to fetch
 			$this->reopen($_folderName);
@@ -2438,6 +2440,7 @@ class felamimail_bo
 				}
 			}
 			if (self::$debug) error_log(__METHOD__.__LINE__.' Query:'.$queryString.' Result:'.array2string($headersNew));
+
 			$count = 0;
 
 			foreach((array)$sortResult as $uid) {

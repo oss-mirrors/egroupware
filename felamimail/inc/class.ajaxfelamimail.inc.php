@@ -528,17 +528,25 @@ class ajaxfelamimail
 			$offset = $this->sessionData['startMessage'];
 			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $offset,$modifyoffset");
 			if ($modifyoffset != 0 && ($offset+$modifyoffset)>0) $offset = $offset+$modifyoffset;
-			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $offset");
-			$headers = $this->bofelamimail->getHeaders(
-				$_folderName,
-				$offset,
-				($maxMessages>0?$maxMessages:1),
-				$this->sessionData['sort'],
-				$this->sessionData['sortReverse'],
-				(array)$this->sessionData['messageFilter'],
-				((int)$maxMessages<0 && $this->sessionData['previewMessage']?$this->sessionData['previewMessage']:null)
-			);
-			$rowsFetched = 0;
+			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with offset: $offset PreviewMessage:".array2string($this->sessionData['previewMessage']));
+			$headers = array();
+			$headers['info']['total']	= 0;
+			$headers['info']['first']	= $offset;
+			$headers['info']['last']	= 0;
+			if($this->sessionData['previewMessage'])
+			{
+				$headers = $this->bofelamimail->getHeaders(
+					$_folderName,
+					$offset,
+					($maxMessages>0?$maxMessages:1),
+					$this->sessionData['sort'],
+					$this->sessionData['sortReverse'],
+					(array)$this->sessionData['messageFilter'],
+					$this->sessionData['previewMessage']
+				);
+				if($this->_debug) error_log(__METHOD__.__LINE__." headers fetched:".array2string($headers));
+			}
+			$rowsFetched = array();
 			if($this->_debug) error_log(__METHOD__.__LINE__.' MaxMessages:'.$maxMessages.' Offset:'.$offset.' Filter:'.array2string($this->sessionData['messageFilter']));
 			//error_log(__METHOD__.__LINE__.' Data:'.array2string($headers));
 			$headerJs = $this->uiwidgets->get_grid_js($listMode,$_folderName,$rowsFetched,$offset,false,($maxMessages>=0?false:true));
@@ -550,14 +558,27 @@ class ajaxfelamimail
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle'],
 				$this->sessionData['previewMessage']
 			);
-
-			if($this->_debug) error_log(__METHOD__.__LINE__.' Rows fetched:'.$rowsFetched);
+			if ($rowsFetched['messages']>0 && empty($headers['info']['total']))
+			{
+				if($this->_debug) error_log(__METHOD__.__LINE__.' Rows fetched:'.array2string($rowsFetched).' Headers Info:'.array2string($headers['info']));
+				$headers['info']['total'] = $rowsFetched['messages'];
+				//error_log(__METHOD__.__LINE__.' Cached FolderInfo:'.array2string($this->sessionData['folderStatus'][$this->imapServerID][$_folderName]));
+				if (empty($headers['info']['total'])) $headers['info']['total']	= $this->sessionData['folderStatus'][$this->imapServerID][$_folderName]['messages'];
+				if (empty($headers['info']['total']))
+				{
+					$foldestatus = $this->bofelamimail->getMailBoxCounters($_folderName);
+					$headers['info']['total'] = $foldestatus->messages;
+				}
+				$headers['info']['first']	= $offset;
+				$headers['info']['last']	= $offset+$rowsFetched['rowsFetched']-1;
+			}
+			if($this->_debug) error_log(__METHOD__.__LINE__.' Rows fetched:'.array2string($rowsFetched));
 			//error_log(__METHOD__.__LINE__.' HeaderJS:'.$headerJs);
 			//error_log(__METHOD__.__LINE__.' HeaderTable:'.$headerTable);
 			$firstMessage = (int)$headers['info']['first'];
 			$lastMessage  = (int)$headers['info']['last'];
 			$totalMessage = (int)$headers['info']['total'];
-			if ((int)$maxMessages<0) $totalMessage = $rowsFetched;
+			if ((int)$maxMessages<0) $totalMessage = $rowsFetched['messages'];
 			$shortName = '';
 			if($folderStatus = $this->bofelamimail->getFolderStatus($_folderName)) {
 				$shortName =$folderStatus['shortDisplayName'];

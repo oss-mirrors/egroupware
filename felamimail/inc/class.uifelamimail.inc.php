@@ -890,7 +890,8 @@ class uifelamimail
 				$navbarButtons = '';
 			}
 			$this->t->set_var('navbarButtonsRight',$navbarButtons);
-
+			$composeImage = $GLOBALS['egw']->common->image('phpgwapi','new');
+			$this->t->set_var('composeBGImage',$composeImage);
 
 			// set the images
 			$listOfImages = array(

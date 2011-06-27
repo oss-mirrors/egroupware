@@ -80,6 +80,7 @@ function mail_changeSorting(_sort, _aNode) {
 	mail_resetMessageSelect();
 
 	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Change sorting ...</span>';
+	mail_cleanup();
 	document.getElementById('divMessageList').innerHTML = '';
 //	aTags = document.getElementById('gridHeaderSubject');
 //	alert(aTags);
@@ -322,6 +323,7 @@ function mail_deleteMessages(_messageList) {
 	}
 	if (Check == true) {
 		egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">' + egw_appWindow('felamimail').lang_deleting_messages + '</span>');
+		mail_cleanup();
 		document.getElementById('divMessageList').innerHTML = '';
 		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteMessages",_messageList);
 	} else {
@@ -464,6 +466,7 @@ function onNodeSelect(_nodeID) {
 				if (actionPending == 'copy') 
 				{
 					egw_appWindow('felamimail').setStatusMessage(egw_appWindow('felamimail').copyingMessages +' <span style="font-weight: bold;">'+ top.tree.getUserData(_nodeID, 'folderName') +'</span>');
+					mail_cleanup();
 					document.getElementById('divMessageList').innerHTML = '';
 					egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.copyMessages", _nodeID, formData);
 				}
@@ -471,6 +474,7 @@ function onNodeSelect(_nodeID) {
 				{
 					// default: move messages
 					egw_appWindow('felamimail').setStatusMessage(egw_appWindow('felamimail').movingMessages +' <span style="font-weight: bold;">'+ top.tree.getUserData(_nodeID, 'folderName') +'</span>');
+					mail_cleanup();
 					document.getElementById('divMessageList').innerHTML = '';
 					egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.moveMessages", _nodeID, formData);
 				}
@@ -484,6 +488,7 @@ function onNodeSelect(_nodeID) {
 		} else {
 			mail_resetMessageSelect();
 			egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">' + egw_appWindow('felamimail').lang_loading + ' ' + top.tree.getUserData(_nodeID, 'folderName') + '</span>');
+			mail_cleanup();
 			document.getElementById('divMessageList').innerHTML = '';
 			egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.updateMessageView",_nodeID);
 			egw_appWindow('felamimail').refreshFolderStatus(_nodeID);
@@ -501,6 +506,7 @@ function quickSearch() {
 	//disable select allMessages in Folder Checkbox, as it is not implemented for filters
 	document.getElementById('selectAllMessagesCheckBox').disabled  = true;
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">' + egw_appWindow('felamimail').lang_updating_view + '</span>');
+	mail_cleanup();
 	document.getElementById('divMessageList').innerHTML = '';
 
 	document.getElementById('quickSearch').select();
@@ -557,33 +563,36 @@ var fm_previewMessageID = null;
 
 function selectedGridChange(_selectAll) {
 	// Get the currently focused object
-	var focused = mailGrid.dataRoot.actionObject.getFocusedObject();
-
-	if (focused)
+	if (mailGrid)
 	{
-		// Get all currently selected object - we don't want to do a preview
-		// if more than one message is selected.
-		var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
+		var focused = mailGrid.dataRoot.actionObject.getFocusedObject();
 
-		if (allSelected.length > 0 && fm_previewMessageID != focused.id) {
-			if (allSelected.length == 1)
-			{
-				MessageBuffer ='';
+		if (focused)
+		{
+			// Get all currently selected object - we don't want to do a preview
+			// if more than one message is selected.
+			var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
 
-				fm_previewMessageFolderType = 0;
-				if (activeFolderB64 == draftFolderB64) fm_previewMessageFolderType = 2;
-				if (activeFolderB64 == templateFolderB64) fm_previewMessageFolderType = 3;
+			if (allSelected.length > 0 && fm_previewMessageID != focused.id) {
+				if (allSelected.length == 1)
+				{
+					MessageBuffer ='';
 
-				// Call the preview function for this message. Set fm_previewMessageID
-				// to the id of this item, so that this function won't be called
-				// again for the same item.
-				fm_previewMessageID = focused.id;
+					fm_previewMessageFolderType = 0;
+					if (activeFolderB64 == draftFolderB64) fm_previewMessageFolderType = 2;
+					if (activeFolderB64 == templateFolderB64) fm_previewMessageFolderType = 3;
 
-				fm_readMessage('', 'MessagePreview_'+focused.id+'_'+fm_previewMessageFolderType,
-					focused.iface.getDOMNode());
+					// Call the preview function for this message. Set fm_previewMessageID
+					// to the id of this item, so that this function won't be called
+					// again for the same item.
+					fm_previewMessageID = focused.id;
+
+					fm_readMessage('', 'MessagePreview_'+focused.id+'_'+fm_previewMessageFolderType,
+						focused.iface.getDOMNode());
+				}
 			}
+			return;
 		}
-		return;
 	}
 }
 
@@ -647,6 +656,7 @@ function extendedSearch(_selectBox) {
 	//disable select allMessages in Folder Checkbox, as it is not implemented for filters
 	document.getElementById('selectAllMessagesCheckBox').disabled  = true;
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">Applying filter '+_selectBox.options[_selectBox.selectedIndex].text+'</span>');
+	mail_cleanup();
 	document.getElementById('divMessageList').innerHTML = '';
 
 	document.getElementById('quickSearch').value = '';
@@ -674,6 +684,7 @@ function mail_flagMessages(_flag)
 	{
 		egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">' + egw_appWindow('felamimail').lang_updating_message_status + '</span>');
 		egw_appWindow('felamimail').xajax_doXMLHTTP("felamimail.ajaxfelamimail.flagMessages", _flag, _messageList);
+		mail_cleanup();
 		document.getElementById('divMessageList').innerHTML = '';
 		fm_startTimerMessageListUpdate(refreshTimeOut);
 	} else {
@@ -683,17 +694,19 @@ function mail_flagMessages(_flag)
 
 function mail_resetMessageSelect()
 {
-	if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
+	if (document.getElementById('messageCounter') != null && document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
 //	document.getElementById('messageCheckBox').checked = false;
-	document.getElementById('selectAllMessagesCheckBox').checked = false;
+	if (document.getElementById('selectAllMessagesCheckBox') != null) document.getElementById('selectAllMessagesCheckBox').checked = false;
 	checkedCounter = 0;
 	folderFunctions = document.getElementById('folderFunction');
-	
-	while (folderFunctions.hasChildNodes())
-		folderFunctions.removeChild(folderFunctions.lastChild);
-	var textNode = document.createTextNode('');
-	folderFunctions.appendChild(textNode);
-	document.getElementsByName("folderAction")[0].value = "changeFolder";
+	if (folderFunctions != null)
+	{
+		while (folderFunctions.hasChildNodes())
+			folderFunctions.removeChild(folderFunctions.lastChild);
+		var textNode = document.createTextNode('');
+		folderFunctions.appendChild(textNode);
+	}
+	if (!(typeof document.getElementsByName("folderAction")[0] == 'undefined'))	document.getElementsByName("folderAction")[0].value = "changeFolder";
 }
 
 function skipForward()
@@ -701,6 +714,7 @@ function skipForward()
 	mail_resetMessageSelect();
 
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_skipping_forward +'</span>');
+	mail_cleanup();
 	document.getElementById('divMessageList').innerHTML = '';
 
 	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.skipForward');
@@ -710,6 +724,7 @@ function skipPrevious() {
 	mail_resetMessageSelect();
 
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_skipping_previous +'</span>');
+	mail_cleanup();
 	document.getElementById('divMessageList').innerHTML = '';
 
 	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.skipPrevious');
@@ -719,6 +734,7 @@ function jumpEnd() {
 	mail_resetMessageSelect();
 
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_jumping_to_end +'</span>');
+	mail_cleanup();
 	document.getElementById('divMessageList').innerHTML = '';
 
 	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.jumpEnd');
@@ -728,6 +744,7 @@ function jumpStart() {
 	mail_resetMessageSelect();
 
 	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">'+ egw_appWindow('felamimail').lang_jumping_to_start +'</span>');
+	mail_cleanup();
 	document.getElementById('divMessageList').innerHTML = '';
 
 	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.jumpStart');
@@ -1343,6 +1360,7 @@ function mail_move(_action, _senders, _target) {
 	// as the "onNodeSelect" function!
 	if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
 	egw_appWindow('felamimail').setStatusMessage(egw_appWindow('felamimail').movingMessages +' <span style="font-weight: bold;">'+ target +'</span>');
+	mail_cleanup();
 	document.getElementById('divMessageList').innerHTML = '';
 
 	egw_appWindow('felamimail').xajax_doXMLHTTP(
@@ -1364,6 +1382,7 @@ function mail_copy(_action, _senders, _target) {
 	// as the "onNodeSelect" function!
 	if (document.getElementById('messageCounter').innerHTML.search(eval('/'+egw_appWindow('felamimail').lang_updating_view+'/'))<0 ) {MessageBuffer = document.getElementById('messageCounter').innerHTML;}
 	egw_appWindow('felamimail').setStatusMessage(egw_appWindow('felamimail').copyingMessages +' <span style="font-weight: bold;">'+ target +'</span>');
+	mail_cleanup();
 	document.getElementById('divMessageList').innerHTML = '';
 	egw_appWindow('felamimail').xajax_doXMLHTTP(
 		"felamimail.ajaxfelamimail.copyMessages", target, messages);

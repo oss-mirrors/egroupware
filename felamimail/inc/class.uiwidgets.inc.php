@@ -622,7 +622,8 @@ $(document).ready(function() {
 					}
 				}
 			}
-			$rowsFetched = count($sortResult['header']);
+			$rowsFetched['rowsFetched'] = count($sortResult['header']);
+			$rowsFetched['messages'] = count($sR);
 			//error_log(__METHOD__.__LINE__.' Data:'.array2string($sortResult));
 			$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
 			if ($GLOBALS['egw_info']['user']['preferences']['common']['select_mode']=='EGW_SELECTMODE_TOGGLE') unset($cols[0]);
@@ -631,7 +632,7 @@ $(document).ready(function() {
 
 		function get_range($_folderName,$folderType,&$rowsFetched,$offset,$uidOnly=false,$headers=false)
 		{
-			//error_log(__METHOD__.__LINE__.' Data:'.array2string($_folderName));
+			//error_log(__METHOD__.__LINE__.' Folder:'.array2string($_folderName).' FolderType:'.$folderType.' RowsFetched:'.array2string($rowsFetched)." these Uids:".array2string($uidOnly).' Headers passed:'.array2string($headers));
 			$this->bofelamimail->restoreSessionData();
 			$maxMessages = 50; // match the hardcoded setting for data retrieval as inital value
 			if (isset($this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior']) && (int)$this->bofelamimail->mailPreferences->preferences['prefMailGridBehavior'] <> 0)
@@ -652,8 +653,9 @@ $(document).ready(function() {
 				else
 				{
 					$sRToFetch = null;
+					$rowsFetched['messages'] = null;
 					$reverse = (bool)$this->sessionData['sortReverse'];
-					//error_log(__METHOD__.__LINE__.' maxMessages:'.$maxMessages.' Offset:'.$offset);
+					//error_log(__METHOD__.__LINE__.' maxMessages:'.$maxMessages.' Offset:'.$offset.' Filter:'.array2string($this->sessionData['messageFilter']));
 					if ($maxMessages > 75)
 					{
 						$sR = $this->bofelamimail->getSortedList(
@@ -663,23 +665,44 @@ $(document).ready(function() {
 							(array)$this->sessionData['messageFilter'],
 							$rByUid=true
 						);
+						$rowsFetched['messages'] = count($sR);
+
 						if($reverse === true) $sR = array_reverse((array)$sR);
-						$sR = array_slice($sR,($offset==1?0:$offset),$maxMessages); // we need only $maxMessages of uids
+						$sR = array_slice($sR,($offset==0?0:$offset-1),$maxMessages); // we need only $maxMessages of uids
 						$sRToFetch = array_slice($sR,0,50); // we fetch only the headers of a subset of the fetched uids
 						//error_log(__METHOD__.__LINE__.' Rows fetched (UID only):'.count($sR).' Data:'.array2string($sR));
 						$maxMessages = 50;
+						$sortResultwH['header'] = array();
+						if (count($sRToFetch)>0)
+						{
+							//error_log(__METHOD__.__LINE__.' Headers to fetch with UIDs:'.count($sRToFetch).' Data:'.array2string($sRToFetch));
+							$sortResult = array();
+							// fetch headers
+							$sortResultwH = $this->bofelamimail->getHeaders(
+								$_folderName,
+								$offset,
+								$maxMessages,
+								$this->sessionData['sort'],
+								$reverse,
+								(array)$this->sessionData['messageFilter'],
+								$sRToFetch
+							);
+						}
 					}
-					$sortResult = array();
-					// fetch headers
-					$sortResultwH = $this->bofelamimail->getHeaders(
-						$_folderName,
-						$offset,
-						$maxMessages,
-						$this->sessionData['sort'],
-						$reverse,
-						(array)$this->sessionData['messageFilter'],
-						$sRToFetch
-					);
+					else
+					{
+						$sortResult = array();
+						// fetch headers
+						$sortResultwH = $this->bofelamimail->getHeaders(
+							$_folderName,
+							$offset,
+							$maxMessages,
+							$this->sessionData['sort'],
+							$reverse,
+							(array)$this->sessionData['messageFilter']
+						);
+						$rowsFetched['messages'] = $sortResultwH['info']['total'];
+					}
 					if (is_array($sR) && count($sR)>0)
 					{
 						foreach ((array)$sR as $key => $v)
@@ -700,7 +723,9 @@ $(document).ready(function() {
 					}
 				}
 			}
-			$rowsFetched = count($sortResult['header']);
+			$rowsFetched['rowsFetched'] = count($sortResult['header']);
+			if (empty($rowsFetched['messages'])) $rowsFetched['messages'] = $rowsFetched['rowsFetched'];
+
 			//error_log(__METHOD__.__LINE__.' Rows fetched:'.$rowsFetched.' Data:'.array2string($sortResult));
 			$cols = array('check','status','attachments','subject','toaddress','fromaddress','date','size');
 			if ($GLOBALS['egw_info']['user']['preferences']['common']['select_mode']=='EGW_SELECTMODE_TOGGLE') unset($cols[0]);
