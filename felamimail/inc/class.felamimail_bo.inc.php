@@ -589,9 +589,10 @@ class felamimail_bo
 		{
 			$attachment = $this->getAttachment( $_uid, $_partID );
 			$dirname = $this->accountid.'_'.$this->profileID.'_'.$this->sessionData['mailbox'].'_'.$_uid.'_'.$_partID;
-			if (self::$debug); error_log(__METHOD__.__LINE__.' Dirname:'.$dirname);
+			if (self::$debug) error_log(__METHOD__.__LINE__.' Dirname:'.$dirname);
 			$dirname = md5($dirname);
 			$dir = $GLOBALS['egw_info']['server']['temp_dir']."/fmail_winmail/$dirname";
+			if (self::$debug) error_log(__METHOD__.__LINE__.' Dir to save winmail.dat to:'.$dir);
 			$mime = CreateObject('phpgwapi.mime_magic');
 			if ( $attachment['type'] == 'APPLICATION/MS-TNEF' && $attachment['filename'] == 'winmail.dat' )
 			{
