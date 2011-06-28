@@ -1071,7 +1071,7 @@ $(document).ready(function() {
 								$this->bofelamimail->openConnection($this->profileID); // connect to the current server
 								$this->bofelamimail->reopen($_folderName);
 							}
-							$attachments = $this->bofelamimail->getMessageAttachments($header['uid']);
+							$attachments = $this->bofelamimail->getMessageAttachments($header['uid'],$_partID='', $_structure='', $fetchEmbeddedImages=true, $fetchTextCalendar=false, $resolveTNEF=false);
 							if (count($attachments)<1) $image = '&nbsp;';
 						}
 						if (count($attachments)>0) $image = "<a name=\"subject_url\" href=\"#\"
@@ -1419,7 +1419,7 @@ $(document).ready(function() {
 						$header['mimetype'] != 'multipart/signed'
 					)
 					{
-						$attachments = $this->bofelamimail->getMessageAttachments($headerData['uid']);
+						$attachments = $this->bofelamimail->getMessageAttachments($headerData['uid'],$_partID='', $_structure='', $fetchEmbeddedImages=true, $fetchTextCalendar=false, $resolveTNEF=false);
 						if (count($attachments)<1) $image = '&nbsp;';
 					}
 

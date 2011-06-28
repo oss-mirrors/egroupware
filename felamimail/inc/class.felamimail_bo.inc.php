@@ -588,8 +588,10 @@ class felamimail_bo
 		function decode_winmail( $_uid, $_partID, $_filenumber=0 )
 		{
 			$attachment = $this->getAttachment( $_uid, $_partID );
-
-			$dir = $GLOBALS['egw_info']['server']['temp_dir']."/fmail_winmail/$_uid";
+			$dirname = $this->accountid.'_'.$this->profileID.'_'.$this->sessionData['mailbox'].'_'.$_uid.'_'.$_partID;
+			if (self::$debug); error_log(__METHOD__.__LINE__.' Dirname:'.$dirname);
+			$dirname = md5($dirname);
+			$dir = $GLOBALS['egw_info']['server']['temp_dir']."/fmail_winmail/$dirname";
 			$mime = CreateObject('phpgwapi.mime_magic');
 			if ( $attachment['type'] == 'APPLICATION/MS-TNEF' && $attachment['filename'] == 'winmail.dat' )
 			{
@@ -598,7 +600,10 @@ class felamimail_bo
 				{
 					@mkdir( $dir, 0700, true );
 					file_put_contents( "$dir/winmail.dat", $attachment['attachment'] );
+
 				}
+				//if (self::$debug) unset($attachment['attachment']);
+				if (self::$debug) error_log(__METHOD__.__LINE__." Saving Attachment to $dir. ->".array2string($attachment));
 				if (file_exists('/usr/bin/tnef'))
 				{
 					exec( "cd $dir && /usr/bin/tnef --save-body --overwrite -C $dir -f ./winmail.dat" );
@@ -2632,7 +2637,7 @@ class felamimail_bo
 			return $this->mailPreferences;
 		}
 
-		function getMessageAttachments($_uid, $_partID='', $_structure='', $fetchEmbeddedImages=true, $fetchTextCalendar=false)
+		function getMessageAttachments($_uid, $_partID='', $_structure='', $fetchEmbeddedImages=true, $fetchTextCalendar=false, $resolveTNEF=true)
 		{
 			if (self::$debug) echo __METHOD__."$_uid, $_partID<br>";
 
@@ -2663,10 +2668,14 @@ class felamimail_bo
 					$newAttachment['cid']	= $structure->cid;
 				}
 				# if the new attachment is a winmail.dat, we have to decode that first
-				if ( $newAttachment['name'] == 'winmail.dat' &&
+				if ( $resolveTNEF && $newAttachment['name'] == 'winmail.dat' &&
 					( $wmattachments = $this->decode_winmail( $_uid, $newAttachment['partID'] ) ) )
 				{
 					$attachments = array_merge( $attachments, $wmattachments );
+				}
+				elseif ( $resolveTNEF===false && $newAttachment['name'] == 'winmail.dat' )
+				{
+					$attachments[] = $newAttachment; 
 				} else {
 					if ( ($fetchEmbeddedImages && isset($newAttachment['cid']) && strlen($newAttachment['cid'])>0) ||
 						!isset($newAttachment['cid']) ||
@@ -2710,7 +2719,7 @@ class felamimail_bo
 				{
 					if ($subPart->type == 'MULTIPART' && $subPart->subType == 'ALTERNATIVE')
 					{
-						$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart, $fetchEmbeddedImages), $attachments);
+						$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart, $fetchEmbeddedImages, $fetchTextCalendar, $resolveTNEF), $attachments);
 					}
 					if (!($subPart->type=='TEXT' && $subPart->disposition =='INLINE' && $subPart->filename)) continue;
 				}
@@ -2722,7 +2731,7 @@ class felamimail_bo
 					$subPart->subType == 'SIGNED' ||
 					$subPart->subType == 'APPLEDOUBLE'))
 				{
-				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart, $fetchEmbeddedImages), $attachments);
+				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart, $fetchEmbeddedImages,$fetchTextCalendar, $resolveTNEF), $attachments);
 				} else {
 					if (!$fetchTextCalendar && $subPart->type == 'TEXT' &&
 						$subPart->subType == 'CALENDAR' &&
@@ -2744,10 +2753,14 @@ class felamimail_bo
 					}
 
 					# if the new attachment is a winmail.dat, we have to decode that first
-					if ( $newAttachment['name'] == 'winmail.dat' &&
+					if ( $resolveTNEF && $newAttachment['name'] == 'winmail.dat' &&
 						( $wmattachments = $this->decode_winmail( $_uid, $newAttachment['partID'] ) ) )
 					{
 						$attachments = array_merge( $attachments, $wmattachments );
+					}
+					elseif ( $resolveTNEF===false && $newAttachment['name'] == 'winmail.dat' )
+					{
+						$attachments[] = $newAttachment;
 					} else {
 						if ( ($fetchEmbeddedImages && isset($newAttachment['cid']) && strlen($newAttachment['cid'])>0) ||
 							!isset($newAttachment['cid']) ||
