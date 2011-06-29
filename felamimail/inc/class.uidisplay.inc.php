@@ -1018,7 +1018,7 @@ blockquote[type=cite] {
 				font-family: Verdana, Arial, Helvetica,sans-serif;
 				font-size: 11px;
 			}
-		</style>'.$css.'
+		</style>'.$additionalStyle.'
 	</head>
 	<body>
 ';
@@ -1051,6 +1051,7 @@ blockquote[type=cite] {
 					)));
 				}
 			}
+
 			// Compose the content of the frame
 			$frameHtml =
 				$this->get_email_header($this->bofelamimail->getStyles($bodyParts)).
@@ -1823,9 +1824,9 @@ blockquote[type=cite] {
 			$this->bofelamimail->closeConnection();
 
 			$GLOBALS['egw']->session->commit_session();
-
-			header ("Content-Type: message/rfc822; name=\"". $headers['SUBJECT'] .".eml\"");
-			header ("Content-Disposition: attachment; filename=\"". $headers['SUBJECT'] .".eml\"");
+			$subject = str_replace('$$','__',$headers['SUBJECT']);
+			header ("Content-Type: message/rfc822; name=\"". $subject .".eml\"");
+			header ("Content-Disposition: attachment; filename=\"". $subject .".eml\"");
 			header("Expires: 0");
 			// the next headers are for IE and SSL
 			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
