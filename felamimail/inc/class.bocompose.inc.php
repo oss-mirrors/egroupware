@@ -692,7 +692,7 @@
 		{
 			$bofelamimail	= $this->bofelamimail;
 			$_mailObject->PluginDir = EGW_SERVER_ROOT."/phpgwapi/inc/";
-			$activeMailProfile = $this->preferences->getIdentity(0);
+			$activeMailProfile = $this->preferences->getIdentity($this->bofelamimail->profileID);
 			$_mailObject->IsSMTP();
 			$_mailObject->CharSet	= $this->displayCharset;
 			// you need to set the sender, if you work with different identities, since most smtp servers, dont allow
@@ -892,14 +892,15 @@
 			// decide where to save the message (default to draft folder, if we find nothing else)
 			// if the current folder is in draft or template folder save it there
 			// if it is called from printview then save it with the draft folder
-			$savingDestination = ($this->preferences->ic_server[0]->draftfolder ? $this->preferences->ic_server[0]->draftfolder : $this->preferencesArray['draftFolder']);
+			//error_log(__METHOD__.__LINE__.array2string($this->preferences->ic_server));
+			$savingDestination = ($this->preferences->ic_server[$bofelamimail->profileID]->draftfolder ? $this->preferences->ic_server[$bofelamimail->profileID]->draftfolder : $this->preferencesArray['draftFolder']);
 			if (empty($this->sessionData['messageFolder']) && !empty($this->sessionData['mailbox'])) $this->sessionData['messageFolder'] = $this->sessionData['mailbox'];
 			if ($bofelamimail->isDraftFolder($this->sessionData['messageFolder'])
 				|| $bofelamimail->isTemplateFolder($this->sessionData['messageFolder']))
 			{
 				$savingDestination = $this->sessionData['messageFolder'];
 			}
-			if (  !empty($_formData['printit']) && $_formData['printit'] == 0 ) $savingDestination = ($this->preferences->ic_server[0]->draftfolder ? $this->preferences->ic_server[0]->draftfolder : $this->preferencesArray['draftFolder']);
+			if (  !empty($_formData['printit']) && $_formData['printit'] == 0 ) $savingDestination = ($this->preferences->ic_server[$bofelamimail->profileID]->draftfolder ? $this->preferences->ic_server[$bofelamimail->profileID]->draftfolder : $this->preferencesArray['draftFolder']);
 
 			if (count($mailAddr)>0) $BCCmail = $mail->AddrAppend("Bcc",$mailAddr);
 			//error_log(__METHOD__.__LINE__.$BCCmail.$mail->getMessageHeader().$mail->getMessageBody());
@@ -979,7 +980,7 @@
 			#print "<pre>". $mail->getMessageBody() ."</pre><hr><br>";
 			#exit;
 
-			$ogServer = $this->preferences->getOutgoingServer(0);
+			$ogServer = $this->preferences->getOutgoingServer($this->bofelamimail->profileID);
 			#_debug_array($ogServer);
 			$mail->Host 	= $ogServer->host;
 			$mail->Port	= $ogServer->port;
