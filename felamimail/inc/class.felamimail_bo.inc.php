@@ -4173,9 +4173,9 @@ class felamimail_bo
 					$Subject = $mailObject->Subject;
 					//error_log(__METHOD__.__LINE__.' Subject:'.$Subject);
 					$Body = $mailObject->Body;
-					error_log(__METHOD__.__LINE__.' Body:'.$Body);
+					//error_log(__METHOD__.__LINE__.' Body:'.$Body);
 					$AltBody = $mailObject->AltBody;
-					error_log(__METHOD__.__LINE__.' AltBody:'.$AltBody);
+					//error_log(__METHOD__.__LINE__.' AltBody:'.$AltBody);
 					foreach ($SendAndMergeTocontacts as $k => $val)
 					{
 						//error_log(__METHOD__.__LINE__.' Id To Merge:'.$val);
@@ -4198,7 +4198,10 @@ class felamimail_bo
 							$mailObject->AddAddress($email,$mailObject->EncodeHeader($nfn));
 							$mailObject->Subject = $bo_merge->merge_string($Subject, $val, $e, 'text/plain');
 							if (!empty($AltBody)) $mailObject->IsHTML(true);
+							else $mailObject->IsHTML(false);
+							//error_log(__METHOD__.__LINE__.' ContentType:'.$mailObject->BodyContentType);
 							if (!empty($Body)) $mailObject->Body = $bo_merge->merge_string($Body, $val, $e, $mailObject->BodyContentType);
+							//error_log(__METHOD__.__LINE__.' Result:'.$mailObject->Body.' error:'.array2string($e));
 							if (!empty($AltBody)) $mailObject->AltBody = $bo_merge->merge_string($AltBody, $val, $e, $mailObject->AltBodyContentType);
 
 							$ogServer = $this->mailPreferences->getOutgoingServer($this->profileID);
@@ -4214,7 +4217,7 @@ class felamimail_bo
 								$mailObject->Username = $username;
 								$mailObject->Password = $ogServer->password;
 							}
-							error_log(__METHOD__.__LINE__.array2string($mailObject));
+							//error_log(__METHOD__.__LINE__.array2string($mailObject));
 							// set a higher timeout for big messages
 							@set_time_limit(120);
 							$sendOK = true;
