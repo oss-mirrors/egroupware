@@ -1074,7 +1074,8 @@ function handleResize()
 	var mainViewArea = $('#divMainView');
 
 	// Exit if the felamimail containers do not exist
-	if (!outerContainer || !mainViewArea) {
+	// maybe check on  $(mainViewArea).offset()== null as well
+	if (!outerContainer || !mainViewArea ||  $(mainViewArea).offset()== null) {
 		return;
 	}
 

@@ -772,10 +772,11 @@
 			$disableRuler = false;
 			#if ($realCharset != $this->displayCharset) error_log("Error: bocompose::createMessage found Charset ($realCharset) differs from DisplayCharset (".$this->displayCharset.")");
 			$signature = $_signature->fm_signature;
+
 			if ((isset($this->preferencesArray['insertSignatureAtTopOfMessage']) && $this->preferencesArray['insertSignatureAtTopOfMessage']))
 			{
 				// note: if you use stationery ' s the insert signatures at the top does not apply here anymore, as the signature
-				// is already part of the body, so the signature part of the teplate will not be applied.
+				// is already part of the body, so the signature part of the template will not be applied.
 				$signature = null; // note: no signature, no ruler!!!!
 			}
 			if ((isset($this->preferencesArray['disableRulerForSignatureSeparation']) &&

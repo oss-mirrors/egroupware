@@ -159,7 +159,7 @@
 				if (!$messageUid) {
 					print "<script type=\"text/javascript\">alert('".lang("Error: Could not save Message as Draft")." ".lang("Trying to recover from session data")."');</script>";
 					//try to reopen the mail from session data
-					$this->compose();
+					$this->compose('to',true);
 					return;
 				}
 				// saving as draft, does not mean closing the message
@@ -171,7 +171,7 @@
 				{
 					//error_log(__METHOD__.__LINE__.' (re)open drafted message with new UID: '.$messageUid.' in folder:'.$folder);
 					$uicompose->bocompose->getDraftData($uicompose->bofelamimail->icServer, $folder, $messageUid);
-					$uicompose->compose();
+					$uicompose->compose('to',true);
 					return;
 				}
 			} else {
@@ -210,7 +210,7 @@
 			$this->compose($_focusElement);
 		}
 
-		function compose($_focusElement='to')
+		function compose($_focusElement='to',$suppressSigOnTop=false)
 		{
 			// read the data from session
 			// all values are empty for a new compose window
@@ -299,10 +299,10 @@
 			{
 				$presetSig = (strtolower($_REQUEST['signature']) == 'no' ? -2 : -1);
 			}
-			if ($sessionData['isDraft'] && !empty($sessionData['signatureID'])) $presetSig = (int)$sessionData['signatureID'];
-			if ($sessionData['isDraft'] && !empty($sessionData['stationeryID'])) $presetStationery = $sessionData['stationeryID'];
+			if (($suppressSigOnTop || $sessionData['isDraft']) && !empty($sessionData['signatureID'])) $presetSig = (int)$sessionData['signatureID'];
+			if (($suppressSigOnTop || $sessionData['isDraft']) && !empty($sessionData['stationeryID'])) $presetStationery = $sessionData['stationeryID'];
 			$presetId = NULL;
-			if ($sessionData['isDraft'] && !empty($sessionData['identity'])) $presetId = (int)$sessionData['identity'];
+			if (($suppressSigOnTop || $sessionData['isDraft']) && !empty($sessionData['identity'])) $presetId = (int)$sessionData['identity'];
 			$this->display_app_header();
 
 			$this->t->set_file(array("composeForm" => "composeForm.tpl"));
@@ -509,9 +509,10 @@
 				$disableRuler = true;
 			}
 			$insertSigOnTop = false;
+			//error_log(__METHOD__.__LINE__.array2string($this->bocompose->preferencesArray));
 			if (isset($this->bocompose->preferencesArray['insertSignatureAtTopOfMessage']) &&
 				$this->bocompose->preferencesArray['insertSignatureAtTopOfMessage'] &&
-				!(isset($_POST['mySigID']) && !empty($_POST['mySigID']))
+				!(isset($_POST['mySigID']) && !empty($_POST['mySigID']) ) && !$suppressSigOnTop
 			)
 			{
 				$insertSigOnTop = true;
@@ -601,7 +602,7 @@
 				// this fill the session data with the values from the original email
 				$this->bocompose->getDraftData($icServer, $folder, $replyID);
 			}
-			$this->compose('body');
+			$this->compose('body',$suppressSigOnTop=true);
 		}
 
 
@@ -801,7 +802,7 @@
 				// this fill the session data with the values from the original email
 				$this->bocompose->getDraftData($icServer, $folder, $replyID, $partID);
 			}
-			$this->compose('body');
+			$this->compose('body',true);
 		}
 
 		function reply() {
