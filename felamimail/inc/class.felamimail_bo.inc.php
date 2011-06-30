@@ -4196,6 +4196,7 @@ class felamimail_bo
 							//$mailObject->From  = $_identity->emailAddress;
 							$mailObject->FromName = $mailObject->EncodeHeader($activeMailProfile->realName);
 
+							$mailObject->MessageID = '';
 							$mailObject->ClearAllRecipients();
 							$mailObject->ClearCustomHeaders();
 							$mailObject->AddAddress($email,$mailObject->EncodeHeader($nfn));
@@ -4247,6 +4248,7 @@ class felamimail_bo
 						elseif (!$k)	// 1. entry, further entries will fail for apps other then addressbook
 						{
 							$openAsDraft = true;
+							$mailObject->MessageID = '';
 							$mailObject->ClearAllRecipients();
 							$mailObject->ClearCustomHeaders();
 							if ($GLOBALS['egw_info']['flags']['currentapp'] == 'addressbook' &&
@@ -4427,7 +4429,7 @@ class felamimail_bo
 							$mailObject->Priority = $val;
 							break;
 						case 'message-id':
-							$mailObject->MessageID  = $val;
+							$mailObject->MessageID  = $val; // ToDo: maybe we want to regenerate the message id all the time
 							break;
 						case 'sender':
 							$mailObject->Sender  = $val;
