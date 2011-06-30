@@ -4187,7 +4187,7 @@ class felamimail_bo
 
 							//error_log(__METHOD__.__LINE__.array2string($mailObject));
 							$contact = $bo_merge->contacts->read($val);
-							//error_log(__METHOD__.__LINE__.array2string($contact));
+							//error_log(__METHOD__.__LINE__.' ID:'.$val.' Data:'.array2string($contact));
 							$email = ($contact['email'] ? $contact['email'] : $contact['email_home']);
 							$nfn = ($contact['n_fn'] ? $contact['n_fn'] : $contact['n_given'].' '.$contact['n_family']);
 							$activeMailProfile = $this->mailPreferences->getIdentity($this->profileID);
@@ -4284,6 +4284,7 @@ class felamimail_bo
 							    } else {
 							        $flags = '';
 							    }
+								unset($mailObject->sentHeader);
 								unset($mailObject->sentBody);
 								$savefailed = false;
 								try
