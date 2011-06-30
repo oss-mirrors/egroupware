@@ -4179,7 +4179,7 @@ class felamimail_bo
 					foreach ($SendAndMergeTocontacts as $k => $val)
 					{
 						//error_log(__METHOD__.__LINE__.' Id To Merge:'.$val);
-						if (is_numeric($val)) // do the merge
+						if (is_numeric($val) || $GLOBALS['egw']->accounts->name2id($val)) // do the merge
 						{
 
 							//error_log(__METHOD__.__LINE__.array2string($mailObject));
