@@ -2676,7 +2676,7 @@ class felamimail_bo
 				}
 				elseif ( $resolveTNEF===false && $newAttachment['name'] == 'winmail.dat' )
 				{
-					$attachments[] = $newAttachment; 
+					$attachments[] = $newAttachment;
 				} else {
 					if ( ($fetchEmbeddedImages && isset($newAttachment['cid']) && strlen($newAttachment['cid'])>0) ||
 						!isset($newAttachment['cid']) ||
@@ -2780,7 +2780,7 @@ class felamimail_bo
 		{
 			static $namecounter;
 			if (is_null($namecounter)) $namecounter = 0;
-	
+
 			//if ( $_uid && $partID) error_log(__METHOD__.__LINE__.array2string($structure).' Uid:'.$_uid.' PartID:'.$partID.' -> '.array2string($this->icServer->getParsedHeaders($_uid, true, $partID, true)));
 			if(isset($structure->parameters['NAME'])) {
 				return rawurldecode(self::decode_header($structure->parameters['NAME']));
@@ -4080,7 +4080,7 @@ class felamimail_bo
 				{
 					$test = json_encode($newBody);
 					//error_log(__METHOD__.__LINE__.'#'.$test.'# ->'.strlen($newBody).' Error:'.json_last_error());
-					if (json_last_error() != JSON_ERROR_NONE && strlen($newBody)>0) 
+					if (json_last_error() != JSON_ERROR_NONE && strlen($newBody)>0)
 					{
 						// this should not be needed, unless something fails with charset detection/ wrong charset passed
 						error_log(__METHOD__.__LINE__.' Charset Reported:'.$bodyParts[$i]['charSet'].' Carset Detected:'.felamimail_bo::detect_encoding($bodyParts[$i]['body']));
@@ -4180,7 +4180,7 @@ class felamimail_bo
 					{
 						$sendOK = $openAsDraft = false;
 						//error_log(__METHOD__.__LINE__.' Id To Merge:'.$val);
-						if ($GLOBALS['egw_info']['flags']['currentapp'] == 'addressbook' && 
+						if ($GLOBALS['egw_info']['flags']['currentapp'] == 'addressbook' &&
 							count($SendAndMergeTocontacts) > 1 &&
 							is_numeric($val) || $GLOBALS['egw']->accounts->name2id($val)) // do the merge
 						{
@@ -4244,39 +4244,35 @@ class felamimail_bo
 								error_log(__METHOD__.__LINE__.array2string($errorInfo));
 							}
 						}
-						else
+						elseif (!$k)	// 1. entry, further entries will fail for apps other then addressbook
 						{
-							if (count($SendAndMergeTocontacts)==1)
+							$openAsDraft = true;
+							$mailObject->ClearAllRecipients();
+							$mailObject->ClearCustomHeaders();
+							if ($GLOBALS['egw_info']['flags']['currentapp'] == 'addressbook' &&
+								is_numeric($val) || $GLOBALS['egw']->accounts->name2id($val)) // do the merge
 							{
-								$openAsDraft = true;
-								$mailObject->ClearAllRecipients();
-								$mailObject->ClearCustomHeaders();
-								if ($GLOBALS['egw_info']['flags']['currentapp'] == 'addressbook' && 
-									is_numeric($val) || $GLOBALS['egw']->accounts->name2id($val)) // do the merge
-								{
-									$contact = $bo_merge->contacts->read($val);
-									//error_log(__METHOD__.__LINE__.array2string($contact));
-									$email = ($contact['email'] ? $contact['email'] : $contact['email_home']);
-									$nfn = ($contact['n_fn'] ? $contact['n_fn'] : $contact['n_given'].' '.$contact['n_family']);
-									$mailObject->AddAddress($email,$mailObject->EncodeHeader($nfn));
-								}
-								$mailObject->Subject = $bo_merge->merge_string($Subject, $val, $e, 'text/plain');
-								if (!empty($AltBody)) $mailObject->IsHTML(true);
-								else $mailObject->IsHTML(false);
-								//error_log(__METHOD__.__LINE__.' ContentType:'.$mailObject->BodyContentType);
-								if (!empty($Body)) $mailObject->Body = $bo_merge->merge_string($Body, $val, $e, $mailObject->BodyContentType);
-								//error_log(__METHOD__.__LINE__.' Result:'.$mailObject->Body.' error:'.array2string($e));
-								if (!empty($AltBody)) $mailObject->AltBody = $bo_merge->merge_string($AltBody, $val, $e, $mailObject->AltBodyContentType);
-								$_folder = $this->getDraftFolder();
+								$contact = $bo_merge->contacts->read($val);
+								//error_log(__METHOD__.__LINE__.array2string($contact));
+								$email = ($contact['email'] ? $contact['email'] : $contact['email_home']);
+								$nfn = ($contact['n_fn'] ? $contact['n_fn'] : $contact['n_given'].' '.$contact['n_family']);
+								$mailObject->AddAddress($email,$mailObject->EncodeHeader($nfn));
 							}
-
+							$mailObject->Subject = $bo_merge->merge_string($Subject, $val, $e, 'text/plain');
+							if (!empty($AltBody)) $mailObject->IsHTML(true);
+							else $mailObject->IsHTML(false);
+							//error_log(__METHOD__.__LINE__.' ContentType:'.$mailObject->BodyContentType);
+							if (!empty($Body)) $mailObject->Body = $bo_merge->merge_string($Body, $val, $e, $mailObject->BodyContentType);
+							//error_log(__METHOD__.__LINE__.' Result:'.$mailObject->Body.' error:'.array2string($e));
+							if (!empty($AltBody)) $mailObject->AltBody = $bo_merge->merge_string($AltBody, $val, $e, $mailObject->AltBodyContentType);
+							$_folder = $this->getDraftFolder();
 						}
 						if ($sendOK || $openAsDraft)
 						{
 							$BCCmail = '';
 							if ($this->folderExists($_folder,true))
 							{
-							    if($this->isSentFolder($_folder)) 
+							    if($this->isSentFolder($_folder))
 								{
 							        $flags = '\\Seen';
 							    } elseif($this->isDraftFolder($_folder)) {
@@ -4330,7 +4326,7 @@ class felamimail_bo
 							}
 							else
 							{
-								if (!$openAsDraft) $processStats['failed'][] = 'Send failed to '.$nfn.'<'.$email.'> See error_log for details';
+								$processStats['failed'][] = 'Send failed to '.$nfn.'<'.$email.'> See error_log for details';
 							}
 						}
 					}
@@ -4418,8 +4414,8 @@ class felamimail_bo
 					foreach((array)$val as $i => $v)
 					{
 //						if ($key!='content-type' && $key !='content-transfer-encoding') // the omitted values to that will be set at the end
-						if ($key!='content-type' && $key !='content-transfer-encoding' && 
-							$key != 'message-id'  && 
+						if ($key!='content-type' && $key !='content-transfer-encoding' &&
+							$key != 'message-id'  &&
 							$key != 'x-priority') // the omitted values to that will be set at the end
 						{
 							$Header .= $mailObject->HeaderLine($key, trim($v));
@@ -4431,7 +4427,7 @@ class felamimail_bo
 							$mailObject->Priority = $val;
 							break;
 						case 'message-id':
-							$mailObject->MessageID  = $val;							
+							$mailObject->MessageID  = $val;
 							break;
 						case 'sender':
 							$mailObject->Sender  = $val;
