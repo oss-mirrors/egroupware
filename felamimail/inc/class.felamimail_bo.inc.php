@@ -4016,12 +4016,30 @@ class felamimail_bo
 					$style .= $singleBodyPart['body'];
 					continue;
 				}
+				if ($singleBodyPart['charSet']===false) $singleBodyPart['charSet'] = felamimail_bo::detect_encoding($singleBodyPart['body']);
+				$singleBodyPart['body'] = $GLOBALS['egw']->translation->convert(
+					$singleBodyPart['body'],
+					strtolower($singleBodyPart['charSet'])
+				);
 				$ct = preg_match_all('#<style(?:\s.*)?>(.+)</style>#isU', $singleBodyPart['body'], $newStyle);
 				if ($ct>0)
 				{
 					//error_log(__METHOD__.__LINE__.array2string($newStyle[0]));
-					$style .= implode('',$newStyle[0]);
-				}
+                    $style2buffer = implode('',$newStyle[0]);
+                }
+                if (strtoupper(self::$displayCharset) == 'UTF-8')
+                {
+                    $test = json_encode($style2buffer);
+                    //error_log(__METHOD__.__LINE__.'#'.$test.'# ->'.strlen($style2buffer).' Error:'.json_last_error());
+                    //if (json_last_error() != JSON_ERROR_NONE && strlen($style2buffer)>0)
+                    if ($test=="null" && strlen($style2buffer)>0)
+                    {
+                        // this should not be needed, unless something fails with charset detection/ wrong charset passed
+                        error_log(__METHOD__.__LINE__.' Found Invalid sequence for utf-8 in CSS:'.$style2buffer.' Charset Reported:'.$singleBodyPart['charSet'].' Carset Detected:'.felamimail_bo::detect_encoding($style2buffer));
+                        $style2buffer = utf8_encode($style2buffer);
+                    }
+                }
+                $style .= $style2buffer;
 			}
 			// CSS Security
 			// http://code.google.com/p/browsersec/wiki/Part1#Cascading_stylesheets
@@ -4095,6 +4113,190 @@ class felamimail_bo
 		}
 
 		/**
+		 * importMessageToMergeAndSend
+		 *
+		 * @param object &bo_merge bo_merge object
+		 * @param string $document the full filename
+		 * @param array $SendAndMergeTocontacts array of contact ids
+		 * @param string $_folder (passed by reference) will set the folder used. must be set with a folder, but will hold modifications if
+		 *					folder is modified
+		 * @param string $importID ID for the imported message, used by attachments to identify them unambiguously
+		 * @return mixed array of messages with success and failed messages or exception
+		 */
+		function importMessageToMergeAndSend(&$bo_merge, $document, $SendAndMergeTocontacts, &$_folder, $importID='')
+		{
+			$importfailed = false;
+			$processStats = array('success'=>array(),'failed'=>array());
+			if (empty($SendAndMergeTocontacts))
+			{
+				$importfailed = true;
+				$alert_msg .= lang("Import of message %1 failed. No Contacts to merge and send to specified.",$_formData['name']);
+			}
+
+			// check if formdata meets basic restrictions (in tmp dir, or vfs, mimetype, etc.)
+			/* as the file is provided by bo_merge, we do not check
+			try
+			{
+				$tmpFileName = felamimail_bo::checkFileBasics($_formData,$importID);
+			}
+			catch (egw_exception_wrong_userinput $e)
+			{
+				$importfailed = true;
+				$alert_msg .= $e->getMessage();
+			}
+			*/
+			$tmpFileName = $document;
+			// -----------------------------------------------------------------------
+			if ($importfailed === false)
+			{
+				$mailObject = new egw_mailer();
+				try
+				{
+					$this->parseFileIntoMailObject($mailObject,$tmpFileName,$Header,$Body);
+				}
+				catch (egw_exception_assertion_failed $e)
+				{
+					$importfailed = true;
+					$alert_msg .= $e->getMessage();
+				}
+
+				//_debug_array($Body);
+				$this->openConnection();
+				if (empty($_folder))
+				{
+					$_folder = $this->getSentFolder();
+				}
+				$delimiter = $this->getHierarchyDelimiter();
+				if($_folder=='INBOX'.$delimiter) $_folder='INBOX';
+				if ($importfailed === false)
+				{
+					$Subject = $mailObject->Subject;
+					//error_log(__METHOD__.__LINE__.' Subject:'.$Subject);
+					$Body = $mailObject->Body;
+					error_log(__METHOD__.__LINE__.' Body:'.$Body);
+					$AltBody = $mailObject->AltBody;
+					error_log(__METHOD__.__LINE__.' AltBody:'.$AltBody);
+					foreach ($SendAndMergeTocontacts as $k => $val)
+					{
+						//error_log(__METHOD__.__LINE__.' Id To Merge:'.$val);
+						if (is_numeric($val)) // do the merge
+						{
+
+							//error_log(__METHOD__.__LINE__.array2string($mailObject));
+							$contact = $bo_merge->contacts->read($val);
+							//error_log(__METHOD__.__LINE__.array2string($contact));
+							$email = ($contact['email'] ? $contact['email'] : $contact['email_home']);
+							$nfn = ($contact['n_fn'] ? $contact['n_fn'] : $contact['n_given'].' '.$contact['n_family']);
+							$activeMailProfile = $this->mailPreferences->getIdentity($this->profileID);
+							//error_log(__METHOD__.__LINE__.array2string($activeMailProfile));
+							$mailObject->From = $activeMailProfile->emailAddress;
+							//$mailObject->From  = $_identity->emailAddress;
+							$mailObject->FromName = $mailObject->EncodeHeader($activeMailProfile->realName);
+
+							$mailObject->ClearAllRecipients();
+							$mailObject->ClearCustomHeaders();
+							$mailObject->AddAddress($email,$mailObject->EncodeHeader($nfn));
+							$mailObject->Subject = $bo_merge->merge_string($Subject, $val, $e, 'text/plain');
+							if (!empty($AltBody)) $mailObject->IsHTML(true);
+							if (!empty($Body)) $mailObject->Body = $bo_merge->merge_string($Body, $val, $e, $mailObject->BodyContentType);
+							if (!empty($AltBody)) $mailObject->AltBody = $bo_merge->merge_string($AltBody, $val, $e, $mailObject->AltBodyContentType);
+
+							$ogServer = $this->mailPreferences->getOutgoingServer($this->profileID);
+							#_debug_array($ogServer);
+							$mailObject->Host     = $ogServer->host;
+							$mailObject->Port = $ogServer->port;
+							// SMTP Auth??
+							if($ogServer->smtpAuth) {
+								$mailObject->SMTPAuth = true;
+								// check if username contains a ; -> then a sender is specified (and probably needed)
+								list($username,$senderadress) = explode(';', $ogServer->username,2);
+								if (isset($senderadress) && !empty($senderadress)) $mailObject->Sender = $senderadress;
+								$mailObject->Username = $username;
+								$mailObject->Password = $ogServer->password;
+							}
+							error_log(__METHOD__.__LINE__.array2string($mailObject));
+							// set a higher timeout for big messages
+							@set_time_limit(120);
+							$sendOK = true;
+							try {
+								$mailObject->Send();
+							}
+							catch(phpmailerException $e) {
+								$sendOK = false;
+								$errorInfo = $e->getMessage();
+								if ($mailObject->ErrorInfo) // use the complete mailer ErrorInfo, for full Information
+								{
+									if (stripos($mailObject->ErrorInfo, $errorInfo)===false)
+									{
+										$errorInfo = 'Send Failed for '.$mailObject->Subject.' to '.$nfn.'<'.$email.'> Error:'.$mailObject->ErrorInfo.'<br>'.$errorInfo;
+									}
+									else
+									{
+										$errorInfo = $mailObject->ErrorInfo;
+									}
+								}
+								error_log(__METHOD__.__LINE__.array2string($errorInfo));
+							}
+							$BCCmail = '';
+							if ($sendOK)
+							{
+								if ($this->folderExists($_folder,true))
+								{
+								    if($this->isSentFolder($_folder)) 
+									{
+								        $flags = '\\Seen';
+								    } elseif($this->isDraftFolder($_folder)) {
+								        $flags = '\\Draft';
+								    } else {
+								        $flags = '';
+								    }
+									unset($mailObject->sentBody);			 
+									$savefailed = false;
+									try
+									{
+						                $messageUid =$this->appendMessage($_folder,
+						                        $BCCmail.$mailObject->getMessageHeader(),
+						                        $mailObject->getMessageBody(),
+						                        $flags);
+
+									}
+									catch (egw_exception_wrong_userinput $e)
+									{
+										$savefailed = true;
+										$alert_msg .= lang("Save of message %1 failed. Could not save message to folder %2 due to: %3",$_formData['name'],$_folder,$e->getMessage());
+									}
+								}
+								else
+								{
+									$savefailed = true;
+									$alert_msg .= lang("Saving of message %1 failed. Destination Folder %2 does not exist.",$_formData['name'],$_folder);
+								}
+							}
+							if ($sendOK)
+							{
+								$processStats['success'][] = 'Send succeeded to '.$nfn.'<'.$email.'>'.($savefailed?' but failed to store to Folder:'.$_folder:'');
+							}
+							else
+							{
+								$processStats['failed'][] = 'Send failed to '.$nfn.'<'.$email.'> See error_log for details';
+							}
+						}
+					}
+				}
+				unset($mailObject);
+			}
+			// set the url to open when refreshing
+			if ($importfailed == true)
+			{
+				throw new egw_exception_wrong_userinput($alert_msg);
+			}
+			else
+			{
+				return $processStats;
+			}
+		}
+
+		/**
 		 * functions to allow the parsing of message/rfc files
 		 * used in felamimail to import mails, or parsev a message from file enrich it with addressdata (merge) and send it right away.
 		 */
@@ -4163,13 +4365,22 @@ class felamimail_bo
 					//error_log(__METHOD__.__LINE__.$key);
 					foreach((array)$val as $i => $v)
 					{
-						if ($key!='content-type' && $key !='content-transfer-encoding') // the omitted values to that will be set at the end
+//						if ($key!='content-type' && $key !='content-transfer-encoding') // the omitted values to that will be set at the end
+						if ($key!='content-type' && $key !='content-transfer-encoding' && 
+							$key != 'message-id'  && 
+							$key != 'x-priority') // the omitted values to that will be set at the end
 						{
 							$Header .= $mailObject->HeaderLine($key, trim($v));
 						}
 					}
 					switch ($key)
 					{
+						case 'x-priority':
+							$mailObject->Priority = $val;
+							break;
+						case 'message-id':
+							$mailObject->MessageID  = $val;							
+							break;
 						case 'sender':
 							$mailObject->Sender  = $val;
 							break;
@@ -4231,11 +4442,12 @@ class felamimail_bo
 		{
 			static $attachmentnumber;
 			static $isHTML;
+			static $alternatebodyneeded;
 			if (is_null($isHTML)) $isHTML = $structure->ctype_secondary=='html'?true:false;
 			if (is_null($attachmentnumber)) $attachmentnumber = 0;
 			if ($structure->parts && $structure->ctype_primary=='multipart')
 			{
-				$alternatebodyneeded = false;
+				if (is_null($alternatebodyneeded)) $alternatebodyneeded = false;
 				foreach($structure->parts as $part)
 				{
 					//error_log(__METHOD__.__LINE__.' Structure Content Type:'.$structure->ctype_primary.'/'.$structure->ctype_secondary.' Decoding:'.($decode?'on':'off'));
@@ -4251,7 +4463,7 @@ class felamimail_bo
 						 $structure->ctype_secondary=='signed') && $part->ctype_primary=='text' && $part->ctype_secondary=='plain' && $part->body)
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
-						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML);
+						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML.' Body:'.$part->body);
 						$bodyPart = $part->body;
 						if ($decode) $bodyPart = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
 						$mailObject->Body = ($isHTML==false?$mailObject->Body:'').$bodyPart;
@@ -4264,9 +4476,10 @@ class felamimail_bo
 						$part->ctype_primary=='text' && $part->ctype_secondary=='html' && $part->body)
 					{
 						//echo __METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
-						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML);
+						//error_log(__METHOD__.__LINE__.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML.' Body:'.$part->body);
 						$bodyPart = $part->body;
 						if ($decode) $bodyPart = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'));
+						//$mailObject->IsHTML(true); // do we need/want that here?
 						$mailObject->Body = ($isHTML?$mailObject->Body:'').$bodyPart;
 						$alternatebodyneeded = true;
 						$isHTML=true;
