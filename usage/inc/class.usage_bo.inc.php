@@ -171,6 +171,7 @@ class usage_bo extends so_sql
 		// get statistics data from cache (if set)
 		$stats = egw_cache::getInstance('usage','stats',array($this,'calc_statistic'));
 		//$stats = $this->calc_statistic();
+		//egw_cache::setInstance('usage','stats',$stats);
 
 		$all_time_total = $stats['all_time_total']; unset($stats['all_time_total']);
 		$total_30d = $stats['total_30d']; unset($stats['total_30d']);
@@ -178,14 +179,14 @@ class usage_bo extends so_sql
 		$content .= "<h1>Evaluation of $total_30d submissions of last 30 days:</h1>\n";
 
 		$content .= '<style type="text/css">
-	.usageList {
+	ol.usageList {
 		margin: 0;
 		padding: 0;
 		max-height: 4em;
 		overflow-y: auto;
 		overflow-x: hidden;
 	}
-	.usageList li {
+	ol.usageList li {
 		line-height: 133%;
 		white-space: nowrap;
 	}
