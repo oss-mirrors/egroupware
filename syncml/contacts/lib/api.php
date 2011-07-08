@@ -971,6 +971,8 @@ function setSupportedFields($content)
 					break;
 				case 'blackberry plug-in':
 				case 'iphone plug-in':
+				case 'iphone sync client':
+				case 'android sync client':
 					$supportedFields = $defaultFields[16];
 					break;
 
