@@ -242,7 +242,7 @@ $$Content$$'
 
 			if ($bo->debug) $start = microtime(true);
 			// do not resolve makros, as it makes no sense to store the resolved stuff with the link table
-			foreach ($ParseEngine as $k => $method) if ($method=='parse_macros') array_splice($ParseEngine,$k,1);
+			foreach ($ParseEngine as $k => $method) if ($method=='parse_macros' || $method=='parse_transclude' || $method=='parse_elements') array_splice($ParseEngine,$k,1);
 			//error_log(__METHOD__.__LINE__.' Method:'.array2string($ParseEngine));
 			parseText($p['text'], $ParseEngine, $ParseObject);
 			if ($bo->debug) 
