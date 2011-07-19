@@ -167,7 +167,8 @@
 				unset($_GET['composeid']);
 				$uicompose   = CreateObject('felamimail.uicompose');
 				$messageUid = ($messageUid===true ? $uidNext : $messageUid);
-				if ($this->bofelamimail->getMessageHeader($messageUid))
+				if (!$uicompose->bofelamimail->icServer->_connected) $uicompose->bofelamimail->openConnection($uicompose->bofelamimail->profileID);
+				if ($uicompose->bofelamimail->getMessageHeader($messageUid))
 				{
 					//error_log(__METHOD__.__LINE__.' (re)open drafted message with new UID: '.$messageUid.' in folder:'.$folder);
 					$uicompose->bocompose->getDraftData($uicompose->bofelamimail->icServer, $folder, $messageUid);
