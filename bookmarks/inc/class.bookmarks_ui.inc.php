@@ -176,6 +176,7 @@
 			}
 			//delete bookmark and close popup
 			if($content['delete']) {
+				$this->bo->delete($bm_id);
 				unset($this->location_info['returnto2']);
 				echo "<html><body><script>window.close();</script></body></html>\n";
 				$this->init();
