@@ -2454,7 +2454,7 @@ class HTTP_WebDAV_Server
     /**
      * private minimalistic version of PHP urlencode()
      *
-     * only blanks and XML special chars must be encoded here
+     * only blanks, percent and XML special chars must be encoded here
      * full urlencode() encoding confuses some clients ...
      *
      * @param  string  URL to encode
@@ -2473,6 +2473,7 @@ class HTTP_WebDAV_Server
 		}
 		//error_log( __METHOD__."\n" .print_r($url,true));
 		return strtr($url, array(' '	=>	'%20',
+                                 '%'	=>	'%25',
                                  '&'	=>	'%26',
                                  '<'	=>	'%3C',
                                  '>'	=>	'%3E',
