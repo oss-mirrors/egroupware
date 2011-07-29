@@ -824,8 +824,10 @@ class HTTP_WebDAV_Server
             /* TODO right now the user implementation has to make sure
              collections end in a slash, this should be done in here
              by checking the resource attribute */
-            // path needs to be urlencoded (only basic version of this class!)
-			$href = $this->_urlencode($this->_mergePathes($this->base_uri, $path));
+            $href = $this->_mergePaths($this->_SERVER['SCRIPT_NAME'], $path);
+
+            /* minimal urlencoding is needed for the resource path */
+            $href = $this->_urlencode($href);
 
             if ($this->crrnd)
             {
@@ -1059,7 +1061,7 @@ class HTTP_WebDAV_Server
 
             echo "<D:multistatus xmlns:D=\"DAV:\">\n";
             echo ' <'.($this->crrnd?'':'D:')."response>\n";
-            echo '  <'.($this->crrnd?'':'D:')."href>".$this->_urlencode($this->_mergePathes($this->_SERVER["SCRIPT_NAME"], $this->path)).'</'.($this->crrnd?'':'D:')."href>\n";
+            echo '  <'.($this->crrnd?'':'D:')."href>".$this->_urlencode($this->_mergePaths($this->_SERVER["SCRIPT_NAME"], $this->path)).'</'.($this->crrnd?'':'D:')."href>\n";
 
             foreach ($options["props"] as $prop) {
                 echo '   <'.($this->crrnd?'':'D:')."propstat>\n";
@@ -1235,7 +1237,7 @@ class HTTP_WebDAV_Server
             if (false === $status) {
                 $this->http_status("404 not found");
             } else {
-                // TODO: check setting of headers in various code pathes above
+                // TODO: check setting of headers in various code paths above
                 $this->http_status("$status");
             }
         }
@@ -2635,17 +2637,17 @@ class HTTP_WebDAV_Server
     }
 
     /**
-     * Merge two pathes, make sure there is exactly one slash between them
+     * Merge two paths, make sure there is exactly one slash between them
      *
      * @param  string  parent path
      * @param  string  child path
      * @return string  merged path
      */
-    function _mergePathes($parent, $child)
+    function _mergePaths($parent, $child)
     {
-		//error_log("merge called :\n$parent \n$child\n" . function_backtrace());
-		//error_log("merge :\n".print_r($this->_mergePathes($this->_SERVER["SCRIPT_NAME"], $this->path)true));
-		if ($child{0} == '/') {
+        //error_log("merge called :\n$parent \n$child\n" . function_backtrace());
+        //error_log("merge :\n".print_r($this->_mergePaths($this->_SERVER["SCRIPT_NAME"], $this->path)true));
+        if ($child{0} == '/') {
             return $this->_unslashify($parent).$child;
         } else {
             return $this->_slashify($parent).$child;
