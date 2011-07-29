@@ -183,18 +183,7 @@ class HTTP_WebDAV_Server
 	        // default uri is the complete request uri
 	        $uri = (@$this->_SERVER["HTTPS"] === "on" ? "https:" : "http:") . '//'.$this->_SERVER['HTTP_HOST'];
         }
-        // support for PHP running as (F)CGI
-        if (!isset($this->_SERVER['PATH_INFO']) && isset($this->_SERVER['ORIG_PATH_INFO']))
-        {
-        	$this->_SERVER['PATH_INFO'] = $this->_SERVER['ORIG_PATH_INFO'];
-        }
-        // we cant use SCRIPT_NAME, because it fails, if there's any url rewriting
-        //error_log("pathinfo:\n". $this->_urldecode($this->_SERVER['REQUEST_URI']).":\n".$this->_SERVER['PATH_INFO']);
-        $uri .= $this->_urldecode($this->_SERVER['REQUEST_URI']);
-        if (!empty($this->_SERVER["PATH_INFO"]))
-        {
-	        $uri = substr($uri,0,-strlen($this->_SERVER["PATH_INFO"]));
-        }
+        $uri .= $this->_SERVER["SCRIPT_NAME"];
 
         // WebDAV has no concept of a query string and clients (including cadaver)
         // seem to pass '?' unencoded, so we need to extract the path info out
@@ -206,8 +195,11 @@ class HTTP_WebDAV_Server
             $path_info = "/";
         }
 
+        $path_info = $this->_urldecode($path_info);
+
         $this->base_uri = $uri;
         $this->uri      = $uri . $path_info;
+
         // set path
         // $_SERVER['PATH_INFO'] is already urldecoded
         //$this->path = $this->_urldecode($path_info);

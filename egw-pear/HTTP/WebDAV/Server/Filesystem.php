@@ -469,7 +469,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
             return false;
         }
 
-        echo "<html><head><title>Index of ".htmlspecialchars($options['path'])."</title></head>\n";
+        echo "<html><head><title>Index of ".htmlspecialchars(urldecode($options['path']))."</title></head>\n";
 
         echo "<h1>Index of ".htmlspecialchars($options['path'])."</h1>\n";
 
@@ -484,7 +484,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
                 printf($format,
                        number_format(filesize($fullpath)),
                        strftime("%Y-%m-%d %H:%M:%S", filemtime($fullpath)),
-                       '<a href="'.$name.'">'.$name.'</a>');
+                       '<a href="'.$name.'">'.urldecode($name).'</a>');
             }
         }
 
