@@ -862,6 +862,17 @@ class HTTP_WebDAV_Server
                             echo $prop["val"];
                             echo '     </'.($this->crrnd?'':'D:')."lockdiscovery>\n";
                             break;
+                        // the following are non-standard Microsoft extensions to the DAV namespace
+                        case "lastaccessed":
+                            echo '     <'.($this->crrnd?'':'D:')."lastaccessed ns0:dt=\"dateTime.rfc1123\">"
+                                . gmdate("D, d M Y H:i:s ", $prop['val'])
+                                . 'GMT</'.($this->crrnd?'':'D:')."lastaccessed>\n";
+                            break;
+                        case "ishidden":
+                            echo '     <'.($this->crrnd?'':'D:')."ishidden>"
+                                . is_string($prop['val']) ? $prop['val'] : ($prop['val'] ? 'true' : 'false')
+                                . '</'.($this->crrnd?'':'D:')."</D:ishidden>\n";
+                            break;
                         default:
                         	$ns_defs = '';
                             if (is_array($prop['val']))
