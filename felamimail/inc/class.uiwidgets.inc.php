@@ -950,7 +950,7 @@ $j(document).ready(function() {
 
 
 				$data["status"] = "<span class=\"status_img\"></span>";
-				error_log(__METHOD__.array2string($header).' Flags:'.$flags);
+				//error_log(__METHOD__.array2string($header).' Flags:'.$flags);
 
 				// the css for this row
 				$is_recent=false;
