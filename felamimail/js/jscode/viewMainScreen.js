@@ -871,7 +871,7 @@ function mail_openComposeWindow(_url,forwardByCompose) {
 		//alert(sMessageList);
 		egw_openWindowCentered(_url+sMessageList,'compose',700,egw_getWindowOuterHeight());
 	}
-	mailGrid.dataRoot.actionObject.setAllSelected(false);
+	if (mailGrid) mailGrid.dataRoot.actionObject.setAllSelected(false);
 }
 
 // timer functions
