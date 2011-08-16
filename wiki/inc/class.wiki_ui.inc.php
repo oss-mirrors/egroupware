@@ -271,7 +271,7 @@ class wiki_ui extends wiki_bo
 		$html = '<h1 style="margin:0px;" class="title">'.$title."</h1>\n";
 
 		$html .= '<form action="'.$GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.wiki_ui.search')).'" method="POST">'.
-			'<a href="'.$this->viewURL($this->config['wikihome']).'">'.$this->config['wikihome'].'</a> | '.
+			'<a href="'.$this->viewURL($this->config['wikihome']).'">'.$this->link_title($this->config['wikihome']).'</a> | '.
 			'<a href="'.$this->viewUrl('RecentChanges').'">'.lang('Recent Changes').'</a> | '.
 			'<input name="search" value="'.html::htmlspecialchars($_REQUEST['search']).'" /> '.
 			'<input type="submit" name="go" value="'.html::htmlspecialchars(lang('Search')).'" /></form>'."\n";
