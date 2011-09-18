@@ -92,7 +92,7 @@
 			$this->save_session_data($location_info);
 		}
 
-		public function get_rows(&$query, &$rows, &$readonlys = array()) 
+		public function get_rows(&$query, &$rows, &$readonlys = array())
 		{
 			// Pass grant list for permission filtering
 			$query['grants'] = array();
@@ -115,7 +115,7 @@
 					$row['favicon'] = 'vfs://'.$favicon;
 				}
 
-				$readonlys["edit[{$row['id']}]"] = !$this->check_perms2($row['owner'], $row['access'], EGW_ACL_READ) && 
+				$readonlys["edit[{$row['id']}]"] = !$this->check_perms2($row['owner'], $row['access'], EGW_ACL_READ) &&
 					!$this->check_perms2($row['owner'], $row['access'], EGW_ACL_EDIT);
 				$readonlys["delete[{$row['id']}]"] = !$this->check_perms2($row['owner'], $row['access'], EGW_ACL_DELETE);
 			}
@@ -181,7 +181,7 @@
 		{
 			$values['owner'] = (int) $GLOBALS['egw_info']['user']['account_id'];
 			$values['added'] = time();
-                        $values['visits'] = 0;
+			$values['visits'] = 0;
 			if(!$values['favicon']) {
 				// Import may provide favicon, so don't get it if it's there
 				$values['favicon'] = $this->get_favicon($values['url']);
@@ -532,31 +532,51 @@
 
 		function gencat($catid)
 		{
-			$t = new Template(EGW_INCLUDE_ROOT . '/bookmarks/templates/export');
-			$t->set_file('categ','export_' . $this->type . '_catlist.tpl');
-			$t->set_block('categ','subcatlist','subcats');
-			$t->set_block('categ','urllist','urls');
+			$t = NULL;
+
+			// get the bookmarks for the current category
+			$query = array(
+				'cat_id'	=>	$catid
+			);
+			$this->get_rows($query, $bm_list);
+
+			// get the sub-cats for the current category
 			$subcats =  $this->categories->return_array('subs',0,False,'','cat_name','',True,$catid);
 
 			if ($subcats)
 			{
 				foreach($subcats as $subcat)
 				{
-					$t->set_var('subcat',$this->gencat($subcat['id']));
-					$t->fp('subcats','subcatlist',True);
+					// Check if there is actual content (or an empty sub-cat)
+					if (!is_null($subcat_content = $this->gencat($subcat['id'])))
+					{
+						if (is_null($t)){
+							$t = new Template(EGW_INCLUDE_ROOT . '/bookmarks/templates/export');
+						}
+						$t->set_var('subcat',$subcat_content);
+						$t->fp('subcats','subcatlist',True);
+					}
 				}
 			}
+
+			// Omit this category if it is empty.
+			if ((!count($bm_list)) && is_null($t)) {
+				return NULL;
+			}
+
+			// Else, if there are bookmarks or sub-categories, fill the template.
+			if (is_null($t)){
+				$t = new Template(EGW_INCLUDE_ROOT . '/bookmarks/templates/export');
+			}
+			$t->set_file('categ','export_' . $this->type . '_catlist.tpl');
+			$t->set_block('categ','subcatlist','subcats');
+			$t->set_block('categ','urllist','urls');
 
 			$t->set_var(array(
 				'catname' => $this->translation->convert($GLOBALS['egw']->strip_html($this->categories->id2name($catid)),$this->charset,'utf-8'),
 				'catid' => $catid,
 				'folded' => (in_array($catid,$this->expanded) ? 'no' : 'yes')
 			));
-
-			$query = array(
-				'cat_id'	=>	$catid
-			);
-			$this->get_rows($query, $bm_list);
 
 			foreach($bm_list as $bookmark) {
 				$t->set_var(array(
@@ -595,7 +615,7 @@
 			}
 
 			// Check for w3c recommended: <link rel="icon" type="image/png" href="http://example.com/image.png">
-			$pattern = '|<link rel.?=.?[\'"]icon[\'"].+href=[\'"](.*)[\'"].*>|i';
+			$pattern = '|<link rel.?=.?[\'"]icon[\'"][^>]+href=[\'"]([^\'"]+)[\'"]|i';
 			preg_match($pattern, $site, $matches);
 			if($matches[1]) {
 				if(!parse_url($matches[1], PHP_URL_HOST)) {
@@ -610,7 +630,7 @@
 			}
 
 			// Check for MS style: <link rel="shortcut icon" href="http://example.com/image.png">
-			$pattern = '|<link rel.?=.?[\'"]shortcut icon[\'"].+href=[\'"](.*)[\'"] ?/?>|i';
+			$pattern = '|<link rel.?=.?[\'"]shortcut icon[\'"][^>]+href=[\'"]([^\'"]+)[\'"]|i';
 			preg_match($pattern, $site, $matches);
 			if($matches[1]) {
 				if(!parse_url($matches[1], PHP_URL_HOST)) {
@@ -618,6 +638,7 @@
 					$matches[1] = parse_url($site_url, PHP_URL_SCHEME) . '://' . parse_url($site_url, PHP_URL_HOST) . '/' . $matches[1];
 				}
 				$headers = @get_headers($matches[1], true);
+
 				if($headers != false && !strpos($headers[0], 404)) {
 					return $matches[1];
 				}
@@ -630,7 +651,6 @@
 			if($headers != false && !strpos($headers[0], 404)) {
 				return $ico_url;
 			}
-
 
 			return $favicon;
 
@@ -677,7 +697,7 @@
 				'tmp_name'	=> $tmpname
 			));
 			unlink($tmpname);
-			
+
 			return false;
 		}
 

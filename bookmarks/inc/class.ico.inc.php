@@ -4,7 +4,7 @@
      *
      * $Id$
      **/
- 
+
     /**
      * Class Ico
      * Open ICO files and extract any size/depth to PNG format
@@ -90,10 +90,15 @@
             /**
              * ICO header
              **/
-            $icodata = unpack("SReserved/SType/SCount", $data);
+            $icodata = unpack("vReserved/vType/vCount", $data);
             $this->ico = $icodata;
             $data = substr($data, 6);
-            
+
+			// Accept ICO files only.
+			if (($this->ico['Reserved'] != 0) || ($this->ico['Type'] != 1)) {
+				return False;
+			}
+
             /**
              * Extract each icon header
              **/
@@ -116,7 +121,7 @@
                 $this->formats[$i]['colors'] = array();
 
                 $this->formats[$i]['BitCount'] = $this->formats[$i]['header']['BitCount'];
-                
+
                 switch ($this->formats[$i]['BitCount']) {
                     case 32:
                     case 24:
@@ -161,7 +166,7 @@
                 }
                 $this->formats[$i]['data_length'] = strlen($this->formats[$i]['data']);
             }
-            
+
             return true;
         }
 
@@ -174,7 +179,7 @@
         function TotalIcons() {
             return count($this->formats);
         }
-        
+
         /**
          * Ico::GetIconInfo()
          * Return the icon header corresponding to that index
@@ -188,7 +193,7 @@
             }
             return false;
         }
-        
+
         /**
          * Ico::SetBackground()
          * Changes background color of extraction. You can set
@@ -209,7 +214,7 @@
 
             $this->bgcolor = array($red, $green, $blue);
         }
-        
+
         /**
          * Ico::SetBackgroundTransparent()
          * Set background color to be saved as transparent
@@ -237,7 +242,7 @@
             if (!isset($this->formats[$index])) {
                 return false;
             }
-            
+
             /**
              * create image
              **/
@@ -248,14 +253,14 @@
              **/
             $bgcolor = $this->AllocateColor($im, $this->bgcolor[0], $this->bgcolor[1], $this->bgcolor[2]);
             imagefilledrectangle($im, 0 , 0, $this->formats[$index]['Width'], $this->formats[$index]['Height'], $bgcolor);
-            
+
             /**
              * set background color transparent
              **/
             if ($this->bgcolor_transparent) {
                 imagecolortransparent($im, $bgcolor);
             }
-            
+
             /**
              * allocate pallete and get XOR image
              **/
@@ -390,7 +395,7 @@
                     for ($i = 0; $i < $total; $i++) {
                         $colorbits .= str_pad(decbin(ord($this->formats[$index]['data'][$i])), 8, '0', STR_PAD_LEFT);
                     }
-                    
+
                     $total = strlen($colorbits);
                     $offset = 0;
                     for ($i = $this->formats[$index]['Height'] - 1; $i >= 0; $i--) {
@@ -403,7 +408,7 @@
                     }
                     break;
             }
-            
+
             return $im;
         }
 

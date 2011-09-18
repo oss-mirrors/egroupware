@@ -32,7 +32,7 @@
 			{
 				$data =& $this->data;
 			}
-			
+
 			if($data['added'] || $data['visited'] || $data['updated']) {
 				$data['info'] = implode(',', array(
 					$data['added'] ? $data['added'] : $this->data['added'],
@@ -42,7 +42,7 @@
 			}
 			return parent::data2db($data);
 		}
-		
+
 		public function db2data($data = null) {
 			if (($intern = !is_array($data)))
 			{
@@ -66,12 +66,19 @@
 
 		function add($values)
 		{
-			if ($values['access'] != 'private')
+			if ($values['access'] !== 'public')
 			{
-				$values['access'] = 'public';
+				if ($values['access'])
+				{
+					$values['access'] = 'private';
+				}
+				else
+				{
+					$values['access'] = 'public';
+				}
 			}
 
-			// Make sure there are no leftovers 
+			// Make sure there are no leftovers
 			$this->init($values);
 
 			parent::save($values);
@@ -121,9 +128,9 @@
 			}
 
 			// Permissions
-			$query['col_filter'][] = '(bm_access = \'public\' OR (bm_owner = ' . (int)$GLOBALS['egw_info']['user']['account_id'] . 
+			$query['col_filter'][] = '(bm_access = \'public\' OR (bm_owner = ' . (int)$GLOBALS['egw_info']['user']['account_id'] .
 				' OR bm_owner IN (' . implode(',', $query['grants']) . ')))';
-		
+
 			// Split out timestamps into sortable seperate columns mysql needs different treatment than postgres, if neither do it with php later on
 			if ($this->db->Type == 'mysql')
 			{
@@ -144,7 +151,6 @@
 			$rows = $this->search($criteria,false,$query['order']?$query['order'].' '.$query['sort']:'',$extra_cols,
 				$wildcard,false,$op,$query['num_rows']?array((int)$query['start'],$query['num_rows']):(int)$query['start'],
 				$query['col_filter'],$join,$need_full_no_count);
-
 			if (!$rows) $rows = array();    // otherwise false returned from search would be returned as array(false)
 
 			if (!isset($extra_cols)) // we need to create added, visited and updated from bm_info
