@@ -11,10 +11,18 @@
 
 	/* $Id: class.module_bookmarks.inc.php 18221 2005-05-02 09:48:28Z ralfbecker $ */
 
-class module_bookmarks extends Module 
+class module_bookmarks extends Module
 {
 	var $template;
 	var $startlevel;
+	/**
+	 *  @var categories
+	 */
+	var $cat;
+	/**
+	 * @var Categories_BO
+	 */
+	var $bo;
 
 	function module_bookmarks()
 	{
@@ -23,8 +31,8 @@ class module_bookmarks extends Module
 		$this->cookie = array('expanded');
 		$this->arguments = array(
 			'category' => array(
-				'type' => 'select', 
-				'label' => lang('Choose the categories to display'), 
+				'type' => 'select',
+				'label' => lang('Choose the categories to display'),
 				'options' => array(),
 				'multiple' => True
 			)
@@ -33,8 +41,8 @@ class module_bookmarks extends Module
 
 	function get_user_interface()
 	{
-		$cat = createobject('phpgwapi.categories','','bookmarks');
-		$cats = $cat->return_array('all',0,False,'','cat_name','',True);
+		$this->cat = createobject('phpgwapi.categories','','bookmarks');
+		$cats = $this->cat->return_array('all',0,False,'','cat_name','',True);
 		$cat_ids = array();
 		while (list(,$category) = @each($cats))
 		{
@@ -68,7 +76,7 @@ class module_bookmarks extends Module
 		{
 			$expandedcats = Array();
 		}
-		$bo = createobject('bookmarks.bookmarks_bo');
-		return $bo->export($arguments['category'],'xbel',$expandedcats);
+		$this->bo = createobject('bookmarks.bookmarks_bo');
+		return $this->bo->export($arguments['category'],'xbel',$expandedcats);
 	}
 }

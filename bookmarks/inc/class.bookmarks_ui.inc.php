@@ -22,7 +22,13 @@
 
 	class bookmarks_ui
 	{
+		/**
+		 * @var etemplate
+		 */
 		var $templ;
+		/**
+		 * @var bookmarks_bo::
+		 */
 		var $bo;
 		var $expandedcats;
 
@@ -162,7 +168,7 @@
 			{
 				$bm_id = $this->location_info['bm_id'];
 			}
-			elseif ($content['bm_id']) 
+			elseif ($content['bm_id'])
 			{
 				$bm_id = $content['bm_id'];
 			}
@@ -278,7 +284,7 @@
 
 			if($content['add']) {
 				$GLOBALS['egw']->redirect_link('/index.php', array('menuaction' => 'bookmarks.bookmarks_ui.create'));
-			} elseif ($content['nm']['rows']) { 
+			} elseif ($content['nm']['rows']) {
 				if($content['nm']['rows']['edit']) {
 					$bm_id = key($content['nm']['rows']['edit']);
 					$GLOBALS['egw']->redirect_link('/index.php', array(
@@ -289,9 +295,9 @@
 					$bm_id = key($content['nm']['rows']['delete']);
 					$this->bo->delete($bm_id);
 				}
-			} 
+			}
 			if($content['action']) {
-				$content['nm']['nm_action'] = $conent['action'];
+				$content['nm']['nm_action'] = $content['action'];
 			}
 			if ($content['nm']['nm_action']) {
 				switch ($content['nm']['nm_action']) {
@@ -343,7 +349,7 @@
 
 		/**
 		* Callback for nm widget
-		* 
+		*
 		* @param &$query Search parameters
 		* @param &$rows Results
 		* @param &$readonlys Widgets to set readonly
@@ -351,7 +357,7 @@
 		public function get_rows(&$query, &$rows, &$readonlys) {
 
 			// Store current filters in the session
-                        $GLOBALS['egw']->session->appsession('_list', 'bookmarks', $query);
+			$GLOBALS['egw']->session->appsession('_list', 'bookmarks', $query);
 
 			// Selected columns
 			$columselection = $GLOBALS['egw_info']['user']['preferences']['bookmarks']['nextmatch-bookmarks.list.rows'];
@@ -371,7 +377,7 @@
 			if (!$query['custom_fields']) $rows['no_customfields'] = true;
 
 			$query['total'] = $this->bo->get_rows($query, $rows, $readonlys);
-			
+
 			return $query['total'];
 		}
 
@@ -383,43 +389,43 @@
 		protected function get_actions()
 		{
 			$actions = array(
-			'visit' => array(
-				'caption' => 'Visit',
-				'icon' => 'no_favicon',
-				'default' => true,
-				'allowOnMultiple' => false,
-				'nm_action' => 'location',
-				'url' => 'menuaction=bookmarks.bookmarks_ui.redirect&bm_id=$id',
-				'target' => '_blank',
-				'group' => $group=1,
-			),
-			'edit' => array(
-				'caption' => 'Open',
-				'allowOnMultiple' => false,
-				'url' => 'menuaction=bookmarks.bookmarks_ui.edit&bm_id=$id',
-				'popup' => egw_link::get_registry('bookmarks', 'add_popup'),
-				'group' => $group,
-				'disableClass' => 'rowNoEdit',
-			),
-			'add' => array(
-				'caption' => 'Add',
-				'url' => 'menuaction=bookmarks.bookmarks_ui.create',
-				'popup' => egw_link::get_registry('bookmarks', 'add_popup'),
-				'group' => $group,
-			),
-			'mailto' => array(
-				'caption' => 'Mail',
-				'allowOnMultiple' => true,
-				'icon'	=> 'mail',
-				'group' => $group,
-			),
-			'delete' => array(
-				'caption' => 'Delete',
-				'confirm' => 'Delete this entry',
-				'confirm_multiple' => 'Delete these entries',
-				'group' => ++$group,
-				'disableClass' => 'rowNoDelete',
-			),
+				'visit' => array(
+					'caption' => 'Visit',
+					'icon' => 'no_favicon',
+					'default' => true,
+					'allowOnMultiple' => false,
+					'nm_action' => 'location',
+					'url' => 'menuaction=bookmarks.bookmarks_ui.redirect&bm_id=$id',
+					'target' => '_blank',
+					'group' => $group=1,
+				),
+				'edit' => array(
+					'caption' => 'Open',
+					'allowOnMultiple' => false,
+					'url' => 'menuaction=bookmarks.bookmarks_ui.edit&bm_id=$id',
+					'popup' => egw_link::get_registry('bookmarks', 'add_popup'),
+					'group' => $group,
+					'disableClass' => 'rowNoEdit',
+				),
+				'add' => array(
+					'caption' => 'Add',
+					'url' => 'menuaction=bookmarks.bookmarks_ui.create',
+					'popup' => egw_link::get_registry('bookmarks', 'add_popup'),
+					'group' => $group,
+				),
+				'mailto' => array(
+					'caption' => 'Mail',
+					'allowOnMultiple' => true,
+					'icon'	=> 'mail',
+					'group' => $group,
+				),
+				'delete' => array(
+					'caption' => 'Delete',
+					'confirm' => 'Delete this entry',
+					'confirm_multiple' => 'Delete these entries',
+					'group' => ++$group,
+					'disableClass' => 'rowNoDelete',
+				),
 			);
 			return $actions;
 		}
@@ -486,7 +492,7 @@
 					// begin entry
 					$bm_tree[$cat['tree']. '/'. $id] = array();
 					$entry = &$bm_tree[$cat['tree']. '/'. $id]['label'];
-				
+
 					// Set leaf icon
 					// Doesn't work because tree requires images to be in a certain directory
 					//$bm_tree[$cat['tree']. '/'. $id]['image'] = $GLOBALS['egw']->common->image('bookmarks','mail');
@@ -628,7 +634,7 @@
 				unset($this->location_info['returnto2']);
 				$this->init();
 				return;
-			} 
+			}
 			elseif ($content['send'])	// Send button clicked
 			{
 				$validate = CreateObject('bookmarks.validator');
