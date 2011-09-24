@@ -188,7 +188,7 @@ class _parse_propfind
 
         // record root tag
         if ($this->depth == 0) {
-        	$this->root = array('name' => $tag, 'xmlns' => $ns);
+        	$this->root = array('name' => $tag, 'xmlns' => $ns, 'attrs' => $attrs);
         }
 
         // special tags at level 1: <allprop> and <propname>
