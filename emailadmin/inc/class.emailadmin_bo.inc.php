@@ -308,7 +308,7 @@ class emailadmin_bo extends so_sql
 					'ea_default_domain' => 'mail_suffix',
 					'ea_smtp_server'    => 'smtp_server',
 					'ea_smtp_port'      => 'smtp_port',
-				)+($this->data['ea_smtp_auth']=='yes' ? array( //ToDo: if no, we may have to reset config values for that too?
+				)+($this->data['ea_smtp_auth']!='no' ? array( //ToDo: if no, we may have to reset config values for that too?
 					'ea_smtp_auth_username' => 'smtp_auth_user',
 					'ea_smtp_auth_password' => 'smtp_auth_passwd',
 				) : array()) as $ea_name => $config_name)
@@ -700,9 +700,9 @@ class emailadmin_bo extends so_sql
 			$ogServer->host		= $data['smtpServer'];
 			$ogServer->port		= $data['smtpPort'];
 			$ogServer->editForwardingAddress = ($data['editforwardingaddress'] == 'yes');
-			$ogServer->smtpAuth	= $data['smtpAuth'] == 'yes';
+			$ogServer->smtpAuth	= ($data['smtpAuth'] == 'yes' || $data['smtpAuth'] == 'ann' );
 			if($ogServer->smtpAuth) {
-				if(!empty($data['ea_smtp_auth_username'])) {
+				if(!empty($data['ea_smtp_auth_username']) && $data['smtpAuth'] == 'yes') {
 					$ogServer->username 	= $data['ea_smtp_auth_username'];
 				} else {
 					// if we use special logintypes for IMAP, we assume this to be used for SMTP too
@@ -714,7 +714,7 @@ class emailadmin_bo extends so_sql
 						$ogServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
 					}
 				}
-				if(!empty($data['ea_smtp_auth_password'])) {
+				if(!empty($data['ea_smtp_auth_password']) && $data['smtpAuth'] == 'yes') {
 					$ogServer->password     = $data['ea_smtp_auth_password'];
 				} else {
 					$ogServer->password     = $GLOBALS['egw_info']['user']['passwd'];
@@ -869,7 +869,7 @@ class emailadmin_bo extends so_sql
 			if (!is_array($ea_name_data))
 			{
 				$profile[$ea_name_data] = $settings[$setup_name];
-				if ($setup_name == 'smtp_auth_user') $profile['stmpAuth'] = !empty($settings['smtp_auth_user']);
+				if ($setup_name == 'smtp_auth_user' && $profile['stmpAuth'] == 'no' && !empty($settings['smtp_auth_user'])) $profile['stmpAuth'] = 'yes';
 			}
 			else
 			{
