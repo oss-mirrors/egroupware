@@ -395,7 +395,7 @@ class emailadmin_ui extends emailadmin_bo
 
 		$sel_options['ea_smtp_auth'] = array(
 			'no' => 'No',
-			'yes' => 'Yes, allways use credentials below',
+			'yes' => 'Yes, use credentials of current user or if given credentials below',
 			'ann' => 'Yes, use credentials below only for alarms and notifications, otherwise use credentials of current user',
 		);
 		/*
