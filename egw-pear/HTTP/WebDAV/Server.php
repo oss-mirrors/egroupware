@@ -2594,7 +2594,13 @@ class HTTP_WebDAV_Server
 						$val = $this->_prop_encode('<![CDATA['.$prop['val'].']]>');
 					} else {
 						$val = $this->_prop_encode(htmlspecialchars($prop['val']));
-					}            }
+						// for href properties we need (minimalistic) urlencoding, eg. space
+						if ($prop['name'] == 'href')
+						{
+							$val = $this->_urlencode($val);
+						}
+					}
+		    	}
 
 		    	$ret .= '<'.($prop['ns'] == $ns ? ($this->cnrnd ? $ns_hash[$ns].':' : '') : $ns_hash[$prop['ns']].':').$prop['name'].
 			    	(empty($prop['val']) ? ' />' : '>'.$val.'</'.($prop['ns'] == $ns ? ($this->cnrnd ? $ns_hash[$ns].':' : '') : ($this->crrnd ? '' : $ns_hash[$prop['ns']].':')).$prop['name'].'>');
