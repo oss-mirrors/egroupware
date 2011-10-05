@@ -2897,7 +2897,7 @@ class felamimail_bo
 					$newAttachment['mimeType']	= $subPart->type .'/'. $subPart->subType;
 					$newAttachment['partID']	= $subPart->partID;
 					$newAttachment['encoding']	= $subPart->encoding;
-					$newAttachment['method']    = $subPart->parameters['METHOD'];
+					$newAttachment['method']    = $this->getMethodFromStructure($subPart,$_uid,$subPart->partID);
 					$newAttachment['charset']   = $subPart->parameters['CHARSET'];
 					// try guessing the mimetype, if we get the application/octet-stream
 					if (strtolower($newAttachment['mimeType']) == 'application/octet-stream') $newAttachment['mimeType'] = mime_magic::filename2mime($newAttachment['name']);
@@ -2983,6 +2983,41 @@ class felamimail_bo
 				}
 				$namecounter++;
 				return lang("unknown").$namecounter.($structure->subType ? ".".$structure->subType : "");
+			}
+		}
+
+		function getMethodFromStructure(&$structure, $_uid = false, $partID = false)
+		{
+			//if ( $_uid && $partID) error_log(__METHOD__.__LINE__.array2string($structure).' Uid:'.$_uid.' PartID:'.$partID.' -> '.array2string($this->icServer->getParsedHeaders($_uid, true, $partID, true)));
+			if(isset($subPart->parameters['METHOD'])) {
+				return $subPart->parameters['METHOD'];
+			}
+			else
+			{
+				if ( $_uid && $partID && $structure->type=='TEXT' && $structure->subType=='CALENDAR' &&  $structure->filename=='NIL')
+				{
+					$attachment = $this->getAttachment($_uid, $partID);
+					if ($attachment['attachment'])
+					{
+						if (!PEAR::isError($attachment['attachment']))
+						{
+							// simple parsing of the attachment for a usable method
+							//error_log( __METHOD__.__LINE__.array2string($attachment['attachment']));
+							foreach(explode("\r\n",$attachment['attachment']) as $k => $v)
+							{
+								if (strpos($v,':') !== false)
+								{
+									list($first,$rest) = explode(':',$v,2);
+									$first = trim($first);
+									if ($first=='METHOD')
+									{
+										return trim($rest);
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 
