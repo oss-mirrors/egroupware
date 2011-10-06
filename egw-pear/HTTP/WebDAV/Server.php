@@ -1401,6 +1401,8 @@ class HTTP_WebDAV_Server
 	        $options['content_type'] = 'application/octet-stream';
         }
 
+        $options['stream'] = fopen('php://input', 'r');
+
         /* RFC 2616 2.6 says: "The recipient of the entity MUST NOT
          ignore any Content-* (e.g. Content-Range) headers that it
          does not understand or implement and MUST return a 501
@@ -1410,10 +1412,22 @@ class HTTP_WebDAV_Server
 	        if (strncmp($key, 'HTTP_CONTENT', 11)) continue;
 	        switch ($key) {
 		        case 'HTTP_CONTENT_ENCODING': // RFC 2616 14.11
-			        // TODO support this if ext/zlib filters are available
-			        $this->http_status('501 not implemented');
-			        echo "The service does not support '$val' content encoding";
-			        return;
+		        	switch($this->_SERVER['HTTP_CONTENT_ENCODING'])
+		        	{
+		        		case 'gzip':
+		        		case 'deflate':	//zlib
+		        			if (extension_loaded('zlib'))
+		        			{
+		        				stream_filter_append($options['stream'], 'zlib.inflate', STREAM_FILTER_READ);
+		        				break;
+		        			}
+		        			// fall through for no zlib support
+		        		default:
+					        $this->http_status('415 Unsupported Media Type');
+					        echo "The service does not support '$val' content encoding";
+					        return;
+		        	}
+		        	break;
 
 		        case 'HTTP_CONTENT_LANGUAGE': // RFC 2616 14.12
 			        // we assume it is not critical if this one is ignored
@@ -1469,8 +1483,6 @@ class HTTP_WebDAV_Server
 		        return;
 	        }
         }
-
-        $options['stream'] = fopen('php://input', 'r');
 
         if (method_exists($this, 'POST')) {
 	        $status = $this->POST($options);
@@ -1539,7 +1551,7 @@ class HTTP_WebDAV_Server
                 // for now we do not support any sort of multipart requests
                 if (!strncmp($this->_SERVER["CONTENT_TYPE"], "multipart/", 10)) {
                     $this->http_status("501 not implemented");
-                    echo "The service does not support mulipart PUT requests";
+                    echo "The service does not support multipart PUT requests";
                     return;
                 }
                 $options["content_type"] = $this->_SERVER["CONTENT_TYPE"];
@@ -1547,6 +1559,8 @@ class HTTP_WebDAV_Server
                 // default content type if none given
                 $options["content_type"] = "application/octet-stream";
             }
+
+            $options["stream"] = fopen("php://input", "r");
 
             /* RFC 2616 2.6 says: "The recipient of the entity MUST NOT
              ignore any Content-* (e.g. Content-Range) headers that it
@@ -1557,10 +1571,22 @@ class HTTP_WebDAV_Server
                 if (strncmp($key, "HTTP_CONTENT", 11)) continue;
                 switch ($key) {
                 case 'HTTP_CONTENT_ENCODING': // RFC 2616 14.11
-                    // TODO support this if ext/zlib filters are available
-                    $this->http_status("501 not implemented");
-                    echo "The service does not support '$val' content encoding";
-                    return;
+		        	switch($this->_SERVER['HTTP_CONTENT_ENCODING'])
+		        	{
+		        		case 'gzip':
+		        		case 'deflate':	//zlib
+		        			if (extension_loaded('zlib'))
+		        			{
+		        				stream_filter_append($options['stream'], 'zlib.inflate', STREAM_FILTER_READ);
+		        				break;
+		        			}
+		        			// fall through for no zlib support
+		        		default:
+					        $this->http_status('415 Unsupported Media Type');
+					        echo "The service does not support '$val' content encoding";
+					        return;
+		        	}
+		        	break;
 
                 case 'HTTP_CONTENT_LANGUAGE': // RFC 2616 14.12
                     // we assume it is not critical if this one is ignored
@@ -1621,8 +1647,6 @@ class HTTP_WebDAV_Server
                     return;
                 }
             }
-
-            $options["stream"] = fopen("php://input", "r");
 
             $stat = $this->PUT($options);
 
