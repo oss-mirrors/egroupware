@@ -251,6 +251,20 @@ class emailadmin_ui extends emailadmin_bo
 		return $returnval;
 	}
 
+	/**
+	 * Get a list of supported SMTP Auth Config options
+	 * 
+	 * @return array value => label pairs
+	 */
+	static public function getSMTPAuthConfig() 
+	{
+		return array(
+			'no' => 'No',
+			'yes' => 'Yes, use credentials of current user or if given credentials below',
+			'ann' => 'Yes, use credentials below only for alarms and notifications, otherwise use credentials of current user',
+		);
+	}
+
 	function edit($content=null)
 	{
 		//$this->editProfile($profileid);
@@ -393,11 +407,7 @@ class emailadmin_ui extends emailadmin_bo
 			$sel_options['status'][$field] = lang($label);
 		}
 
-		$sel_options['ea_smtp_auth'] = array(
-			'no' => 'No',
-			'yes' => 'Yes, use credentials of current user or if given credentials below',
-			'ann' => 'Yes, use credentials below only for alarms and notifications, otherwise use credentials of current user',
-		);
+		$sel_options['ea_smtp_auth'] = self::getSMTPAuthConfig();
 		/*
 		$content['stored_templates'] = html::checkbox_multiselect(
 			'ea_stationery_active_templates',$content['ea_stationery_active_templates']
