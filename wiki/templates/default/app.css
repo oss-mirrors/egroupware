@@ -5,6 +5,10 @@ div,td {
 	font-size:12px;
 }
 
+div.wikipage {
+	margin-left: 10px;
+}
+
 table.diff { 
 	width: 95%; 
 }

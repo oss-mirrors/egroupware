@@ -243,7 +243,8 @@ class wiki_ui extends wiki_bo
 		$html = $this->header($page).$html;
 		if ($page) $html .= $this->get($page,'',$this->wiki_id);
 		$html .= $this->footer($page);
-
+		// add a div with id and class to be able to apply styles for the whole wikipage
+		$html = '<div id="wikipage" class="wikipage">'.$html.'</div>';
 		if ($return_content) return $html;
 
 		echo $html;
