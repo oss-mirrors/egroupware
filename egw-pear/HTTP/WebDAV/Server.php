@@ -1375,8 +1375,6 @@ class HTTP_WebDAV_Server
         $options         = Array();
         $options['path'] = $this->path;
 
-        error_log('WebDAV POST: ' . $this->path);
-
         if (isset($this->_SERVER['CONTENT_LENGTH']))
         {
 	        $options['content_length'] = $this->_SERVER['CONTENT_LENGTH'];
