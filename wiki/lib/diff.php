@@ -6,8 +6,8 @@ function diff_compute($text1, $text2)
 {
 	global $TempDir, $DiffCmd, $ErrorCreatingTemp, $ErrorWritingTemp;
 
-	$num = strncmp(PHP_OS,'WIN',3) ? posix_getpid() : rand();
-
+	$num = trim($GLOBALS['egw_info']['user']['account_id']).'_'.common::randomstring(8); //strncmp(PHP_OS,'WIN',3) ? posix_getpid() : rand();
+	//error_log(__METHOD__.__LINE__.' RandomString:'.$num);
 	$temp1 = $TempDir . '/wiki_' . $num . '_1.txt';
 	$temp2 = $TempDir . '/wiki_' . $num . '_2.txt';
 
