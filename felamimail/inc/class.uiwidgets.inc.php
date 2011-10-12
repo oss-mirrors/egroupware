@@ -441,6 +441,75 @@ class uiwidgets
 							'enableClass' => 'deleted',
 							'enabled' => "javaScript:mail_enabledByClass",
 						),
+						// icons used from http://creativecommons.org/licenses/by-sa/3.0/
+						// Artist: Led24
+						// Iconset Homepage: http://led24.de/iconset
+						// License: CC Attribution 3.0
+						'setLabel' => array(
+							'caption' => 'Set Label',
+							'icon' => 'tag_message',
+							'group' => ++$group,
+							'children' => array(
+								'label1' => array(
+									'caption' => 'urgent',
+									'icon' => 'mail_label1',
+									'onExecute' => 'javaScript:mail_flag',
+								),
+								'label2' => array(
+									'caption' => 'job',
+									'icon' => 'mail_label2',
+									'onExecute' => 'javaScript:mail_flag',
+								),
+								'label3' => array(
+									'caption' => 'personal',
+									'icon' => 'mail_label3',
+									'onExecute' => 'javaScript:mail_flag',
+								),
+								'label4' => array(
+									'caption' => 'to do',
+									'icon' => 'mail_label4',
+									'onExecute' => 'javaScript:mail_flag',
+								),
+								'label5' => array(
+									'caption' => 'later',
+									'icon' => 'mail_label5',
+									'onExecute' => 'javaScript:mail_flag',
+								),
+							),
+						),
+						// modified icons from http://creativecommons.org/licenses/by-sa/3.0/
+						'unsetLabel' => array(
+							'caption' => 'Remove Label',
+							'icon' => 'untag_message',
+							'group' => ++$group,
+							'children' => array(
+								'unlabel1' => array(
+									'caption' => 'urgent',
+									'icon' => 'mail_unlabel1',
+									'onExecute' => 'javaScript:mail_flag',
+								),
+								'unlabel2' => array(
+									'caption' => 'job',
+									'icon' => 'mail_unlabel2',
+									'onExecute' => 'javaScript:mail_flag',
+								),
+								'unlabel3' => array(
+									'caption' => 'personal',
+									'icon' => 'mail_unlabel3',
+									'onExecute' => 'javaScript:mail_flag',
+								),
+								'unlabel4' => array(
+									'caption' => 'to do',
+									'icon' => 'mail_unlabel4',
+									'onExecute' => 'javaScript:mail_flag',
+								),
+								'unlabel5' => array(
+									'caption' => 'later',
+									'icon' => 'mail_unlabel5',
+									'onExecute' => 'javaScript:mail_flag',
+								),
+							),
+						),
 					),
 				),
 /*
@@ -947,6 +1016,11 @@ $j(document).ready(function() {
 				if(!empty($header['forwarded'])) $flags .= "W";
 				if(!empty($header['deleted'])) $flags .= "D";
 				if(!empty($header['seen'])) $flags .= "S";
+				if(!empty($header['label1'])) $flags .= "1";
+				if(!empty($header['label2'])) $flags .= "2";
+				if(!empty($header['label3'])) $flags .= "3";
+				if(!empty($header['label4'])) $flags .= "4";
+				if(!empty($header['label5'])) $flags .= "5";
 
 				$data["status"] = "<span class=\"status_img\"></span>";
 				//error_log(__METHOD__.array2string($header).' Flags:'.$flags);
@@ -986,6 +1060,22 @@ $j(document).ready(function() {
 				if ($header['forwarded']) {
 					$css_styles[] = 'forwarded';
 				}
+				if ($header['label1']) {
+					$css_styles[] = 'label1';
+				}
+				if ($header['label2']) {
+					$css_styles[] = 'label2';
+				}
+				if ($header['label3']) {
+					$css_styles[] = 'label3';
+				}
+				if ($header['label4']) {
+					$css_styles[] = 'label4';
+				}
+				if ($header['label5']) {
+					$css_styles[] = 'label5';
+				}
+
 				//error_log(__METHOD__.array2string($css_styles));
 				//if (in_array("check", $cols))
 				// don't overwrite check with "false" as this forces the grid to
