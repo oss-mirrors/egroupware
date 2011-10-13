@@ -591,6 +591,13 @@ class felamimail_bo
 					case 'UNSEEN':
 						$imapFilter .= $criteria .' ';
 						break;
+					case 'KEYWORD1':
+					case 'KEYWORD2':
+					case 'KEYWORD3':
+					case 'KEYWORD4':
+					case 'KEYWORD5':
+						$imapFilter .= "KEYWORD ".'$label'.substr(trim($criteria),strlen('KEYWORD'));
+						break;
 				}
 			}
 			if (isset($_criterias['range']) && !empty($_criterias['range']))

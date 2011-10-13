@@ -272,6 +272,7 @@ info	felamimail	en	Info
 insert the signature at top of the new (or reply) message when opening compose dialog (you may not be able to switch signatures)	felamimail	en	Insert the signature at top of the new message when opening compose dialog.
 invalid user name or password	felamimail	en	Invalid user name or password!
 javascript	felamimail	en	JavaScript
+job	felamimail	en	job
 jumping to end	felamimail	en	Jumping to end
 jumping to start	felamimail	en	Jumping to start
 junk	felamimail	en	Junk
@@ -280,6 +281,7 @@ keep local copy of email	felamimail	en	Keep local copy of email
 kilobytes	felamimail	en	kilobytes
 language	felamimail	en	Language
 last name	felamimail	en	Last name
+later	felamimail	en	later
 left	felamimail	en	Left
 less	felamimail	en	Less
 less than	felamimail	en	Less than
@@ -370,6 +372,7 @@ organization name	admin	en	Organization name
 original message	felamimail	en	Original message
 outgoing mail server(smtp)	felamimail	en	Outgoing mail server SMTP
 participants	felamimail	en	Participants
+personal	felamimail	en personal
 personal information	felamimail	en	Personal information
 please ask the administrator to correct the emailadmin imap server settings for you.	felamimail	en	Ask the administrator to correct the eMailAdmin IMAP server settings
 please configure access to an existing individual imap account.	felamimail	en	Configure access to an existing individual IMAP account
@@ -484,6 +487,7 @@ there is no imap server configured.	felamimail	en	There is no IMAP server config
 this folder is empty	felamimail	en	THIS FOLDER IS EMPTY
 this php has no imap support compiled in!!	felamimail	en	This PHP has no IMAP support compiled in!
 to	felamimail	en	To
+to do	felamimail	en	to do
 to mail sent to	felamimail	en	To mail sent to
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	en	To use a TLS connection, you must be running a version of PHP 5.1.0 or higher.
 translation preferences	felamimail	en	Translation preferences
@@ -513,6 +517,7 @@ unsubscribed successfully!	felamimail	en	Unsubscribed successfully!
 up	felamimail	en	Up
 updating message status	felamimail	en	Updating message status.
 updating view	felamimail	en	Updating view.
+urgent	felamimail	en	urgent
 use <a href="%1">emailadmin</a> to create profiles	felamimail	en	Use <a href="%1">eMailAdmin</a> to create profiles.
 use a signature	felamimail	en	Use signature
 use a signature?	felamimail	en	Use signature

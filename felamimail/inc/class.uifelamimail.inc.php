@@ -917,6 +917,11 @@ class uifelamimail
 				'answered'	=> 'replied',
 				'seen'		=> 'read',
 				'deleted'	=> 'deleted',
+				'keyword1'	=> 'urgent',
+				'keyword2'	=> 'job',
+				'keyword3'	=> 'personal',
+				'keyword4'	=> 'to do',
+				'keyword5'	=> 'later',
 			);
 			$selectStatus = html::select('status', $defaultSelectStatus, $statusTypes, false, "style='width:100%;' onchange='javascript:quickSearch();' id='status'");
 			$this->t->set_var('select_status', $selectStatus);
