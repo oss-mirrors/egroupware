@@ -404,43 +404,6 @@ class uiwidgets
 					'icon' => 'read_small',
 					'group' => ++$group,
 					'children' => array(
-						'flagged' => array(
-							'caption' => 'Flagged',
-							'icon' => 'unread_flagged_small',
-							'onExecute' => 'javaScript:mail_flag',
-							//'disableClass' => 'flagged',
-							//'enabled' => "javaScript:mail_disabledByClass",
-							'shortcut' => egw_keymanager::shortcut(egw_keymanager::F, true, true),
-						),
-						'unflagged' => array(
-							'caption' => 'Unflagged',
-							'icon' => 'read_flagged_small',
-							'onExecute' => 'javaScript:mail_flag',
-							//'enableClass' => 'flagged',
-							//'enabled' => "javaScript:mail_enabledByClass",
-							'shortcut' => egw_keymanager::shortcut(egw_keymanager::U, true, true),
-						),
-						'read' => array(
-							'caption' => 'Read',
-							'icon' => 'read_small',
-							'onExecute' => 'javaScript:mail_flag',
-							//'enableClass' => 'unseen',
-							//'enabled' => "javaScript:mail_enabledByClass",
-						),
-						'unread' => array(
-							'caption' => 'Unread',
-							'icon' => 'unread_small',
-							'onExecute' => 'javaScript:mail_flag',
-							//'disableClass' => 'unseen',
-							//'enabled' => "javaScript:mail_disabledByClass",
-						),
-						'undelete' => array(
-							'caption' => 'Undelete',
-							'icon' => 'revert',
-							'onExecute' => 'javaScript:mail_flag',
-							'enableClass' => 'deleted',
-							'enabled' => "javaScript:mail_enabledByClass",
-						),
 						// icons used from http://creativecommons.org/licenses/by-sa/3.0/
 						// Artist: Led24
 						// Iconset Homepage: http://led24.de/iconset
@@ -510,6 +473,48 @@ class uiwidgets
 								),
 							),
 						),
+						'flagged' => array(
+							'group' => ++$group,
+							'caption' => 'Flagged',
+							'icon' => 'unread_flagged_small',
+							'onExecute' => 'javaScript:mail_flag',
+							//'disableClass' => 'flagged',
+							//'enabled' => "javaScript:mail_disabledByClass",
+							'shortcut' => egw_keymanager::shortcut(egw_keymanager::F, true, true),
+						),
+						'unflagged' => array(
+							'group' => $group,
+							'caption' => 'Unflagged',
+							'icon' => 'read_flagged_small',
+							'onExecute' => 'javaScript:mail_flag',
+							//'enableClass' => 'flagged',
+							//'enabled' => "javaScript:mail_enabledByClass",
+							'shortcut' => egw_keymanager::shortcut(egw_keymanager::U, true, true),
+						),
+						'read' => array(
+							'group' => $group,
+							'caption' => 'Read',
+							'icon' => 'read_small',
+							'onExecute' => 'javaScript:mail_flag',
+							//'enableClass' => 'unseen',
+							//'enabled' => "javaScript:mail_enabledByClass",
+						),
+						'unread' => array(
+							'group' => $group,
+							'caption' => 'Unread',
+							'icon' => 'unread_small',
+							'onExecute' => 'javaScript:mail_flag',
+							//'disableClass' => 'unseen',
+							//'enabled' => "javaScript:mail_disabledByClass",
+						),
+						'undelete' => array(
+							'group' => $group,
+							'caption' => 'Undelete',
+							'icon' => 'revert',
+							'onExecute' => 'javaScript:mail_flag',
+							'enableClass' => 'deleted',
+							'enabled' => "javaScript:mail_enabledByClass",
+						),
 					),
 				),
 /*
@@ -570,7 +575,12 @@ class uiwidgets
 			{
 				unset($actions['tracker']);
 			}
-
+			// note this one is NOT a real CAPABILITY reported by the server, but added by selectMailbox
+			if (!$this->bofelamimail->icServer->hasCapability('SUPPORTS_KEYWORDS'))
+			{
+				unset($actions['mark']['children']['setLabel']);
+				unset($actions['mark']['children']['unsetLabel']);
+			}
 			return nextmatch_widget::egw_actions($actions, 'felamimail', '', $action_links);
 		}
 
