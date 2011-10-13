@@ -596,7 +596,7 @@ class felamimail_bo
 					case 'KEYWORD3':
 					case 'KEYWORD4':
 					case 'KEYWORD5':
-						$imapFilter .= "KEYWORD ".'$label'.substr(trim($criteria),strlen('KEYWORD'));
+						$imapFilter .= "KEYWORD ".'$label'.substr(trim($criteria),strlen('KEYWORD')).' ';
 						break;
 				}
 			}
