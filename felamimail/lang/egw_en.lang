@@ -398,6 +398,7 @@ refresh time in minutes	felamimail	en	Refresh time in minutes
 reject with	felamimail	en	Reject with
 remove	felamimail	en	Remove
 remove immediately	felamimail	en	Remove immediately
+remove label	felamimail	en	Remove keywords
 rename	felamimail	en	Rename
 rename a folder	felamimail	en	Rename a folder
 rename folder	felamimail	en	Rename folder
@@ -443,6 +444,7 @@ sent	felamimail	en	Sent
 sent folder	felamimail	en	Sent folder
 server supports mailfilter(sieve)	felamimail	en	Server supports mail filter (sieve)
 set as default	felamimail	en	Set as default
+set label	felamimail	en	Set keywords
 show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	en	Show all folders, subscribed AND unsubscribed, in main screen folder pane.
 show all messages	felamimail	en	Show all messages
 show header	felamimail	en	Show header

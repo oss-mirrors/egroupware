@@ -392,6 +392,7 @@ recent	felamimail	de	neu
 refresh time in minutes	felamimail	de	Aktualisierungsintervall in Minuten
 reject with	felamimail	de	zurückweisen mit
 remove	felamimail	de	entfernen
+remove label	felamimail	de	Schlagwort entfernen
 remove immediately	felamimail	de	sofort löschen
 rename	felamimail	de	Umbenennen
 rename a folder	felamimail	de	Ordner umbenennen
@@ -436,6 +437,7 @@ sent	felamimail	de	Gesendet
 sent folder	felamimail	de	Ordner für gesendete Nachrichten
 server supports mailfilter(sieve)	felamimail	de	Server unterstützt Mailfilter(Sieve)
 set as default	felamimail	de	Als Vorgabe setzen
+set label	felamimail	de	Schlagwort setzen
 show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	de	zeige alle Ordner (subscribed UND unsubscribed) in der Ordnerleiste des Hauptfensters
 show header	felamimail	de	Kopfzeilen anzeigen
 show new messages on main screen	felamimail	de	Neue Nachrichten auf der Startseite anzeigen?
