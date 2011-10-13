@@ -414,27 +414,27 @@ class uiwidgets
 							'group' => ++$group,
 							'children' => array(
 								'label1' => array(
-									'caption' => 'urgent',
+									'caption' => "<font color='#ff0000'>".lang('urgent')."</font>",
 									'icon' => 'mail_label1',
 									'onExecute' => 'javaScript:mail_flag',
 								),
 								'label2' => array(
-									'caption' => 'job',
+									'caption' => "<font color='#ff8000'>".lang('job')."</font>",
 									'icon' => 'mail_label2',
 									'onExecute' => 'javaScript:mail_flag',
 								),
 								'label3' => array(
-									'caption' => 'personal',
+									'caption' => "<font color='#008000'>".lang('personal')."</font>",
 									'icon' => 'mail_label3',
 									'onExecute' => 'javaScript:mail_flag',
 								),
 								'label4' => array(
-									'caption' => 'to do',
+									'caption' => "<font color='#0000ff'>".lang('to do')."</font>",
 									'icon' => 'mail_label4',
 									'onExecute' => 'javaScript:mail_flag',
 								),
 								'label5' => array(
-									'caption' => 'later',
+									'caption' => "<font color='#8000ff'>".lang('later')."</font>",
 									'icon' => 'mail_label5',
 									'onExecute' => 'javaScript:mail_flag',
 								),
@@ -447,27 +447,27 @@ class uiwidgets
 							'group' => ++$group,
 							'children' => array(
 								'unlabel1' => array(
-									'caption' => 'urgent',
+									'caption' => "<font color='#ff0000'>".lang('urgent')."</font>",
 									'icon' => 'mail_unlabel1',
 									'onExecute' => 'javaScript:mail_flag',
 								),
 								'unlabel2' => array(
-									'caption' => 'job',
+									'caption' => "<font color='#ff8000'>".lang('job')."</font>",
 									'icon' => 'mail_unlabel2',
 									'onExecute' => 'javaScript:mail_flag',
 								),
 								'unlabel3' => array(
-									'caption' => 'personal',
+									'caption' => "<font color='#008000'>".lang('personal')."</font>",
 									'icon' => 'mail_unlabel3',
 									'onExecute' => 'javaScript:mail_flag',
 								),
 								'unlabel4' => array(
-									'caption' => 'to do',
+									'caption' => "<font color='#0000ff'>".lang('to do')."</font>",
 									'icon' => 'mail_unlabel4',
 									'onExecute' => 'javaScript:mail_flag',
 								),
 								'unlabel5' => array(
-									'caption' => 'later',
+									'caption' => "<font color='#8000ff'>".lang('later')."</font>",
 									'icon' => 'mail_unlabel5',
 									'onExecute' => 'javaScript:mail_flag',
 								),
