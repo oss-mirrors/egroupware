@@ -17,7 +17,7 @@
  *
  * Plugin creates a device specific file to map alphanumeric folder names to nummeric id's.
  */
-class felamimail_activesync implements activesync_plugin_write, activesync_plugin_sendmail, activesync_plugin_meeting_response
+class felamimail_activesync implements activesync_plugin_write, activesync_plugin_sendmail, activesync_plugin_meeting_response, activesync_plugin_search_mailbox
 {
 	/**
 	 * var BackendEGW
@@ -1396,7 +1396,76 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		return $messagelist;
 	}
 
+	/**
+	 * Search mailbox for a given pattern
+	 *
+	 * @param string $searchquery
+	 * @return array with just rows (no values for keys rows, status or global_search_status!)
+	 */
+	public function getSearchResultsMailbox($searchquery)
+	{
+		if (!is_array($searchquery)) return array();
+		if ($this->debugLevel>0); debugLog(__METHOD__.__LINE__.array2string($searchquery));
+		// 19.10.2011 16:28:59 [24502] felamimail_activesync::getSearchResultsMailbox1408
+		//Array(
+		//	[query] => Array(
+		//		[0] => Array([op] => Search:And
+		//			[value] => Array(
+		//				[FolderType] => Email
+		//				[FolderId] => 101000000000
+		//				[Search:FreeText] => ttt
+		//				[subquery] => Array(
+		//					[0] => Array([op] => Search:GreaterThan
+		//						[value] => Array(
+		//							[POOMMAIL:DateReceived] => 1318975200))
+		//					[1] => Array([op] => Search:LessThan
+		//						[value] => Array(
+		//							[POOMMAIL:DateReceived] => 1319034600))))))
+		//	[rebuildresults] => 1
+		//	[deeptraversal] => 
+		//	[range] => 0-999)
+		if (isset($searchquery['rebuildresults'])) {
+			$rebuildresults = $searchquery['rebuildresults'];
+		} else {
+			$rebuildresults = false;
+		}
+		if ($this->debugLevel>0) debugLog( 'RebuildResults ['.$rebuildresults.']' );
 
+		if (isset($searchquery['deeptraversal'])) {
+			$deeptraversal = $searchquery['deeptraversal'];
+		} else {
+			$deeptraversal = false;
+		}
+		if ($this->debugLevel>0) debugLog( 'DeepTraversal ['.$deeptraversal.']' );
+
+		if (isset($searchquery['range'])) {
+			$range = explode("-",$searchquery['range']);
+			$limit = $range[1] - $range[0] + 1;
+		} else {
+			$range = false;
+		}
+		if ($this->debugLevel>0) debugLog( 'Range ['.print_r($range, true).']' );
+
+		foreach($searchquery['query'] as $k => $value) {
+			//$query = $value;
+		}
+		$folderid = $searchquery['query'][0]['value']['FolderId'];
+		$_filter = array('status'=>array('UNDELETED'),'type'=>"SINCE",'string'=> date("d-M-Y", $cutoffdate));
+		$rv = $this->splitID($folderid,$account,$_folderName,$id);
+		if ($this->debugLevel>1) debugLog (__METHOD__.' for Folder:'.$_folderName.' Filter:'.array2string($_filter));
+		$rv_messages = $this->mail->getHeaders($_folderName, $_startMessage=1, $_numberOfMessages=($limit?$limit:9999999), $_sort=0, $_reverse=false, $_filter, $_id=NULL);
+$list['rows'][] = array(
+                    "uniqueid" =>  12272172,
+                    "searchfolderid" => $_folderName,
+);
+//            if ($total > 0)
+                $list['status'] = 1;
+//            else
+//                $list['status'] = 0;
+            $list['global_search_status'] = 1;
+
+		return array();
+	}
 
 	/**
 	 * Get ID of parent Folder or '0' for folders in root
