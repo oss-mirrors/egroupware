@@ -898,7 +898,7 @@ class HTTP_WebDAV_Server
                             } elseif (isset($prop['raw'])) {
                             	$val = $this->_prop_encode('<![CDATA['.$prop['val'].']]>');
                             } else {
-	                    		$val = $this->_prop_encode(htmlspecialchars($prop['val']));
+	                    		$val = $this->_prop_encode(htmlspecialchars($prop['val'], ENT_NOQUOTES, 'utf-8'));
                             }
 	                        echo '     <'.($this->crrnd?'':'D:')."$prop[name]$ns_defs>$val".
 	                        	'</'.($this->crrnd?'':'D:')."$prop[name]>\n";
@@ -932,13 +932,22 @@ class HTTP_WebDAV_Server
 		                    		$ns_name = '';
 	                    		}
 	                    		$vals .= "<$ns_name$subprop[name]";
-	                    		if (is_array($subprop['val']))	// val contains only attributes, no value
+	                    		if (is_array($subprop['val']))
 	                    		{
-		                    		foreach($subprop['val'] as $attr => $val)
-									{
-			                    		$vals .= ' '.$attr.'="'.htmlspecialchars($val).'"';
-									}
-		                    		$vals .= '/>';
+	                    			if (isset($subprop['val'][0]))
+	                    			{
+		                    			$vals .= '>';
+		                    			$vals .= $this->_hierarchical_prop_encode($subprop['val'], $subprop['ns'], $ns_defs, $ns_hash);
+			                    		$vals .= "</$ns_name$subprop[name]>";
+	                    			}
+	                    			else	// val contains only attributes, no value
+	                    			{
+			                    		foreach($subprop['val'] as $attr => $val)
+										{
+				                    		$vals .= ' '.$attr.'="'.htmlspecialchars($val, ENT_NOQUOTES, 'utf-8').'"';
+										}
+			                    		$vals .= '/>';
+	                    			}
 	                    		}
 	                    		else
 	                    		{
@@ -946,7 +955,7 @@ class HTTP_WebDAV_Server
 	                    			if (isset($subprop['raw'])) {
 	                    				$vals .= '<![CDATA['.$subprop['val'].']]>';
 	                    			} else {
-		                    			$vals .= htmlspecialchars($subprop['val']);
+		                    			$vals .= htmlspecialchars($subprop['val'], ENT_NOQUOTES, 'utf-8');
 	                    			}
 	                    			$vals .= "</$ns_name$subprop[name]>";
 	                    		}
@@ -957,7 +966,7 @@ class HTTP_WebDAV_Server
                         	{
                         		$val = '<![CDATA['.$prop['val'].']]>';
                         	} else {
-                        		$val = htmlspecialchars($prop['val']);
+                        		$val = htmlspecialchars($prop['val'], ENT_NOQUOTES, 'utf-8');
                         	}
                         	$val = $this->_prop_encode($val);
 	                        // properties from namespaces != "DAV:" or without any namespace
@@ -1072,7 +1081,7 @@ class HTTP_WebDAV_Server
 
             if ($responsedescr) {
                 echo '  <'.($this->crrnd?'':'D:')."responsedescription>".
-                    $this->_prop_encode(htmlspecialchars($responsedescr)).
+                    $this->_prop_encode(htmlspecialchars($responsedescr, ENT_NOQUOTES, 'utf-8')).
                     '</'.($this->crrnd?'':'D:')."responsedescription>\n";
             }
 
@@ -2596,7 +2605,7 @@ class HTTP_WebDAV_Server
 
 			    	foreach($subprop as $attr => $val)
 					{
-				    	$vals .= ' '.$attr.'="'.htmlspecialchars($val).'"';
+				    	$vals .= ' '.$attr.'="'.htmlspecialchars($val, ENT_NOQUOTES, 'utf-8').'"';
 					}
 
 		             $ret .= '<'.($prop['ns'] == $ns ? ($this->cnrnd ? $ns_hash[$ns].':' : '') : $ns_hash[$prop['ns']].':').$prop['name'].
@@ -2615,7 +2624,7 @@ class HTTP_WebDAV_Server
 					{
 						$val = $this->_prop_encode('<![CDATA['.$prop['val'].']]>');
 					} else {
-						$val = $this->_prop_encode(htmlspecialchars($prop['val']));
+						$val = $this->_prop_encode(htmlspecialchars($prop['val'], ENT_NOQUOTES, 'utf-8'));
 						// for href properties we need (minimalistic) urlencoding, eg. space
 						if ($prop['name'] == 'href')
 						{
