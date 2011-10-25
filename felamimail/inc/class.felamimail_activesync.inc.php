@@ -1446,25 +1446,48 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		}
 		if ($this->debugLevel>0) debugLog( 'Range ['.print_r($range, true).']' );
 
-		foreach($searchquery['query'] as $k => $value) {
-			//$query = $value;
+		//foreach($searchquery['query'] as $k => $value) {
+		//	$query = $value;
+		//}
+		if (isset($searchquery['query'][0]['value']['FolderId'])) $folderid = $searchquery['query'][0]['value']['FolderId'];
+		// other types may be possible - we support quicksearch first (freeText in subject and from (or TO in Sent Folder))
+		if (isset($searchquery['query'][0]['value']['Search:FreeText']))
+		{
+			$type = 'quick';
+			$searchText = $searchquery['query'][0]['value']['Search:FreeText'];
 		}
-		$folderid = $searchquery['query'][0]['value']['FolderId'];
-		$_filter = array('status'=>array('UNDELETED'),'type'=>"SINCE",'string'=> date("d-M-Y", $cutoffdate));
+		if (!$folderid)
+		{
+			$_folderName = ($this->mail->sessionData['mailbox']?$this->mail->sessionData['mailbox']:'INBOX');
+			$folderid = $this->createID($account=0,$_folderName);
+		}
+//if ($searchquery['query'][0]['value'][subquery][0][op]=='Search:GreaterThan');
+//if (isset($searchquery['query'][0]['value'][subquery][0][value][POOMMAIL:DateReceived]));
+//if ($searchquery['query'][0]['value'][subquery][1][op]=='Search:LessThan');
+//if (isset($searchquery['query'][0]['value'][subquery][1][value][POOMMAIL:DateReceived]));
+//$_filter = array('status'=>array('UNDELETED'),'type'=>"SINCE",'string'=> date("d-M-Y", $cutoffdate));
 		$rv = $this->splitID($folderid,$account,$_folderName,$id);
+		$_filter = array('type'=> 'quick',
+						 'string'=> $searchText,
+						 'status'=>'any',
+						);
+
+		//$_filter[] = array('type'=>"SINCE",'string'=> date("d-M-Y", $cutoffdate));
 		if ($this->debugLevel>1) debugLog (__METHOD__.' for Folder:'.$_folderName.' Filter:'.array2string($_filter));
 		$rv_messages = $this->mail->getHeaders($_folderName, $_startMessage=1, $_numberOfMessages=($limit?$limit:9999999), $_sort=0, $_reverse=false, $_filter, $_id=NULL);
-$list['rows'][] = array(
-                    "uniqueid" =>  12272172,
-                    "searchfolderid" => $_folderName,
-);
-//            if ($total > 0)
-                $list['status'] = 1;
-//            else
-//                $list['status'] = 0;
-            $list['global_search_status'] = 1;
-
-		return array();
+		//debugLog(__METHOD__.__LINE__.array2string($rv_messages));
+		$list=array();
+		foreach((array)$rv_messages['header'] as $i => $vars)
+		{
+			$list[] = array(
+				"uniqueid" => $folderid.':'.$vars['uid'],
+				"item"	=> $vars['uid'],
+				//"parent" => ???,
+				"searchfolderid" => $folderid,
+			);
+		}
+		debugLog(__METHOD__.__LINE__.array2string($list));
+		return $list;//array();
 	}
 
 	/**
