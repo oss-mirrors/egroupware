@@ -126,7 +126,9 @@ class bookmarks_hooks
 				'type' => 'export',
 				'application' => 'bookmarks'
 			));
-			$options = array();
+			$options = array(
+				'~nextmatch~'	=>	lang('No definition')
+			);
 			foreach ((array)$definitions->get_definitions() as $identifier)
 			{
 				try
