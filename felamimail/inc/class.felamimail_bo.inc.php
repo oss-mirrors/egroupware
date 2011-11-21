@@ -4438,7 +4438,7 @@ class felamimail_bo
 					//error_log(__METHOD__.__LINE__.array2string($GLOBALS['egw_info']['user']));
 					// do not change urls for absolute images (thanks to corvuscorax)
 					//if (!preg_match('#^[A-z]+://#',$url)) {
-						error_log(__METHOD__.__LINE__.' -> '.$i.': '.array2string($images));
+						//error_log(__METHOD__.__LINE__.' -> '.$i.': '.array2string($images));
 						$filename = basename($url);
 						$directory = dirname($url);
 						($directory == '.')?$directory='':'';
@@ -4451,23 +4451,23 @@ class felamimail_bo
 						{
 							$basedir = ($_SERVER['HTTPS']?'https://':'http://'.$_SERVER['HTTP_HOST']);
 							if (strpos($myUrl,'webdav.php') !== false) // we have a webdav link, so we build a vfs/sqlfs link of it.
-							{#############
+							{
 								egw_vfs::load_wrapper('vfs');
 								list($garbage,$vfspart) = explode('webdav.php',$myUrl,2);
 								$myUrl = $vfspart;
 								$basedir = 'vfs://default';
 							}
 						}
-						if ( strlen($basedir) > 1 && substr($basedir,-1) != '/') { $basedir .= '/'; }
-						//error_log(__METHOD__.__LINE__.$myUrl);
-						$data = @file_get_contents($basedir.$myUrl);
+						if ( strlen($basedir) > 1 && substr($basedir,-1) != '/' && $myUrl[0]!='/') { $basedir .= '/'; }
+						//error_log(__METHOD__.__LINE__.$basedir.$myUrl);
+						$data = file_get_contents($basedir.urldecode($myUrl));
 						if ($data)
 						{
 							$attachment_file =tempnam($GLOBALS['egw_info']['server']['temp_dir'],$GLOBALS['egw_info']['flags']['currentapp']."_");
 							$tmpfile = fopen($attachment_file,'w');
 							fwrite($tmpfile,$data);
 							fclose($tmpfile);
-							//error_log(__METHOD__.__LINE__.' -> '.$basedir.$directory.$filename. ' TmpFile:'.$tmpfile);
+							//error_log(__METHOD__.__LINE__.' '.$url.' -> '.$basedir.$myUrl. ' TmpFile:'.$tmpfile);
 							if ( $_mailObject->AddEmbeddedImage($attachment_file, md5($filename), $filename, 'base64',$mimeType) ) {
 								$_html2parse = preg_replace("/".$images[1][$i]."=\"".preg_quote($url, '/')."\"/Ui", $images[1][$i]."=\"".$cid."\"", $_html2parse);
 							}
