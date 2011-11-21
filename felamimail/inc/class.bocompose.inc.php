@@ -787,7 +787,11 @@
 			{
 				$disableRuler = true;
 			}
-			$signature = felamimail_bo::merge($signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
+
+			if($signature)
+			{
+				$signature = felamimail_bo::merge($signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
+			}
 			if($_formData['mimeType'] =='html') {
 				$_mailObject->IsHTML(true);
 				if(!empty($signature)) {
@@ -814,6 +818,8 @@
 					}
 					$_mailObject->AltBody	= $this->convertHTMLToText($_formData['body']);
 				}
+				// convert URL Images to inline images - if possible
+				felamimail_bo::processURL2InlineImages($_mailObject, $_mailObject->Body);
 			} else {
 				$_mailObject->IsHTML(false);
 				$_mailObject->Body = $this->convertHTMLToText($_formData['body'],false);
