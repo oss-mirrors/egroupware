@@ -689,7 +689,7 @@
 			$GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID,'felamimail',$this->sessionData);
 		}
 
-		function createMessage(&$_mailObject, $_formData, $_identity, $_signature = false)
+		function createMessage(&$_mailObject, $_formData, $_identity, $_signature = false, $_convertLinks=false)
 		{
 			$bofelamimail	= $this->bofelamimail;
 			$_mailObject->PluginDir = EGW_SERVER_ROOT."/phpgwapi/inc/";
@@ -819,7 +819,7 @@
 					$_mailObject->AltBody	= $this->convertHTMLToText($_formData['body']);
 				}
 				// convert URL Images to inline images - if possible
-				felamimail_bo::processURL2InlineImages($_mailObject, $_mailObject->Body);
+				if ($_convertLinks) felamimail_bo::processURL2InlineImages($_mailObject, $_mailObject->Body);
 			} else {
 				$_mailObject->IsHTML(false);
 				$_mailObject->Body = $this->convertHTMLToText($_formData['body'],false);
@@ -986,7 +986,7 @@
 			#error_log($this->sessionData['identity']);
 			#error_log(print_r($identity,true));
 			// create the messages
-			$this->createMessage($mail, $_formData, $identity, $signature);
+			$this->createMessage($mail, $_formData, $identity, $signature, true);
 			// remember the identity
 			if ($_formData['to_infolog'] == 'on' || $_formData['to_tracker'] == 'on') $fromAddress = $mail->FromName.($mail->FromName?' <':'').$mail->From.($mail->FromName?'>':'');
 			#print "<pre>". $mail->getMessageHeader() ."</pre><hr><br>";
