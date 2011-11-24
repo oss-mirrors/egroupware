@@ -178,7 +178,7 @@ class felamimail_bo
 			$identities = array();
 			$mail = felamimail_bo::getInstance($_restoreSession, $_profileID, $validate=false); // we need an instance of felamimail_bo
 			$selectedID = $mail->getIdentitiesWithAccounts($identities);
-			$activeIdentity =& $mail->mailPreferences->getIdentity($_profileID, true);
+			if (is_object($mail->mailPreferences)) $activeIdentity =& $mail->mailPreferences->getIdentity($_profileID, true);
 			// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
 			// as we validate the profile in question and may need to return an emailadminprofile, we fetch this one all the time
 			$boemailadmin = new emailadmin_bo();
@@ -3493,7 +3493,7 @@ class felamimail_bo
 			static $isError;
 			//error_log(__METHOD__.__LINE__.'->'.$_icServerID.' called from '.function_backtrace());
 			if (is_null($isError)) $isError = egw_cache::getCache(egw_cache::INSTANCE,'email','icServerIMAP_connectionError'.trim($GLOBALS['egw_info']['user']['account_id']),null,array(),$expiration=60*5);
-			if ( isset($isError[$_icServerID]) || PEAR::isError($this->icServer->_connectionErrorObject)) 
+			if ( isset($isError[$_icServerID]) || (($this->icServer instanceof defaultimap) && PEAR::isError($this->icServer->_connectionErrorObject))) 
 			{
 				if (trim($isError[$_icServerID])==',' || trim($this->icServer->_connectionErrorObject->message) == ',')
 				{
@@ -3511,7 +3511,7 @@ class felamimail_bo
 			{
 				if (self::$debug) error_log(__METHOD__." No Object for MailPreferences found.". function_backtrace());
 				$this->errorMessage .= lang('No valid data to create MailProfile!!');
-				$isError[$_icServerID] = new PEAR_Error($this->errorMessage);
+				$isError[$_icServerID] = (($this->icServer instanceof defaultimap)?new PEAR_Error($this->errorMessage):$this->errorMessage);
 				egw_cache::setCache(egw_cache::INSTANCE,'email','icServerIMAP_connectionError'.trim($GLOBALS['egw_info']['user']['account_id']),$isError,$expiration=60*15);
 				return false;
 			}
