@@ -193,7 +193,7 @@ function view_macro_wanted()
 	foreach($pagestore->db->query("SELECT l.wiki_link, SUM(l.wiki_count) AS ct, p.wiki_title " .
 		"FROM ".$pagestore->LkTbl." AS l LEFT JOIN ".$pagestore->PgTbl." AS p " .
 		"ON l.wiki_link = p.wiki_title " .
-		"GROUP BY l.wiki_link " .
+		"GROUP BY l.wiki_link, p.wiki_title " .
 		"HAVING p.wiki_title IS NULL " .
 		"ORDER BY ct DESC, l.wiki_link",__LINE__,__FILE__) as $result)
 	{
