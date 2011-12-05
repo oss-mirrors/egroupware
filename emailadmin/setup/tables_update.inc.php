@@ -383,3 +383,13 @@ function emailadmin_upgrade1_9_002()
 	
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.003';
 }
+
+function emailadmin_upgrade1_9_003()
+{
+	$GLOBALS['egw_setup']->oProc->AlterColumn('egw_emailadmin','ea_smtp_auth_username',array(
+		'type' => 'varchar',
+		'precision' => '128',
+	));
+	
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.004';
+}

@@ -47,7 +47,7 @@ $phpgw_baseline = array(
 			'ea_group' => array('type' => 'varchar','precision' => '80'),
 			'ea_user' => array('type' => 'varchar','precision' => '80'),
 			'ea_active' => array('type' => 'int','precision' => '4'),
-			'ea_smtp_auth_username' => array('type' => 'varchar','precision' => '80'),
+			'ea_smtp_auth_username' => array('type' => 'varchar','precision' => '128'),
 			'ea_smtp_auth_password' => array('type' => 'varchar','precision' => '80'),
 			'ea_user_defined_signatures' => array('type' => 'varchar','precision' => '3'),
 			'ea_default_signature' => array('type' => 'text'),
