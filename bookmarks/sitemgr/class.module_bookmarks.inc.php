@@ -20,7 +20,7 @@ class module_bookmarks extends Module
 	 */
 	var $cat;
 	/**
-	 * @var Categories_BO
+	 *  @var bookmarks_bo
 	 */
 	var $bo;
 
@@ -34,7 +34,13 @@ class module_bookmarks extends Module
 				'type' => 'select',
 				'label' => lang('Choose the categories to display'),
 				'options' => array(),
-				'multiple' => True
+				'multiple' => True,
+			),
+			'initial_cats' => array(
+				'type' => 'select',
+				'label' => lang('Choose the categories to expand in the initial view'),
+				'options' => array(),
+				'multiple' => True,
 			)
 		);
 	}
@@ -48,7 +54,7 @@ class module_bookmarks extends Module
 		{
 			$cat_ids[$category['id']] = $GLOBALS['egw']->strip_html($category['name']);
 		}
-		$this->arguments['category']['options'] = $cat_ids;
+		$this->arguments['category']['options'] = $this->arguments['initial_cats']['options'] = $cat_ids;
 		return parent::get_user_interface();
 	}
 
@@ -58,10 +64,24 @@ class module_bookmarks extends Module
 
 		if ($produce)
 		{
+			// Check for cookies, which have not yet been extracted.
+			if (isset($_COOKIE['block'][$block->id]['expanded']))
+			{
+				$expandNow = 'no';
+			}
+			else
+			{
+				// Set the unfold cookies if not already set.
+				$expandNow = 'yes';
+			}
+
 			require_once(EGW_INCLUDE_ROOT . SEP . 'sitemgr' . SEP . 'inc' . SEP . 'class.xslt_transform.inc.php');
 			$this->add_transformer(new xslt_transform(
 				$this->find_template_dir() . SEP . 'xbel.xsl',
-				array('blockid' => $this->block->id)
+				array(
+					'blockid' => $this->block->id,
+					'expandNow' => $expandNow,
+				)
 			));
 		}
 	}
@@ -74,7 +94,15 @@ class module_bookmarks extends Module
 		}
 		else
 		{
-			$expandedcats = Array();
+			// Expand configured categories if no user-cookie is set
+			if ($arguments['initial_cats'])
+			{
+				$expandedcats = $arguments['initial_cats'];
+			}
+			else
+			{
+				$expandedcats = array();
+			}
 		}
 		$this->bo = createobject('bookmarks.bookmarks_bo');
 		return $this->bo->export($arguments['category'],'xbel',$expandedcats);
