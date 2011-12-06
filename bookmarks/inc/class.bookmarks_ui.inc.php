@@ -16,10 +16,6 @@
 
 	/* $Id$ */
 
-	define('TREE',1);
-	define('_LIST',2);
-	define('CREATE',3);
-
 	class bookmarks_ui
 	{
 		/**
