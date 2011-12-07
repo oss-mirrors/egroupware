@@ -620,7 +620,7 @@ class wiki_so	// DB-Layer
 	function new_link($page, $link)
 	{
 		static $links = array();
-
+		if (stripos($link,'webdav.php') !== false) return false; // webdav links are no wiki links, and the link table is for wiki link lookup only
 		$where = array(
 			'wiki_id' => is_array($page) && isset($page['wiki_id']) ? $page['wiki_id'] : $this->wiki_id,
 			'wiki_name'    => trim(is_array($page) ? $page['name'] : $page),
@@ -632,7 +632,7 @@ class wiki_so	// DB-Layer
 		$link = strtolower(trim($link));
 
 		$data = array('wiki_count' => ++$links[$page_uid][$link]);
-
+		//error_log(__METHOD__.__LINE__.' link 2 insert:'.trim($link));
 		if ($this->debug) echo "<p>sowiki::new_link('$where[wiki_id]:$where[wiki_name]:$where[wiki_lang]','$link') = $data[wiki_count]</p>";
 
 		if ($data['wiki_count'] == 1)
