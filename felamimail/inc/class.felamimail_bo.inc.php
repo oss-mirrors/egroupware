@@ -521,7 +521,7 @@ class felamimail_bo
 				$HierarchyDelimiter = $this->getHierarchyDelimiter();
 				$newFolderName = $parent . $HierarchyDelimiter . $folderName;
 			}
-			if (self::folderExists($newFolderName))
+			if (self::folderExists($newFolderName,true))
 			{
 				error_log(__METHOD__.__LINE__." Folder $newFolderName already exists.");
 				return $newFolderName;
@@ -1810,8 +1810,8 @@ class felamimail_bo
 			#_debug_array($folders);
 
 			$nameSpace = $this->icServer->getNameSpaces();
-			#_debug_array($nameSpace);
-			#_debug_array($delimiter);
+			//_debug_array($nameSpace);
+			//_debug_array($delimiter);
 			if(isset($nameSpace['#mh/'])) {
 				// removed the uwimap code
 				// but we need to reintroduce him later
@@ -1829,7 +1829,7 @@ class felamimail_bo
 					} else {
 						$foldersNameSpace[$type]['prefix'] = $singleNameSpace[0]['name'];
 					}
-					#echo "############## ".print_r($singleNameSpace,true)." ###################<br>";
+					//echo "############## ".print_r($singleNameSpace,true)." ###################<br>";
 					$foldersNameSpace[$type]['delimiter'] = $delimiter;
 
 					if(is_array($singleNameSpace[0])) {
@@ -1837,13 +1837,13 @@ class felamimail_bo
 						$subscribedMailboxes = $this->icServer->listsubscribedMailboxes($foldersNameSpace[$type]['prefix']);
 						if (empty($subscribedMailboxes) && $type == 'shared') $subscribedMailboxes = $this->icServer->listsubscribedMailboxes('',0);
 
-						#echo "subscribedMailboxes";_debug_array($subscribedMailboxes);
+						//echo "subscribedMailboxes";_debug_array($subscribedMailboxes);
 						if( PEAR::isError($subscribedMailboxes) ) {
 							continue;
 						}
 						$foldersNameSpace[$type]['subscribed'] = $subscribedMailboxes;
 						if (is_array($foldersNameSpace[$type]['subscribed'])) sort($foldersNameSpace[$type]['subscribed']);
-						#_debug_array($foldersNameSpace);
+						//_debug_array($foldersNameSpace);
 						if ($_subscribedOnly == true) {
 							$foldersNameSpace[$type]['all'] = (is_array($foldersNameSpace[$type]['subscribed']) ? $foldersNameSpace[$type]['subscribed'] :array());
 							continue;
@@ -1853,7 +1853,7 @@ class felamimail_bo
 							foreach ((array)$foldersNameSpace[$type]['subscribed'] as $folderName)
 							{
 								//echo __METHOD__."Checking $folderName for existence<br>";
-								if (!self::folderExists($folderName)) {
+								if (!self::folderExists($folderName,true)) {
 									echo("eMail Folder $folderName failed to exist; should be unsubscribed; Trying ...");
 									error_log(__METHOD__."-> $folderName failed to be here; should be unsubscribed");
 									if (self::subscribe($folderName, false))
@@ -1867,7 +1867,7 @@ class felamimail_bo
 						}
 
 						// fetch and sort all folders
-						#echo $type.'->'.$foldersNameSpace[$type]['prefix'].'->'.($type=='shared'?0:2)."<br>";
+						//echo $type.'->'.$foldersNameSpace[$type]['prefix'].'->'.($type=='shared'?0:2)."<br>";
 						$allMailboxesExt = $this->icServer->getMailboxes($foldersNameSpace[$type]['prefix'],2,true);
 						if (empty($allMailboxesExt) && $type == 'shared')  $allMailboxesExt = $this->icServer->getMailboxes('',0,true);
 						if( PEAR::isError($allMailboxesExt) ) {
@@ -1875,11 +1875,12 @@ class felamimail_bo
 							continue;
 						}
 						foreach ($allMailboxesExt as $mbx) {
-							#echo __METHOD__;_debug_array($mbx);
+							//echo __METHOD__;_debug_array($mbx);
+							//error_log(__METHOD__.__LINE__.array2string($mbx));
 							$allMailBoxesExtSorted[$mbx['MAILBOX']] = $mbx;
 						}
 						if (is_array($allMailBoxesExtSorted)) ksort($allMailBoxesExtSorted);
-						#_debug_array($allMailBoxesExtSorted);
+						//_debug_array($allMailBoxesExtSorted);
 						$allMailboxes = array();
 						foreach ((array)$allMailBoxesExtSorted as $mbx) {
 							#echo $mbx['MAILBOX']."<br>";
@@ -1894,7 +1895,7 @@ class felamimail_bo
 								if (is_array($buff)) $allMailboxes = array_merge($allMailboxes,$buff);
 							}
 							if (!in_array($mbx['MAILBOX'],$allMailboxes)) $allMailboxes[] = $mbx['MAILBOX'];
-							#echo "Result:";_debug_array($allMailboxes);
+							//echo "Result:";_debug_array($allMailboxes);
 						}
 						$foldersNameSpace[$type]['all'] = $allMailboxes;
 						if (is_array($foldersNameSpace[$type]['all'])) sort($foldersNameSpace[$type]['all']);
@@ -3414,7 +3415,7 @@ class felamimail_bo
 			// reduce traffic within the Instance per User; Expire every 5 Minutes
 			//error_log(__METHOD__.__LINE__.' Called with Folder:'.$_folder.function_backtrace());
 			if (is_null($folderInfo)) $folderInfo = egw_cache::getCache(egw_cache::INSTANCE,'email','icServerFolderExistsInfo'.trim($GLOBALS['egw_info']['user']['account_id']),null,array(),$expiration=60*5);
-			if (isset($folderInfo[$this->profileID][$_folder])) return $folderInfo[$this->profileID][$_folder];
+			if (isset($folderInfo[$this->profileID][$_folder]) && $forceCheck===false) return $folderInfo[$this->profileID][$_folder];
 
 			// does the folder exist???
 			//error_log(__METHOD__."->Connected?".$this->icServer->_connected.", ".$_folder.", ".($forceCheck?' forceCheck activated':'dont check on server'));
