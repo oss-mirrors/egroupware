@@ -863,7 +863,7 @@
 					{
 						egw_vfs::load_wrapper('vfs');
 					}
-					if ( stripos($attachment['type'],"text/calendar; method=")!==false && 1==2)
+					if ( stripos($attachment['type'],"text/calendar; method=")!==false )
 					{
 						$_mailObject->AltExtended = file_get_contents($attachment['file']);
 						$_mailObject->AltExtendedContentType = $attachment['type'];
