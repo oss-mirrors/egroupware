@@ -45,17 +45,22 @@
 </tr>
 
 <tr class="row_off">
+<td>{lang_Allow_creating_new_pages_(blank_for_all)}:</td>
+<td>{call_wiki_hooks::hook_new_page_permission}</td>
+</tr>
+
+<tr class="row_on">
 <td>{lang_Emailaddress_Administrator}:</td>
 <td><input name="newsettings[emailadmin]" size="30" value="{value_emailadmin}"></td>
 </tr>
 
-<tr class="row_on">
+<tr class="row_off">
 <td>{lang_InterWikiPrefix}:</td>
 <td><input name="newsettings[InterWikiPrefix]" size="30" value="{value_InterWikiPrefix}"></td>
 </tr>
 
 
-<tr class="row_off">
+<tr class="row_on">
 <td>{lang_Enable_Free_Links}:</td>
 <td>
 <select name="newsettings[Enable_Free_Links]">
@@ -65,7 +70,7 @@
 </td>
 </tr>
 
-<tr class="row_on">
+<tr class="row_off">
 <td>{lang_Enable_Wiki_Links}:</td>
 <td>
 <select name="newsettings[Enable_Wiki_Links]">
@@ -75,7 +80,7 @@
 </td>
 </tr>
 
-<tr class="row_off">
+<tr class="row_on">
 <td>{lang_Automatically_convert_pages_with_wiki-syntax_to_richtext_(if_edited)?}:</td>
 <td>
 <select name="newsettings[AutoconvertPages]">
@@ -87,7 +92,7 @@
 </td>
 </tr>
 
-<tr class="row_on">
+<tr class="row_off">
  <td>{lang_After_how_many_days_should_old_versions_of_a_page_be_removed_(0_for_never)}:</td>
  <td><input name="newsettings[ExpireLen]" size="5" value="{value_ExpireLen}"></td>
 </tr>

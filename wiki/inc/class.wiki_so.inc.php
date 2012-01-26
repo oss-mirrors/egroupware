@@ -174,6 +174,29 @@ class soWikiPage
 		if (!$this->time) $this->read(true);	// read the page (ignoring acl), if we have not done so
 
 		//echo "<p>soWikiPage::acl_check(".($readable?'readable':'writeable').") $this->name ($this->time/$this->version): readable=".print_r($this->readable, true) . ', writable=' . print_r($this->writable, true)."</p>\n";
+
+		if(!$this->exists && $this->config['new_page_permission'])
+		{
+			// Global config for creating new pages
+			$create = false;
+			if(in_array(WIKI_ACL_ALL, $this->config['new_page_permission']))
+			{
+				$create = true;
+			}
+			else if(in_array(WIKI_ACL_USER, $this->config['new_page_permission']))
+			{
+				$create = ($GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username']);
+			}
+			else if (in_array(WIKI_ACL_ADMIN, $this->config['new_page_permission']))
+			{
+				$create = isset($GLOBALS['egw_info']['user']['apps']['admin']);
+			}
+			else
+			{
+				$create = count(array_intersect($this->config['new_page_permission'], $this->memberships)) > 0;
+			}
+			return $create;
+		}
 		if (!$readable && $this->config['Anonymous_Session_Type'] != 'editable' &&
 			$GLOBALS['egw_info']['user']['account_lid'] == $this->config['anonymous_username'])
 		{

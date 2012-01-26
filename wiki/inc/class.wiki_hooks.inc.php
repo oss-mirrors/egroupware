@@ -275,4 +275,26 @@ $$Content$$'
 		error_log(__METHOD__.__LINE__. ' Redirect back to Admin Page ');
 		$GLOBALS['egw']->redirect_link('/admin/index.php');
 	}
+
+	/**
+         * Hook returning options for new_page_permission groups
+         *
+         * @param array $config
+         */
+        public static function hook_new_page_permission($config)
+        {
+		// Definitions in wiki_so
+		$groups = array(
+			'_0' =>   lang('everyone'),
+			'_1' =>  lang('users'),
+			'_2' => lang('admins'),
+		);
+		$accs = $GLOBALS['egw']->accounts->get_list('groups');
+		foreach($accs as $acc)
+		{
+			$groups[$acc['account_id']] = lang('group').' '.$acc['account_lid'];
+		}
+		return html::select('newsettings[new_page_permission]',$config['new_page_permission'],
+                        $groups,true,'',4);
+        }
 }
