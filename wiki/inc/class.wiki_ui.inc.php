@@ -80,18 +80,6 @@ class wiki_ui extends wiki_bo
 		{
 			$pg->version = $content['version'];
 		}
-		if ($pg->read() === False)	// new entry
-		{
-			$pg->lang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
-			if($GLOBALS['egw_info']['user']['preferences']['wiki']['default_read'])
-			{
-				$pg->readable = explode(',',$GLOBALS['egw_info']['user']['preferences']['wiki']['default_read']);
-			}
-			if($GLOBALS['egw_info']['user']['preferences']['wiki']['default_write'])
-			{
-				$pg->writable = explode(',',$GLOBALS['egw_info']['user']['preferences']['wiki']['default_write']);
-			}
-		}
 
 		// acl checks
 		if (!$pg->acl_check())	// no edit-rights
@@ -185,6 +173,23 @@ class wiki_ui extends wiki_bo
 					// return to view
 					$GLOBALS['egw']->redirect($this->ViewURL($content));
 					break;
+			}
+		}
+		if ($pg->read() === False)	// new entry
+		{
+			$pg->lang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
+			foreach(array('readable' => 'default_read', 'writable' => 'default_write') as $attr => $pref)
+			{
+				if($GLOBALS['egw_info']['user']['preferences']['wiki'][$pref])
+				{
+					$pref = explode(',',$GLOBALS['egw_info']['user']['preferences']['wiki'][$pref]);
+					// Preference excludes user!
+					if(count(array_intersect($pg->memberships, $pref)) == 0)
+					{
+						$pref[] = $GLOBALS['egw_info']['user']['account_primary_group'];
+					};
+					$content[$attr] = $pref;
+				}
 			}
 		}
 		$acl_values = array(
