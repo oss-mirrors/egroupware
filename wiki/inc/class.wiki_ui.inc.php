@@ -244,7 +244,6 @@ class wiki_ui extends wiki_bo
 		}
 		if ($page && !$page->acl_check(True))	// no read-rights
 		{
-die();
 			$this->tpl->location('/wiki/');
 		}
 		$html = $this->header($page).$html;
