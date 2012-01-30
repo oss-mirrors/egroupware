@@ -175,6 +175,11 @@ class wiki_ui extends wiki_bo
 					break;
 			}
 		}
+		$acl_values = array(
+			WIKI_ACL_ALL =>   lang('everyone'),
+			WIKI_ACL_USER =>  lang('users'),
+			WIKI_ACL_ADMIN => lang('admins'),
+		);
 		if ($pg->read() === False)	// new entry
 		{
 			$pg->lang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
@@ -183,8 +188,9 @@ class wiki_ui extends wiki_bo
 				if($GLOBALS['egw_info']['user']['preferences']['wiki'][$pref])
 				{
 					$pref = explode(',',$GLOBALS['egw_info']['user']['preferences']['wiki'][$pref]);
+
 					// Preference excludes user!
-					if(count(array_intersect($pg->memberships, $pref)) == 0)
+					if(count(array_intersect($pg->memberships, $pref)) == 0 && count(array_intersect(array_keys($acl_values), $pref)) == 0)
 					{
 						$pref[] = $GLOBALS['egw_info']['user']['account_primary_group'];
 					};
@@ -192,11 +198,6 @@ class wiki_ui extends wiki_bo
 				}
 			}
 		}
-		$acl_values = array(
-			WIKI_ACL_ALL =>   lang('everyone'),
-			WIKI_ACL_USER =>  lang('users'),
-			WIKI_ACL_ADMIN => lang('admins'),
-		);
 		$this->tpl->read('wiki.edit');
 
 		if ($content['is_html'] || $this->AutoconvertPages == 'never' || !html::htmlarea_availible())
@@ -243,6 +244,7 @@ class wiki_ui extends wiki_bo
 		}
 		if ($page && !$page->acl_check(True))	// no read-rights
 		{
+die();
 			$this->tpl->location('/wiki/');
 		}
 		$html = $this->header($page).$html;

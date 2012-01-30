@@ -183,18 +183,15 @@ class soWikiPage
 			{
 				$create = true;
 			}
-			else if(in_array(WIKI_ACL_USER, $this->config['new_page_permission']))
+			if(in_array(WIKI_ACL_USER, $this->config['new_page_permission']))
 			{
 				$create = ($GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username']);
 			}
-			else if (in_array(WIKI_ACL_ADMIN, $this->config['new_page_permission']))
+			if (in_array(WIKI_ACL_ADMIN, $this->config['new_page_permission']))
 			{
-				$create = isset($GLOBALS['egw_info']['user']['apps']['admin']);
+				$create = $create || isset($GLOBALS['egw_info']['user']['apps']['admin']);
 			}
-			else
-			{
-				$create = count(array_intersect($this->config['new_page_permission'], $this->memberships)) > 0;
-			}
+			$create = $create || count(array_intersect($this->config['new_page_permission'], $this->memberships)) > 0;
 			return $create;
 		}
 		if (!$readable && $this->config['Anonymous_Session_Type'] != 'editable' &&
@@ -208,18 +205,16 @@ class soWikiPage
 		{
 			$writable = True;
 		}
-		else if (in_array(WIKI_ACL_USER, $this->writable))
+		if (in_array(WIKI_ACL_USER, $this->writable))
 		{
-			$writable = $GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username'];
+			$writable = $writable || $GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username'];
 		}
-		else if (in_array(WIKI_ACL_ADMIN, $this->writable))
+		if (in_array(WIKI_ACL_ADMIN, $this->writable))
 		{
-			$writable = isset($GLOBALS['egw_info']['user']['apps']['admin']);
+			$writable = $writable || isset($GLOBALS['egw_info']['user']['apps']['admin']);
 		}
-		else
-		{
-			$writable = count(array_intersect($this->writable, $this->memberships)) > 0;
-		}
+		// eGW group memberships
+		$writable = $writable || count(array_intersect($this->writable, $this->memberships)) > 0;
 		if(!$readable) return $writable;
 
 		// Writable implies readable
@@ -227,19 +222,17 @@ class soWikiPage
 		{
 			return True;
 		}
-		else if (in_array(WIKI_ACL_USER, $this->readable))
+		if (in_array(WIKI_ACL_USER, $this->readable))
 		{
-			return $writable || ($GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username']);
+			$writable = $writable || ($GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username']);
 		}
-		else if (in_array(WIKI_ACL_ADMIN, $this->readable))
+		if (in_array(WIKI_ACL_ADMIN, $this->readable))
 		{
-			return $writable || isset($GLOBALS['egw_info']['user']['apps']['admin']);
+			$writable = $writable || isset($GLOBALS['egw_info']['user']['apps']['admin']);
 		}
-		else
-		{
-			return $writable || count(array_intersect($this->readable,$this->memberships)) > 0;
-		}
-		return False;
+		// eGW group memberships
+		$writable = $writable || count(array_intersect($this->readable,$this->memberships)) > 0;
+		return $writable;
 	}
 
 	/**
