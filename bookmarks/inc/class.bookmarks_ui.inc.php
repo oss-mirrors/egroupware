@@ -112,8 +112,11 @@
 				if ($bm_id)
 				{
 					$this->location_info['bm_id'] = $bm_id;
-					$this->view();
-					return;
+					unset($this->location_info['returnto2']);
+					$this->bo->save_session_data($this->location_info);
+					// Close popoup
+					echo "<html><body><script>opener.location.reload(); window.close();</script></body></html>\n";
+					common::egw_exit();
 				}
 			}
 			//if we come back from editing categories we restore form values
@@ -131,8 +134,10 @@
 			if ($content['cancel'])
 			{
 				unset($this->location_info['returnto2']);
-				$this->init();
-				return;
+				$this->bo->save_session_data($this->location_info);
+				// Close popoup
+				echo "<html><body><script>window.close();</script></body></html>\n";
+				common::egw_exit();
 			}
 			//store the view, we came from originally(list,tree), and the view we are in
 			$this->location_info['bookmark'] = False;
