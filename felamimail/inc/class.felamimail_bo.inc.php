@@ -4504,7 +4504,7 @@ class felamimail_bo
 					if (extension_loaded('tidy'))
 					{
 						$tidy = new tidy();
-						$cleaned = $tidy->repairString($_html, self::$tidy_config,'utf8');
+						$cleaned = $tidy->repairString($newBody, self::$tidy_config,'utf8');
 						// Found errors. Strip it all so there's some output
 						if($tidy->getStatus() == 2)
 						{
@@ -4512,7 +4512,7 @@ class felamimail_bo
 						}
 						else
 						{
-							$_html = $cleaned;
+							$newBody = $cleaned;
 						}
 					}
 					else
