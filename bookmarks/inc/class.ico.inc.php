@@ -103,12 +103,20 @@
              * Extract each icon header
              **/
             for ($i = 0; $i < $this->ico['Count']; $i ++) {
-                $icodata = unpack("CWidth/CHeight/CColorCount/CReserved/SPlanes/SBitCount/LSizeInBytes/LFileOffset", $data);
-                $icodata['FileOffset'] -= ($this->ico['Count'] * 16) + 6;
-                if ($icodata['ColorCount'] == 0) $icodata['ColorCount'] = 256;
-                $this->formats[] = $icodata;
+                if (strlen($data))
+                {
+                    $icodata = unpack("CWidth/CHeight/CColorCount/CReserved/SPlanes/SBitCount/LSizeInBytes/LFileOffset", $data);
+                    $icodata['FileOffset'] -= ($this->ico['Count'] * 16) + 6;
+                    if ($icodata['ColorCount'] == 0) $icodata['ColorCount'] = 256;
+                    $this->formats[] = $icodata;
 
-                $data = substr($data, 16);
+                    $data = substr($data, 16);
+                }
+                else
+                {
+                    error_log(__METHOD__.__LINE__.' no data available:'.array2string($this->ico));
+                    break;
+                }
             }
 
             /**
