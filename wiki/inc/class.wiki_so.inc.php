@@ -886,6 +886,7 @@ class wiki_so	// DB-Layer
 	 */
 	function rateCheck($type,$remote_addr)
 	{
+		//_debug_array(array('type'=>$type,'remoteaddr'=>$remote_addr,'rateperiod'=>$this->RatePeriod,'view'=>$this->RateView,'search'=>$this->RateSearch,'edit'=>$this->RateEdit));
 		if(!$this->RatePeriod)
 		{
 			return;
@@ -930,9 +931,9 @@ class wiki_so	// DB-Layer
 			{
 				$result[0] = $this->RatePeriod;
 			}
-			$result[1] = min($result[1] + $result[0] * $this->RateView / $this->RatePeriod,$this->RateView);
-			$result[2] = min($result[2] + $result[0] * $this->RateSearch / $this->RatePeriod,$this->RateSearch);
-			$result[3] = min($result[3] + $result[0] * $this->RateEdit / $this->RatePeriod,$this->RateEdit);
+			$result[1] = (int)min($result[1] + $result[0] * $this->RateView / $this->RatePeriod,$this->RateView);
+			$result[2] = (int)min($result[2] + $result[0] * $this->RateSearch / $this->RatePeriod,$this->RateSearch);
+			$result[3] = (int)min($result[3] + $result[0] * $this->RateEdit / $this->RatePeriod,$this->RateEdit);
 		}
 
 		switch($type)
@@ -941,6 +942,7 @@ class wiki_so	// DB-Layer
 			case 'search':	$result[2]--; break;
 			case 'edit':	$result[3]--; break;
 		}
+
 		if($result[1] < 0 || $result[2] < 0 || $result[3] < 0)
 		{
 			global $ErrorRateExceeded;
@@ -948,16 +950,17 @@ class wiki_so	// DB-Layer
 		}
 
 		// Record this action.
-
-		$this->db->insert($this->RtTbl,array(
+		$rs = $this->db->insert($this->RtTbl,array(
 				'`wiki_rate_viewLimit`'	=> $result[1],	// PostgreSQL requires mixed case names quoted!
-				'`wiki_rate_searchLimit`'	=> $result[2],
-				'`wiki_rate_editLimit`'	=> $result[3],
-				'wiki_rate_time'		=> time(),
+				'`wiki_rate_searchLimit`'	=> $result[2], 
+				'`wiki_rate_editLimit`'	=> $result[3],  
+//				'wiki_rate_viewLimit'	=> $result[1],	// PostgreSQL requires mixed case names quoted! Mysql does not
+//				'wiki_rate_searchLimit'	=> $result[2],  // update those columns, as column_data_implode does not find
+//				'wiki_rate_editLimit'	=> $result[3],  // the quoted column names -> thus the resulting query does not 
+				'wiki_rate_time'		=> time(),      // have the quoted columns to update
 			),array(
 				'wiki_rate_ip' => $remote_addr
 			),__LINE__,__FILE__);
-
 		$this->db->unlock();
 	}
 

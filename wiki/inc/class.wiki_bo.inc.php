@@ -15,6 +15,7 @@ global $ParseEngine,$DiffEngine,$DisplayEngine,$ConvertEngine,$SaveMacroEngine,$
 global $UpperPtn,$LowerPtn,$AlphaPtn,$LinkPtn,$UrlPtn,$InterwikiPtn,$MaxNesting,$MaxHeading,$MinEntries,$DayLimit;
 global $EditBase,$ViewBase,$HistoryBase,$FindBase,$FindScript;
 global $TempDir, $DiffCmd;
+global $RatePeriod, $RateView, $RateSearch, $RateEdit;
 
 require_once(EGW_INCLUDE_ROOT.'/wiki/lib/defaults.php');
 if (is_object($GLOBALS['egw']->translation) && $GLOBALS['egw']->translation->charset() == 'iso-8859-1')	// allow all iso-8859-1 extra-chars

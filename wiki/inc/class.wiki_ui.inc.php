@@ -314,7 +314,7 @@ class wiki_ui extends wiki_bo
 	 */
 	function search($return_content=false)
 	{
-		$this->rateCheck('view',$_SERVER['REMOTE_ADDR']);
+		$this->rateCheck('search',$_SERVER['REMOTE_ADDR']);
 
 		if (strlen(trim($_REQUEST['search']))==0) $_REQUEST['search'] = '*';
 
