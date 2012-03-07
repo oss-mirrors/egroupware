@@ -175,8 +175,11 @@ $$Content$$'
 		$menu_title = lang('Wiki Menu');
 		$file = Array(
 			'Recent Changes' => $GLOBALS['egw']->link('/wiki/index.php','page=RecentChanges'),
-			'Preferences' => $GLOBALS['egw']->link('/index.php',array('menuaction'=>'preferences.uisettings.index','appname'=>'wiki')),
 		);
+		if($GLOBALS['egw_info']['user']['apps']['preferences'])
+		{
+			$file['Preferences'] = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'preferences.uisettings.index','appname'=>'wiki'));
+		}
 		display_sidebox($appname,$menu_title,$file);
 
 		if ($GLOBALS['egw_info']['user']['apps']['admin'])
