@@ -114,7 +114,7 @@ $HistMax = 8;
 // $RatePeriod determines how many seconds of time to record a visitor's access
 //   to the site.  If it is set to zero, ALL RATE CHECKING AND IP ADDRESS
 //   BLOCKING WILL BE DISABLED.
-$RatePeriod = 300;
+$RatePeriod = 60; //300 is the old default, TODO: make this configurable in EGw
 
 // $RateView determines how many pages a visitor can view in $RatePeriod
 //   amount of time.
