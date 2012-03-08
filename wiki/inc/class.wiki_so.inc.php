@@ -950,17 +950,15 @@ class wiki_so	// DB-Layer
 		}
 
 		// Record this action.
-		$rs = $this->db->insert($this->RtTbl,array(
-				'`wiki_rate_viewLimit`'	=> $result[1],	// PostgreSQL requires mixed case names quoted!
-				'`wiki_rate_searchLimit`'	=> $result[2], 
-				'`wiki_rate_editLimit`'	=> $result[3],  
-//				'wiki_rate_viewLimit'	=> $result[1],	// PostgreSQL requires mixed case names quoted! Mysql does not
-//				'wiki_rate_searchLimit'	=> $result[2],  // update those columns, as column_data_implode does not find
-//				'wiki_rate_editLimit'	=> $result[3],  // the quoted column names -> thus the resulting query does not 
+		$this->db->insert($this->RtTbl, array(
+				'wiki_rate_viewLimit'	=> $result[1],	// PostgreSQL requires mixed case names quoted! Mysql does not
+				'wiki_rate_searchLimit'	=> $result[2],  // update those columns, as column_data_implode does not find
+				'wiki_rate_editLimit'	=> $result[3],  // the quoted column names -> thus the resulting query does not
 				'wiki_rate_time'		=> time(),      // have the quoted columns to update
 			),array(
 				'wiki_rate_ip' => $remote_addr
 			),__LINE__,__FILE__);
+
 		$this->db->unlock();
 	}
 
