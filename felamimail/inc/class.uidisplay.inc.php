@@ -1234,7 +1234,7 @@ blockquote[type=cite] {
 		/**
 		 * Save an attachment in the vfs
 		 *
-		 * @param string|array $ids '::' delemited mailbox::uid::part-id::is_winmail::name (::name for multiple id's)
+		 * @param string|array $ids '::' delimited mailbox::uid::part-id::is_winmail::name (::name for multiple id's)
 		 * @param string $path path in vfs (no egw_vfs::PREFIX!), only directory for multiple id's ($ids is an array)
 		 * @return string javascript eg. to close the selector window
 		 */
@@ -1267,7 +1267,7 @@ blockquote[type=cite] {
 		/**
 		 * Save an Message in the vfs
 		 *
-		 * @param string|array $ids '::' delemited mailbox::uid::part-id::is_winmail::name (::name for multiple id's)
+		 * @param string|array $ids '::' delimited mailbox::name (::name for multiple id's)
 		 * @param string $path path in vfs (no egw_vfs::PREFIX!), only directory for multiple id's ($ids is an array)
 		 * @return string javascript eg. to close the selector window
 		 */

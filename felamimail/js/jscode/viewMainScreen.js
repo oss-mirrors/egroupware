@@ -244,15 +244,7 @@ function mail_save(_action, _elems)
  */
 function mail_save2fm(_action, _elems)
 {
-//							'menuaction' => 'filemanager.filemanager_select.select',
-//							'mode' => 'saveas',
-//							'name' => $value['name'],
-//							'mime' => strtolower($value['mimeType']),
-//							'method' => 'felamimail.uidisplay.vfsSaveAttachment',
-//							'id' => $this->mailbox.'::'.$this->uid.'::'.$value['partID'].'::'.$value['is_winmail'],
-//							'label' => lang('Save'),
-//							_elems[0].data.data.subject.data
-	//alert('mail_save('+_elems[0].id+')');
+	//alert('mail_save('+_elems[0].id+')'+'->'+_elems[0].data.data.subject.data+'.eml');
 	var url = window.egw_webserverUrl+'/index.php?';
 	url += 'menuaction=filemanager.filemanager_select.select';	// todo compose for Draft folder
 	//url += '&icServer='+egw_appWindow('felamimail').activeServerID;
