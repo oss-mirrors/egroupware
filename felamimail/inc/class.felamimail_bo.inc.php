@@ -730,6 +730,11 @@ class felamimail_bo
 				{
 					exec( "cd $dir && /usr/bin/tnef --save-body --overwrite -C $dir -f ./winmail.dat" );
 				}
+				// Mac ports location
+				elseif (file_exists('/opt/local/bin/tnef'))
+				{
+					exec( "cd $dir && /opt/local/bin/tnef --save-body --overwrite -C $dir -f ./winmail.dat" );
+				}
 				elseif (exec("which tnef")) // use tnef if exsting, as it gives better results..
 				{
 					exec( "cd $dir && tnef --save-body --overwrite -C $dir -f ./winmail.dat" );
@@ -1456,7 +1461,7 @@ class felamimail_bo
 				$_html = preg_replace('/([\000-\012])/','',$_html);
 				//error_log($_html);
 			}
-			// using purify above should have tidied the tags already sufficiently 
+			// using purify above should have tidied the tags already sufficiently
 			if ($usepurify == false && $cleanTags==true)
 			{
 				if (extension_loaded('tidy'))
@@ -3511,7 +3516,7 @@ class felamimail_bo
 			if(($this->icServer instanceof defaultimap)) $folderInfo[$this->profileID][$_folder] = $this->icServer->mailboxExist($_folder);
 			//error_log(__METHOD__.__LINE__.' Folder Exists:'.$folderInfo[$this->profileID][$_folder].function_backtrace());
 
-			if(!empty($folderInfo) && isset($folderInfo[$this->profileID][$_folder]) && 
+			if(!empty($folderInfo) && isset($folderInfo[$this->profileID][$_folder]) &&
 				($folderInfo[$this->profileID][$_folder] instanceof PEAR_Error) || $folderInfo[$this->profileID][$_folder] !== true)
 			{
 				$folderInfo[$this->profileID][$_folder] = false; // set to false, whatever it was (to have a valid returnvalue for the static return)
@@ -3590,7 +3595,7 @@ class felamimail_bo
 			static $isError;
 			//error_log(__METHOD__.__LINE__.'->'.$_icServerID.' called from '.function_backtrace());
 			if (is_null($isError)) $isError = egw_cache::getCache(egw_cache::INSTANCE,'email','icServerIMAP_connectionError'.trim($GLOBALS['egw_info']['user']['account_id']),null,array(),$expiration=60*5);
-			if ( isset($isError[$_icServerID]) || (($this->icServer instanceof defaultimap) && PEAR::isError($this->icServer->_connectionErrorObject))) 
+			if ( isset($isError[$_icServerID]) || (($this->icServer instanceof defaultimap) && PEAR::isError($this->icServer->_connectionErrorObject)))
 			{
 				if (trim($isError[$_icServerID])==',' || trim($this->icServer->_connectionErrorObject->message) == ',')
 				{
