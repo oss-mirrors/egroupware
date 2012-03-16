@@ -807,6 +807,7 @@ class felamimail_bo
 
 		function deleteMessages($_messageUID, $_folder=NULL)
 		{
+			//error_log(__METHOD__.__LINE__.'->'.array2string($_messageUID).','.$_folder);
 			$msglist = '';
 			$oldMailbox = '';
 			if (is_null($_folder) || empty($_folder)) $_folder = $this->sessionData['mailbox'];
@@ -1208,7 +1209,8 @@ class felamimail_bo
 				// EnableID is needed for anchor tags
 				$config->set('Attr.EnableID',true);
 				// actual allowed tags and attributes
-				$config->set('URI.AllowedSchemes', array('http'=>true, 'https'=>true, 'ftp'=>true, 'file'=>true, 'cid'=>true, 'data'=>true));				$config->set('AutoFormat.RemoveEmpty', true);
+				$config->set('URI.AllowedSchemes', array('http'=>true, 'https'=>true, 'ftp'=>true, 'file'=>true, 'cid'=>true, 'data'=>true));
+				//$config->set('AutoFormat.RemoveEmpty', true);
 				$config->set('HTML.Allowed', 'br,p[class|align],b,i,u,s,em,pre,tt,strong,strike,center,div[class|align],hr[class|style],'.
 							'font[size|color],'.
 							'ul[class|type],ol[class|type|start],li,'.
@@ -4525,7 +4527,7 @@ class felamimail_bo
 					}
 					else
 					{
-						$newBody = html::purify($newBody);
+						$newBody = html::purify($newBody,html::purifyCreateHTMLTidyConfig());
 					}
 					//error_log(__METHOD__.__LINE__.' after purify:'.$newBody);
 					if ($preserveHTML==false) $newBody = $bofelamimail->convertHTMLToText($newBody,true);
