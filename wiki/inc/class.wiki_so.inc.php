@@ -290,7 +290,7 @@ class soWikiPage
 		{
 			$where[] = 'wiki_supercede=wiki_time';	// gives the up-to-date version only
 		}
-		$this->db->select($this->PgTbl,"*,$this->lang_priority_sql",$where,__LINE__,__FILE__,false,'ORDER BY lang_priority');
+		$this->db->select($this->PgTbl,"*,$this->lang_priority_sql",$where,__LINE__,__FILE__,false,'ORDER BY lang_priority, wiki_version DESC');
 
 		if (!$this->db->next_record())
 		{
