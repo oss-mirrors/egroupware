@@ -258,6 +258,7 @@ class soWikiPage
 	function exists()
 	{
 		$this->db->select($this->PgTbl,'wiki_lang',$where=array(
+				'wiki_id' => $this->wiki_id,
 				'wiki_name'	=> $this->name,
 				'wiki_lang' => $this->use_langs,
 				$this->acl_filter(),
@@ -277,6 +278,7 @@ class soWikiPage
 	function read($ignore_acl=false)
 	{
 		$where = array(
+			'wiki_id' => $this->wiki_id,
 			'wiki_name'	=> $this->name,
 			'wiki_lang' => !empty($this->lang) ? $this->lang : $this->use_langs,
 		);
