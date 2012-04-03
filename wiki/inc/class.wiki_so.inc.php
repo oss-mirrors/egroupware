@@ -321,8 +321,8 @@ class soWikiPage
 			$arr[$dbname] = $this->$name;
 		}
 		// Prepend , for easer LIKEing
-		$arr['wiki_readable'] = ','.implode(',',$arr['wiki_readable']).',';
-		$arr['wiki_writable'] = ','.implode(',',$arr['wiki_writable']).',';
+		$arr['wiki_readable'] = ','.(is_array($arr['wiki_readable'])?implode(',',$arr['wiki_readable']):'_0').',';
+		$arr['wiki_writable'] = ','.(is_array($arr['wiki_writable'])?implode(',',$arr['wiki_writable']):'_0').',';
 		if (is_null($arr['wiki_comment'])) $arr['wiki_comment'] = '';	// can not be null
 
 		if (empty($this->text))	unset($arr['wiki_body']);	// deleted / empty pages are written as SQL NULL
@@ -591,7 +591,7 @@ class wiki_so	// DB-Layer
 
 		$this->db->delete($this->LkTbl,array(
 			'wiki_id' => is_array($page) && isset($page['wiki_id']) ? $page['wiki_id'] : $this->wiki_id,
-			'wiki_name'    => is_array($page) ? $page['name'] : $page,
+			'wiki_name'    => trim(is_array($page) ? $page['name'] : $page),
 			'wiki_lang'    => $page['lang'],
 		),__LINE__,__FILE__);
 	}
@@ -638,20 +638,25 @@ class wiki_so	// DB-Layer
 	{
 		static $links = array();
 		if (stripos($link,'webdav.php') !== false) return false; // webdav links are no wiki links, and the link table is for wiki link lookup only
+		if (is_array($page))
+		{
+			$page['name']=trim($page['name']);
+		} else {
+			$page = trim($page);
+		}
 		$where = array(
 			'wiki_id' => is_array($page) && isset($page['wiki_id']) ? $page['wiki_id'] : $this->wiki_id,
-			'wiki_name'    => trim(is_array($page) ? $page['name'] : $page),
+			'wiki_name'    => is_array($page) ? $page['name'] : $page,
 			'wiki_lang'    => $page['lang'],
 			'wiki_link'    => trim($link),
 		);
 		// $links need to be 2-dimensional as rename, can cause new_link to be called for different pages
-		$page_uid = strtolower($where['wiki_id'].':'.$where['page'].':'.$where['lang']);
+		$page_uid = strtolower($where['wiki_id'].':'.$where['wiki_name'].':'.$where['wiki_lang']);
 		$link = strtolower(trim($link));
 
 		$data = array('wiki_count' => ++$links[$page_uid][$link]);
 		//error_log(__METHOD__.__LINE__.' link 2 insert:'.trim($link));
 		if ($this->debug) echo "<p>sowiki::new_link('$where[wiki_id]:$where[wiki_name]:$where[wiki_lang]','$link') = $data[wiki_count]</p>";
-
 		if ($data['wiki_count'] == 1)
 		{
 			$this->db->insert($this->LkTbl,array_merge($data,$where),False,__LINE__,__FILE__);
