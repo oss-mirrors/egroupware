@@ -194,10 +194,8 @@ class wiki_bo extends wiki_so
 		{
 			add_to_category($page, $values['category']);
 		}
-		// make sure the needed values for deletion of links are up to date
-		$values['wiki_id'] = $page->wiki_id;
-		$values['wiki_name'] = $page->wiki_name;
-		$values['wiki_lang'] = $page->lang;
+		// if wiki id is not set, make sure we use the wiki id used by the constructor
+		$values['wiki_id'] = ($values['wiki_id']?$values['wiki_id']:$this->wiki_id);
 		// delete the links of the page
 		$this->clear_link($values);
 		// Process save macros (eg. store the links or define interwiki entries).
