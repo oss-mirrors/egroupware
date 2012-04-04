@@ -128,7 +128,7 @@ function view_macro_orphans()
 	foreach($pages as $page)
 	{
 		if (!$pagestore->db->query("SELECT wiki_name FROM ".$pagestore->LkTbl." " .
-			"WHERE wiki_link=".$pagestore->db->quote($page[1])." AND wiki_name!=".$pagestore->db->quote($page[1]),__LINE__,__FILE__)->fetchColumn(0))
+			"WHERE wiki_id=".(int)$pagestore->wiki_id." AND wiki_link=".$pagestore->db->quote($page[1])." AND wiki_name!=".$pagestore->db->quote($page[1]),__LINE__,__FILE__)->fetchColumn(0))
 		{
 			if(!$first)                       // Don't prepend newline to first one.
 				{ $text = $text . "\n"; }
@@ -192,7 +192,8 @@ function view_macro_wanted()
 
 	foreach($pagestore->db->query("SELECT l.wiki_link, SUM(l.wiki_count) AS ct, p.wiki_title " .
 		"FROM ".$pagestore->LkTbl." AS l LEFT JOIN ".$pagestore->PgTbl." AS p " .
-		"ON l.wiki_link = p.wiki_title " .
+		"ON l.wiki_link = p.wiki_name " .
+		"WHERE l.wiki_id=".(int)$pagestore->wiki_id." ".
 		"GROUP BY l.wiki_link, p.wiki_title " .
 		"HAVING p.wiki_title IS NULL " .
 		"ORDER BY ct DESC, l.wiki_link",__LINE__,__FILE__) as $result)
@@ -219,6 +220,7 @@ function view_macro_outlinks()
 	$first = 1;
 
 	foreach($pagestore->db->query("SELECT wiki_name, SUM(wiki_count) AS ct FROM ".$pagestore->LkTbl." " .
+		"WHERE wiki_id=".(int)$pagestore->wiki_id." ".
 		"GROUP BY wiki_name ORDER BY ct DESC, wiki_name",__LINE__,__FILE__) as $result)
 	{
 		if(!$first)                         // Don't prepend newline to first one.
@@ -248,10 +250,12 @@ function view_macro_refs()
 // entertain them.  -- ScottMoonen
 
 	foreach($pagestore->db->query("SELECT wiki_link, SUM(wiki_count) AS ct FROM ".$pagestore->LkTbl." " .
+		"WHERE wiki_id=".(int)$pagestore->wiki_id." ".
 		"GROUP BY wiki_link ORDER BY ct DESC, wiki_link",__LINE__,__FILE__) as $result)
 	{
 		if ($pagestore->db->query("SELECT MAX(wiki_version) FROM ".$pagestore->PgTbl." " .
-			"WHERE wiki_title=".$pagestore->db->quote($result[0]),__LINE__,__FILE__)->fetchColumn(0))
+			"WHERE wiki_id=".(int)$pagestore->wiki_id." ".
+			"AND wiki_name=".$pagestore->db->quote($result[0]),__LINE__,__FILE__)->fetchColumn(0))
 		{
 			if(!$first)                       // Don't prepend newline to first one.
 				{ $text = $text . "\n"; }
