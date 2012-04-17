@@ -150,14 +150,27 @@ class felamimail_bo
 			else
 			{
 				// make sure the prefs are up to date for the profile to load
+				$loadfailed = false;
 				self::$instances[$_profileID]->mailPreferences	= self::$instances[$_profileID]->bopreferences->getPreferences(true,$_profileID);
 				//error_log(__METHOD__.__LINE__." ReRead the Prefs for ProfileID ".$_profileID.' called from:'.function_backtrace());
 				if (self::$instances[$_profileID]->mailPreferences) {
 					self::$instances[$_profileID]->icServer = self::$instances[$_profileID]->mailPreferences->getIncomingServer($_profileID);
+					// if we do not get an icServer object, session restore failed on bopreferences->getPreferences
+					if (!self::$instances[$_profileID]->icServer) $loadfailed=true;
 					if ($_profileID != 0) self::$instances[$_profileID]->mailPreferences->setIncomingServer(self::$instances[$_profileID]->icServer,0);
 					self::$instances[$_profileID]->ogServer = self::$instances[$_profileID]->mailPreferences->getOutgoingServer($_profileID);
 					if ($_profileID != 0) self::$instances[$_profileID]->mailPreferences->setOutgoingServer(self::$instances[$_profileID]->ogServer,0);
 					self::$instances[$_profileID]->htmlOptions  = self::$instances[$_profileID]->mailPreferences->preferences['htmlOptions'];
+				}
+				else
+				{
+					$loadfailed=true;
+				}
+				if ($loadfailed)
+				{
+					error_log(__METHOD__.__LINE__." ReRead of the Prefs for ProfileID ".$_profileID.' failed for icServer; trigger new instance. called from:'.function_backtrace());
+					// restore session seems to provide an incomplete session
+					self::$instances[$_profileID] = new felamimail_bo('utf-8',false,$_profileID);
 				}
 			}
 			self::$instances[$_profileID]->profileID = $_profileID;
@@ -361,6 +374,17 @@ class felamimail_bo
 		{
 			foreach($nameSpace as $type => $singleNameSpace)
 			{
+/*
+					if($type == 'personal' && ($singleNameSpace[2]['name'] == '#mh/' || count($nameSpace) == 1) && ($this->icServer->mailboxExist('Mail')||$this->icServer->mailboxExist('INBOX'))) {
+						// uw-imap server with mailbox prefix or dovecot maybe
+						return ($this->icServer->mailboxExist('Mail')?'Mail':'');
+					} elseif($type == 'personal' && ($singleNameSpace[2]['name'] == '#mh/' || count($nameSpace) == 1) && $this->icServer->mailboxExist('mail')) {
+						// uw-imap server with mailbox prefix or dovecot maybe
+						return 'mail';
+					} else {
+						return $singleNameSpace[0]['name'];
+					}
+*/
 				if($type == 'personal' && substr($singleNameSpace[2]['name'],0,strlen($folderName))==$folderName && ($singleNameSpace[2]['name'] == '#mh/' || count($nameSpace) == 1) && $this->icServer->mailboxExist('Mail')) {
 					// uw-imap server with mailbox prefix or dovecot maybe
 					return 'Mail';
@@ -967,8 +991,9 @@ class felamimail_bo
 			return $flags;
 		}
 
-		function getNotifyFlags ($_messageUID) {
-			$flags =  $this->icServer->getFlags($_messageUID, true);
+		function getNotifyFlags ($_messageUID, $flags=null)
+		{
+			if($flags===null) $flags =  $this->icServer->getFlags($_messageUID, true);
 			if (self::$debug) error_log(__METHOD__.$_messageUID.array2string($flags));
 			if (PEAR::isError($flags)) {
 				return null;
@@ -995,7 +1020,7 @@ class felamimail_bo
 		 */
 		function flagMessages($_flag, $_messageUID,$_folder=NULL)
 		{
-			//error_log(__METHOD__.__LINE__.'->' .$_flag."$_messageUID,$_folder");
+			//error_log(__METHOD__.__LINE__.'->' .$_flag." ".array2string($_messageUID).",$_folder");
 			if(!is_array($_messageUID)) {
 				#return false;
 				if ($_messageUID=='all')
@@ -1074,6 +1099,7 @@ class felamimail_bo
 
 			$this->sessionData['folderStatus'][$this->profileID][$this->sessionData['mailbox']]['uidValidity'] = 0;
 			$this->saveSessionData();
+			//error_log(__METHOD__.__LINE__.'->' .$_flag." ".array2string($_messageUID).",".($_folder?$_folder:$this->sessionData['mailbox']));
 			return true; // as we do not catch/examine setFlags returnValue
 		}
 
@@ -1195,51 +1221,9 @@ class felamimail_bo
 			$usepurify = false;
 			if ($usepurify)
 			{
-				// we may need a customized config, as we may allow external images, $GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs']
-
-				$config = html::purifyCreateDefaultConfig();
-
-				$config->set('Core.Encoding', (self::$displayCharset?self::$displayCharset:'UTF-8'));
-				// maybe the two following lines are useful for caching???
-				$config->set('HTML.DefinitionID', 'felamimail');
-				$config->set('HTML.DefinitionRev', 1);
-				// doctype and tidylevel
-	 			$config->set('HTML.Doctype', 'XHTML 1.0 Transitional');
-				$config->set('HTML.TidyLevel', 'light');
-				// EnableID is needed for anchor tags
-				$config->set('Attr.EnableID',true);
-				// actual allowed tags and attributes
-				$config->set('URI.AllowedSchemes', array('http'=>true, 'https'=>true, 'ftp'=>true, 'file'=>true, 'cid'=>true, 'data'=>true));
-				//$config->set('AutoFormat.RemoveEmpty', true);
-				$config->set('HTML.Allowed', 'br,p[class|align],b,i,u,s,em,pre,tt,strong,strike,center,div[class|align],hr[class|style],'.
-							'font[size|color],'.
-							'ul[class|type],ol[class|type|start],li,'.
-							'h1,h2,h3,'.
-							'span[class|style],'.
-							'table[class|border|cellpadding|cellspacing|width|style|align|bgcolor|align],'.
-							'tbody,thead,tfoot,colgroup,'.
-							'col[width|span],'.
-							'blockquote[class|cite|dir],'.
-							'tr[class|style|align|bgcolor|align|valign],'.
-							'td[class|colspan|rowspan|width|style|align|bgcolor|align|valign|nowrap],'.
-							'th[class|colspan|rowspan|width|style|align|bgcolor|align|valign|nowrap],'.
-							'a[class|href|target|name|title],'.
-							'img[class|src|alt|title]');
-				$DisableExternalResources = true;
-				if ($GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs']) $DisableExternalResources = false;
-				$config->set('URI.DisableExternalResources',$DisableExternalResources);
-				$config->set('Core.RemoveInvalidImg', false);
-				//$config->set('Attr.DefaultInvalidImage', 'Image removed by htmlpurify');
-				$config->set('Core.HiddenElements', array('script','style','head')); // strips script, style, head copletely
-
-				$config->set('Cache.SerializerPath', ($GLOBALS['egw_info']['server']['temp_dir']?$GLOBALS['egw_info']['server']['temp_dir']:sys_get_temp_dir()));
-				//$config->set('HTML.MaxImgLength',null);
-				$config->set('Cache.DefinitionImpl', null); // remove this later!
-				//$purifier = new HTMLPurifier($config);
-				//$_html = $purifier->purify( $_html );
+				// we need a customized config, as we may allow external images, $GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs']
 				if (get_magic_quotes_gpc() === 1) $_html = stripslashes($_html);
-				$_html = html::purify($_html,$config);
-	            // no scripts allowed
+				$_html = html::purify($_html);
 	            // clean out comments , should not be needed as purify should do the job.
 				$search = array(
 					'@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
@@ -1484,7 +1468,15 @@ class felamimail_bo
 				{
 					//$to = ini_get('max_execution_time');
 					//@set_time_limit(10);
-					$_html = html::purify($_html,html::purifyCreateHTMLTidyConfig());
+//$p = microtime(true);
+					$htmLawed = new egw_htmLawed();
+//$pela = microtime(true);
+					$_html = $htmLawed->egw_htmLawed($_html);
+//$le = microtime(true);
+//$a=$pela-$p;
+//$b=$le-$pela;
+//error_log(__METHOD__.__LINE__.' new egw_htmLawed:'.$a.' htmlLawed took:'.$b);
+					//error_log(__METHOD__.__LINE__.$_html);
 					//@set_time_limit($to);
 				}
 			}
@@ -3697,7 +3689,7 @@ class felamimail_bo
 		function reopen($_foldername)
 		{
 			//error_log( "------------------------reopen-<br>");
-			//error_log(print_r($this->icServer->_connected,true));
+			//error_log(__METHOD__.__LINE__.' Connected with icServer for Profile:'.$this->profileID.'?'.print_r($this->icServer->_connected,true));
 			if ($this->icServer->_connected == 1) {
 				$tretval = $this->icServer->selectMailbox($_foldername);
 			} else {
@@ -3907,7 +3899,8 @@ class felamimail_bo
 			return ($_reverse?'REVERSE ':'').$retValue;
 		}
 
-		function sendMDN($uid) {
+		function sendMDN($uid)
+		{
 			$identities = $this->mailPreferences->getIdentity();
 			$headers = $this->getMessageHeader($uid);
 			$send = CreateObject('phpgwapi.send');
@@ -3921,7 +3914,7 @@ class felamimail_bo
 				if ( preg_match('/\b'.$identity->emailAddress.'\b/',$headers['TO']) ) {
 					$send->From = $identity->emailAddress;
 					$send->FromName = $identity->realName;
-					error_log(__METHOD__.__LINE__.' using identity for send from:'.$send->From.' to match header information:'.$headers['TO']);
+					error_log(__METHOD__.__LINE__.' using identity for send from:'.$send->From.' to match header information:'.$headers['TO'].' ProfileID:'.$this->profileID.' Folder:'.$this->sessionData['mailbox']);
 					break;
 				}
 				if($identity->default) {
@@ -4349,11 +4342,11 @@ class felamimail_bo
 		{
 			$headdata = null;
 			if ($header['SUBJECT']) $headdata = lang('subject').': '.$header['SUBJECT'].($createHTML?"<br />":"\n");
-			if ($header['FROM']) $headdata .= lang('from').': '.self::convertAddressArrayToString($header['FROM']).($createHTML?"<br />":"\n");
-			if ($header['SENDER']) $headdata .= lang('sender').': '.self::convertAddressArrayToString($header['SENDER']).($createHTML?"<br />":"\n");
-			if ($header['TO']) $headdata .= lang('to').': '.self::convertAddressArrayToString($header['TO']).($createHTML?"<br />":"\n");
-			if ($header['CC']) $headdata .= lang('cc').': '.self::convertAddressArrayToString($header['CC']).($createHTML?"<br />":"\n");
-			if ($header['BCC']) $headdata .= lang('bcc').': '.self::convertAddressArrayToString($header['BCC']).($createHTML?"<br />":"\n");
+			if ($header['FROM']) $headdata .= lang('from').': '.self::convertAddressArrayToString($header['FROM'], $createHTML).($createHTML?"<br />":"\n");
+			if ($header['SENDER']) $headdata .= lang('sender').': '.self::convertAddressArrayToString($header['SENDER'], $createHTML).($createHTML?"<br />":"\n");
+			if ($header['TO']) $headdata .= lang('to').': '.self::convertAddressArrayToString($header['TO'], $createHTML).($createHTML?"<br />":"\n");
+			if ($header['CC']) $headdata .= lang('cc').': '.self::convertAddressArrayToString($header['CC'], $createHTML).($createHTML?"<br />":"\n");
+			if ($header['BCC']) $headdata .= lang('bcc').': '.self::convertAddressArrayToString($header['BCC'], $createHTML).($createHTML?"<br />":"\n");
 			if ($header['DATE']) $headdata .= lang('date').': '.$header['DATE'].($createHTML?"<br />":"\n");
 			if ($header['PRIORITY'] && $header['PRIORITY'] != 'normal') $headdata .= lang('priority').': '.$header['PRIORITY'].($createHTML?"<br />":"\n");
 			if ($header['IMPORTANCE'] && $header['IMPORTANCE'] !='normal') $headdata .= lang('importance').': '.$header['IMPORTANCE'].($createHTML?"<br />":"\n");
@@ -4376,7 +4369,7 @@ class felamimail_bo
 		 * @param array $rfcAddressArray  an addressarray as provided by felamimail retieved via egw_pear....
 		 * @return string a comma separated string with the mailaddress(es) converted to text
 		 */
-		static function convertAddressArrayToString($rfcAddressArray)
+		static function convertAddressArrayToString($rfcAddressArray, $createHTML = false)
 		{
 			//error_log(__METHOD__.__LINE__.array2string($rfcAddressArray));
 			$returnAddr ='';
@@ -4407,14 +4400,18 @@ class felamimail_bo
 					//$p = (string)$addressObject->personal;
 					$returnAddr .= (strlen($returnAddr)>0?',':'');
 					//error_log(__METHOD__.__LINE__.$p.' <'.$mb.'@'.$h.'>');
-					$returnAddr .= imap_rfc822_write_address($addressObject->mailbox, $addressObject->host, $addressObject->personal);
+					$buff = imap_rfc822_write_address($addressObject->mailbox, $addressObject->host, $addressObject->personal);
+					$buff = str_replace(array('<','>'),array('[',']'),$buff);
+					if ($createHTML) $buff = felamimail_bo::htmlspecialchars($buff);
 					//error_log(__METHOD__.__LINE__.' Address: '.$returnAddr);
+					$returnAddr .= $buff;
 				}
 			}
 			else
 			{
 				// do not mess with strings, return them untouched /* ToDo: validate string as Address */
-				if (is_string($rfcAddressArray)) return $rfcAddressArray;
+				$rfcAddressArray = str_replace(array('<','>'),array('[',']'),$rfcAddressArray);
+				if (is_string($rfcAddressArray)) return ($createHTML ? felamimail_bo::htmlspecialchars($rfcAddressArray) : $rfcAddressArray);
 			}
 			return $returnAddr;
 		}
@@ -4488,6 +4485,32 @@ class felamimail_bo
 				}
 				if (isset($bodyParts[$i]['error'])) continue;
 				if (empty($bodyParts[$i]['body'])) continue;
+				// some characterreplacements, as they fail to translate
+				$sar = array(
+					'@(\x84|\x93|\x94)@',
+					'@(\x96|\x97|\x1a)@',
+					'@(\x82|\x91|\x92)@',
+					'@(\x85)@',
+					'@(\x86)@',
+					'@(\x99)@',
+					'@(\xae)@',
+				);
+				$rar = array(
+					'"',
+					'-',
+					'\'',
+					'...',
+					'&',
+					'(TM)',
+					'(R)',
+				);
+
+				if(($bodyParts[$i]['mimeType'] == 'text/html' || $bodyParts[$i]['mimeType'] == 'text/plain') &&
+					strtoupper($bodyParts[$i]['charSet']) != 'UTF-8')
+				{
+					$bodyParts[$i]['body'] = preg_replace($sar,$rar,$bodyParts[$i]['body']);
+				}
+
 				if ($bodyParts[$i]['charSet']===false) $bodyParts[$i]['charSet'] = self::detect_encoding($bodyParts[$i]['body']);
 				// add line breaks to $bodyParts
 				//error_log(__METHOD__.__LINE__.' Charset:'.$bodyParts[$i]['charSet'].'->'.$bodyParts[$i]['body']);
@@ -4527,7 +4550,9 @@ class felamimail_bo
 					}
 					else
 					{
-						$newBody = html::purify($newBody,html::purifyCreateHTMLTidyConfig());
+						$htmLawed = new egw_htmLawed();
+						$newBody = $htmLawed->egw_htmLawed($newBody);
+						//$newBody = html::purify($newBody,html::purifyCreateHTMLTidyConfig());
 					}
 					//error_log(__METHOD__.__LINE__.' after purify:'.$newBody);
 					if ($preserveHTML==false) $newBody = $bofelamimail->convertHTMLToText($newBody,true);
