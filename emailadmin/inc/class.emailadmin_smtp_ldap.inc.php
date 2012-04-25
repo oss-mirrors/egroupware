@@ -280,7 +280,7 @@ class emailadmin_smtp_ldap extends defaultsmtp
 
 				if ($this->config['quota_attr'] && isset($allValues[0][$this->config['quota_attr']]))
 				{
-					$userData['quotaLimit'] = $allValues[0][$this->config['quota_attr']] / 1048576;
+					$userData['quotaLimit'] = $allValues[0][$this->config['quota_attr']][0] / 1048576;
 				}
 			}
 		}
