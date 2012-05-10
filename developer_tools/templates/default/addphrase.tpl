@@ -6,20 +6,21 @@
  <input name="targetlang" type="hidden" value="{targetlang}">
  <input name="app_name" type="hidden" value="{app_name}">
 
- <table border="0" align="center">
-  <tr>
-   <td>{lang_message_id}</td>
-   <td>{message_id_field}</td>
-  </tr>
+ <table border="0" width="95%">
   <tr>
    <td>{lang_app}</td>
    <td>{app_field}</td>
   </tr>
+  <tr valign="top">
+   <td width="200">{lang_message_id}</td>
+   <td>{message_id_field}</td>
+  </tr>
   <tr>
-  <tr>
+  <tr valign="top">
    <td>{lang_translation}</td>
    <td>{translation_field}</td>
   </tr>
+  <tr valign="top">
    <td>{lang_target}</td>
    <td>{target_field}</td>
   </tr>

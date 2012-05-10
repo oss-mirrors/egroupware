@@ -99,11 +99,11 @@ class uilangfile
 		$this->template->set_var('app_name',$app_name);
 
 		$this->template->set_file(array('form' => 'addphrase.tpl'));
-		$this->template->set_var('message_id_field','<input size ="40" name="entry[message_id]">');
+		$this->template->set_var('message_id_field','<textarea rows="5" style="width: 100%;" name="entry[message_id]"></textarea>');
 		if ($app_name == 'phpgwapi') $app_name = 'common';
-		$this->template->set_var('app_field',$this->lang_option($app_name,$app_name,'entry[app_name]'));
-		$this->template->set_var('translation_field','<input size ="40" name="entry[content]">');
-		$this->template->set_var('target_field','<input size ="40" name="entry[target]">');
+		$this->template->set_var('app_field',$this->lang_option($app_name,isset($entry)?$entry['app_name']:$app_name,'entry[app_name]'));
+		$this->template->set_var('translation_field','<textarea rows="5" style="width: 100%;"  name="entry[content]"></textarea>');
+		$this->template->set_var('target_field','<textarea rows="5" style="width: 100%;" name="entry[target]"></textarea>');
 
 		$this->template->set_var('lang_message_id',lang('message_id in English'));
 		$this->template->set_var('lang_app',lang('Application'));
