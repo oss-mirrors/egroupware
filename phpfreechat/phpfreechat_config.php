@@ -33,7 +33,7 @@ if ($GLOBALS['egw_info']['user']['apps']['admin'])
 /* some configured params */
 $config = config::read('phpfreechat');
 $frozen_nick = true;
-if (!empty($config['frozen_nick'])|| $config['frozen_nick']=='False') 
+if (!empty($config['frozen_nick'])|| $config['frozen_nick']=='False')
 {
 	$frozen_nick = ($config['frozen_nick']=='False'?False:True);
 }
@@ -158,7 +158,10 @@ $params["dyn_params"] = array(
 	"nickmeta",
 	"data_public_path",
 	"data_private_path",
-	"isadmin",
+	"data_public_url",
+	"server_script_url",
+ 	"isadmin",
+	'container_cfg_mysql_host','container_cfg_mysql_port','container_cfg_mysql_database','container_cfg_mysql_username','container_cfg_mysql_password',
 );
 /**
  * phpFreeChat caches all params - values (but the dyn_params) in $files_dir/phpfreechat/private/cache/default*.php
@@ -171,10 +174,10 @@ $params["server_script_url"] = $GLOBALS['egw']->link('/phpfreechat/index.php');
 $params['height'] = '400px';
 // eGroupware install_id used as serverid
 $params["serverid"] = $GLOBALS['egw_info']['server']['install_id'];
-// mysql integration: note your serverid must fit the fieldlength of your database tables server column. 
+// mysql integration: note your serverid must fit the fieldlength of your database tables server column.
 if (substr($GLOBALS['egw_info']['server']['db_type'],0,5)=='mysql')
 {
-/*  
+/*
       container_cfg_mysql_host : the host of your Database. Default value is “localhost”
       container_cfg_mysql_port : the port of your database. default value is 3306
       container_cfg_mysql_database : your database's name. Default value is “phpfreechat”
