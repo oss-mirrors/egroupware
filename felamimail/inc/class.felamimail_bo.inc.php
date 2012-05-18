@@ -5145,6 +5145,7 @@ class felamimail_bo
 						$partFetched = true;
 					}
 					if (($structure->ctype_secondary=='mixed' ||
+						 $structure->ctype_secondary=='related' ||
 						 $structure->ctype_secondary=='alternative' ||
 						 $structure->ctype_secondary=='signed') && $part->ctype_primary=='multipart')
 					{
