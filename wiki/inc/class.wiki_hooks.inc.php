@@ -77,8 +77,8 @@ class wiki_hooks
 				'admin'  => False,
 			)
 		);
-	
-/* Needs testing	
+
+/* Needs testing
 		if ($GLOBALS['egw_info']['user']['apps']['notifications'])
 		{
 			$details = array(
@@ -134,7 +134,7 @@ $$Content$$'
 		if ($GLOBALS['egw_info']['user']['apps']['filemanager'])
 		{
 			$settings['upload_dir'] = array(
-				'type'  => 'input',
+				'type'  => 'vfs_dir',
 				'label' => 'VFS upload directory',
 				'name'  => 'upload_dir',
 				'size'  => 50,
@@ -248,7 +248,7 @@ $$Content$$'
 			foreach ($ParseEngine as $k => $method) if ($method=='parse_macros' || $method=='parse_transclude' || $method=='parse_elements') array_splice($ParseEngine,$k,1);
 			//error_log(__METHOD__.__LINE__.' Method:'.array2string($ParseEngine));
 			parseText($p['text'], $ParseEngine, $ParseObject);
-			if ($bo->debug) 
+			if ($bo->debug)
 			{
 				$end = microtime(true);
 				$time= $end - $start;
@@ -266,7 +266,7 @@ $$Content$$'
 				$end = microtime(true);
 				$time= $end - $start;
 				error_log(__METHOD__.__LINE__.'['.$j.']' ." Action loop and link took ->$time seconds");
-			
+
 				$ennd = microtime(true);
 				$time= $ennd - $starrt;
 				error_log(__METHOD__.__LINE__.' ['.$i.']' ." Action for ".$p['name']." ".$p['title']." ( ".$p['lang']." ) took ->$time seconds");
