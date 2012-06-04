@@ -43,7 +43,7 @@ class felamimail_bo
 		 *
 		 * @array
 		 */
-		static $htmLawed_config = array('comment'=>1,
+		static $htmLawed_config = array('comment'=>1, //remove comments
 					//'keep_bad'=>2,
 					'balance'=>0,//turn off tag-balancing (config['balance']=>0). That will not introduce any security risk; only standards-compliant tag nesting check/filtering will be turned off (basic tag-balance will remain; i.e., there won't be any unclosed tag, etc., after filtering)
 					'tidy'=>1,
@@ -577,7 +577,7 @@ class felamimail_bo
 			}
 			$rv = $this->icServer->createMailbox($newFolderName);
 			if ( PEAR::isError($rv ) ) {
-				error_log(__METHOD__.__LINE__.' create Folder '.$newFolderName.'->'.$rv->message);
+				error_log(__METHOD__.__LINE__.' create Folder '.$newFolderName.'->'.$rv->message.' Namespace:'.array2string($this->icServer->getNameSpaces()));
 				return false;
 			}
 			$srv = $this->icServer->subscribeMailbox($newFolderName);
@@ -1240,6 +1240,7 @@ class felamimail_bo
 				// Strip out doctype in head, as htmlLawed cannot handle it TODO: Consider extracting it and adding it afterwards
 				if (stripos($_html,'!doctype')!==false) self::replaceTagsCompletley($_html,'!doctype');
 				if (stripos($_html,'?xml:namespace')!==false) self::replaceTagsCompletley($_html,'\?xml:namespace','/>',false);
+				if (stripos($_html,'?xml version')!==false) self::replaceTagsCompletley($_html,'\?xml version','\?>',false);
 				if (strpos($_html,'!CURSOR')!==false) self::replaceTagsCompletley($_html,'!CURSOR');
 				// purify got switched to htmLawed
 				$_html = html::purify($_html,self::$htmLawed_config,array(),true);
@@ -2511,7 +2512,13 @@ class felamimail_bo
 			if (self::$debug) error_log(__METHOD__.__LINE__."$_folderName,$_startMessage, $_numberOfMessages, $_sort, $reverse, ".array2string($_filter).", $_thisUIDOnly");
 			$reverse = (bool)$_reverse;
 			// get the list of messages to fetch
+			if (self::$debug) $starttime = microtime (true);
 			$this->reopen($_folderName);
+			if (self::$debug)
+			{
+				$endtime = microtime(true) - $starttime;
+				error_log(__METHOD__. " time used for reopen: ".$endtime.' for Folder:'.$_folderName);
+			}
 			//$this->icServer->selectMailbox($_folderName);
 			$rByUid = true; // try searching by uid. this var will be passed by reference to getSortedList, and may be set to false, if UID retrieval fails
 			#print "<pre>";
@@ -2528,8 +2535,13 @@ class felamimail_bo
 					//$_filter['range'] ="$_startMessage:*";
 				}
 				if (self::$debug) error_log(__METHOD__.__LINE__."$_folderName, $_sort, $reverse, ".array2string($_filter).", $rByUid");
-
+				if (self::$debug) $starttime = microtime (true);
 				$sortResult = $this->getSortedList($_folderName, $_sort, $reverse, $_filter, $rByUid, $_cacheResult);
+				if (self::$debug)
+				{
+					$endtime = microtime(true) - $starttime;
+					error_log(__METHOD__. " time used for getSortedList: ".$endtime.' for Folder:'.$_folderName.' Filter:'.array2string($_filter).' Ids:'.array2string($_thisUIDOnly));
+				}
 				if (self::$debug) error_log(__METHOD__.__LINE__.array2string($sortResult));
 				#$this->icServer->setDebug(false);
 				#print "</pre>";
@@ -2565,6 +2577,7 @@ class felamimail_bo
 
 			$queryString = implode(',', $sortResult);
 			// fetch the data for the selected messages
+			if (self::$debug) $starttime = microtime(true);
 			$headersNew = $this->icServer->getSummary($queryString, $rByUid);
 			if ($headersNew == null && empty($_thisUIDOnly)) // -> if we request uids, do not try to look for messages with ids
 			{
@@ -2578,7 +2591,12 @@ class felamimail_bo
 					$headersNew[] = $rv[0];
 				}
 			}
-			if (self::$debug) error_log(__METHOD__.__LINE__.' Query:'.$queryString.' Result:'.array2string($headersNew));
+			if (self::$debug)
+			{
+				$endtime = microtime(true) - $starttime;
+				error_log(__METHOD__. " time used for getSummary: ".$endtime.' for Folder:'.$_folderName.' Filter:'.array2string($_filter));
+				error_log(__METHOD__.__LINE__.' Query:'.$queryString.' Result:'.array2string($headersNew));
+			}
 
 			$count = 0;
 
@@ -2588,6 +2606,7 @@ class felamimail_bo
 
 			$count = 0;
 			if (is_array($headersNew)) {
+				if (self::$debug) $starttime = microtime(true);
 				foreach((array)$headersNew as $headerObject) {
 					//if($count == 0) error_log(__METHOD__.array2string($headerObject));
 					if (empty($headerObject['UID'])) continue;
@@ -2676,6 +2695,11 @@ class felamimail_bo
 					}
 
 					$count++;
+				}
+				if (self::$debug)
+				{
+					$endtime = microtime(true) - $starttime;
+					error_log(__METHOD__. " time used for the rest: ".$endtime.' for Folder:'.$_folderName);
 				}
 				//self::$debug=false;
 				// sort the messages to the requested displayorder
@@ -2926,6 +2950,7 @@ class felamimail_bo
 
 			//if ( $_uid && $partID) error_log(__METHOD__.__LINE__.array2string($structure).' Uid:'.$_uid.' PartID:'.$partID.' -> '.array2string($this->icServer->getParsedHeaders($_uid, true, $partID, true)));
 			if(isset($structure->parameters['NAME'])) {
+				if (is_array($structure->parameters['NAME'])) $structure->parameters['NAME'] = implode(' ',$structure->parameters['NAME']);
 				return rawurldecode(self::decode_header($structure->parameters['NAME']));
 			} elseif(isset($structure->dparameters['FILENAME'])) {
 				return rawurldecode(self::decode_header($structure->dparameters['FILENAME']));
@@ -4378,6 +4403,7 @@ class felamimail_bo
 					}
 				}
 				*/
+				//error_log(__METHOD__.__LINE__.' before purify:'.$newBody);
 				if ($bodyParts[$i]['mimeType'] == 'text/html') {
 					// as translation::convert reduces \r\n to \n and purifier eats \n -> peplace it with a single space
 					$newBody = str_replace("\n"," ",$newBody);
@@ -4398,13 +4424,23 @@ class felamimail_bo
 					}
 					else
 					{
+						// htmLawed filter only the 'body'
+						preg_match('`(<htm.+?<body[^>]*>)(.+?)(</body>.*?</html>)`ims', $newBody, $matches);
+						if ($matches[2])
+						{
+							$hasOther = true;
+							$newBody = $matches[2];
+						}
 						$htmLawed = new egw_htmLawed();
 						$newBody = $htmLawed->egw_htmLawed($newBody);
-						//$newBody = html::purify($newBody,html::purifyCreateHTMLTidyConfig());
+						if ($hasOther && $preserveHTML) $newBody = $matches[1]. $newBody. $matches[3];
 					}
 					//error_log(__METHOD__.__LINE__.' after purify:'.$newBody);
 					if ($preserveHTML==false) $newBody = $bofelamimail->convertHTMLToText($newBody,true);
-					$bofelamimail->getCleanHTML($newBody,false,$preserveHTML); // new Body passed by reference
+					//error_log(__METHOD__.__LINE__.' after convertHTMLToText:'.$newBody);
+					if ($preserveHTML==false) $newBody = nl2br($newBody); // we need this, as htmLawed removes \r\n
+					$bofelamimail->getCleanHTML($newBody,false,$preserveHTML); // remove stuff we regard as unwanted
+					if ($preserveHTML==false) $newBody = str_replace("<br />","\r\n",$newBody);
 					//error_log(__METHOD__.__LINE__.' after getClean:'.$newBody);
 					$message .= $newBody;
 					continue;
