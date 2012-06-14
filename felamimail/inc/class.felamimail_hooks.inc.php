@@ -895,19 +895,19 @@ class felamimail_hooks
 			if(empty($preferences->preferences['prefpreventmanagefolders']) || $preferences->preferences['prefpreventmanagefolders'] == 0) {
 				$file['Manage Folders']	= egw::link('/index.php',array('menuaction'=>'felamimail.uipreferences.listFolder'));
 			}
-                        if (is_object($preferences)) $ogServer = $preferences->getOutgoingServer(0);
-                        if(($ogServer instanceof defaultsmtp)) {
-                                if($ogServer->editForwardingAddress)
-                                {
-                                        $linkData = array
-                                        (
-                                                'menuaction'    => 'felamimail.uipreferences.editForwardingAddress',
-                                        );
-                                        //if(empty($preferences->preferences['prefpreventforwarding']) || $preferences->preferences['prefpreventforwarding'] == 0)
-                                                $file['Forwarding']     = egw::link('/index.php',$linkData);
-                                }
-                        }
-                        display_sidebox($appname,$menu_title,$file);
+			if (is_object($preferences)) $ogServer = $preferences->getOutgoingServer(0);
+			if(($ogServer instanceof defaultsmtp)) {
+				if($ogServer->editForwardingAddress)
+				{
+					$linkData = array
+						(
+							'menuaction'    => 'felamimail.uipreferences.editForwardingAddress',
+						);
+					//if(empty($preferences->preferences['prefpreventforwarding']) || $preferences->preferences['prefpreventforwarding'] == 0)
+					$file['Forwarding']     = egw::link('/index.php',$linkData);
+				}
+			}
+			display_sidebox($appname,$menu_title,$file);
 			unset($file);
 			$menu_title = 'Sieve';
 			if (is_object($preferences)) $icServer = $preferences->getIncomingServer($profileID);
