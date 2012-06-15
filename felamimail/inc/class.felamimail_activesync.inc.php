@@ -844,12 +844,12 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 			// unless your templatefolder is a subfolder of your draftfolder, and the message is in there
 			if ($this->mail->isDraftFolder($folder) && !$this->mail->isTemplateFolder($folder))
 			{
-				$bofelamimail->deleteMessages(array($uid));
+				$bofelamimail->deleteMessages(array($uid),$folder);
 			} else {
-				$this->mail->flagMessages("answered", array($uid));
+				$this->mail->flagMessages("answered", array($uid),$folder);
 				if ($smartdata['task']== "forward")
 				{
-					$this->mail->flagMessages("forwarded", array($uid));
+					$this->mail->flagMessages("forwarded", array($uid),$folder);
 				}
 			}
 		}
@@ -1884,9 +1884,11 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 	function SetReadFlag($folderid, $id, $flags)
 	{
 		// debugLog("IMAP-SetReadFlag: (fid: '$folderid'  id: '$id'  flags: '$flags' )");
+		$this->splitID($folderid, $account, $folder);
+
 		$_messageUID = (array)$id;
 		$this->_connect($this->account);
-		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$_folderid);
+		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$folder);
 		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
 
 		return $rv;
@@ -1937,7 +1939,8 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 	{
 		$_messageUID = (array)$id;
 		$this->_connect($this->account);
-		$rv = $this->mail->flagMessages((($flags->flagstatus == 2) ? "flagged" : "unflagged"), $_messageUID,$_folderid);
+		$this->splitID($folderid, $account, $folder);
+		$rv = $this->mail->flagMessages((($flags->flagstatus == 2) ? "flagged" : "unflagged"), $_messageUID,$folder);
 		debugLog("IMAP-SetFlaggedFlag -> set as " . (($flags->flagstatus == 2) ? "flagged" : "unflagged") . "-->". $rv);
 
 		return $rv;
