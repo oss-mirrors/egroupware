@@ -1889,7 +1889,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		$_messageUID = (array)$id;
 		$this->_connect($this->account);
 		$rv = $this->mail->flagMessages((($flags) ? "read" : "unread"), $_messageUID,$folder);
-		debugLog("IMAP-SetReadFlag -> set as " . (($flags) ? "read" : "unread") . "-->". $rv);
+		debugLog("IMAP-SetReadFlag -> set ".array2string($_messageUID).' in Folder '.$folder." as " . (($flags) ? "read" : "unread") . "-->". $rv);
 
 		return $rv;
 	}
@@ -1941,7 +1941,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		$this->_connect($this->account);
 		$this->splitID($folderid, $account, $folder);
 		$rv = $this->mail->flagMessages((($flags->flagstatus == 2) ? "flagged" : "unflagged"), $_messageUID,$folder);
-		debugLog("IMAP-SetFlaggedFlag -> set as " . (($flags->flagstatus == 2) ? "flagged" : "unflagged") . "-->". $rv);
+		debugLog("IMAP-SetFlaggedFlag -> set ".array2string($_messageUID).' in Folder '.$folder." as " . (($flags->flagstatus == 2) ? "flagged" : "unflagged") . "-->". $rv);
 
 		return $rv;
 	}
