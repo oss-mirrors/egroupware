@@ -698,10 +698,10 @@ function setSupportedFields($content)
 				'NOTE'          => array('note'),
 				'ORG'           => array('org_name','org_unit'),
 				'TEL;CELL'      => array('tel_cell'),
-				'TEL;HOME;FAX'  => array('tel_fax'),
+				'TEL;FAX;WORK'  => array('tel_fax'),
 				'TEL;HOME;VOICE' => array('tel_home'),
 				'TEL;PAGER'     => array('tel_pager'),
-				'TEL;WORK;VOICE' => array('tel_work'),
+				'TEL;VOICE;WORK' => array('tel_work'),
 				'TITLE'         => array('title'),
 				'URL;WORK'      => array('url'),
 				'URL;HOME'		=> array('url_home'),
@@ -952,6 +952,34 @@ function setSupportedFields($content)
 				'PHOTO'		=> array('jpegphoto'),
 				'NICKNAME'		=> array('label'),
 	);
+	$defaultFields[17] = array(  // funambol: windows sync client (10.x)
+		        'ADR;WORK'      => array('','','adr_one_street','adr_one_locality','adr_one_region',
+		        							'adr_one_postalcode','adr_one_countryname'),
+		        'ADR;HOME'      => array('','','adr_two_street','adr_two_locality','adr_two_region',
+		        							'adr_two_postalcode','adr_two_countryname'),
+		        'BDAY'          => array('bday'),
+		        'CATEGORIES'    => array('cat_id'),
+		        'EMAIL'         => array('email'),
+		        'EMAIL;HOME'    => array('email_home'),
+		        'N'             => array('n_family','n_given','n_middle','n_prefix','n_suffix'),
+		        'FN'            => array('n_fn'),
+		        'NOTE'          => array('note'),
+		        'ORG'           => array('org_name','org_unit','room'),
+		        'ROLE'          => array('role'),
+		        'CLASS'         => array('private'),
+		        'NICKNAME'      => array('label'),
+		        'TEL;CELL'      => array('tel_cell'),
+		        'TEL;FAX;WORK'  => array('tel_fax'),
+		        'TEL;HOME;FAX'  => array('tel_fax_home'),
+		        'TEL;HOME;VOICE' => array('tel_home'),
+		        'TEL;PAGER'     => array('tel_pager'),
+		        'TEL;OTHER'     => array('tel_other'),
+		        'TEL;VOICE;WORK' => array('tel_work'),
+		        'TITLE'         => array('title'),
+		        'URL'           => array('url'),
+		        'URL;HOME'      => array('url_home'),
+		        'PHOTO'         => array('jpegphoto'),
+    );
 
 	switch ($productManufacturer)
 	{
@@ -979,7 +1007,11 @@ function setSupportedFields($content)
 				case 'outlook sync client v.':
 					$supportedFields = $defaultFields[14];
 					break;
-
+					
+	     		case 'windows sync client v.':
+	     			$supportedFields = $defaultFields[17];
+					break;
+					
 				default:
 					error_log('Funambol product "' . $deviceInfo['model'] . '", assuming same as Thunderbird');
 				$supportedFields = $defaultFields[6];
