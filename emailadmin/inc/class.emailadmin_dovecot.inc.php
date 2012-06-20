@@ -196,8 +196,9 @@ class emailadmin_dovecot extends defaultimap
 		$this->openConnection(true);
 		$userData = array();
 
-		if($quota = $this->getQuotaByUser($_username)) {
-			$userData['quotaLimit'] = $quota / 1024;
+		// we are authenticated with master but for current user
+		if($quota = $this->getStorageQuotaRoot('INBOX')) {
+			$userData['quotaLimit'] = $quota['QMAX'] / 1024;
 		}
 
 		$this->disconnect();
@@ -230,33 +231,7 @@ class emailadmin_dovecot extends defaultimap
 		if(!$this->enableCyrusAdmin) {
 			return false;
 		}
-		#_debug_array($_hookValues);
-		$username 	= $_hookValues['account_lid'];
-		if(isset($_hookValues['new_passwd'])) {
-			$userPassword	= $_hookValues['new_passwd'];
-		}
-
-		if($this->_connected === true) {
-			$this->disconnect();
-		}
-
-		// we need a admin connection
-		if(!$this->openConnection(true)) {
-			return false;
-		}
-
-		// create the mailbox, with the account_lid, as it is passed from the hook values (gets transformed there if needed)
-		$mailboxName = $this->getUserMailboxString($username, $mailboxName);
-		// make sure we use the correct username here.
-		$username = $this->getMailBoxUserName($username);
-		$folderInfo = $this->getMailboxes('', $mailboxName, true);
-		if(empty($folderInfo)) {
-			if(!PEAR::isError($this->createMailbox($mailboxName))) {
-				if(PEAR::isError($this->setACL($mailboxName, $username, "lrswipcda"))) {
-					# log error message
-				}
-			}
-		}
-		$this->disconnect();
+		// mailbox get's automatic created with full rights for user
+		return true;
 	}
 }
