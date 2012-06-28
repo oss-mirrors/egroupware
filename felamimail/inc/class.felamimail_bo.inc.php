@@ -560,6 +560,7 @@ class felamimail_bo
 	*/
 	function createFolder($_parent, $_folderName, $_subscribe=false)
 	{
+		if (self::$debug) error_log(__METHOD__.__LINE__."->"."$_parent, $_folderName, $_subscribe");
 		$parent		= $this->_encodeFolderName($_parent);
 		$folderName	= $this->_encodeFolderName($_folderName);
 
@@ -1620,6 +1621,7 @@ class felamimail_bo
 		if (is_null($_ImapServerId))
 		{
 			$folders2return = array();
+			$folderInfo = array();
 		}
 		else
 		{
@@ -1628,8 +1630,14 @@ class felamimail_bo
 			{
 				unset($folders2return[$_ImapServerId]);
 			}
+			$folderInfo = egw_cache::getCache(egw_cache::INSTANCE,'email','icServerFolderExistsInfo'.trim($GLOBALS['egw_info']['user']['account_id']),null,array(),$expiration=60*5);
+			if (isset($folderInfo[$_ImapServerId]))
+			{
+				unset($folderInfo[$_ImapServerId]);
+			}
 		}
 		egw_cache::setCache(egw_cache::INSTANCE,'email','folderObjects'.trim($GLOBALS['egw_info']['user']['account_id']),$folders2return, $expiration=60*60*1);
+		egw_cache::setCache(egw_cache::INSTANCE,'email','icServerFolderExistsInfo'.trim($GLOBALS['egw_info']['user']['account_id']),$folderInfo,$expiration=60*5);
 	}
 
 	/**
@@ -1744,6 +1752,7 @@ class felamimail_bo
 					if(!$_subscribedOnly) {
 						foreach ((array)$foldersNameSpace[$type]['subscribed'] as $folderName)
 						{
+							if ($foldersNameSpace[$type]['prefix'] == $folderName || $foldersNameSpace[$type]['prefix'] == $folderName.$foldersNameSpace[$type]['delimiter']) continue;
 							//echo __METHOD__."Checking $folderName for existence<br>";
 							if (!self::folderExists($folderName,true)) {
 								echo("eMail Folder $folderName failed to exist; should be unsubscribed; Trying ...");
@@ -1777,16 +1786,23 @@ class felamimail_bo
 						#echo __METHOD__;_debug_array($allMailboxesExt);
 						continue;
 					}
+					$allMailBoxesExtSorted = array();
 					foreach ($allMailboxesExt as $mbx) {
 						//echo __METHOD__;_debug_array($mbx);
 						//error_log(__METHOD__.__LINE__.array2string($mbx));
+						if (isset($allMailBoxesExtSorted[$mbx['MAILBOX']])||
+							isset($allMailBoxesExtSorted[$mbx['MAILBOX'].$foldersNameSpace[$type]['delimiter']])||
+							(substr($mbx['MAILBOX'],-1)==$foldersNameSpace[$type]['delimiter'] && isset($allMailBoxesExtSorted[substr($mbx['MAILBOX'],0,-1)]))
+						) continue;
+					
+						//echo '#'.$mbx['MAILBOX'].':'.array2string($mbx)."#<br>";
 						$allMailBoxesExtSorted[$mbx['MAILBOX']] = $mbx;
 					}
 					if (is_array($allMailBoxesExtSorted)) ksort($allMailBoxesExtSorted);
 					//_debug_array($allMailBoxesExtSorted);
 					$allMailboxes = array();
 					foreach ((array)$allMailBoxesExtSorted as $mbx) {
-						#echo $mbx['MAILBOX']."<br>";
+						//echo $mbx['MAILBOX']."<br>";
 						if (in_array('\HasChildren',$mbx["ATTRIBUTES"]) || in_array('\Haschildren',$mbx["ATTRIBUTES"])) {
 							unset($buff);
 							//$buff = $this->icServer->getMailboxes($mbx['MAILBOX'].$delimiter,0,false);
@@ -1900,7 +1916,7 @@ class felamimail_bo
 				}
 			}
 		}
-		#echo "<br>FolderNameSpace To Process:";_debug_array($foldersNameSpace);
+		//echo "<br>FolderNameSpace To Process:";_debug_array($foldersNameSpace);
 		$autoFolderObjects = array();
 		foreach( array('personal', 'others', 'shared') as $type) {
 			if(isset($foldersNameSpace[$type])) {
@@ -1911,7 +1927,7 @@ class felamimail_bo
 				}
 				foreach((array)$listOfFolders as $folderName) {
 					//echo "<br>FolderToCheck:$folderName<br>";
-					if($_subscribedOnly && !in_array($folderName, $foldersNameSpace[$type]['all'])) {
+					if($_subscribedOnly && !(in_array($folderName, $foldersNameSpace[$type]['all'])||in_array($folderName.$foldersNameSpace[$type]['delimiter'], $foldersNameSpace[$type]['all']))) {
 						#echo "$folderName failed to be here <br>";
 						continue;
 					}
