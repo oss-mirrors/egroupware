@@ -907,6 +907,8 @@ class felamimail_bo
 				// mark messages as deleted
 				foreach((array)$_messageUID as $key =>$uid)
 				{
+					//flag messages, that are flagged for deletion as seen too
+					$this->flagMessages('read', $uid, $oldMailbox);
 					$flags = $this->getFlags($uid);
 					if (strpos( array2string($flags),'Deleted')!==false) $undelete[] = $uid;
 					unset($flags);
@@ -1588,14 +1590,6 @@ class felamimail_bo
 		}
 
 		if ( PEAR::isError($folderStatus = $this->_getStatus($_folderName,$ignoreStatusCache)) ) {
-		/*if ($folderStatus = $this->bofelamimail->getMailBoxCounters($_folderName)) {
-			$retValue['messages']	=	$folderStatus->messages;
-			$retValue['recent']		=	$folderStatus->recent;
-			$retValue['uidnext']	=	$folderStatus->uidnext;
-			$retValue['unseen']		=	$folderStatus->unseen;
-			$retValue['uidvalidity']=	$folderStatus->uidvalidity;
-		*/
-			//_debug_array($folderStatus);
 			if (self::$debug) error_log(__METHOD__." returned folderStatus for Folder $_folderName:".print_r($folderStatus->message,true));
 		} else {
 			$retValue['messages']		= $folderStatus['MESSAGES'];
@@ -1603,11 +1597,12 @@ class felamimail_bo
 			$retValue['uidnext']		= $folderStatus['UIDNEXT'];
 			$retValue['uidvalidity']	= $folderStatus['UIDVALIDITY'];
 			$retValue['unseen']		= $folderStatus['UNSEEN'];
-			if ($retValue['unseen']==0 &&
+			if (//$retValue['unseen']==0 &&
 				isset($this->mailPreferences->preferences['trustServersUnseenInfo']) && // some servers dont serve the UNSEEN information
 				$this->mailPreferences->preferences['trustServersUnseenInfo']==false)
 			{
-				$sortResult = $this->getSortedList($_folderName, $_sort=0, $_reverse=1, $_filter=array('status'=>array('UNSEEN')),$byUid=true,false);
+				// we filter for the combined status of unseen and undeleted, as this is what we show in list
+				$sortResult = $this->getSortedList($_folderName, $_sort=0, $_reverse=1, $_filter=array('status'=>array('UNSEEN','UNDELETED')),$byUid=true,false);
 				$retValue['unseen'] = count($sortResult);
 			}
 		}
@@ -2014,7 +2009,7 @@ class felamimail_bo
 	function getMailBoxCounters($folderName)
 	{
 		$folderStatus = $this->_getStatus($folderName);
-		#echo "<br> FolderStatus:";_debug_array($folderStatus);
+		//error_log(__METHOD__.__LINE__." FolderStatus:".array2string($folderStatus));
 		if ( PEAR::isError($folderStatus)) {
 			if (self::$debug) error_log(__METHOD__." returned FolderStatus for Folder $folderName:".print_r($folderStatus->message,true));
 			return false;
