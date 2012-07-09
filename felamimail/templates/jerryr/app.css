@@ -435,8 +435,13 @@ DIV.divButton {
 	height:99%;
 }
 
+#attachmentSpanAllDIV{
+	background-color:#efefdf;
+	height:260px;
+}
+
 #attachmentDIV {
-	position:fixed; 
+	position:top; 
 	background-color:#efefdf; 
 	bottom:0px; 
 	min-height:80px;
