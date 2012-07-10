@@ -1012,9 +1012,10 @@ class felamimail_bo
 	{
 		if($flags===null) $flags =  $this->icServer->getFlags($_messageUID, true);
 		if (self::$debug) error_log(__METHOD__.$_messageUID.' Flags:'.array2string($flags));
-		if (PEAR::isError($flags)) {
+		if (PEAR::isError($flags))
+		{
 			return null;
-			}
+		}
 		if ( stripos( array2string($flags),'MDNSent')!==false)
 			return true;
 
@@ -1054,64 +1055,75 @@ class felamimail_bo
 
 		switch($_flag) {
 			case "undelete":
-				$this->icServer->setFlags($_messageUID, '\\Deleted', 'remove', true);
+				$ret = $this->icServer->setFlags($_messageUID, '\\Deleted', 'remove', true);
 				break;
 			case "flagged":
-				$this->icServer->setFlags($_messageUID, '\\Flagged', 'add', true);
+				$ret = $this->icServer->setFlags($_messageUID, '\\Flagged', 'add', true);
 				break;
 			case "read":
-				$this->icServer->setFlags($_messageUID, '\\Seen', 'add', true);
+				$ret = $this->icServer->setFlags($_messageUID, '\\Seen', 'add', true);
 				break;
 			case "forwarded":
-				$this->icServer->setFlags($_messageUID, '$Forwarded', 'add', true);
+				$ret = $this->icServer->setFlags($_messageUID, '$Forwarded', 'add', true);
 			case "answered":
-				$this->icServer->setFlags($_messageUID, '\\Answered', 'add', true);
+				$ret = $this->icServer->setFlags($_messageUID, '\\Answered', 'add', true);
 				break;
 			case "unflagged":
-				$this->icServer->setFlags($_messageUID, '\\Flagged', 'remove', true);
+				$ret = $this->icServer->setFlags($_messageUID, '\\Flagged', 'remove', true);
 				break;
 			case "unread":
-				$this->icServer->setFlags($_messageUID, '\\Seen', 'remove', true);
-				$this->icServer->setFlags($_messageUID, '\\Answered', 'remove', true);
-				$this->icServer->setFlags($_messageUID, '$Forwarded', 'remove', true);
+				$ret = $this->icServer->setFlags($_messageUID, '\\Seen', 'remove', true);
+				$ret = $this->icServer->setFlags($_messageUID, '\\Answered', 'remove', true);
+				$ret = $this->icServer->setFlags($_messageUID, '$Forwarded', 'remove', true);
 				break;
 			case "mdnsent":
-				$this->icServer->setFlags($_messageUID, 'MDNSent', 'add', true);
+				$ret = $this->icServer->setFlags($_messageUID, 'MDNSent', 'add', true);
 				break;
 			case "mdnnotsent":
-				$this->icServer->setFlags($_messageUID, 'MDNnotSent', 'add', true);
+				$ret = $this->icServer->setFlags($_messageUID, 'MDNnotSent', 'add', true);
 				break;
 			case "label1":
-				$this->icServer->setFlags($_messageUID, '$label1', 'add', true);
+				$ret = $this->icServer->setFlags($_messageUID, '$label1', 'add', true);
 				break;
 			case "unlabel1":
 				$this->icServer->setFlags($_messageUID, '$label1', 'remove', true);
 				break;
 			case "label2":
-				$this->icServer->setFlags($_messageUID, '$label2', 'add', true);
+				$ret = $this->icServer->setFlags($_messageUID, '$label2', 'add', true);
 				break;
 			case "unlabel2":
-				$this->icServer->setFlags($_messageUID, '$label2', 'remove', true);
+				$ret = $this->icServer->setFlags($_messageUID, '$label2', 'remove', true);
 				break;
 			case "label3":
-				$this->icServer->setFlags($_messageUID, '$label3', 'add', true);
+				$ret = $this->icServer->setFlags($_messageUID, '$label3', 'add', true);
 				break;
 			case "unlabel3":
-				$this->icServer->setFlags($_messageUID, '$label3', 'remove', true);
+				$ret = $this->icServer->setFlags($_messageUID, '$label3', 'remove', true);
 				break;
 			case "label4":
-				$this->icServer->setFlags($_messageUID, '$label4', 'add', true);
+				$ret = $this->icServer->setFlags($_messageUID, '$label4', 'add', true);
 				break;
 			case "unlabel4":
-				$this->icServer->setFlags($_messageUID, '$label4', 'remove', true);
+				$ret = $this->icServer->setFlags($_messageUID, '$label4', 'remove', true);
 				break;
 			case "label5":
-				$this->icServer->setFlags($_messageUID, '$label5', 'add', true);
+				$ret = $this->icServer->setFlags($_messageUID, '$label5', 'add', true);
 				break;
 			case "unlabel5":
-				$this->icServer->setFlags($_messageUID, '$label5', 'remove', true);
+				$ret = $this->icServer->setFlags($_messageUID, '$label5', 'remove', true);
 				break;
 
+		}
+		if (PEAR::isError($ret))
+		{
+			if (stripos($ret->message,'Too long argument'))
+			{
+				$c = count($_messageUID);
+				$h =ceil($c/2);
+				error_log(__METHOD__.__LINE__.$ret->message." $c messages given for flagging. Trying with chunks of $h");
+				$this->flagMessages($_flag, array_slice($_messageUID,0,$h),($_folder?$_folder:$this->sessionData['mailbox']));
+				$this->flagMessages($_flag, array_slice($_messageUID,$h),($_folder?$_folder:$this->sessionData['mailbox']));
+			}
 		}
 
 		$this->sessionData['folderStatus'][$this->profileID][$this->sessionData['mailbox']]['uidValidity'] = 0;
@@ -1606,7 +1618,7 @@ class felamimail_bo
 				$this->mailPreferences->preferences['trustServersUnseenInfo']==false)
 			{
 				// we filter for the combined status of unseen and undeleted, as this is what we show in list
-				$sortResult = $this->getSortedList($_folderName, $_sort=0, $_reverse=1, $_filter=array('status'=>array('UNSEEN','UNDELETED')),$byUid=true,false);
+				$sortResult = $this->getSortedList($_folderName, $_sort=0, $_reverse=1, $_filter=array('status'=>array('UNSEEN'/*,'UNDELETED'*/)),$byUid=true,false);
 				$retValue['unseen'] = count($sortResult);
 			}
 		}
@@ -2428,12 +2440,13 @@ class felamimail_bo
 	* @param bool $resultByUid if set to true, the result is to be returned by uid, if the server does not reply
 	* 			on a query for uids, the result may be returned by IDs only, this will be indicated by this param
 	* @param bool $setSession if set to true the session will be populated with the result of the query
-	* @return bool
+	* @return mixed bool/array false or array of ids
 	*/
 	function getSortedList($_folderName, $_sort, &$_reverse, $_filter, &$resultByUid=true, $setSession=true)
 	{
 		//ToDo: FilterSpecific Cache
 		if(PEAR::isError($folderStatus = $this->icServer->examineMailbox($_folderName))) {
+			//if (stripos($folderStatus->message,'not connected') !== false); error_log(__METHOD__.__LINE__.$folderStatus->message);
 			return false;
 		}
 		//error_log(__METHOD__.__LINE__.array2string($folderStatus));
@@ -2869,8 +2882,10 @@ class felamimail_bo
 
 	function getIMAPACL($_folderName, $user='')
 	{
+		if ($_folderName =='user' || $_folderName == '--topfolder--') return false;
 		if(($this->hasCapability('ACL'))) {
 			if ( PEAR::isError($acl = $this->icServer->getACL($_folderName)) ) {
+				error_log(__METHOD__.__LINE__.array2string($acl->message));
 				return false;
 			}
 
@@ -3147,7 +3162,8 @@ class felamimail_bo
 		if(is_object($_structure)) {
 			$structure = $_structure;
 		} else {
-			$structure = $this->_getStructure($_uid, true, true);
+			$this->icServer->_cmd_counter = rand($this->icServer->_cmd_counter+1,$this->icServer->_cmd_counter+100);
+			$structure = $this->_getStructure($_uid, true);
 			if($_partID != '') {
 				$structure = $this->_getSubStructure($structure, $_partID);
 			}
@@ -3659,13 +3675,18 @@ class felamimail_bo
 
 	function reopen($_foldername)
 	{
-		//error_log( "------------------------reopen-<br>");
-		//error_log(__METHOD__.__LINE__.' Connected with icServer for Profile:'.$this->profileID.'?'.print_r($this->icServer->_connected,true));
-		if ($this->icServer->_connected == 1) {
-			$tretval = $this->icServer->selectMailbox($_foldername);
-		} else {
-			$tretval = $this->icServer->openConnection(false);
-			$tretval = $this->icServer->selectMailbox($_foldername);
+		static $folderOpened;
+		if (empty($folderOpened) || $folderOpened!=$_foldername)
+		{
+			//error_log( "------------------------reopen-<br>");
+			//error_log(__METHOD__.__LINE__.' Connected with icServer for Profile:'.$this->profileID.'?'.print_r($this->icServer->_connected,true));
+			if ($this->icServer->_connected == 1) {
+				$tretval = $this->icServer->selectMailbox($_foldername);
+			} else {
+				$tretval = $this->icServer->openConnection(false);
+				$tretval = $this->icServer->selectMailbox($_foldername);
+			}
+			$folderOpened = $_foldername;
 		}
 	}
 
