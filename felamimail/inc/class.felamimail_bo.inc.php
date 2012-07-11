@@ -1618,7 +1618,7 @@ class felamimail_bo
 				$this->mailPreferences->preferences['trustServersUnseenInfo']==false)
 			{
 				// we filter for the combined status of unseen and undeleted, as this is what we show in list
-				$sortResult = $this->getSortedList($_folderName, $_sort=0, $_reverse=1, $_filter=array('status'=>array('UNSEEN'/*,'UNDELETED'*/)),$byUid=true,false);
+				$sortResult = $this->getSortedList($_folderName, $_sort=0, $_reverse=1, $_filter=array('status'=>array('UNSEEN','UNDELETED')),$byUid=true,false);
 				$retValue['unseen'] = count($sortResult);
 			}
 		}
