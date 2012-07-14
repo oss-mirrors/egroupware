@@ -1,15 +1,13 @@
 <?php
 /**
  * eGroupWare - Polls
- * http://www.egroupware.org 
+ * http://www.egroupware.org
  *
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @package polls
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @version $Id$ 
+ * @version $Id$
  */
-
-require_once(EGW_API_INC.'/class.config.inc.php');
 
 class sopolls
 {
@@ -38,11 +36,10 @@ class sopolls
 
 	var $total = 0;
 
-	function sopolls()
+	function __construct()
 	{
 		$this->db = clone($GLOBALS['egw']->db);
 		$this->db->set_app('polls');
-		$this->config = new config('polls');
 		$this->user = $GLOBALS['egw_info']['user']['account_id'];
 	}
 
@@ -53,11 +50,7 @@ class sopolls
 	 */
 	function load_settings()
 	{
-		$this->config->read_repository();
-		
-		if (!is_array($this->config->config_data)) $this->config->config_data = array();
-		
-		return $GLOBALS['poll_settings'] = $this->config->config_data;
+		return $GLOBALS['poll_settings'] = config::read('polls');
 	}
 
 	/**
@@ -67,8 +60,10 @@ class sopolls
 	 */
 	function save_settings($data)
 	{
-		$this->config->config_data = $data;
-		$this->config->save_repository();
+		foreach($data as $name => $value)
+		{
+			config::save_value($name, $value, 'polls');
+		}
 	}
 
 	/**
@@ -94,11 +89,11 @@ class sopolls
 
 		$this->db->select($this->votes_table,'COUNT(*)',$where,__LINE__,__FILE__);
 		$this->db->next_record();
-		
+
 		//echo "<p>sopolls::get_user_votecount($poll_id,$uid,$use_ip) = ".(int)$this->db->f(0);
 		return (int) $this->db->f(0);
 	}
-	
+
 	/**
 	 * Get content of a poll
 	 *
@@ -108,7 +103,7 @@ class sopolls
 	function get_poll($poll_id)
 	{
 		$this->db->select($this->polls_table,'*',array('poll_id' => $poll_id),__LINE__,__FILE__);
-		
+
 		return $this->db->row(true);
 	}
 
@@ -136,7 +131,7 @@ class sopolls
 	{
 		$where = array('poll_id' => $poll_id);
 		if (!is_null($answer_id) && $answer_id >= 0) $where['answer_id'] = $answer_id;
-		
+
 		$this->db->select($this->answers_table,'*',$where,__LINE__,__FILE__,false,'ORDER BY LOWER(answer_text)');
 
 		$options = array();
@@ -156,7 +151,7 @@ class sopolls
 	function get_latest_poll()
 	{
 		$this->db->select($this->polls_table,'MAX(poll_id)',false,__LINE__,__FILE__);
-		
+
 		return $this->db->next_record() ? $this->db->f(0) : false;
 	}
 
@@ -173,7 +168,7 @@ class sopolls
 			'poll_id' => $poll_id,
 			'answer_text' => $answer,
 		),false,__LINE__,__FILE__);
-		
+
 		return $this->db->get_last_insert_id($this->answers_table,'answer_id');
 	}
 
@@ -193,7 +188,7 @@ class sopolls
 			'poll_votable' => $votable,
 			'poll_timestamp' => time(),
 		),false,__LINE__,__FILE__);
-		
+
 		return $this->db->get_last_insert_id('egw_polls','poll_id');
 	}
 
@@ -209,7 +204,7 @@ class sopolls
 		$where = array('poll_id' => $poll_id);
 		if ($answer_id) $where['answer_id'] = $answer_id;
 		$this->db->delete($this->answers_table,$where,__LINE__,__FILE__);
-		
+
 		return $this->db->affected_rows();
 	}
 
@@ -228,7 +223,7 @@ class sopolls
 
 		if($GLOBALS['currentpoll'] == $poll_id)
 		{
-			$this->config->save_value('currentpoll',$this->get_latest_poll());
+			config::save_value('currentpoll', $this->get_latest_poll(), 'polls');
 		}
 		return $ret;
 	}
@@ -255,9 +250,9 @@ class sopolls
 			'answer_id' => $answer_id,
 			//'answer_votable' => memberships($uid),
 		),__LINE__,__FILE__);
-		
+
 		if (!$this->db->affected_rows()) return false;	// not existing vote, answer or not allowed to vote
-		
+
 		$data = array(
 			'poll_id' => $poll_id,
 			'answer_id' => $answer_id,
@@ -314,7 +309,7 @@ class sopolls
 			'poll_id' => $poll_id,
 			'answer_id' => $answer_id,
 		),__LINE__,__FILE__);
-		
+
 		return $this->db->affected_rows();
 	}
 
@@ -334,7 +329,7 @@ class sopolls
 		if (!is_null($votable)) $data['poll_votable'] = $votable;
 
 		$this->db->update($this->polls_table,$data,array('poll_id' => $poll_id),__LINE__,__FILE__);
-		
+
 		return $this->db->affected_rows();
 	}
 
@@ -383,7 +378,7 @@ class sopolls
 		}
 		$this->db->select($this->polls_table,$cols,false,__LINE__,__FILE__,
 			isset($args['limit']) ? (int)$args['start'] : false,$order,false,(int)$args['limit'],$join);
-		
+
 		$data = array();
 		while (($row = $this->db->row(true)))
 		{
@@ -415,7 +410,7 @@ class sopolls
 	function is_anonymous()
 	{
 		static $anonymous;
-		
+
 		if (!is_null($anonymous)) return $anonymous;
 
 		//echo "<p align=right>is_anonymous=".(int)$GLOBALS['egw']->acl->check('anonymous',1,'phpgwapi')."</p>\n";
