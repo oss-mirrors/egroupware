@@ -188,7 +188,8 @@ class emailadmin_dovecot extends defaultimap
 	 */
 	function getUserData($_username)
 	{
-		if($this->_connected === true) {
+		if($this->_connected === true)
+		{
 			//error_log(__METHOD__."try to disconnect");
 			$this->disconnect();
 		}
@@ -197,7 +198,8 @@ class emailadmin_dovecot extends defaultimap
 		$userData = array();
 
 		// we are authenticated with master but for current user
-		if($quota = $this->getStorageQuotaRoot('INBOX')) {
+		if(($quota = $this->getStorageQuotaRoot('INBOX')) && !PEAR::isError($quota))
+		{
 			$userData['quotaLimit'] = $quota['QMAX'] / 1024;
 		}
 
@@ -228,7 +230,8 @@ class emailadmin_dovecot extends defaultimap
 	 */
 	function updateAccount($_hookValues)
 	{
-		if(!$this->enableCyrusAdmin) {
+		if(!$this->enableCyrusAdmin)
+		{
 			return false;
 		}
 		// mailbox get's automatic created with full rights for user
