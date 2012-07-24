@@ -10,7 +10,7 @@ class DatabaseAccess
 {
 	var $db;
 	/**
-	 * just copy the existent class $GLOBALS['phpgw']->db 
+	 * just copy the existent class $GLOBALS['phpgw']->db
 	 */
 	function connect()
 	{
@@ -64,6 +64,7 @@ class DatabaseAccess
 $db = new DatabaseAccess();
 $db->connect();
 
+if (!isset($GLOBALS['mydms'])) $GLOBALS['mydms'] = new stdClass();
 $GLOBALS['mydms']->db = new DatabaseAccess();
 $GLOBALS['mydms']->db->connect();
 
