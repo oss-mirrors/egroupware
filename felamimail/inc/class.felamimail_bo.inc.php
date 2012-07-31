@@ -1265,14 +1265,14 @@ class felamimail_bo
 			if (strpos($_html,'!CURSOR')!==false) self::replaceTagsCompletley($_html,'!CURSOR');
 			// purify got switched to htmLawed
 			$_html = html::purify($_html,self::$htmLawed_config,array(),true);
-            // clean out comments , should not be needed as purify should do the job.
+			// clean out comments , should not be needed as purify should do the job.
 			$search = array(
 				'@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
 				'@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA
 			);
 			$_html = preg_replace($search,"",$_html);
 			// remove non printable chars
-            $_html = preg_replace('/([\000-\012])/','',$_html);
+			$_html = preg_replace('/([\000-\012])/','',$_html);
 			//error_log(__METHOD__.':'.__LINE__.':'.$_html);
 		}
 		// using purify above should have tidied the tags already sufficiently
@@ -4505,7 +4505,7 @@ class felamimail_bo
 			}
 			$style .= $style2buffer;
 		}
-        // clean out comments and stuff
+		// clean out comments and stuff
 		$search = array(
 			'@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
 //			'@<!--[\s\S]*?[ \t\n\r]*-->@',   // Strip multi-line comments including CDATA
