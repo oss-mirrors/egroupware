@@ -81,6 +81,7 @@ if ($GLOBALS['egw_info']['user']['account_lid'] != 'anonymous')
 	case 'gl':
 		$params['language'] = 'gl_ES';
 		break;
+	case 'si':	// using croation for slovenian for now
 	case 'hr':
 		$params['language'] = 'hr_HR';
 		break;
@@ -130,6 +131,11 @@ if ($GLOBALS['egw_info']['user']['account_lid'] != 'anonymous')
 		$params['language'] = $GLOBALS['egw_info']['user']['preferences']['common']['lang'].'_'.
 			strtoupper($GLOBALS['egw_info']['user']['preferences']['common']['lang']);
 		break;
+	}
+	// if phpFreeChat has not translation for users language, fall back to English
+	if (!file_exists(EGW_SERVER_ROOT.'/phpfreechat/phpfreechat/i18n/'.$params['language']))
+	{
+		$params['language'] = 'en_US';
 	}
 	$params["nickmeta"] = array(
 		'Full Name' => $GLOBALS['egw_info']['user']['account_fullname'],
