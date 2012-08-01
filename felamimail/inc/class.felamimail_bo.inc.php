@@ -45,7 +45,7 @@ class felamimail_bo
 	 */
 	static $htmLawed_config = array('comment'=>1, //remove comments
 				'keep_bad'=>6,
-				'balance'=>0,//turn off tag-balancing (config['balance']=>0). That will not introduce any security risk; only standards-compliant tag nesting check/filtering will be turned off (basic tag-balance will remain; i.e., there won't be any unclosed tag, etc., after filtering)
+				'balance'=>1,//turn off tag-balancing (config['balance']=>0). That will not introduce any security risk; only standards-compliant tag nesting check/filtering will be turned off (basic tag-balance will remain; i.e., there won't be any unclosed tag, etc., after filtering)
 				'tidy'=>1,
 				'elements' => "* -script",
 				'schemes'=>'href: file, ftp, http, https, mailto; src: cid, data, file, ftp, http, https; *:file, http, https',
@@ -1263,8 +1263,16 @@ class felamimail_bo
 			if (stripos($_html,'?xml:namespace')!==false) self::replaceTagsCompletley($_html,'\?xml:namespace','/>',false);
 			if (stripos($_html,'?xml version')!==false) self::replaceTagsCompletley($_html,'\?xml version','\?>',false);
 			if (strpos($_html,'!CURSOR')!==false) self::replaceTagsCompletley($_html,'!CURSOR');
+			// htmLawed filter only the 'body'
+			//preg_match('`(<htm.+?<body[^>]*>)(.+?)(</body>.*?</html>)`ims', $_html, $matches);
+			//if ($matches[2])
+			//{
+			//	$hasOther = true;
+			//	$_html = $matches[2];
+			//}
 			// purify got switched to htmLawed
 			$_html = html::purify($_html,self::$htmLawed_config,array(),true);
+			//if ($hasOther) $_html = $matches[1]. $_html. $matches[3];
 			// clean out comments , should not be needed as purify should do the job.
 			$search = array(
 				'@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
@@ -3507,9 +3515,10 @@ class felamimail_bo
 		}
 	}
 
-	function folderExists($_folder, $forceCheck=false)
+	function folderExists($_folder, $_forceCheck=false)
 	{
 		static $folderInfo;
+		$forceCheck = $_forceCheck;
 		if (empty($_folder))
 		{
 			error_log(__METHOD__.__LINE__.' Called with empty Folder:'.$_folder.function_backtrace());
@@ -3526,7 +3535,11 @@ class felamimail_bo
 		}
 		else
 		{
-			if ($forceCheck === false) error_log(__METHOD__.__LINE__.' No cached Info on Folder:'.$_folder.' for Profile:'.$this->profileID.' FolderExistsInfoCache:'.array2string($folderInfo[$this->profileID]));
+			if ($forceCheck === false)
+			{
+				//error_log(__METHOD__.__LINE__.' No cached Info on Folder:'.$_folder.' for Profile:'.$this->profileID.' FolderExistsInfoCache:'.array2string($folderInfo[$this->profileID]));
+				$forceCheck = true; // try to force the check, in case there is no connection, we may need that
+			}
 		}
 
 		// does the folder exist???
