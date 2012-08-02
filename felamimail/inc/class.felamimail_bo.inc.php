@@ -3681,7 +3681,8 @@ class felamimail_bo
 			//error_log(__METHOD__." using existing Connection ProfileID:".$_icServerID.' Status:'.print_r($this->icServer->_connected,true));
 		} else {
 			//error_log( "-------------------------->open connection for Server with profileID:".$_icServerID.function_backtrace());
-			$tretval = $this->icServer->openConnection($_adminConnection);
+			$timeout = felamimail_bo::getTimeOut();
+			$tretval = $this->icServer->openConnection($_adminConnection,$timeout);
 			if ( PEAR::isError($tretval) || $tretval===false)
 			{
 				$isError[$_icServerID] = ($tretval?$tretval->message:$this->icServer->_connectionErrorObject->message);
@@ -3699,6 +3700,18 @@ class felamimail_bo
 		//error_log(__METHOD__.__LINE__.array2string($sUF));
 
 		return $tretval;
+	}
+
+	/**
+	 * getTimeOut
+	 *
+	 * @return int - timeout (either set or default 20)
+	 */
+	static function getTimeOut()
+	{
+		$timeout = $GLOBALS['egw_info']['user']['preferences']['felamimail']['connectionTimeout'];
+		if (empty($timeout)) $timeout = 20; // this is the default value
+		return $timeout;
 	}
 
 	/**
