@@ -3705,12 +3705,14 @@ class felamimail_bo
 	/**
 	 * getTimeOut
 	 *
-	 * @return int - timeout (either set or default 20)
+	 * @param string _use decide if the use is for IMAP or SIEVE, by now only the default differs
+	 *
+	 * @return int - timeout (either set or default 20/10)
 	 */
-	static function getTimeOut()
+	static function getTimeOut($_use='IMAP')
 	{
 		$timeout = $GLOBALS['egw_info']['user']['preferences']['felamimail']['connectionTimeout'];
-		if (empty($timeout)) $timeout = 20; // this is the default value
+		if (empty($timeout)) $timeout = ($_use=='SIEVE'?10:20); // this is the default value
 		return $timeout;
 	}
 
