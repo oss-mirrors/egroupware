@@ -5,7 +5,8 @@ add answers	polls	sk	Pridať odpovede
 add new poll question	polls	sk	Pridať novú otázku pre voľbu
 add questions	polls	sk	Pridať otázky
 administrators	polls	sk	Správcovia
-allow users to vote more then once	polls	sk	Pridať používateľov s možnosťou opakovanej voľby
+allow users to change their vote	polls	sk	Dovoliť používateľom zmeniť svoju voľbu
+allow users to vote more then once	polls	sk	Dovoliť používateľom voliť viac než raz
 allways use latest poll	polls	sk	Vždy použiť najnovšiu voľbu
 answer	polls	sk	Odpoveď
 answer has been added to poll	polls	sk	Odpoveď bola pridaná do voľby
@@ -13,6 +14,7 @@ answer has been updated	polls	sk	Odpoveď bola aktualizovaná
 answers	polls	sk	Odpovede
 are you sure want to delete this answer ?	polls	sk	Naozaj chcete odstrániť túto odpoveď?
 are you sure want to delete this question ?	polls	sk	Naozaj chcete odstrániť túto otázku?
+change vote	polls	sk	Zmeniť voľbu
 current poll	polls	sk	Aktuálna voľba
 edit answer	polls	sk	Upraviť odpoveď
 edit poll question	polls	sk	Upraviť otázku pre voľbu

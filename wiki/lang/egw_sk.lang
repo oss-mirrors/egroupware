@@ -5,7 +5,8 @@ added	wiki	sk	Pridané
 administration features are disabled for this wiki.	wiki	sk	Správcovské funkcie sú zakázané pre túto wiki.
 admins	wiki	sk	Správcovia
 after how many days should old versions of a page be removed (0 for never)	admin	sk	Po koľkých dňoch treba odstrániť staré verzie stránky (0 pre nikdy)
-allow anonymous access	admin	sk	povoliť anonymný prístup
+allow anonymous access	admin	sk	Povoliť anonymný prístup
+allow creating new pages (blank for all)	admin	sk	Povoliť vytváranie nových prázdnych stránok
 anonymous password	admin	sk	Heslo anonymného používateľa
 anonymous session type	admin	sk	Typ sedenia anonymného používateľa
 anonymous username	admin	sk	Používateľské meno anonymného používateľa
@@ -14,6 +15,7 @@ block	wiki	sk	Blokovať
 block / unblock hosts	common	sk	Blokovať / Odblokovať stroje
 blocked ip address ranges	wiki	sk	Blokované rozsahy IP
 cancel without saving	wiki	sk	Zrušiť bez uloženia
+change notification	wiki	sk	Zmeniť pripomienky
 changed	wiki	sk	Zmenené
 changes by last author	wiki	sk	Zmeny od posledného autora
 choose your current time here, so the server may figure out what time zone you are in.	wiki	sk	Vyberte Váš aktuálny čas, aby mohol server zistiť, v akej časovej zóne sa nachádzate.
@@ -21,6 +23,10 @@ columns	wiki	sk	Stĺpce
 compute difference	wiki	sk	Vypočítať rozdiel
 converts the page to richtext	wiki	sk	Skonvertuje stránku na richtext
 current version	wiki	sk	Súčasná verzia
+default read permission	wiki	sk	Predvolené právo čítať
+default read permissions for creating a new page	preferences	sk	Predvolené právo čítať pre vytvorené nové stránky
+default write permission	preferences	sk	Predvolené právo zapisovať
+default write permissions for creating a new page	preferences	sk	Predvolené právo zapisovať pre vytvorené nové stránky
 deleted	wiki	sk	Odstránené
 deletes this page	wiki	sk	Odstráni túto stránku
 difference between versions	wiki	sk	Rozdiely medzi verziami
@@ -47,11 +53,14 @@ history	wiki	sk	História
 history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	sk	Zobrazenie Histórie má zobraziť <em>všetky</em> zmeny, ktoré vykonal posledný autor. V opačnom prípade, zobraziť iba poslednú vykonanú zmenu.
 history lists	wiki	sk	Zoznamy histórie
 history of	wiki	sk	História (čoho)
+if a page i have read access to is changed, send a notification	wiki	sk	Ak sa zmení stránka, ku ktorej mám právo čítať, poslať pripomienku
+if a page i have write access to is changed, send a notification	wiki	sk	Ak sa zmení stránka, ku ktorej mám právo zápisu, poslať pripomienku
 invalid page name.	wiki	sk	Chybný názov stránky.
 load	wiki	sk	Načítať
 loads the named page in the given language, all change so far get lost !!!	wiki	sk	Načíta pomenovanú stránku v zadanom jazyku, všetky doterajšie zmeny sa stratia !!!
 lock / unlock pages	common	sk	Zamknúť / Odomknúť stránky
 locked	wiki	sk	Zamknuté
+message to send	wiki	sk	Správa na odoslanie
 name wiki home link	admin	sk	názov wiki domov odkaz
 newer	wiki	sk	Novšie
 no never	admin	sk	Nie, nikdy
@@ -62,14 +71,20 @@ on all pages	wiki	sk	na všetkých stránkach
 only if browser supports a richtext-editor	admin	sk	Iba ak prehliadač podporuje richtext-editor
 only on the first page	wiki	sk	iba na prvej stránke
 page '%1' not found !!!	wiki	sk	Stránka '%1' sa nenašla !!!
+page content	wiki	sk	Obsah stránky
+pages i have read access	wiki	sk	Stránky ku ktorým mám právo na čítanie
+pages i have write access	wiki	sk	Stránky ku ktorým mám právo zápisu
+pages that match this regular expression	wiki	sk	Stránky ktoré spĺňajú tento regulérny výraz
 path of the upload directory (has to be writable by the webserver!)	admin	sk	Cesta k adresáru pre odovzdanie (musí byť zapisovateľný webserverom!)
+person who changed the page	wiki	sk	Osoba ktorá zmenila túto stránku
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	sk	Odovzdanie obrázku cez richedit editor (ak chcete zakázať odovzdávanie, ponechajte adresár pre odovzdanie prázdny)
 please contact the %1administrator%2 for assistance.	wiki	sk	Prosím kontaktujte %1Správcu%2 o pomoc.
 preview	wiki	sk	Náhľad
 preview of current version	wiki	sk	Náhľad súčasnej verzie
 rate control / ip blocking disabled	wiki	sk	Kontrola hodnotenia / Blokovanie IP vypnuté
 readable by	wiki	sk	Môže čítať
-readonly	admin	sk	iba na čítanie
+readonly	admin	sk	Iba na čítanie
+rebuild links	wiki	sk	Prebudovať odkazy
 recent changes	wiki	sk	Najnovšie zmeny
 renames page to the given name and language	wiki	sk	Premenuje stránku na zadané meno a jazyk
 richtext	wiki	sk	Richtext

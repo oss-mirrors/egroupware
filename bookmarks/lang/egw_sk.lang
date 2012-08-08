@@ -29,6 +29,7 @@ categories to export	bookmarks	sk	Kategórie pre export
 change bookmark	bookmarks	sk	Zmeniť záložku
 check all	bookmarks	sk	Označiť všetko
 choose the categories to display	bookmarks	sk	Vyberte, ktoré kategórie zobraziť
+choose the categories to expand in the initial view	bookmarks	sk	Vyberte kategórie, ktoré sa majú otvoriť pri úvodnom zobrazení
 close this window to return	bookmarks	sk	pre návrat zavrite toto okno
 create bookmark	bookmarks	sk	Vytvoriť záložku
 create new bookmark	bookmarks	sk	Vytvoriť novú záložku
@@ -48,6 +49,8 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 existing links	bookmarks	sk	Existujúce odkazy
 export	bookmarks	sk	Export
 export bookmarks	common	sk	Exportovať záložky
+export definition to use for nextmatch export	bookmarks	sk	Exportná definícia pre použitie v exporte
+export definitition to use for nextmatch export	bookmarks	sk	Exportná definícia pre použitie v exporte
 export format	bookmarks	sk	Formát exportu
 fewer	bookmarks	sk	Menej
 filter by	bookmarks	sk	Filtrovať podľa
@@ -59,6 +62,7 @@ global categories	bookmarks	sk	Globálne kategórie
 highest	bookmarks	sk	Najvyššie
 history	bookmarks	sk	História
 i thought you would be interested in the following link(s):	bookmarks	sk	Myslím, že by vás mohli zaujímať nasledujúce odkazy:
+if you specify an export definition, it will be used when you export	bookmarks	sk	Ak zadáte exportnú definíciu, bude sa používať pri exportoch.
 import bookmarks	common	sk	Naimportovať záložky
 import under category	bookmarks	sk	Importovať pod kategóriou
 last modified	bookmarks	sk	Naposledy zmenené
@@ -82,6 +86,7 @@ netscape/mozilla	bookmarks	sk	Netscape/Mozilla
 new	bookmark	sk	Nová
 new bookmark	bookmarks	sk	Nová záložka
 note: you can use bookmark files exported as html	bookmarks	sk	Poznámka: Môžete použiť súbory záložiek exportované ako HTML
+old fixed definition	bookmarks	sk	Stará pevná definícia
 or	bookmarks	sk	alebo
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	sk	Prosím vyplňte <B>Adresu Komu</B>,<B>Predmet</B>,a <B>Spr8vu</B>!
 please select the categories to export	bookmarks	sk	Prosím vyberte kategórie ktoré chcete exportovať
