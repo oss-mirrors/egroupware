@@ -1149,9 +1149,13 @@ class felamimail_bo
 	function _getStructure($_uid, $byUid=true, $_ignoreCache=false)
 	{
 		static $structure;
-		$_folder = $this->sessionData['mailbox'];
+		$_folder = ($this->sessionData['mailbox']? $this->sessionData['mailbox'] : $this->icServer->getCurrentMailbox());
+		//error_log(__METHOD__.__LINE__." UID: $_uid, ".$this->icServer->ImapServerId.','.$_folder);
+		$_folder = ($this->sessionData['mailbox']? $this->sessionData['mailbox'] : $this->icServer->getCurrentMailbox());
 		if (is_null($structure)) $structure = egw_cache::getCache(egw_cache::INSTANCE,'email','structureCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
-		if (isset($structure[$this->icServer->ImapServerId][$_folder][$_uid]))
+		if (isset($structure[$this->icServer->ImapServerId]) && !empty($structure[$this->icServer->ImapServerId]) &&
+			isset($structure[$this->icServer->ImapServerId][$_folder]) && !empty($structure[$this->icServer->ImapServerId][$_folder]) &&
+			isset($structure[$this->icServer->ImapServerId][$_folder][$_uid]) && !empty($structure[$this->icServer->ImapServerId][$_folder][$_uid]))
 		{
 			if ($_ignoreCache===false)
 			{
@@ -2305,7 +2309,7 @@ class felamimail_bo
 			return false;
 		}
 		//_debug_array($mimePartBody);
-		//error_log(__METHOD__.__LINE__.' UID:'.$_uid.' PartID:'.$partID.' HTMLMode:'.$_htmlMode.' ->'.array2string($_structure).array2string($mimePartBody));
+		//error_log(__METHOD__.__LINE__.' UID:'.$_uid.' PartID:'.$partID.' HTMLMode:'.$_htmlMode.' ->'.array2string($_structure).' body:'.array2string($mimePartBody));
 		if (empty($mimePartBody)) return array(
 				'body'		=> '',
 				'mimeType'  => ($_structure->type == 'TEXT' && $_structure->subType == 'HTML') ? 'text/html' : 'text/plain',
@@ -3197,7 +3201,6 @@ class felamimail_bo
 			}
 		}
 		if (self::$debug) _debug_array($structure);
-
 		switch($structure->type) {
 			case 'APPLICATION':
 				return array(
