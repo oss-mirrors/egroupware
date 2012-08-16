@@ -24,11 +24,12 @@ bookmarks - export	bookmarks	de	Lesezeichen - Export
 bookmarks - import	bookmarks	de	Lesezeichen - Import
 bookmarks - mail	bookmarks	de	Lesezeichen - E-Mail
 bookmarks - tree	bookmarks	de	Lesezeichen - Baumansicht
-bookmarks settings	bookmarks	de	Lesezeichen-Einstellungen
+bookmarks settings	bookmarks	de	Lesezeichen - Einstellungen
 categories to export	bookmarks	de	Kategorien zum exportieren
 change bookmark	bookmarks	de	Lesezeichen ändern
 check all	bookmarks	de	Alle prüfen
 choose the categories to display	bookmarks	de	Wählen Sie eine Kategorie zum Anzeigen
+choose the categories to expand in the initial view	bookmarks	de	Wählen Sie eine Kategorie, die beim Aufruf des Moduls aufgeklappt dargestellt werden soll.
 close this window to return	bookmarks	de	Zurück und diese Fenster schließen
 create bookmark	bookmarks	de	Lesezeichen anlegen
 create new bookmark	bookmarks	de	Neues Lesezeichen anlegen
@@ -44,10 +45,11 @@ descending	bookmarks	de	Aufsteigend
 edit bookmark	bookmarks	de	Lesezeichen bearbeiten
 edit bookmark - %1	bookmarks	de	Lesezeichen bearbeiten - %1
 edit this bookmark	bookmarks	de	Dieses Lesezeichen bearbeiten
-enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	de	Geben Sie den Namen der Netscape-Lesezeichendatei an<br>die sie importieren wollen.
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	de	Geben Sie den Namen der Netscape-Lesezeichendatei an<br>die Sie importieren möchten.
 existing links	bookmarks	de	Bestehende Verknüpfungen
 export	bookmarks	de	Export
 export bookmarks	common	de	Lesezeichen exportieren
+export definition to use for nextmatch export	bookmarks	de	Export Profil der Listenansicht (Disketten Symbol)
 export definitition to use for nextmatch export	bookmarks	de	Export Profil der Listenansicht (Disketten Symbol)
 export format	bookmarks	de	Export Format
 fewer	bookmarks	de	Weniger
@@ -59,8 +61,9 @@ general	bookmarks	de	Allgemein
 global categories	bookmarks	de	Globale Kategorien
 highest	bookmarks	de	Höchste
 history	bookmarks	de	Historie
-i thought you would be interested in the following link(s):	bookmarks	de	Ich denke Sie könnten an den folgenden Links interessiert sein:
-if you specify an export definition, it will be used when you export	bookmarks	de	Wählen Sie eine Export Definition für den Export
+i thought you would be interested in the following link(s):	bookmarks	de	Diese Link(s) könnten für Sie von Interesse sein:
+if you specify an export definition, it will be used when you export	bookmarks	de	Wählen Sie eine Export Definition für den Export.
+if you specify an export definition, it will be used when you export*	bookmarks	de	Wählen Sie eine Export Definition für den Export.
 import bookmarks	common	de	Lesezeichen importieren
 import under category	bookmarks	de	Import unter der Kategoie
 last modified	bookmarks	de	Letzte Änderung
@@ -80,10 +83,11 @@ name is required	bookmarks	de	Name wird benötigt
 netscape / firefox	bookmarks	de	Netscape / Firefox
 netscape bookmark file	bookmarks	de	Netscape-Lesezeichendatei
 netscape bookmark filename is required!	bookmarks	de	Dateinamen der Netscape-Lesezeichen ist erforderlich!
-netscape/mozilla	bookmarks	de	Netscape/Mozilla
+netscape/mozilla	bookmarks	de	Netscape / Mozilla
 new	bookmark	de	Neu
 new bookmark	bookmarks	de	Neues Lesezeichen
 note: you can use bookmark files exported as html	bookmarks	de	Achtung: Sie können Lesezeichen nutzen, die als HTML-Datei exportiert wurden.
+old fixed definition	bookmarks	de	Ältere Definition, deren Werte nicht angepasst werden können.
 or	bookmarks	de	oder
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	de	Bitte <b>An E-Mail-Adresse</b>, <b>Betreff</b> and <b>Nachricht</b> ausfüllen!
 please select the categories to export	bookmarks	de	Bitte wählen Sie die zu exportierenden Kategorien
@@ -93,11 +97,11 @@ rating of this site	bookmarks	de	Bewertung von Seiten
 search for:	bookmarks	de	Suchen nach:
 select an action	bookmarks	de	Eine Aktion auswählen
 select an action...	bookmarks	de	Eine Aktion auswählen...
-select the format you would like to export to	bookmarks	de	In welchem Format wollen sie exportieren
+select the format you would like to export to	bookmarks	de	In welchem Format möchten Sie exportieren
 send bookmark	bookmarks	de	Lesezeichen versenden
 sub category	bookmarks	de	Unterkategorie
-sub-folders will create new categories	bookmarks	de	Unterordner werden eine neue Kategorie erstellenDas
-this is the view bookmarks uses when you enter the application.	bookmarks	de	Das ist die Ansicht, die den Benutzern angezeigt wird, wenn Sie diese Anwendung verwenden.
+sub-folders will create new categories	bookmarks	de	Unterordner werden eine neue Kategorie erstellen.
+this is the view bookmarks uses when you enter the application.	bookmarks	de	Dies ist die Ansicht, die den Benutzern angezeigt wird, wenn Sie diese Anwendung öffnen.
 this module displays bookmarks in a javascript based tree	bookmarks	de	Dieses Modul zeigt Lesezeichen in einer javacriptbasierenden Baumstruktur an.
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	de	An Adresse %1 ungültig. Das Format muss <strong>benutzer@domain</strong> sein und die Domain muss existieren.
 to e-mail addresses	bookmarks	de	An E-Mail-Adressen
@@ -113,6 +117,6 @@ view this bookmark	bookmarks	de	Lesezeichen anzeigen
 warning	bookmarks	de	Warnung
 whole query	bookmarks	de	Gesamte Abfrage
 xbel	bookmarks	de	XBEL
-you are viewing this site outside of egroupware	bookmarks	de	Sie besuchen diese Seite von außerhalb der eGroupWare
+you are viewing this site outside of egroupware	bookmarks	de	Sie besuchen diese Seite von außerhalb der EGroupware
 you must select a category	bookmarks	de	Sie müssen eine Kategorie auswählen
 you need to select a category!	bookmarks	de	Sie müssen erst eine Kategorie auswählen!

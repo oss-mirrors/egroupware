@@ -29,6 +29,7 @@ categories to export	bookmarks	en	Categories to export
 change bookmark	bookmarks	en	Change bookmark
 check all	bookmarks	en	Check all
 choose the categories to display	bookmarks	en	Choose the categories to display
+choose the categories to expand in the initial view	bookmarks	en	Choose the categories to expand in the initial view
 close this window to return	bookmarks	en	Close this window to return
 create bookmark	bookmarks	en	Create bookmark
 create new bookmark	bookmarks	en	Create new bookmark
@@ -48,6 +49,7 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 existing links	bookmarks	en	Existing links
 export	bookmarks	en	Export
 export bookmarks	common	en	Export bookmarks
+export definition to use for nextmatch export	bookmarks	en	Export definition to use for nextmatch export
 export definitition to use for nextmatch export	bookmarks	en	Export definition to use for nextmatch export
 export format	bookmarks	en	Export format
 fewer	bookmarks	en	Fewer
@@ -61,6 +63,7 @@ highest	bookmarks	en	Highest
 history	bookmarks	en	History
 i thought you would be interested in the following link(s):	bookmarks	en	I thought you would be interested in the following link(s):
 if you specify an export definition, it will be used when you export	bookmarks	en	If you specify an export definition, it will be used when you export.
+if you specify an export definition, it will be used when you export*	bookmarks	en	If you specify an export definition, it will be used when you export*
 import bookmarks	common	en	Import bookmarks
 import under category	bookmarks	en	Import under category
 last modified	bookmarks	en	Last modified
@@ -84,6 +87,7 @@ netscape/mozilla	bookmarks	en	Netscape / Mozilla
 new	bookmark	en	New
 new bookmark	bookmarks	en	New bookmark
 note: you can use bookmark files exported as html	bookmarks	en	Note: You can use bookmark files exported as HTML.
+old fixed definition	bookmarks	en	Old fixed definition
 or	bookmarks	en	or
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	en	Fill out <B>To email address</B>, <B>Subject</B>, and <B>Message</B>!
 please select the categories to export	bookmarks	en	Please select the categories to export.
