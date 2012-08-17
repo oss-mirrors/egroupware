@@ -5080,14 +5080,19 @@ class felamimail_bo
 			$mailObject->AddReplyto($emailAddress, $addressObject->personal);
 */
 			$result ='';
+			$contenttypecalendar = '';
 			foreach((array)$structure->headers as $key => $val)
 			{
-				//error_log(__METHOD__.__LINE__.$key);
+				//error_log(__METHOD__.__LINE__.$key.'->'.$val);
 				foreach((array)$val as $i => $v)
 				{
-//						if ($key!='content-type' && $key !='content-transfer-encoding') // the omitted values to that will be set at the end
 					if ($key!='content-type' && $key !='content-transfer-encoding' &&
 						$key != 'message-id'  &&
+						$key != 'subject' &&
+						$key != 'from' &&
+						$key != 'to' &&
+						$key != 'cc' &&
+						$key != 'bcc' &&
 						$key != 'x-priority') // the omitted values to that will be set at the end
 					{
 						$Header .= $mailObject->HeaderLine($key, trim($v));
@@ -5104,18 +5109,36 @@ class felamimail_bo
 					case 'sender':
 						$mailObject->Sender  = $val;
 						break;
+					case 'to':
+					case 'cc':
+					case 'bcc':
 					case 'from':
 						$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($val):$val),'');
-						foreach((array)$address_array as $addressObject) {
-							$mailObject->From = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
-							$mailObject->FromName = $addressObject->personal;
+						$i = 0;
+						foreach((array)$address_array as $addressObject)
+						{
+							$mb = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+							$pName = $addressObject->personal;
+							if ($key=='from')
+							{
+								$mailObject->From = $mb;
+								$mailObject->FromName = $pName;
+							}
+							${$key}[$i] = array($mb,$pName);
+							$i++;
 						}
+						$Header .= $mailObject->TextLine(trim($mailObject->AddrAppend($key,${$key})));
 						break;
 					case 'content-transfer-encoding':
 						$mailObject->Encoding = $val;
 						break;
+					case 'content-type':
+						//error_log(__METHOD__.__LINE__.' '.$key.'->'.$val);
+						if (stripos($val,'calendar')) $contenttypecalendar = $val;
+						break;
 					case 'subject':
-						$mailObject->Subject = $val;
+						$mailObject->Subject = $mailObject->EncodeHeader($mailObject->SecureHeader($val));
+						$Header .= $mailObject->HeaderLine('Subject',$mailObject->Subject);
 						break;
 					default:
 						// stuff like X- ...
@@ -5130,10 +5153,12 @@ class felamimail_bo
 						break;
 				}
 			}
+			$seemsToBePlainMessage = false;
 			if ($structure->ctype_primary=='text' && $structure->body)
 			{
 				$mailObject->IsHTML($structure->ctype_secondary=='html'?true:false);
 				$mailObject->Body = $structure->body;
+				$seemsToBePlainMessage = true;
 			}
 			$this->createBodyFromStructure($mailObject, $structure, $parenttype=null);
 			$mailObject->SetMessageType();
@@ -5141,8 +5166,14 @@ class felamimail_bo
 			//echo "Boundary:".$mailObject->FetchBoundary(1).'<br>';
 			//$boundary ='';
 			//if (isset($structure->ctype_parameters['boundary'])) $boundary = ' boundary="'.$mailObject->FetchBoundary(1).'";';
-			//if (isset($structure->headers['content-type'])) $Header .= $mailObject->HeaderLine('Content-type', $structure->ctype_primary.'/'.$structure->ctype_secondary.';'.$boundary);
-			$Header .= $mailObject->GetMailMIME();
+			if ($seemsToBePlainMessage && !empty($contenttypecalendar) && $mailObject->ContentType=='text/plain')
+			{
+				$Header .= $mailObject->HeaderLine('Content-type', $contenttypecalendar);
+			}
+			else
+			{
+				$Header .= $mailObject->GetMailMIME();
+			}
 			$Body = $mailObject->getMessageBody(); // this is a method of the egw_mailer/phpmailer class
 			//_debug_array($Header);
 			//_debug_array($Body);
