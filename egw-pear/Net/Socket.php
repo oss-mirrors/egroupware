@@ -187,7 +187,7 @@ class Net_Socket extends PEAR
 
         @ini_set('track_errors', $old_track_errors);
         $this->fp = $fp;
-
+        $this->setTimeout($this->timeout, 0);
         return $this->setBlocking($this->blocking);
     }
 
