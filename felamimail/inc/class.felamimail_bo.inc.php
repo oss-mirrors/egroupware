@@ -5169,6 +5169,7 @@ class felamimail_bo
 			//if (isset($structure->ctype_parameters['boundary'])) $boundary = ' boundary="'.$mailObject->FetchBoundary(1).'";';
 			if ($seemsToBePlainMessage && !empty($contenttypecalendar) && $mailObject->ContentType=='text/plain')
 			{
+				$Header .= $mailObject->HeaderLine('Content-Transfer-Encoding', $mailObject->Encoding);
 				$Header .= $mailObject->HeaderLine('Content-type', $contenttypecalendar);
 			}
 			else
