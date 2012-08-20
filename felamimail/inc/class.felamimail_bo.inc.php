@@ -1160,12 +1160,11 @@ class felamimail_bo
 		return $folderStatus[$this->icServer->ImapServerId][$folderName];
 	}
 
-	function _getStructure($_uid, $byUid=true, $_ignoreCache=false)
+	function _getStructure($_uid, $byUid=true, $_ignoreCache=false, $_folder = '')
 	{
 		static $structure;
-		$_folder = ($this->sessionData['mailbox']? $this->sessionData['mailbox'] : $this->icServer->getCurrentMailbox());
+		if (empty($_folder)) $_folder = ($this->sessionData['mailbox']? $this->sessionData['mailbox'] : $this->icServer->getCurrentMailbox());
 		//error_log(__METHOD__.__LINE__." UID: $_uid, ".$this->icServer->ImapServerId.','.$_folder);
-		$_folder = ($this->sessionData['mailbox']? $this->sessionData['mailbox'] : $this->icServer->getCurrentMailbox());
 		if (is_null($structure)) $structure = egw_cache::getCache(egw_cache::INSTANCE,'email','structureCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
 		if (isset($structure[$this->icServer->ImapServerId]) && !empty($structure[$this->icServer->ImapServerId]) &&
 			isset($structure[$this->icServer->ImapServerId][$_folder]) && !empty($structure[$this->icServer->ImapServerId][$_folder]) &&
@@ -3185,7 +3184,7 @@ class felamimail_bo
 		}
 	}
 
-	function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure = '', $_preserveSeen = false)
+	function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure = '', $_preserveSeen = false, $_folder = '')
 	{
 		if (self::$debug) echo __METHOD__."$_uid, $_htmlOptions, $_partID<br>";
 		if($_htmlOptions != '') {
@@ -3195,7 +3194,7 @@ class felamimail_bo
 			$structure = $_structure;
 		} else {
 			$this->icServer->_cmd_counter = rand($this->icServer->_cmd_counter+1,$this->icServer->_cmd_counter+100);
-			$structure = $this->_getStructure($_uid, true);
+			$structure = $this->_getStructure($_uid, true, false, $_folder);
 			if($_partID != '') {
 				$structure = $this->_getSubStructure($structure, $_partID);
 			}
@@ -3320,7 +3319,7 @@ class felamimail_bo
 	{
 		//TODO: caching einbauen static!
 		static $rawBody;
-		$_folder = $this->icServer->getCurrentMailbox();
+		$_folder = ($this->sessionData['mailbox']? $this->sessionData['mailbox'] : $this->icServer->getCurrentMailbox());
 		if (isset($rawBody[$_folder][$_uid][($_partID==''?'NIL':$_partID)]))
 		{
 			error_log(__METHOD__.__LINE__." Using Cache for raw Body $_uid, $_partID in Folder $_folder");
@@ -3343,7 +3342,7 @@ class felamimail_bo
 	function getMessageRawHeader($_uid, $_partID = '')
 	{
 		static $rawHeaders;
-		$_folder = $this->icServer->getCurrentMailbox();
+		$_folder = ($this->sessionData['mailbox']? $this->sessionData['mailbox'] : $this->icServer->getCurrentMailbox());
 		//error_log(__METHOD__.__LINE__." Try Using Cache for raw Header $_uid, $_partID in Folder $_folder");
 
 		if (is_null($rawHeaders)) $rawHeaders = egw_cache::getCache(egw_cache::INSTANCE,'email','rawHeadersCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
@@ -3756,9 +3755,11 @@ class felamimail_bo
 
 	function reopen($_foldername)
 	{
-		static $folderOpened;
-		if (empty($folderOpened) || $folderOpened!=$_foldername)
-		{
+		// TODO: trying to reduce traffic to the IMAP Server here, introduces problems with fetching the bodies of
+		// eMails when not in "current-Folder" (folder that is selected by UI)
+		//static $folderOpened;
+		//if (empty($folderOpened) || $folderOpened!=$_foldername)
+		//{
 			//error_log( "------------------------reopen-<br>");
 			//error_log(__METHOD__.__LINE__.' Connected with icServer for Profile:'.$this->profileID.'?'.print_r($this->icServer->_connected,true));
 			if ($this->icServer->_connected == 1) {
@@ -3768,7 +3769,7 @@ class felamimail_bo
 				$tretval = $this->icServer->selectMailbox($_foldername);
 			}
 			$folderOpened = $_foldername;
-		}
+		//}
 	}
 
 	function restoreSessionData()
