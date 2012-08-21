@@ -29,9 +29,30 @@ class emailadmin_sieve extends Net_Sieve
 	var $scriptName;
 
 	/**
+	* @var $rules containing the rules
+	*/
+	var $rules;
+
+	/**
+	* @var $vacation containing the vacation
+	*/
+	var $vacation;
+
+	/**
+	* @var $emailNotification containing the emailNotification
+	*/
+	var $emailNotification;
+
+	/**
 	* @var object $error the last PEAR error object
 	*/
 	var $error;
+
+	/**
+	 * The timeout for the connection to the SIEVE server.
+	 * @var int
+	 */
+	var $_timeout = null;
 
 	/**
 	 * Switch on some error_log debug messages
@@ -48,6 +69,16 @@ class emailadmin_sieve extends Net_Sieve
 	function __construct(defaultimap $_icServer=null)
 	{
 		parent::Net_Sieve();
+
+		// TODO: since we seem to have major problems authenticating via DIGEST-MD5 and CRAM-MD5 in SIEVE, we skip MD5-METHODS for now
+		if (!is_null($_icServer))
+		{
+			$_icServer->supportedAuthMethods = array('PLAIN' , 'LOGIN');
+		}
+		else
+		{
+			$this->supportedAuthMethods = array('PLAIN' , 'LOGIN');
+		}
 
 		$this->scriptName = !empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName']) ? $GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName'] : 'felamimail';
 
@@ -126,6 +157,129 @@ class emailadmin_sieve extends Net_Sieve
 		}
 		return true;
 	}
+
+    /**
+     * Handles connecting to the server and checks the response validity.
+     * overwritten function from Net_Sieve to respect timeout
+     *
+     * @param string  $host    Hostname of server.
+     * @param string  $port    Port of server.
+     * @param array   $options List of options to pass to
+     *                         stream_context_create().
+     * @param boolean $useTLS  Use TLS if available.
+     *
+     * @return boolean  True on success, PEAR_Error otherwise.
+     */
+    function connect($host, $port, $options = null, $useTLS = true)
+    {
+        //error_log(__METHOD__.__LINE__."$host, $port, ".array2string($options).", $useTLS");
+        $this->_data['host'] = $host;
+        $this->_data['port'] = $port;
+        $this->_useTLS       = $useTLS;
+        if (is_array($options)) {
+            $this->_options = array_merge($this->_options, $options);
+        }
+
+        if (NET_SIEVE_STATE_DISCONNECTED != $this->_state) {
+            return PEAR::raiseError('Not currently in DISCONNECTED state', 1);
+        }
+
+        if (PEAR::isError($res = $this->_sock->connect($host, $port, false, ($this->_timeout?$this->_timeout:10), $options))) {
+            return $res;
+        }
+
+        if ($this->_bypassAuth) {
+            $this->_state = NET_SIEVE_STATE_TRANSACTION;
+        } else {
+            $this->_state = NET_SIEVE_STATE_AUTHORISATION;
+            if (PEAR::isError($res = $this->_doCmd())) {
+                return $res;
+            }
+        }
+
+        // Explicitly ask for the capabilities in case the connection is
+        // picked up from an existing connection.
+        if (PEAR::isError($res = $this->_cmdCapability())) {
+            return PEAR::raiseError(
+                'Failed to connect, server said: ' . $res->getMessage(), 2
+            );
+        }
+
+        // Check if we can enable TLS via STARTTLS.
+        if ($useTLS && !empty($this->_capability['starttls'])
+            && function_exists('stream_socket_enable_crypto')
+        ) {
+            if (PEAR::isError($res = $this->_startTLS())) {
+                return $res;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Handles the authentication using any known method
+     * overwritten function from Net_Sieve to support fallback
+     *
+     * @param string $uid The userid to authenticate as.
+     * @param string $pwd The password to authenticate with.
+     * @param string $userMethod The method to use ( if $userMethod == '' then the class chooses the best method (the stronger is the best ) )
+     * @param string $euser The effective uid to authenticate as.
+     *
+     * @return mixed  string or PEAR_Error
+     *
+     * @access private
+     * @since  1.0
+     */
+    function _cmdAuthenticate($uid , $pwd , $userMethod = null , $euser = '' )
+    {
+        if ( PEAR::isError( $method = $this->_getBestAuthMethod($userMethod) ) ) {
+            return $method;
+        }
+        //error_log(__METHOD__.__LINE__.' using AuthMethod: '.$method);
+        switch ($method) {
+            case 'DIGEST-MD5':
+                $result = $this->_authDigest_MD5( $uid , $pwd , $euser );
+                if ( !PEAR::isError($result)) break;
+                $res = $this->_doCmd();
+                unset($this->_error);
+                $this->supportedAuthMethods = array_diff($this->supportedAuthMethods,array($method,'CRAM-MD5'));
+                return $this->_cmdAuthenticate($uid , $pwd, null, $euser);
+            case 'CRAM-MD5':
+                $result = $this->_authCRAM_MD5( $uid , $pwd, $euser);
+                if ( !PEAR::isError($result)) break;
+                $res = $this->_doCmd();
+                unset($this->_error);
+                $this->supportedAuthMethods = array_diff($this->supportedAuthMethods,array($method,'DIGEST-MD5'));
+                return $this->_cmdAuthenticate($uid , $pwd, null, $euser);
+            case 'LOGIN':
+                $result = $this->_authLOGIN( $uid , $pwd , $euser );
+                if ( !PEAR::isError($result)) break;
+                $res = $this->_doCmd();
+                unset($this->_error);
+                $this->supportedAuthMethods = array_diff($this->supportedAuthMethods,array($method));
+                return $this->_cmdAuthenticate($uid , $pwd, null, $euser);
+            case 'PLAIN':
+                $result = $this->_authPLAIN( $uid , $pwd , $euser );
+                break;
+            default :
+                $result = new PEAR_Error( "$method is not a supported authentication method" );
+                break;
+        }
+        if (PEAR::isError($result)) return $result;
+        if (PEAR::isError($res = $this->_doCmd())) {
+            return $res;
+        }
+
+        // Query the server capabilities again now that we are authenticated.
+        if (PEAR::isError($res = $this->_cmdCapability())) {
+            return PEAR::raiseError(
+                'Failed to connect, server said: ' . $res->getMessage(), 2
+            );
+        }
+
+        return $result;
+    }
 
 	function getRules($_scriptName) {
 		return $this->rules;
@@ -221,7 +375,7 @@ class emailadmin_sieve extends Net_Sieve
     	return false;
 	}
 
-	function retrieveRules($_scriptName) {
+	function retrieveRules($_scriptName, $returnRules = false) {
 		if (!$_scriptName) $_scriptName = $this->scriptName;
 		$script = new emailadmin_script($_scriptName);
 
@@ -229,6 +383,7 @@ class emailadmin_sieve extends Net_Sieve
 			$this->rules = $script->rules;
 			$this->vacation = $script->vacation;
 			$this->emailNotification = $script->emailNotification; // Added email notifications
+			if ($returnRules) return array('rules'=>$this->rules,'vacation'=>$this->vacation,'emailNotification'=>$this->emailNotification);
 			return true;
 		}
 

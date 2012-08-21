@@ -526,3 +526,8 @@ function felamimail_upgrade1_8()
 {
 	return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.9';
 }
+
+function felamimail_upgrade1_9()
+{
+	return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.9.001';
+}

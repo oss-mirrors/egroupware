@@ -11,7 +11,7 @@
 
 $setup_info['felamimail']['name']      		= 'felamimail';
 $setup_info['felamimail']['title']     		= 'FeLaMiMail';
-$setup_info['felamimail']['version']     	= '1.9';
+$setup_info['felamimail']['version']     	= '1.9.001';
 $setup_info['felamimail']['app_order'] 		= 2;
 $setup_info['felamimail']['enable']    		= 1;
 $setup_info['felamimail']['index']    		= 'felamimail.uifelamimail.viewMainScreen&ajax=true';
@@ -57,15 +57,6 @@ $setup_info['felamimail']['check_install'] = array(
 		'version' => '1.6.0',	// otherwise install of Mail_Mime fails!
 	),
 # get's provided by egw-pear temporarly
-	'Net_Sieve' => array(
-		'func' => 'pear_check',
-	),
-	'Net_IMAP' => array(
-		'func' => 'pear_check',
-	),
-	'Auth_SASL' => array(
-		'func' => 'pear_check',
-	),
 	'Mail_Mime' => array(
 		'func' => 'pear_check',
 		'version' => '1.4.1',

@@ -12,7 +12,7 @@
 
 $setup_info['emailadmin']['name']      = 'emailadmin';
 $setup_info['emailadmin']['title']     = 'EMailAdmin';
-$setup_info['emailadmin']['version']   = '1.9.004';
+$setup_info['emailadmin']['version']   = '1.9.005';
 $setup_info['emailadmin']['app_order'] = 10;
 $setup_info['emailadmin']['enable']    = 2;
 $setup_info['emailadmin']['index']     = 'emailadmin.emailadmin_ui.listProfiles';
@@ -55,6 +55,14 @@ $setup_info['emailadmin']['check_install'] = array(
 		'from' => 'EMailAdmin',
 	),
 	'Auth_SASL' => array(
+		'func' => 'pear_check',
+		'from' => 'EMailAdmin',
+	),
+	'Net_Socket' => array(
+		'func' => 'pear_check',
+		'from' => 'EMailAdmin',
+	),
+	'Net_Sieve' => array(
 		'func' => 'pear_check',
 		'from' => 'EMailAdmin',
 	),
