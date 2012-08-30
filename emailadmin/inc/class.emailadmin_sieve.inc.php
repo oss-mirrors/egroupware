@@ -52,7 +52,7 @@ class emailadmin_sieve extends Net_Sieve
 	 * The timeout for the connection to the SIEVE server.
 	 * @var int
 	 */
-	var $_timeout = null;
+	var $_timeout = 10;
 
 	/**
 	 * Switch on some error_log debug messages
