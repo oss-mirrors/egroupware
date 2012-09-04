@@ -147,8 +147,8 @@ if ($GLOBALS['egw_info']['user']['account_lid'] != 'anonymous')
 	*/
 	$params["frozen_nick"] = $frozen_nick;
 
-	// Maximum nick length
-	$params['max_nick_len'] =($config['max_nick_len']? $config['max_nick_len']:64);
+	// Maximum nick length (must be an integer!)
+	$params['max_nick_len'] = (int)$config['max_nick_len'] > 0 ? (int)$config['max_nick_len'] : 64;
 }
 // if you use NFS you may want to use, since logging is enabled by default
 $params['skip_proxies'] = array('log');
