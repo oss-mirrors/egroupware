@@ -25,7 +25,7 @@ class emailadmin_dovecot extends defaultimap
 	/**
 	 * Capabilities of this class (pipe-separated): default, sieve, admin, logintypeemail
 	 */
-	const CAPABILITIES = 'default|sieve|admin|logintypeemail';
+	const CAPABILITIES = 'default|sieve|timedsieve|admin|logintypeemail';
 
 	// mailbox delimiter
 	var $mailboxDelimiter = '.';
