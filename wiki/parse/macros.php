@@ -326,7 +326,9 @@ function view_macro_transclude($args)
     }
   }
 
-  $result = parseText($pg->text, $ParseEngine, $page);
+  // Rich text pages have HTML wrapper, which is used to tell which editor to use,
+  // but breaks page when transcluded.
+  $result = parseText(preg_replace('@</?html>@i','',$pg->text), $ParseEngine, $page);
   $visited_count--;
   $HeadingOffset = $previousHeadingOffset; // Restore offset
   return $result;
