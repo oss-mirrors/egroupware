@@ -89,7 +89,7 @@
 
 			if(($icServer instanceof defaultimap) && $icServer->enableSieve) {
 				$this->bosieve		=& $icServer;
-				$serverclass = gettype($icServer);
+				$serverclass = get_class($icServer);
 				$classsupportstimedsieve = false;
 				if (!empty($serverclass) && stripos(constant($serverclass.'::CAPABILITIES'),'timedsieve') !== false) $classsupportstimedsieve = true;
 				
