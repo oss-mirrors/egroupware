@@ -1904,7 +1904,7 @@ class felamimail_bo
 							isset($allMailBoxesExtSorted[$mbx['MAILBOX'].$foldersNameSpace[$type]['delimiter']])||
 							(substr($mbx['MAILBOX'],-1)==$foldersNameSpace[$type]['delimiter'] && isset($allMailBoxesExtSorted[substr($mbx['MAILBOX'],0,-1)]))
 						) continue;
-					
+
 						//echo '#'.$mbx['MAILBOX'].':'.array2string($mbx)."#<br>";
 						$allMailBoxesExtSorted[$mbx['MAILBOX']] = $mbx;
 					}
@@ -2752,7 +2752,7 @@ class felamimail_bo
 						if ($numberOfMessages>0 && $numberOfMessages<=$_numberOfMessages) $_numberOfMessages = $numberOfMessages;
 //error_log(__METHOD__.__LINE__.' Start:'.$_startMessage.' NumberOfMessages:'.$_numberOfMessages.' Total:'.$total);
 					}
-					$startMessage=($total-$_numberOfMessages)-1;					
+					$startMessage=($total-$_numberOfMessages)-1;
 					//$retValue['info']['first'] = $startMessage;
 					//$retValue['info']['last'] = $total;
 
@@ -2764,7 +2764,7 @@ class felamimail_bo
 					//$retValue['info']['last'] = $total;
 				}
 				if($startMessage > 0) {
-					if (self::$debug) error_log(__METHOD__.__LINE__.' StartMessage:'.(-($_numberOfMessages+$startMessage)).', '.-$startMessage.' Number of Messages:'.count($sortResult));	
+					if (self::$debug) error_log(__METHOD__.__LINE__.' StartMessage:'.(-($_numberOfMessages+$startMessage)).', '.-$startMessage.' Number of Messages:'.count($sortResult));
 					$sortResult = array_slice($sortResult, -($_numberOfMessages+$startMessage), -$startMessage);
 				} else {
 					if (self::$debug) error_log(__METHOD__.__LINE__.' StartMessage:'.(-($_numberOfMessages+($_startMessage-1))).', AllTheRest, Number of Messages:'.count($sortResult));
@@ -4190,7 +4190,7 @@ class felamimail_bo
 		$mergeobj = new addressbook_merge();
 
 		if (empty($mimetype)) $mimetype = (strlen(strip_tags($content)) == strlen($content) ?'text/plain':'text/html');
-		$rv = $mergeobj->merge_string($content,$ids,$err,$mimetype);
+		$rv = $mergeobj->merge_string($content,$ids,$err,$mimetype, array(), self::$displayCharset);
 		if (empty($rv) && !empty($content) && !empty($err)) $rv = $content;
 		if (!empty($err) && !empty($content) && !empty($ids)) error_log(__METHOD__.__LINE__.' Merge failed for Ids:'.array2string($ids).' ContentType:'.$mimetype.' Content:'.$content.' Reason:'.array2string($err));
 		return $rv;
@@ -4908,7 +4908,7 @@ class felamimail_bo
 	 * @param string $importID ID for the imported message, used by attachments to identify them unambiguously
 	 * @return mixed array of messages with success and failed messages or exception
 	 */
-	function importMessageToMergeAndSend(&$bo_merge, $document, $SendAndMergeTocontacts, &$_folder, $importID='')
+	function importMessageToMergeAndSend(bo_merge $bo_merge, $document, $SendAndMergeTocontacts, &$_folder, $importID='')
 	{
 		$importfailed = false;
 		$processStats = array('success'=>array(),'failed'=>array());
@@ -4986,7 +4986,7 @@ class felamimail_bo
 						$mailObject->ClearAllRecipients();
 						$mailObject->ClearCustomHeaders();
 						$mailObject->AddAddress($email,$mailObject->EncodeHeader($nfn));
-						$mailObject->Subject = $bo_merge->merge_string($Subject, $val, $e, 'text/plain');
+						$mailObject->Subject = $bo_merge->merge_string($Subject, $val, $e, 'text/plain', array(), self::$displayCharset);
 						if (!empty($AltBody))
 						{
 							$mailObject->IsHTML(true);
@@ -5001,9 +5001,9 @@ class felamimail_bo
 							$mailObject->IsHTML(false);
 						}
 						//error_log(__METHOD__.__LINE__.' ContentType:'.$mailObject->BodyContentType);
-						if (!empty($Body)) $mailObject->Body = $bo_merge->merge_string($Body, $val, $e, $mailObject->BodyContentType);
+						if (!empty($Body)) $mailObject->Body = $bo_merge->merge_string($Body, $val, $e, $mailObject->BodyContentType, array(), self::$displayCharset);
 						//error_log(__METHOD__.__LINE__.' Result:'.$mailObject->Body.' error:'.array2string($e));
-						if (!empty($AltBody)) $mailObject->AltBody = $bo_merge->merge_string($AltBody, $val, $e, $mailObject->AltBodyContentType);
+						if (!empty($AltBody)) $mailObject->AltBody = $bo_merge->merge_string($AltBody, $val, $e, $mailObject->AltBodyContentType, array(), self::$displayCharset);
 
 						$ogServer = $this->mailPreferences->getOutgoingServer($this->profileID);
 						#_debug_array($ogServer);
@@ -5057,7 +5057,7 @@ class felamimail_bo
 							$nfn = ($contact['n_fn'] ? $contact['n_fn'] : $contact['n_given'].' '.$contact['n_family']);
 							$mailObject->AddAddress($email,$mailObject->EncodeHeader($nfn));
 						}
-						$mailObject->Subject = $bo_merge->merge_string($Subject, $val, $e, 'text/plain');
+						$mailObject->Subject = $bo_merge->merge_string($Subject, $val, $e, 'text/plain', array(), self::$displayCharset);
 						if (!empty($AltBody))
 						{
 							$mailObject->IsHTML(true);
@@ -5072,9 +5072,9 @@ class felamimail_bo
 							$mailObject->IsHTML(false);
 						}
 						//error_log(__METHOD__.__LINE__.' ContentType:'.$mailObject->BodyContentType);
-						if (!empty($Body)) $mailObject->Body = $bo_merge->merge_string($Body, $val, $e, $mailObject->BodyContentType);
+						if (!empty($Body)) $mailObject->Body = $bo_merge->merge_string($Body, $val, $e, $mailObject->BodyContentType, array(), self::$displayCharset);
 						//error_log(__METHOD__.__LINE__.' Result:'.$mailObject->Body.' error:'.array2string($e));
-						if (!empty($AltBody)) $mailObject->AltBody = $bo_merge->merge_string($AltBody, $val, $e, $mailObject->AltBodyContentType);
+						if (!empty($AltBody)) $mailObject->AltBody = $bo_merge->merge_string($AltBody, $val, $e, $mailObject->AltBodyContentType, array(), self::$displayCharset);
 						$_folder = $this->getDraftFolder();
 					}
 					if ($sendOK || $openAsDraft)
