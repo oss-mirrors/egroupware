@@ -47,7 +47,7 @@ name	bookmarks	no	Navn
 name is required	bookmarks	no	Navn er påkrevd
 netscape bookmark file	bookmarks	no	Netscape Favoritt Fil
 netscape bookmark filename is required!	bookmarks	no	Netscape favoritt filnavn er påkrevd!
-new	bookmark	no	Opprett
+new	bookmarks	no	Opprett
 new bookmark	bookmarks	no	Opprette bokmerke
 or	bookmarks	no	eller
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	no	Vennligst fyll inn <B>Til epost adresse</B>, <B>Emne</B>, og <B>Melding</B>!

@@ -49,7 +49,7 @@ name	bookmarks	iw	שם
 name is required	bookmarks	iw	השם חובה
 netscape bookmark file	bookmarks	iw	Netscape קובץ סימניות של
 netscape bookmark filename is required!	bookmarks	iw	חובה Netscape שם קובץ הסימניות של
-new	bookmark	iw	חדש
+new	bookmarks	iw	חדש
 or	bookmarks	iw	או
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	iw	נא לציין <b>כתובת דואר אלקטרוני אל</b>, <b>נושא</b>, ו-<b>הודעה</b>!
 please select the categories to export	bookmarks	iw	נא לבחור את הקטגוריות לייצא

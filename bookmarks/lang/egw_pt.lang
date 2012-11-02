@@ -48,7 +48,7 @@ name	bookmarks	pt	Nome
 name is required	bookmarks	pt	É necessário inserir um nome
 netscape bookmark file	bookmarks	pt	Ficheiro de marcadores da Netscape
 netscape bookmark filename is required!	bookmarks	pt	É necessário inserir o nome do ficheiro de marcadores da Netscape!
-new	bookmark	pt	Novo
+new	bookmarks	pt	Novo
 new bookmark	bookmarks	pt	Novo marcador
 or	bookmarks	pt	ou
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	pt	Por favor, preencha os campos <B>Para</B>, <B>Assunto</B>, e <B>Mensagem</B>!

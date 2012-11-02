@@ -46,7 +46,7 @@ name	bookmarks	da	Navn
 name is required	bookmarks	da	Navn er krævet
 netscape bookmark file	bookmarks	da	Netscape bogmærke fil
 netscape bookmark filename is required!	bookmarks	da	Netscape bogmærke fil er krævet!
-new	bookmark	da	Ny
+new	bookmarks	da	Ny
 or	bookmarks	da	eller
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	da	Indtast venligst <b>Modtager E-mail adresse</b>, <b>Emne</b>, og <b>Besked</b>!
 please select the categories to export	bookmarks	da	Vælg venligst kategorierne du vil eksportere

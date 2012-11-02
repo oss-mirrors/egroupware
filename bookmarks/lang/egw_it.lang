@@ -47,7 +47,7 @@ name	bookmarks	it	Nome
 name is required	bookmarks	it	Il nome è richiesto
 netscape bookmark file	bookmarks	it	File Segnalibri Netscape
 netscape bookmark filename is required!	bookmarks	it	NomeFile dei Segnalibri di Netscape è richiesto !
-new	bookmark	it	Nuovo
+new	bookmarks	it	Nuovo
 new bookmark	bookmarks	it	nuovo segnalibro
 or	bookmarks	it	o
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	it	Prego riempi <B>A Indirizzo E-Mail</B>,<B>Oggetto</B>, e <B>Messaggio</B>!

@@ -43,7 +43,7 @@ name is required	bookmarks	id	Nama diperlukan
 netscape / firefox	bookmarks	id	Netscape / Firefox
 netscape bookmark file	bookmarks	id	Berkas Tandabuku Netscape
 netscape bookmark filename is required!	bookmarks	id	Nama berkas tandabuku Netscape diperlukan
-new	bookmark	id	Baru
+new	bookmarks	id	Baru
 new bookmark	bookmarks	id	tandabuku baru
 or	bookmarks	id	or
 query condition	bookmarks	id	Query Condition

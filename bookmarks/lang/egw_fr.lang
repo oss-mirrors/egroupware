@@ -49,7 +49,7 @@ name	bookmarks	fr	Nom
 name is required	bookmarks	fr	Le nom est requis
 netscape bookmark file	bookmarks	fr	Fichier de Signets Netscape
 netscape bookmark filename is required!	bookmarks	fr	Le nom du fichier de signets Netscape est requis!
-new	bookmark	fr	Nouveau
+new	bookmarks	fr	Nouveau
 new bookmark	bookmarks	fr	nouveau signet
 or	bookmarks	fr	ou
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	fr	SVP remplissez <B>l'adresse EMail destinataire</B>, <B>le sujet</B>, et <B>le message</B>!

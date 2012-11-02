@@ -49,7 +49,7 @@ name	bookmarks	sl	Ime
 name is required	bookmarks	sl	Ime je obvezno
 netscape bookmark file	bookmarks	sl	Netscape datoteka z zaznamki
 netscape bookmark filename is required!	bookmarks	sl	Zahtevana datoteka z zaznamki mora biti v Netscape formatu!
-new	bookmark	sl	Novo
+new	bookmarks	sl	Novo
 new bookmark	bookmarks	sl	Nov zaznamek
 or	bookmarks	sl	ali
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	sl	Izpolnite <B>E-poštni naslov</B>, <B>Predmet</B>, in <B>Sporočilo</B>

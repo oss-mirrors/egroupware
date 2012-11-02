@@ -50,7 +50,7 @@ name	bookmarks	cs	Název
 name is required	bookmarks	cs	Název je vyžadován
 netscape bookmark file	bookmarks	cs	Soubor záložek Netscape
 netscape bookmark filename is required!	bookmarks	cs	Jméno Netscape souboru se záložkami je vyžadováno!
-new	bookmark	cs	Nová
+new	bookmarks	cs	Nová
 new bookmark	bookmarks	cs	Nová záložka
 or	bookmarks	cs	nebo
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	cs	Vyplňte prosím <B>e-mailovou adresu příjemce</B>, <B>předmět</B> a <B>zprávu</B>!

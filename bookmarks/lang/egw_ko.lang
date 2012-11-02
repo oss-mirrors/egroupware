@@ -46,7 +46,7 @@ name	bookmarks	ko	이름
 name is required	bookmarks	ko	이름이 필요합니다
 netscape bookmark file	bookmarks	ko	넷스케입 북마크 파일
 netscape bookmark filename is required!	bookmarks	ko	넷스케입 북마크 파일이름이 필요합니다!
-new	bookmark	ko	새로만들기
+new	bookmarks	ko	새로만들기
 or	bookmarks	ko	이거나(OR연산)
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	ko	<b>보낼 이메일 주소</b>,<B>제목</b>, 그리고 <B>메세지</b>를 작성해주세요!
 please select the categories to export	bookmarks	ko	내보낼 카테고리를 선택해주세요

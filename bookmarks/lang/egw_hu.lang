@@ -50,7 +50,7 @@ name	bookmarks	hu	Név
 name is required	bookmarks	hu	Név szükséges
 netscape bookmark file	bookmarks	hu	Netscape könyvjelző állomány
 netscape bookmark filename is required!	bookmarks	hu	Netscape könyvjelző állomány név szükséges!
-new	bookmark	hu	Új
+new	bookmarks	hu	Új
 new bookmark	bookmarks	hu	új könyvjelző
 or	bookmarks	hu	vagy
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	hu	Kérem töltse ki a <B>Címzett E-Mail Címe</B>, <B>Tárgy</B>, és <B>Üzenet</B> mezőket!

@@ -46,7 +46,7 @@ name	bookmarks	bg	Име
 name is required	bookmarks	bg	Името е задължително
 netscape bookmark file	bookmarks	bg	Файл с отметки на Netscape
 netscape bookmark filename is required!	bookmarks	bg	Нужно е името на файл с отметки на Netscape!
-new	bookmark	bg	Нова
+new	bookmarks	bg	Нова
 or	bookmarks	bg	или
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	bg	Моля, попълнете <B>адрес на получателя</B>, <B>относно</B>, и <B>съдържанието на писмото</B>!
 please select the categories to export	bookmarks	bg	Моля изберете категориите за експортиране

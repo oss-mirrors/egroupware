@@ -50,7 +50,7 @@ name	bookmarks	nl	Naam
 name is required	bookmarks	nl	Naam is noodzakelijk
 netscape bookmark file	bookmarks	nl	Netscape-favorietenbestand
 netscape bookmark filename is required!	bookmarks	nl	Netscape-favorietenbestand is noodzakelijk!
-new	bookmark	nl	Nieuw
+new	bookmarks	nl	Nieuw
 new bookmark	bookmarks	nl	nieuwe favoriet
 or	bookmarks	nl	of
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	nl	Geef a.u.b. het <B>Aan E-Mailadres</B>, <B>Onderwerp</B>, en <B>Bericht</B>!

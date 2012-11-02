@@ -37,7 +37,7 @@ name	bookmarks	et	Nimi
 name is required	bookmarks	et	Nimi on nõutav
 netscape bookmark file	bookmarks	et	Netskape järjehoidja fail
 netscape bookmark filename is required!	bookmarks	et	Netskape järjehoidja failinimi on nõutav!
-new	bookmark	et	Uus
+new	bookmarks	et	Uus
 new bookmark	bookmarks	et	uus järjehoidja
 or	bookmarks	et	või
 please select the categories to export	bookmarks	et	Palun vali kategooriad mida eksportida

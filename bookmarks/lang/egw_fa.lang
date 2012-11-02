@@ -44,7 +44,7 @@ name	bookmarks	fa	نام
 name is required	bookmarks	fa	نام لازم است
 netscape bookmark file	bookmarks	fa	پرونده چوب الف Netscape
 netscape bookmark filename is required!	bookmarks	fa	نام پرونده چوب الف Netscape لازم است!
-new	bookmark	fa	جدید
+new	bookmarks	fa	جدید
 new bookmark	bookmarks	fa	چوب الف جدید
 or	bookmarks	fa	یا
 please select the categories to export	bookmarks	fa	لطفا دسته ها را برای صادرات انتخاب کنید

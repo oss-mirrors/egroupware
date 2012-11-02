@@ -49,7 +49,7 @@ name	bookmarks	sv	Namn
 name is required	bookmarks	sv	Namn krävs
 netscape bookmark file	bookmarks	sv	Netscape kompatibel bokmärkesfil
 netscape bookmark filename is required!	bookmarks	sv	Netscape bokmärkens filnamn krävs
-new	bookmark	sv	Nytt
+new	bookmarks	sv	Nytt
 new bookmark	bookmarks	sv	Nytt bokmärke
 or	bookmarks	sv	Eller
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	sv	Fyll i <B>Till e-postadress</B>, <B>Ämne</B> och <B>Meddelande</B>

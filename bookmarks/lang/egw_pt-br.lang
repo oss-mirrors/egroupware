@@ -50,7 +50,7 @@ name	bookmarks	pt-br	Nome
 name is required	bookmarks	pt-br	O campo nome é requerido
 netscape bookmark file	bookmarks	pt-br	Arquivo de Favoritos do Netscape
 netscape bookmark filename is required!	bookmarks	pt-br	Arquivo de Favoritos do Netscape é requerido!
-new	bookmark	pt-br	Novo
+new	bookmarks	pt-br	Novo
 new bookmark	bookmarks	pt-br	Novo favorito
 or	bookmarks	pt-br	ou
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	pt-br	Favor preencher <B> Destinatário da mensagem</B>, <B>Assunto</B>, e <B>Mensagem</B>!

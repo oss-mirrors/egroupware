@@ -50,7 +50,7 @@ name	bookmarks	es-es	Nombre
 name is required	bookmarks	es-es	El nombre es obligatorio
 netscape bookmark file	bookmarks	es-es	Fichero de marcadores de Netscape
 netscape bookmark filename is required!	bookmarks	es-es	El nombre del fichero de marcadores de Netscape es obligatorio
-new	bookmark	es-es	Nuevo
+new	bookmarks	es-es	Nuevo
 new bookmark	bookmarks	es-es	nuevo marcador
 or	bookmarks	es-es	o
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	es-es	Por favor, rellene <b>Dirección destino</b>, <b>Asunto</b> y <b>Mensaje</b>

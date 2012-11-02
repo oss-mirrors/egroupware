@@ -50,7 +50,7 @@ name	bookmarks	ca	Nom
 name is required	bookmarks	ca	El nom és obligatori
 netscape bookmark file	bookmarks	ca	Arxiu d'Adreces d'Interès de Netscape
 netscape bookmark filename is required!	bookmarks	ca	El nom de l'arxiu d'Adreces d'Interès de Netscape és obligatori
-new	bookmark	ca	Nou
+new	bookmarks	ca	Nou
 new bookmark	bookmarks	ca	nova adreça d'interès
 or	bookmarks	ca	o
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	ca	Ompliu <b>Adreça de correu destí</b>, <b>Assumpte</b> i <b>Missatge</b>
