@@ -1,6 +1,6 @@
 <?php
 /**
- * eGroupWare - TranslationTools
+ * EGroupware - TranslationTools
  *
  * @link http://www.egroupware.org
  * @author Miles Lott <milos(at)groupwhere.org>
@@ -282,7 +282,6 @@ class uilangfile
 
 		$this->template->set_var('action_url',$GLOBALS['egw']->link('/index.php','menuaction=developer_tools.uilangfile.edit'));
 		$this->template->set_var('lang_remove',lang('Remove'));
-		$this->template->set_var('lang_loaddb',lang('Update Database'));
 		$this->template->set_var('lang_application',lang('Application'));
 		$this->template->set_var('lang_source',lang('Source Language'));
 		$this->template->set_var('lang_target',lang('Target Language'));
@@ -300,7 +299,6 @@ class uilangfile
 		$this->template->set_var('revert_help',sprintf($help,str_replace("'","\\'",lang('Clears the internal buffer, all changes made sofar are lost'))));
 		$this->template->set_var('download_help',sprintf($help,str_replace("'","\\'",lang('Download the lang-file to be saved in the apps setup-dir'))));
 		$this->template->set_var('write_help',sprintf($help,str_replace("'","\\'",lang('Write the lang-file to the apps setup-dir'))));
-		$this->template->set_var('loaddb_help',sprintf($help,str_replace("'","\\'",lang('Updates the translations of both lang-files in your database, so you can verify your work immediately'))));
 
 		if(!$sourcelang)
 		{
@@ -410,17 +408,6 @@ class uilangfile
 		{
 			echo '<br>'.lang("Writing langfile for '%1' ...",$targetlang);
 			$this->bo->write_file('target',$app_name,$targetlang);
-		}
-		if ($_POST['loaddb'] || $_POST['loaddb_too'])
-		{
-			echo '<br>' . lang('Loading source langfile') . ': ' . $sourcelang . '... ';
-			if ($sourcelang != $targetlang)
-			{
-				echo '<br>' . lang('Loading target langfile') . ': ' . $targetlang . '... ';
-			}
-			$langs[$sourcelang] = $sourcelang;
-			$langs[$targetlang] = $targetlang;
-			echo $this->bo->loaddb($app_name,$langs);
 		}
 
 		if($sourcelang && $targetlang)

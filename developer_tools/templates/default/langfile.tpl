@@ -127,18 +127,5 @@
    </td>
   </tr>
  </table>
-<hr>
- <table width="90%" align="center"><tr>
-   <td width="10%" nowrap>
-     <h3>{lang_step} #4:</h3>
-   </td>
-   <td width="25%">
-     <input type="submit" name="loaddb" value="{lang_loaddb}" {loaddb_help}>
-     <input checked type="checkbox" name="loaddb_too" {loaddb_help}>
-   </td>
-   <td>
-    <input type="submit" name="cancel" value="{lang_cancel}" {cancel_help}>
-   </td>
- </tr></table>
 </form>
 <!-- END footer -->
