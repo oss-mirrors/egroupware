@@ -207,8 +207,8 @@ class emailadmin_dovecot extends defaultimap
 		// we are authenticated with master but for current user
 		if($this->openConnection(true) === true && ($quota = $this->getStorageQuotaRoot('INBOX')) && !PEAR::isError($quota))
 		{
-			$userData['quotaLimit'] = $quota['QMAX'] / 1024;
-			$userData['quotaUsed'] = $quota['USED'] / 1024;
+			$userData['quotaLimit'] = (int) ($quota['QMAX'] / 1024);
+			$userData['quotaUsed'] = (int) ($quota['USED'] / 1024);
 		}
 		$this->username = $bufferUsername;
 		$this->loginName = $bufferLoginName;
