@@ -122,8 +122,8 @@ class cyrusimap extends defaultimap
 		$userData = array();
 
 		if($quota = $this->getQuotaByUser($_username,'ALL')) {
-			$userData['quotaLimit'] = (int)$quota['QMAX'] / 1024;
-			$userData['quotaUsed'] = (int)$quota['USED'] / 1024;
+			$userData['quotaLimit'] = (int)($quota['QMAX'] / 1024);
+			$userData['quotaUsed'] = (int)($quota['USED'] / 1024);
 		}
 
 		$this->disconnect();
