@@ -200,6 +200,7 @@ class emailadmin_dovecot extends defaultimap
 		if($this->openConnection(true) === true && ($quota = $this->getStorageQuotaRoot('INBOX')) && !PEAR::isError($quota))
 		{
 			$userData['quotaLimit'] = $quota['QMAX'] / 1024;
+			$userData['quotaUsed'] = $quota['USED'] / 1024;
 		}
 
 		$this->disconnect();
