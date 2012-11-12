@@ -796,7 +796,8 @@ class emailadmin_bo extends so_sql
 					//_debug_array($icUserData);
 				}
 			}
-			return (array)$icUserData + (array)$ogUserData;
+			// we consider ogServer Data as more recent, assuming ldap is the leading system here (being in control of the attributes it is managing)
+			return (array)$ogUserData + (array)$icUserData;
 		}
 
 		return false;
