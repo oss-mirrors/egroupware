@@ -168,6 +168,7 @@ class emailadmin_smtp_sql extends defaultsmtp
 			{
 				$account_id[] = $row['account_id'];
 			}
+			//error_log(__METHOD__."('$user') account_id=".array2string($account_id));
 		}
 		if ($account_id)
 		{
@@ -184,12 +185,12 @@ class emailadmin_smtp_sql extends defaultsmtp
 				{
 					case self::TYPE_ENABLED:
 						$userData['accountStatus'] = $row['mail_value'];
-						$enabled[$row['account_id']] = $row['mailValue'] == self::ENABLED;
+						$enabled[$row['account_id']] = $row['mail_value'] == self::ENABLED;
 						break;
 
 					case self::TYPE_DELIVERY:
 						$userData['deliveryMode'] = $row['mail_value'];
-						$forwardOnly[$row['account_id']] = $row['mailValue'] == self::FORWARD_ONLY;
+						$forwardOnly[$row['account_id']] = $row['mail_value'] == self::FORWARD_ONLY;
 						break;
 
 					case self::TYPE_QUOTA:
@@ -210,6 +211,7 @@ class emailadmin_smtp_sql extends defaultsmtp
 
 					case self::TYPE_MAILBOX:
 						$userData['mailmessagestore'] = $row['mail_value'];
+						//error_log(__METHOD__."('$user') row=".array2string($row).', enabled[$row[account_id]]='.array2string($enabled[$row['account_id']]).', forwardOnly[$row[account_id]]='.array2string($forwardOnly[$row['account_id']]));
 						if ($row['account_id'] > 0 && $enabled[$row['account_id']] && !$forwardOnly[$row['account_id']])
 						{
 							$userData['uid'][] = $this->accounts->id2name($row['account_id'], 'account_lid');
