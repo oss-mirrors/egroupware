@@ -153,6 +153,7 @@ class emailadmin_smtp_sql extends defaultsmtp
 		}
 		else	// email address
 		{
+			// check with primary email address
 			if (($account_id = $this->accounts->name2id($user, 'account_email')))
 			{
 				$account_id = array($account_id);
@@ -161,12 +162,18 @@ class emailadmin_smtp_sql extends defaultsmtp
 			{
 				$account_id = array();
 			}
+			// always allow username@domain
+			list($account_lid) = explode('@', $user);
+			if (($id = $this->accounts->name2id($account_lid, 'account_lid')) && !in_array($id, $account_id))
+			{
+				$account_id[] = $id;
+			}
 			foreach($this->db->select(self::TABLE, 'account_id', array(
 				'mail_type' => array(self::TYPE_ALIAS, self::TYPE_FORWARD),
 				'mail_value' => $user,
 			), __LINE__, __FILE__, false, '', self::APP) as $row)
 			{
-				$account_id[] = $row['account_id'];
+				if (!in_array($row['account_id'], $account_id)) $account_id[] = $row['account_id'];
 			}
 			//error_log(__METHOD__."('$user') account_id=".array2string($account_id));
 		}
