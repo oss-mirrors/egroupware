@@ -31,6 +31,13 @@ class emailadmin_smtp
 	const FORWARD_ONLY = 'forwardonly';
 
 	/**
+	 * Reference to global account object
+	 *
+	 * @var accounts
+	 */
+	protected $accounts;
+
+	/**
 	 * SmtpServerId
 	 *
 	 * @var int
@@ -59,6 +66,8 @@ class emailadmin_smtp
 	function __construct($defaultDomain=null)
 	{
 		$this->defaultDomain = $defaultDomain ? $defaultDomain : $GLOBALS['egw_info']['server']['mail_suffix'];
+
+		$this->accounts = $GLOBALS['egw']->accounts;
 	}
 
 	/**

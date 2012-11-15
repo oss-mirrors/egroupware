@@ -28,13 +28,6 @@ class emailadmin_smtp_sql extends emailadmin_smtp
 	protected $db;
 
 	/**
-	 * Reference to global account object
-	 *
-	 * @var accounts
-	 */
-	protected $accounts;
-
-	/**
 	 * Name of table
 	 */
 	const TABLE = 'egw_mailaccounts';
@@ -64,7 +57,6 @@ class emailadmin_smtp_sql extends emailadmin_smtp
 		parent::__construct($defaultDomain);
 
 		$this->db = $GLOBALS['egw']->db;
-		$this->accounts = $GLOBALS['egw']->accounts;
 	}
 
 	/**
