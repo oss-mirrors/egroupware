@@ -53,7 +53,7 @@ class felamimail_hooks
 			$ogServer = $bofelamimail->mailPreferences->getOutgoingServer($default_profile_id);
 			//error_log(__METHOD__."() default_profile_id = $default_profile_id, get_class(ogServer)=".get_class($ogServer));
 
-			if (get_class($ogServer) != 'defaultsmtp')
+			if (!in_array(get_class($ogServer), array('defaultsmtp', 'emailadmin_smtp')))
 			{
 				global $menuData;
 
@@ -930,7 +930,7 @@ class felamimail_hooks
 				$file['Manage Folders']	= egw::link('/index.php',array('menuaction'=>'felamimail.uipreferences.listFolder'));
 			}
 			if (is_object($preferences)) $ogServer = $preferences->getOutgoingServer(0);
-			if(($ogServer instanceof defaultsmtp)) {
+			if(($ogServer instanceof emailadmin_smtp)) {
 				if($ogServer->editForwardingAddress)
 				{
 					$linkData = array

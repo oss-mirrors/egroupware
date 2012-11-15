@@ -10,8 +10,6 @@
  * @version $Id$
  */
 
-include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.defaultsmtp.inc.php');
-
 /**
  * Generic base class for SMTP configuration via LDAP
  *
@@ -23,7 +21,7 @@ include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.defaultsmtp.inc.php');
  * Please do NOT copy this class! Extend it and set the constants different
  * (incl. protected config var as long as we can not require PHP5.3 for LSB).
  */
-class emailadmin_smtp_ldap extends defaultsmtp
+class emailadmin_smtp_ldap extends emailadmin_smtp
 {
 	/**
 	 * Name of schema, has to be in the right case!
@@ -34,10 +32,6 @@ class emailadmin_smtp_ldap extends defaultsmtp
 	 * Attribute to enable mail for an account, OR false if existence of ALIAS_ATTR is enough for mail delivery
 	 */
 	const MAIL_ENABLE_ATTR = false;
-	/**
-	 * Attribute value to enable mail for an account, OR false if existense of attribute is enough to enable account
-	 */
-	const MAIL_ENABLED = false;
 
 	/**
 	 * Attribute for aliases OR false to use mail
@@ -58,10 +52,6 @@ class emailadmin_smtp_ldap extends defaultsmtp
 	 * Attribute to only forward mail, OR false if not available
 	 */
 	const FORWARD_ONLY_ATTR = false;
-	/**
-	 * Attribute value to only forward mail
-	 */
-	const FORWARD_ONLY = false;
 
 	/**
 	 * Attribute for mailbox, to which mail gets delivered OR false if not supported
@@ -243,10 +233,11 @@ class emailadmin_smtp_ldap extends defaultsmtp
 	 * from all accounts!
 	 *
 	 * @param int|string $user numerical account-id, account-name or email address
+	 * @param boolean $match_uid_at_domain=true true: uid@domain matches, false only an email or alias address matches
 	 * @return array with values for keys 'mailLocalAddress', 'mailAlternateAddress' (array), 'mailForwardingAddress' (array),
 	 * 	'accountStatus' ("active"), 'quotaLimit' and 'deliveryMode' ("forwardOnly")
 	 */
-	function getUserData($user)
+	function getUserData($user, $match_uid_at_domain=false)
 	{
 		$userData = array();
 
@@ -273,12 +264,13 @@ class emailadmin_smtp_ldap extends defaultsmtp
 			}
 			else
 			{
-				$filter = '(|(mail='.ldap::quote($user).')(uid='.ldap::quote($namepart).')';
+				$filter = array('(mail='.ldap::quote($user).')');
+				if ($match_uid_at_domain) $filter[] = '(uid='.ldap::quote($namepart).')';
 				if ($this->config['alias_attr'])
 				{
-					$filter .= '('.$this->config['alias_attr'].'='.ldap::quote($user).')';
+					$filter[] = '('.$this->config['alias_attr'].'='.ldap::quote($user).')';
 				}
-				$filter .= ')';	// end of (|
+				$filter = count($filter) > 1 ? '(|'.explode('', $filter).')' : $filter[0];
 
 				// if an enable attribute is set, only return enabled accounts
 				if ($this->config['mail_enable_attr'])
@@ -414,7 +406,7 @@ class emailadmin_smtp_ldap extends defaultsmtp
 	 * @param int $_quota in MB
 	 * @return boolean true on success, false on error writing to ldap
 	 */
-	function setUserData($_uidnumber, $_mailAlternateAddress, $_mailForwardingAddress, $_deliveryMode, $_accountStatus, $_mailLocalAddress, $_quota)
+	function setUserData($_uidnumber, array $_mailAlternateAddress, array $_mailForwardingAddress, $_deliveryMode, $_accountStatus, $_mailLocalAddress, $_quota)
 	{
 		$filter = 'uidnumber='.(int)$_uidnumber;
 
