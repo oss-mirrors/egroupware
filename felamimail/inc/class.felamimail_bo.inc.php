@@ -167,6 +167,12 @@ class felamimail_bo
 	 */
 	public static function getInstance($_restoreSession=true, $_profileID=0, $_validate=true)
 	{
+		if ($_profileID == 0)
+		{
+			$profileID = emailadmin_bo::getDefaultProfileID();
+			if ($profileID!=$_profileID) $_restoreSession==false;
+			$_profileID=$profileID;
+		}
 		if ($_profileID != 0 && $_validate)
 		{
 			$profileID = self::validateProfileID($_restoreSession, $_profileID);
@@ -182,7 +188,7 @@ class felamimail_bo
 			}
 		}
 		//error_log(__METHOD__.__LINE__.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID.' called from:'.function_backtrace());
-		if (!isset(self::$instances[$_profileID]))
+		if (!isset(self::$instances[$_profileID]) || $_restoreSession===false)
 		{
 			self::$instances[$_profileID] = new felamimail_bo('utf-8',$_restoreSession,$_profileID);
 		}
