@@ -101,7 +101,7 @@
 				if (!($imapClassName == 'defaultimap' || $imapClassName == 'emailadmin_imap'))
 				{
 					//$smtpClass='emailadmin_smtp_sql';
-					$accounts = $GLOBALS['egw']->accounts->search(array('type'=>($imapClassName=='managementserver_cyrusimap'?'both':'accounts')));
+					$accounts = $GLOBALS['egw']->accounts->search(array('type'=>($imapClassName=='managementserver_imap'?'both':'accounts')));
 					//_debug_array($accounts);
 					foreach ($accounts as $k => $v)
 					{
