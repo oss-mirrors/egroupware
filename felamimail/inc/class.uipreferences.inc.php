@@ -69,18 +69,69 @@
 		{
 			$this->display_app_header(FALSE);
 			if (isset($this->bofelamimail->profileID)) $lprofileID = $this->bofelamimail->profileID;
-			
+			if (isset($this->bofelamimail->icServer->domainName)) $ldomainName = $this->bofelamimail->icServer->domainName;
+			if (isset($this->bofelamimail->bopreferences->profileData->identities[$lprofileID]->emailAddress)) $lemailAddress = $this->bofelamimail->bopreferences->profileData->identities[$lprofileID]->emailAddress;
+			$accountList = array();
+			// we initialize the box for use with ($imapClassName == 'defaultimap' || $imapClassName == 'emailadmin_imap')
+			$accountSelection = '<input type="text" name="accountName" id="accountName" style="width:100%;">';
 			if (($default_profile_id = emailadmin_bo::getDefaultProfileID()))
 			{
 				$bofelamimail = felamimail_bo::forceEAProfileLoad($default_profile_id);
+				//fetch the imapClass
 				//_debug_array($bofelamimail->icServer);
+				$imapClassName = get_class($bofelamimail->icServer);
+
+				//fetch the smtpClass
 				//_debug_array($bofelamimail->ogServer);
+				$smtpClassName = get_class($bofelamimail->ogServer);
+				//the active profile, and thus the folders we are to work on, may be a self defined or other effective emailadmin profile
+				if ($lprofileID>0)
+				{
+					// domainName of defaultProfile should be part of emailaddress of user defined profile
+					if (isset($lemailAddress) && !empty($bofelamimail->icServer->defaultDomain) && stripos($lemailAddress,$bofelamimail->icServer->defaultDomain)===false)
+					{
+						$imapClassName = 'defaultimap'; // fake the imapclass to deny accountselectionbox
+					}										
+				}
+				// if users active profile defaultDomain is differing from default defaultDomain
+				if ($lprofileID<0 && isset($ldomainName) && $bofelamimail->icServer->defaultDomain != $ldomainName)
+				{
+					$imapClassName = 'defaultimap'; // fake the imapclass to deny accountselectionbox
+				}
+				if (!($imapClassName == 'defaultimap' || $imapClassName == 'emailadmin_imap'))
+				{
+					//$smtpClass='emailadmin_smtp_sql';
+					$accounts = $GLOBALS['egw']->accounts->search(array('type'=>($imapClass=='managementserver_cyrusimap'?'both':'accounts')));
+					//_debug_array($accounts);
+					foreach ($accounts as $k => $v)
+					{
+						$dfn = common::display_fullname($v['account_lid']);
+						if ($bofelamimail->icServer->loginType=='standard') // means username
+						{
+							$accountList[$v['account_lid']] = $dfn;
+						}
+						elseif ($bofelamimail->icServer->loginType=='email')
+						{
+							if (!empty($v['account_email'])) $accountList[$v['account_email']] = $dfn;
+						}
+						elseif ($bofelamimail->icServer->loginType=='vmailmgr') // means username + domainname
+						{
+							$accountList[trim(strtolower($v['account_lid'].'@'.$bofelamimail->icServer->defaultDomain))] = $dfn;
+						}
+						elseif ($bofelamimail->icServer->loginType=='uidNumber') // userid + domain
+						{
+							$accountList[trim(strtolower($v['account_id'].'@'.$bofelamimail->icServer->defaultDomain))] = $dfn;
+						}
+					}
+					//sort($accountList,SORT_STRING);
+					if (count($accountList)>=1) $accountList = array(''=>lang('Select one'))+$accountList;
+				}
+				if (!empty($accountList)) $accountSelection = html::select('accountName','',$accountList,true, "id=\"accountName\"");
 			}
+
 			$this->t->set_file(array("body" => "preferences_manage_folder.tpl"));
 			$this->t->set_block('body','main');
 			$this->t->set_block('body','add_acl');
-			//$accountSelection = html::select('accountName',0,array(0=>'ich'),true, "id=\"accountName\"");
-			$accountSelection ='<input type="text" name="accountName" id="accountName" style="width:100%;">';
 			$this->t->set_var('accountSelection',$accountSelection);
 			$aclShortCuts = felamimail_bo::$aclShortCuts;
 			unset($aclShortCuts['custom']);
@@ -121,6 +172,8 @@
 					html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
 					egw_framework::validate_file('jscode','listFolder','felamimail');
 					$GLOBALS['egw']->js->set_onload("javascript:updateACLView('disableACL');");
+					$aclSupported = in_array('ACL',$this->bofelamimail->icServer->_serverSupportedCapabilities);
+					if (!$aclSupported) $GLOBALS['egw']->js->set_onload("javascript:disableACLEdit();");
 					break;
 			}
 
