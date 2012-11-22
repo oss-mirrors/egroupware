@@ -88,39 +88,40 @@
 				if ($lprofileID>0)
 				{
 					// domainName of defaultProfile should be part of emailaddress of user defined profile
-					if (isset($lemailAddress) && !empty($bofelamimail->icServer->defaultDomain) && stripos($lemailAddress,$bofelamimail->icServer->defaultDomain)===false)
+					if (isset($lemailAddress) && !empty($bofelamimail->icServer->domainName) && stripos($lemailAddress,$bofelamimail->icServer->domainName)===false)
 					{
 						$imapClassName = 'defaultimap'; // fake the imapclass to deny accountselectionbox
 					}										
 				}
-				// if users active profile defaultDomain is differing from default defaultDomain
-				if ($lprofileID<0 && isset($ldomainName) && $bofelamimail->icServer->defaultDomain != $ldomainName)
+				// if users active profile domainName is differing from default domainName
+				if ($lprofileID<0 && isset($ldomainName) && $bofelamimail->icServer->domainName != $ldomainName)
 				{
 					$imapClassName = 'defaultimap'; // fake the imapclass to deny accountselectionbox
 				}
 				if (!($imapClassName == 'defaultimap' || $imapClassName == 'emailadmin_imap'))
 				{
 					//$smtpClass='emailadmin_smtp_sql';
-					$accounts = $GLOBALS['egw']->accounts->search(array('type'=>($imapClass=='managementserver_cyrusimap'?'both':'accounts')));
+					$accounts = $GLOBALS['egw']->accounts->search(array('type'=>($imapClassName=='managementserver_cyrusimap'?'both':'accounts')));
 					//_debug_array($accounts);
 					foreach ($accounts as $k => $v)
 					{
+						$isgroup=$v['account_id']<0?constant("$imapClassName::ACL_GROUP_PREFIX"):'';
 						$dfn = common::display_fullname($v['account_lid']);
 						if ($bofelamimail->icServer->loginType=='standard') // means username
 						{
-							$accountList[$v['account_lid']] = $dfn;
+							$accountList[$isgroup.$v['account_lid']] = $dfn;
 						}
 						elseif ($bofelamimail->icServer->loginType=='email')
 						{
-							if (!empty($v['account_email'])) $accountList[$v['account_email']] = $dfn;
+							if (!empty($v['account_email'])) $accountList[$isgroup.$v['account_email']] = $dfn;
 						}
 						elseif ($bofelamimail->icServer->loginType=='vmailmgr') // means username + domainname
 						{
-							$accountList[trim(strtolower($v['account_lid'].'@'.$bofelamimail->icServer->defaultDomain))] = $dfn;
+							$accountList[$isgroup.trim($v['account_lid'].'@'.$bofelamimail->icServer->domainName)] = $dfn;
 						}
 						elseif ($bofelamimail->icServer->loginType=='uidNumber') // userid + domain
 						{
-							$accountList[trim(strtolower($v['account_id'].'@'.$bofelamimail->icServer->defaultDomain))] = $dfn;
+							$accountList[$isgroup.trim($v['account_id'].'@'.$bofelamimail->icServer->domainName)] = $dfn;
 						}
 					}
 					//sort($accountList,SORT_STRING);
