@@ -786,7 +786,7 @@ class felamimail_hooks
 					//$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
 				}
 
-				$selectAccount = html::select('accountSelect', $selectedID, $identities, true, 'style="width:100%;" onchange="var appWindow=egw_appWindow(\''.$appname.'\');appWindow.changeActiveAccount(this);"');
+				$selectAccount = html::select('accountSelect', $selectedID, $identities, true, 'id="accountSelect" style="width:100%;" onchange="var appWindow=egw_appWindow(\''.$appname.'\');appWindow.changeActiveAccount(this);"');
 				//error_log(__METHOD__.__LINE__.$selectAccount);
 				$file[] = array(
 					'text' => "<div id=\"divAccountSelect\" style=\" width:100%;\">".$selectAccount."</div>",
@@ -812,6 +812,17 @@ class felamimail_hooks
 					$folderTree
 					</div>
 					<script>
+						if (document.getElementById('accountSelect_chzn'))
+						{
+							var xchzn = document.getElementById('accountSelect_chzn');
+							xchzn.style.width = '100%';
+							if (xchzn.childElementCount>1)
+							{
+								xchzn.children[1].style.width='99%'; //chzn-drop
+								xchzn.children[1].children[0].children[0].style.width = '85%';
+							}
+						}
+
 						var wnd = egw_appWindow('".$appname."');
 						if (wnd && typeof wnd.refreshFolderStatus != 'undefined')
 						{
