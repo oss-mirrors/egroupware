@@ -1221,6 +1221,17 @@ var felamimail_documentHeight = 0;
 
 function handleResize()
 {
+	if (document.getElementById('accountSelect_chzn'))
+	{
+		var xchzn = document.getElementById('accountSelect_chzn');
+		xchzn.style.width = '100%';
+		if (xchzn.childElementCount>1)
+		{
+			xchzn.children[1].style.width='99%'; //chzn-drop
+			xchzn.children[1].children[0].children[0].style.width = '85%';
+		}
+	}
+
 	//alert($j("body").height()+' bodyHeight');
 	//alert($j(document).height()+' documentHeight');
 	var documentHeight =  $j("body").height() == 0 ? $j(document).height() : $j("body").height();
