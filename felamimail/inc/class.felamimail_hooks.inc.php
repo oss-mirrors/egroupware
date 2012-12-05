@@ -808,7 +808,7 @@ class felamimail_hooks
 					//$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
 				}
 
-				$selectAccount = html::select('accountSelect', $selectedID, $identities, true, 'id="accountSelect" style="width:100%;" onchange="var appWindow=egw_appWindow(\''.$appname.'\');appWindow.changeActiveAccount(this);"');
+				$selectAccount = html::select('accountSelect', $selectedID, $identities, true, 'id="accountSelect" style="width:100%;" onchange="var appWindow=egw_appWindow(\''.$appname.'\');appWindow.changeActiveAccount(this);"',0,false);
 				//error_log(__METHOD__.__LINE__.$selectAccount);
 				$file[] = array(
 					'text' => "<div id=\"divAccountSelect\" style=\" width:100%;\">".$selectAccount."</div>",
