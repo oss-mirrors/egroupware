@@ -552,4 +552,52 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 			return ldap_modify ($ds, $allValues[0]['dn'], $newData);
 		}
 	}
+
+	/**
+	 * Get configured mailboxes of a domain
+	 *
+	 * @param boolean $return_inactive return mailboxes NOT marked as accountStatus=active too
+	 * @return array uid => name-part of mailMessageStore
+	 */
+	function getMailboxes($return_inactive)
+	{
+		global $ds, $search_base;
+
+		$filter = array("(mail=*)");
+		$attrs = array('uid', 'mail');
+		if ($this->config['mailbox_attr'])
+		{
+			$filter[] = '('.$this->config['mailbox_attr'].'=*)';
+			$attrs[] = $this->config['mailbox_attr'];
+		}
+		if (!$return_inactive && $this->config['mail_enable_attr'])
+		{
+			$filter[] = '('.$this->config['mail_enable_attr'].'='.$this->config['mail_enabled'].')';
+		}
+		if (count($filter) > 1)
+		{
+			$filter = '(&'.implode('', $filter).')';
+		}
+		else
+		{
+			$filter = $filter[0];
+		}
+		if (!($sr = @ldap_search($ds, $this->config['search_base'], $filter, $attrs)))
+		{
+			//error_log("Error ldap_search(\$ds, '$base', '$filter')!");
+			return array();
+		}
+		$entries = ldap_get_entries($ds, $sr);
+
+		unset($entries['count']);
+
+		$mailboxes = array();
+		foreach($entries as $entry)
+		{
+			if ($entry['uid'][0] == 'anonymous') continue;	// anonymous is never a mail-user!
+			list($mailbox) = explode('@', $entry[$this->config['mailbox_attr'] ? $this->config['mailbox_attr'] : 'mail'][0]);
+			$mailboxes[$entry['uid'][0]] = $mailbox;
+		}
+		return $mailboxes;
+	}
 }

@@ -330,4 +330,31 @@ class emailadmin_smtp_sql extends emailadmin_smtp
 		}
 		return true;
 	}
+
+	/**
+	 * Get configured mailboxes of a domain
+	 *
+	 * @param boolean $return_inactive return mailboxes NOT marked as accountStatus=active too
+	 * @return array uid => name-part of mailMessageStore
+	 */
+	function getMailboxes($return_inactive)
+	{
+		global $ds, $search_base;
+
+		$join = 'JOIN '.accounts_sql::TABLE.' ON '.self::TABLE.'.account_id='.accounts_sql::TABLE.'.account_id';
+		if (!$return_inactive)
+		{
+			$join .= ' JOIN '.self::TABLE.' active ON active.account_id='.self::TABLE.'.account_id AND active.mail_type='.$this->db->quote(self::TYPE_ENABLED);
+		}
+		$mailboxes = array();
+		foreach($this->db->select(self::TABLE, 'account_lid AS uid,mail_value AS mailbox', array(
+			'mail_type' => self::TYPE_MAILBOX
+		), __LINE__, __FILE__, false, 'ORDER BY account_lid', self::APP, 0, $join) as $row)
+		{
+			if ($row['uid'] == 'anonymous') continue;	// anonymous is never a mail-user!
+			list($mailbox) = explode('@', $row['mailbox']);
+			$mailboxes[$row['uid']] = $mailbox;
+		}
+		return $mailboxes;
+	}
 }
