@@ -582,7 +582,10 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 		{
 			$filter = $filter[0];
 		}
-		if (!($sr = @ldap_search($ds, $this->config['search_base'], $filter, $attrs)))
+		$base = empty($this->config['search_base']) ?
+			$GLOBALS['egw_info']['server']['ldap_context'] : $this->config['search_base'];
+
+		if (!($sr = @ldap_search($ds, $base, $filter, $attrs)))
 		{
 			//error_log("Error ldap_search(\$ds, '$base', '$filter')!");
 			return array();
