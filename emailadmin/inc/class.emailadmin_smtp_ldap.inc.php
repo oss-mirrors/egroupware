@@ -561,8 +561,7 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 	 */
 	function getMailboxes($return_inactive)
 	{
-		global $ds, $search_base;
-
+		$ds = $GLOBALS['egw']->ldap->ldapConnect();
 		$filter = array("(mail=*)");
 		$attrs = array('uid', 'mail');
 		if ($this->config['mailbox_attr'])
