@@ -204,7 +204,6 @@ class wiki_ui extends wiki_bo
 		{
 			$this->tpl->disable_cells('action[convert]');
 			$content['upload_dir'] = $GLOBALS['egw_info']['user']['preferences']['wiki']['upload_dir'];
-			$content['rtfEditorFeatures'] = $GLOBALS['egw_info']['user']['preferences']['wiki']['rtfEditorFeatures'];
 		}
 		$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['wiki']['title'] . ' - ' .
 			lang('edit') . ' ' . $content['name'] .
