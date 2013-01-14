@@ -49,7 +49,7 @@
 			return false;
 		}
 		// if we submit the form, we do not want to execute the onunload stuff
-		do_onunload=false; 
+		do_onunload=false;
 		return true;
 	}
 	fm_startTimerSaveAsDraft(_refreshTimeOut);
