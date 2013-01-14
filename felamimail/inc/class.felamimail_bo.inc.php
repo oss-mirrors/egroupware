@@ -1662,7 +1662,8 @@ class felamimail_bo
 	function folderIsSelectable($folderToSelect)
 	{
 		$retval = true;
-		if($folderToSelect && ($folderStatus = $this->getFolderStatus($folderToSelect))) {
+		if($folderToSelect && ($folderStatus = $this->getFolderStatus($folderToSelect,false,true))) {
+			if ($folderStatus instanceof PEAR_Error) return false;
 			if (stripos(array2string($folderStatus['attributes']),'noselect')!==false)
 			{
 				$retval = false;
@@ -1677,10 +1678,12 @@ class felamimail_bo
 	* returns an array information about the imap folder
 	*
 	* @param _folderName string the foldername
+	* @param ignoreStatusCache bool ignore the cache used for counters
+	* @param basicInfoOnly bool retrieve only names and stuff returned by getMailboxes
 	*
 	* @return array
 	*/
-	function getFolderStatus($_folderName,$ignoreStatusCache=false)
+	function getFolderStatus($_folderName,$ignoreStatusCache=false,$basicInfoOnly=false)
 	{
 		if (self::$debug) error_log(__METHOD__." called with:".$_folderName);
 		if (!is_string($_folderName) || empty($_folderName)) // something is wrong. Do not proceed
@@ -1688,6 +1691,13 @@ class felamimail_bo
 			return false;
 		}
 		static $folderInfoCache; // reduce traffic on single request
+		static $folderBasicInfo;
+		if (is_null($folderBasicInfo))
+		{
+			$folderBasicInfo = egw_cache::getCache(egw_cache::INSTANCE,'email','folderBasicInfo'.trim($GLOBALS['egw_info']['user']['account_id']),null,array(),$expiration=60*60*1);
+			$folderInfoCache = $folderBasicInfo[$this->profileID];
+		}
+		if (isset($folderInfoCache[$_folderName]) && $ignoreStatusCache==false && $basicInfoOnly) return $folderInfoCache[$_folderName];
 		$retValue = array();
 		$retValue['subscribed'] = false;
 		if(!$icServer = $this->mailPreferences->getIncomingServer($this->profileID)) {
@@ -1728,7 +1738,9 @@ class felamimail_bo
 		{
 			$retValue['displayName'] = $retValue['shortDisplayName'] = lang($retValue['shortName']);
 		}
-		if (stripos(array2string($retValue['attributes']),'noselect')!==false)
+		if (!($folderInfo instanceof PEAR_Error)) $folderBasicInfo[$this->profileID][$_folderName]=$retValue;
+		egw_cache::setCache(egw_cache::INSTANCE,'email','folderBasicInfo'.trim($GLOBALS['egw_info']['user']['account_id']),$folderBasicInfo,$expiration=60*60*1);
+		if ($basicInfoOnly || stripos(array2string($retValue['attributes']),'noselect')!==false)
 		{
 			return $retValue;
 		}
@@ -1831,10 +1843,16 @@ class felamimail_bo
 			{
 				unset($lastFolderUsedForMove[$_ImapServerId]);
 			}
+			$folderBasicInfo = egw_cache::getCache(egw_cache::INSTANCE,'email','folderBasicInfo'.trim($GLOBALS['egw_info']['user']['account_id']),null,array(),$expiration=60*60*1);
+			if (isset($folderBasicInfo[$_ImapServerId]))
+			{
+				unset($folderBasicInfo[$_ImapServerId]);
+			}
 		}
 		egw_cache::setCache(egw_cache::INSTANCE,'email','folderObjects'.trim($GLOBALS['egw_info']['user']['account_id']),$folders2return, $expiration=60*60*1);
 		egw_cache::setCache(egw_cache::INSTANCE,'email','icServerFolderExistsInfo'.trim($GLOBALS['egw_info']['user']['account_id']),$folderInfo,$expiration=60*5);
 		egw_cache::setCache(egw_cache::INSTANCE,'email','lastFolderUsedForMove'.trim($GLOBALS['egw_info']['user']['account_id']),$lastFolderUsedForMove,$expiration=60*60*1);
+		egw_cache::setCache(egw_cache::INSTANCE,'email','folderBasicInfo'.trim($GLOBALS['egw_info']['user']['account_id']),$folderBasicInfo,$expiration=60*60*1);
 	}
 
 	/**
@@ -3875,7 +3893,7 @@ class felamimail_bo
 		//error_log( "-------------------------->open connection ".function_backtrace());
 		//error_log(__METHOD__.__LINE__.' ->'.array2string($this->icServer));
 		if ($this->icServer->_connected == 1) {
-			$tretval = $this->icServer->selectMailbox($this->icServer->currentMailbox);
+			if (!empty($this->icServer->currentMailbox)) $tretval = $this->icServer->selectMailbox($this->icServer->currentMailbox);
 			if ( PEAR::isError($tretval) ) $isError[$_icServerID] = $tretval->message;
 			//error_log(__METHOD__." using existing Connection ProfileID:".$_icServerID.' Status:'.print_r($this->icServer->_connected,true));
 		} else {
@@ -3891,7 +3909,7 @@ class felamimail_bo
 					error_log(__METHOD__.__LINE__.' # Instance='.$GLOBALS['egw_info']['user']['domain'].', User='.$GLOBALS['egw_info']['user']['account_lid']);
 				}
 			}
-			if (isset($this->sessionData['mailbox'])) $smretval = $this->icServer->selectMailbox($this->sessionData['mailbox']);//may fail silently
+			if (!PEAR::isError($tretval) && isset($this->sessionData['mailbox']) && !empty($this->sessionData['mailbox'])) $smretval = $this->icServer->selectMailbox($this->sessionData['mailbox']);//may fail silently
 		}
 		if ( PEAR::isError($tretval) ) egw_cache::setCache(egw_cache::INSTANCE,'email','icServerIMAP_connectionError'.trim($GLOBALS['egw_info']['user']['account_id']),$isError,$expiration=60*15);
 		//error_log(print_r($this->icServer->_connected,true));
