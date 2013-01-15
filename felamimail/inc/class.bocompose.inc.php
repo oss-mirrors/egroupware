@@ -182,11 +182,11 @@
 		function generateRFC822Address($_addressObject)
 		{
 			if(!empty($_addressObject->personal) && !empty($_addressObject->mailbox) && !empty($_addressObject->host)) {
-				return sprintf('"%s" <%s@%s>', $this->bofelamimail->decode_header($_addressObject->personal), $_addressObject->mailbox, $_addressObject->host);
+				return sprintf('"%s" <%s@%s>', $this->bofelamimail->decode_header($_addressObject->personal), $_addressObject->mailbox, $this->bofelamimail->decode_header($_addressObject->host,'FORCE'));
 			} elseif(!empty($_addressObject->mailbox) && !empty($_addressObject->host)) {
-				return sprintf("%s@%s", $_addressObject->mailbox, $_addressObject->host);
+				return sprintf("%s@%s", $_addressObject->mailbox, $this->bofelamimail->decode_header($_addressObject->host,'FORCE'));
 			} else {
-				return $_addressObject->mailbox;
+				return $this->bofelamimail->decode_header($_addressObject->mailbox,true);
 			}
 		}
 
@@ -251,7 +251,7 @@
 
 				if(!$foundAddresses[$val['EMAIL']]) {
 					$address = $val['PERSONAL_NAME'] != 'NIL' ? $val['RFC822_EMAIL'] : $val['EMAIL'];
-					$address = $this->bofelamimail->decode_header($address);
+					$address = $this->bofelamimail->decode_header($address,true);
 					$this->sessionData['cc'][] = $address;
 					$foundAddresses[$val['EMAIL']] = true;
 				}
@@ -268,7 +268,7 @@
 
 				if(!$foundAddresses[$val['EMAIL']]) {
 					$address = $val['PERSONAL_NAME'] != 'NIL' ? $val['RFC822_EMAIL'] : $val['EMAIL'];
-					$address = $this->bofelamimail->decode_header($address);
+					$address = $this->bofelamimail->decode_header($address,true);
 					$this->sessionData['to'][] = $address;
 					$foundAddresses[$val['EMAIL']] = true;
 				}
@@ -285,7 +285,7 @@
 
 				if(!$foundAddresses[$val['EMAIL']]) {
 					$address = $val['PERSONAL_NAME'] != 'NIL' ? $val['RFC822_EMAIL'] : $val['EMAIL'];
-					$address = $this->bofelamimail->decode_header($address);
+					$address = $this->bofelamimail->decode_header($address,true);
 					$this->sessionData['replyto'][] = $address;
 					$foundAddresses[$val['EMAIL']] = true;
 				}
@@ -302,7 +302,7 @@
 
 				if(!$foundAddresses[$val['EMAIL']]) {
 					$address = $val['PERSONAL_NAME'] != 'NIL' ? $val['RFC822_EMAIL'] : $val['EMAIL'];
-					$address = $this->bofelamimail->decode_header($address);
+					$address = $this->bofelamimail->decode_header($address,true);
 					$this->sessionData['bcc'][] = $address;
 					$foundAddresses[$val['EMAIL']] = true;
 				}
@@ -474,7 +474,7 @@
 
 					if(!$foundAddresses[$val['EMAIL']]) {
 						$address = $val['PERSONAL_NAME'] != 'NIL' ? $val['RFC822_EMAIL'] : $val['EMAIL'];
-						$address = $this->bofelamimail->decode_header($address);
+						$address = $this->bofelamimail->decode_header($address,true);
 						$oldTo[] = $address;
 						$foundAddresses[$val['EMAIL']] = true;
 					}
@@ -487,7 +487,7 @@
 					}
 					if(!$foundAddresses[$val['EMAIL']]) {
 						$address = $val['PERSONAL_NAME'] != 'NIL' ? $val['RFC822_EMAIL'] : $val['EMAIL'];
-						$address = $this->bofelamimail->decode_header($address);
+						$address = $this->bofelamimail->decode_header($address,true);
 						$oldTo[] = $address;
 						$foundAddresses[$val['EMAIL']] = true;
 					}
@@ -513,7 +513,7 @@
 
 						if(!$foundAddresses[$val['EMAIL']]) {
 							$address = $val['PERSONAL_NAME'] != 'NIL' ? $val['RFC822_EMAIL'] : $val['EMAIL'];
-							$address = $this->bofelamimail->decode_header($address);
+							$address = $this->bofelamimail->decode_header($address,true);
 							$this->sessionData['cc'][] = $address;
 							$foundAddresses[$val['EMAIL']] = true;
 						}
@@ -533,7 +533,7 @@
 
 						if(!$foundAddresses[$val['EMAIL']]) {
 							$address = $val['PERSONAL_NAME'] != 'NIL' ? $val['RFC822_EMAIL'] : $val['EMAIL'];
-							$address = $this->bofelamimail->decode_header($address);
+							$address = $this->bofelamimail->decode_header($address,true);
 							$this->sessionData['to'][] = $address;
 							$foundAddresses[$val['EMAIL']] = true;
 						}
@@ -552,7 +552,7 @@
 
 						if(!$foundAddresses[$val['EMAIL']]) {
 							$address = $val['PERSONAL_NAME'] != 'NIL' ? $val['RFC822_EMAIL'] : $val['EMAIL'];
-							$address = $this->bofelamimail->decode_header($address);
+							$address = $this->bofelamimail->decode_header($address,true);
 							$this->sessionData['to'][] = $address;
 							$foundAddresses[$val['EMAIL']] = true;
 						}
@@ -595,11 +595,11 @@
 				$ccAddress = @htmlspecialchars(lang("cc")).": ".$ccAddress.($bodyParts['0']['mimeType'] == 'text/html'?"\r\n<br>":"\r\n");
 			}
 			if($bodyParts['0']['mimeType'] == 'text/html') {
-				$this->sessionData['body']	= "<br>&nbsp;\r\n<p>".'----------------'.lang("original message").'-----------------'."\r\n".'<br>'.
+				$this->sessionData['body']	= /*"<br>".*/"&nbsp;\r\n"."<div>".'----------------'.lang("original message").'-----------------'."\r\n".'<br>'.
 					@htmlspecialchars(lang("from")).": ".$fromAddress."\r\n<br>".
 					$toAddress.$ccAddress.
 					@htmlspecialchars(lang("date").": ".$headers['DATE'],ENT_QUOTES | ENT_IGNORE,felamimail_bo::$displayCharset, false)."\r\n<br>".
-					'----------------------------------------------------------'."\r\n</p>";
+					'----------------------------------------------------------'."\r\n</div>";
 				$this->sessionData['mimeType'] 	= 'html';
 				$this->sessionData['body']	.= '<blockquote type="cite">';
 
@@ -740,10 +740,11 @@
 				$address_array	= imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($address):$address), '');
 				foreach((array)$address_array as $addressObject) {
 					if ($addressObject->host == '.SYNTAX-ERROR.') continue;
-					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+					$_emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$bofelamimail->idna2->encode($addressObject->host) : '');
 					#$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
 					#$_mailObject->AddAddress($emailAddress, $emailName);
-					$_mailObject->AddAddress($emailAddress, str_replace(array('@'),' ',($addressObject->personal?$addressObject->personal:$emailAddress)));
+					$_mailObject->AddAddress($emailAddress, str_replace(array('@'),' ',($addressObject->personal?$addressObject->personal:$_emailAddress)));
 				}
 			}
 
@@ -751,10 +752,11 @@
 				$address_array	= imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($address):$address),'');
 				foreach((array)$address_array as $addressObject) {
 					if ($addressObject->host == '.SYNTAX-ERROR.') continue;
-					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+					$_emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$bofelamimail->idna2->encode($addressObject->host) : '');
 					#$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
 					#$_mailObject->AddCC($emailAddress, $emailName);
-					$_mailObject->AddCC($emailAddress, str_replace(array('@'),' ',($addressObject->personal?$addressObject->personal:$emailAddress)));
+					$_mailObject->AddCC($emailAddress, str_replace(array('@'),' ',($addressObject->personal?$addressObject->personal:$_emailAddress)));
 				}
 			}
 
@@ -762,10 +764,11 @@
 				$address_array	= imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($address):$address),'');
 				foreach((array)$address_array as $addressObject) {
 				if ($addressObject->host == '.SYNTAX-ERROR.') continue;
-					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+					$_emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$bofelamimail->idna2->encode($addressObject->host) : '');
 					#$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
 					#$_mailObject->AddBCC($emailAddress, $emailName);
-					$_mailObject->AddBCC($emailAddress, str_replace(array('@'),' ',($addressObject->personal?$addressObject->personal:$emailAddress)));
+					$_mailObject->AddBCC($emailAddress, str_replace(array('@'),' ',($addressObject->personal?$addressObject->personal:$_emailAddress)));
 				}
 			}
 
@@ -773,10 +776,11 @@
 				$address_array  = imap_rfc822_parse_adrlist((get_magic_quotes_gpc()?stripslashes($address):$address),'');
 				foreach((array)$address_array as $addressObject) {
 					if ($addressObject->host == '.SYNTAX-ERROR.') continue;
+					$_emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
 					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
 					#$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
 					#$_mailObject->AddBCC($emailAddress, $emailName);
-					$_mailObject->AddReplyto($emailAddress, str_replace(array('@'),' ',($addressObject->personal?$addressObject->personal:$emailAddress)));
+					$_mailObject->AddReplyto($emailAddress, str_replace(array('@'),' ',($addressObject->personal?$addressObject->personal:$_emailAddress)));
 				}
 			}
 
