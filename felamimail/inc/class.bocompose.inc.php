@@ -572,34 +572,34 @@
 			$bodyParts = $bofelamimail->getMessageBody($_uid, ($this->preferencesArray['htmlOptions']?$this->preferencesArray['htmlOptions']:''), $_partID);
 			//_debug_array($bodyParts);
 
-			$fromAddress = felamimail_bo::htmlspecialchars($bofelamimail->decode_header(($headers['FROM'][0]['PERSONAL_NAME'] != 'NIL') ? str_replace(array('<','>'),array('[',']'),$headers['FROM'][0]['RFC822_EMAIL']) : $headers['FROM'][0]['EMAIL']));
+			$fromAddress = felamimail_bo::htmlspecialchars((($headers['FROM'][0]['PERSONAL_NAME'] != 'NIL') ? str_replace(array('<','>'),array('[',']'),$bofelamimail->decode_header($headers['FROM'][0]['RFC822_EMAIL'],true)) : $bofelamimail->decode_header($headers['FROM'][0]['EMAIL'],true)));
 
 			$toAddressA = array();
 			$toAddress = '';
 			foreach ($headers['TO'] as $mailheader) {
-				$toAddressA[] =  ($mailheader['PERSONAL_NAME'] != 'NIL') ? $mailheader['RFC822_EMAIL'] : $mailheader['EMAIL'];
+				$toAddressA[] =  trim($bofelamimail->decode_header((($mailheader['PERSONAL_NAME'] != 'NIL') ? $mailheader['RFC822_EMAIL'] : $mailheader['EMAIL']),true));
 			}
 			if (count($toAddressA)>0)
 			{
-				$toAddress = felamimail_bo::htmlspecialchars($bofelamimail->decode_header(implode(', ', str_replace(array('<','>'),array('[',']'),$toAddressA))));
-				$toAddress = @htmlspecialchars(lang("to")).": ".$toAddress.($bodyParts['0']['mimeType'] == 'text/html'?"\r\n<br>":"\r\n");;
+				$toAddress = felamimail_bo::htmlspecialchars(implode(', ', str_replace(array('<','>'),array('[',']'),$toAddressA)));
+				$toAddress = @htmlspecialchars(lang("to")).": ".$toAddress.($bodyParts['0']['mimeType'] == 'text/html'?"<br>":"\r\n");
 			}
 			$ccAddressA = array();
 			$ccAddress = '';
 			foreach ($headers['CC'] as $mailheader) {
-				$ccAddressA[] =  ($mailheader['PERSONAL_NAME'] != 'NIL') ? $mailheader['RFC822_EMAIL'] : $mailheader['EMAIL'];
+				$ccAddressA[] =  trim($bofelamimail->decode_header((($mailheader['PERSONAL_NAME'] != 'NIL') ? $mailheader['RFC822_EMAIL'] : $mailheader['EMAIL']),true));
 			}
 			if (count($ccAddressA)>0)
 			{
-				$ccAddress = felamimail_bo::htmlspecialchars($bofelamimail->decode_header(implode(', ', str_replace(array('<','>'),array('[',']'),$ccAddressA))));
-				$ccAddress = @htmlspecialchars(lang("cc")).": ".$ccAddress.($bodyParts['0']['mimeType'] == 'text/html'?"\r\n<br>":"\r\n");
+				$ccAddress = felamimail_bo::htmlspecialchars(implode(', ', str_replace(array('<','>'),array('[',']'),$ccAddressA)));
+				$ccAddress = @htmlspecialchars(lang("cc")).": ".$ccAddress.($bodyParts['0']['mimeType'] == 'text/html'?"<br>":"\r\n");
 			}
 			if($bodyParts['0']['mimeType'] == 'text/html') {
-				$this->sessionData['body']	= /*"<br>".*/"&nbsp;\r\n"."<div>".'----------------'.lang("original message").'-----------------'."\r\n".'<br>'.
-					@htmlspecialchars(lang("from")).": ".$fromAddress."\r\n<br>".
+				$this->sessionData['body']	= /*"<br>".*/"&nbsp;"."<div>".'----------------'.lang("original message").'-----------------'."".'<br>'.
+					@htmlspecialchars(lang("from")).": ".$fromAddress."<br>".
 					$toAddress.$ccAddress.
-					@htmlspecialchars(lang("date").": ".$headers['DATE'],ENT_QUOTES | ENT_IGNORE,felamimail_bo::$displayCharset, false)."\r\n<br>".
-					'----------------------------------------------------------'."\r\n</div>";
+					@htmlspecialchars(lang("date").": ".$headers['DATE'],ENT_QUOTES | ENT_IGNORE,felamimail_bo::$displayCharset, false)."<br>".
+					'----------------------------------------------------------'."</div>";
 				$this->sessionData['mimeType'] 	= 'html';
 				$this->sessionData['body']	.= '<blockquote type="cite">';
 
@@ -615,18 +615,17 @@
 
 					$this->sessionData['body'] .= "<br>".self::_getCleanHTML(translation::convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']));
 					#error_log( "GetReplyData (HTML) CharSet:".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
-
 				}
 
 				$this->sessionData['body']	.= '</blockquote><br>';
 			} else {
-				#$this->sessionData['body']	= @htmlspecialchars(lang("on")." ".$headers['DATE']." ".$bofelamimail->decode_header($fromAddress), ENT_QUOTES) . " ".lang("wrote").":\r\n";
+				//$this->sessionData['body']	= @htmlspecialchars(lang("on")." ".$headers['DATE']." ".$bofelamimail->decode_header($fromAddress), ENT_QUOTES) . " ".lang("wrote").":\r\n";
+				// take care the way the ReplyHeader is created here, is used later on in uicompose::compose, in case you force replys to be HTML (prefs)
                 $this->sessionData['body']  = " \r\n \r\n".'----------------'.lang("original message").'-----------------'."\r\n".
                     @htmlspecialchars(lang("from")).": ".$fromAddress."\r\n".
 					$toAddress.$ccAddress.
 					@htmlspecialchars(lang("date").": ".$headers['DATE'], ENT_QUOTES | ENT_IGNORE,felamimail_bo::$displayCharset, false)."\r\n".
                     '-------------------------------------------------'."\r\n \r\n ";
-
 				$this->sessionData['mimeType']	= 'plain';
 
 				for($i=0; $i<count($bodyParts); $i++) {

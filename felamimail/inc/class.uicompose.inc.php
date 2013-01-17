@@ -400,6 +400,8 @@
 					{
 						$sessionData['mimeType']  = 'html';
 						$sessionData['body'] = "<pre>".$sessionData['body']."</pre>";
+						// take care this assumption is made on the creation of the reply header in bocompose::getReplyData
+						if (strpos($sessionData['body'],"<pre> \r\n \r\n---")===0) $sessionData['body'] = substr_replace($sessionData['body']," <br>\r\n<pre>---",0,strlen("<pre> \r\n \r\n---")-1);
 					}
 				}
 			}
