@@ -644,7 +644,8 @@
 				// User preferences for style
 				$font = $GLOBALS['egw_info']['user']['preferences']['common']['rte_font'];
 				$font_size = $GLOBALS['egw_info']['user']['preferences']['common']['rte_font_size'];
-				if (!empty($font) && !empty($font_size)) $font_span = '<span style="font-family:'.$font.';font-size:'.$font_size.';">';
+				$font_span = '<span '.($font?'style="font-family:'.$font.'; ':'').';'.($font_size?'font-size:'.$font_size.'; ':'').'">';
+				if (empty($font) && empty($font_size)) $font_span = '';
 			}			
 			//remove possible html header stuff
 			if (stripos($sessionData['body'],'<html><head></head><body>')!==false) $sessionData['body'] = str_ireplace(array('<html><head></head><body>','</body></html>'),array('',''),$sessionData['body']);
