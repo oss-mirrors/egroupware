@@ -1,0 +1,7 @@
+egroupware chat	phpfreechat	es-es	Chat de eGroupware
+global categories	phpfreechat	es-es	Categorías globales
+phpfreechat	common	es-es	freechat
+phpfreechat integration into egroupware	phpfreechat	es-es	integración de phpFreeChat en eGroupWare
+the chat opens in a new window.	phpfreechat	es-es	El chat se abre en una ventana nueva.
+to complete the phpfreechat installation you have to give the webserver write access to:	phpfreechat	es-es	Para completar la instalación de phpFreeChat tiene que dar permiso de escritura al servidor web a:
+you should remove the write access, once you see the chat!	phpfreechat	es-es	Debe quitar el permiso de escritura, una vez ya vea el chat.

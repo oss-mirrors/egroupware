@@ -57,6 +57,7 @@ no never	admin	ca	No mai
 not set	wiki	ca	no especificat
 older	wiki	ca	Més antic
 only if browser supports a richtext-editor	admin	ca	Només si el navegador suporta un editor de text enriquit
+page content	wiki	ca	Contenido de la página
 please contact the %1administrator%2 for assistance.	wiki	ca	Si us plau, contacteu amb el vostre %1Administrador%2 per a obtenir assistència.
 preview	wiki	ca	Visualització prèvia
 preview of current version	wiki	ca	Visualització prèvia de la Versió Actual
@@ -69,9 +70,11 @@ richtext	wiki	ca	Text enriquit
 rows	wiki	ca	Files
 save the changes and exit	wiki	ca	Desa els canvis i surt
 saves and continues editing	wiki	ca	Desa i continua editant
+search for	wiki	ca	Cercar
 see complete list (%1 entries)	wiki	ca	Mostra la llista sencera (%1 entrades)
 summary	wiki	ca	Resum
 summary of change	wiki	ca	Resum dels canvis
+the search returned no result!	wiki	ca	La recerca no ha aconseguit cap resultat!
 this page can not be edited.	wiki	ca	Aquesta pàgina no pot ser editada.
 twin pages	wiki	ca	Pàgines bessones
 unblock	wiki	ca	Desbloca

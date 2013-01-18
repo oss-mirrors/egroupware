@@ -1,14 +1,13 @@
 compose	messenger	ja	作成
-compose global message	admin	ja	共通メッセージ
-compose global message	messenger	ja	共通メッセージ
+compose global message	common	ja	共通メッセージ
 compose message	messenger	ja	作成
 delete selected	messenger	ja	選択メッセージを削除
 forward	messenger	ja	転送
 forward a message	messenger	ja	転送
 forwarded	messenger	ja	転送済み
 global message	messenger	ja	共通メッセージ
-inbox	messenger	ja	Inbox
 i can't find the username %1 on the system	messenger	ja	ユーザ %1 がありません
+inbox	messenger	ja	Inbox
 message from	messenger	ja	送信者
 messenger	common	ja	メッセンジャー
 new	messenger	ja	新規

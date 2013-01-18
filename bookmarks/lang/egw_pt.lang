@@ -1,7 +1,8 @@
 %1 bookmarks have been deleted	bookmarks	pt	Foram eliminados %1 marcadores
 %1 bookmarks imported from %2 successfully.	bookmarks	pt	Foram importandos %1 marcadores de %2 com sucesso.
 (comma separate multiple addresses)	bookmarks	pt	(vírgula para separar vários endereços)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	pt	<b>Nota:</b> Esta função funciona apenas com marcadores da netscape
+actions	bookmarks	pt	Acções
+added	bookmarks	pt	Adicionado
 all bookmarks	bookmarks	pt	Todos os marcadores
 and	bookmarks	pt	E
 append this message to mailed bookmarks	bookmarks	pt	Anexar esta mensagem aos marcadores enviados por correio electrónico
@@ -16,9 +17,14 @@ bookmark not readable	bookmarks	pt	Marcador não legível
 bookmarks	common	pt	Marcadores
 bookmarks settings	bookmarks	pt	Definições de marcadores
 change bookmark	bookmarks	pt	Alterar marcador
+check all	bookmarks	pt	Marcar todas
+choose the categories to display	bookmarks	pt	Escolher as categorias a apresentar
 close this window to return	bookmarks	pt	Fechar esta janela e volta
 create bookmark	bookmarks	pt	Criar marcador
 create new bookmark	bookmarks	pt	Criar novo marcador
+create new links	bookmarks	pt	Criar novas ligações
+created	bookmarks	pt	Criado
+custom fields	bookmarks	pt	Personalizar campos
 date added	bookmarks	pt	Data adicionada
 date changed	bookmarks	pt	Data alterada
 date last updated	bookmarks	pt	Data da última actualização
@@ -27,16 +33,23 @@ descending	bookmarks	pt	Ordem decrescente
 edit bookmark	bookmarks	pt	Editar marcador
 edit this bookmark	bookmarks	pt	Editar este marcador
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	pt	Insira o nome do ficheiro do marcador da Netscape que deseja importar.
+existing links	bookmarks	pt	Ligações existentes
+export	bookmarks	pt	Exportar
 export bookmarks	common	pt	Exportar marcadores
 fewer	bookmarks	pt	Menos
 filter by	bookmarks	pt	Filtrar por
 found a link you might like	bookmarks	pt	Encontrei uma ligação que lhe pode interessar
 from	bookmarks	pt	De
 from category %1	bookmarks	pt	da categoria %1
+general	bookmarks	pt	Geral
+global categories	bookmarks	pt	Categorias gerais
 highest	bookmarks	pt	Mais alto
+history	bookmarks	pt	Histórico
 i thought you would be interested in the following link(s):	bookmarks	pt	Talvez esteja interessado/a na(s) seguinte(s) ligação (ligações):
 import bookmarks	common	pt	Importar marcadores
+last modified	bookmarks	pt	última modificação
 like	bookmarks	pt	como
+links	bookmarks	pt	Ligações
 list view	bookmarks	pt	Ver lista
 lowest	bookmarks	pt	Mais baixo
 mail this bookmark	bookmarks	pt	Enviar este marcador por correio electrónico
@@ -59,12 +72,14 @@ search for:	bookmarks	pt	Pesquisar por:
 select the format you would like to export to	bookmarks	pt	Seleccione o formato para exportação
 send bookmark	bookmarks	pt	Enviar marcador
 sub category	bookmarks	pt	Subcategoria
+this module displays bookmarks in a javascript based tree	bookmarks	pt	Este módulo apresenta marcadores num menu em árvore baseado em javascript.
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	pt	O endereço %1 para o qual deseja enviar é inválido. O formato deve ser <strong>utilizador@domínio</strong> e o domínio tem de existir!
 to e-mail addresses	bookmarks	pt	Para (endereços de correio electrónico):
 to which category should the imported folder hierarchy be attached	bookmarks	pt	Categoria a que deve ser anexada a hierarquia de pastas importadas.
 total visits	bookmarks	pt	Total de visitas
 tree view	bookmarks	pt	Ver em árvore
 unable to open temp file %1 for import.	bookmarks	pt	Não foi possível abrir o ficheiro temporário %1 para importar.
+updated	bookmarks	pt	Actualizado
 url is required.	bookmarks	pt	É necessário inserir uma URL.
 view bookmark	bookmarks	pt	Ver marcador
 view this bookmark	bookmarks	pt	Ver este marcador

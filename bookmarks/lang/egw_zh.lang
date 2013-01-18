@@ -1,7 +1,8 @@
 %1 bookmarks have been deleted	bookmarks	zh	%1个书签已删除
 %1 bookmarks imported from %2 successfully.	bookmarks	zh	已成功地从%2导入%1个书签。
 (comma separate multiple addresses)	bookmarks	zh	(以逗号分隔多个地址)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	zh	<b>注意：</b> 目前这只能与 Netscape 浏览器书签兼容
+actions	bookmarks	zh	操作
+added	bookmarks	zh	已添加
 all bookmarks	bookmarks	zh	所有书签收藏
 and	bookmarks	zh	及
 append this message to mailed bookmarks	bookmarks	zh	发送时在书签附加以下信息
@@ -16,10 +17,14 @@ bookmark not readable	bookmarks	zh	书签不可读
 bookmarks	common	zh	书签收藏
 bookmarks settings	bookmarks	zh	书签收藏设置
 change bookmark	bookmarks	zh	更改书签
+check all	bookmarks	zh	全选
 choose the categories to display	bookmarks	zh	选择类别显示
 close this window to return	bookmarks	zh	关闭窗口并返回
 create bookmark	bookmarks	zh	创建书签
 create new bookmark	bookmarks	zh	新建书签
+create new links	bookmarks	zh	创建新链接
+created	bookmarks	zh	创建
+custom fields	bookmarks	zh	自定义字段
 date added	bookmarks	zh	日期已添加
 date changed	bookmarks	zh	日期已更改
 date last updated	bookmarks	zh	最近更新日期
@@ -28,17 +33,23 @@ descending	bookmarks	zh	降序
 edit bookmark	bookmarks	zh	编辑书签
 edit this bookmark	bookmarks	zh	编辑该书签
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	zh	请输入您想要导入到以下书签的 Netscape 书签文件名。
+existing links	bookmarks	zh	存在的链接
+export	bookmarks	zh	导出
 export bookmarks	common	zh	导出书签
 fewer	bookmarks	zh	较少
 filter by	bookmarks	zh	筛选条件：
 found a link you might like	bookmarks	zh	发现了一个可能是您感兴趣的链接
 from	bookmarks	zh	从
 from category %1	bookmarks	zh	从类别 %1
+general	bookmarks	zh	通用
 global categories	bookmarks	zh	全局类别
 highest	bookmarks	zh	最高的
+history	bookmarks	zh	历史记录
 i thought you would be interested in the following link(s):	bookmarks	zh	我想您也许会对以下链接感兴趣：
 import bookmarks	common	zh	导入书签
+last modified	bookmarks	zh	最近修改
 like	bookmarks	zh	相似条件
+links	bookmarks	zh	链接
 list view	bookmarks	zh	列表查看
 lowest	bookmarks	zh	最低的
 mail this bookmark	bookmarks	zh	发送该书签
@@ -50,7 +61,7 @@ name	bookmarks	zh	名称
 name is required	bookmarks	zh	需要名称
 netscape bookmark file	bookmarks	zh	Netscape 书签文件
 netscape bookmark filename is required!	bookmarks	zh	需要 Netscape 书签文件名！
-new	bookmark	zh	新建
+new	bookmarks	zh	新建
 new bookmark	bookmarks	zh	新建书签
 or	bookmarks	zh	或
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	zh	请填写发送的<b>电子邮件地址</b>、<b>邮件主题</b>和<b>讯息内容</b>！
@@ -66,13 +77,14 @@ to address %1 invalid. format must be <strong>user@domain</strong> and domain mu
 to e-mail addresses	bookmarks	zh	收件人地址
 to which category should the imported folder hierarchy be attached	bookmarks	zh	导入的文件夹层次应该附属于哪个类别
 total visits	bookmarks	zh	访问总数
-tree	bookmarks	zh	树型
 tree view	bookmarks	zh	树型查看
 unable to open temp file %1 for import.	bookmarks	zh	无法打开用于导入的临时文件 %1。
+updated	bookmarks	zh	更新
 url is required.	bookmarks	zh	需要网址。
 view bookmark	bookmarks	zh	查看书签
 view this bookmark	bookmarks	zh	查看这个书签
 warning	bookmarks	zh	警告
+whole query	bookmarks	zh	完整查询
 you are viewing this site outside of egroupware	bookmarks	zh	您正在浏览的是 Oscar Trading 以外的站点
 you must select a category	bookmarks	zh	您必须选择一个类别
 you need to select a category!	bookmarks	zh	您必须选择一个类别！

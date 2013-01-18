@@ -1,4 +1,3 @@
-you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	uk	Необхідно [Зберегти] кожну ручну зміну в полях перед тим як перейти до наступного кроку !!!
 add	developer_tools	uk	Додати
 add change	developer_tools	uk	Додати зміни
 add new phrase	developer_tools	uk	Додати нову фразу
@@ -22,7 +21,6 @@ download the lang-file to be saved in the apps setup-dir	developer_tools	uk	За
 edit	developer_tools	uk	Редагувати
 installed applications	developer_tools	uk	Встановлені приложення
 language file management	developer_tools	uk	Керування файлами мов
-list changelogs	developer_tools	uk	
 load	developer_tools	uk	Вгрузити
 loading source langfile	developer_tools	uk	Вгружається вхідний файл мови
 loading target langfile	developer_tools	uk	Вгружається ціловий файл мови
@@ -32,7 +30,6 @@ message_id in english	developer_tools	uk	message_id в англійській
 no file	developer_tools	uk	файлу немає
 ok	developer_tools	uk	ok
 original	developer_tools	uk	Оригінальне
-phrase in english	developer_tools	uk	Фраза по англійськи
 preferences	developer_tools	uk	Параметри
 preferences have been updated	developer_tools	uk	Параметри змінено
 project	developer_tools	uk	Проект
@@ -45,12 +42,7 @@ search for missing phrase	developer_tools	uk	Шукати пропущену ф�
 search new phrases	developer_tools	uk	Шукати нові фрази
 searches the source-code for phrases not in the actual source-lang-file	developer_tools	uk	Шукає в вихідному коді фрази, які не знаходяться в поточному вхідному мовному файлі
 select project	developer_tools	uk	Вибрати проект
-sf project tracker	developer_tools	uk	
-sf project tracker preferences	preferences	uk	
 source language	developer_tools	uk	Вхідна мова
-sourceforge project id	developer_tools	uk	
-sourceforge project tracker	developer_tools	uk	
-sourceforge project tracker preferences	developer_tools	uk	
 step	developer_tools	uk	Крок
 submit	developer_tools	uk	Передати
 target language	developer_tools	uk	Цільова мова
@@ -59,11 +51,11 @@ translate	developer_tools	uk	Перекласти
 translation	developer_tools	uk	Переклад
 update	developer_tools	uk	Поновити
 update database	developer_tools	uk	Поновити базу даних
-updates the translations of both lang-files in your database, so you can verify your work imediatly	developer_tools	uk	Поновлює переклади з обох файлів в базі даних, таким чином Ви можете перевірити свою роботу негайно
 version	developer_tools	uk	Версія
 write	developer_tools	uk	Записати
 write the lang-file to the apps setup-dir	developer_tools	uk	Записує мовний файл в каталог setup приложення
 write to lang table	developer_tools	uk	Записати мовну таблицю
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	uk	Необхідно [Зберегти] кожну ручну зміну в полях перед тим як перейти до наступного кроку !!!
 you must a version	developer_tools	uk	Необхідно встановити версію
 you must enter a change	developer_tools	uk	Необхідно внести зміни
 you must select a project	developer_tools	uk	Необхідно вибрати проект

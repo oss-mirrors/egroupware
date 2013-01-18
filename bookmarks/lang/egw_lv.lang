@@ -1,7 +1,8 @@
 %1 bookmarks have been deleted	bookmarks	lv	%1 grāmatzīmes tika izdzēstas
 %1 bookmarks imported from %2 successfully.	bookmarks	lv	%1 grāmatzīmes tika veiksmīgi pārvietotas no %2
 (comma separate multiple addresses)	bookmarks	lv	(ar komatu atdalītas )
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	lv	<b>Piezīme:</b> Strādā tikai ar netscape grāmatzīmēm.
+actions	bookmarks	lv	Darbības
+added	bookmarks	lv	PIevienots
 all bookmarks	bookmarks	lv	Visas grāmatzīmes
 and	bookmarks	lv	Un
 append this message to mailed bookmarks	bookmarks	lv	PIevienot šo ziņojumu  sūtītajām grāmatzīmēm
@@ -15,9 +16,14 @@ bookmark not readable	bookmarks	lv	Grāmatzīme nav lasāma
 bookmarks	common	lv	Grāmatzīmes
 bookmarks settings	bookmarks	lv	Grāmatzīmes iestatījumi
 change bookmark	bookmarks	lv	Mainīt grāmatzīmi
+check all	bookmarks	lv	Parbaudīt visu
+choose the categories to display	bookmarks	lv	Izvēlies sadaļas
 close this window to return	bookmarks	lv	aizvērt šo logu, lai atgrieztos
 create bookmark	bookmarks	lv	Izveidot grāmatzīmi
 create new bookmark	bookmarks	lv	Izveidot jaunu grāmatzīmi
+create new links	bookmarks	lv	Izveidot jaunas saites
+created	bookmarks	lv	Izveidots
+custom fields	bookmarks	lv	Mainīti lauki
 date added	bookmarks	lv	Pievienošanas datums
 date changed	bookmarks	lv	Izmaiņu veikšanas datums
 date last updated	bookmarks	lv	Pēdējo jauninājumu datums
@@ -25,17 +31,23 @@ date last visited	bookmarks	lv	Pēdējais apmeklējuma datums
 descending	bookmarks	lv	Dilstošs
 edit bookmark	bookmarks	lv	Rediģēt grāmatzīmi
 edit this bookmark	bookmarks	lv	Rediģēt šo grāmatzīmi
+existing links	bookmarks	lv	Eksistējošas saites
+export	bookmarks	lv	Eksportēt
 export bookmarks	common	lv	Pārsūtīt grāmatzīmes
 fewer	bookmarks	lv	Mazāk
 filter by	bookmarks	lv	FIltrēt pēc
 found a link you might like	bookmarks	lv	Atrast saiti , kura tev varētu patikt
 from	bookmarks	lv	No
 from category %1	bookmarks	lv	no kategorijas %1
+general	bookmarks	lv	Vispārējs
+global categories	bookmarks	lv	Globālās kategorijas
 highest	bookmarks	lv	Augstākais
+history	bookmarks	lv	Vēsture
 i thought you would be interested in the following link(s):	bookmarks	lv	Es domāju, tevi varētu interesēt sekojošas saites:
 import bookmarks	common	lv	Importēt grāmatzīmes
+last modified	bookmarks	lv	Pēdējo reizi pārveidots
 like	bookmarks	lv	kā
-list	bookmarks	lv	Saraksts
+links	bookmarks	lv	Saites
 lowest	bookmarks	lv	Zemākais
 mail this bookmark	bookmarks	lv	Sūtīt šo grāmatzīmi
 mail-this-link message sent to %1.	bookmarks	lv	sūtīt-šo-saiti ziņojums aizsūtīts %1.
@@ -55,11 +67,13 @@ search for:	bookmarks	lv	Meklēt
 select the format you would like to export to	bookmarks	lv	Atzīmē formātu, kurā vēlies pārsūtīt
 send bookmark	bookmarks	lv	Sūtīt grāmatzīmi
 sub category	bookmarks	lv	Apakšgrupa
+this module displays bookmarks in a javascript based tree	bookmarks	lv	Šis modulis parāda grāmatzīmes kokā,kas balstās uz javaskriptu
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	lv	Adrese %1 nav derīga. Formātam jābūt <strong>user@domain</strong> un domēnam jāeksistē!
 to e-mail addresses	bookmarks	lv	Uz e-pasta adresēm
 total visits	bookmarks	lv	kopējais apmeklējumu skaits
 tree view	bookmarks	lv	Koka skatījums
 unable to open temp file %1 for import.	bookmarks	lv	nevar atvērt importējamo īslaicīgo datni %1
+updated	bookmarks	lv	Atjaunināts
 url is required.	bookmarks	lv	pieprasīts URL
 view bookmark	bookmarks	lv	Rādīt grāmatzīmes
 view this bookmark	bookmarks	lv	Radīt šo grāmatzīmi

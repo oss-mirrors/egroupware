@@ -11,7 +11,9 @@ categories to export	bookmarks	id	Kategori untuk ekspor
 change bookmark	bookmarks	id	Ubah Tandabuku
 check all	bookmarks	id	Contreng semua
 create bookmark	bookmarks	id	Bikin tandabuku
+create new links	bookmarks	id	Bikin tautan baru
 created	bookmarks	id	Dibikin
+custom fields	bookmarks	id	Custom fields
 date added	bookmarks	id	Tanggal ditambahkan
 date changed	bookmarks	id	Tanggal Diubah
 descending	bookmarks	id	Menurun
@@ -49,6 +51,7 @@ or	bookmarks	id	or
 query condition	bookmarks	id	Query Condition
 rating	bookmarks	id	Rating
 search for:	bookmarks	id	Mancarikan:
+select an action	bookmarks	id	Pilih tindakan
 send bookmark	bookmarks	id	Kirim tandabuku
 sub category	bookmarks	id	Sub Kategori
 to e-mail addresses	bookmarks	id	Ke Alamat E-Mail

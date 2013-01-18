@@ -6,7 +6,6 @@ administration features are disabled for this wiki.	wiki	sk	Správcovské funkci
 admins	wiki	sk	Správcovia
 after how many days should old versions of a page be removed (0 for never)	admin	sk	Po koľkých dňoch treba odstrániť staré verzie stránky (0 pre nikdy)
 allow anonymous access	admin	sk	Povoliť anonymný prístup
-allow creating new pages (blank for all)	admin	sk	Povoliť vytváranie nových prázdnych stránok
 anonymous password	admin	sk	Heslo anonymného používateľa
 anonymous session type	admin	sk	Typ sedenia anonymného používateľa
 anonymous username	admin	sk	Používateľské meno anonymného používateľa

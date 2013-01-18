@@ -7,14 +7,13 @@ access_mode_readwrite	mydms	fa	خواندن و نوشتن
 acl get inherited	mydms	fa	لیست دسترسی ارثی
 add acl	mydms	fa	اضافه کردن لیست دسترسی
 add document	mydms	fa	اضافه کردن سند
+add link	mydms	fa	افزودن پیوند
 add notification	mydms	fa	افزودن فرد/گروه مرتبط
 add subfolder	mydms	fa	اضافه شدن زیر پوشه
 admin-tools	mydms	fa	ابزارهای مدیریت
-administration	mydms	fa	مدیریت
 all versions	mydms	fa	همه نسخه ها
 comment	mydms	fa	موضوع
 comment for current version	mydms	fa	توضیحات برای سند جاری
-content	mydms	fa	محتوی
 copy acl	mydms	fa	نسخه برداری از لیست دسترسی
 copy documents	mydms	fa	نسخه برداری از سند
 copy folder	mydms	fa	نسخه برداری از پوشه

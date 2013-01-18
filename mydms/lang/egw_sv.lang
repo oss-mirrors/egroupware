@@ -7,6 +7,7 @@ access_mode_readwrite	mydms	sv	Läs+skriv
 acl get inherited	mydms	sv	ACL ärvs
 add acl	mydms	sv	Lägg till ACL
 add document	mydms	sv	Skapa dokument
+add link	mydms	sv	Lägg till länk
 add notification	mydms	sv	Lägg till notifiering
 add subfolder	mydms	sv	Skapa underkatalog
 admin-tools	mydms	sv	Administrativa verktyg

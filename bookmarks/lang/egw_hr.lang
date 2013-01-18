@@ -1,7 +1,8 @@
 %1 bookmarks have been deleted	bookmarks	hr	%1 bookmarks have been deleted
 %1 bookmarks imported from %2 successfully.	bookmarks	hr	%1 bookmarks imported from %2 successfully.
 (comma separate multiple addresses)	bookmarks	hr	(comma separate multiple addresses)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	hr	<b>Note:</b> This currently works with netscape bookmarks only
+actions	bookmarks	hr	Akcije
+added	bookmarks	hr	Dodano
 all bookmarks	bookmarks	hr	All bookmarks
 and	bookmarks	hr	And
 append this message to mailed bookmarks	bookmarks	hr	Append this message to mailed bookmarks
@@ -17,6 +18,9 @@ change bookmark	bookmarks	hr	Change Bookmark
 close this window to return	bookmarks	hr	close this window to return
 create bookmark	bookmarks	hr	Create bookmark
 create new bookmark	bookmarks	hr	Create new bookmark
+create new links	bookmarks	hr	Create new links
+created	bookmarks	hr	Napravljeno
+custom fields	bookmarks	hr	Proizvoljno Polje
 date added	bookmarks	hr	Date added
 date changed	bookmarks	hr	Date Changed
 date last updated	bookmarks	hr	Date last updated
@@ -25,16 +29,22 @@ descending	bookmarks	hr	Descending
 edit bookmark	bookmarks	hr	Edit bookmark
 edit this bookmark	bookmarks	hr	Edit this bookmark
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	hr	Enter the name of the Netscape bookmark file<br>that you want imported into bookmarker below.
+existing links	bookmarks	hr	Existing links
+export	bookmarks	hr	Export
 export bookmarks	common	hr	Export Bookmarks
 fewer	bookmarks	hr	Fewer
 filter by	bookmarks	hr	Filter by
 found a link you might like	bookmarks	hr	Found a link you might like
 from	bookmarks	hr	From
 from category %1	bookmarks	hr	from category %1
+global categories	bookmarks	hr	Globalne kategorije
 highest	bookmarks	hr	Highest
+history	bookmarks	hr	povijest
 i thought you would be interested in the following link(s):	bookmarks	hr	I thought you would be interested in the following link(s):
 import bookmarks	common	hr	Import bookmarks
+last modified	bookmarks	hr	Zadnja izmjena
 like	bookmarks	hr	like
+links	bookmarks	hr	Links
 list view	bookmarks	hr	list view
 lowest	bookmarks	hr	Lowest
 mail this bookmark	bookmarks	hr	Mail this bookmark
@@ -62,9 +72,9 @@ to which category should the imported folder hierarchy be attached	bookmarks	hr	
 total visits	bookmarks	hr	total visits
 tree view	bookmarks	hr	Tree view
 unable to open temp file %1 for import.	bookmarks	hr	Unable to open temp file %1 for import.
+updated	bookmarks	hr	Updated
 url is required.	bookmarks	hr	URL is required.
 view bookmark	bookmarks	hr	View bookmark
 view this bookmark	bookmarks	hr	View this bookmark
 warning	bookmarks	hr	Warning
-you are viewing this site outside of phpgroupware	bookmarks	hr	You are viewing this site outside of phpGroupWare
 you must select a category	bookmarks	hr	You must select a category

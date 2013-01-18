@@ -63,6 +63,7 @@ on all pages	wiki	cs	na všech stránkách
 only if browser supports a richtext-editor	admin	cs	Jen pokud prohlížeč podporuje richtext ed
 only on the first page	wiki	cs	jen na první straně
 page '%1' not found !!!	wiki	cs	Strana '%1' nebyla nalezena !!!
+page content	wiki	cs	Obsah stránky
 path of the upload directory (has to be writable by the webserver!)	admin	cs	Cesta k adresáři pro upload (webserver do ní musí mít právo zápisu!)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	cs	Upload obrázku pomocí richtext editoru (adresář pro upload ponechte prázdný, chcete-li funkci zakázat)
 please contact the %1administrator%2 for assistance.	wiki	cs	Prosím, požádejte o pomoc %1Administrátora%2.

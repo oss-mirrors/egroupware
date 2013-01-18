@@ -63,6 +63,7 @@ on all pages	wiki	fr	sur toutesles pages
 only if browser supports a richtext-editor	admin	fr	Seulement si le navigateur supporte un éditeur de texte enrichi
 only on the first page	wiki	fr	seulement sur la première page
 page '%1' not found !!!	wiki	fr	Page '%1' introuvable !!!
+page content	wiki	fr	Contenu de la page
 path of the upload directory (has to be writable by the webserver!)	admin	fr	Chemin du répertoire de dépôt (le serveur web doit pouvoir y écrire!)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	fr	Dépôt d'image via un éditeur de texte enrichi (laisser le répertoire de dépôt vide pour désactiver le dépôt)
 please contact the %1administrator%2 for assistance.	wiki	fr	Veuillez contacter l'%1Administrateur%2 pour de l'assistance.

@@ -63,6 +63,7 @@ on all pages	wiki	sl	Na vseh straneh
 only if browser supports a richtext-editor	admin	sl	Le, če brskalnik podpira urejevalnik obogatenega besedila
 only on the first page	wiki	sl	Samo na prvi strani
 page '%1' not found !!!	wiki	sl	Stran '%1' ni bila najdena!
+page content	wiki	sl	Vsebina strani
 path of the upload directory (has to be writable by the webserver!)	admin	sl	Mapa za nalaganje (spletni strežnika mora imeti pravico pisanja)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	sl	Nalaganje slik z obogatenim urejevalnikom (pustite prazno če želite onemogočiti nalaganje)
 please contact the %1administrator%2 for assistance.	wiki	sl	Prosim, posvetujte se z %1oskrbnikom%2.

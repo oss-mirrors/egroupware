@@ -1,295 +1,68 @@
---choose group--	mydms	hu	--Csoport választása--
---choose user--	mydms	hu	--Felhasználó választása--
---please choose--	mydms	hu	--Kérem válasszon--
-<a class="inheritaccess" href="%1">inherit access</a>	mydms	hu	<a class="inheritAccess" href="%1">Hozzáférési jogosultság örököltetése</a>
-<a class="inheritaccess" href="[inheriturl]">inherit access</a>	mydms	hu	<a class="inheritAccess" href="[inheriturl]">Hozzáférési jogosultság örököltetése</a>
-<a class=\"inheritaccess\" href=\"[inheriturl]\">inherit access</a>	mydms	hu	<a class="inheritAccess" href="[inheriturl]">Hozzáférési jogosultság örököltetése</a>
-<br>setting image for user...	mydms	hu	<br>Kép beállítása a felhasználóhoz...
-accept	mydms	hu	Elfogad
-access is being inherited.<p><a class="inheritaccess" href="%1">copy inherited access-list</a><br><a class="inheritaccess" href="%2">start with empty access-list</a>	mydms	hu	A hozzáférési jogok öröklöttek.<p><a class="inheritAccess" href="%1">Öröklött hozzáférési lista másolása</a><br><a class="inheritAccess" href="%2">Kezdés egy új és üres hozzáférési listával</a>
-access is being inherited.<p><a class="inheritaccess" href="[copyurl]">copy inherited access-list</a><br><a class="inheritaccess" href="[emptyurl]">start with empty access-list</a>	mydms	hu	A hozzáférési jogok öröklöttek.<p><a class="inheritAccess" href="[copyurl]">Öröklött hozzáférési lista másolása</a><br><a class="inheritAccess" href="[emptyurl]">Kezdés egy új és üres hozzáférési listával</a>
 access mode	mydms	hu	Hozzáférési mód
 access rights	mydms	hu	Hozzáférési jogosultságok
-access-list is empty	mydms	hu	A hozzáférési lista üres
 access_mode_all	mydms	hu	Összes
 access_mode_none	mydms	hu	Nincs hozzáférése
 access_mode_read	mydms	hu	Olvas
 access_mode_readwrite	mydms	hu	Írás+olvasás
 acl get inherited	mydms	hu	származtatott ACL
-add a member	mydms	hu	Tag hozzáadása
-add access	mydms	hu	Hozzáférés hozzáadása
 add acl	mydms	hu	ACL hozzáadása
-add category	mydms	hu	Kategória hozzáadása
 add document	mydms	hu	Dokumentum hozzáadása
-add keywords	mydms	hu	Kulcsszavak hozzáadása
 add link	mydms	hu	Hivatkozás hozzáadása
-add new group	mydms	hu	Csoport hozzáadása
-add new notify	mydms	hu	Új értesítés hozzáadása
-add new user	mydms	hu	Új felhasználó hozzáadása
 add notification	mydms	hu	Értesítő hozzáadása
 add subfolder	mydms	hu	Almappa hozzáadása
-adding category...	mydms	hu	Kategória hozzáadása...
-adding document "[documentname]" to folder "[foldername]"...	mydms	hu	Dokumentum \"[documentname]\" hozzáadása a(z) \"[foldername]\" mappához...
-adding document %1 to folder %2...	mydms	hu	%1 dokumentum hozzáadása a(z) %2 mappához...
-adding document \"[documentname]\" to folder \"[foldername]\"...	mydms	hu	Dokumentum \"[documentname]\" hozzáadása a(z) \"[foldername]\" mappához...
-adding element to access-list...	mydms	hu	Elem hozzáadása a hozzáférési listához...
-adding element to notify-list...	mydms	hu	Elem hozzáadása az értesítő listához...
-adding group to system...	mydms	hu	Csoport hozzáadása a rendszerhez...
-adding keywords...	mydms	hu	Kulcsszavak hozzáadása...
-adding link to related document...	mydms	hu	Hivatkozás hozzáadása a kapcsolódó dokumentumokhoz...
-adding member to group...	mydms	hu	Tag hozzáadása csoporthoz...
 adding subfolder "%1" to folder "%2"...	mydms	hu	"%1" almappa hozzáadása a "%2" mappához...
-adding subfolder "[subfoldername]" to folder "[foldername]"...	mydms	hu	"%1" almappa hozzáadása a "%2" mappához...
-adding user to system...	mydms	hu	Felhasználó hozzáadása a rendszerhez...
 admin-tools	mydms	hu	Adminisztráció
-after "[prevname]"	mydms	hu	%1 után
-after %1	mydms	hu	%1 után
-all	mydms	hu	Teljes jogkör
-all folders	mydms	hu	Összes mappában
-all users	mydms	hu	Összes felhasználó
 all versions	mydms	hu	Összes verzió
-all words	mydms	hu	összes kifejezés
-an error has occured	mydms	hu	Hiba történt
-and	mydms	hu	és
-at least one word	mydms	hu	legalább egy kifejezés
-at the end	mydms	hu	A végére
-available keywords	mydms	hu	Rendelkezésre álló kulcsszavak
-between	mydms	hu	közötte
-cancel	mydms	hu	Elvet
-categories	mydms	hu	Kategóriák
-changing access-mode...	mydms	hu	Hozzáférési mód megváltoztatása...
-changing category...	mydms	hu	Kategória megváltoztatása...
-changing keywords...	mydms	hu	Kulcsszavak megváltoztatása...
 choose document	mydms	hu	Válasszon egy dokumentumot
-choose target-folder	mydms	hu	Válasszon célmappát
 comment	mydms	hu	Megjegyzés
 comment for current version	mydms	hu	Megjegyzés a legfrissebb verzióhoz
-confirm password	mydms	hu	Jelszó megerősítése
-content	mydms	hu	Tartalom
 copy acl	mydms	hu	ACL másolása
 copy documents	mydms	hu	Dokumentum másolása
 copy folder	mydms	hu	Mappa másolása
 copy options	mydms	hu	Opciók másolása
 copy subfolders	mydms	hu	Almappa másolása
-copying access-list...	mydms	hu	Hozzáférési lista másolása...
 create empty acl	mydms	hu	Üres ACL létrehozása
-created	mydms	hu	Készült
 creation date	mydms	hu	Létrehozás dátuma
 current acl	mydms	hu	Aktuális ACL
 current version	mydms	hu	Aktuális verzió
 default access	mydms	hu	Alapértelmezett hozzáférés
-default access-mode	mydms	hu	Alapértelmezett hozzáférési mód
-delete	mydms	hu	Törlés
 delete folder	mydms	hu	Mappa törlése
-delete keywords	mydms	hu	Kulcsszavak törlése
-delete this category	mydms	hu	Kategória törlése
 delete this notification	mydms	hu	Értesítés törlése
-deleting category...	mydms	hu	Kategória törlése...
-deleting keywords...	mydms	hu	Kulcsszavak törlése...
 do you really want to delete this acl?	mydms	hu	Valóban törölni kívánja ezt az ACL-t?
 do you really want to delete this document?	mydms	hu	Valóban törölni kívánja ezt a dokumentumot?
 do you really want to delete this version of the document?	mydms	hu	Valóban törölni kívánja a dokumentum ezen verzióját?
-do you really want to remove the "[foldername]" and its content?<br>be careful: this action cannot be undone.	mydms	hu	Valóban törölni kívánja a "%1" mappát és a teljes tartalmát?<br>Figyelem: Ez a művelet nem vonható vissza!
-do you really want to remove the document "[documentname]"?<br>be careful: this action cannot be undone.	mydms	hu	Valóban el akarja távolítani a dokumentumot "[documentname]"?<br>Figyelem: ez a művelet nem vonható vissza!
-do you really want to remove the document %1?<br>be careful: this action cannot be undone.	mydms	hu	Valóban el akarja távolítani a dokumentumot  %1?<br>Figyelem: ez a művelet nem vonható vissza!
 do you really want to remove the folder "%1" and its content?<br>be careful: this action cannot be undone.	mydms	hu	Valóban törölni kívánja a "%1" mappát és a teljes tartalmát?<br>Figyelem: Ez a művelet nem vonható vissza!
-do you really want to remove version %2 of document %1?<br>be careful: this action cannot be undone.	mydms	hu	Valóban el akarja távolítani a dokumentum %2 ezen verzióját %1?<br>Figyelem: ez a művelet nem vonható vissza!
-do you really want to remove version [version] of document "[documentname]"?<br>be careful: this action cannot be undone.	mydms	hu	Valóban el akarja távolítani a dokumentum [version] ezen verzióját [documentname]?<br>Figyelem: ez a művelet nem vonható vissza!
-document-overview	mydms	hu	Dokumentum áttekintő
-documents	mydms	hu	Dokumentumok
 does not expire	mydms	hu	Nem jár le
-done	mydms	hu	Kész
 download	mydms	hu	Letöltés
-edit access	mydms	hu	Hozzáférések szerkesztése
-edit access-list	mydms	hu	Hozzáférési lista szerkesztése
-edit categories	mydms	hu	Kategóriák szerkesztése
-edit document	mydms	hu	Dokumentum szerkesztése
-edit document access again	mydms	hu	Dokumentum hozzáférésének beállítása újból
-edit document again	mydms	hu	Dokumentum szerkesztése megint
 edit folder	mydms	hu	Mappa szerkesztése
-edit folder access again	mydms	hu	Mappa hozzáférés újbóli szerkesztése
-edit folder again	mydms	hu	Mappa szerkesztése újból
-edit group	mydms	hu	Csoport szerkesztése
-edit group %1	mydms	hu	%1 csoport szerkesztése
-edit keywords	mydms	hu	Kulcsszavak szerkesztése
-edit notify-list	mydms	hu	Értesítés szerkesztése
-edit notify-list again	mydms	hu	Értesítő lista szerkesztése újból
-edit personal keywords	mydms	hu	Személyes kulcsszavak szerkesztése
-edit user	mydms	hu	Felhasználó szerkesztése
-editing access...	mydms	hu	Hozzáférés szerkesztése...
-editing document...	mydms	hu	Dokumentum szerkesztése...
-editing folder...	mydms	hu	Mappa szerkesztése...
-editing group...	mydms	hu	Csoport szerkesztése...
-editing user settings...	mydms	hu	Felhasználó beállítások szerkesztése...
-editing user...	mydms	hu	Felhasználó szerkesztése...
-elapsed time: [time] sec.	mydms	hu	Eltelt idő: [time] másodperc.
-email	mydms	hu	Email
 expires	mydms	hu	Lejár
 expires after	mydms	hu	Lejárat ideje
 file size	mydms	hu	Állomány méret
 filename	mydms	hu	Állománynév
-filesize	mydms	hu	Méret
-first position	mydms	hu	Az elejére
 folder	mydms	hu	Mappa
-folder-overview	mydms	hu	Mappa áttekintő
-foldertree	mydms	hu	Mappa fa
-found [count] documents for "[query]".	mydms	hu	%1 dokumentum található a lekérdezés szerint "%2".
-fullname	mydms	hu	Teljes név
 general information	mydms	hu	Általános információk
-global keywords	mydms	hu	Globális kulcsszavak
-go back	mydms	hu	Visszatérés
-goto	mydms	hu	Ugrás
-group	mydms	hu	Csoport
-group members	mydms	hu	Csoport tagok
-groups	mydms	hu	Csoportok
-image	mydms	hu	Kép
-in folder	mydms	hu	A mappában
 information about last update	mydms	hu	Utolsó frissítés részletei
 informations	mydms	hu	Információ
-inherit access	mydms	hu	Öröklött hozzáférési jogosultságok szerkesztése
 inherit acl again	mydms	hu	ACL származtatása újból
-keep position	mydms	hu	Maradjon a pozícióján
-keywords	mydms	hu	Kulcsszavak
-language	mydms	hu	Nyelv
 last update	mydms	hu	Utolsó frissítés
-last updated	mydms	hu	Utolsó módosítás
 linked by	mydms	hu	Hozzárendelte:;
 linked documents	mydms	hu	Csatolt dokumentumok
-list of users	mydms	hu	Felhasználók listája
-local file	mydms	hu	Helyi fájl
-lock	mydms	hu	Zárolás
 lock status	mydms	hu	Zárolás állapota
-locking document...	mydms	hu	Dokumentum zárolása...
-logged in	mydms	hu	Belépve mint
-login	mydms	hu	Bejelentkezés
-login as guest	mydms	hu	Belépés mint vendég (publikus)
-logout	mydms	hu	Kilépés
 mime type	mydms	hu	MIME típus
-mime-type	mydms	hu	Mime típus
-mode	mydms	hu	Mód
 move document	mydms	hu	Dokumentum mozgatás
 move folder	mydms	hu	Mappa mozgatás
-moving document...	mydms	hu	Dokumentum mozgatása...
-moving folder...	mydms	hu	Mappa mozgatása...
-my account	mydms	hu	Hozzáférésem
 mydms	common	hu	Dokumentumtár
-mydms - document %1	mydms	hu	MyDMS - Dokumentum %1
-mydms - document [documentname]	mydms	hu	MyDMS - Dokumentum [documentname]
-mydms - folder %1	mydms	hu	MyDMS - Mappa %1
-mydms - folder [foldername]	mydms	hu	MyDMS - Mappa [foldername]
-name	mydms	hu	Név
-new image	mydms	hu	Új kép
-new or expired documents in your dms	mydms	hu	Új vagy lejárt dokumentum a Dokumentumkezelő rendszerben
-no	mydms	hu	Nem
-no access	mydms	hu	Hozzáférés megtagadva
-no documents	mydms	hu	Nincsenek dokumentumok
-no entries	mydms	hu	Nincsenek bejegyzések
-no groups	mydms	hu	Nincsenek csoportok
-no image found	mydms	hu	Kép nem található
-no keywords available	mydms	hu	Nem érhetők el kulcsszavak
 no related documents	mydms	hu	Nincsenek kapcsolódó dokumentumok
-no subfolders	mydms	hu	Nincsenek almappák
 notifications	mydms	hu	Értesítések
-notify-list	mydms	hu	Értesítő lista
-only .jpg-images may be used as user-images	mydms	hu	Csak .jpg képek használhatóak felhasználói ikonként.
-only this ([foldername]) including subfolders	mydms	hu	csak itt ([foldername]), az almappákkal együtt
-overview of folders and documents	mydms	hu	Mappák és dokumentumok áttekintése
-owner	mydms	hu	Tulajdonos
-password	mydms	hu	Jelszó
-password and passwords-confirmation are not equal	mydms	hu	A megadott jelszó és megerősítése nem egyezik
-path	mydms	hu	Útvonal
 permission	mydms	hu	Engedélyek
-personal keywords	mydms	hu	Személyes kulcsszavak
-please select a file	mydms	hu	Kérem válasszon egy dokumentumot
-please select an user	mydms	hu	Kérem válasszon egy felhasználót
-please type in a name	mydms	hu	Kérem adjon meg egy nevet
-please type in an username	mydms	hu	Kérem adjon meg egy felhasználónevet
-public	mydms	hu	Nyilvános
-read	mydms	hu	Olvasási jog
-read-write	mydms	hu	Írás és olvasás
-related documents	mydms	hu	Kapcsolódó dokumentumok
-remove document	mydms	hu	Dokumentum törlése
-remove folder	mydms	hu	Mappa törlése
-remove link	mydms	hu	Hivatkozás eltávolítása
-remove member	mydms	hu	Tag eltávolítása
-remove this group	mydms	hu	Csoport eltávolítása
-remove this user	mydms	hu	Felhasználó eltávolítása
-remove version	mydms	hu	Verzió törlése
-removing acl. document will inherit access...	mydms	hu	ACL eltávolítása. A dokument örökli a hozzáférési jogosultságokat...
-removing acl. folder will inherit access...	mydms	hu	ACL eltávolítása. A mappa örökölni fogja a hozzáféréseket...
-removing document...	mydms	hu	Dokumentum eltávolítása...
-removing element from access-list...	mydms	hu	Elem eltávolítása a hozzáférési listáró...
-removing element from notify-list...	mydms	hu	Elem eltávolítása az értesítő listáról...
-removing folder...	mydms	hu	Mappa eltávolítása...
-removing group from system...	mydms	hu	Csoport eltávolítása a rendszerből...
-removing inherited access. starting with empty acl...	mydms	hu	Öröklött hozzáférés eltávolítása. Kezdés üres ACL-el...
-removing link to related document...	mydms	hu	Kapcsolódó dokumentumokhoz való hivatkozás eltávolítása...
-removing member from group...	mydms	hu	Tag eltávolítása a csoportból...
-removing user from system...	mydms	hu	Felhasználó eltávolítása a rendszerből...
-removing version [version]...	mydms	hu	[version] verzió eltávolítása...
-root folder	mydms	hu	Gyökér mappa
-save	mydms	hu	Mentés
-search	mydms	hu	Keresés
-search for	mydms	hu	Keresés
-search in	mydms	hu	Keresés itt
-search results	mydms	hu	Keresés eredménye
-select at least a user or a group	mydms	hu	Válasszon ki legalább egy felhasználót vagy csoportot
 select folder	mydms	hu	Mappa kiválasztása
-select one	mydms	hu	Válasszon egyet
 select target folder	mydms	hu	Célmappa kiválasztása
-selected document	mydms	hu	Kiválasztott dokumentum
-selected folder	mydms	hu	Kiválsztott mappa
-sequence	mydms	hu	Sorrend
-set owner	mydms	hu	Tulajdonos beállítása
-setting default access for document...	mydms	hu	A dokumentum alapértelmezett hozzáférésének beállítása...
-setting default access-mode for folder...	mydms	hu	Alapértelmezett hozzáférési mód beállítása a mappára...
-setting expiration...	mydms	hu	Lejárat időpontjának beállítása...
-setting owner...	mydms	hu	Tulajdonos beállítása...
-specify some keywords	mydms	hu	Határozzon meg néhány kulcsszót
-start	mydms	hu	Indít
-status	mydms	hu	Zárolási állapot
-subfolders	mydms	hu	Almappák
 target folder	mydms	hu	Célmappa
-the document "[documentname]" (path: "[path]") has expired on [expires]	mydms	hu	A [documentname] dokumentum (útvonal: [path]) lejárt ezen a napon: [expires]
-the document "[documentname]" (path: "[path]") was created or updated on [updated]	mydms	hu	A [documentname] dokumentum (útvonal: [path]) létrehozva vagy frissítve ezen a napon: [updated]
-the document %1 (path: %2) has expired on %3	mydms	hu	A %1 dokumentum (útvonal: %2) lejárt ezen a napon: %3
-the document %1 (path: %2) was created or updated on %3	mydms	hu	A %1 dokumentum (útvonal: %2) létrehozva vagy frissítve ezen a napon: %3
-theme	mydms	hu	Téma
-there are no documents that match your search ("[query]").	mydms	hu	Nem található dokumentum a megadott keresési feltételek szerint. ("[query]").
-there is no comment	mydms	hu	Nincsenek megjegyzések
 this document gets locked by you!	mydms	hu	A dokumentum zárolása megtörtént.
 this document gets unlocked by you.	mydms	hu	A dokumentum zárolásának feloldása megtörtént.
-this document is aleady locked	mydms	hu	A dokumentum már zárolt.
 this document is currently not locked.	mydms	hu	A dokumentum jelenleg nincs zárolva.
 this document is locked by <a href="mailto:%1">%2</a>.	mydms	hu	A dokumentumot <a href="mailto:%1">%2</a> zárolta.
-this document is locked.	mydms	hu	Ez a dokumentum zárolt.
-this document is not locked	mydms	hu	A dokumentum nincs zárolva.
-this document was locked by <a href="mailto:[email]">[username]</a>.<br>only authorized users can unlock this document (see end of page).	mydms	hu	Ezt a dokumentumot a <a href="mailto:[email]">[username]</a> nevű felhasználó zárolta.<br>Csak a megfelelő jogosultsággal rendelkező felhasználók tudják a zárolást feloldani (tekintsen a lap aljára).
-this group has no members	mydms	hu	Ennek a csoportnak nincsenek tagjai
-this username does not exist	mydms	hu	Ez a felhasználónév nem létezik.
-type in a query	mydms	hu	Kérem adjon meg egy lekérdezést
-type in your email-address	mydms	hu	Adja meg az email címét
-unlock	mydms	hu	Zárolás feloldása
-unlocking document...	mydms	hu	Dokumentum feloldása...
-update	mydms	hu	Frissítés
 update document	mydms	hu	Dokumentum frissítése
-updating document...	mydms	hu	Dokumentum frissítése...
 upload date	mydms	hu	Feltöltés dátuma
-upload failed. please contact the administrator.	mydms	hu	A feltöltés nem sikerült. Lépjen kapcsolatba az adminisztrátorral.
-upload-date	mydms	hu	Feltöltés ideje
 uploaded by	mydms	hu	Feltöltő
-use predefined keywords	mydms	hu	Használj előre meghatározott kulcsszavakat
-user	mydms	hu	Felhasználó
-username	mydms	hu	Felhasználónév
-users	mydms	hu	Felhasználók
-version	mydms	hu	Verzió
 view online	mydms	hu	Online megtekintés
-yes	mydms	hu	Igen
-you can still update it, beacuse you have access-mode	mydms	hu	Ön mégis tudja frissíteni, mivel megvan a megfelelő jogosultsága hozzá
-you can still update it, beacuse you have access-mode "all". locking will automatically be removed.	mydms	hu	Ön mégis tudja frissíteni, mivel megvan a megfelelő jogosultsága hozzá. A zárolás automatikusan el lesz távolítva.
-you can still update it, because you are also the one that locked ist. locking will automatically be removed.	mydms	hu	Ön frissítheti a dokumentumot, mert ön zárolta a dokumentumot.  A zárolás automatikusan feloldásra és eltávolításra kerül.
-you can therefore not update this document. please contanct the locking user.	mydms	hu	Hát bizony, ön nem frissítheti a dokumentumot. Lépjen kapcsolatba a zárolást eszközlő felhasználóval.
-you don't have enough rights to do that	mydms	hu	Nincs meg a jogosítványa a művelethez
-you dont't have enough rights to unlock this document	mydms	hu	Önnek nincs meg a jogosultsága, hogy feloldja a dokumentum zárolását.
-you need to type in your password	mydms	hu	Meg kell adnia a jelszavát, különben lelőjük a kutyáját!
-your password is incorrect. try again.	mydms	hu	Felhasználónév és/vagy jelszó nem megfelelő. Próbálja újra.

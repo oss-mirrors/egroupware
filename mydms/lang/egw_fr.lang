@@ -6,6 +6,7 @@ access_mode_readwrite	mydms	fr	Lire+Ecrire
 acl get inherited	mydms	fr	Les permissions sont hérités
 add acl	mydms	fr	Ajouter des permissions
 add document	mydms	fr	Ajouter un document
+add link	mydms	fr	Ajouter un lien
 add notification	mydms	fr	Ajouter une notification
 add subfolder	mydms	fr	Ajouter un sous-répertoire
 admin-tools	mydms	fr	outils d'administration

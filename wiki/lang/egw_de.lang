@@ -63,6 +63,7 @@ on all pages	wiki	de	auf allen Seiten
 only if browser supports a richtext-editor	admin	de	Nur wenn der Webbrowser das Bearbeiten von formatiertem Text unterstütz
 only on the first page	wiki	de	nur auf der ersten Seite
 page '%1' not found !!!	wiki	de	Seite '%1' nicht gefunden !!!
+page content	wiki	de	Seiteninhalt
 path of the upload directory (has to be writable by the webserver!)	admin	de	Pfad des Verzeichnisses zum Hochladen (muß vom Webserver beschreibbar sein!)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	de	Hochladen von Bildern über den Editor für formatierten Text (das Verzeichnis leer lassen um das Hochladen abzuschalten)
 please contact the %1administrator%2 for assistance.	wiki	de	Bitte wenden Sie sich für weitere Hilfe an den %1Administrator%2..

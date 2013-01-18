@@ -63,6 +63,7 @@ on all pages	wiki	it	su tutte le pagine
 only if browser supports a richtext-editor	admin	it	Solo se il browser supporta un editor RICHTEXT
 only on the first page	wiki	it	solo sulla prima pagina
 page '%1' not found !!!	wiki	it	Pagina '%1' non trovata !!!
+page content	wiki	it	Contenuto pagina
 path of the upload directory (has to be writable by the webserver!)	admin	it	Percorso della cartella di upload (deve essere scrivibile dal Server web)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	it	Upload delle immagini attraverso l'editor richtext (lascia la cartella di upload vuota per disabilitare l'upload)
 please contact the %1administrator%2 for assistance.	wiki	it	Prego contatta l' %1Amministratore%2 per assistenza.

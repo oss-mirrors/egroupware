@@ -1,7 +1,8 @@
 %1 bookmarks have been deleted	bookmarks	nl	%1 favorieten zijn verwijderd
 %1 bookmarks imported from %2 successfully.	bookmarks	nl	Met succes %1 favorieten geïmporteerd van %2.
 (comma separate multiple addresses)	bookmarks	nl	(komma gescheiden, meerdere adressen)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	nl	LET OP: Dit werkt momenteel alleen met Netscape favorieten.
+actions	bookmarks	nl	Acties
+added	bookmarks	nl	toegevoegd
 all bookmarks	bookmarks	nl	Alle Favorieten
 and	bookmarks	nl	En
 append this message to mailed bookmarks	bookmarks	nl	Dit bericht toevoegen ge-mailde favorieten
@@ -16,10 +17,14 @@ bookmark not readable	bookmarks	nl	Favoriet niet leesbaar
 bookmarks	common	nl	Favorieten
 bookmarks settings	bookmarks	nl	Favorieteninstellingen
 change bookmark	bookmarks	nl	Wijzig favoriet
+check all	bookmarks	nl	Markeer alles
 choose the categories to display	bookmarks	nl	Kies de categorieën om weer te geven
 close this window to return	bookmarks	nl	Sluit dit venster om terug te keren
 create bookmark	bookmarks	nl	Maak favoriet
 create new bookmark	bookmarks	nl	Maak een nieuwe favoriet
+create new links	bookmarks	nl	Nieuwe links aanmaken
+created	bookmarks	nl	Gecreëerd
+custom fields	bookmarks	nl	Aangepast velden
 date added	bookmarks	nl	Datum toegevoegd
 date changed	bookmarks	nl	Datum gewijzigd
 date last updated	bookmarks	nl	Datum laatste keer bijgewerkt
@@ -28,17 +33,23 @@ descending	bookmarks	nl	Aflopend
 edit bookmark	bookmarks	nl	Wijzig favoriet
 edit this bookmark	bookmarks	nl	Deze favoriet wijzigen
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	nl	Geef de naam van het Netscape favorietenbestand dat u wilt importeren in uw favorieten hieronder.
+existing links	bookmarks	nl	Bestaande links
+export	bookmarks	nl	exporteren
 export bookmarks	common	nl	Exporteer favorieten
 fewer	bookmarks	nl	Minder
 filter by	bookmarks	nl	Filteren op
 found a link you might like	bookmarks	nl	Link gevonden die u wellicht interesseert
 from	bookmarks	nl	Van
 from category %1	bookmarks	nl	uit categorie %1
+general	bookmarks	nl	Algemeen
 global categories	bookmarks	nl	Globale categoriën
 highest	bookmarks	nl	Hoogste
+history	bookmarks	nl	Historie
 i thought you would be interested in the following link(s):	bookmarks	nl	I dacht dat u geïntereseerd zou zijn in de volgende link(s):
 import bookmarks	common	nl	Importeer favorieten
+last modified	bookmarks	nl	laatste wijziging
 like	bookmarks	nl	zoals
+links	bookmarks	nl	Links
 list view	bookmarks	nl	lijst weergave
 lowest	bookmarks	nl	Laagste
 mail this bookmark	bookmarks	nl	Email deze favoriet
@@ -68,10 +79,12 @@ to which category should the imported folder hierarchy be attached	bookmarks	nl	
 total visits	bookmarks	nl	totaal aantal bezoekers
 tree view	bookmarks	nl	Boomweergave
 unable to open temp file %1 for import.	bookmarks	nl	Tijdelijk bestand %1 kan niet worden geopend om te importeren.
+updated	bookmarks	nl	Bijgewerkt
 url is required.	bookmarks	nl	URL is vereist.
 view bookmark	bookmarks	nl	Favoriet weergeven
 view this bookmark	bookmarks	nl	Deze favoriet weergeven
 warning	bookmarks	nl	Waarschuwing
+whole query	bookmarks	nl	gehele query
 you are viewing this site outside of egroupware	bookmarks	nl	U bekijkt deze website buiten eGroupWare
 you must select a category	bookmarks	nl	U moet een categorie selecteren
 you need to select a category!	bookmarks	nl	Het is nodig dat u een categorie selecteert!

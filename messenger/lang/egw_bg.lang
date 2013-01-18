@@ -1,8 +1,6 @@
 compose	messenger	bg	Създай
 compose global message	common	bg	Създай ново глобално съобщение
 compose message	messenger	bg	Ново съобщение
-compose to multi-users	messenger	bg	Ново,  към няколко получатели
-compose to single-user	messenger	bg	Ново, към един получател
 delete a message.	messenger	bg	Изтрий съобщение
 delete selected	messenger	bg	Изтрий маркираните
 forward	messenger	bg	Препрати

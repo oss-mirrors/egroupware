@@ -28,7 +28,6 @@ please note:	gallery	zh	请注意：
 set block title to	gallery	zh	设定区块标题
 set gallery title as page-title?	gallery	zh	设定相册标题为页面标题？
 should contain a "gallery" block in contentarea "center".	gallery	zh	內容区域 "center" 是否要包含一个 "gallery" 区块。
-site configuration	gallery	zh	站点配置
 size (maximum number of pixel of the longest side)	gallery	zh	大小 (最长边的最大像素)
 specific item (requires itemid!)	gallery	zh	指定项目 (需要项目 ID！)
 the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	zh	管理员账号必须是 eGroupWare 中已经存在的账号，而且英文大小写一致！

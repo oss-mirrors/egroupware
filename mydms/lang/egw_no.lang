@@ -7,6 +7,7 @@ access_mode_readwrite	mydms	no	Lese + skrive
 acl get inherited	mydms	no	acl ble arvet
 add acl	mydms	no	Opprett acl
 add document	mydms	no	Opprett dokument
+add link	mydms	no	Legg til lenke
 add notification	mydms	no	Opprett bekjentgjørelse
 add subfolder	mydms	no	Opprett undermappe
 admin-tools	mydms	no	Administrasjonsverktøy
@@ -45,6 +46,7 @@ move folder	mydms	no	Flytte mappe
 mydms	common	no	Dokumentsenter
 notifications	mydms	no	Bekjentgjørelser
 permission	mydms	no	tillatelser
+select folder	mydms	no	Velg mappe
 this document gets locked by you!	mydms	no	dette dokumentet ble låst av deg !
 this document gets unlocked by you.	mydms	no	dette dokumentet ble frigitt av deg !
 this document is currently not locked.	mydms	no	dette dokumentet er for nåværende ikke låst

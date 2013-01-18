@@ -63,6 +63,7 @@ on all pages	wiki	pt-br	em todas as páginas
 only if browser supports a richtext-editor	admin	pt-br	Apenas se o navegador suportar o editor richtext
 only on the first page	wiki	pt-br	somente para a primeira página
 page '%1' not found !!!	wiki	pt-br	Página '%1' não encontrada !!!
+page content	wiki	pt-br	Conteúdo da página
 path of the upload directory (has to be writable by the webserver!)	admin	pt-br	Caminho para o diretório de carregamento (o servidor web deve ter permissões de escrita nele)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	pt-br	Carregar figura através de editor richtext (deixe em branco para desabilitar o carregamento)
 please contact the %1administrator%2 for assistance.	wiki	pt-br	Contate o %1Administrador%2 para ajuda.

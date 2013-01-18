@@ -51,7 +51,10 @@ newer	wiki	no	Aldri
 no only on request	admin	no	Ikke bare på forespørsel
 not set	wiki	no	Ikke satt
 older	wiki	no	Eldre
+on all pages	wiki	no	på alle sider
 only if browser supports a richtext-editor	admin	no	Bare dersom nettleseren støtter riktekst
+only on the first page	wiki	no	bare på den første siden
+page content	wiki	no	Sideinnhold
 please contact the %1administrator%2 for assistance.	wiki	no	Kontakt %1Administrator%2 for assistanse
 preview	wiki	no	Forhåndsvis
 preview of current version	wiki	no	Forhåndsvis gjeldende versjon
@@ -63,13 +66,16 @@ richtext	wiki	no	Riktekst
 rows	wiki	no	Rader
 save the changes and exit	wiki	no	Lagre endringene og avslutte
 saves and continues editing	wiki	no	Lagre og fortsette redigering
+search for	wiki	no	Søk etter
 see complete list (%1 entries)	wiki	no	Se en komplett liste (%1 forekomster)
+show the title of the wiki page	wiki	no	Vis tittel for wikisiden
 summary	wiki	no	Sum
 summary of change	wiki	no	Sum av endringer
 this page can not be edited.	wiki	no	Denne siden kan ikke endres
 twin pages	wiki	no	Tvillingsider
 unblock	wiki	no	Lås opp
 updates the preview	wiki	no	Oppdater forhåndsvisningen
+use this module for displaying wiki-pages	wiki	no	Bruk denne modulen for å vise wikisider
 users	wiki	no	Brukere
 view document history	wiki	no	Vis dokumenthistorikk
 visit %1 to set your user name	wiki	no	Besøk %1 for å registrere ditt brukernavn
@@ -79,6 +85,7 @@ who should be able to read this page	wiki	no	Hvem skal kunne lese denne siden
 wiki	common	no	Wiki
 wiki administration	wiki	no	Wiki administrasjon
 wiki menu	wiki	no	Wiki meny
+wiki startpage	wiki	no	Wiki startside
 writable by	wiki	no	Skrivbar av
 yes always	admin	no	Ja alltid
 you have been denied access to this site.	wiki	no	Du har blitt nektet adgang til dette nettstedet

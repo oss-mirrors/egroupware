@@ -3,6 +3,7 @@ add answer to poll	polls	it	Aggiungi risposta al Sondaggio
 add answers	polls	it	Aggiungi risposte
 add new poll question	polls	it	Aggiungi nuova domanda al Sondaggio
 add questions	polls	it	Aggiungi domande
+administrators	polls	it	amministratori
 allow users to vote more then once	polls	it	Permetti agli utenti di votare più volte
 answer	polls	it	Risposta
 answer has been added to poll	polls	it	La risposta è stata aggiunta al sondaggio
@@ -15,12 +16,11 @@ edit answer	polls	it	Modifica risposta
 edit poll question	polls	it	Modifica domanda Sondaggio
 enter poll question	polls	it	Inserisci domanda Sondaggio
 new poll has been added.  you should now add some answers for this poll	polls	it	Il nuovo Sondaggio è stato aggiunto. Ora devi aggiungere alcune risposte per questo sondaggio
+noone	polls	it	Nessuno
 poll question	polls	it	Domanda Sondaggio
-poll settings	common	it	Impostazioni Sondaggio
 polls	common	it	Sondaggi
 question has been updated	polls	it	La domanda è stata aggiornata
 select current poll	polls	it	Seleziona Sondaggio attuale
-settings	polls	it	Impostazioni
 settings updated	polls	it	Impostazioni aggiornate
 show answers	polls	it	Mostra risposte
 show questions	common	it	Mostra domande

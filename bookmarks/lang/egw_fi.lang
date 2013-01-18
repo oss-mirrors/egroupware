@@ -48,6 +48,7 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 existing links	bookmarks	fi	Olemassaolevat linkit
 export	bookmarks	fi	Vienti
 export bookmarks	common	fi	Vie suosikit
+export definition to use for nextmatch export	bookmarks	fi	Vienti asetukset 'nextmatch' vientiin
 export definitition to use for nextmatch export	bookmarks	fi	Vienti asetukset 'nextmatch' vientiin
 export format	bookmarks	fi	Vie formaatti
 fewer	bookmarks	fi	Vähemmän
@@ -84,6 +85,7 @@ netscape bookmark filename is required!	bookmarks	fi	Netscapen suosikit-tiedosto
 netscape/mozilla	bookmarks	fi	Netscape/Mozilla
 new	bookmarks	fi	Uusi
 new bookmark	bookmarks	fi	Uusi suosikki
+old fixed definition	bookmarks	fi	Vanha, korjattu määritelmä
 or	bookmarks	fi	tai
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	fi	Täytä <B>Vastaanottaja</B>, <B>Aihe</B> ja <B>Viesti</B>!
 please select the categories to export	bookmarks	fi	Valitse vietävät kategoriat

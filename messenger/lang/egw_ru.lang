@@ -1,8 +1,6 @@
 compose	messenger	ru	Написать
 compose global message	common	ru	Написать всем пользователям
 compose message	messenger	ru	Написать сообщение
-compose to multi-users	messenger	ru	Написать выбранным пользователям
-compose to single-user	messenger	ru	Написать одному пользователю
 delete a message.	messenger	ru	Удалить сообщение
 delete selected	messenger	ru	Удалить выбранное
 forward	messenger	ru	Переслать
@@ -13,6 +11,7 @@ i can't find the username %1 on the system	messenger	ru	Немагу найти 
 inbox	messenger	ru	Входящие
 message from	messenger	ru	Сообщение от
 new	messenger	ru	Новое
+replied	messenger	ru	был ответ
 reply	messenger	ru	Ответить
 reply to a message	messenger	ru	Ответить на сообщение
 send	messenger	ru	Отправить

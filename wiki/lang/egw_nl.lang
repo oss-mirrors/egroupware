@@ -63,6 +63,7 @@ on all pages	wiki	nl	op alle pagina's
 only if browser supports a richtext-editor	admin	nl	Alleen indien browser een rich-text editor ondersteunt
 only on the first page	wiki	nl	alleen op de eerste pagina
 page '%1' not found !!!	wiki	nl	Pagina '%1' niet gevonden !!!
+page content	wiki	nl	Pagina inhoud
 path of the upload directory (has to be writable by the webserver!)	admin	nl	Pad naar de upload directory (moet schrijfbaar zijn voor de webserver!)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	nl	Afbeeldingen uploaden via richtext editor (laat de upload directory leeg om dit uit te schakelen)
 please contact the %1administrator%2 for assistance.	wiki	nl	Neem s.v.p. contact op met %1Administrator%2 voor assistentie.

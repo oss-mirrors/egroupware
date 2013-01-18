@@ -58,6 +58,7 @@ on all pages	wiki	fa	در تمام صفحات
 only if browser supports a richtext-editor	admin	fa	فقط وفتی مرورگر از ویرایشگر متن پیشرفته پشتیبانی می کند
 only on the first page	wiki	fa	فقط در صفحه اول
 page '%1' not found !!!	wiki	fa	صفحه '%1' پیدا نشد
+page content	wiki	fa	صفحه جاری
 preview	wiki	fa	پیش نمایش
 preview of current version	wiki	fa	پیش نمایش نسخه کنونی
 rate control / ip blocking disabled	wiki	fa	مهار امتیاز/ قفل IP غیر فعال

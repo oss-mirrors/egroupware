@@ -1,6 +1,8 @@
 %1 bookmarks have been deleted	bookmarks	fa	%1 چوب الفها حذف  شدند
 %1 bookmarks imported from %2 successfully.	bookmarks	fa	%1 چوب الفها با موفقیت از %2 وارد شدند
 (comma separate multiple addresses)	bookmarks	fa	(چند نشانی را با ویگول جدا کنید)
+actions	bookmarks	fa	اعمال
+added	bookmarks	fa	اضافه شد
 all bookmarks	bookmarks	fa	همه چوب الفها
 and	bookmarks	fa	و
 append this message to mailed bookmarks	bookmarks	fa	این پیام را در چوب الفهای ارسالی از طریق رایانامه اضافه کن
@@ -14,9 +16,14 @@ bookmark not readable	bookmarks	fa	چوب الف قابل خواندن نیست
 bookmarks	common	fa	چوب الفها
 bookmarks settings	bookmarks	fa	تنظیمات چوب الفها
 change bookmark	bookmarks	fa	تغییر چوب الفها
+check all	bookmarks	fa	چک کردن همه
+choose the categories to display	bookmarks	fa	دسته های قابل نمایش را انتخاب کنید
 close this window to return	bookmarks	fa	این پنجره را برای بازگشت ببندید
 create bookmark	bookmarks	fa	ایجاد چوب الف
 create new bookmark	bookmarks	fa	ایجاد چوب الف جدید
+create new links	bookmarks	fa	ایجاد پیوندهای جدید
+created	bookmarks	fa	ایجاد شد
+custom fields	bookmarks	fa	فیلدهای سفارشی
 date added	bookmarks	fa	تاریخ افزوده شد
 date changed	bookmarks	fa	تاریخ تغییر کرد
 date last updated	bookmarks	fa	تاریخ آخرین بهنگام سازی
@@ -24,15 +31,22 @@ date last visited	bookmarks	fa	تاریخ آخرین بازدید
 descending	bookmarks	fa	نزولی
 edit bookmark	bookmarks	fa	ویرایش چوب الف
 edit this bookmark	bookmarks	fa	ویرایش این چوب الف
+existing links	bookmarks	fa	پیوندهای موجود
+export	bookmarks	fa	صدور
 export bookmarks	common	fa	صادرات چوب الفها
 fewer	bookmarks	fa	کمتر
 filter by	bookmarks	fa	صافی بوسیله
 found a link you might like	bookmarks	fa	پیوندی که ممکن است خوشتان بیاید پیدا شد
 from	bookmarks	fa	از
 from category %1	bookmarks	fa	از دسته %1
+general	bookmarks	fa	عمومی
+global categories	bookmarks	fa	دسته های عمومی
 highest	bookmarks	fa	بالاترین
+history	bookmarks	fa	تاریخچه
 import bookmarks	common	fa	واردات چوب الفها
+last modified	bookmarks	fa	آخرین تغییرات
 like	bookmarks	fa	شبیه
+links	bookmarks	fa	پیوندها
 list view	bookmarks	fa	نمای فهرستی
 lowest	bookmarks	fa	پائینترین
 mail this bookmark	bookmarks	fa	ارسال این چوب الف از طریق رایانامه
@@ -54,11 +68,12 @@ search for:	bookmarks	fa	جستجوی برای:
 select the format you would like to export to	bookmarks	fa	قالبی که میخواهید به آن صادر کنید را انتخاب کنید
 send bookmark	bookmarks	fa	ارسال چوب الف
 sub category	bookmarks	fa	زیر دسته
+this module displays bookmarks in a javascript based tree	bookmarks	fa	این پیمانه چوب الفها را بصورت نمای درختی جاوااسکریپتی نمایش میدهد
 to e-mail addresses	bookmarks	fa	نشانی رایانامه «به»
 total visits	bookmarks	fa	مجموع بازدیدها
 tree view	bookmarks	fa	نمای درختی
 unable to open temp file %1 for import.	bookmarks	fa	ناتوان از باز کردن پرونده موقت %1 برای واردات
-url	bookmarks	fa	نشانی
+updated	bookmarks	fa	بهنگام شد
 url is required.	bookmarks	fa	URL لازم است
 view bookmark	bookmarks	fa	دیدن چوب الف
 view this bookmark	bookmarks	fa	دیدن این چوب الف

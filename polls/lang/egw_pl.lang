@@ -1,3 +1,4 @@
+%1 group	polls	pl	%1 grupa
 actions	polls	pl	Akcje
 add answer to poll	polls	pl	Dodawanie odpowiedzi
 add answers	polls	pl	Dodaj odpowiedź
@@ -28,12 +29,17 @@ result visible to	polls	pl	Wynik widoczny dla
 select current poll	polls	pl	Wybierz aktualne głosowanie
 settings updated	polls	pl	Uaktualniono konfigurację
 show answers	polls	pl	Pokaż odpowiedzi
+show bullet if allowed to vote and result else	polls	pl	Pokaż bullet jeśli użytkownik ma uprawnienia do głosowania, w przeciwnym wypadku wyświetl wynik
+show only the ballot	polls	pl	Pokaż tylko głosowanie
+show only the result	polls	pl	Pokaż tylko rezultaty
 show questions	common	pl	Pokaż pytania
+this module displays polls.	polls	pl	Ten moduł wyświetla
 total votes	polls	pl	Wszystkich głosów
 view poll	polls	pl	Wyświetl głosowania
 view results	polls	pl	Zobacz rezultaty
 vote	polls	pl	Głosuj
 voting booth admin	admin	pl	Głosowania
 voting booth administration	polls	pl	Administracja głosowaniami
+what to show	polls	pl	Co pokazać
 which poll	polls	pl	Wybór głosowania
 you are not (yet) allowed view the result of this vote.	polls	pl	Nie masz (jeszcze) zgody na oglądanie wyniku tego głosowania.

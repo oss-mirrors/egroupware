@@ -7,13 +7,13 @@ access_mode_readwrite	mydms	it	Lettura+Scrittura
 acl get inherited	mydms	it	acl viene ereditata
 add acl	mydms	it	aggiungi acl
 add document	mydms	it	aggiungi documento
+add link	mydms	it	Aggiungi link
 add notification	mydms	it	aggiungi notifica
 add subfolder	mydms	it	aggiungi sottocartella
 admin-tools	mydms	it	Strumenti di Amministrazione
 all versions	mydms	it	Tutte le Versioni
 comment	mydms	it	Commento
 comment for current version	mydms	it	Commento alla versione attuale
-content	mydms	it	Contenuto
 copy acl	mydms	it	copia acl
 copy documents	mydms	it	copia documenti
 copy folder	mydms	it	copia cartella

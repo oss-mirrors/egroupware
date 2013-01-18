@@ -1,4 +1,3 @@
-wiki	common	id	Wiki
 added	wiki	id	Added
 admins	wiki	id	admins
 anonymous password	admin	id	Anonymous password
@@ -26,6 +25,7 @@ newer	wiki	id	Newer
 no never	admin	id	No never
 not set	wiki	id	not set
 older	wiki	id	Older
+page content	wiki	id	Page Content
 preview	wiki	id	Preview
 readable by	wiki	id	Readable by
 readonly	admin	id	readonly
@@ -34,9 +34,11 @@ richtext	wiki	id	Richtext
 rows	wiki	id	Rows
 search for	wiki	id	Search for
 summary	wiki	id	Summary
+the search returned no result!	wiki	id	Pencarian tidak menghasilkan apapun!
 twin pages	wiki	id	Twin pages
 unblock	wiki	id	Unblock
 users	wiki	id	users
+wiki	common	id	Wiki
 wiki administration	wiki	id	Wiki Administration
 wiki menu	wiki	id	Wiki Menu
 wiki startpage	wiki	id	Wiki startpage

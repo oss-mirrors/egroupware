@@ -7,6 +7,7 @@ access_mode_readwrite	mydms	pt	Leitura+Escrita
 acl get inherited	mydms	pt	ACL herdado
 add acl	mydms	pt	Adicionarl ACL
 add document	mydms	pt	Adicionar documento
+add link	mydms	pt	Adicionar ligação
 add notification	mydms	pt	Adicionar aviso
 add subfolder	mydms	pt	Adicionar subpasta
 admin-tools	mydms	pt	Ferramentas de administração

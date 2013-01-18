@@ -1,7 +1,8 @@
 %1 bookmarks have been deleted	bookmarks	es-es	Se han borrado %1 marcadores
 %1 bookmarks imported from %2 successfully.	bookmarks	es-es	Se han importado correctamente %1 marcadores de %2
 (comma separate multiple addresses)	bookmarks	es-es	(la coma separa varias direcciones)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	es-es	<b>Nota:</b> Actualmente sólo funciona con marcadores de netscape
+actions	bookmarks	es-es	Acciones
+added	bookmarks	es-es	añadido
 all bookmarks	bookmarks	es-es	Todos los marcadores
 and	bookmarks	es-es	Y
 append this message to mailed bookmarks	bookmarks	es-es	Añadir este mensaje a los marcadores enviados
@@ -16,10 +17,14 @@ bookmark not readable	bookmarks	es-es	No se puede leer el marcador
 bookmarks	common	es-es	Marcadores
 bookmarks settings	bookmarks	es-es	Configuración de los marcadores
 change bookmark	bookmarks	es-es	Cambiar marcador
+check all	bookmarks	es-es	Marcar todo
 choose the categories to display	bookmarks	es-es	Elija las categorías a mostrar
 close this window to return	bookmarks	es-es	cerrar esta ventana para volver
 create bookmark	bookmarks	es-es	Crear marcador
 create new bookmark	bookmarks	es-es	Crear nuevo marcador
+create new links	bookmarks	es-es	Crear enlaces nuevos
+created	bookmarks	es-es	Creado
+custom fields	bookmarks	es-es	Campos personalizados
 date added	bookmarks	es-es	Fecha añadida
 date changed	bookmarks	es-es	Fecha cambiada
 date last updated	bookmarks	es-es	Fecha de la última actualización
@@ -28,17 +33,26 @@ descending	bookmarks	es-es	Descendente
 edit bookmark	bookmarks	es-es	Editar marcador
 edit this bookmark	bookmarks	es-es	Editar este marcador
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	es-es	Introduzca el nombre del fichero de marcadores de Netscape<br>que quiera ver importado debajo.
+existing links	bookmarks	es-es	Enlaces existentes
+export	bookmarks	es-es	exportar
 export bookmarks	common	es-es	Exportar marcadores
+export definition to use for nextmatch export	bookmarks	es-es	Exportar la definición a usar para exportar nextmatch
+export definitition to use for nextmatch export	bookmarks	es-es	Exportar la definición a usar para exportar nextmatch
 fewer	bookmarks	es-es	Menos
 filter by	bookmarks	es-es	Filtrar por
 found a link you might like	bookmarks	es-es	Se encontró un enlace que le puede gustar
 from	bookmarks	es-es	De
 from category %1	bookmarks	es-es	de la categoría %º
+general	bookmarks	es-es	General
 global categories	bookmarks	es-es	Categorías globales
 highest	bookmarks	es-es	La más alta
+history	bookmarks	es-es	Historial
 i thought you would be interested in the following link(s):	bookmarks	es-es	Pensé que le interesarían los siguientes enlaces:
+if you specify an export definition, it will be used when you export	bookmarks	es-es	Si especifica una definición de exportación, se usará al exportar
+if you specify an export definition, it will be used when you export*	bookmarks	es-es	Si especifica una definición de exportación, se usará al exportar
 import bookmarks	common	es-es	Importar marcadores
 like	bookmarks	es-es	como
+links	bookmarks	es-es	Enlaces
 list view	bookmarks	es-es	ver lista
 lowest	bookmarks	es-es	La más baja
 mail this bookmark	bookmarks	es-es	Mandar por este marcador por correo
@@ -58,6 +72,8 @@ please select the categories to export	bookmarks	es-es	Por favor, seleccione las
 query condition	bookmarks	es-es	Condición de consulta
 rating	bookmarks	es-es	Valoración
 search for:	bookmarks	es-es	Buscar:
+select an action	bookmarks	es-es	Seleccionar una acción
+select an action...	bookmarks	es-es	Seleccionar una acción...
 select the format you would like to export to	bookmarks	es-es	Seleccione el formato al que le gustaría exportar
 send bookmark	bookmarks	es-es	Enviar marcador
 sub category	bookmarks	es-es	Subcategoría
@@ -68,10 +84,12 @@ to which category should the imported folder hierarchy be attached	bookmarks	es-
 total visits	bookmarks	es-es	visitas totales
 tree view	bookmarks	es-es	Vista de árbol
 unable to open temp file %1 for import.	bookmarks	es-es	No se pudo abrir el fichero temporal %1 para importar
+updated	bookmarks	es-es	Actualizado
 url is required.	bookmarks	es-es	Hace falta una URL
 view bookmark	bookmarks	es-es	Ver marcador
 view this bookmark	bookmarks	es-es	Ver este marcador
 warning	bookmarks	es-es	Aviso
+whole query	bookmarks	es-es	la consulta completa
 you are viewing this site outside of egroupware	bookmarks	es-es	Está viendo este sito desde fuera de eGroupWare
 you must select a category	bookmarks	es-es	Debe seleccionar una categoría
 you need to select a category!	bookmarks	es-es	¡Necesita seleccionar una categoría!

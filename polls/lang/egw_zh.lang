@@ -4,7 +4,6 @@ add answer to poll	polls	zh	添加投票选择项
 add answers	polls	zh	添加投票选择项
 add new poll question	polls	zh	添加新表决问题
 add questions	polls	zh	添加待表决问题
-administration	polls	zh	系统管理
 administrators	polls	zh	系统管理
 allow users to vote more then once	polls	zh	允许用户多次表决
 allways use latest poll	polls	zh	允许使用最新投票
@@ -25,7 +24,6 @@ noone	polls	zh	没有人
 poll question	polls	zh	投票问题
 poll votable by	polls	zh	投票由
 polls	common	zh	投票调查
-polls menu	polls	zh	投票菜单
 question has been updated	polls	zh	投票问题已更新
 result visible to	polls	zh	结果可见
 select current poll	polls	zh	选择当前投票

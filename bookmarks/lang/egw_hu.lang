@@ -1,7 +1,8 @@
 %1 bookmarks have been deleted	bookmarks	hu	%1 könyvjelző törölve
 %1 bookmarks imported from %2 successfully.	bookmarks	hu	%1 könyvjelző sikeresen importálva a %2-ből.
 (comma separate multiple addresses)	bookmarks	hu	(vesszővel elválasztott többszörös cím)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	hu	<b>Figyelem:</b> Csupán csak a netscape könyvjelzőkkel működik
+actions	bookmarks	hu	Műveletek
+added	bookmarks	hu	Hozzáadva
 all bookmarks	bookmarks	hu	Minden könyvjelző
 and	bookmarks	hu	És
 append this message to mailed bookmarks	bookmarks	hu	Fűzd hozzá ezt az üzenetet a levélben küldött könyvjelzőkhöz
@@ -16,10 +17,14 @@ bookmark not readable	bookmarks	hu	A könyvjelző nem olvasható
 bookmarks	common	hu	Könyvjelzők
 bookmarks settings	bookmarks	hu	Könyvjelző beállítások
 change bookmark	bookmarks	hu	Könyvjelző változás
+check all	bookmarks	hu	Összes kijelölese
 choose the categories to display	bookmarks	hu	Válaszd ki a megjelenítendő kategóriákat
 close this window to return	bookmarks	hu	zárd be ezt az ablakot a visszatéréshez
 create bookmark	bookmarks	hu	Könyvjelző létrehozás
 create new bookmark	bookmarks	hu	Új könyvjelző létrehozása
+create new links	bookmarks	hu	Új hivatkozás létrehozása
+created	bookmarks	hu	Létrehozva
+custom fields	bookmarks	hu	Egyedi mezők
 date added	bookmarks	hu	Hozzáadás dátuma
 date changed	bookmarks	hu	Változtatás dátuma
 date last updated	bookmarks	hu	Utolsó frissítés dátuma
@@ -28,17 +33,23 @@ descending	bookmarks	hu	Csökkenő
 edit bookmark	bookmarks	hu	Könyvjelző szerkesztése
 edit this bookmark	bookmarks	hu	Ennek a könyvjelzőnek a szerkesztése
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	hu	Adja meg a Netscape könyvjelző állomány nevét<br>amit importálni kíván a Könyvjelzőbe.
+existing links	bookmarks	hu	Meglévő hivatkozások
+export	bookmarks	hu	exportál
 export bookmarks	common	hu	Könyvjelzők exportálása
 fewer	bookmarks	hu	Kevesebb
 filter by	bookmarks	hu	Szűrve
 found a link you might like	bookmarks	hu	Találtam egy hivatkozást ami megfelelő lehet önnek
 from	bookmarks	hu	Tól:
 from category %1	bookmarks	hu	%1 kategóriából
+general	bookmarks	hu	Általános
 global categories	bookmarks	hu	Globális kategóriák
 highest	bookmarks	hu	Legmagasabb
+history	bookmarks	hu	Történet
 i thought you would be interested in the following link(s):	bookmarks	hu	Gondolom hogy érdekelhetik a következő hivatkozás(ok):
 import bookmarks	common	hu	Könyvjelzők importálása
+last modified	bookmarks	hu	utoljára módosítva
 like	bookmarks	hu	mint
+links	bookmarks	hu	Hivatkozások
 list view	bookmarks	hu	listanézet
 lowest	bookmarks	hu	Legalacsonyabb
 mail this bookmark	bookmarks	hu	Könyvjelző küldése levélben
@@ -68,10 +79,12 @@ to which category should the imported folder hierarchy be attached	bookmarks	hu	
 total visits	bookmarks	hu	összes látogatások
 tree view	bookmarks	hu	Fa nézet
 unable to open temp file %1 for import.	bookmarks	hu	Lehetetlen megnyitni az %1 átmeneti állományt az importáláshoz.
+updated	bookmarks	hu	frissítve
 url is required.	bookmarks	hu	URL szükséges.
 view bookmark	bookmarks	hu	Könyvjelző megtekintése
 view this bookmark	bookmarks	hu	Ennek a könyvjelzőnek a megtekintése
 warning	bookmarks	hu	Figyelmeztetés
+whole query	bookmarks	hu	teljes lekérdezés
 you are viewing this site outside of egroupware	bookmarks	hu	Az eGroupWare-n kívül nézi ezt az oldalt
 you must select a category	bookmarks	hu	Válasszon ki egy kategóriát!
 you need to select a category!	bookmarks	hu	Válasszon ki egy kategóriát!

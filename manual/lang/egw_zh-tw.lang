@@ -1,5 +1,7 @@
 %1 manual page(s) added or updated	manual	zh-tw	新增或更新了 %1 頁
 allow anonymous access to the manual, only necessary to act as remote manual	admin	zh-tw	允許訪客存取手冊，只有在啟用遠端手冊時才需要
+anonymous password	admin	zh-tw	訪客密碼
+anonymous username	admin	zh-tw	訪客暱稱
 download	manual	zh-tw	下載
 index	manual	zh-tw	首頁
 install or update the manual-pages	admin	zh-tw	安裝或更新手冊

@@ -5,6 +5,7 @@ all other egroupware users will be created by the g2 integration including there
 an error occurred during user creation in g2.	gallery	fr	Une erreur s'est produite lors de la création de l'utilisateur dans G2.
 an error occurred while trying to initialize g2.	gallery	fr	Une erreur s'est produite lors de l'initialisation de G2.
 can be used to limit the block to a certain album.	gallery	fr	Peut être utilisé pour limiter le bloc à un certain album.
+center	gallery	fr	Centre
 complete gallery	gallery	fr	Galerie Complète
 default item to show in the gallery.	gallery	fr	Elément par défaut à afficher dans la Galerie
 extra information to show	gallery	fr	Information complémentaire à afficher

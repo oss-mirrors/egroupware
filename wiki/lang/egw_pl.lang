@@ -32,19 +32,41 @@ edit this <em>archive version</em> of this document	wiki	pl	Edytuj tę <em>ARCHI
 edit this document	wiki	pl	Edytuj ten dokument
 edit with preview	admin	pl	Edytuj z podglądem
 editable	admin	pl	edytowalny
+editing	wiki	pl	Edytowanie
+emailaddress administrator	admin	pl	Administrator adresu email
+enable free links	admin	pl	Włącz wolne linki
+enable wiki links	admin	pl	Włącz linki wiki
+enter here the maximum number of entries to display in a document's history list.	wiki	pl	Maksymalna ilość wpisów do wyświetlenie w historii dokumentu.
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	pl	Wprowadź liczbę dni edycji które chcesz wyświetlać w Ostatnich Zmianach lub innych listach subskrypcji. Ustaw na 0 jeśli chcesz zobaczyć wszystkie wpisy.
+enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	pl	Wprowadź zakres ip w formie <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>
 error creating temporary file.	wiki	pl	Błąd przy tworzeniu pliku tymczasowego
 error writing to temporary file.	wiki	pl	Bład przy zapisie do pliku tymczasowego
 everyone	wiki	pl	każdy
 find	wiki	pl	Znajdź
 history	wiki	pl	historia
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	pl	Historia powinna pokazywać <em>wszystkie</em> zmiany wykonane przez ostatniego autora. Alternatywnie zostaną wyświetlone tylko ostatnie zmiany.
+history lists	wiki	pl	Listy historii
+history of	wiki	pl	Historia
+interwikiprefix	admin	pl	Prefiks Wewnętrzny Wiki
+invalid page name.	wiki	pl	Niepoprawna nazwa strony.
 load	wiki	pl	Załaduj
 loads the named page in the given language, all change so far get lost !!!	wiki	pl	Ładuje nazwaną stronę w podanym języku - wszystkie zmiany wykonane do tego czasu zostaną stracone!
 lock / unlock pages	common	pl	Blokuje / odblokowuje strony
 locked	wiki	pl	Zablokowano
+name wiki home link	admin	pl	nazwij link domowy wiki
+newer	wiki	pl	Nowsze
+no never	admin	pl	Nie, nigdy
+no only on request	admin	pl	Nie, tylko na żądanie
 not set	wiki	pl	nie ustawiono
+older	wiki	pl	Starsze
 on all pages	wiki	pl	na wszystkich stronach
+only if browser supports a richtext-editor	admin	pl	Tylko jeśli przeglądarka wspiera zaawansowany edytor
 only on the first page	wiki	pl	tylko na pierszej stronie
 page '%1' not found !!!	wiki	pl	Strona '%1' nie znaleziona!
+page content	wiki	pl	Zawartość strony
+path of the upload directory (has to be writable by the webserver!)	admin	pl	Ścieżka katalogu uploadu (zapisywalna przez serwer www)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	pl	Ładowanie obrazka przez zaawansowany edytor (zostaw katalog uploadu pusty aby wyłączyć)
+please contact the %1administrator%2 for assistance.	wiki	pl	Skontaktuj się z %1Administratorem%2 aby uzyskać pomoc.
 preview	wiki	pl	Podgląd
 preview of current version	wiki	pl	Podgląd wersji bieżącej
 rate control / ip blocking disabled	wiki	pl	Blokowanie IP oraz limit stron wyłączone

@@ -63,6 +63,7 @@ on all pages	wiki	zh	在所有页面
 only if browser supports a richtext-editor	admin	zh	只有当浏览器支持 RichText-编辑器
 only on the first page	wiki	zh	只在第一页
 page '%1' not found !!!	wiki	zh	找不到 '%1' 页！
+page content	wiki	zh	网页内容
 path of the upload directory (has to be writable by the webserver!)	admin	zh	上传目录的路径(能被Web服务器写入！)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	zh	通过 RichText-编辑器上传图片(上传目录留空表示禁用上传)
 please contact the %1administrator%2 for assistance.	wiki	zh	请联系%1系统管理员%2帮助。
@@ -72,7 +73,6 @@ rate control / ip blocking disabled	wiki	zh	评分控制/禁用 IP 封禁
 readable by	wiki	zh	可读用户(组)：
 readonly	admin	zh	只读
 recent changes	wiki	zh	最近更改
-recentchanges	wiki	zh	最近更改
 renames page to the given name and language	wiki	zh	重命名该页为指定的名称和语言
 richtext	wiki	zh	Richtext
 rows	wiki	zh	行

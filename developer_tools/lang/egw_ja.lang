@@ -13,7 +13,6 @@ changelogs	developer_tools	ja	変更履歴
 clears the internal buffer, all changes made sofar are lost	developer_tools	ja	内部バッファをクリアします(全ての変更は破棄されます)
 create new language file	developer_tools	ja	新しい言語ファイルを作成する
 create sgml file	developer_tools	ja	SGMLファイル作成
-developer tools	common	ja	開発者用ツール
 developer tools - preferences	developer_tools	ja	Developer tools - ユーザ設定
 developer_tools	common	ja	翻訳ツール
 diary	developer_tools	ja	日誌
@@ -33,7 +32,6 @@ message_id in english	developer_tools	ja	メッセージID(英語)
 no file	developer_tools	ja	ファイルなし
 ok	developer_tools	ja	OK
 original	developer_tools	ja	オリジナル
-phrase in english	developer_tools	ja	文言(英語)
 phrase in english (or empty if identical)	developer_tools	ja	英語の文言(同一なら空)
 preferences	developer_tools	ja	ユーザ設定
 preferences have been updated	developer_tools	ja	ユーザ設定が更新されました

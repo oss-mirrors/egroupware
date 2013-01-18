@@ -1,3 +1,4 @@
+actions	polls	uk	Дії
 add answer to poll	polls	uk	Додати відповідь до голосування
 add answers	polls	uk	Додати відповіді
 add new poll question	polls	uk	Додати нове питання голосування
@@ -14,13 +15,12 @@ edit poll question	polls	uk	Редагувати питання
 enter poll question	polls	uk	Ввести питання голосування
 new poll has been added.  you should now add some answers for this poll	polls	uk	Нове голосування додано. Необхідно ввести кілька відповідей для цього голосування
 poll question	polls	uk	Питання голосування
-poll settings	polls	uk	Параметри голосування
 polls	common	uk	Голосування
 question has been updated	polls	uk	Питання змінено
 select current poll	polls	uk	Вибрати поточне голосування
 settings updated	polls	uk	Параметри змінено
 show answers	polls	uk	Показати відповіді
-show questions	polls	uk	Показати питання
+show questions	common	uk	Показати питання
 total votes	polls	uk	Всього
 view poll	polls	uk	Перегляд голосування
 vote	polls	uk	Голосувати

@@ -6,6 +6,7 @@ all other egroupware users will be created by the g2 integration including there
 an error occurred during user creation in g2.	gallery	sk	Nastala chyba počas vytvárania používateľa v G2.
 an error occurred while trying to initialize g2.	gallery	sk	Nastala chyba počas inicializácie G2.
 can be used to limit the block to a certain album.	gallery	sk	Dá sa použiť na obmedzenie bloku na jednotlivý album.
+center	gallery	sk	Stred
 complete gallery	gallery	sk	Úplná Galéria
 default item to show in the gallery.	gallery	sk	Predvolená položka, ktorá sa zobrazí v Galérii.
 extra information to show	gallery	sk	Ďalšie informácie, ktoré sa majú zobraziť

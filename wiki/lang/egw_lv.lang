@@ -54,6 +54,7 @@ no only on request	admin	lv	Nē, tikai pēc pieprasījuma
 not set	wiki	lv	nav uzstādīts
 older	wiki	lv	Vecāks
 only if browser supports a richtext-editor	admin	lv	Tikai, ja pārlūks atbalsta RTF redaktoru
+page content	wiki	lv	Lapas saturs
 please contact the %1administrator%2 for assistance.	wiki	lv	Pēc palīdzības sazinies ar%1administratoru%2
 preview	wiki	lv	Priekšskatījums
 preview of current version	wiki	lv	Priekšskatīt esošo versiju
@@ -66,6 +67,7 @@ richtext	wiki	lv	RTF
 rows	wiki	lv	Rindas
 save the changes and exit	wiki	lv	Saglabā izmaiņas un iziet
 saves and continues editing	wiki	lv	Saglaba un turpina rediģēšanu
+search for	wiki	lv	Meklēt
 see complete list (%1 entries)	wiki	lv	Skatīt pabeigto sarakstu(%1 ieraksti)
 summary	wiki	lv	Kopsavilkums
 summary of change	wiki	lv	Izmaiņu kopsavilkums
@@ -73,6 +75,7 @@ this page can not be edited.	wiki	lv	Šī lapa nevar tikt rediģēta
 twin pages	wiki	lv	Pāra lapas
 unblock	wiki	lv	Atbloķēt
 updates the preview	wiki	lv	Atjaunina priekšskatījumu
+use this module for displaying wiki-pages	wiki	lv	Lietot šo moduli, lai parādītu wiki-lapas
 users	wiki	lv	lietotāji
 view document history	wiki	lv	Rādīt dokumentu vēsturi
 visit %1 to set your user name	wiki	lv	Apmeklē %1, lai uzstādītu savu lietotājvārdu
@@ -82,6 +85,7 @@ who should be able to read this page	wiki	lv	kam vajadzētu lasīt šo lapu?
 wiki	common	lv	Wiki
 wiki administration	wiki	lv	Wiki administrācija
 wiki menu	wiki	lv	Wiki izvēlne
+wiki startpage	wiki	lv	Wiki sākumlapa
 writable by	wiki	lv	Rakstāms ar
 yes always	admin	lv	Jā, vienmēr
 you have been denied access to this site.	wiki	lv	Tev liegta pieeja šai vietnei

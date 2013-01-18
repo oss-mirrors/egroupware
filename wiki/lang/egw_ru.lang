@@ -63,6 +63,7 @@ on all pages	wiki	ru	на всех страницах
 only if browser supports a richtext-editor	admin	ru	только если браузер поддерживает редактор richtext
 only on the first page	wiki	ru	только на первой странице
 page '%1' not found !!!	wiki	ru	Страница '%1' не найдена !!!
+page content	wiki	ru	Содержимое страницы
 path of the upload directory (has to be writable by the webserver!)	admin	ru	Путь к каталогу выгрузки (должен быть доступен на запись веб-сервром!)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	ru	Выгрузка изображения с помощью редактора richtext (оставить каталог выгрузки незаполненным чтобы отключить выгрузку)
 please contact the %1administrator%2 for assistance.	wiki	ru	Пожалуйста, обратитесь к %1Администратору%2 для помощи.
@@ -81,7 +82,6 @@ search for	wiki	ru	Искать
 see complete list (%1 entries)	wiki	ru	Посмотреть полный список (%1 записей)
 show a search	wiki	ru	Показать поиск
 show the title of the wiki page	wiki	ru	Показать заголовок страницы Вики
-site configuration	wiki	ru	Настройки Сайта
 summary	wiki	ru	Итого
 summary of change	wiki	ru	Итого изменений
 the search returned no result!	wiki	ru	Поиск не дал результатов!

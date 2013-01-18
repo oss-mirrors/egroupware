@@ -63,6 +63,7 @@ on all pages	wiki	pt	em todas as páginas
 only if browser supports a richtext-editor	admin	pt	Apenas se o navegador suportar um editor de texto
 only on the first page	wiki	pt	apenas na primeira página
 page '%1' not found !!!	wiki	pt	Página '%1' não encontrada !!!
+page content	wiki	pt	Conteúdo da página
 path of the upload directory (has to be writable by the webserver!)	admin	pt	Caminho para a directoria de envio (tem de ser editável pelo servidor Web!)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	pt	Imagem enviada através do editor de texto (deixar a directoria de envio vazia para desactivar o envio)
 please contact the %1administrator%2 for assistance.	wiki	pt	Por favor, contacte o %1Administrador%2 para obter ajuda.

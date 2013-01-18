@@ -7,6 +7,7 @@ access_mode_readwrite	mydms	zh-tw	讀取＋寫入
 acl get inherited	mydms	zh-tw	繼承存取權限
 add acl	mydms	zh-tw	新增存取權限
 add document	mydms	zh-tw	新增檔案
+add link	mydms	zh-tw	新增連結
 add notification	mydms	zh-tw	新增提醒通知
 add subfolder	mydms	zh-tw	新增子資料夾
 admin-tools	mydms	zh-tw	管理工具

@@ -38,7 +38,6 @@ enable wiki links	admin	iw	wiki אפשר קישורי
 enter here the maximum number of entries to display in a document's history list.	wiki	iw	הכניס כאן את כמות המירבית של רשומות להציג ברשימת היסטוריה של מסמך
 enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	iw	הכנס כאן את כמות הימים של עריכות י שלהציג בשינוים אחרונים או בכל רשימת רישום אחרת. קבע את הערך ל-0 אם ברצונך לראות את כל העמודים השינוים אחרונים ללא קשר לגיל העריכה
 enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	iw	בצורה IP-הכנס את תווך כתובות ה
-<br><tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>
 error creating temporary file.	wiki	iw	שגיאה ביצירת קובץ זמני
 error writing to temporary file.	wiki	iw	שגיאה בכתיבה לקובץ זמני
 everyone	wiki	iw	כולם
@@ -59,6 +58,7 @@ no only on request	admin	iw	לא, רק לפי בקשה
 not set	wiki	iw	לא נקבע
 older	wiki	iw	ישן יותר
 only if browser supports a richtext-editor	admin	iw	רק אם הדפדפן תומך בעורך טקסט עשיר
+page content	wiki	iw	תוכן עמוד
 please contact the %1administrator%2 for assistance.	wiki	iw	.נא ליצור קשר עם %1המנהל%2 לקבלת סיוע
 preview	wiki	iw	תצוגה מקדימה
 preview of current version	wiki	iw	תצוגה מקדימה של הגירסה הנוכחית
@@ -71,6 +71,7 @@ richtext	wiki	iw	טקסט עשיר
 rows	wiki	iw	שורות
 save the changes and exit	wiki	iw	שמור שינוים וצא
 saves and continues editing	wiki	iw	שומר וממשיך לערוך
+search for	wiki	iw	חפש
 see complete list (%1 entries)	wiki	iw	(ראה רשימה מלאה (%1 רשומות
 summary	wiki	iw	סיכום
 summary of change	wiki	iw	ביכום השינוי
@@ -78,6 +79,7 @@ this page can not be edited.	wiki	iw	לא ניתן לערוך עמוד זה
 twin pages	wiki	iw	עמודים תואמים
 unblock	wiki	iw	הסר חסימה
 updates the preview	wiki	iw	מעדכן את התצוגה המקדימה
+use this module for displaying wiki-pages	wiki	iw	wiki-השתמש במודול זה להציג עמודי
 users	wiki	iw	משתמשים
 view document history	wiki	iw	הצג היסטוריה של מסמך
 visit %1 to set your user name	wiki	iw	בקר ב-%1 כדי לקבוע את שם המשתמש שלך
@@ -86,6 +88,7 @@ who should be able to edit this page	wiki	iw	למי מותר לעאוך עמוד
 who should be able to read this page	wiki	iw	למי מותר לקרוא עמוד זה
 wiki administration	wiki	iw	wiki ניהול
 wiki menu	wiki	iw	wiki תפריט
+wiki startpage	wiki	iw	wiki עמוד התחלה של
 writable by	wiki	iw	נכתב על ידי
 yes always	admin	iw	כן תמיד
 you have been denied access to this site.	wiki	iw	.נאסרה גישתך לאתר זה

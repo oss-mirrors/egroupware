@@ -1,3 +1,5 @@
+actions	bookmarks	et	Tegevused
+added	bookmarks	et	Lisatud
 all bookmarks	bookmarks	et	Kõik järjehoidjad
 and	bookmarks	et	Ja
 ascending	bookmarks	et	Kasvav
@@ -10,9 +12,12 @@ bookmark not readable	bookmarks	et	Järjehoidja pole loetav
 bookmarks	common	et	Järjehoidjad
 bookmarks settings	bookmarks	et	Järjehoidjate setingud
 change bookmark	bookmarks	et	Muuda järjehoidjat
+check all	bookmarks	et	Kontrolli kõik
 close this window to return	bookmarks	et	sule see agen tagasiminekuks
 create bookmark	bookmarks	et	Tee järjehoidja
 create new bookmark	bookmarks	et	Tee uus järjehoidja
+create new links	bookmarks	et	Tee uued lingid
+created	bookmarks	et	Tehtud
 date added	bookmarks	et	Kuupäev lisatud
 date changed	bookmarks	et	Kuupäev muudetud
 date last updated	bookmarks	et	Kuupäev viimati uuendatud
@@ -20,14 +25,20 @@ date last visited	bookmarks	et	Kuupäev viimati külastatud
 descending	bookmarks	et	Kahanev
 edit bookmark	bookmarks	et	Muuda järjehoidjat
 edit this bookmark	bookmarks	et	Muuda seda järjehoidjat
+existing links	bookmarks	et	Eksisteerivad lingid
+export	bookmarks	et	Eksport
 export bookmarks	common	et	Ekspordi järjehoidjad
 fewer	bookmarks	et	Vähem
 filter by	bookmarks	et	Filtreeri
 found a link you might like	bookmarks	et	Leidsin järjehoida mis võibolla meeldib
+general	bookmarks	et	Üldine
 global categories	bookmarks	et	Globaalsed Kategooriad
 highest	bookmarks	et	Kõrgeim
+history	bookmarks	et	Ajalugu
 import bookmarks	common	et	Impordi järjehoidjad
+last modified	bookmarks	et	Viimati muudetud
 like	bookmarks	et	nagu
+links	bookmarks	et	Lingid
 list view	bookmarks	et	nimekirjavaade
 lowest	bookmarks	et	Madalaim
 mail this bookmark	bookmarks	et	Maili see järjehoidja
@@ -45,11 +56,11 @@ rating	bookmarks	et	Reiting
 search for:	bookmarks	et	Otsi:
 select the format you would like to export to	bookmarks	et	Vali formaat millesse soovid eksportida
 send bookmark	bookmarks	et	Saada järjehoidja
-site configuration	bookmarks	et	Lehe Konfiguratsioon
 sub category	bookmarks	et	Alam-kategooria
 total visits	bookmarks	et	kokku külastusi
 tree view	bookmarks	et	Puuvaade
 unable to open temp file %1 for import.	bookmarks	et	Ei saa avada temp faili %1 impordijaoks.
+updated	bookmarks	et	uuendatud
 url is required.	bookmarks	et	URL on nõutav.
 view bookmark	bookmarks	et	Vaata järjehoidjat
 view this bookmark	bookmarks	et	Vaata seda järjehoidjat

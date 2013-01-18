@@ -63,6 +63,7 @@ highest	bookmarks	sk	Najvyššie
 history	bookmarks	sk	História
 i thought you would be interested in the following link(s):	bookmarks	sk	Myslím, že by vás mohli zaujímať nasledujúce odkazy:
 if you specify an export definition, it will be used when you export	bookmarks	sk	Ak zadáte exportnú definíciu, bude sa používať pri exportoch.
+if you specify an export definition, it will be used when you export*	bookmarks	sk	Ak zadáte exportnú definíciu, bude sa používať pri exportoch
 import bookmarks	common	sk	Naimportovať záložky
 import under category	bookmarks	sk	Importovať pod kategóriou
 last modified	bookmarks	sk	Naposledy zmenené

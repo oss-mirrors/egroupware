@@ -1,7 +1,8 @@
 %1 bookmarks have been deleted	bookmarks	ko	%1 북마크는 삭제되었습니다.
 %1 bookmarks imported from %2 successfully.	bookmarks	ko	** %2의 북마크를 %1로 가져오기 성공.
 (comma separate multiple addresses)	bookmarks	ko	(컴마로 분리된 여러개의 주소)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ko	<b>참고:</b> 현재는 넷스케입 북마크만 동작합니다
+actions	bookmarks	ko	액션
+added	bookmarks	ko	추가됨
 all bookmarks	bookmarks	ko	모든 북마크
 and	bookmarks	ko	그리고(AND 연산)
 append this message to mailed bookmarks	bookmarks	ko	메일로 발송된 북마크로 이 메세지를 확장
@@ -17,6 +18,9 @@ change bookmark	bookmarks	ko	북마크 바꾸기
 close this window to return	bookmarks	ko	이 창을 닫고 돌아가기
 create bookmark	bookmarks	ko	북마크 생성
 create new bookmark	bookmarks	ko	새 북마크 생성
+create new links	bookmarks	ko	새 링크 만들기
+created	bookmarks	ko	생성됨
+custom fields	bookmarks	ko	사용자정의 필드
 date added	bookmarks	ko	추가된 날짜
 date changed	bookmarks	ko	변경된 날짜
 date last updated	bookmarks	ko	최종갱신 날짜
@@ -25,16 +29,23 @@ descending	bookmarks	ko	내림차순
 edit bookmark	bookmarks	ko	북마크 편집
 edit this bookmark	bookmarks	ko	이 북마크 편집
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	ko	북마크로 가져오고 싶은 <br> 넷스케입 북마크파일의 이름을 입력하세요.
+existing links	bookmarks	ko	기존링크
+export	bookmarks	ko	내보내기
 export bookmarks	common	ko	북마크 내보내기
 fewer	bookmarks	ko	검색조건 감소
 filter by	bookmarks	ko	걸러짐 :
 found a link you might like	bookmarks	ko	좋아하실 링크를 발견했습니다.
 from	bookmarks	ko	부터
 from category %1	bookmarks	ko	카테고리 %1 부터
+general	bookmarks	ko	일반
+global categories	bookmarks	ko	전역 카테고리
 highest	bookmarks	ko	가장높은 (highest)
+history	bookmarks	ko	내역
 i thought you would be interested in the following link(s):	bookmarks	ko	다음의 링크가 관심있으실 겁니다:
 import bookmarks	common	ko	북마크 가져오기
+last modified	bookmarks	ko	마지막 수정
 like	bookmarks	ko	비슷한
+links	bookmarks	ko	링크
 list view	bookmarks	ko	목록
 lowest	bookmarks	ko	가장낮은 (lowest)
 mail this bookmark	bookmarks	ko	이 북마크를 메일로 보냄
@@ -62,6 +73,7 @@ to which category should the imported folder hierarchy be attached	bookmarks	ko	
 total visits	bookmarks	ko	총 방문자
 tree view	bookmarks	ko	트리 뷰
 unable to open temp file %1 for import.	bookmarks	ko	가져오기: 임시파일 %1을 열수없습니다
+updated	bookmarks	ko	갱신됨
 url is required.	bookmarks	ko	URL이 필요합니다.
 view bookmark	bookmarks	ko	북마크 보기
 view this bookmark	bookmarks	ko	이 북마크 보기

@@ -3,6 +3,7 @@ add answer to poll	polls	lv	Pievienot atbildi aptaujai
 add answers	polls	lv	Pievienot atbildes
 add new poll question	polls	lv	Pievienot jaunu aptaujas jautājumu
 add questions	polls	lv	Pievienot jautājumus
+administrators	polls	lv	administratori
 allow users to vote more then once	polls	lv	Atļaut lietotājiem balsot vairāk nekā vienu reizi
 answer	polls	lv	Atbilde
 answer has been added to poll	polls	lv	Atbilde ir pievienota aptaujai
@@ -16,11 +17,9 @@ edit poll question	polls	lv	Rediģēt aptaujas jautājumu
 enter poll question	polls	lv	Ievadīt aptaujas jautājumu
 new poll has been added.  you should now add some answers for this poll	polls	lv	Jauna aptauja ir izveidota. Tev vajadzētu tagad tai vievienot atbildes
 poll question	polls	lv	Aptaujas jautājums
-poll settings	common	lv	Aptaujas uzstādījumi
 polls	common	lv	Aptauja!!!!
 question has been updated	polls	lv	Jautājums ir atjaunināts
 select current poll	polls	lv	Iezīmējiet pašreizējo aptauju
-settings	polls	lv	Uzstādījumi
 settings updated	polls	lv	Uzstādījumi atjaunināti
 show answers	polls	lv	Rādīt atbildes
 show questions	common	lv	Rādīt jautājumus

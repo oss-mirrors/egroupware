@@ -15,12 +15,11 @@ edit answer	polls	sv	Ändra svar
 edit poll question	polls	sv	Ändra undersökning
 enter poll question	polls	sv	Skapa undersökning
 new poll has been added.  you should now add some answers for this poll	polls	sv	Undersökningen sparad och du kan nu lägga till frågor
+noone	polls	sv	Ingen
 poll question	polls	sv	Frågeställning
-poll settings	common	sv	Undersöknings alternativ
 polls	common	sv	Undersökning
 question has been updated	polls	sv	Frågan uppdaterad
 select current poll	polls	sv	Välj aktuell undersökning
-settings	polls	sv	Alternativ
 settings updated	polls	sv	Inställningarna uppdaterade
 show answers	polls	sv	Visa svar
 show questions	common	sv	Visa undersökningar

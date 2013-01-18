@@ -1,7 +1,8 @@
 %1 bookmarks have been deleted	bookmarks	ru	%1 закладок удалено
 %1 bookmarks imported from %2 successfully.	bookmarks	ru	%1 закладок импортировано из %2 успешно
 (comma separate multiple addresses)	bookmarks	ru	(множественные адреса, разделенные запятыми)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ru	<b>Примечание:</b> Эта функция сейчас работает только с закладками Netscape
+actions	bookmarks	ru	Действия
+added	bookmarks	ru	добавлено
 all bookmarks	bookmarks	ru	Все закладки
 and	bookmarks	ru	и
 append this message to mailed bookmarks	bookmarks	ru	Добавить это сообщение к закладкам, пересылаемым почтовым сообщением
@@ -16,10 +17,14 @@ bookmark not readable	bookmarks	ru	Закладка не читаемая
 bookmarks	common	ru	Закладки
 bookmarks settings	bookmarks	ru	Настройки Закладок
 change bookmark	bookmarks	ru	Изменить закладку
+check all	bookmarks	ru	Отметить все
 choose the categories to display	bookmarks	ru	Выберите категории для показа
 close this window to return	bookmarks	ru	для возврата закрыть окно
 create bookmark	bookmarks	ru	Создать закладку
 create new bookmark	bookmarks	ru	Создать новую закладку
+create new links	bookmarks	ru	Создайте новые ссылки
+created	bookmarks	ru	Создано
+custom fields	bookmarks	ru	Пользовательские Поля
 date added	bookmarks	ru	Дата добавлена
 date changed	bookmarks	ru	Дата Изменена
 date last updated	bookmarks	ru	Дата последнего обновления
@@ -28,17 +33,23 @@ descending	bookmarks	ru	По убыванию
 edit bookmark	bookmarks	ru	Редактировать закладку
 edit this bookmark	bookmarks	ru	Редактировать данную закладку
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	ru	Ниже введите имя файла с закладками Netscape<br>, которые Вы хотите импортировать в свои закладки
+existing links	bookmarks	ru	Существующие ссылки
+export	bookmarks	ru	экспорт
 export bookmarks	common	ru	Экспортировать закладки
 fewer	bookmarks	ru	Убрать
 filter by	bookmarks	ru	Сортировать по
 found a link you might like	bookmarks	ru	Найдена ссылка которая может Вам понравиться
 from	bookmarks	ru	От
 from category %1	bookmarks	ru	из категории %1
+general	bookmarks	ru	Общее
 global categories	bookmarks	ru	Общие Категории
 highest	bookmarks	ru	Наивысший
+history	bookmarks	ru	История
 i thought you would be interested in the following link(s):	bookmarks	ru	Мне кажется, Вы заинтересуетесь следующими ссылками:
 import bookmarks	common	ru	Импортировать закладки
+last modified	bookmarks	ru	последние изменение
 like	bookmarks	ru	похоже
+links	bookmarks	ru	Ссылки
 list view	bookmarks	ru	в виде списка
 lowest	bookmarks	ru	Наинизший
 mail this bookmark	bookmarks	ru	Отправить закладку по почте
@@ -68,10 +79,12 @@ to which category should the imported folder hierarchy be attached	bookmarks	ru	
 total visits	bookmarks	ru	всего посещений
 tree view	bookmarks	ru	Дерево закладок
 unable to open temp file %1 for import.	bookmarks	ru	Невозможно открыть временный файл %1 для импорта.
+updated	bookmarks	ru	Обновлено
 url is required.	bookmarks	ru	Необходим URL
 view bookmark	bookmarks	ru	Просмотр закладки
 view this bookmark	bookmarks	ru	Просмотреть эту закладку
 warning	bookmarks	ru	Предупреждение
+whole query	bookmarks	ru	весь запрос
 you are viewing this site outside of egroupware	bookmarks	ru	Вы просматриваете этот сайт вне eGroupWare
 you must select a category	bookmarks	ru	Вы должны выбрать категорию
 you need to select a category!	bookmarks	ru	Вы должны выбрать категорию!

@@ -63,6 +63,7 @@ on all pages	wiki	es-es	en todas las páginas
 only if browser supports a richtext-editor	admin	es-es	Sólo si el navegador soporta un editor de texto enriquecido
 only on the first page	wiki	es-es	sólo en la primera página
 page '%1' not found !!!	wiki	es-es	¡No se encontró la página '%1'!
+page content	wiki	es-es	Contenido de la página
 path of the upload directory (has to be writable by the webserver!)	admin	es-es	Ruta al directorio de subir ficheros (el servidor web debe tener derecho de escritura)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	es-es	Subir ficheros con el editor de texto enriquecido (dejar el directorio de subir en blanco para desactivar)
 please contact the %1administrator%2 for assistance.	wiki	es-es	Por favor, póngase en contacto con el %1Administrator%2 para obtener ayuda.

@@ -1,7 +1,7 @@
 %1 bookmarks have been deleted	bookmarks	it	%1 segnalibri sono stati cancellati
 %1 bookmarks imported from %2 successfully.	bookmarks	it	%1 segnalibri importati da %2 con successo.
 (comma separate multiple addresses)	bookmarks	it	(indirizzi multipli separati da virgole)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	it	<b>Nota:</b> Attualmente funziona solo con segnalibri di Netscape
+added	bookmarks	it	Aggiunto
 all bookmarks	bookmarks	it	Tutti i segnalibri
 and	bookmarks	it	E
 append this message to mailed bookmarks	bookmarks	it	Appendi questo messaggio ai segnalibri inviati
@@ -15,9 +15,14 @@ bookmark not readable	bookmarks	it	Segnalibro non leggibile
 bookmarks	common	it	Segnalibri
 bookmarks settings	bookmarks	it	Impostazioni Segnalibri
 change bookmark	bookmarks	it	Cambia segnalibro
+check all	bookmarks	it	Seleziona tutto
+choose the categories to display	bookmarks	it	Scegli le categorie da mostrare
 close this window to return	bookmarks	it	chiudi questa finestra per ritornare
 create bookmark	bookmarks	it	Crea segnalibro
 create new bookmark	bookmarks	it	Crea nuovo segnalibro
+create new links	bookmarks	it	Crea nuovi collegamenti
+created	bookmarks	it	Creato
+custom fields	bookmarks	it	Campi Personalizzati
 date added	bookmarks	it	Data aggiunta
 date changed	bookmarks	it	Data modifica
 date last updated	bookmarks	it	Data ultimo aggiornamento
@@ -26,16 +31,24 @@ descending	bookmarks	it	Discendente
 edit bookmark	bookmarks	it	Modifica segnalibro
 edit this bookmark	bookmarks	it	Modifica questo segnalibro
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	it	Inserisci il nome del file Netscape <br> che vuoi importare qui sotto.
+existing links	bookmarks	it	Collegamenti esistenti
+export	bookmarks	it	esporta
 export bookmarks	common	it	Esporta Segnalibri
+export definitition to use for nextmatch export	bookmarks	it	Esporta la definizione da utilizzare per la esportazione
 fewer	bookmarks	it	Di meno
 filter by	bookmarks	it	Filtra per
 found a link you might like	bookmarks	it	Trovato un link che ti potrebbe piacere
 from	bookmarks	it	Da
 from category %1	bookmarks	it	dalla categoria %1
+general	bookmarks	it	Generale
+global categories	bookmarks	it	Categorie Globali
 highest	bookmarks	it	Più alto
+history	bookmarks	it	Storico
 i thought you would be interested in the following link(s):	bookmarks	it	Ho pensato che saresti stato interessato ai seguenti link:
+if you specify an export definition, it will be used when you export	bookmarks	it	Se specifichi una definizione di esportazione, allora verrà usata durante la relativa operazione
 import bookmarks	common	it	Importa segnalibri
 like	bookmarks	it	come
+links	bookmarks	it	Collegamenti
 list view	bookmarks	it	elenco
 lowest	bookmarks	it	Più basso
 mail this bookmark	bookmarks	it	Invia questo segnalibro
@@ -55,15 +68,19 @@ please select the categories to export	bookmarks	it	Prego seleziona le categorie
 query condition	bookmarks	it	Condizione query
 rating	bookmarks	it	Valutazione
 search for:	bookmarks	it	Cerca:
+select an action	bookmarks	it	Seleziona una azione
+select an action...	bookmarks	it	Seleziona una azione
 select the format you would like to export to	bookmarks	it	Seleziona il formato per l'esportazione
 send bookmark	bookmarks	it	Invia segnalibro
 sub category	bookmarks	it	SottoCategoria
+this module displays bookmarks in a javascript based tree	bookmarks	it	Questo modulo visualizza i preferiti in una struttura basata su javascript
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	it	L'indirizzo %1 non è valido. Il formato deve essere <strong>utente@dominio</strong> e il dominio deve esistere!
 to e-mail addresses	bookmarks	it	Indirizzi email A
 to which category should the imported folder hierarchy be attached	bookmarks	it	A quale categoria deve appartenere la gerarchia delle cartelle importate
 total visits	bookmarks	it	visite totali
 tree view	bookmarks	it	Vista ad albero
 unable to open temp file %1 for import.	bookmarks	it	Impossibile aprire il file temporaneo %1 per importazione.
+updated	bookmarks	it	Aggiornato
 url is required.	bookmarks	it	URL richiesto
 view bookmark	bookmarks	it	Visualizza segnalibro
 view this bookmark	bookmarks	it	Visualizza questo segnalibro

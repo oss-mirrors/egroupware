@@ -1,6 +1,4 @@
-%1 manual page(s) added or updated	manual	en	%1 manual page(s) added or updated
-download	manual	en	download
-install or update the manual-pages	admin	en	install or update the manual-pages
-manual	common	en	Manual / Help
-page(s) %1 not found !!!	manual	en	Page(s) %1 not found !!!
-starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	en	Starting import from %1, this might take several minutes (specialy if you start it the first time) ...
+anonymous password	admin	hr	Lozinka nepoznatog
+anonymous username	admin	hr	Korisničko ime nepoznatog
+download	manual	hr	Preuzmi sa poslužitelja
+search for	manual	hr	Traži

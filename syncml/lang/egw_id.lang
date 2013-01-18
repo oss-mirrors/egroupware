@@ -1,4 +1,5 @@
 accepted	syncml	id	Accepted
+all incl. rejected	syncml	id	Semua termasuk yang ditolak
 auto	syncml	id	auto
 calendar	common	id	Kalender
 calendar filter	syncml	id	Saring Kalender

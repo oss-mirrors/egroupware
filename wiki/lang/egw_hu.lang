@@ -63,6 +63,7 @@ on all pages	wiki	hu	összes oldalon
 only if browser supports a richtext-editor	admin	hu	Csak ha a böngésző támogatja a ritchtext-szerkesztőt
 only on the first page	wiki	hu	csak az első oldalon
 page '%1' not found !!!	wiki	hu	'%1' oldal nem található !!!
+page content	wiki	hu	Lap tartalom
 path of the upload directory (has to be writable by the webserver!)	admin	hu	Feltöltési könyvtár elérési útja (a webszerver által írhatónak kell lennie).
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	hu	Képfeltöltés a richtext szerkesztővel (hagyja üresen a feltöltési könyvtár útvonalát a feltöltés letiltásához).
 please contact the %1administrator%2 for assistance.	wiki	hu	Kérjen segítséget az %1Adminisztrátortól%2.

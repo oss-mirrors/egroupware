@@ -1,0 +1,5 @@
+delete selected	messenger	et	Kustuta valitud
+forward	messenger	et	Edasi
+new	messenger	et	Uus
+replied	messenger	et	vastatud
+reply	messenger	et	Vasta

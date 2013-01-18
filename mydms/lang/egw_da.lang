@@ -6,6 +6,7 @@ access_mode_readwrite	mydms	da	Læs+skriv
 acl get inherited	mydms	da	ACL blvier arvet
 add acl	mydms	da	tilføj ACL
 add document	mydms	da	Tilføj dokument
+add link	mydms	da	Tilføj link
 add notification	mydms	da	Tilføj alarm
 add subfolder	mydms	da	Tilføj under folder
 admin-tools	mydms	da	Administrations værktøjer
@@ -28,6 +29,7 @@ do you really want to delete this acl?	mydms	da	Vil du slette denne ACL?
 do you really want to delete this document?	mydms	da	Vil du slette dette dokument?
 do you really want to delete this version of the document?	mydms	da	Vil du slette denne version af dokumentet?
 does not expire	mydms	da	Udløber ikke
+download	mydms	da	Download
 edit folder	mydms	da	editer folder
 expires	mydms	da	udløber
 expires after	mydms	da	udløber efter
@@ -40,6 +42,7 @@ inherit acl again	mydms	da	arve ACL igen ?
 last update	mydms	da	Sidste opdatering
 linked documents	mydms	da	linkede dokumenter
 lock status	mydms	da	låse status
+mime type	mydms	da	MIME type
 move document	mydms	da	Flyt dokument
 move folder	mydms	da	Flyt folder
 mydms	common	da	Dokumenthåndtering

@@ -1,281 +1,68 @@
---choose group--	mydms	zh	--选择组--
---choose user--	mydms	zh	--选择用户--
---please choose--	mydms	zh	--请选择--
-<a class="inheritaccess" href="%1">inherit access</a>	mydms	zh	<a class=\"inheritAccess\" href="%1">继承性访问</a>
-<br>setting image for user...	mydms	zh	为用户设置图像...
-accept	mydms	zh	同意
-access is being inherited.<p><a class="inheritaccess" href="%1">copy inherited access-list</a><br><a class="inheritaccess" href="%2">start with empty access-list</a>	mydms	zh	读写权限被继承。<p><a class="inheritAccess" href="%1">复制访问列表</a><br><a class="inheritAccess" href="%2">启用空的访问列表</a>
 access mode	mydms	zh	访问模式
 access rights	mydms	zh	访问权限
-access-list is empty	mydms	zh	访问列表是空的
 access_mode_all	mydms	zh	全部
 access_mode_none	mydms	zh	无权访问
 access_mode_read	mydms	zh	只读
 access_mode_readwrite	mydms	zh	读写
 acl get inherited	mydms	zh	获取 ACL 继承
-add a member	mydms	zh	添加成员
-add access	mydms	zh	添加访问
 add acl	mydms	zh	添加 ACL
-add category	mydms	zh	添加类别
 add document	mydms	zh	添加文档
-add keywords	mydms	zh	添加关键词
 add link	mydms	zh	添加链接
-add new group	mydms	zh	添加新组
-add new notify	mydms	zh	添加新通知
-add new user	mydms	zh	添加新用户
 add notification	mydms	zh	添加提醒通知
 add subfolder	mydms	zh	添加子文件夹
-adding category...	mydms	zh	添加类别...
-adding document %1 to folder %2...	mydms	zh	添加文件%1到文件夹%2...
-adding element to access-list...	mydms	zh	添加元素到访问列表...
-adding element to notify-list...	mydms	zh	添加元素到通知列表...
-adding group to system...	mydms	zh	添加组到系统中...
-adding keywords...	mydms	zh	添加关键词...
-adding link to related document...	mydms	zh	添加链接到关联的文档...
-adding member to group...	mydms	zh	添加成员到组中...
 adding subfolder "%1" to folder "%2"...	mydms	zh	添加子文件夹"%1"到文件夹"%2"...
-adding user to system...	mydms	zh	添加用户到系统中...
 admin-tools	mydms	zh	管理工具
-after %1	mydms	zh	在%1以后
-all	mydms	zh	全部
-all folders	mydms	zh	所有文件夹
-all users	mydms	zh	所有用户
 all versions	mydms	zh	所有版本
-all words	mydms	zh	所有字词
-an error has occured	mydms	zh	发生一个错误
-and	mydms	zh	与
-at least one word	mydms	zh	至少一个字词
-at the end	mydms	zh	在结尾
-available keywords	mydms	zh	有用的关键词
-between	mydms	zh	介于
-cancel	mydms	zh	取消
-categories	mydms	zh	类别
-changing access-mode...	mydms	zh	更改访问模式...
-changing category...	mydms	zh	更改类别...
-changing keywords...	mydms	zh	更改关键词...
 choose document	mydms	zh	选择文件
-choose target-folder	mydms	zh	选择目标文件夹
 comment	mydms	zh	注释
 comment for current version	mydms	zh	当前版本注释
-confirm password	mydms	zh	确认密码
-content	mydms	zh	内容
 copy acl	mydms	zh	复制 ACL
 copy documents	mydms	zh	复制文档
 copy folder	mydms	zh	复制文件夹
 copy options	mydms	zh	复制选项
 copy subfolders	mydms	zh	复制子文件夹
-copying access-list...	mydms	zh	复制访问列表
 create empty acl	mydms	zh	创建空 ACL
-created	mydms	zh	创建日期
 creation date	mydms	zh	创建日期
 current acl	mydms	zh	当前 ACL
 current version	mydms	zh	当前版本
 default access	mydms	zh	默认访问
-default access-mode	mydms	zh	默认访问模式
-delete	mydms	zh	删除
 delete folder	mydms	zh	删除文件夹
-delete keywords	mydms	zh	删除关键词
-delete this category	mydms	zh	删除类别
 delete this notification	mydms	zh	删除这个提醒通知
-deleting category...	mydms	zh	删除类别...
-deleting keywords...	mydms	zh	删除关键词...
 do you really want to delete this acl?	mydms	zh	你确实要删除这个 ACL 吗？
 do you really want to delete this document?	mydms	zh	您确实要删除这个文件吗？
 do you really want to delete this version of the document?	mydms	zh	您确定要删除该文件版本吗？
-do you really want to remove the document %1?<br>be careful: this action cannot be undone.	mydms	zh	你真的想要删除文件%1吗？<br>慎重：此操作是不可撤消的。
 do you really want to remove the folder "%1" and its content?<br>be careful: this action cannot be undone.	mydms	zh	您是否真地要移除文件夹“%1”和它的内容？<br>慎重：此操作是不可撤消的。
-do you really want to remove version %2 of document %1?<br>be careful: this action cannot be undone.	mydms	zh	你真的想要删除文件%1的版本%2吗？<br>慎重：此操作是不可撤消的。
-document-overview	mydms	zh	文件-概况
-documents	mydms	zh	文档
 does not expire	mydms	zh	永不过期
-done	mydms	zh	完成
 download	mydms	zh	下载
-edit access	mydms	zh	编辑访问
-edit access-list	mydms	zh	编辑访问列表
-edit categories	mydms	zh	编辑类别
-edit document	mydms	zh	编辑文件
-edit document access again	mydms	zh	再次编辑文件访问
-edit document again	mydms	zh	再次编辑文件
 edit folder	mydms	zh	编辑文件夹
-edit folder access again	mydms	zh	再次编辑文件夹访问
-edit folder again	mydms	zh	再次编辑文件夹
-edit group	mydms	zh	编辑组
-edit group %1	mydms	zh	编辑组%1
-edit keywords	mydms	zh	编辑关键词
-edit notify-list	mydms	zh	编辑通知列表
-edit notify-list again	mydms	zh	再次编辑通知列表
-edit personal keywords	mydms	zh	编辑私有关键词
-edit user	mydms	zh	编辑用户
-editing access...	mydms	zh	编辑访问...
-editing document...	mydms	zh	编辑文件...
-editing folder...	mydms	zh	编辑文件夹...
-editing group...	mydms	zh	编辑组...
-editing user settings...	mydms	zh	编辑用户设置...
-editing user...	mydms	zh	编辑用户...
-elapsed time: %1 sec.	mydms	zh	耗用时间：%1秒
-email	mydms	zh	电子邮件
 expires	mydms	zh	到期
 expires after	mydms	zh	到期日
 file size	mydms	zh	文件大小
 filename	mydms	zh	文件名
-filesize	mydms	zh	文件大小
-first position	mydms	zh	第一位置
 folder	mydms	zh	文件夹
-folder-overview	mydms	zh	文件夹-概况
-foldertree	mydms	zh	文件夹树
-found %2 documents for %1.	mydms	zh	为%1建立%2文件
-fullname	mydms	zh	全名
 general information	mydms	zh	一般信息
-global keywords	mydms	zh	全局关键词
-go back	mydms	zh	返回上一页
-goto	mydms	zh	Goto
-group	mydms	zh	组
-group members	mydms	zh	组成员
-groups	mydms	zh	组
-image	mydms	zh	图片
-in folder	mydms	zh	在文件夹
 information about last update	mydms	zh	关于最近更新信息
 informations	mydms	zh	信息
-inherit access	mydms	zh	继承访问
 inherit acl again	mydms	zh	再次继承 ACL
-keep position	mydms	zh	保持位置
-keywords	mydms	zh	关键词
-language	mydms	zh	语言
 last update	mydms	zh	最近更新
-last updated	mydms	zh	最近更新
 linked by	mydms	zh	链接
 linked documents	mydms	zh	连接的文档
-list of users	mydms	zh	用户列表
-local file	mydms	zh	本地文件
-lock	mydms	zh	锁定
 lock status	mydms	zh	锁定状态
-locking document...	mydms	zh	锁定文件...
-logged in	mydms	zh	登录
-login	mydms	zh	登录
-login as guest	mydms	zh	以访客登录
-logout	mydms	zh	登出
 mime type	mydms	zh	Mime 类型
-mime-type	mydms	zh	Mime-类型
-mode	mydms	zh	模式
 move document	mydms	zh	移动文档
 move folder	mydms	zh	移动文件夹
-moving document...	mydms	zh	删除文件...
-moving folder...	mydms	zh	删除文件夹...
-my account	mydms	zh	我的账户
 mydms	common	zh	我的文档
-mydms - document %1	mydms	zh	我的文档 - 文件%1
-mydms - folder %1	mydms	zh	我的文档 - 文件夹%1
-name	mydms	zh	名称
-new image	mydms	zh	新建图片
-new or expired documents in your dms	mydms	zh	在您的文档中新建或终止文件
-no	mydms	zh	否
-no access	mydms	zh	无访问
-no comment	mydms	zh	没有注释
-no documents	mydms	zh	没有文档
-no entries	mydms	zh	没有条目
-no groups	mydms	zh	没有组
-no image found	mydms	zh	未找到图片
-no keywords available	mydms	zh	无可用关键词
 no related documents	mydms	zh	无相关文档
-no subfolders	mydms	zh	无子文件夹
 notifications	mydms	zh	通知
-notify-list	mydms	zh	通知列表
-only .jpg-images may be used as user-images	mydms	zh	只有 JPG 格式图象可被用作用户头象
-open...	mydms	zh	浏览...
-overview of folders and documents	mydms	zh	文件夹及文件概况
-owner	mydms	zh	所有者
-password	mydms	zh	密码
-password and passwords-confirmation are not equal	mydms	zh	密码和确认密码不相同
-path	mydms	zh	路径
 permission	mydms	zh	权限
-personal keywords	mydms	zh	私有关键词
-please select a file	mydms	zh	请选择文件
-please select an user	mydms	zh	请选择用户
-please type in a name	mydms	zh	请输入名称
-please type in an username	mydms	zh	请输入用户名
-public	mydms	zh	共用
-read	mydms	zh	读取
-read-write	mydms	zh	读写
-related documents	mydms	zh	相关文件
-remove document	mydms	zh	清除文件
-remove folder	mydms	zh	清除文件夹
-remove link	mydms	zh	清除链接
-remove member	mydms	zh	清除成员
-remove this group	mydms	zh	清除该组
-remove this user	mydms	zh	清除该用户
-remove version	mydms	zh	清除版本
-removing acl. document will inherit access...	mydms	zh	清除 ACL。文件将继承访问权限...
-removing acl. folder will inherit access...	mydms	zh	清除 ACL。文件夹将继承访问权限...
-removing document...	mydms	zh	清除文件...
-removing element from access-list...	mydms	zh	从访问列表中清除元素...
-removing element from notify-list...	mydms	zh	从通知列表中清除元素...
-removing folder...	mydms	zh	清除文件夹...
-removing group from system...	mydms	zh	从系统清除组...
-removing inherited access. starting with empty acl...	mydms	zh	清除继承访问。启用空 ACL...
-removing link to related document...	mydms	zh	移动链接到相关文件...
-removing member from group...	mydms	zh	从组移除成员...
-removing user from system...	mydms	zh	从系统移除成员...
-removing version %1...	mydms	zh	移除版本%1...
-root folder	mydms	zh	根文件夹
-save	mydms	zh	保存
-search	mydms	zh	搜索
-search for	mydms	zh	搜索内容
-search in	mydms	zh	搜索类别
-search results	mydms	zh	搜索结果
-select at least a user or a group	mydms	zh	选择至少一个用户或组
 select folder	mydms	zh	选择文件夹
-select one	mydms	zh	选择一个
 select target folder	mydms	zh	选择目标文件夹
-selected document	mydms	zh	选择的文件
-selected folder	mydms	zh	选择的文件夹
-sequence	mydms	zh	序列
-set owner	mydms	zh	设置所有者
-setting default access for document...	mydms	zh	为文件设置默认访问...
-setting default access-mode for folder...	mydms	zh	为文件j夹设置默认访问模式...
-setting expiration...	mydms	zh	设置有效期...
-setting owner...	mydms	zh	设置拥有者...
-specify some keywords	mydms	zh	指定关键词
-start	mydms	zh	开始
-status	mydms	zh	状态
-subfolders	mydms	zh	子文件夹
 target folder	mydms	zh	目标文件夹
-the document %1 (path: %2) has expired on %3	mydms	zh	文件%1(路径：%2)已在存在于%3
-the document %1 (path: %2) was created or updated on %3	mydms	zh	文件%1(路径：%2)已在%3创建或更新
-theme	mydms	zh	外观主题
-there are no documents that match your search (%1).	mydms	zh	没有与您的搜索(%1)相匹配的结果。
-there is no comment	mydms	zh	没有注释
 this document gets locked by you!	mydms	zh	该文档被您锁定！
 this document gets unlocked by you.	mydms	zh	该文档被您取消锁定。
-this document is aleady locked	mydms	zh	该文档已经锁定
 this document is currently not locked.	mydms	zh	该文档当前未锁定。
 this document is locked by <a href="mailto:%1">%2</a>.	mydms	zh	该文档已被 <a href="mailto:%1">%2</a> 锁定。
-this document is locked.	mydms	zh	该文档被锁定
-this document is not locked	mydms	zh	该文档没有被锁定
-this document was locked by <a href="mailto:%1">%2</a>.<br>only authorized users can unlock this document (see end of page).	mydms	zh	该文档由<a href="mailto:%1">%2</a>锁定.<br>只有经批准的用户才能解除该文档的锁定(见页末)
-this group has no members	mydms	zh	该组没有成员
-this username does not exist	mydms	zh	该用户名不存在
-type in a query	mydms	zh	输入查询内容
-type in your email-address	mydms	zh	输入您的电子邮件地址
-unlock	mydms	zh	上传
-unlocking document...	mydms	zh	上传文档...
-update	mydms	zh	更新
 update document	mydms	zh	更新文档
-updating document...	mydms	zh	更新文档...
 upload date	mydms	zh	上传数据
-upload failed. please contact the administrator.	mydms	zh	上传失败，请联系系统管理员。
-upload-date	mydms	zh	上传-数据
 uploaded by	mydms	zh	上传自
-use predefined keywords	mydms	zh	使用预定义关键字
-user	mydms	zh	用户
-username	mydms	zh	用户名
-users	mydms	zh	用户
-version	mydms	zh	版本
 view online	mydms	zh	在线查看
-yes	mydms	zh	是的
-you can still update it, beacuse you have access-mode	mydms	zh	你仍然可以进行更新，因为您具有访问权限
-you can still update it, because you are also the one that locked ist. locking will automatically be removed.	mydms	zh	你仍然可以进行更新，因为您也是加锁人之一。更新后锁定将自动解除。
-you can therefore not update this document. please contanct the locking user.	mydms	zh	你不能更新这个文件。请与锁定用户联系。
-you don't have enough rights to do that	mydms	zh	您没有足够的权限进行此操作
-you dont't have enough rights to unlock this document	mydms	zh	您没有足够的权限解除该文档的锁定
-you need to type in your password	mydms	zh	您必须输入您的密码
-your password is incorrect. try again.	mydms	zh	您的密码有误，请重试。

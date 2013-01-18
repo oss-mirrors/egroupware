@@ -1,7 +1,8 @@
 %1 bookmarks have been deleted	bookmarks	tr	%1 favori silindi
 %1 bookmarks imported from %2 successfully.	bookmarks	tr	%2'den %1 favori baþarýyla ithal edildi.
 (comma separate multiple addresses)	bookmarks	tr	(virgülle ayrýlmýþ çoklu adres)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	tr	<b>Not:</b> Bu özellik henüz sadece Netscape favorileri ile çalýþmaktadýr
+actions	bookmarks	tr	Eylemler
+added	bookmarks	tr	Eklendi
 all bookmarks	bookmarks	tr	Bütün favoriler
 and	bookmarks	tr	Ve
 append this message to mailed bookmarks	bookmarks	tr	Bu mesajý maillenmiþ favorilere ekle
@@ -18,6 +19,7 @@ change bookmark	bookmarks	tr	Favori Deðiþtir
 close this window to return	bookmarks	tr	Geri dönmek için bu pencereyi kapatýnýz
 create bookmark	bookmarks	tr	Favori oluþtur
 create new bookmark	bookmarks	tr	Yeni favori oluþtur
+custom fields	bookmarks	tr	Özel Alanlar
 date added	bookmarks	tr	Eklenme tarihi
 date changed	bookmarks	tr	Deðiþtirilme tarihi
 date last updated	bookmarks	tr	Son güncelleme tarihi
@@ -26,12 +28,14 @@ descending	bookmarks	tr	Azalan
 edit bookmark	bookmarks	tr	Favori düzenle
 edit this bookmark	bookmarks	tr	Favoriyi düzenle
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	tr	Ithal etmek istediðiniz Netscape<br> favori dosyasýnýn adýný giriniz.
+export	bookmarks	tr	Ýhraç Et
 export bookmarks	common	tr	Favorileri Ýhraç Et
 fewer	bookmarks	tr	Daha Az
 filter by	bookmarks	tr	Süzgeç Tipi
 found a link you might like	bookmarks	tr	Sevebileceðiniz bir link bulundu
 from	bookmarks	tr	Nereden
 from category %1	bookmarks	tr	%1 kategorisinden
+global categories	bookmarks	tr	Genel kategoriler
 highest	bookmarks	tr	En yüksek
 i thought you would be interested in the following link(s):	bookmarks	tr	Aþaðýdaki linklerle ilgilenebileceðinizi düþündüm:
 import bookmarks	common	tr	Favorileri Ýhraç Et
@@ -47,7 +51,7 @@ name	bookmarks	tr	Ýsim
 name is required	bookmarks	tr	Ýsim gereklidir
 netscape bookmark file	bookmarks	tr	Netscape favori dosyasý
 netscape bookmark filename is required!	bookmarks	tr	Netscape favori dosyasý gereklidir!
-new	bookmark	tr	Yeni
+new	bookmarks	tr	Yeni
 new bookmark	bookmarks	tr	Yeni Favori
 or	bookmarks	tr	ya da
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	tr	Lütfen <b>Alýcý E-mail Adresi</b>, <b>Konu</b> ve <b>Mesaj</b> alanlarýný doldurunuz!
@@ -64,6 +68,7 @@ to which category should the imported folder hierarchy be attached	bookmarks	tr	
 total visits	bookmarks	tr	toplam ziyaret
 tree view	bookmarks	tr	Aðaç görünümü
 unable to open temp file %1 for import.	bookmarks	tr	Geçici dosya %1 ithal etmek için açýlamýyor.
+updated	bookmarks	tr	Güncelle
 url is required.	bookmarks	tr	URL gereklidir.
 view bookmark	bookmarks	tr	Favori görüntüle
 view this bookmark	bookmarks	tr	Bu favoriyi görüntüle
