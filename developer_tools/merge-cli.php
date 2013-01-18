@@ -1,4 +1,4 @@
-#!/usr/bin/php -qC -d memory_limit=-1
+#!/usr/bin/php -qC
 <?php
 /**
  * TranslationTools - CLI to merge translations from all apps and other tree / branches
@@ -11,12 +11,13 @@
  * @version $Id$
  */
 
-chdir($own_tree=dirname(dirname(__FILE__)));	// to enable our relative pathes to work
-
 if (isset($_SERVER['HTTP_HOST']))	// security precaution: forbit calling admin-cli as web-page
 {
 	die('<h1>merge-cli.php must NOT be called as web-page --> exiting !!!</h1>');
 }
+
+chdir($own_tree=dirname(dirname(__FILE__)));	// to enable our relative pathes to work
+ini_set('memory_limit', -1);
 
 /**
  * Give usage and exit
@@ -33,7 +34,7 @@ function usage()
 	exit;
 }
 
-$langs = $only_apps = array();
+$langs = array();
 // read all available languages (other then source "en") from our own tree
 foreach(scandir($own_tree.'/phpgwapi/lang') as $lang_file)
 {
