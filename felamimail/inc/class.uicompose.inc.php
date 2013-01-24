@@ -184,7 +184,12 @@
 				$cachedComposeID = egw_cache::getCache(egw_cache::INSTANCE,'email','composeIdCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60);
 				egw_cache::setCache(egw_cache::INSTANCE,'email','composeIdCache'.trim($GLOBALS['egw_info']['user']['account_id']),$this->composeID,$expiration=60);
 				//error_log(__METHOD__.__LINE__.' '.$formData['subject'].' '.$cachedComposeID.'<->'.$this->composeID);
-				if (!empty($cachedComposeID) && $cachedComposeID == $this->composeID) return;
+				if (!empty($cachedComposeID) && $cachedComposeID == $this->composeID)
+				{
+					//already send
+					print "<script type=\"text/javascript\">window.close();</script>";
+					return;
+				}
 				if(!$this->bocompose->send($formData)) {
 //					print "<script type=\"text/javascript\">alert('".lang("Error: Could not send Message.")." ".lang("Trying to recover from session data")."');</script>";
 					$this->compose();
