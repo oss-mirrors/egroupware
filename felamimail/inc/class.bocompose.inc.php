@@ -1262,7 +1262,10 @@
 					$mailaddresses,
 					$this->sessionData['subject'],
 					$this->convertHTMLToText($this->sessionData['body']),
-					$this->sessionData['attachments']
+					$this->sessionData['attachments'],
+					false, // date
+					$sentMailHeader, // raw SentMailHeader
+					$sentMailBody // raw SentMailBody
 				);
 			}
 /*
