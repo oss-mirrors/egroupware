@@ -2125,7 +2125,7 @@ class felamimail_bo
 									$createfolder=false;
 								break;
 							case 'Templates': //] => Vorlagen
-								$templateFolder = $this->bofelamimail->getTemplateFolder();
+								$templateFolder = $this->getTemplateFolder();
 								if ($templateFolder && $templateFolder=='none')
 									$createfolder=false;
 								break;
