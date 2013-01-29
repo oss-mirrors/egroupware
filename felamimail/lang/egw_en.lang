@@ -40,7 +40,7 @@ any status	felamimail	en	Any status
 anyone	felamimail	en	Anyone
 as a subfolder of	felamimail	en	As a sub folder of
 attach	felamimail	en	Attach
-attach users vcard at compose to every new mail	felamimail	en	attach users VCard at compose to every new mail
+attach users vcard at compose to every new mail	felamimail	en	Attach users VCard at compose to every new mail
 attachments	felamimail	en	Attachments
 authentication required	felamimail	en	Authentication required
 auto refresh folder list	felamimail	en	Auto refresh folder list
@@ -513,7 +513,7 @@ skipping previous	felamimail	en	Skipping previous
 small view	felamimail	en	Small view
 smtp settings	admin	en	SMTP settings
 start new messages with mime type plain/text or html?	felamimail	en	Start new messages with mime type plain/text or HTML?
-start reply messages with mime type plain/text or html or try to use the displayed format (default)?	felamimail	en	start reply messages with mime type plain/text or html or try to use the displayed format (default)?
+start reply messages with mime type plain/text or html or try to use the displayed format (default)?	felamimail	en	Start reply messages with mime type plain/text or html or try to use the displayed format (default)?
 stationery	felamimail	en	Stationery
 subject	felamimail	en	Subject
 subject(a->z)	felamimail	en	Subject (A->Z)
@@ -600,7 +600,7 @@ viewing full header	felamimail	en	Viewing full header
 viewing message	felamimail	en	Viewing message
 viewing messages	felamimail	en	Viewing messages
 when deleting messages	felamimail	en	When deleting messages
-when saving messages as item of a different app (if app supports the desired option)	felamimail	en	when saving messages as item of a different app (if app supports the desired option)
+when saving messages as item of a different app (if app supports the desired option)	felamimail	en	When saving messages as item of a different app (if app supports the desired option)
 when sending messages	felamimail	en	When sending messages
 which folders (additional to the sent folder) should be displayed using the sent folder view schema	felamimail	en	Which folders additionally to the Sent folder should be displayed using the Sent Folder View Schema
 which folders - in general - should not be automatically created, if not existing	felamimail	en	Which folders - in general - should NOT be automatically created, if not existing
