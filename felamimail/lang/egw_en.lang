@@ -8,7 +8,6 @@
 (with checkbox enforced)	felamimail	en	(with checkbox enforced)
 1) keep drafted message (press ok)	felamimail	en	1) keep drafted message (press OK)
 2) discard the message completely (press cancel)	felamimail	en	2) discard the message completely (press Cancel)
-3paneview: if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here (300 seems to be a good working value). the preview will be displayed at the end of the message list on demand (click).	felamimail	en	3PaneView: If you want to see a preview of a mail by single click onto the subject, set the height for the message list and the preview area e.g. 300. You may specify the minimum height of the message list too, by adding it after the specified IFrame Preview height, separated by comma (e.g.: 300,190)
 aborted	felamimail	en	Aborted
 activate	felamimail	en	Activate
 activate acl management	felamimail	en	Activate ACL Management
@@ -124,7 +123,7 @@ deleted	felamimail	en	Deleted
 deleted folder successfully!	felamimail	en	Deleted folder successfully!
 deleting messages	felamimail	en	Deleting messages
 disable	felamimail	en	Disable
-disable ruler for separation of mailbody and signature when adding signature to composed message (this is not according to rfc).<br>if you use templates, this option is only applied to the text part of the message.	felamimail	en	Disable ruler for separation of mail body and signature when adding signature to composed message .<br>If templates are used, this option is only applied to the text part of the message.
+disable ruler for separation of mailbody and signature	felamimail	en	Disable ruler for separation of mail body and signature
 discard	felamimail	en	Discard
 discard message	felamimail	en	Discard message
 display mail subject in notification	felamimail	en	Display mail subject in notification
@@ -257,6 +256,7 @@ have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.
 header lines	felamimail	en	Header lines
 hide header	felamimail	en	Hide header
 hostname / address	felamimail	en	Hostname / address
+how many messages should the mail list load	felamimail	en	How many messages should the mail list load
 how to forward messages	felamimail	en	How to forward messages
 html	felamimail	en	HTML
 icons and text	felamimail	en	Icons and text
@@ -272,6 +272,8 @@ if subject contains	felamimail	en	If subject contains
 if to contains	felamimail	en	If to contains
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	en	If using SSL or TLS, you must have the PHP openssl extension loaded.
 if you leave this page without saving to draft, the message will be discarded completely	felamimail	en	If you leave this page without saving to draft, the message will be discarded completely
+if you select all messages there will be no pagination for mail message list. beware, as some actions on all selected messages may be problematic depending on the amount of selected messages.	felamimail	en	If you select all messages there will be no pagination for mail message list. Beware, as some actions on all selected messages may be problematic depending on the amount of selected messages.
+if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here. 300 seems to be a good working value. the preview will be displayed at the end of the message when a message is selected.	felamimail	en	If you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here. 300 seems to be a good working value. The preview will be displayed at the end of the message list when a message is selected.
 illegal folder name.  please select a different name.	felamimail	en	Invalid folder name. Please select a different name.
 imap	felamimail	en	IMAP
 imap server	felamimail	en	IMAP server
@@ -318,7 +320,6 @@ list all	felamimail	en	List all
 loading	felamimail	en	Loading
 location of buttons when composing	felamimail	en	Location of buttons when composing
 look up the name of the mailbox (but not its contents).	felamimail	en	Look up the name of the mailbox (but not its contents).
-mail grid behavior: how many messages should the mailgrid load? if you select all messages there will be no pagination for mail message list. (beware, as some actions on all selected messages may be problematic depending on the amount of selected messages.)	felamimail	en	Mail Grid Behavior: how many messages should the mail grid load? If you select all messages there will be no pagination for mail message list.
 mail server login type	admin	en	Mail server login type
 mail settings	felamimail	en	Mail settings
 mail source	felamimail	en	Mail source
@@ -342,6 +343,7 @@ matches regexp	felamimail	en	Matches regexp
 max uploadsize	felamimail	en	Max upload size
 message highlighting	felamimail	en	Message highlighting
 message list	felamimail	en	Message list
+message preview size	felamimail	en	Message preview size
 messages	felamimail	en	Messages
 move	felamimail	en	Move
 move folder	felamimail	en	Move folder
@@ -513,7 +515,7 @@ skipping previous	felamimail	en	Skipping previous
 small view	felamimail	en	Small view
 smtp settings	admin	en	SMTP settings
 start new messages with mime type plain/text or html?	felamimail	en	Start new messages with mime type plain/text or HTML?
-start reply messages with mime type plain/text or html or try to use the displayed format (default)?	felamimail	en	Start reply messages with mime type plain/text or html or try to use the displayed format (default)?
+start reply messages with mime type plain/text or html or try to use the displayed format (default)?	felamimail	en	Start reply messages with mime type plain/text or html or try to use the displayed format?
 stationery	felamimail	en	Stationery
 subject	felamimail	en	Subject
 subject(a->z)	felamimail	en	Subject (A->Z)
@@ -547,6 +549,7 @@ to	felamimail	en	To
 to do	felamimail	en	to do
 to mail sent to	felamimail	en	To mail sent to
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	en	To use a TLS connection, you must be running a version of PHP 5.1.0 or higher.
+turn off horizontal line between signature and composed message (this is not according to RFC).\nIf you use templates, this option is only applied to the text part of the message.	felamimail	en	Turn off horizontal line between signature and composed message (this is not according to RFC).\nIf you use templates, this option is only applied to the text part of the message.
 translation preferences	felamimail	en	Translation preferences
 translation server	felamimail	en	Translation server
 trash	felamimail	en	Trash
