@@ -508,7 +508,7 @@ class felamimail_hooks
 			'trashFolder' => array(
 				'type'   => 'select',
 				'label'  => lang('trash folder'),
-				'help'   => (isset($trashFolder) && !empty($trashFolder)?lang('(The folder <b>%1</b> will be used, if there is nothing set here, and no valid predefine given.)',$trashFolder):''),
+				'help'   => (isset($trashFolder) && !empty($trashFolder)?lang('The folder <b>%1</b> will be used, if there is nothing set here, and no valid predefine given.',$trashFolder):''),
 				'name'   => 'trashFolder',
 				'values' => $trashOptions,
 				'xmlrpc' => True,
@@ -517,7 +517,7 @@ class felamimail_hooks
 			'sentFolder' => array(
 				'type'   => 'select',
 				'label'  => lang('sent folder'),
-				'help'   => (isset($sentFolder) && !empty($sentFolder)?lang('(The folder <b>%1</b> will be used, if there is nothing set here, and no valid predefine given.)',$sentFolder):''),
+				'help'   => (isset($sentFolder) && !empty($sentFolder)?lang('The folder <b>%1</b> will be used, if there is nothing set here, and no valid predefine given.',$sentFolder):''),
 				'name'   => 'sentFolder',
 				'values' => $sentOptions,
 				'xmlrpc' => True,
@@ -526,7 +526,7 @@ class felamimail_hooks
 			'draftFolder' => array(
 				'type'   => 'select',
 				'label'  => lang('draft folder'),
-				'help'   => (isset($draftFolder) && !empty($draftFolder)?lang('(The folder <b>%1</b> will be used, if there is nothing set here, and no valid predefine given.)',$draftFolder):''),
+				'help'   => (isset($draftFolder) && !empty($draftFolder)?lang('The folder <b>%1</b> will be used, if there is nothing set here, and no valid predefine given.',$draftFolder):''),
 				'name'   => 'draftFolder',
 				'values' => $draftOptions,
 				'xmlrpc' => True,
@@ -535,7 +535,7 @@ class felamimail_hooks
 			'templateFolder' => array(
 				'type'   => 'select',
 				'label'  => lang('template folder'),
-				'help'   => (isset($templateFolder) && !empty($templateFolder)?lang('(The folder <b>%1</b> will be used, if there is nothing set here, and no valid predefine given.)',$templateFolder):''),
+				'help'   => (isset($templateFolder) && !empty($templateFolder)?lang('The folder <b>%1</b> will be used, if there is nothing set here, and no valid predefine given.',$templateFolder):''),
 				'name'   => 'templateFolder',
 				'values' => $templateOptions,
 				'xmlrpc' => True,
