@@ -325,6 +325,7 @@ class felamimail_hooks
 			'message_forwarding' => array(
 				'type'   => 'select',
 				'label'  => 'how to forward messages',
+				'help'   => 'Which method to use when forwarding a message',
 				'name'   => 'message_forwarding',
 				'values' => $forwardOptions,
 				'xmlrpc' => True,
@@ -333,7 +334,8 @@ class felamimail_hooks
 			),
 			'composeOptions' => array(
 				'type'   => 'select',
-				'label'  => 'start new messages with mime type plain/text or html?',
+				'label'  => 'New message type',
+				'help'   => 'start new messages with mime type plain/text or html?',
 				'name'   => 'composeOptions',
 				'values' => $composeOptions,
 				'xmlrpc' => True,
@@ -342,7 +344,8 @@ class felamimail_hooks
 			),
 			'replyOptions' => array(
 				'type'   => 'select',
-				'label'  => 'start reply messages with mime type plain/text or html or try to use the displayed format (default)?',
+				'label'  => 'Reply message type',
+				'help'  => 'start reply messages with mime type plain/text or html or try to use the displayed format (default)?',
 				'name'   => 'replyOptions',
 				'values' => $replyOptions,
 				'xmlrpc' => True,
@@ -361,7 +364,8 @@ class felamimail_hooks
 			),
 			'insertSignatureAtTopOfMessage' => array(
 				'type'   => 'select',
-				'label'  => 'insert the signature at top of the new (or reply) message when opening compose dialog (you may not be able to switch signatures)',
+				'label'  => 'signature at top',
+				'help'   => 'insert the signature at top of the new (or reply) message when opening compose dialog (you may not be able to switch signatures)',
 				'name'   => 'insertSignatureAtTopOfMessage',
 				'values' => $no_yes,
 				'xmlrpc' => True,
@@ -370,7 +374,8 @@ class felamimail_hooks
 			),
 			'attachVCardAtCompose' => array(
 				'type'   => 'select',
-				'label'  => 'attach users VCard at compose to every new mail',
+				'label'  => 'Attach vCard',
+				'help'   => 'attach users VCard at compose to every new mail',
 				'name'   => 'attachVCardAtCompose',
 				'values' => $no_yes,
 				'xmlrpc' => True,
@@ -387,6 +392,7 @@ class felamimail_hooks
 			'refreshTime' => array(
 				'type'   => 'select',
 				'label'  => 'Refresh time in minutes',
+				'help'   => 'How often to check with the server for new mail',
 				'name'   => 'refreshTime',
 				'values' => $refreshTime,
 				'xmlrpc' => True,
@@ -396,6 +402,7 @@ class felamimail_hooks
 			'htmlOptions' => array(
 				'type'   => 'select',
 				'label'  => 'display of html emails',
+				'help'   => 'What do do with html email',
 				'name'   => 'htmlOptions',
 				'values' => $htmlOptions,
 				'xmlrpc' => True,
@@ -405,6 +412,7 @@ class felamimail_hooks
 			'message_newwindow' => array(
 				'type'   => 'select',
 				'label'  => 'display messages in multiple windows',
+				'help'   => 'When displaying messages in a popup, re-use the same popup for all or open a new popup for each message',
 				'name'   => 'message_newwindow',
 				'values' => $newWindowOptions,
 				'xmlrpc' => True,
@@ -413,7 +421,8 @@ class felamimail_hooks
 			),
 			'allowExternalIMGs' => array(
 				'type'   => 'check',
-				'label'  => 'allow images from external sources in html emails',
+				'label'  => 'Allow external images',
+				'help'   => 'allow images from external sources in html emails',
 				'name'   => 'allowExternalIMGs',
 				'xmlrpc' => True,
 				'admin'  => True,
@@ -421,7 +430,8 @@ class felamimail_hooks
 			),
 			'sortOrder' => array(
 				'type'   => 'select',
-				'label'  => 'Default sorting order',
+				'label'  => 'Sort order',
+				'help'   => 'Default sorting order',
 				'name'   => 'sortOrder',
 				'values' => $sortOrder,
 				'xmlrpc' => True,
@@ -431,6 +441,7 @@ class felamimail_hooks
 			'rowOrderStyle' => array(
 				'type'   => 'select',
 				'label'  => 'row order style',
+				'help'   => 'What order the list columns are in',
 				'name'   => 'rowOrderStyle',
 				'values' => $rowOrderStyle,
 				'xmlrpc' => True,
@@ -458,7 +469,8 @@ class felamimail_hooks
 			),
 			'prefaskformove' => array(
 				'type'   => 'select',
-				'label'  => 'Do you want to be asked for confirmation before moving selected messages to another folder?',
+				'label'  => 'Confirm move to folder',
+				'help'   => 'Do you want to be asked for confirmation before moving selected messages to another folder?',
 				'name'   => 'prefaskformove',
 				'values' => $no_yes_copy,
 				'xmlrpc' => True,
@@ -467,7 +479,8 @@ class felamimail_hooks
 			),
 			'prefaskformultipleforward' => array(
 				'type'   => 'select',
-				'label'  => 'Do you want to be asked for confirmation before attaching selected messages to new mail?',
+				'label'  => 'Confirm attach message',
+				'help'  => 'Do you want to be asked for confirmation before attaching selected messages to new mail?',
 				'name'   => 'prefaskformultipleforward',
 				'values' => $no_yes,
 				'xmlrpc' => True,
@@ -476,7 +489,8 @@ class felamimail_hooks
 			),
 			'mainscreen_showmail' => array(
 				'type'   => 'select',
-				'label'  => 'show new messages on main screen',
+				'label'  => 'show new messages on home page',
+				'help'   => 'Should new messages show up on the Home page',
 				'name'   => 'mainscreen_showmail',
 				'values' => $selectOptions,
 				'xmlrpc' => True,
@@ -484,7 +498,8 @@ class felamimail_hooks
 			),
 			'mainscreen_showfolders' => array(
 				'type'   => 'multiselect',
-				'label'  => 'if shown, which folders should appear on main screen',
+				'label'  => 'home page folders',
+				'help'   => 'if shown, which folders should appear on the Home page',
 				'name'   => 'mainscreen_showfolders',
 				'values' => $folderList,
 				'xmlrpc' => True,
@@ -492,7 +507,8 @@ class felamimail_hooks
 			),
 			'notify_folders' => array(
 				'type'   => 'multiselect',
-				'label'  => 'notify when new mails arrive on these folders',
+				'label'  => 'New mail notification',
+				'help'   => 'notify when new mails arrive in these folders',
 				'name'   => 'notify_folders',
 				'values' => $folderList,
 				'xmlrpc' => True,
@@ -544,6 +560,7 @@ class felamimail_hooks
 			'deleteOptions' => array(
 				'type'   => 'select',
 				'label'  => 'when deleting messages',
+				'help'   => 'what to do when you delete a message',
 				'name'   => 'deleteOptions',
 				'values' => $deleteOptions,
 				'xmlrpc' => True,
@@ -553,6 +570,7 @@ class felamimail_hooks
 			'sendOptions' => array(
 				'type'   => 'select',
 				'label'  => 'when sending messages',
+				'help'   => 'what to do when you send a message',
 				'name'   => 'sendOptions',
 				'values' => $sendOptions,
 				'xmlrpc' => True,
@@ -561,7 +579,8 @@ class felamimail_hooks
 			),
 			'trustServersUnseenInfo' => array(
 				'type'   => 'select',
-				'label'  => 'trust servers SEEN / UNSEEN info when retrieving the folder status. (if you select no, we will search for the UNSEEN messages and count them ourselves)',
+				'label'  => 'trust servers SEEN / UNSEEN info',
+				'help'   => 'Trust the server when retrieving the folder status. if you select no, we will search for the UNSEEN messages and count them ourselves',
 				'name'   => 'trustServersUnseenInfo',
 				'values' => $trustServersUnseenOptions,
 				'xmlrpc' => True,
@@ -570,7 +589,8 @@ class felamimail_hooks
 			),
 			'showAllFoldersInFolderPane' => array(
 				'type'   => 'select',
-				'label'  => 'show all Folders (subscribed AND unsubscribed) in Main Screen Folder Pane',
+				'label'  => 'show all Folders',
+				'help'   => 'show all folders, (subscribed AND unsubscribed) in Main Screen Folder Pane',
 				'name'   => 'showAllFoldersInFolderPane',
 				'values' => $no_yes,
 				'xmlrpc' => True,
@@ -579,7 +599,8 @@ class felamimail_hooks
 			),
 			'messages_showassent_0' => array(
 				'type'   => 'multiselect',
-				'label'  => 'which folders (additional to the Sent Folder) should be displayed using the Sent Folder View Schema',
+				'label'  => 'Extra sent folders',
+				'help'   => 'which folders (additional to the Sent Folder) should be displayed using the Sent Folder View Schema',
 				'name'   => 'messages_showassent_0',
 				'values' => $folderList,
 				'xmlrpc' => True,
@@ -595,7 +616,8 @@ class felamimail_hooks
 			),
 			'prefpreventmanagefolders' => array(
 				'type'   => 'select',
-				'label'  => 'Do you want to prevent the managing of folders (creation, accessrights AND subscribtion)?',
+				'label'  => 'Prevent managing folders',
+				'help'   => 'Do you want to prevent the managing of folders (creation, accessrights AND subscribtion)?',
 				'name'   => 'prefpreventmanagefolders',
 				'values' => $prefAllowManageFolders,
 				'xmlrpc' => True,
@@ -604,7 +626,8 @@ class felamimail_hooks
 			),
 			'prefpreventforwarding' => array(
 				'type'   => 'select',
-				'label'  => 'Do you want to prevent the editing/setup for forwarding of mails via settings (, even if SIEVE is enabled)?',
+				'label'  => 'Prevent managing forwards',
+				'help'   => 'Do you want to prevent the editing/setup for forwarding of mails via settings (, even if SIEVE is enabled)?',
 				'name'   => 'prefpreventforwarding',
 				'values' => $no_yes,
 				'xmlrpc' => True,
@@ -613,7 +636,8 @@ class felamimail_hooks
 			),
 			'prefpreventnotificationformailviaemail' => array(
 				'type'   => 'select',
-				'label'  => 'Do you want to prevent the editing/setup of notification by mail to other emailadresses if emails arrive (, even if SIEVE is enabled)?',
+				'label'  => 'Prevent managing notifications',
+				'help'   => 'Do you want to prevent the editing/setup of notification by mail to other emailadresses if emails arrive (, even if SIEVE is enabled)?',
 				'name'   => 'prefpreventnotificationformailviaemail',
 				'values' => $no_yes,
 				'xmlrpc' => True,
@@ -622,7 +646,8 @@ class felamimail_hooks
 			),
 			'prefpreventeditfilterrules' => array(
 				'type'   => 'select',
-				'label'  => 'Do you want to prevent the editing/setup of filter rules (, even if SIEVE is enabled)?',
+				'label'  => 'Prevent managing filters',
+				'help'   => 'Do you want to prevent the editing/setup of filter rules (, even if SIEVE is enabled)?',
 				'name'   => 'prefpreventeditfilterrules',
 				'values' => $no_yes,
 				'xmlrpc' => True,
@@ -631,7 +656,8 @@ class felamimail_hooks
 			),
 			'prefpreventabsentnotice' => array(
 				'type'   => 'select',
-				'label'  => 'Do you want to prevent the editing/setup of the absent/vacation notice (, even if SIEVE is enabled)?',
+				'label'  => 'Prevent managing vacation notice',
+				'help'   => 'Do you want to prevent the editing/setup of the absent/vacation notice (, even if SIEVE is enabled)?',
 				'name'   => 'prefpreventabsentnotice',
 				'values' => $no_yes,
 				'xmlrpc' => True,
@@ -640,7 +666,8 @@ class felamimail_hooks
 			),
 			'connectionTimeout' => array(
 				'type'   => 'select',
-				'label'  => 'Timeout on connections to your IMAP Server',
+				'label'  => 'IMAP timeout',
+				'help'   => 'Timeout on connections to your IMAP Server',
 				'name'   => 'connectionTimeout',
 				'values' => $connectionTimeout,
 				'xmlrpc' => True,
@@ -649,6 +676,7 @@ class felamimail_hooks
 			'sieveScriptName' => array(
 				'type'   => 'input',
 				'label'  => 'sieve script name',
+				'help'   => 'sieve script name',
 				'name'   => 'sieveScriptName',
 				'xmlrpc' => True,
 				'admin'  => False,
@@ -656,7 +684,8 @@ class felamimail_hooks
 			),
 			'prefcontroltestconnection' => array(
 				'type'   => 'select',
-				'label'  => 'Show Test Connection section and control the level of info displayed?',
+				'label'  => 'Test connection',
+				'help'   => 'Show Test Connection section and control the level of info displayed?',
 				'name'   => 'prefcontroltestconnection',
 				'values' => $test_connection,
 				'xmlrpc' => True,
@@ -665,7 +694,8 @@ class felamimail_hooks
 			),
 			'notavailableautofolders' => array(
 				'type'   => 'multiselect',
-				'label'  => 'which folders - in general - should NOT be automatically created, if not existing',
+				'label'  => 'do not auto create folders',
+				'help'   => 'which folders - in general - should NOT be automatically created, if not existing',
 				'name'   => 'notavailableautofolders',
 				'values' => $availableAutoFolders,
 				'xmlrpc' => True,
@@ -673,13 +703,14 @@ class felamimail_hooks
 				'forced' => 'none',
 			),
 			'saveAsOptions' => array(
-					'type'   => 'select',
-					'label'  => 'when saving messages as item of a different app',
-					'name'   => 'saveAsOptions',
-					'values' => $saveAsOptions,
-					'xmlrpc' => True,
-					'admin'  => False,
-					'default'=> 'text',
+				'type'   => 'select',
+				'label'  => 'Save as',
+				'help'   => 'when saving messages as item of a different app',
+				'name'   => 'saveAsOptions',
+				'values' => $saveAsOptions,
+				'xmlrpc' => True,
+				'admin'  => False,
+				'default'=> 'text',
 			),
 		);
 		if (!$GLOBALS['egw_info']['apps']['stylite']) unset($settingsArray['attachVCardAtCompose']);

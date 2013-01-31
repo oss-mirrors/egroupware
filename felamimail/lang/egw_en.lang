@@ -4,7 +4,7 @@
 (select mails by clicking on the line, like a checkbox)	felamimail	en	(select mails by clicking on the line, like a checkbox)
 (separate multiple addresses by comma)	felamimail	en	Separate multiple addresses by comma
 (unknown sender)	felamimail	en	Unknown sender
-(with checkbox enforced)	felamimail	en	(with checkbox enforced)
+(with checkbox enforced)	felamimail	en	with checkbox enforced
 1) keep drafted message (press ok)	felamimail	en	1) keep drafted message (press OK)
 2) discard the message completely (press cancel)	felamimail	en	2) discard the message completely (press Cancel)
 aborted	felamimail	en	Aborted
@@ -29,6 +29,7 @@ all address books	felamimail	en	All address books
 all folders	felamimail	en	All folders
 all messages in folder	felamimail	en	All messages in folder
 all of	felamimail	en	All of
+allow external images	felamimail	en	Allow external images
 allow images from external sources in html emails	felamimail	en	Allow images from external sources in HTML emails
 allways a new window	felamimail	en	Always a new window
 always show html emails	felamimail	en	Always show HTML emails
@@ -38,7 +39,8 @@ any status	felamimail	en	Any status
 anyone	felamimail	en	Anyone
 as a subfolder of	felamimail	en	As a sub folder of
 attach	felamimail	en	Attach
-attach users vcard at compose to every new mail	felamimail	en	Attach users VCard at compose to every new mail
+attach users vcard at compose to every new mail	felamimail	en	Attach user's VCard at compose to every new mail
+attach vcard	felamimail	en	Attach vCard
 attachments	felamimail	en	Attachments
 authentication required	felamimail	en	Authentication required
 auto refresh folder list	felamimail	en	Auto refresh folder list
@@ -76,12 +78,14 @@ compress folder	felamimail	en	Compress folder
 condition	felamimail	en	Condition
 configuration	felamimail	en	Configuration
 configure a valid imap server in emailadmin for the profile you are using.	felamimail	en	Configure a valid IMAP server in eMailAdmin for the profile you are using.
+confirm attach message	felamimail	en	Confirm attach to message
+confirm move to folder	felamimail	en	Confirm move to folder
 connection dropped by imap server.	felamimail	en	Connection dropped by IMAP server.
 connection status	felamimail	en	Connection Status
 contact not found!	felamimail	en	Contact not found!
 contains	felamimail	en	Contains
-convert mail to item and attach its attachments to this item (standard)	felamimail	en	convert Mail to item and attach its attachments to this item (standard)
-convert mail to item, attach its attachments and add raw message (message/rfc822 (.eml)) as attachment	felamimail	en	convert Mail to item, attach its attachments and add raw message (message/rfc822 (.eml)) as attachment
+convert mail to item and attach its attachments to this item (standard)	felamimail	en	Convert message to item and attach its attachments to the item
+convert mail to item, attach its attachments and add raw message (message/rfc822 (.eml)) as attachment	felamimail	en	Convert message to item, attach its attachments and add raw message (message/rfc822 (.eml)) as attachment
 copy or move messages?	felamimail	en	Copy or move messages
 copy to	felamimail	en	Copy to
 copying messages to	felamimail	en	Copying messages to
@@ -134,6 +138,7 @@ display preferences	felamimail	en	Display preferences
 displaying html messages is disabled	felamimail	en	Displaying HTML messages is disabled.
 displaying plain messages is disabled	felamimail	en	Displaying plain messages is disabled.
 do it!	felamimail	en	Do it!
+do not auto create folders	felamimail	en	Do not auto-create folders
 do not use sent	felamimail	en	Do not use Sent
 do not use trash	felamimail	en	Do not use Trash
 do not validate certificate	felamimail	en	Do not validate certificate
@@ -211,6 +216,7 @@ every %1 days	felamimail	en	Every %1 days
 expunge	felamimail	en	Expunge
 extended	felamimail	en	Extended
 external email address	felamimail	en	External email address
+extra sent folders	felamimail	en	Extra sent folders
 felamimail	common	en	eMail
 file into	felamimail	en	File into
 file rejected, no %2. is:%1	felamimail	en	File rejected, no %2. Is:%1
@@ -236,8 +242,8 @@ folders created successfully!	felamimail	en	Folders created successfully!
 follow	felamimail	en	Follow
 for mail to be send - not functional yet	felamimail	en	For mail to be send - not functional yet
 for received mail	felamimail	en	For received mail
-force html	felamimail	en	force html
-force plain text	felamimail	en	force plain text
+force html	felamimail	en	Force HTML
+force plain text	felamimail	en	Force plain text
 forward	felamimail	en	Forward
 forward as attachment	felamimail	en	Forward as attachment
 forward inline	felamimail	en	Forward inline
@@ -254,8 +260,10 @@ greater than	felamimail	en	Greater than
 have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	en	Have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about Squirrelmail.<br>
 header lines	felamimail	en	Header lines
 hide header	felamimail	en	Hide header
+home page folders	felamimail	en	Home page folders
 hostname / address	felamimail	en	Hostname / address
 how many messages should the mail list load	felamimail	en	How many messages should the mail list load
+how often to check with the server for new mail	felamimail	en	How often to check with the server for new mail
 how to forward messages	felamimail	en	How to forward messages
 html	felamimail	en	HTML
 icons and text	felamimail	en	Icons and text
@@ -266,7 +274,7 @@ if	felamimail	en	IF
 if from contains	felamimail	en	If from contains
 if mail header	felamimail	en	If mail header
 if message size	felamimail	en	If message size
-if shown, which folders should appear on main screen	felamimail	en	If shown, which folders should appear on main screen
+if shown, which folders should appear on the home page	felamimail	en	If shown, which folders should appear on the Home page
 if subject contains	felamimail	en	If subject contains
 if to contains	felamimail	en	If to contains
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	en	If using SSL or TLS, you must have the PHP openssl extension loaded.
@@ -282,6 +290,7 @@ imap server closed the connection. server responded: %s	felamimail	en	IMAP serve
 imap server password	felamimail	en	IMAP server password
 imap server type	felamimail	en	IMAP server type
 imap server username	felamimail	en	IMAP server user name
+imap timeout	felamimail	en	IMAP timeout
 imaps authentication	felamimail	en	IMAPS authentication
 imaps encryption only	felamimail	en	IMAPS encryption only
 import	felamimail	en	Import
@@ -357,6 +366,8 @@ name	felamimail	en	Name
 never display html emails	felamimail	en	Never display HTML emails
 new	common	en	New
 new filter	felamimail	en	New filter
+new mail notification	felamimail	en	New mail notification
+new message type	felamimail	en	New message type
 next	felamimail	en	Next
 next message	felamimail	en	Next message
 no (valid) send folder set in preferences	felamimail	en	No (valid) Send Folder set in preferences
@@ -391,7 +402,7 @@ none	felamimail	en	None
 none, create all	felamimail	en	None, create all
 not allowed	felamimail	en	Not allowed
 note:	felamimail	en	Note:
-notify when new mails arrive on these folders	felamimail	en	Notify when new mails arrive on these folders
+notify when new mails arrive in these folders	felamimail	en	Notify when new mails arrive in these folders
 on	felamimail	en	On
 on behalf of	felamimail	en	On behalf of
 one address is not valid	felamimail	en	One address is not valid
@@ -420,6 +431,10 @@ please supply the message to send with auto-responses	felamimail	en	Supply the m
 port	felamimail	en	Port
 posting	felamimail	en	Posting
 preserve the 'seen' and 'recent' status of messages across imap sessions.	felamimail	en	Preserve the 'seen' and 'recent' status of messages across IMAP sessions.
+prevent managing filters	felamimail	en	Prevent managing filters
+prevent managing folders	felamimail	en	Prevent managing folders
+prevent managing forwards	felamimail	en	Prevent managing forwards
+prevent managing notifications	felamimail	en	Prevent managing notifications
 preview disabled for folder:	felamimail	en	Preview disabled for folder:
 previous	felamimail	en	Previous
 previous message	felamimail	en	Previous message
@@ -447,6 +462,7 @@ renamed successfully!	felamimail	en	Renamed successfully!
 replied	felamimail	en	Replied
 reply	felamimail	en	Reply
 reply all	felamimail	en	Reply All
+reply message type	felamimail	en	Reply message type
 reply to	felamimail	en	Reply To
 replyto	felamimail	en	Reply To
 required pear class mail/mimedecode.php not found.	felamimail	en	Required PEAR class Mail / mimeDecode.php not found.
@@ -460,6 +476,7 @@ row order style	felamimail	en	Row order style
 rule	felamimail	en	Rule
 save	felamimail	en	Save
 save all	felamimail	en	Save all
+save as	felamimail	en	Save as
 save as draft	felamimail	en	Save as draft
 save as infolog	felamimail	en	Save as InfoLog
 save as ticket	felamimail	en	Save as Tracker ticket
@@ -493,17 +510,20 @@ set as default	felamimail	en	Set as default
 set label	felamimail	en	Set keywords
 shared folders	felamimail	en	shared folders
 shared user folders	felamimail	en	shared user folders
-show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	en	Show all folders, subscribed AND unsubscribed, in main screen folder pane.
+should new messages show up on the home page	felamimail	en	Should new messages show up on the Home page
+show all folders	felamimail	en	Show all folders
+show all folders, (subscribed and unsubscribed) in main screen folder pane	felamimail	en	Show all folders, subscribed AND unsubscribed, in main screen folder pane.
 show all messages	felamimail	en	Show all messages
 show header	felamimail	en	Show header
-show new messages on main screen	felamimail	en	Show new messages on main screen
-show test connection section and control the level of info displayed?	felamimail	en	Show Test Connection section and control the level of info displayed?
+show new messages on home page	felamimail	en	Show new messages on Home page
+show test connection section and control the level of info displayed?	felamimail	en	Show Test Connection section and control the level of info displayed
 sieve	admin	en	sieve
 sieve connection status	felamimail	en	Sieve Connection Status
 sieve script name	felamimail	en	Sieve script name
 sieve settings	admin	en	Sieve settings
 signatur	felamimail	en	Signature
 signature	felamimail	en	Signature
+signature at top	felamimail	en	Signature at top
 simply click the target-folder	felamimail	en	Click the target folder
 size	felamimail	en	Size
 size of editor window	felamimail	en	Size of editor window
@@ -513,6 +533,7 @@ skipping forward	felamimail	en	Skipping forward
 skipping previous	felamimail	en	Skipping previous
 small view	felamimail	en	Small view
 smtp settings	admin	en	SMTP settings
+sort order	felamimail	en	Sort order
 start new messages with mime type plain/text or html?	felamimail	en	Start new messages with mime type plain/text or HTML?
 start reply messages with mime type plain/text or html or try to use the displayed format (default)?	felamimail	en	Start reply messages with mime type plain/text or html or try to use the displayed format?
 stationery	felamimail	en	Stationery
@@ -555,7 +576,8 @@ translation server	felamimail	en	Translation server
 trash	felamimail	en	Trash
 trash fold	felamimail	en	Trash folder
 trash folder	felamimail	en	Trash folder
-trust servers seen / unseen info when retrieving the folder status. (if you select no, we will search for the unseen messages and count them ourselves)	felamimail	en	Trust servers SEEN / UNSEEN info when retrieving the folder status
+trust servers seen / unseen info	felamimail	en	Trust server's SEEN / UNSEEN info
+trust the server when retrieving the folder status. if you select no, we will search for the unseen messages and count them ourselves	felamimail	en	Trust the server when retrieving the folder status. if you select no, we will search for the UNSEEN messages and count them ourselves
 trying to recover from session data	felamimail	en	Trying to recover from session data
 type	felamimail	en	Type
 undelete	felamimail	en	Undelete
@@ -585,10 +607,10 @@ use addresses	felamimail	en	Use addresses
 use common preferences max. messages	felamimail	en	Use common preferences max. messages
 use custom identities	felamimail	en	Use custom identities
 use custom settings	felamimail	en	Use custom settings
-use default timeout (20 seconds)	felamimail	en	use default timeout (20 seconds)
+use default timeout (20 seconds)	felamimail	en	Use default timeout (20 seconds)
 use regular expressions	felamimail	en	Use regular expressions
 use smtp auth	admin	en	Use SMTP authentication
-use source as displayed, if applicable	felamimail	en	use source as displayed, if applicable
+use source as displayed, if applicable	felamimail	en	Use source as displayed, if applicable
 users can define their own emailaccounts	admin	en	Users can define their own email accounts
 vacation notice	common	en	Vacation notice
 vacation notice is active	felamimail	en	Vacation notice is active
@@ -602,23 +624,31 @@ view message	felamimail	en	View message
 viewing full header	felamimail	en	Viewing full header
 viewing message	felamimail	en	Viewing message
 viewing messages	felamimail	en	Viewing messages
+what order the list columns are in	felamimail	en	What order the list columns are in
+what to do when you delete a message	felamimail	en	What to do when you delete a message
+what to do when you send a message	felamimail	en	What to do when you send a message
+what to do with html email	felamimail	en	What to do with HTML email
 when deleting messages	felamimail	en	When deleting messages
-when saving messages as item of a different app (if app supports the desired option)	felamimail	en	When saving messages as item of a different app (if app supports the desired option)
+when displaying messages in a popup, re-use the same popup for all or open a new popup for each 
+message	felamimail	en	When displaying messages in a popup, re-use the same popup for all or open a new popup for each 
+message
+when saving messages as item of a different app	felamimail	en	When saving messages as item of a different app
 when sending messages	felamimail	en	When sending messages
-which folders (additional to the sent folder) should be displayed using the sent folder view schema	felamimail	en	Which folders additionally to the Sent folder should be displayed using the Sent Folder View Schema
+which folders (additional to the sent folder) should be displayed using the sent folder view schema	felamimail	en	Which folders in addition to the Sent folder should be displayed using the Sent Folder View Schema
 which folders - in general - should not be automatically created, if not existing	felamimail	en	Which folders - in general - should NOT be automatically created, if not existing
+which method to use when forwarding a message	felamimail	en	Which method to use when forwarding a message
 with message	felamimail	en	With message
 with message "%1"	felamimail	en	With message "%1"
 wrap incoming text at	felamimail	en	Wrap incoming text at
 write (change message flags such as 'recent', 'answered', and 'draft').	felamimail	en	Write (change message flags such as 'recent', 'answered', and 'draft').
 writing	felamimail	en	Writing
 wrote	felamimail	en	Wrote
-yes, but mask all passwords	felamimail	en	yes, but mask all passwords
-yes, but mask all usernames and passwords	felamimail	en	yes, but mask all usernames and passwords
+yes, but mask all passwords	felamimail	en	Yes, but mask all passwords
+yes, but mask all usernames and passwords	felamimail	en	Yes, but mask all usernames and passwords
 yes, offer copy option	felamimail	en	Yes, offer copy option
-yes, only trigger connection reset	felamimail	en	yes, only trigger connection reset
-yes, show all debug information available for the user	felamimail	en	yes, show all debug information available for the user
-yes, show basic info only	felamimail	en	yes, show basic info only
+yes, only trigger connection reset	felamimail	en	Yes, only trigger connection reset
+yes, show all debug information available for the user	felamimail	en	Yes, show all debug information available for the user
+yes, show basic info only	felamimail	en	Yes, show basic info only
 you can either choose to save as infolog or tracker, not both.	felamimail	en	You can either choose to save as InfoLog OR Tracker, not both.
 you can use %1 for the above start-date and %2 for the end-date.	felamimail	en	You can use %1 for the above start date and %2 for the end date.
 you have received a new message on the	felamimail	en	You have received a new message on the
