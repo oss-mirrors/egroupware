@@ -1,6 +1,7 @@
 %1 bookmarks have been deleted	bookmarks	ru	%1 закладок удалено
 %1 bookmarks imported from %2 successfully.	bookmarks	ru	%1 закладок импортировано из %2 успешно
 (comma separate multiple addresses)	bookmarks	ru	(множественные адреса, разделенные запятыми)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ru	<b>Примечание:</b> Эта функция сейчас работает только с закладками Netscape
 actions	bookmarks	ru	Действия
 added	bookmarks	ru	добавлено
 all bookmarks	bookmarks	ru	Все закладки
