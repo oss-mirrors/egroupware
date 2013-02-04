@@ -76,7 +76,7 @@
 			</rows>
 		</grid>
 	</template>
-	<template id="bookmarks.list" template="" lang="" group="0" version="1.7.001">
+	<template id="bookmarks.list" template="" lang="" group="0" version="1.9.001">
 		<grid width="100%">
 			<columns>
 				<column/>
@@ -88,16 +88,13 @@
 					<description/>
 				</row>
 				<row>
-					<nextmatch id="nextmatch" options="bookmarks.list.row" span="all"/>
+					<nextmatch id="nm" options="bookmarks.list.row" span="all"/>
 				</row>
-				<row>
+				<row disabled="!@nm[selectcols]=/legacy_actions/">
 					<button label="add" id="add"/>
 					<hbox align="right">
-						<checkbox disabled="true" statustext="Apply the action on the whole query, NOT only the shown bookmarks!!!" label="whole query" id="use_all" onchange="if (this.checked==true &amp;&amp; !confirm('Apply the action on the whole query, NOT only the shown bookmarks!!!')) this.checked=false;"/>
-						<menulist>
-							<menupopup statustext="Select an action" id="action" no_lang="1" onchange="1" options="Select an action..."/>
-						</menulist>
-						<button statustext="Check all" label="Check all" id="check_all" needed="1" onclick="toggle_all(this.form,form::name('nextmatch[rows][checked][]')); return false;" image="arrow_ltr" class="checkAllArrow"/>
+						<buttononly statustext="Select action" label="Select action" id="legacy_actions" onclick="if (!egw_globalObjectManager.getObjectById('bookmarks.list.row').executeActionImplementation(this, 'popup')) alert(egw::lang('You need to select some entries first!')); return false;;"/>
+						<button statustext="Check all" label="Check all" id="check_all" needed="1" onclick="egw_globalObjectManager.getObjectById('bookmarks.list.row').toggleAllSelected(); return false;" image="arrow_ltr" class="checkAllArrow"/>
 					</hbox>
 				</row>
 			</rows>
