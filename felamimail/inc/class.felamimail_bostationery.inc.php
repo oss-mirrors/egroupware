@@ -60,6 +60,7 @@ class felamimail_bostationery
 	 */
 	public function get_stored_templates()
 	{
+		if (!method_exists($this->etemplate,'test_import')) return array();
 		// ensure that templates are actually loaded into the database
 		$this->etemplate->test_import(self::_appname);
 		
