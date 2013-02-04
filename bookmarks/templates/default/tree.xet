@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<overlay>
+	<template id="bookmarks.tree" template="" lang="" group="0" version="1.7.001">
+		<grid>
+			<columns>
+				<column/>
+			</columns>
+			<rows>
+				<row disabled="!@msg">
+					<html id="msg" span="all" class="message"/>
+				</row>
+				<row>
+					<tree id="tree"/>
+				</row>
+			</rows>
+		</grid>
+		<styles>a.action {
+  float: right;
+}</styles>
+	</template>
+</overlay>

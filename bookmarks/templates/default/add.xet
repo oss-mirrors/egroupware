@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<overlay>
+	<template id="bookmarks.add" template="" lang="" group="0" version="1.9.001">
+		<grid>
+			<columns>
+				<column width="200px"/>
+				<column/>
+			</columns>
+			<rows>
+				<row disabled="!@msg">
+					<html id="msg" span="all" class="message"/>
+					<description/>
+				</row>
+				<row>
+					<hbox options="0,0">
+						<description value="URL"/>
+						<image align="right" src="favicon"/>
+					</hbox>
+					<textbox id="url" needed="1" maxlength="255" class="text"/>
+				</row>
+				<row>
+					<description value="Name"/>
+					<textbox id="name" needed="1" maxlength="255" class="text"/>
+				</row>
+				<row valign="top">
+					<description value="Description"/>
+					<textbox multiline="true" id="desc" class="text"/>
+				</row>
+				<row>
+					<description value="Keywords"/>
+					<textbox id="keywords" maxlength="255" class="text"/>
+				</row>
+				<row valign="top">
+					<hbox options="0,0">
+						<description value="Category"/>
+						<button align="right" id="edit_category" image="edit"/>
+					</hbox>
+					<menulist>
+						<menupopup type="select-cat" id="category" needed="1"/>
+					</menulist>
+				</row>
+				<row>
+					<description value="Rating"/>
+					<menulist>
+						<menupopup type="select-number" id="rating" options=",0,10"/>
+					</menulist>
+				</row>
+				<row>
+					<description value="Private"/>
+					<checkbox id="access" options="private,public"/>
+				</row>
+				<row>
+					<hbox span="all">
+						<button label="Save" id="save"/>
+						<buttononly label="Cancel" id="cancel" onclick="this.form[form::name('name')].value = ' '; this.form.submit_button.value=this.name; this.form.submit();"/>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+		<styles>
+			input[type=&quot;text&quot;], .text input {
+  width: 50em;
+}
+
+textarea {
+  width: 55em;
+  height: 5em;
+}
+		</styles>
+	</template>
+</overlay>
