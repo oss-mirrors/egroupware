@@ -2,29 +2,37 @@
 /* $Id$ */
 
 // Under EGroupware these URL's are NOT configurable, you can set the webserver_url in setup
-$ScriptBase = $GLOBALS['egw']->link('/wiki/index.php');
-$ScriptBase .= strpos($ScriptBase,'?') !== false ? '&' : '?';
+if (is_object($GLOBALS['egw']) && ($GLOBALS['egw'] instanceof egw))
+{
+	if (!method_exists($GLOBALS['egw'], 'link')) throw new egw_exception_assertion_failed('undefined method egw::link()!');
+	$ScriptBase = $GLOBALS['egw']->link('/wiki/index.php');
+	$ScriptBase .= strpos($ScriptBase,'?') !== false ? '&' : '?';
 
-$AdminScript = $ScriptBase . 'action=admin';
+	$AdminScript = $ScriptBase . 'action=admin';
 
-//if(!isset($ViewBase))
-	{ $ViewBase    = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.wiki_ui.view')). '&page='; }
-//if(!isset($EditBase))
-	{ $EditBase    = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.wiki_ui.edit')).'&page='; }
-//if(!isset($HistoryBase))
-	{ $HistoryBase = $ScriptBase . 'action=history&page='; }
-//if(!isset($FindScript))
-	{ $FindScript  = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.wiki_ui.search')); }
-//if(!isset($FindBase))
-	{ $FindBase    = $FindScript . '&search='; }
-//if(!isset($SaveBase))
-	{ $SaveBase    = $ScriptBase . 'action=save&page='; }
-//if(!isset($DiffScript))
-	{ $DiffScript  = $ScriptBase . 'action=diff'; }
-//if(!isset($PrefsScript))
-	{ $PrefsScript = $ScriptBase . 'action=prefs'; }
-//if(!isset($StyleScript))
-	{ $StyleScript = $ScriptBase . 'action=style'; }
+	//if(!isset($ViewBase))
+		{ $ViewBase    = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.wiki_ui.view')). '&page='; }
+	//if(!isset($EditBase))
+		{ $EditBase    = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.wiki_ui.edit')).'&page='; }
+	//if(!isset($HistoryBase))
+		{ $HistoryBase = $ScriptBase . 'action=history&page='; }
+	//if(!isset($FindScript))
+		{ $FindScript  = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.wiki_ui.search')); }
+	//if(!isset($FindBase))
+		{ $FindBase    = $FindScript . '&search='; }
+	//if(!isset($SaveBase))
+		{ $SaveBase    = $ScriptBase . 'action=save&page='; }
+	//if(!isset($DiffScript))
+		{ $DiffScript  = $ScriptBase . 'action=diff'; }
+	//if(!isset($PrefsScript))
+		{ $PrefsScript = $ScriptBase . 'action=prefs'; }
+	//if(!isset($StyleScript))
+		{ $StyleScript = $ScriptBase . 'action=style'; }
+}
+else
+{
+	return null;
+}
 
 if(!function_exists('viewURL'))
 {
