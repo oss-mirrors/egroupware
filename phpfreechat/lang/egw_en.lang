@@ -1,7 +1,10 @@
+%1 is leaving channel %2 by closing his chat window	phpfreechat	en	%1 is leaving channel %2 by closing his chat window
 are users allowed to change their nicknames in phpfreechat and are allowed to connect multiple times	admin	en	Are users allowed to change their nicknames in Chat AND allowed to connect multiple times
 egroupware chat	phpfreechat	en	EGroupware Chat
 frozen nick	admin	en	Frozen nick
 global categories	phpfreechat	en	Global categories
+maximum nickname length (if not set the length of 64 is used. as it is the maximum lenght of usernames within egroupware)	admin	en	maximum nickname length (if not set the length of 64 is used. as it is the maximum lenght of usernames within egroupware)
+nick length	admin	en	nick length
 phpfreechat	common	en	Chat
 phpfreechat configuration	admin	en	Chat configuration
 phpfreechat integration into egroupware	phpfreechat	en	Chat integration into EGroupware

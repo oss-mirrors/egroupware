@@ -7,7 +7,7 @@ index	manual	de	Inhaltsverzeichnis
 install or update the manual-pages	admin	de	Installieren oder Aktualisieren der Handbuchseiten
 manual	common	de	Handbuch / Hilfe
 page(s) %1 not found !!!	manual	de	Seite(n) %1 nicht gefunden !!!
-remote egroupware url for the manual to use, empty for a local manual, default	admin	de	Entfernte eGroupWare Internetadresse (URL) für das Handbuch, leer lassen für ein lokales Handbuch, Vorgabe
+remote egroupware url for the manual to use, empty for a local manual, default	admin	de	Entfernte EGroupware Internetadresse (URL) für das Handbuch, leer lassen für ein lokales Handbuch, Vorgabe
 search for	manual	de	Suchen nach
 starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	de	Beginne Import von %1, das kann einige Minuten dauern (speziell wenn Sie es zum ersten Mal starten) ...
 the search returned no result!	manual	de	Die Suche lieferte kein Ergebnis!

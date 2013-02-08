@@ -1,10 +1,13 @@
+%1 is leaving channel %2 by closing his chat window	phpfreechat	de	%1 verlässt diesen Chat %2 schlisst das Chat Fenster
 are users allowed to change their nicknames in phpfreechat and are allowed to connect multiple times	admin	de	Allen Benutzern erlauben in phpFreeChat Ihre Spitznamen zu ändern UND sich mehrfach mit dem Chatmodul zu verbinden.
 egroupware chat	phpfreechat	de	EGroupware Chat
 frozen nick	admin	de	eingefrorener Spitzname
 global categories	phpfreechat	de	Globale Kategorien
+maximum nickname length (if not set the length of 64 is used. as it is the maximum lenght of usernames within egroupware)	admin	de	Maximale Länge des Spitznamens. Wenn Sie keinen Wert eingetragen haben, wird die Standardlänge von 64 Zeichen verwendet. 64 Zeichen ist die max. verfügbare Länge an Namen.
+nick length	admin	de	Länge des Spitznamens
 phpfreechat	common	de	freeChat
 phpfreechat configuration	admin	de	Konfiguration phpFreeChat
 phpfreechat integration into egroupware	phpfreechat	de	phpFreeChat-Integration für EGroupware
 the chat opens in a new window.	phpfreechat	de	Der Chat öffnet sich in einem neuen Fenster.
-to complete the phpfreechat installation you have to give the webserver write access to:	phpfreechat	de	Um die Installation fpr phpFreeChat abzuschliessen, müssen Sie dem Webserver für kurze Zeit Schreibrechte geben.
+to complete the phpfreechat installation you have to give the webserver write access to:	phpfreechat	de	Um die Installation für phpFreeChat abzuschließen, müssen Sie dem Webserver für kurze Zeit Schreibrechte geben.
 you should remove the write access, once you see the chat!	phpfreechat	de	Sie sollten den Schreibzugriff wieder entfernen, nachdem Sie sich zu ersten mal eingeloggt haben und Sie das Chat Modul sehen können.
