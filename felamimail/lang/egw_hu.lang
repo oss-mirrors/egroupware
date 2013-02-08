@@ -223,7 +223,6 @@ if	felamimail	hu	HA
 if from contains	felamimail	hu	ha feladó tartalmazza
 if mail header	felamimail	hu	ha a levél fejléce
 if message size	felamimail	hu	ha a levél mérete
-if shown, which folders should appear on main screen	felamimail	hu	a főképernyőn megjelenő mappák kijelölése
 if subject contains	felamimail	hu	ha a tárgy tartalmazza
 if to contains	felamimail	hu	ha a címzett tartalmazza
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	hu	SSL vagy TLS használatához a PHP openssl bővítményét telepíteni kell.
@@ -322,7 +321,6 @@ no supported imap authentication method could be found.	felamimail	hu	Nem talál
 no valid emailprofile selected!!	felamimail	hu	Nincs érvényes email profil kiválasztva!!!
 none	felamimail	hu	Semmi
 none, create all	felamimail	hu	egyik sem, összes létrehozása
-notify when new mails arrive on these folders	felamimail	hu	értesítés ha új üzenet érkezik ezekbe a mappákba
 on	felamimail	hu	be
 on behalf of	felamimail	hu	kinek a nevében
 one address is not valid	felamimail	hu	Egy cím érvénytelen
@@ -399,7 +397,6 @@ sent folder	felamimail	hu	'Elküldött' mappa
 server supports mailfilter(sieve)	felamimail	hu	a szerver támogatja a levélszűrőket (sieve)
 set as default	felamimail	hu	Beállítás alapértelmezettként
 show header	felamimail	hu	fejléc megjelenítése
-show new messages on main screen	felamimail	hu	Új üzenetek megjelenítése a főképernyőn
 sieve script name	felamimail	hu	sieve szűrő szkript neve
 sieve settings	admin	hu	SIEVE beállítások
 signatur	felamimail	hu	Aláírás

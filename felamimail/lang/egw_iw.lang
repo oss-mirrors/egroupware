@@ -253,7 +253,6 @@ select your mail server type	admin	iw	בחר את סוג שרת הדואר של�
 send	felamimail	iw	שלח
 sent folder	felamimail	iw	תיקיית נשלחו
 show header	felamimail	iw	הצג כותרת
-show new messages on main screen	felamimail	iw	הצג הודעות חדשות במסך הראשי.
 sieve settings	admin	iw	הגדרות Sieve
 signature	felamimail	iw	חתימה
 simply click the target-folder	felamimail	iw	פשוט הקלק על תיקיית היעד
@@ -263,6 +262,7 @@ size(...->0)	felamimail	iw	גודל (...->0)
 size(0->...)	felamimail	iw	גודל (0->...)
 small view	felamimail	iw	תצוגה קטנה
 smtp settings	admin	iw	הגדרות SMTP
+sort order	felamimail	iw	סדר אתר
 subject	felamimail	iw	נושא
 subject(a->z)	felamimail	iw	נושא (א -> ת)
 subject(z->a)	felamimail	iw	נושא (ת -> א)

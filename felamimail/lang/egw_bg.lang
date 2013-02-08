@@ -212,7 +212,6 @@ if	felamimail	bg	АКО
 if from contains	felamimail	bg	ако "От:" съдържа
 if mail header	felamimail	bg	ако заглавната част
 if message size	felamimail	bg	ако размерът на съобщението
-if shown, which folders should appear on main screen	felamimail	bg	Кои папки да се появяват на главния екран?
 if subject contains	felamimail	bg	ако Темата съдържа
 if to contains	felamimail	bg	ако "До:" съдържа
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	bg	Ако използвате SSL или TLS, трябва да заредите OpenSSL разширението на PHP.
@@ -371,7 +370,6 @@ sent folder	felamimail	bg	Папка "Изпратени"
 server supports mailfilter(sieve)	felamimail	bg	сървърът поддържа филтър за поща - sieve
 set as default	felamimail	bg	По подразбиране
 show header	felamimail	bg	покажи заглавната част
-show new messages on main screen	felamimail	bg	показване на новите съобщения на началния екран
 sieve script name	felamimail	bg	име на sieve скрипт
 sieve settings	admin	bg	Настройки на Sieve
 signatur	felamimail	bg	Подпис

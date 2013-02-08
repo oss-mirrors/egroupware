@@ -5,7 +5,6 @@
 (unknown sender)	felamimail	it	(mittente sconosciuto)
 1) keep drafted message (press ok)	felamimail	it	Mantieni il messaggio in Bozze (premere OK)
 2) discard the message completely (press cancel)	felamimail	it	Scartare il messaggio (premere Canella)
-3paneview: if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here (300 seems to be a good working value). the preview will be displayed at the end of the message list on demand (click).	felamimail	it	3PanelView: Se vuoi vedere una anteprima di un messaggio email con click singolo sull'oggetto, imposta l'altezza dell'elenco dei messaggi e l'area di anteprima p.es. 300. Puoi specificare anche l'altezza minima della lista dei messaggi, aggiungendola dopo l'altezza dal pannello di anteprima specificata, separando con la virgola: (p.es. 300, 190)
 aborted	felamimail	it	Fallito
 activate	felamimail	it	Attiva
 activate script	felamimail	it	attiva script
@@ -114,7 +113,6 @@ deleted	felamimail	it	cancellato
 deleted folder successfully!	felamimail	it	Cartella eliminata!
 deleting messages	felamimail	it	Eliminazione messaggi
 disable	felamimail	it	Disabilita
-disable ruler for separation of mailbody and signature when adding signature to composed message (this is not according to rfc).<br>if you use templates, this option is only applied to the text part of the message.	felamimail	it	Disabilita il righello per la separazione del corpo del messaggio quando si aggiunge la firma al messaggio composto.<br>Se sono utilizzati dei modelli, questa opzione viene applicata soltanto nella parte testuale del messaggio.
 discard	felamimail	it	Scarta
 discard message	felamimail	it	Scarta messaggio
 display message in new window	felamimail	it	Visualizza i messaggi in una nuova finestra
@@ -250,7 +248,6 @@ if	felamimail	it	SE
 if from contains	felamimail	it	se da contiene
 if mail header	felamimail	it	se intestazione messaggio
 if message size	felamimail	it	se dimensione messaggio
-if shown, which folders should appear on main screen	felamimail	it	Se mostrato, quali cartelle dovrebbero comparire nella schermata principale?
 if subject contains	felamimail	it	se oggetto contiene
 if to contains	felamimail	it	se a contiene
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	it	Se usati SSL o TLS devi avere prima caricato l'estensione openssl in PHP
@@ -299,7 +296,6 @@ light gray	felamimail	it	Grigio Chiaro
 list all	felamimail	it	Visualizza tutti
 loading	felamimail	it	Sto caricando...
 location of buttons when composing	felamimail	it	Location of buttons when composing
-mail grid behavior: how many messages should the mailgrid load? if you select all messages there will be no pagination for mail message list. (beware, as some actions on all selected messages may be problematic depending on the amount of selected messages.)	felamimail	it	Comportamento griglia messaggi: quanti messaggi dovrebbero esservi caricati? Se selezionassi tutti allora non ci sarà la paginazione nell'elenco
 mail server login type	admin	it	Mail server login type
 mail settings	felamimail	it	Imposazioni Mail
 mail source	felamimail	it	Sorgente messaggio
@@ -368,7 +364,6 @@ no valid emailprofile selected!!	felamimail	it	Nessun Profilo E-Mail valido sele
 none	felamimail	it	nessuno
 none, create all	felamimail	it	Nessuno, crea tutti
 not allowed	felamimail	it	Non permesso
-notify when new mails arrive on these folders	felamimail	it	Notifica quando arrivano nuovi messaggi in questa cartella
 on	felamimail	it	Su
 on behalf of	felamimail	it	Da parte di
 one address is not valid	felamimail	it	Un indirizzo non è valido
@@ -464,10 +459,8 @@ sent folder	felamimail	it	Cartella Posta Inviata
 server supports mailfilter(sieve)	felamimail	it	Il server supporta il filtro SIEVE
 set as default	felamimail	it	Imposta come predefinito
 set label	felamimail	it	Imposta parole chiave
-show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	it	Mostra tutte le cartelle, sottoscitte e non, nel pannello delle cartelle della schermata principale.
 show all messages	felamimail	it	Mostra tutti i messaggi
 show header	felamimail	it	visualizza header
-show new messages on main screen	felamimail	it	Visualizza i nuovi messaggi nella schermata principale
 show test connection section and control the level of info displayed?	felamimail	it	Mostrare la sezione di Test della connessione e controllare il livello delle informazioni mostrate
 sieve connection status	felamimail	it	Salva lo stato della connessione
 sieve script name	felamimail	it	Nome script sieve
@@ -483,6 +476,7 @@ skipping forward	felamimail	it	Salto avanti
 skipping previous	felamimail	it	Salto indietro
 small view	felamimail	it	visualizzazione ridotta
 smtp settings	admin	it	Impostazioni SMTP
+sort order	felamimail	it	Ordinamento
 start new messages with mime type plain/text or html?	felamimail	it	Iniziare nuovi messaggi con mime type plain/test o HTML
 start reply messages with mime type plain/text or html or try to use the displayed format (default)?	felamimail	it	Iniziare i messaggi di risposta con mime type plain/text oppure provare a usare il formato mostrato (predefinito)?
 stationery	felamimail	it	Modello
@@ -521,7 +515,6 @@ translation server	felamimail	it	Server Traduzioni
 trash	felamimail	it	Cestino
 trash fold	felamimail	it	Cestino
 trash folder	felamimail	it	Cestino
-trust servers seen / unseen info when retrieving the folder status. (if you select no, we will search for the unseen messages and count them ourselves)	felamimail	it	Usare le informazioni letto/non letto quando si riceve lo stato della cartella
 trying to recover from session data	felamimail	it	Prova di recupero dai dati di sessione
 type	felamimail	it	tipo
 undelete	felamimail	it	Ripristina
@@ -567,7 +560,6 @@ viewing full header	felamimail	it	Viewing full header
 viewing message	felamimail	it	Viewing message
 viewing messages	felamimail	it	Viewing messages
 when deleting messages	felamimail	it	Durante la cancellazione dei messaggi
-when saving messages as item of a different app (if app supports the desired option)	felamimail	it	quando si salvano i messaggi come elementi di una applicazione diversa (se la applicazione supporta l'opzione desiderata)
 when sending messages	felamimail	it	Quando si inviano messaggi
 which folders (additional to the sent folder) should be displayed using the sent folder view schema	felamimail	it	Quali cartelle oltre alla cartella della posta inviata dovrebbe essere mostrata usando lo schema di visualizzazione della posta inviata?
 which folders - in general - should not be automatically created, if not existing	felamimail	it	Quali cartelle in generale non dovrebbero essere automaticamente create se non esistono?

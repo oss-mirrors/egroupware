@@ -3,7 +3,6 @@
 (only cc/bcc)	felamimail	es-es	(sólo Cc/Cco)
 (separate multiple addresses by comma)	felamimail	es-es	(separar múltiples direcciones con comas)
 (unknown sender)	felamimail	es-es	(remitente desconocido)
-3paneview: if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here (300 seems to be a good working value). the preview will be displayed at the end of the message list on demand (click).	felamimail	es-es	Vista de tres paneles: si desea tener una vista previa del correo con un simple clic en el asunto, ponga aquí la altura para la lista de mensajes y el área de vista previa (300 parece un valor apropiado). La vista previa se mostrará al final de la lista de mensajes bajo demanda, al pulsar.
 aborted	felamimail	es-es	abortado
 activate	felamimail	es-es	Activar
 activate script	felamimail	es-es	activar script
@@ -105,7 +104,6 @@ deleted	felamimail	es-es	Borrado
 deleted folder successfully!	felamimail	es-es	Carpeta borrada correctamente
 deleting messages	felamimail	es-es	borrando mensajes
 disable	felamimail	es-es	Deshabilitar
-disable ruler for separation of mailbody and signature when adding signature to composed message (this is not according to rfc).<br>if you use templates, this option is only applied to the text part of the message.	felamimail	es-es	desactivar la regla para separar el cuerpo del mensaje y la firma al añadir la firma al mensaje redactado (sin seguir las reglas del RFC).<br>Si usa plantillas, esta opción se aplica sólo a la parte de texto del mensaje.
 discard	felamimail	es-es	descargar
 discard message	felamimail	es-es	descartar mensaje
 display message in new window	felamimail	es-es	Mostrar el mensaje en una ventana nueva
@@ -234,7 +232,6 @@ if	felamimail	es-es	SI
 if from contains	felamimail	es-es	si el remitente contiene
 if mail header	felamimail	es-es	si el encabezado
 if message size	felamimail	es-es	si el tamaño del mensaje
-if shown, which folders should appear on main screen	felamimail	es-es	Si se muestra, qué carpetas deben aparecer en la pantalla principal
 if subject contains	felamimail	es-es	si el asunto contiene
 if to contains	felamimail	es-es	si el destinatario contiene
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	es-es	Si se usa SSL o TLS, debe tener la extensión openssl de PHP cargada.
@@ -339,7 +336,6 @@ no valid emailprofile selected!!	felamimail	es-es	No se ha seleccionado un perfi
 none	felamimail	es-es	ninguno
 none, create all	felamimail	es-es	ninguno, crear todo
 not allowed	felamimail	es-es	no permitido
-notify when new mails arrive on these folders	felamimail	es-es	notificar cuando lleguen mensajes nuevos a estas carpetas
 on	felamimail	es-es	en
 on behalf of	felamimail	es-es	en nombre de
 one address is not valid	felamimail	es-es	Una dirección no es válida
@@ -397,6 +393,7 @@ row order style	felamimail	es-es	estilo de ordenar filas
 rule	felamimail	es-es	Regla
 save	felamimail	es-es	Guardar
 save all	felamimail	es-es	Guardar todo
+save as	felamimail	es-es	Guardar como
 save as draft	felamimail	es-es	guardar como borrador
 save as infolog	felamimail	es-es	guardar como registro de notas y tareas
 save changes	felamimail	es-es	guardar cambios
@@ -418,9 +415,7 @@ sent	felamimail	es-es	Enviados
 sent folder	felamimail	es-es	Carpeta de enviados
 server supports mailfilter(sieve)	felamimail	es-es	El servidor soporta filtro de correo (sieve)
 set as default	felamimail	es-es	Establecer como predeterminado
-show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	es-es	mostrar todas las carpetas (suscritas Y no suscritas) en la pantalla principal
 show header	felamimail	es-es	mostrar cabecera
-show new messages on main screen	felamimail	es-es	Mostrar mensajes nuevos en la pantalla principal
 sieve script name	felamimail	es-es	nombre del script sieve
 sieve settings	admin	es-es	Configuración de Sieve
 signatur	felamimail	es-es	Firma
@@ -434,6 +429,7 @@ skipping forward	felamimail	es-es	saltando el siguiente
 skipping previous	felamimail	es-es	saltando el anterior
 small view	felamimail	es-es	Vista reducida
 smtp settings	admin	es-es	Opciones SMTP
+sort order	felamimail	es-es	Orden en la página
 start new messages with mime type plain/text or html?	felamimail	es-es	¿Comenzar nuevos mensajes con el tipo MIME plain/text o html?
 stationery	felamimail	es-es	material preimpreso
 subject	felamimail	es-es	Asunto

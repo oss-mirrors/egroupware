@@ -1,7 +1,6 @@
 %1 bookmarks have been deleted	bookmarks	ru	%1 закладок удалено
 %1 bookmarks imported from %2 successfully.	bookmarks	ru	%1 закладок импортировано из %2 успешно
 (comma separate multiple addresses)	bookmarks	ru	(множественные адреса, разделенные запятыми)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ru	<b>Примечание:</b> Эта функция сейчас работает только с закладками Netscape
 actions	bookmarks	ru	Действия
 added	bookmarks	ru	добавлено
 all bookmarks	bookmarks	ru	Все закладки
@@ -37,6 +36,7 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 existing links	bookmarks	ru	Существующие ссылки
 export	bookmarks	ru	экспорт
 export bookmarks	common	ru	Экспортировать закладки
+export definition to use for nextmatch export	bookmarks	ru	Экспорт определения для использования при следующем экспорте
 fewer	bookmarks	ru	Убрать
 filter by	bookmarks	ru	Сортировать по
 found a link you might like	bookmarks	ru	Найдена ссылка которая может Вам понравиться
@@ -47,6 +47,7 @@ global categories	bookmarks	ru	Общие Категории
 highest	bookmarks	ru	Наивысший
 history	bookmarks	ru	История
 i thought you would be interested in the following link(s):	bookmarks	ru	Мне кажется, Вы заинтересуетесь следующими ссылками:
+if you specify an export definition, it will be used when you export	bookmarks	ru	если вы укажете оперделения для экспорта, оно будет использоваться при экспорте
 import bookmarks	common	ru	Импортировать закладки
 last modified	bookmarks	ru	последние изменение
 like	bookmarks	ru	похоже
@@ -64,6 +65,7 @@ netscape bookmark file	bookmarks	ru	Файл Закладок Netscape
 netscape bookmark filename is required!	bookmarks	ru	требуется имя файла закладок Netscape!
 new	bookmarks	ru	Новая
 new bookmark	bookmarks	ru	новая закладка
+old fixed definition	bookmarks	ru	Прежние изменения определены(Old fixed definition)
 or	bookmarks	ru	или
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	ru	Пожалуйста, заполните поля <B>E-Mail Кому</B>, <B>Тема</B>, и <B>Сообщение</B>!
 please select the categories to export	bookmarks	ru	Выбирите категории для экспорта

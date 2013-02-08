@@ -3,7 +3,6 @@
 (only cc/bcc)	felamimail	pl	(tylko DW/UDW)
 (separate multiple addresses by comma)	felamimail	pl	(rozdziel adresy przecinkiem)
 (unknown sender)	felamimail	pl	(nieznany nadawca)
-3paneview: if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here (300 seems to be a good working value). the preview will be displayed at the end of the message list on demand (click).	felamimail	pl	Widok 3 panelowy: Jeśli chcesz zobaczyć podgląd wiadomości klikając na jej temat ustaw tutaj wysokość podglądu (300 jest dobrą wartością na początek). Podgląd będzie wyświetlany na życzenie pod na końcu listy wiadomości.
 aborted	felamimail	pl	anulowany
 activate	felamimail	pl	Aktywuj
 activate script	felamimail	pl	aktywuj skrypt
@@ -232,7 +231,6 @@ if	felamimail	pl	JEŻELI
 if from contains	felamimail	pl	jeżeli pole 'From:" zawiera
 if mail header	felamimail	pl	jeżeli nagłówek wiadomości
 if message size	felamimail	pl	jeżeli rozmiar wiadomości
-if shown, which folders should appear on main screen	felamimail	pl	jeśli są pokazywane, które foldery powinny pojawiać się na ekranie głównym
 if subject contains	felamimail	pl	jeżeli pole "Temat" zawiera
 if to contains	felamimail	pl	jeżeli pole "Adresat" zawiera
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	pl	Jeżeli korzystasz z SSL lub TLS, musisz mieć dołączone rozszerzenie OpenSSL do PHP.
@@ -335,7 +333,6 @@ no valid emailprofile selected!!	felamimail	pl	Nie wybrano poprawnego profilu e-
 none	felamimail	pl	Żaden
 none, create all	felamimail	pl	żaden, utwórz wszystko
 not allowed	felamimail	pl	brak zezwolenia
-notify when new mails arrive on these folders	felamimail	pl	powiadom o przyjściu wiadomości do tego folderu
 on	felamimail	pl	na
 on behalf of	felamimail	pl	w imieniu
 one address is not valid	felamimail	pl	Jeden adres nie jest poprawny
@@ -412,9 +409,7 @@ sent	felamimail	pl	Wysłano
 sent folder	felamimail	pl	Folder Wysłane
 server supports mailfilter(sieve)	felamimail	pl	serwer posiada filtr poczy (sieve - sito)
 set as default	felamimail	pl	Ustaw jako domyslne
-show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	pl	pokaż wszystkie foldery (subskrybowane i nie subskrybowane) w panelu folderów głównego ekranu
 show header	felamimail	pl	pokaż nagłówek
-show new messages on main screen	felamimail	pl	Wyświetlać nowe wiadomości na stronie głównej?
 sieve script name	felamimail	pl	Nazwa skryptu sita ('sieve')
 sieve settings	admin	pl	Ustawienia Sieve
 signatur	felamimail	pl	Sygnatura
@@ -428,6 +423,7 @@ skipping forward	felamimail	pl	omija kolejną
 skipping previous	felamimail	pl	omija poprzednią
 small view	felamimail	pl	widok uproszczony
 smtp settings	admin	pl	Ustawienia SMTP
+sort order	felamimail	pl	Porządek sortowania
 start new messages with mime type plain/text or html?	felamimail	pl	nowe wiadomości mają być oznaczane jako tekst czy html?
 stationery	felamimail	pl	Stacjonarny
 subject	felamimail	pl	Temat

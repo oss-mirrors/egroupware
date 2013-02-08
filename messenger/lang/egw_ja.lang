@@ -5,6 +5,7 @@ delete selected	messenger	ja	選択メッセージを削除
 forward	messenger	ja	転送
 forward a message	messenger	ja	転送
 forwarded	messenger	ja	転送済み
+from	messenger	ja	差出人
 global message	messenger	ja	共通メッセージ
 i can't find the username %1 on the system	messenger	ja	ユーザ %1 がありません
 inbox	messenger	ja	Inbox

@@ -289,7 +289,6 @@ send	felamimail	eu	Bidali
 send a reject message	felamimail	eu	bidali eta hautatu mezua
 sent folder	felamimail	eu	Bidalitakoen karpeta
 show header	felamimail	eu	bistaratu goiburuak
-show new messages on main screen	felamimail	eu	Erakutzi posta berria lehendabizio pantailan
 sieve settings	admin	eu	SIEVE ren lehentasunak
 signature	felamimail	eu	Sinadura
 simply click the target-folder	felamimail	eu	hautatu non gorde nahi duzun karpeta zerrendan

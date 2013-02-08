@@ -3,7 +3,6 @@
 (only cc/bcc)	felamimail	cs	(jen Kopie/Skrytá kopie)
 (separate multiple addresses by comma)	felamimail	cs	(více adres oddělte čárkou)
 (unknown sender)	felamimail	cs	(neznámý odesílatel)
-3paneview: if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here (300 seems to be a good working value). the preview will be displayed at the end of the message list on demand (click).	felamimail	cs	3OkenníVzhled: Pokud chcete zobrazovat náhled zprávy kliknutím na její předmět, nastavte výšku okna pro seznam zpráv a oblast náhledu (300 vypadá jako dobrá pracovní hodnota). Náhled se po kliknutí na předmět zprávy zobrazí na konci seznamu zpráv.
 aborted	felamimail	cs	přerušeno
 activate	felamimail	cs	Aktivovat
 activate script	felamimail	cs	aktivovat skript
@@ -232,7 +231,6 @@ if	felamimail	cs	POKUD
 if from contains	felamimail	cs	pokud odesílatel obsahuje
 if mail header	felamimail	cs	pokud hlavička obsahuje
 if message size	felamimail	cs	pokud velikost zprávy
-if shown, which folders should appear on main screen	felamimail	cs	Při zobrazení, které složky by se měly objevit na hlavní obrazovce
 if subject contains	felamimail	cs	pokud předmět obsahuje
 if to contains	felamimail	cs	pokud adresát obsahuje
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	cs	Pro používání SSL nebo TLS musíte mít k aktivní openssl rozšíření PHP.
@@ -336,7 +334,6 @@ no valid emailprofile selected!!	felamimail	cs	Nebyl vybrán platný e-mailový 
 none	felamimail	cs	Žádné
 none, create all	felamimail	cs	žádné, vytvořit všechny
 not allowed	felamimail	cs	není povoleno
-notify when new mails arrive on these folders	felamimail	cs	Upozornit na příchod nových zpráv do těchto složek
 on	felamimail	cs	na
 on behalf of	felamimail	cs	jménem (koho)
 one address is not valid	felamimail	cs	Jedna adresa není platná
@@ -415,9 +412,7 @@ sent	felamimail	cs	Odeslané
 sent folder	felamimail	cs	Odeslané
 server supports mailfilter(sieve)	felamimail	cs	server podporuje poštovní filter (sieve)
 set as default	felamimail	cs	Nastavit jako výchozí
-show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	cs	zobrazit všechny složky (přihlášené i nepřihlášené) na hlavní obrazovce v okně složek
 show header	felamimail	cs	Zobrazit hlavičku
-show new messages on main screen	felamimail	cs	Zobrazovat nové zprávy na hlavní obrazovce
 sieve script name	felamimail	cs	Jméno sieve skriptu
 sieve settings	admin	cs	Nastavení sieve
 signatur	felamimail	cs	Podpis
@@ -431,6 +426,7 @@ skipping forward	felamimail	cs	vynechávám přeposlání
 skipping previous	felamimail	cs	vynechávám předchozí
 small view	felamimail	cs	malé zobrazení
 smtp settings	admin	cs	Nastavení SMTP
+sort order	felamimail	cs	Pořadí řazení
 start new messages with mime type plain/text or html?	felamimail	cs	Začínat psaní nových zpráv jako MIME typ plain/text nebo html?
 stationery	felamimail	cs	šablona
 subject	felamimail	cs	Předmět

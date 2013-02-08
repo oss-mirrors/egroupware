@@ -214,7 +214,6 @@ if	felamimail	pt-br	SE
 if from contains	felamimail	pt-br	Se "De" contém
 if mail header	felamimail	pt-br	Se cabeçalho de e-mail
 if message size	felamimail	pt-br	Se tamanho da mensagem
-if shown, which folders should appear on main screen	felamimail	pt-br	se exibidas, quais pastas deverão aparecer na tela principal
 if subject contains	felamimail	pt-br	Se assunto contém
 if to contains	felamimail	pt-br	Se "Para" contém
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	pt-br	Se estiver usando SSL ou TLS, você deve ter a extensão php 'openssl' carregada.
@@ -381,7 +380,6 @@ sent folder	felamimail	pt-br	Pasta Enviadas
 server supports mailfilter(sieve)	felamimail	pt-br	Servidor suporta filtro de e-mails (sieve)
 set as default	felamimail	pt-br	Definir como padrão
 show header	felamimail	pt-br	Exibir cabeçalho
-show new messages on main screen	felamimail	pt-br	Exibir novas mensagens na tela principal
 sieve script name	felamimail	pt-br	nome do script sieve
 sieve settings	admin	pt-br	Configurações SIEVE
 signatur	felamimail	pt-br	Assinatura
@@ -395,6 +393,7 @@ skipping forward	felamimail	pt-br	buscando as próximas mensagens
 skipping previous	felamimail	pt-br	buscando as mensagens anteriores
 small view	felamimail	pt-br	Visão resumida
 smtp settings	admin	pt-br	Cofigurações SMTP
+sort order	felamimail	pt-br	Ordem de classificação
 start new messages with mime type plain/text or html?	felamimail	pt-br	iniciar novas mensagens com mime type plain/text ou html ?
 subject	felamimail	pt-br	Assunto
 subject(a->z)	felamimail	pt-br	Assunto (A->Z)

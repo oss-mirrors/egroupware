@@ -346,7 +346,6 @@ send	felamimail	sv	Skicka
 send a reject message	felamimail	sv	Skicka ett nekande meddelande
 sent folder	felamimail	sv	Skickat katalog
 show header	felamimail	sv	Visa brevhuvud
-show new messages on main screen	felamimail	sv	Visa nya meddelanden på Startsidan
 sieve script name	felamimail	sv	Sieve skript namn
 sieve settings	admin	sv	Sieve alternativ
 signature	felamimail	sv	Signatur

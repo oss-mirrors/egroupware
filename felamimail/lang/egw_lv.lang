@@ -250,7 +250,6 @@ select your mail server type	admin	lv	Atzīmē tava e-pasta servera tipu
 send	felamimail	lv	Sūtīt
 sent folder	felamimail	lv	Mape nosūtīts
 show header	felamimail	lv	rādīt galveni
-show new messages on main screen	felamimail	lv	Rādīt jaunās vēstules galvenajā logā
 sieve settings	admin	lv	SIEVE uzstādījumi
 signature	felamimail	lv	Paraksts
 simply click the target-folder	felamimail	lv	Vienkārši noklikšķini uz mērķa mapes
@@ -260,6 +259,7 @@ size(...->0)	felamimail	lv	Izmērs (...->0)
 size(0->...)	felamimail	lv	Izmērs (0->...)
 small view	felamimail	lv	mazais skats
 smtp settings	admin	lv	SMTP uzstādījumi
+sort order	felamimail	lv	Vieta pēc kārtas
 subject	felamimail	lv	Tēma
 subject(a->z)	felamimail	lv	Tēma (A->Z)
 subject(z->a)	felamimail	lv	Tēma (Z->A)

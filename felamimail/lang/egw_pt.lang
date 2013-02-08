@@ -290,7 +290,6 @@ send	felamimail	pt	Enviar
 send a reject message	felamimail	pt	enviar mensagem de rejeição
 sent folder	felamimail	pt	Pasta Enviados
 show header	felamimail	pt	exibir cabeçalho
-show new messages on main screen	felamimail	pt	Exibir novas mensagens no ecrã principal
 sieve settings	admin	pt	Configurações do Sieve
 signature	felamimail	pt	Assinatura
 simply click the target-folder	felamimail	pt	Clique simplesmente na pasta de destino
@@ -300,6 +299,7 @@ size(...->0)	felamimail	pt	Tamanho (...->0)
 size(0->...)	felamimail	pt	Tamanho (0->...)
 small view	felamimail	pt	Sumário
 smtp settings	admin	pt	Configurações do SMTP
+sort order	felamimail	pt	Ordenar
 subject	felamimail	pt	Assunto
 subject(a->z)	felamimail	pt	Assunto (A->Z)
 subject(z->a)	felamimail	pt	Assunto (Z-->A)

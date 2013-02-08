@@ -290,7 +290,6 @@ send	felamimail	ca	Enviar
 send a reject message	felamimail	ca	envia un missatge de rebuig
 sent folder	felamimail	ca	Carpeta d'enviats
 show header	felamimail	ca	mostrar capçalera
-show new messages on main screen	felamimail	ca	Mostrar missatges nous a la pantalla principal
 sieve settings	admin	ca	Configuració de Sieve
 signature	felamimail	ca	Signatura
 simply click the target-folder	felamimail	ca	Senzillament, cliqueu sobre la carpeta destinació
@@ -300,6 +299,7 @@ size(...->0)	felamimail	ca	Mida (...->0)
 size(0->...)	felamimail	ca	Mida (0->...)
 small view	felamimail	ca	Vista reduïda
 smtp settings	admin	ca	Opcions SMTP
+sort order	felamimail	ca	Forma de ordenación
 subject	felamimail	ca	Assumpte
 subject(a->z)	felamimail	ca	Assumpte (A->Z)
 subject(z->a)	felamimail	ca	Assumpte (Z->A)

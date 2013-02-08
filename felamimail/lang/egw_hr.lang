@@ -251,7 +251,6 @@ select your mail server type	admin	hr	Izaberte vrstu mail poslužitelja
 send	felamimail	hr	Pošalji
 sent folder	felamimail	hr	Mapa poslano
 show header	felamimail	hr	prikaži zaglavlje
-show new messages on main screen	felamimail	hr	Prikaži novu poruku na glavnom ekranu
 sieve settings	admin	hr	Postavke Sieve
 signature	felamimail	hr	Potpis
 simply click the target-folder	felamimail	hr	Samo izaberite ciljanu mapu

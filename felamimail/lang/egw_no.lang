@@ -287,7 +287,6 @@ send	felamimail	no	Send
 send a reject message	felamimail	no	send en avvisningsmelding
 sent folder	felamimail	no	Sendt Mappe
 show header	felamimail	no	vis meldingshode
-show new messages on main screen	felamimail	no	Vis nye meldinger på hovedside
 sieve settings	admin	no	Sieve innstillinger
 signature	felamimail	no	Signatur
 simply click the target-folder	felamimail	no	Klikk på målmappe
@@ -297,6 +296,7 @@ size(...->0)	felamimail	no	Størrelse (...->0)
 size(0->...)	felamimail	no	Størrelse (0->...)
 small view	felamimail	no	liten visning
 smtp settings	admin	no	SMTP innstillinger
+sort order	felamimail	no	Sortering
 subject	felamimail	no	Emne
 subject(a->z)	felamimail	no	Emne (A->Å)
 subject(z->a)	felamimail	no	Emne (Å->A)

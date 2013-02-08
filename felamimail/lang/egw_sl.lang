@@ -3,7 +3,6 @@
 (only cc/bcc)	felamimail	sl	(le CC/BCC)
 (separate multiple addresses by comma)	felamimail	sl	(več naslovov ločite z vejico)
 (unknown sender)	felamimail	sl	(neznan pošiljatelj)
-3paneview: if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here (300 seems to be a good working value). the preview will be displayed at the end of the message list on demand (click).	felamimail	sl	Pogled 3D: če želite videti predogled sporočila z enojnim klikom na zadevo, nastavite višino seznama sporočil in področja prikaza (300 je dober primer iz prakse). Predogled bo na zahtevo (klik) prikazan na dnu seznama sporočil.
 aborted	felamimail	sl	Prekinjeno
 activate	felamimail	sl	Aktiviraj
 activate script	felamimail	sl	Skripta za aktiviranje
@@ -231,7 +230,6 @@ if	felamimail	sl	IF
 if from contains	felamimail	sl	Če od vsebuje
 if mail header	felamimail	sl	Če glava elektronskega sporočila
 if message size	felamimail	sl	Če velikost sporočila
-if shown, which folders should appear on main screen	felamimail	sl	Če so prikazana, katere mape naj bodo prikazane na prvi strani?
 if subject contains	felamimail	sl	Če zadeva vsebuje
 if to contains	felamimail	sl	Če za vsebuje
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	sl	Če želite uporabljati SSL ali TSL, morate naložiti razširitev PHP openssl.
@@ -334,7 +332,6 @@ no valid emailprofile selected!!	felamimail	sl	Ni veljavnega E-poštnega profila
 none	felamimail	sl	Prazno
 none, create all	felamimail	sl	Prazno, ustvari vse
 not allowed	felamimail	sl	Ni dovoljenja
-notify when new mails arrive on these folders	felamimail	sl	Obvesti, ko nova sporočila pridejo v te mape
 on	felamimail	sl	Vključeno
 on behalf of	felamimail	sl	V imenu
 one address is not valid	felamimail	sl	En naslov ni veljaven
@@ -391,6 +388,7 @@ row order style	felamimail	sl	Slog zaporednih vrstic
 rule	felamimail	sl	Pravilo
 save	felamimail	sl	Shrani
 save all	felamimail	sl	Shrani vse
+save as	felamimail	sl	Shrani kot
 save as draft	felamimail	sl	Shrani kot osnutek
 save as infolog	felamimail	sl	Shrani kot Infolog
 save changes	felamimail	sl	Shrani spremembe
@@ -410,9 +408,7 @@ sent	felamimail	sl	Poslano
 sent folder	felamimail	sl	Mapa s poslanimi
 server supports mailfilter(sieve)	felamimail	sl	Strežnik podpira mailfilter (sieve)
 set as default	felamimail	sl	Nastavi kot privzeto
-show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	sl	Prikaži vse mape (naročene in ne-naročene) v glavnem oknu
 show header	felamimail	sl	Prikaži glavo
-show new messages on main screen	felamimail	sl	Prikaži nova sporočila na začetnem zaslonu
 sieve script name	felamimail	sl	Ime skripte sieve
 sieve settings	admin	sl	Nastavitve Sieve
 signatur	felamimail	sl	Podpis
@@ -426,6 +422,7 @@ skipping forward	felamimail	sl	Skok naprej
 skipping previous	felamimail	sl	Skok nazaj
 small view	felamimail	sl	Skrčen pogled
 smtp settings	admin	sl	Nastavitve SMTP
+sort order	felamimail	sl	Način sortiranja
 start new messages with mime type plain/text or html?	felamimail	sl	Začnem novo sporočilo kot navadno besedilo ali kot HTML?
 stationery	felamimail	sl	Stacionarno
 subject	felamimail	sl	Zadeva

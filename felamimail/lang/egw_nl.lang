@@ -236,7 +236,6 @@ if	felamimail	nl	ALS
 if from contains	felamimail	nl	als van bevat
 if mail header	felamimail	nl	als berichtkop bevat
 if message size	felamimail	nl	als berichtgrootte
-if shown, which folders should appear on main screen	felamimail	nl	indien getoond, welke folders moeten zichtbaar worden op het hoofdscherm
 if subject contains	felamimail	nl	als onderwerp bevat
 if to contains	felamimail	nl	als aan bevat
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	nl	Indien SSL of TLS gebruikt wordt, moet de PHP extensie openssl geladen zijn.
@@ -345,7 +344,6 @@ no valid emailprofile selected!!	felamimail	nl	Geen geldig Emailprofiel geselect
 none	felamimail	nl	geen
 none, create all	felamimail	nl	geen, maak ze allemaal
 not allowed	felamimail	nl	niet toegestaan
-notify when new mails arrive on these folders	felamimail	nl	waarschuw als er nieuwe mail is voor deze folders
 on	felamimail	nl	op
 on behalf of	felamimail	nl	namens
 one address is not valid	felamimail	nl	Een adres is ongeldig
@@ -432,7 +430,6 @@ set as default	felamimail	nl	Instellen als standaard
 set label	felamimail	nl	Zet sleutelwoorden
 show all messages	felamimail	nl	Toon alle bercihten
 show header	felamimail	nl	berichtkop weergeven
-show new messages on main screen	felamimail	nl	Nieuwe berichten op hoofdscherm weergeven
 sieve connection status	felamimail	nl	Status Sieve connectie
 sieve script name	felamimail	nl	sieve script naam
 sieve settings	admin	nl	SIEVE instellingen
@@ -447,6 +444,7 @@ skipping forward	felamimail	nl	springt voorwaarts
 skipping previous	felamimail	nl	springt achterwaarts
 small view	felamimail	nl	kleine weergave
 smtp settings	admin	nl	SMTP-instellingen
+sort order	felamimail	nl	Volgorde
 start new messages with mime type plain/text or html?	felamimail	nl	begin nieuwe berichten met mime type, plain/text of html?
 stationery	felamimail	nl	stationery
 subject	felamimail	nl	Onderwerp

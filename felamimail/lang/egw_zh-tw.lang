@@ -350,7 +350,6 @@ send a reject message	felamimail	zh-tw	寄送一個拒絕信件
 sent folder	felamimail	zh-tw	寄件備份
 server supports mailfilter(sieve)	felamimail	zh-tw	伺服器支援郵件規則(sieve)
 show header	felamimail	zh-tw	顯示標頭
-show new messages on main screen	felamimail	zh-tw	在主要畫面顯示新訊息
 sieve script name	felamimail	zh-tw	sieve 程式名稱
 sieve settings	admin	zh-tw	Sieve設定
 signature	felamimail	zh-tw	簽名檔
@@ -363,6 +362,7 @@ skipping forward	felamimail	zh-tw	略過轉寄
 skipping previous	felamimail	zh-tw	略過上一個
 small view	felamimail	zh-tw	縮小
 smtp settings	admin	zh-tw	SMTP設定
+sort order	felamimail	zh-tw	排序方式
 subject	felamimail	zh-tw	主旨
 subject(a->z)	felamimail	zh-tw	標題(A->Z)
 subject(z->a)	felamimail	zh-tw	標題(Z->A)

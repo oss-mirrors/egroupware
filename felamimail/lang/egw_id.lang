@@ -301,6 +301,7 @@ skipping forward	felamimail	id	skipping forward
 skipping previous	felamimail	id	skipping previous
 small view	felamimail	id	small view
 smtp settings	admin	id	SMTP settings
+sort order	felamimail	id	Sort Order
 stationery	felamimail	id	stationery
 subject	felamimail	id	Subyek
 subject(a->z)	felamimail	id	Subyek (A->Z)

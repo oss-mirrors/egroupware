@@ -1,10 +1,6 @@
 are users allowed to change their nicknames in phpfreechat and are allowed to connect multiple times	admin	ru	Пользователи, имеющие право смены псевдонима и множественного подключения
 egroupware chat	phpfreechat	ru	Чат EGroupware
-frozen nick	admin	en	Frozen nick
 global categories	phpfreechat	ru	Глобальные категории
 phpfreechat	common	ru	Чат
 phpfreechat configuration	admin	ru	Конфигурация чата
 phpfreechat integration into egroupware	phpfreechat	ru	Интеграция чата в EGroupware
-the chat opens in a new window.	phpfreechat	en	Chat opens in a new window.
-to complete the phpfreechat installation you have to give the webserver write access to:	phpfreechat	en	To complete the Chat installation you have to give the web server write access to:
-you should remove the write access, once you see the chat!	phpfreechat	en	You should remove the write access, once you see the chat!

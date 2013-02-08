@@ -249,7 +249,6 @@ select your mail server type	admin	da	Vælg din post server type
 send	felamimail	da	Send
 sent folder	felamimail	da	Sendt Mappe
 show header	felamimail	da	vis hoved information
-show new messages on main screen	felamimail	da	Vis nye meddelser på startsiden
 sieve settings	admin	da	Sieve indstillinger
 signature	felamimail	da	Signatur
 simply click the target-folder	felamimail	da	Bare klik destinations mappen
@@ -259,6 +258,7 @@ size(...->0)	felamimail	da	Størrelse (...->0)
 size(0->...)	felamimail	da	Størrelse (0->...)
 small view	felamimail	da	Lille overblik
 smtp settings	admin	da	SMTP indstillinger
+sort order	felamimail	da	Soterings rækkefølge
 subject	felamimail	da	Emne
 subject(a->z)	felamimail	da	Emne (A->Z)
 subject(z->a)	felamimail	da	Emne (Z->A)

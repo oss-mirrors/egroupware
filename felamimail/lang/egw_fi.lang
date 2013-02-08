@@ -3,7 +3,6 @@
 (only cc/bcc)	felamimail	fi	Vain kopio/piilokopio
 (separate multiple addresses by comma)	felamimail	fi	Erottele osoitteet pilkulla
 (unknown sender)	felamimail	fi	Tuntematon lähettäjä
-3paneview: if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here (300 seems to be a good working value). the preview will be displayed at the end of the message list on demand (click).	felamimail	fi	3PaneView: Jos haluat sähköpostin esinäkymän klikkaamalla otsikkoa/aihetta, aseta viestilistan ja esinäkymän korkeus esim. 300
 aborted	felamimail	fi	Keskeytetty
 activate	felamimail	fi	Aktivoi
 activate script	felamimail	fi	Aktiivinen skripti
@@ -105,7 +104,6 @@ deleted	felamimail	fi	Poistettu
 deleted folder successfully!	felamimail	fi	Kansio poistettu!
 deleting messages	felamimail	fi	Poistetaan viestejä
 disable	felamimail	fi	Poista valinta
-disable ruler for separation of mailbody and signature when adding signature to composed message (this is not according to rfc).<br>if you use templates, this option is only applied to the text part of the message.	felamimail	fi	Ota tekstin ja allekirjoituksen välissä oleva eroitin pois käytöstä. Jos käytät mallipohjia, tämä koskee ainoastaan viestin tekstiosaa.
 discard	felamimail	fi	Hylkää
 discard message	felamimail	fi	Hylkää viesti
 display message in new window	felamimail	fi	Näytä viesti uudessa ikkunassa
@@ -237,7 +235,6 @@ if	felamimail	fi	JOS
 if from contains	felamimail	fi	Jos lähettäjä sisältää
 if mail header	felamimail	fi	Jos postin ylätunniste
 if message size	felamimail	fi	Jos viestin koko
-if shown, which folders should appear on main screen	felamimail	fi	Jos näytetään, mitkä kansiot tulisi näyttää etusivulla?
 if subject contains	felamimail	fi	Jos aihe sisältää
 if to contains	felamimail	fi	Jos vastaanottaja sisältää
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	fi	Jos käytetään SSL tai TLS, sinulla pitää olla ladattuna PHP openssl lisäpaketti.
@@ -347,7 +344,6 @@ no valid emailprofile selected!!	felamimail	fi	Voimassaolevaa sähköpostiprofii
 none	felamimail	fi	Ei mitään
 none, create all	felamimail	fi	Ei mitään, luo kaikki
 not allowed	felamimail	fi	Ei sallittu
-notify when new mails arrive on these folders	felamimail	fi	Huomauta uusien viestien saapuessa näihin kansioihin
 on behalf of	felamimail	fi	Puolesta
 one address is not valid	felamimail	fi	Yksi osoite ei kelpaa
 only inbox	felamimail	fi	Vain Saapuneet
@@ -406,6 +402,7 @@ row order style	felamimail	fi	Rivijärjestyksen muotoilu
 rule	felamimail	fi	Sääntö
 save	felamimail	fi	Tallenna
 save all	felamimail	fi	Tallenna kaikki
+save as	felamimail	fi	Tallenna nimellä
 save as draft	felamimail	fi	Tallenna luonnoksena
 save as infolog	felamimail	fi	Tallenna InfoLogina
 save as ticket	felamimail	fi	Tallenna reklamaationa
@@ -432,10 +429,8 @@ sent	felamimail	fi	Lähetetyt
 sent folder	felamimail	fi	Lähetetyt kansio
 server supports mailfilter(sieve)	felamimail	fi	Palvelin tukee sähköpostin suodatusta (SIEVE)
 set as default	felamimail	fi	Aseta oletukseksi
-show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	fi	Näytä kaikki kansiot (tilatut ja tilaamattomat) sähköpostivalikossa.
 show all messages	felamimail	fi	Näytä kaikki viestit
 show header	felamimail	fi	Näytä ylätunniste
-show new messages on main screen	felamimail	fi	Näytä uudet viestit etusivulla
 sieve script name	felamimail	fi	SIEVE skriptin nimi
 sieve settings	admin	fi	SIEVE asetukset
 signatur	felamimail	fi	Allekirjoitus
@@ -449,6 +444,7 @@ skipping forward	felamimail	fi	Siirry seuraavaan
 skipping previous	felamimail	fi	Siirry edelliseen
 small view	felamimail	fi	Pieni näkymä
 smtp settings	admin	fi	SMTP asetukset
+sort order	felamimail	fi	Lajittelujärjestys
 start new messages with mime type plain/text or html?	felamimail	fi	Haluatko aloitaa uudet viestit pelkkänä tekstinä vai HTML:nä?
 stationery	felamimail	fi	Sähköpostin taustakuva -mallipohjat
 subject	felamimail	fi	Aihe

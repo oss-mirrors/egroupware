@@ -7,7 +7,6 @@
 (with checkbox enforced)	felamimail	de	(mit Auswahlbox für alle Ordner)
 1) keep drafted message (press ok)	felamimail	de	1) Nachrichtenentwurf behalten (wählen Sie OK)
 2) discard the message completely (press cancel)	felamimail	de	2) verwerfen der kompletten Nachricht (wählen Sie Abbrechen)
-3paneview: if you want to see a preview of a mail by single clicking onto the subject, set the height for the message-list and the preview area here (300 seems to be a good working value). the preview will be displayed at the end of the message list on demand (click).	felamimail	de	Vorschauansicht: Wenn Sie eine Vorschauansicht von E-Mails wünschen, müssen Sie hier die Höhe des Vorschaubereichs und der Nachrichtenliste festlegen. (300 hat sich als zufriedenstellender Wert erwiesen). Sie können ebenfalls die Mindesthöhe der E-Mail Liste festlegen, indem Sie die gewünschte Mindesthöhe, durch Komma getrennt, an den Wert für die Höhe des Vorschaubereiches anhängen (Bsp.: 300,190). Die Vorschau wird durch einen einfachen Klick auf den Betreff der anzuzeigenden Nachricht aktiviert.
 aborted	felamimail	de	abgebrochen
 activate	felamimail	de	aktivieren
 activate acl management	felamimail	de	ACL Management aktivieren
@@ -124,7 +123,6 @@ deleted	felamimail	de	gelöscht
 deleted folder successfully!	felamimail	de	Ordner erfolgreich gelöscht
 deleting messages	felamimail	de	lösche Nachrichten
 disable	felamimail	de	Deaktivieren
-disable ruler for separation of mailbody and signature when adding signature to composed message (this is not according to rfc).<br>if you use templates, this option is only applied to the text part of the message.	felamimail	de	Deaktiviere den automatisch hinzugefügten Trenner zwischen E-Mailkörper und Signatur (Achtung: Dies ist nicht RFC konform). <br>Wenn Sie Templates zur Formatierung Ihrer E-Mail benutzen, wird diese Option nur dann Auswirkungen haben, wenn Sie die Signatur am Anfang der E-Mail einfügen lassen.
 discard	felamimail	de	verwerfen
 discard message	felamimail	de	Nachricht verwerfen
 display mail subject in notification	felamimail	de	Anzeigen des Betreffs der E-Mail in der Benachrichtigung
@@ -269,7 +267,6 @@ if	felamimail	de	Wenn
 if from contains	felamimail	de	wenn Von enthält
 if mail header	felamimail	de	wenn E-Mail-Header enthält
 if message size	felamimail	de	wenn Nachrichtengröße
-if shown, which folders should appear on main screen	felamimail	de	Welche Ordner, sollen in Home angezeigt werden?
 if subject contains	felamimail	de	wenn Betreff enthält
 if to contains	felamimail	de	wenn An enthält
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	de	Wenn Sie SSL oder TLS benutzen, muss die openssl PHP Erweiterung geladen sein.
@@ -320,7 +317,6 @@ list all	felamimail	de	Alle anzeigen
 loading	felamimail	de	lade
 location of buttons when composing	felamimail	de	Ort der Knöpfe beim E-Mail schreiben
 look up the name of the mailbox (but not its contents).	felamimail	de	Prüfen des Namens der Mailbox (jedoch nicht deren Inhalt).
-mail grid behavior: how many messages should the mailgrid load? if you select all messages there will be no pagination for mail message list. (beware, as some actions on all selected messages may be problematic depending on the amount of selected messages.)	felamimail	de	Mail Grid Verhalten: Wie viele Nachrichten soll der Mail Grid laden? Wenn Sie zeige alle Nachrichten wählen wird die Möglichkeit in der Anzeige der Mailliste zu blättern unterbunden.
 mail server login type	admin	de	Typ der Mailserver Anmeldung
 mail settings	felamimail	de	E-Mail-Einstellungen
 mail source	felamimail	de	Nachrichtenquelltext
@@ -392,7 +388,6 @@ none	felamimail	de	kein
 none, create all	felamimail	de	keine, erstellt alle
 not allowed	felamimail	de	nicht erlaubt
 note:	felamimail	de	Beachte:
-notify when new mails arrive on these folders	felamimail	de	Benachrichtigung, wenn neue E-Mails in diesen Ordnern ankommen
 on	felamimail	de	am
 on behalf of	felamimail	de	im Auftrag von
 one address is not valid	felamimail	de	Eine Adresse ist ungültig
@@ -461,6 +456,7 @@ row order style	felamimail	de	Spaltenanordnung
 rule	felamimail	de	Regel
 save	felamimail	de	Speichern
 save all	felamimail	de	Alle speichern
+save as	felamimail	de	Speichern als
 save as draft	felamimail	de	als Entwurf speichern
 save as infolog	felamimail	de	Als Infolog speichern
 save as ticket	felamimail	de	Als Ticket speichern
@@ -494,10 +490,8 @@ set as default	felamimail	de	Als Vorgabe setzen
 set label	felamimail	de	Schlagwort setzen
 shared folders	felamimail	de	Freigaben
 shared user folders	felamimail	de	Benutzerfreigaben
-show all folders (subscribed and unsubscribed) in main screen folder pane	felamimail	de	zeige alle Ordner (subscribed UND unsubscribed) in der Ordnerleiste des Hauptfensters
 show all messages	felamimail	de	Zeige alle Nachrichten
 show header	felamimail	de	Kopfzeilen anzeigen
-show new messages on main screen	felamimail	de	Neue Nachrichten auf der Startseite anzeigen?
 show test connection section and control the level of info displayed?	felamimail	de	Zeige Verbindungstest Link an und spezifiziere das Ausmaß der angezeigten Information?
 sieve	admin	de	Sieve
 sieve connection status	felamimail	de	Sieve Verbindungsstatus
@@ -514,6 +508,7 @@ skipping forward	felamimail	de	blättere vorwärts
 skipping previous	felamimail	de	blättere zurück
 small view	felamimail	de	schmale Ansicht
 smtp settings	admin	de	SMTP Einstellungen
+sort order	felamimail	de	Sortierreihenfolge
 start new messages with mime type plain/text or html?	felamimail	de	Sollen neue E-Mails als plain/text oder HTML Nachrichten verfasst werden?
 start reply messages with mime type plain/text or html or try to use the displayed format (default)?	felamimail	de	Starte Antworten auf E-Mails im Text oder im HTML Format, oder versuche bei Antworten das Format zu verwenden, der auch für die Anzeige verwendet wird (Standard)?
 stationery	felamimail	de	Briefkopf
@@ -555,7 +550,6 @@ translation server	felamimail	de	Übersetzungsserver
 trash	felamimail	de	Papierkorb
 trash fold	felamimail	de	Papierkorb Ordner
 trash folder	felamimail	de	Ordner für gelöschte Nachrichten
-trust servers seen / unseen info when retrieving the folder status. (if you select no, we will search for the unseen messages and count them ourselves)	felamimail	de	Vertraue der SEEN/UNSEEN Information beim Abruf des Ordnerstatus
 trying to recover from session data	felamimail	de	Versuch der Wiederherstellung aus den gespeicherten Session-Daten.
 type	felamimail	de	Typ
 undelete	felamimail	de	wiederherstellen
@@ -603,7 +597,6 @@ viewing full header	felamimail	de	zeige alle Kopfzeilen
 viewing message	felamimail	de	zeige Nachricht
 viewing messages	felamimail	de	zeige Nachrichten
 when deleting messages	felamimail	de	wenn Nachrichten gelöscht werden
-when saving messages as item of a different app (if app supports the desired option)	felamimail	de	wenn Nachrichten als Eintrag einer anderen Anwendung gespeichert werden (die Anwendung muss diese Option unterstützen)
 when sending messages	felamimail	de	wenn Nachrichten versendet werden
 which folders (additional to the sent folder) should be displayed using the sent folder view schema	felamimail	de	Welche E-Mailordner, zusätzlich zum Gesendet-Ordner, sollen im Anzeigenschema analog des Gesendet-Ordners  dargestellt werden.
 which folders - in general - should not be automatically created, if not existing	felamimail	de	Welche E-Mailordner sollen generell NICHT automatisch angelegt werden, wenn Sie nicht existieren?

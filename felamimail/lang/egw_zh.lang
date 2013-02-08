@@ -357,7 +357,6 @@ sent folder	felamimail	zh	发件夹
 server supports mailfilter(sieve)	felamimail	zh	服务器支持邮件过滤(sieve)
 set as default	felamimail	zh	设置作为缺省
 show header	felamimail	zh	显示邮件头
-show new messages on main screen	felamimail	zh	在首页上显示新邮件
 sieve script name	felamimail	zh	Sieve 脚本名
 sieve settings	admin	zh	Sieve 设置
 signature	felamimail	zh	签名
@@ -370,6 +369,7 @@ skipping forward	felamimail	zh	跳到前面
 skipping previous	felamimail	zh	跳回上一个
 small view	felamimail	zh	小视图
 smtp settings	admin	zh	SMTP设置
+sort order	felamimail	zh	分类排序
 subject	felamimail	zh	主题
 subject(a->z)	felamimail	zh	主题 (A->Z)
 subject(z->a)	felamimail	zh	主题 (Z->A)

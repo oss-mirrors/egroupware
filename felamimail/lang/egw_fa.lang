@@ -288,7 +288,6 @@ send	felamimail	fa	ارسال
 send a reject message	felamimail	fa	ارسال یک پیام برگشتی
 sent folder	felamimail	fa	پوشه ارسال شده
 show header	felamimail	fa	نمایش سرآیند
-show new messages on main screen	felamimail	fa	نمایش پیامهای جدید در صفحه اصلی(خانه)
 sieve settings	admin	fa	تنظیمات Sieve
 signature	felamimail	fa	امضاء
 simply click the target-folder	felamimail	fa	برای انتقال انتخاب شده ها فقط روی پوشه مقصد کلیک کنید
@@ -298,6 +297,7 @@ size(...->0)	felamimail	fa	اندازه (...->0)
 size(0->...)	felamimail	fa	اندازه (0->...)
 small view	felamimail	fa	نمای کوچک
 smtp settings	admin	fa	تنظیمات SMTP
+sort order	felamimail	fa	ترتیب مرتب سازی
 subject	felamimail	fa	موضوع
 subject(a->z)	felamimail	fa	موضوع (A->Z)
 subject(z->a)	felamimail	fa	موضوع (Z->A)

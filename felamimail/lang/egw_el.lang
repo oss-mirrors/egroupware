@@ -339,7 +339,6 @@ send	felamimail	el	Αποστολή
 send a reject message	felamimail	el	αποστολή μηνύματος απόρριψης
 sent folder	felamimail	el	Φάκελος σταλθέντων
 show header	felamimail	el	Προβολή τίτλου
-show new messages on main screen	felamimail	el	Προβολή νέων μηνυμάτων στην κύρια οθόνη
 sieve script name	felamimail	el	όνομα sieve σεναρίου
 sieve settings	admin	el	Ρυθμίσεις Sieve
 signature	felamimail	el	Υπογραφή
