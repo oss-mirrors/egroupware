@@ -9,7 +9,7 @@
  * @param string _type=null either 'edit', 'delete', 'add' or null
  */
 var doStatus;
-function app_refresh(_msg, _app, _id, _type)
+register_app_refresh("felamimail", function(_msg, _app, _id, _type)
 {
 	var bufferExists = false;
 	window.clearInterval(doStatus); // whatever message was up to be activated
@@ -31,7 +31,7 @@ function app_refresh(_msg, _app, _id, _type)
 		// TODO: more actions
 	}
 	if (bufferExists) doStatus = window.setInterval("egw_appWindow('felamimail').setStatusMessage(myMessageBuffer,true);", 10000);
-}
+});
 
 function egw_email_fetchDataProc(_elems, _columns, _callback, _context)
 {

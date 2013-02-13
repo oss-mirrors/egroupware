@@ -131,7 +131,7 @@ function mailview_deleteMessages(_messageList) {
 				//dataElem.clearData();
 				dataElem.addClass('deleted');
 				//dataElem.parentActionObject.remove();
-				opener.app_refresh(opener.lang_deleting_messages,'felamimail',_id,'delete');
+				opener.egw_refresh(opener.lang_deleting_messages,'felamimail',_id,'delete');
 			}
 		}
 		opener.refresh();
