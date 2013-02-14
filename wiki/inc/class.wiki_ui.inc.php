@@ -214,7 +214,7 @@ class wiki_ui extends wiki_bo
 			'lang'     => array('' => lang('not set')) + $GLOBALS['egw']->translation->get_installed_langs(),
 			'readable' => $acl_values,
 			'writable' => $acl_values,
-		),False,array(
+		),null,array(
 			'wiki_id'  => $content['wiki_id'],
 			'old_name' => isset($content['old_name']) ? $content['old_name'] : $content['name'],
 			'old_lang' => isset($content['old_lang']) ? $content['old_lang'] : $content['lang'],
