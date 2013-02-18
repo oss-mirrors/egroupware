@@ -1,6 +1,6 @@
 %1 - %2 of %3	sambaadmin	de	%1 - %2 von %3
 add workstation	sambaadmin	de	Arbeitsstation hinzufügen
-check ldap setup (experimental!!!)	admin	de	LDAP setup überprüfen (experimentell!!!!)
+check ldap setup (experimental!!!)	admin	de	LDAP Setup überprüfen (experimentell!!!!)
 computer group	admin	de	Computer Gruppe
 computer ou	admin	de	Computer OU
 displayname	sambaadmin	de	Anzeigename

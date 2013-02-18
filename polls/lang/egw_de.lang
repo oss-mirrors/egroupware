@@ -5,6 +5,7 @@ add answers	polls	de	Antwort hinzufügen
 add new poll question	polls	de	Eine neue Umfrage hinzufügen
 add questions	polls	de	Umfrage hinzufügen
 administrators	polls	de	Administratoren
+allow users to change their vote	polls	de	Benutzers erlauben, Ihre eigene Abstimmung zu Ändern
 allow users to vote more then once	polls	de	Benutzern erlauben mehr als einmal abzustimmen
 allways use latest poll	polls	de	Immer die letzte Umfrage benutzen
 answer	polls	de	Antwort
@@ -13,10 +14,11 @@ answer has been updated	polls	de	Umfrage wurde aktualisiert
 answers	polls	de	Antworten
 are you sure want to delete this answer ?	polls	de	Sind Sie sicher das Sie diese Antwort löschen möchten ?
 are you sure want to delete this question ?	polls	de	Sind Sie sicher das Sie diese Frage löschen möchten ?
+change vote	polls	de	Abstimmung ändern
 current poll	polls	de	Aktuelle Umfrage
 edit answer	polls	de	Antwort bearbeiten
 edit poll question	polls	de	Umfrage bearbeiten
-egroupware users (non-anonymous)	polls	de	eGroupWare Benutzer (nicht anonyme)
+egroupware users (non-anonymous)	polls	de	EGroupware Benutzer (nicht anonyme)
 enter poll question	polls	de	Neue Umfrage
 everyone incl. anonymous users	polls	de	Jeder einschl. anonyme Benutzer
 new poll has been added.  you should now add some answers for this poll	polls	de	Neue Umfrage hinzugefügt. Geben Sie nun die Antworten zu dieser Umfrage ein.
