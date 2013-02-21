@@ -779,11 +779,6 @@ class felamimail_hooks
 					$file['vacation notice'] = egw::link('/index.php','menuaction=felamimail.uisieve.editVacation');
 			}
 		}
-		$file[lang('Register EGroupware EMail for mailto')] = "javascript:navigator.registerProtocolHandler('mailto','".
-			egw::link('/index.php', array(
-				'menuaction' => 'felamimail.uicompose.compose',
-				'preset[mailto]' => '%s',
-			))."', 'EGroupware')";
 		//Do not modify below this line
 		display_section($appname,$title,$file);
 	}
