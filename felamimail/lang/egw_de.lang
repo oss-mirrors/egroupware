@@ -561,6 +561,7 @@ test connection	felamimail	de	Verbindungstest
 test connection and display basic information about the selected profile	felamimail	de	Teste Verbindung und zeige Basisinformationen zum ausgewählten (aktiven) Profil
 text only	felamimail	de	Nur Text
 text/plain	felamimail	de	text/plain
+the action will be applied to all messages of the current folder.\ndo you want to proceed?	felamimail	de	Die Aktion wird auf ALLE Nachrichten des aktuellen Ordners angewendet.\nMöchten Sie fortfahren?
 the action will be applied to all messages of the current folder.ndo you want to proceed?	felamimail	de	Die Aktion wird auf ALLE Nachrichten des aktuellen Ordners angewendet.\nMöchten Sie fortfahren?
 the connection to the imap server failed!!	felamimail	de	Die Verbindung zum IMAP Server ist fehlgeschlagen
 the folder <b>%1</b> will be used, if there is nothing set here, and no valid predefine given.	felamimail	de	Der Ordner <b>%1</b> wird verwendet, wenn hier nichts gesetzt ist und kein gültiger Vorgabewert eingetragen ist.
@@ -585,7 +586,6 @@ trust servers seen / unseen info	felamimail	de	Abruf des Ungelesen/gelesen Statu
 trust the server when retrieving the folder status. if you select no, we will search for the unseen messages and count them ourselves	felamimail	de	EGroupware verwendet die Statusinformationen Ihres E-Mail Servers. Wählen Sie hier nur "Nein", wenn die Anzahl der ungelesenen E-Mails nicht stimmt. Die Eigenermittlung der Anzahl der ungelesenen E-Mails wirkt sich negativ auf die Performance des E-Mail-Moduls aus.
 trying to recover from session data	felamimail	de	Versuch der Wiederherstellung aus den gespeicherten Session-Daten.
 turn off horizontal line between signature and composed message (this is not according to rfc).<br>if you use templates, this option is only applied to the text part of the message.	felamimail	de	Deaktivieren Sie die horizontale Trennlinie zwischen dem Text Ihrer E-Mail und der Signatur.
-turn off horizontal line between signature and composed message (this is not according to rfc).nif you use templates, this option is only applied to the text part of the message.	felamimail	de	Deaktivieren Sie die Horizontale Trennlinie zwischen dem Text und der E-Mail Signatur. Achtung  diese kann evt. die Darstellung der E-Mail beeinträchtigen.
 type	felamimail	de	Typ
 undelete	felamimail	de	wiederherstellen
 unexpected response from server to authenticate command.	felamimail	de	Unerwartete Antwort vom Server auf das AUTHENTICATE Kommando.
