@@ -213,6 +213,7 @@ class emailadmin_bo extends so_sql
 				//echo "<p>eGW configuration update: ".print_r($new_config,true)."</p>\n";
 			}
 		}
+		if (empty($this->data['ea_stationery_active_templates'])) $this->data['ea_stationery_active_templates']='';
 		//error_log(__METHOD__.__LINE__.' Content to save:'.array2string($this->data));
 		if (is_numeric($this->data['ea_profile_id'])) self::unsetCachedObjects($this->data['ea_profile_id']*-1);
 		if (!($result = parent::save()))
