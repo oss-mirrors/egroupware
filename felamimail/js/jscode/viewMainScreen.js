@@ -500,11 +500,12 @@ function tellUser(message,_nodeID) {
 }
 
 function getTreeNodeOpenItems(_nodeID, mode) {
+	var returnValue = ""+_nodeID;
+	if (typeof top.tree == 'undefined') return returnValue;
 	var z = top.tree.getSubItems(_nodeID).split(",");
 	var oS;
 	var PoS;
 	var rv;
-	var returnValue = ""+_nodeID;
 	var modetorun = "none";
 	if (mode) { modetorun = mode }
 	PoS = top.tree.getOpenState(_nodeID)

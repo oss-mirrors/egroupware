@@ -926,12 +926,14 @@ class felamimail_hooks
 								xchzn.children[1].children[0].children[0].style.width = '85%';
 							}
 						}
-
-						var wnd = egw_appWindow('".$appname."');
-						if (wnd && typeof wnd.refreshFolderStatus != 'undefined')
-						{
-							wnd.refreshFolderStatus();
-						}
+						var wnd;
+						egw.LAB.wait(function() {
+							wnd = egw_appWindow('".$appname."');
+							if (wnd && typeof wnd.refreshFolderStatus != 'undefined')
+							{
+								wnd.refreshFolderStatus();
+							}
+						});
 					</script>",
 					'no_lang' => True,
 					'link' => False,

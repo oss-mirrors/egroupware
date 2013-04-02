@@ -1,9 +1,15 @@
 <!-- BEGIN main -->
 <script language="JavaScript1.2">
-var tab = new Tabs(2,'activetab','inactivetab','tab','tabcontent','','','tabpage');
+var tab;
+egw.LAB.wait(function() {
+	tab = new Tabs(2,'activetab','inactivetab','tab','tabcontent','','','tabpage');
+	jQuery(document).ready(function(){
+		tab.init();
+	});
+});
 var allowAccounts        = {allowAccounts};
 function initTabs() {
-tab.init();
+//tab.init(); // done on LAB.wait
 }
 </script>
 <style>

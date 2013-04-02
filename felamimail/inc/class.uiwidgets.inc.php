@@ -171,12 +171,14 @@ class uiwidgets
 		egw_appWindow('felamimail').onNodeSelect.apply(this, arguments);
 	}
 }";
-			$folder_tree_new .= "var tree=new dhtmlXTreeObject('$_divName','100%','100%',0);";
+			$folder_tree_new .= "var tree;";
 			$folder_tree_new .= "var felamimail_folders=[];";
 			$folder_tree_new .= "var donotclick_folders=[];";
 			$folder_tree_new .= "donotclick_folders.push('--topfolder--');";
 			//error_log(__METHOD__.__LINE__.array2string($suFolders));
 			foreach ($suFolders as $suFi => $suFv) $folder_tree_new .= "donotclick_folders.push('$suFv');";
+			$folder_tree_new .= "egw.LAB.wait(function() {";
+			$folder_tree_new .= "tree=new dhtmlXTreeObject('$_divName','100%','100%',0);";
 			$folder_tree_new .= "tree.parentObject.style.overflow=\"auto\";";
 			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');";
 			if($_displayCheckBox) {
@@ -279,10 +281,11 @@ class uiwidgets
 			#$selected = base64_encode($_selected);
 
 			$folder_tree_new.= "tree.closeAllItems(0);tree.openItem('$selected');";
-
+			$folder_tree_new .= "});";
 			$folder_tree_new .= "if (typeof felamimail_transform_foldertree == 'function') {
 				felamimail_transform_foldertree();
-			}</script>";
+			}";
+			$folder_tree_new .= "</script>";
 
 			return $folder_tree_new;
 		}
