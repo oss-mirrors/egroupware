@@ -279,7 +279,7 @@ class soWikiPage
 	{
 		$where = array(
 			'wiki_id' => $this->wiki_id,
-			'wiki_name'	=> $this->name,
+			'wiki_name'	=> ($this->name==html_entity_decode($this->name)?$this->name:array($this->name,html_entity_decode($this->name))),
 			'wiki_lang' => !empty($this->lang) ? $this->lang : $this->use_langs,
 		);
 		if (!$ignore_acl) $where[] = $this->acl_filter();
@@ -292,12 +292,14 @@ class soWikiPage
 		{
 			$where[] = 'wiki_supercede=wiki_time';	// gives the up-to-date version only
 		}
+
 		$this->db->select($this->PgTbl,"*,$this->lang_priority_sql",$where,__LINE__,__FILE__,false,'ORDER BY lang_priority, wiki_version DESC');
 
 		if (!$this->db->next_record())
 		{
 			return False;
 		}
+
 		foreach($this->colNames as $dbname => $name)
 		{
 			$this->$name     = $this->db->f($dbname);

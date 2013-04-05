@@ -289,14 +289,14 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
 
 	if (!is_array($page) && strpos($page,':') !== false)
 	{
-	list($name,$lang) = explode(':',$page);
-	if (strlen($lang) == 2 || strlen($lang) == 5 && $lang[2] == '-')
-	{
-		$page = array(
-			'name' => $name,
-			'lang' => $lang
-		);
-	}
+		list($name,$lang) = explode(':',$page);
+		if (strlen($lang) == 2 || strlen($lang) == 5 && $lang[2] == '-')
+		{
+			$page = array(
+				'name' => $name,
+				'lang' => $lang
+			);
+		}
 	}
 	$title = get_title($page);
 	if (is_array($appearance))
@@ -328,6 +328,13 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
 	}
 	else
 	{
+		$sP = (is_array($page)?array('name'=>$page['name'],'lang'=>$page['lang']):array('name'=>$page));
+		if ($sP['name'] != html_entity_decode($sP['name']))
+		{
+			//error_log(__METHOD__.__LINE__.html_entity_decode($sP['name']));
+			$sP['name'] = html_entity_decode($sP['name']);
+			return html_ref($sP, $appearance, $hover, $anchor, $anchor_appearance);
+		}
 		//echo "<p>$page does NOT exist</p>\n";
 		if(validate_page($title) == 1        // Normal WikiName
 			 && $appearance == $title)         // ... and is what it appears

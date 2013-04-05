@@ -65,7 +65,7 @@ class wiki_ui extends wiki_bo
 
 		if (!is_array($content))
 		{
-			$content['name'] = $content ? $content : $_GET['page'];
+			$content['name'] = $content ? $content : html_entity_decode($_GET['page']);
 			$content['lang'] = $_GET['lang'];
 			$content['version'] = $_GET['version'];
 			$start = True;
@@ -80,8 +80,7 @@ class wiki_ui extends wiki_bo
 		{
 			$pg->version = $content['version'];
 		}
-
-		// acl checks
+		// acl checks (reads the page in question but ...)
 		if (!$pg->acl_check())	// no edit-rights
 		{
 			$GLOBALS['egw']->redirect($this->ViewURL($content));
@@ -107,7 +106,6 @@ class wiki_ui extends wiki_bo
 				$content['is_html'] = True;
 			}
 		}
-
 		if ($content['is_html'])
 		{
 			// some tavi stuff need to be at the line-end
