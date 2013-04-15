@@ -450,7 +450,7 @@ class Net_IMAP extends Net_IMAPProtocol {
     {
        if( $msg_id != null){
             if(is_array($msg_id)){
-                //error_log(__METHOD__.__LINE__.' Request for Summary of '.count($msg_id).' IDs')
+                //error_log(__METHOD__.__LINE__.' Request for Summary of '.count($msg_id).' IDs');
                 $message_set=$this->_getSearchListFromArray($msg_id);
             }else{
                 //error_log(__METHOD__.__LINE__.' Request for Summary of '.count(explode(',',$msg_id)).' IDs:'.$msg_id);
