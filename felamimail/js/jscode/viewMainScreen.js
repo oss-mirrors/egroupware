@@ -1154,6 +1154,7 @@ function fm_readMessage(_url, _windowName, _node) {
  */
 function fm_handleAttachmentClick(_double, _url, _windowName, _node)
 {
+alert(navigator.platform);
 	var msgId = _windowName.split('_')[1];
 
 	felamimail_readMessage = msgId;
