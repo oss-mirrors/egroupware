@@ -510,6 +510,8 @@
 					$this->rules[$ruleID] = $newRule;
 
 					$this->bosieve->setRules($this->scriptName, $this->rules);
+					print lang("Saving the rule failed:")."<br />";
+					print $this->bosieve->errstr."<br />";
 
 					$this->saveSessionData();
 				} else {
