@@ -1073,8 +1073,8 @@ class felamimail_hooks
 			#$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
 			$menu_title = lang('Preferences');
 			$file = array(
-				//'Preferences'		=> egw::link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
-				'Preferences'	=> egw::link('/index.php','menuaction=felamimail.uifelamimail.redirectToPreferences&appname=felamimail'),
+				'Preferences'		=> egw::link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
+				//'Preferences'	=> egw::link('/index.php','menuaction=felamimail.uifelamimail.redirectToPreferences&appname=felamimail'),
 			);
 
 			if($preferences->userDefinedAccounts || $preferences->userDefinedIdentities) {
