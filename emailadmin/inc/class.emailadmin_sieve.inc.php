@@ -137,10 +137,11 @@ class emailadmin_sieve extends Net_Sieve
 		$this->_timeout = 10; // socket::connect sets the/this timeout on connection
 		$timeout = felamimail_bo::getTimeOut('SIEVE');
 		if ($timeout>$this->_timeout) $this->_timeout = $timeout;
-
-		if(PEAR::isError($this->error = $this->connect($sieveHost , $sievePort, null, $useTLS) ) ){
-			if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": error in connect($sieveHost,$sievePort): ".$this->error->getMessage());
-			$isConError[$_icServerID] = "SIEVE: error in connect($sieveHost,$sievePort): ".$this->error->getMessage();
+		$options = $_icServer->_getTransportOptions(($sievePort==5190?3:1));
+		$sieveHost = $_icServer->_getTransportString($sieveHost,($sievePort==5190?3:1));
+		if(PEAR::isError($this->error = $this->connect($sieveHost , $sievePort, $options, $useTLS) ) ){
+			if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": error in connect($sieveHost,$sievePort, ".array2string($options).", $useTLS): ".$this->error->getMessage());
+			$isConError[$_icServerID] = "SIEVE: error in connect($sieveHost,$sievePort, ".array2string($options).", $useTLS): ".$this->error->getMessage();
 			egw_cache::setCache(egw_cache::INSTANCE,'email','icServerSIEVE_connectionError'.trim($GLOBALS['egw_info']['user']['account_id']),$isConError,$expiration=60*15);
 			return false;
 		}
@@ -172,12 +173,12 @@ class emailadmin_sieve extends Net_Sieve
      */
     function connect($host, $port, $options = null, $useTLS = true)
     {
-        //error_log(__METHOD__.__LINE__."$host, $port, ".array2string($options).", $useTLS");
+        if ($this->debug) error_log(__METHOD__.__LINE__."$host, $port, ".array2string($options).", $useTLS");
         $this->_data['host'] = $host;
         $this->_data['port'] = $port;
         $this->_useTLS       = $useTLS;
         if (is_array($options)) {
-            $this->_options = array_merge($this->_options, $options);
+            $this->_options = array_merge((array)$this->_options, $options);
         }
 
         if (NET_SIEVE_STATE_DISCONNECTED != $this->_state) {
