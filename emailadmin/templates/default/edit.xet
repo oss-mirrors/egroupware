@@ -177,7 +177,7 @@
 			</rows>
 		</grid>
 	</template>
-	<template id="emailadmin.edit.IMAP" template="" lang="" group="0" version="1.9.004">
+	<template id="emailadmin.edit.IMAP" template="" lang="" group="0" version="1.9.005">
 		<grid width="100%" height="400" overflow="auto">
 			<columns>
 				<column/>
@@ -274,22 +274,26 @@
 							<columns>
 								<column/>
 								<column/>
+								<column/>
 							</columns>
 							<rows>
 								<row>
 									<description value="enable Sieve"/>
 									<checkbox id="ea_imap_enable_sieve" onchange="1" options="yes,no"/>
+									<description/>
 								</row>
 								<row disabled="!@ea_imap_enable_sieve=yes">
 									<description value="Sieve server hostname or ip address"/>
 									<textbox id="ea_imap_sieve_server"/>
+									<description/>
 								</row>
 								<row disabled="!@ea_imap_enable_sieve=yes">
 									<description value="Sieve server port"/>
 									<textbox type="integer" id="ea_imap_sieve_port"/>
+									<description value="if you specify port 5190 as sieve server port, you enforce ssl for sieve (server must support that)" readonly="true"/>
 								</row>
 								<row>
-									<description value="Vacation messages with start- and end-date require an admin account to be set" span="2"/>
+									<description value="Vacation messages with start- and end-date require an admin account to be set" span="3"/>
 								</row>
 							</rows>
 						</grid>
@@ -361,7 +365,7 @@
 									<checkbox id="ea_user_defined_signatures" options="yes,no"/>
 								</row>
 								<row>
-									<htmlarea id="ea_default_signature" mode="advanced" width="700" toolbar="180" span="2"/>
+									<htmlarea mode="advanced" id="ea_default_signature" span="2" toolbar="180" width="700"/>
 								</row>
 							</rows>
 						</grid>
@@ -439,14 +443,14 @@
 					</grid>
 				</row>
 				<row>
-					<tabbox id="tabs">
+					<tabbox id="emailadmin.edit.global|emailadmin.edit.SMTP|emailadmin.edit.IMAP|emailadmin.edit.signature|emailadmin.edit.stationery|emailadmin.edit.history">
 						<tabs>
-							<tab id="global" label="Global"/>
-							<tab id="SMTP" label="SMTP"/>
-							<tab id="IMAP" label="IMAP"/>
-							<tab id="signature" label="Signature"/>
-							<tab id="stationery" label="Stationery"/>
-							<tab id="history" label="History"/>
+							<tab id="emailadmin.edit.global" label="Global"/>
+							<tab id="emailadmin.edit.SMTP" label="SMTP"/>
+							<tab id="emailadmin.edit.IMAP" label="IMAP"/>
+							<tab id="emailadmin.edit.signature" label="Signature"/>
+							<tab id="emailadmin.edit.stationery" label="Stationery"/>
+							<tab id="emailadmin.edit.history" label="History"/>
 						</tabs>
 						<tabpanels>
 							<template id="emailadmin.edit.global"/>
