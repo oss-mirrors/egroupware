@@ -1,6 +1,6 @@
 <?php
 /**
- * EGroupware  eTemplate extension - InfoLog widget
+ * EGroupware  eTemplate extension - Tracker widget
  *
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @package etemplate
@@ -11,17 +11,17 @@
  */
 
 /**
- * eTemplate extension: InfoLog widget
+ * eTemplate extension: Tracker widget
  *
- * This widget can be used to display data from an InfoLog specified by it's id
+ * This widget can be used to display data from an Tracker specified by it's id
  *
- * The infolog-value widget takes 3 comma-separated arguments (beside the name) in the options/size field:
- * 1) name of the field (as provided by the infolog-fields widget)
+ * The tracker-value widget takes 3 comma-separated arguments (beside the name) in the options/size field:
+ * 1) name of the field (as provided by the tracker-fields widget)
  * 2) an optional compare value: if given the selected field is compared with its value and an X is printed on equality, nothing otherwise
  * 3) colon (:) separted list of alternative fields: the first non-empty one is used if the selected value is empty
  * There's a special field "sum" in 1), which sums up all fields given in alternatives.
  */
-class infolog_widget
+class tracker_widget
 {
 	/**
 	 * exported methods of this class
@@ -37,17 +37,17 @@ class infolog_widget
 	 * @var string/array $human_name
 	 */
 	var $human_name = array(
-		'infolog-value'  => 'InfoLog',
-		'infolog-fields' => 'InfoLog fields',
+		'tracker-value'  => 'Tracker value',
+		'tracker-fields' => 'Tracker fields',
 	);
 	/**
-	 * Instance of the infolog_bo class
+	 * Instance of the tracker_bo class
 	 *
-	 * @var infolog_bo
+	 * @var tracker_bo
 	 */
-	var $infolog;
+	var $tracker;
 	/**
-	 * Cached infolog
+	 * Cached tracker
 	 *
 	 * @var array
 	 */
@@ -61,7 +61,7 @@ class infolog_widget
 	function __construct($ui)
 	{
 		$this->ui = $ui;
-		$this->infolog = new infolog_bo();
+		$this->tracker = new tracker_bo();
 	}
 
 	/**
@@ -81,18 +81,18 @@ class infolog_widget
 	{
 		switch($cell['type'])
 		{
-			case 'infolog-fields':
+			case 'tracker-fields':
 				translation::add_app('addressbook');
 				$cell['sel_options'] = $this->_get_fields();
 				$cell['type'] = 'select';
 				$cell['no_lang'] = 1;
 				break;
 
-			case 'infolog-value':
+			case 'tracker-value':
 			default:
-				if (substr($value,0,8) == 'infolog:') $value = substr($value,8);	// link-entry syntax
+				if (substr($value,0,8) == 'tracker:') $value = substr($value,8);	// link-entry syntax
 				if (!$value || !$cell['size'] || (!is_array($this->data) || $this->data['info_id'] != $value) &&
-					!($this->data = $this->infolog->read($value)))
+					!($this->data = $this->tracker->read($value)))
 				{
 					$cell = $tmpl->empty_cell();
 					$value = '';
@@ -117,45 +117,41 @@ class infolog_widget
 						$alternatives = '';
 						break;
 
-					case 'info_startdate':
-					case 'info_datemodified':
-					case 'info_datecompleted':
+					case 'tr_created':
+					case 'tr_startdate':
+					case 'tr_duedate':
+					case 'tr_modified':
+					case 'tr_closed':
 						$cell['type'] = 'date-time';
 						break;
 
-					case 'info_enddate':
-						$cell['type'] = 'date';
-						break;
-
-					case 'info_owner':
-					case 'info_responsible':
+					case 'tr_assigned':
+					case 'tr_creator':
+					case 'tr_group':
+					case 'tr_modifier':
 						$cell['type'] = 'select-owner';
 						break;
 
-					case 'info_cat':
+					case 'tr_tracker':
+					case 'cat_id':
+					case 'tr_version':
+					case 'tr_status':
+					case 'tr_resolution':
 						$cell['type'] = 'select-cat';
 						break;
 
-					case 'info_access':
-						$cell['type'] = 'select-access';
+					case 'tr_completion':
+						$cell['type'] = 'select-percent';
 						break;
 
-					case 'info_type':
-					case 'info_priority':
-					case 'info_confirm':
-						$cell['sel_options'] = $this->infolog->enums[$type];
-						$cell['type'] = 'select';
-						break;
-
-					case 'info_status':
-						$cell['sel_options'] = $this->infolog->status[$this->data['info_type']];
-						$cell['type'] = 'select';
+					case 'tr_private':
+						$cell['type'] = 'checkbox';
 						break;
 
 					default:
 						if ($type{0} == '#')	// custom field --> use field-type itself
 						{
-							$field = $this->infolog->customfields[substr($type,1)];
+							$field = $this->tracker->customfields[substr($type,1)];
 							if (($cell['type'] = $field['type']))
 							{
 								if ($field['type'] == 'select')
@@ -191,7 +187,7 @@ class infolog_widget
 					$cell['type'] = 'label';
 					$cell['size'] = '';
 				}
-				// use a contact widget to render the value, eg. to fetch contact data from an linked infolog
+				// use a contact widget to render the value, eg. to fetch contact data from an linked tracker
 				if (!empty($contactfield))
 				{
 					$cell['type'] = 'contact-value';
@@ -212,38 +208,17 @@ class infolog_widget
 
 		$fields = array(
 			'' => lang('Sum'),
-			'info_type' => lang('Type'),
-			'info_subject' => lang('Subject'),
-			'info_des' => lang('Description'),
-			'info_cat' => lang('Category'),
-			'info_from' => lang('Contact'),
-			'info_addr' => lang('Phone/Email'),
-			'info_responsible' => lang('Responsible'),
-			'info_startdate' => lang('Startdate'),
-			'info_enddate' => lang('Enddate'),
-			'info_status' => lang('Status'),
-			'info_priority' => lang('Priority'),
-			'info_location' => lang('Location'),
-			'info_percent' => lang('Completed'),
-			'info_datecompleted' => lang('Date completed'),
-			// meta data
-			// PM fields
-			'info_planned_time' => lang('planned time'),
-			'info_used_time' => lang('used time'),
-			'pl_id' => lang('Pricelist'),
-			'info_price' => lang('Price'),
-			// other
-			'info_owner' => lang('Owner'),
-			'info_access' => lang('Access'),
-			'info_id' => lang('Id#'),
-			'info_link_id' => lang('primary link'),
-			'info_modifier' => lang('Modifierer'),
-			'info_datemodified' => lang('Last modified'),
-//			'info_id_parent' => lang('Parent'),
-//			'info_confirm' => lang('Confirm'),
-//			'info_custom_from' => lang('Custom from'),
 		);
-		foreach(config::get_customfields('infolog') as $name => $data)
+
+		static $remove = array(
+			'link_to','canned_response','reply_message','add','vote',
+			'no_notifications','bounty','num_replies','customfields',
+		);
+		$fields += array_diff_key($this->tracker->field2label, array_flip($remove));
+		$fileds['tr_modified'] = 'Modified';
+		$fileds['tr_modifier'] = 'Modifier';
+
+		foreach(config::get_customfields('tracker') as $name => $data)
 		{
 			$fields['#'.$name] = lang($data['label']);
 		}
