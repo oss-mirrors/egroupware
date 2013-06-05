@@ -1333,7 +1333,7 @@ class felamimail_bo
 		$toFetch = array_diff($_uids,(array)$uidsCached);
 		if (!empty($toFetch))
 		{
-			error_log(__METHOD__.__LINE__.' fetch Summary for Headers with:'.implode(',',$toFetch));
+			error_log(__METHOD__.__LINE__.':UserID:'.$GLOBALS['egw_info']['user']['account_id'].':ServerID:'.$this->icServer->ImapServerId.'::'.' fetch Summary for Headers in Folder:'.$_folder.' with:'.implode(',',$toFetch));
 			$result = $this->icServer->getSummary(implode(',',$toFetch), $byUid);
 			foreach ($result as $sum)
 			{
@@ -1357,7 +1357,7 @@ class felamimail_bo
 			}
 			if ($fetched==false)
 			{
-				error_log(__METHOD__.__LINE__.' fetch Summary for Header of Mail with:'.$_uid);
+				error_log(__METHOD__.__LINE__.':UserID:'.$GLOBALS['egw_info']['user']['account_id'].':ServerID:'.$this->icServer->ImapServerId.'::'.' fetch Summary for Header in Folder:'.$_folder.' with:'.$_uid);
 				$result = $this->icServer->getSummary($_uid, $byUid);
 				$summary[$this->icServer->ImapServerId][$_folder][$_uid] = $result[0];
 				$rv[] = $summary[$this->icServer->ImapServerId][$_folder][$_uid];
@@ -2804,6 +2804,7 @@ class felamimail_bo
 			error_log(__METHOD__.__LINE__.' Profile:'.$this->profileID.' Folder:'.$_folderName.' -> EXISTS/SessStat:'.array2string($folderStatus['EXISTS']).'/'.$this->sessionData['folderStatus'][$this->profileID][$_folderName]['messages'].' ListContDelMsg/SessDeleted:'.$eMailListContainsDeletedMessages[$this->profileID][$_folderName].'/'.$this->sessionData['folderStatus'][$this->profileID][$_folderName]['deleted']);
 			error_log(__METHOD__.__LINE__.' CachedFolderStatus:'.array2string($this->sessionData['folderStatus'][$this->profileID][$_folderName]));
 		}
+		//error_log(__METHOD__.__LINE__.'->'.$folderStatus['UIDVALIDITY'].'<-');
 		if($try2useCache && (is_array($this->sessionData['folderStatus'][$this->profileID][$_folderName]) &&
 			$this->sessionData['folderStatus'][$this->profileID][$_folderName]['uidValidity']	=== $folderStatus['UIDVALIDITY'] &&
 			$this->sessionData['folderStatus'][$this->profileID][$_folderName]['messages']	== $folderStatus['EXISTS'] &&
@@ -2819,6 +2820,17 @@ class felamimail_bo
 
 		} else {
 			$try2useCache = false;
+			// control HeaderCache
+			if (isset($this->sessionData['folderStatus'][$this->profileID][$_folderName]['uidValidity']) &&
+				$this->sessionData['folderStatus'][$this->profileID][$_folderName]['uidValidity'] != $folderStatus['UIDVALIDITY'])
+			{
+				$summary = egw_cache::getCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
+				if (isset($summary[$this->profileID][$_folderName]))
+				{
+					unset($summary[$this->profileID][$_folderName]);
+					egw_cache::setCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$summary, $expiration=60*60*1);
+				}
+			}
 			//error_log(__METHOD__." USE NO CACHE for Profile:". $this->profileID." Folder:".$_folderName.'->'.($setSession?'setSession':'checkrun'));
 			if (self::$debug) error_log(__METHOD__." USE NO CACHE for Profile:". $this->profileID." Folder:".$_folderName." Filter:".array2string($_filter).function_backtrace());
 			$filter = $this->createIMAPFilter($_folderName, $_filter);
@@ -3561,6 +3573,20 @@ class felamimail_bo
 			}
 		}
 		if (self::$debug) _debug_array($structure);
+		if ($_preserveSeen==false)
+		{
+			$summary = egw_cache::getCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
+			$cachemodified = false;
+			if (isset($summary[$this->icServer->ImapServerId][$this->sessionData['mailbox']][$_uid]))
+			{
+				$cachemodified = true;
+				unset($summary[$this->icServer->ImapServerId][$this->sessionData['mailbox']][$_uid]);
+			}
+			if ($cachemodified)
+			{
+				egw_cache::setCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$summary,$expiration=60*60*1);
+			}
+		}
 		switch($structure->type) {
 			case 'APPLICATION':
 				return array(
@@ -4012,7 +4038,6 @@ class felamimail_bo
 			if($deleteOptions != "mark_as_deleted")
 			{
 				$structure = egw_cache::getCache(egw_cache::INSTANCE,'email','structureCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
-				$summary = egw_cache::getCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
 				$cachemodified = false;
 				foreach ((array)$_messageUID as $k => $_uid)
 				{
@@ -4021,21 +4046,29 @@ class felamimail_bo
 						$cachemodified = true;
 						unset($structure[$this->icServer->ImapServerId][(!empty($currentFolder)?$currentFolder: $this->sessionData['mailbox'])][$_uid]);
 					}
-					if (isset($summary[$this->icServer->ImapServerId][(!empty($currentFolder)?$currentFolder: $this->sessionData['mailbox'])][$_uid]))
-					{
-						$cachemodified = true;
-						unset($summary[$this->icServer->ImapServerId][(!empty($currentFolder)?$currentFolder: $this->sessionData['mailbox'])][$_uid]);
-					}
 				}
 				if ($cachemodified)
 				{
 					egw_cache::setCache(egw_cache::INSTANCE,'email','structureCache'.trim($GLOBALS['egw_info']['user']['account_id']),$structure,$expiration=60*60*1);
-					egw_cache::setCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$summary,$expiration=60*60*1);
 				}
 
 				// delete the messages finaly
 				$this->icServer->expunge();
 			}
+		}
+		$summary = egw_cache::getCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
+		$cachemodified = false;
+		foreach ((array)$_messageUID as $k => $_uid)
+		{
+			if (isset($summary[$this->icServer->ImapServerId][(!empty($currentFolder)?$currentFolder: $this->sessionData['mailbox'])][$_uid]))
+			{
+				$cachemodified = true;
+				unset($summary[$this->icServer->ImapServerId][(!empty($currentFolder)?$currentFolder: $this->sessionData['mailbox'])][$_uid]);
+			}
+		}
+		if ($cachemodified)
+		{
+			egw_cache::setCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$summary,$expiration=60*60*1);
 		}
 		//error_log(__METHOD__.__LINE__.array2string($retUid));
 		return ($returnUIDs ? $retUid : true);
