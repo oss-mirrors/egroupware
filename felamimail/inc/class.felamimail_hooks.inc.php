@@ -355,16 +355,6 @@ class felamimail_hooks
 				'xmlrpc' => False,
 				'admin'  => False
 			),
-			'ActiveProfileID' => array(
-				'type'   => 'select',
-				'label'  => 'Active Mail Profile',
-				'help'   => 'view / select your currently active mailprofile (this is a user only setting)',
-				'name'   => 'ActiveProfileID',
-				'values' => $identities,
-				'xmlrpc' => True,
-				'admin'  => False,
-				'default'=> $profileID,
-			),
 			'message_forwarding' => array(
 				'type'   => 'select',
 				'label'  => 'how to forward messages',
@@ -556,6 +546,16 @@ class felamimail_hooks
 				'values' => $folderList,
 				'xmlrpc' => True,
 				'admin'  => False,
+			),
+			'ActiveProfileID' => array(
+				'type'   => 'select',
+				'label'  => 'Active Mail Profile',
+				'help'   => 'view / select your currently active mailprofile (this is a user only setting)',
+				'name'   => 'ActiveProfileID',
+				'values' => $identities,
+				'xmlrpc' => True,
+				'admin'  => False,
+				'default'=> $profileID,
 			),
 			array(
 				'type'  => 'section',
@@ -804,7 +804,7 @@ class felamimail_hooks
 		$profileID = $GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'] = $bofelamimail->profileID;
 		$mailPreferences =& $bofelamimail->mailPreferences;
 
-		$file['Preferences'] = egw::link('/index.php','menuaction=preferences.uisettings.index&appname=' . $appname);
+		$file['Preferences'] = egw::link('/index.php','menuaction=preferences.preferences_settings.index&appname=' . $appname);
 
 		if($mailPreferences->userDefinedAccounts) {
 			$linkData = array
@@ -1073,7 +1073,7 @@ class felamimail_hooks
 			#$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
 			$menu_title = lang('Preferences');
 			$file = array(
-				'Preferences'		=> egw::link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
+				'Preferences'		=> egw::link('/index.php','menuaction=preferences.preferences_settings.index&appname=felamimail'),
 				//'Preferences'	=> egw::link('/index.php','menuaction=felamimail.uifelamimail.redirectToPreferences&appname=felamimail'),
 			);
 

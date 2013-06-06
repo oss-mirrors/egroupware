@@ -160,9 +160,10 @@ class uifelamimail
 
 		function redirectToPreferences ()
 		{
+			//$GLOBALS['egw_info']['flags']['currentapp'] = 'preferences';
 			$this->display_app_header(false);
 			//appname is a $_GET parameter, so the passing as function parameter does not work
-			ExecMethod('preferences.uisettings.index',array('appname'=>'felamimail'));
+			ExecMethod('preferences.preferences_settings.index',array('appname'=>'felamimail'));
 			exit;
 		}
 
