@@ -781,7 +781,7 @@ class felamimail_hooks
 
 		$file = Array(
 			'Site Configuration' => egw::link('/index.php',array('menuaction'=>'admin.uiconfig.index','appname'=>'felamimail')),
-			'eMailAdmin: Profilemanagement' => egw::link('/index.php','menuaction=emailadmin.emailadmin_ui.index'),
+			'eMailAdmin: Profilemanagement' => egw::link('/index.php','menuaction=emailadmin.emailadmin_ui.index','admin'),
 		);
 		display_section($appname,$title,$file);
 	}
@@ -1073,7 +1073,7 @@ class felamimail_hooks
 			#$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
 			$menu_title = lang('Preferences');
 			$file = array(
-				'Preferences'		=> egw::link('/index.php','menuaction=preferences.preferences_settings.index&appname=felamimail'),
+				'Preferences'		=> egw::link('/index.php','menuaction=preferences.preferences_settings.index&appname=felamimail','preferences'),
 				//'Preferences'	=> egw::link('/index.php','menuaction=felamimail.uifelamimail.redirectToPreferences&appname=felamimail'),
 			);
 
@@ -1143,8 +1143,8 @@ class felamimail_hooks
 		if ($GLOBALS['egw_info']['user']['apps']['admin'])
 		{
 			$file = Array(
-				'Site Configuration' => egw::link('/index.php','menuaction=felamimail.uifelamimail.redirectToConfig'), //'menuaction=admin.uiconfig.index&appname=felamimail'),
-				'eMailAdmin: Profilemanagement' => egw::link('/index.php','menuaction=felamimail.uifelamimail.redirectToEmailadmin'),
+				'Site Configuration' => egw::link('/index.php',array('menuaction'=>'admin.uiconfig.index','appname'=>'felamimail'),'admin'),
+				'eMailAdmin: Profilemanagement' => egw::link('/index.php','menuaction=emailadmin.emailadmin_ui.index','admin'),
 			);
 			display_sidebox($appname,lang('Admin'),$file);
 		}

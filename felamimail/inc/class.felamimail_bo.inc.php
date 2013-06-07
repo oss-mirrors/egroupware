@@ -3563,6 +3563,10 @@ class felamimail_bo
 		if($_htmlOptions != '') {
 			$this->htmlOptions = $_htmlOptions;
 		}
+		if ($_folder=='')
+		{
+			$_folder = $this->sessionData['mailbox'];
+		}
 		if(is_object($_structure)) {
 			$structure = $_structure;
 		} else {
@@ -3577,10 +3581,10 @@ class felamimail_bo
 		{
 			$summary = egw_cache::getCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
 			$cachemodified = false;
-			if (isset($summary[$this->icServer->ImapServerId][$this->sessionData['mailbox']][$_uid]))
+			if (isset($summary[$this->icServer->ImapServerId][$_folder][$_uid]))
 			{
 				$cachemodified = true;
-				unset($summary[$this->icServer->ImapServerId][$this->sessionData['mailbox']][$_uid]);
+				unset($summary[$this->icServer->ImapServerId][$_folder][$_uid]);
 			}
 			if ($cachemodified)
 			{
@@ -3649,7 +3653,7 @@ class felamimail_bo
 					case 'RFC822':
 						$newStructure = array_shift($structure->subParts);
 						if (self::$debug) {echo __METHOD__." Message -> RFC -> NewStructure:"; _debug_array($newStructure);}
-						return self::normalizeBodyParts($this->getMessageBody($_uid, $_htmlOptions, $newStructure->partID, $newStructure));
+						return self::normalizeBodyParts($this->getMessageBody($_uid, $_htmlOptions, $newStructure->partID, $newStructure, $_preserveSeen, $_folder));
 						break;
 				}
 				break;
