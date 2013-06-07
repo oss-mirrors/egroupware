@@ -1331,6 +1331,7 @@ class felamimail_bo
 		$_uids = explode(',', $queryString);
 		$uidsCached = (is_array($summary[$this->icServer->ImapServerId][$_folder])?array_keys($summary[$this->icServer->ImapServerId][$_folder]):array());
 		$toFetch = array_diff($_uids,(array)$uidsCached);
+		$saveNeeded = false;
 		if (!empty($toFetch))
 		{
 			error_log(__METHOD__.__LINE__.':UserID:'.$GLOBALS['egw_info']['user']['account_id'].':ServerID:'.$this->icServer->ImapServerId.'::'.' fetch Summary for Headers in Folder:'.$_folder.' with:'.implode(',',$toFetch));
@@ -1339,6 +1340,7 @@ class felamimail_bo
 			{
 				$summary[$this->icServer->ImapServerId][$_folder][$sum['UID']]=$sum;
 			}
+			$saveNeeded = true;
 		}
 		foreach ($_uids as $_uid)
 		{
@@ -1361,9 +1363,10 @@ class felamimail_bo
 				$result = $this->icServer->getSummary($_uid, $byUid);
 				$summary[$this->icServer->ImapServerId][$_folder][$_uid] = $result[0];
 				$rv[] = $summary[$this->icServer->ImapServerId][$_folder][$_uid];
+				$saveNeeded = true;
 			}
 		}
-		egw_cache::setCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$summary,$expiration=60*60*1);
+		if ($saveNeeded ) egw_cache::setCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$summary,$expiration=60*60*1);
 		//error_log(__METHOD__.__LINE__.' Using query for summary on Server:'.$this->icServer->ImapServerId.' for uid:'.$_uid." in Folder:".$_folder.'->'.array2string($structure[$this->icServer->ImapServerId][$_folder][$_uid]));
 		return $rv;
 	}
