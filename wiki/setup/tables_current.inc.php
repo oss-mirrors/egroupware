@@ -30,10 +30,10 @@ $phpgw_baseline = array(
 			'wiki_name' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
 			'wiki_lang' => array('type' => 'varchar','precision' => '5','nullable' => False,'default' => ''),
 			'wiki_version' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '1'),
-			'wiki_time' => array('type' => 'int','precision' => '4'),
+			'wiki_time' => array('type' => 'int','meta' => 'timestamp','precision' => '4'),
 			'wiki_supercede' => array('type' => 'int','precision' => '4'),
-			'wiki_readable' => array('type' => 'varchar','precision' => '255','nullable' => False,'default' => ',_0'),
-			'wiki_writable' => array('type' => 'varchar','precision' => '255','nullable' => False,'default' => ',_0'),
+			'wiki_readable' => array('type' => 'varchar','meta' => 'group-commasep','precision' => '255','nullable' => False,'default' => ',_0'),
+			'wiki_writable' => array('type' => 'varchar','meta' => 'group-commasep','precision' => '255','nullable' => False,'default' => ',_0'),
 			'wiki_username' => array('type' => 'varchar','precision' => '80'),
 			'wiki_hostname' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
 			'wiki_comment' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
@@ -42,13 +42,13 @@ $phpgw_baseline = array(
 		),
 		'pk' => array('wiki_id','wiki_name','wiki_lang','wiki_version'),
 		'fk' => array(),
-		'ix' => array('wiki_title',array('wiki_body','options' => array('mysql' => 'FULLTEXT','mssql' => '','pgsql' => '','maxdb' => '','sapdb' => ''))),
+		'ix' => array('wiki_title',array('wiki_body','options' => array('mysql' => 'FULLTEXT','  mssql' => '','  pgsql' => '','  maxdb' => '','  sapdb' => ''))),
 		'uc' => array()
 	),
 	'egw_wiki_rate' => array(
 		'fd' => array(
 			'wiki_rate_ip' => array('type' => 'char','precision' => '20','nullable' => False,'default' => ''),
-			'wiki_rate_time' => array('type' => 'int','precision' => '4'),
+			'wiki_rate_time' => array('type' => 'int','meta' => 'timestamp','precision' => '4'),
 			'wiki_rate_viewLimit' => array('type' => 'int','precision' => '2'),
 			'wiki_rate_searchLimit' => array('type' => 'int','precision' => '2'),
 			'wiki_rate_editLimit' => array('type' => 'int','precision' => '2')
