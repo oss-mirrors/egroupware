@@ -1,19 +1,20 @@
-(don't offer the possibility)	admin	ru	(возможность не предлагать)
+(don't offer the possibility)	admin	ru	Не предлагать возможность
 <em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	ru	<em>Но</em> отображать минимум это множество записей в НедавниеИзменения и в других списках подписки
 add document to category	wiki	ru	Добавить документ в категорию
 added	wiki	ru	Добавлено
 administration features are disabled for this wiki.	wiki	ru	Административные настройки в этом Вики отключены
-admins	wiki	ru	администраторы
-after how many days should old versions of a page be removed (0 for never)	admin	ru	Через сколько дней старые версии страницы должны быть удалены (0, если никогда)
-allow anonymous access	admin	ru	разрешить анонимный доступ
-anonymous password	admin	ru	пароль анонимного пользователя пользователя
+admins	wiki	ru	Администраторы
+after how many days should old versions of a page be removed (0 for never)	admin	ru	Через сколько дней старые версии страницы должны быть удалены (0 = никогда)
+allow anonymous access	admin	ru	Разрешить анонимный доступ
+anonymous password	admin	ru	Пароль анонимного пользователя
 anonymous session type	admin	ru	Тип анонимного сеанса
-anonymous username	admin	ru	имя анонимного пользователя
+anonymous username	admin	ru	Имя анонимного пользователя
 automatically convert pages with wiki-syntax to richtext (if edited)?	admin	ru	Автоматически конвертирует страницы из синтаксиса Вики в richtext (если отредактированно)?
 block	wiki	ru	Заблокировать
 block / unblock hosts	common	ru	Блокировать/Разблоктровать хосты
 blocked ip address ranges	wiki	ru	Диапазон заблокированных адресов IP
 cancel without saving	wiki	ru	Отменить без сохранения
+change notification	wiki	ru	Изменить уведомление
 changed	wiki	ru	Изменено
 changes by last author	wiki	ru	Изменено последним автором
 choose your current time here, so the server may figure out what time zone you are in.	wiki	ru	Выберите здесь свое текущее время чтобы сервер мог выяснить в какой Вы временной зоне.
@@ -21,6 +22,10 @@ columns	wiki	ru	Колонки
 compute difference	wiki	ru	Вычислить Разницу
 converts the page to richtext	wiki	ru	Конвертировать страницы в richtext
 current version	wiki	ru	Текущая Версия
+default read permission	wiki	ru	Право чтения по умолчанию
+default read permissions for creating a new page	preferences	ru	Право чтения при создании новой страницы
+default write permission	preferences	ru	Право записи
+default write permissions for creating a new page	preferences	ru	Право записи при создании новой страницы
 deleted	wiki	ru	Удалено
 deletes this page	wiki	ru	Удаляет эту страницу
 difference between versions	wiki	ru	Различия между версиями
@@ -47,12 +52,16 @@ history	wiki	ru	история
 history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	ru	Страница истории должен отображать <em>все</em> изменения, сделанные последним редактором. В противном случае будет отображаться только последнее изменение.
 history lists	wiki	ru	Список истории
 history of	wiki	ru	История
+if a page i have read access to is changed, send a notification	wiki	ru	Уведомлять если изменена страница, к которой я имею доступ на чтение
+if a page i have write access to is changed, send a notification	wiki	ru	Уведомлять если изменена страница, к которой я имею доступ на запись
+if a page title matches this regular expression, send a notification.  you can look at title, name, lang, text using name: regex	wiki	ru	Уведомлять, если заголовок страницы соответствует регулярному выражению. Поиск по заголовку, имени, языку, тексту используя name:pattern<br />Примеры:<br />Совпадение имени: "name: Manual" соответствует каждой странице со словом Manual в имени. "name: ^Manual" соответствует каждой странице у которой имя <em>начинается</em> со слова Manual, но не OperationsManual. "name: InfoLog|Addressbook" соответствует любой странице имя которой содержит InfoLog или Addressbook. <br />Совпадение языка: "lang: en|de" соответствует английской и немецкой страницам.<br />Расширенные регулярные выражения: "text: \b(word1|word2|word3)(?:\W+\w+){1,6}?\W+(word1|word2|word3)\b" соответствует любой странице в которой любые из трёх слов разделены на количество слов от 1 до 6 .
 interwikiprefix	admin	ru	InterWikiPrefix
-invalid page name.	wiki	ru	Неверное имя страницы.
+invalid page name.	wiki	ru	Неверное имя страницы!
 load	wiki	ru	Загрузить
-loads the named page in the given language, all change so far get lost !!!	wiki	ru	Заргужает именованную страницу на данном языке, все изменения будут потеряны !!!
+loads the named page in the given language, all change so far get lost !!!	wiki	ru	Заргужает именованную страницу на данном языке, все изменения будут потеряны!
 lock / unlock pages	common	ru	Блокировать/Разблокировать Страницы
 locked	wiki	ru	Заблокировано
+message to send	wiki	ru	Отправить сообщение
 name wiki home link	admin	ru	Назовите ссылку на домашнюю страницу Вики
 newer	wiki	ru	Новее
 no never	admin	ru	Не никогда
@@ -64,17 +73,22 @@ only if browser supports a richtext-editor	admin	ru	только если бра
 only on the first page	wiki	ru	только на первой странице
 page '%1' not found !!!	wiki	ru	Страница '%1' не найдена !!!
 page content	wiki	ru	Содержимое страницы
+pages i have read access	wiki	ru	Страницы к которым я имею доступ на чтение
+pages i have write access	wiki	ru	Страницы к которым я имею доступ на запись
+pages that match this regular expression	wiki	ru	Страницы соответствующие регулярному выражению
 path of the upload directory (has to be writable by the webserver!)	admin	ru	Путь к каталогу выгрузки (должен быть доступен на запись веб-сервром!)
+person who changed the page	wiki	ru	Кто изменил страницу
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	ru	Выгрузка изображения с помощью редактора richtext (оставить каталог выгрузки незаполненным чтобы отключить выгрузку)
 please contact the %1administrator%2 for assistance.	wiki	ru	Пожалуйста, обратитесь к %1Администратору%2 для помощи.
 preview	wiki	ru	Предварительный просмотр
 preview of current version	wiki	ru	Предварительный просмотр текущей версии
-rate control / ip blocking disabled	wiki	ru	Контроль норм/блокировка IP неактивны
+rate control / ip blocking disabled	wiki	ru	Контроль рейтинга/блокировка IP неактивны
 readable by	wiki	ru	Чтение доступно для
-readonly	admin	ru	только для чтения
+readonly	admin	ru	Только для чтения
+rebuild links	wiki	ru	Ссылки пересборки
 recent changes	wiki	ru	Последние Изменения
 renames page to the given name and language	wiki	ru	Переименовывает страницу в данное имя и язык
-richtext	wiki	ru	Richtext
+richtext	wiki	ru	Простой текст
 rows	wiki	ru	Ряды
 save the changes and exit	wiki	ru	сохранить изенения и выйти
 saves and continues editing	wiki	ru	Сохранить и продолжить редактирование
@@ -95,8 +109,8 @@ users	wiki	ru	пользователи
 view document history	wiki	ru	Посмотреть историю документа
 visit %1 to set your user name	wiki	ru	Посетить %1 для установки вашего имени пользователя
 warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	ru	Внимание: с тех пор, как Вы начали редактирование, этот документ был изменен еще кем то. Пожалуйста, объедините ваши изменения в текущей версии документа.
-who should be able to edit this page	wiki	ru	кто может редактировать эту страницу
-who should be able to read this page	wiki	ru	кто может получить читать эту страницу
+who should be able to edit this page	wiki	ru	Кто может редактировать эту страницу
+who should be able to read this page	wiki	ru	Кто может получить читать эту страницу
 wiki	common	ru	Вики
 wiki administration	wiki	ru	Администрация Вики
 wiki menu	wiki	ru	Меню Вики
@@ -107,6 +121,6 @@ yes with navbar	admin	ru	Да с панелью навигации
 you have been denied access to this site.	wiki	ru	Вам запрещен доступ к этому сайту
 you have entered an invalid user name.	wiki	ru	Вы ввели неверное имя пользователя
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	ru	Вы превысили лимит количество страниц, которое Вам разрешено посетить за указанный период времени. Пожалуйста, вернитесь позже.
-you have no rights to view wiki content !!!	wiki	ru	У вас нет доступа к просмотру содержания Вики !!!
+you have no rights to view wiki content !!!	wiki	ru	У вас нет доступа к просмотру содержания Вики!
 your changes	wiki	ru	Ваши изменения
 your user name is "%1".	wiki	ru	Ваша имя пользователя "%1"

@@ -12,10 +12,10 @@ new account defaults	admin	ru	Новые умолчания учетных за�
 participants	sambaadmin	ru	Подписчики
 path to mkntpwd	admin	ru	Путь к mkntpwd
 profilepath	admin	ru	Путь к профилю
-samba config	sambaadmin	ru	Конфигурирование Самбы
-samba settings	common	ru	Настройки Самбы
-samba sid	admin	ru	SID Самбы
-sambaadmin	common	ru	Администрирование Самбы
+samba config	sambaadmin	ru	Конфигурирование Samba
+samba settings	common	ru	Настройки Samba
+samba sid	admin	ru	SID Samba
+sambaadmin	common	ru	Samba админ
 smb homepath	admin	ru	Путь к домашней папке Smb
 workstation account for	sambaadmin	ru	Учетная запись рабочей станции для
 workstation configuration	sambaadmin	ru	Конфигурирование рабочей станции
