@@ -49,6 +49,7 @@ before headers	felamimail	it	Prima degli header
 between headers and message body	felamimail	it	Tra gli header e il corpo del messaggio
 body part	felamimail	it	body part
 by date	felamimail	it	Per data
+can not open imap connection	felamimail	it	Impossibile aprire la connessione IMAP
 can not send message. no recipient defined!	felamimail	it	Non posso inviare il messaggio. Non hai specificato il destinatario!
 can't connect to inbox!!	felamimail	it	non riesco a connettermi alla INBOX !!
 cc	felamimail	it	CC
@@ -189,6 +190,7 @@ error: could not save message as draft	felamimail	it	Errore: Il messaggio non pu
 error: could not save rule	felamimail	it	Errore: la regola non può essere salvata
 error: could not send message.	felamimail	it	Errore: il messaggio non può essere inviato
 error: message could not be displayed.	felamimail	it	Errore: il messaggio non può essere visualizzato
+esync will fail without a working email configuration!	felamimail	it	eSync non funzionerà senza una configurazione esistente corretta di eMail.
 event details follow	felamimail	it	Seguono dettagli dell'evento
 every	felamimail	it	ogni
 every %1 days	felamimail	it	ogni %1 giorni
@@ -359,6 +361,7 @@ no stationery	felamimail	it	Nessun modello!
 no subject given!	felamimail	it	Nessun oggetto!
 no supported imap authentication method could be found.	felamimail	it	Non è stato trovato alcun metodo valido di autenticazione IMAP
 no text body supplied, check attachments for message text	felamimail	it	Nessun corpo nel messaggio, controlla l'allegato per il testo del messaggio
+no valid %1 folder configured!	felamimail	it	La %1 non è una cartella valida!
 no valid data to create mailprofile!!	felamimail	it	Dati non validi per la creazione di un profilo email!
 no valid emailprofile selected!!	felamimail	it	Nessun Profilo E-Mail valido selezionato!!
 none	felamimail	it	nessuno
@@ -497,7 +500,6 @@ test connection	felamimail	it	Prova connessione attiva
 test connection and display basic information about the selected profile	felamimail	it	Prova connessione e mostra informazioni di base sul profilo selezionato
 text only	felamimail	it	Solo testo
 text/plain	felamimail	it	Text/plain
-the action will be applied to all messages of the current folder.ndo you want to proceed?	felamimail	it	L'azione verrà applicata a tutti i messaggi della cartella corrente.\nVuoi procedere?
 the connection to the imap server failed!!	felamimail	it	La connessione al server IMAP è fallita!!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	it	Il server IMAP sembra non supportare il metodo di autenticazione scelto. Contattare l'amministratore di sistema.
 the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	it	Il mittente ha richiesto la ricevuta di lettura. Inviarla?
