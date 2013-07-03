@@ -5,6 +5,7 @@
 	* http://www.phpgw.de                                                       *
 	* http://www.egroupware.org                                                 *
 	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
+	* Written by : Hadi Nategh [hn@stylite.de]				                    *
 	* -------------------------------------------------                         *
 	* This program is free software; you can redistribute it and/or modify it   *
 	* under the terms of the GNU General Public License as published by the     *

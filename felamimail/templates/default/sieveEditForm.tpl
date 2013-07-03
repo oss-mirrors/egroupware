@@ -69,7 +69,7 @@ function SubmitForm(a)
 						{lang_if_mail_header}
 					</td>
 					<td>
-						<input class="input_text" TYPE="text" NAME="field" SIZE="20" value="{value_field}"> 
+						<input class="input_text" TYPE="text" NAME="field" SIZE="20" value="{value_field}">
 						{lang_contains}<sup><small>(*)</small></sup>
 						<input class="input_text" TYPE="text" NAME="field_val" SIZE="30" value="{value_field_val}">
 					</td>
@@ -92,10 +92,10 @@ function SubmitForm(a)
 					<td>
 						{ctype_select}
 						/
-						<input class="input_text" placeholder="{lang_placeholder_ctype_val}" TYPE="text" NAME="field_ctype_val" SIZE="20" value="{value_ctype_val}"> 
+						<input class="input_text" placeholder="{lang_placeholder_ctype_val}" TYPE="text" NAME="field_ctype_val" SIZE="20" value="{value_ctype_val}">
 					</td>
 				</tr>
-				<!-- END BodyTransform --> 
+				<!-- END BodyTransform -->
 			</table>
 (*) <small>{lang_wildcards_can_be_used}</small>
 	</fieldset>

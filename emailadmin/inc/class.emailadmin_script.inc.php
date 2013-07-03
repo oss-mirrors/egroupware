@@ -7,6 +7,7 @@
  * @link http://www.egroupware.org
  * @package emailadmin
  * @author Stephen Grier <stephengrier@users.sourceforge.net>
+ * @author Hadi Nategh	<hn@stylite.de>
  * @copyright 2002 by Stephen Grier <stephengrier@users.sourceforge.net>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
