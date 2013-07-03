@@ -60,7 +60,7 @@
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
 
 			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
- 			$this->botranslation	=& $GLOBALS['egw']->translation;
+			$this->botranslation	=& $GLOBALS['egw']->translation;
 
 			$profileID = 0;
 			if (isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID']))
@@ -331,8 +331,13 @@
 			$msg = html::purify($msg);
 			// initialize the template
 			$this->t->set_file(array("filterForm" => "sieveEditForm.tpl"));
+			$this->t->set_block('filterForm','BodyTransform');
+			$this->t->set_var('ctype_select', html::select('ctype', $_ruleData['ctype'], emailadmin_script::$btransform_ctype_array,true));
+			$this->t->set_var('bodytransform_select', html::select('bodytransform', $_ruleData['bodytransform'], array("raw", "text",),true));
 			$this->t->set_block('filterForm','main');
 			$this->t->set_var('message',$msg);
+			$objSieve = new emailadmin_sieve($this->bosieve);
+			if (!in_array('body', $objSieve->_capability['extensions']) && !in_array('BODY', $objSieve->_capability['extensions'])) $this->t->set_var('BodyTransform','');
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uisieve.editRule',
@@ -362,6 +367,8 @@
 				$this->t->set_var('value_subject',htmlspecialchars($_ruleData['subject'], ENT_QUOTES, $GLOBALS['egw']->translation->charset()));
 				$this->t->set_var('gthan_selected'.intval($_ruleData['gthan']),'selected');
 				$this->t->set_var('value_size',$_ruleData['size']);
+				$this->t->set_var('value_field_bodytransform',htmlspecialchars($_ruleData['field_bodytransform'], ENT_QUOTES, $GLOBALS['egw']->translation->charset()));
+				$this->t->set_var('value_ctype_val',htmlspecialchars($_ruleData['field_ctype_val'], ENT_QUOTES, $GLOBALS['egw']->translation->charset()));
 				$this->t->set_var('value_field',htmlspecialchars($_ruleData['field'], ENT_QUOTES, $GLOBALS['egw']->translation->charset()));
 				$this->t->set_var('value_field_val',htmlspecialchars($_ruleData['field_val'], ENT_QUOTES, $GLOBALS['egw']->translation->charset()));
 				$this->t->set_var('checked_action_'.$_ruleData['action'],'checked');
@@ -423,6 +430,11 @@
 				$newRule['size']	= intval(get_var('size',array('POST')));
 				$newRule['continue']	= get_var('continue',array('POST'));
 				$newRule['gthan']	= intval(get_var('gthan',array('POST')));
+				$newRule['bodytransform']	= intval(get_var('bodytransform',array('POST')));
+				$newRule['field_bodytransform']	= get_var('field_bodytransform',array('POST'));
+				$newRule['ctype']	= intval(get_var('ctype',array('POST')));
+				$newRule['field_ctype_val']	= get_var('field_ctype_val',array('POST'));
+				$newRule['ctype']	= intval(get_var('ctype',array('POST')));
 				$newRule['anyof']	= intval(get_var('anyof',array('POST')));
 				$newRule['keep']	= get_var('keep',array('POST'));
 				$newRule['regexp']	= get_var('regexp',array('POST'));
@@ -1048,8 +1060,11 @@
 			$this->t->set_var("lang_if_message_size",lang('if message size'));
 			$this->t->set_var("lang_less_than",lang('less than'));
 			$this->t->set_var("lang_greater_than",lang('greater than'));
+			$this->t->set_var("lang_placeholder_ctype_val",lang('for eg.:mpeg'));
 			$this->t->set_var("lang_kilobytes",lang('kilobytes'));
 			$this->t->set_var("lang_if_mail_header",lang('if mail header'));
+			$this->t->set_var("lang_if_mail_body_transform",lang('if mail body message type'));
+			$this->t->set_var("lang_if_mail_body_content",lang('if mail body content / attachment type'));
 			$this->t->set_var("lang_file_into",lang('file into'));
 			$this->t->set_var("lang_forward_to_address",lang('forward to address'));
 			$this->t->set_var("lang_send_reject_message",lang('send a reject message'));
