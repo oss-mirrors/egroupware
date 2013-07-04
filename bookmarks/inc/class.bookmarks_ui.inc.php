@@ -679,7 +679,7 @@
 				{
 					$send     =& CreateObject('phpgwapi.send');
 
-					$from = $GLOBALS['egw_info']['user']['fullname'] . ' <'.$GLOBALS['egw_info']['user']['email'].'>';
+					$from = $GLOBALS['egw_info']['user']['account_fullname'] . ' <'.$GLOBALS['egw_info']['user']['account_email'].'>';
 
 					// send the message
 					$send->msg('email',$to,$subject,$message ."\n". $this->bo->config['mail_footer'],'','','',$from);
