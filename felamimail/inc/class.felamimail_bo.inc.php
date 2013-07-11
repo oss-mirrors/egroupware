@@ -479,6 +479,8 @@ class felamimail_bo
 		// this section takes care for setting the ActiveProfileID accordingly
 		if (!empty($hook_data) && $hook_data['type']=='user')
 		{
+			if (empty($hook_data['prefs']['ActiveProfileID'])&&!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])) $hook_data['prefs']['ActiveProfileID'] = $GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
+			if (empty($hook_data['prefs']['ActiveProfileID'])) $hook_data['prefs']['ActiveProfileID'] = emailadmin_bo::getUserDefaultProfileID();
 			if (isset($hook_data['prefs']['ActiveProfileID']) && $hook_data['prefs']['ActiveProfileID'] != $GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'])
 			{
 				//error_log(__METHOD__.__LINE__.array2string(array_keys($hook_data['prefs'])));
