@@ -1,7 +1,7 @@
 <!-- BEGIN main -->
 <script language="JavaScript1.2">
 var tab;
-egw.LAB.wait(function() {
+egw_LAB.wait(function() {
 	tab = new Tabs(2,'activetab','inactivetab','tab','tabcontent','','','tabpage');
 	jQuery(document).ready(function(){
 		tab.init();

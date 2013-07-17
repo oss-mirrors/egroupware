@@ -976,7 +976,7 @@ class felamimail_hooks
 							}
 						}
 						var wnd;
-						egw.LAB.wait(function() {
+						egw_LAB.wait(function() {
 							wnd = egw_appWindow('".$appname."');
 							if (wnd && typeof wnd.refreshFolderStatus != 'undefined')
 							{

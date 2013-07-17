@@ -9,7 +9,7 @@ function submitRuleList(action)
 	});
 	document.rulelist.submit();
 }
-egw.LAB.wait(function() {
+egw_LAB.wait(function() {
 	$j(document).ready(function() {
 		$j( "#sortable tbody" ).sortable({
 			start: function(e, ui) {

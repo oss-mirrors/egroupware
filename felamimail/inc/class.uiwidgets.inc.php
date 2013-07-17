@@ -177,7 +177,7 @@ class uiwidgets
 			$folder_tree_new .= "donotclick_folders.push('--topfolder--');";
 			//error_log(__METHOD__.__LINE__.array2string($suFolders));
 			foreach ($suFolders as $suFi => $suFv) $folder_tree_new .= "donotclick_folders.push('$suFv');";
-			$folder_tree_new .= "egw.LAB.wait(function() {";
+			$folder_tree_new .= "egw_LAB.wait(function() {";
 			$folder_tree_new .= "tree=new dhtmlXTreeObject('$_divName','100%','100%',0);";
 			$folder_tree_new .= "tree.parentObject.style.overflow=\"auto\";";
 			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');";

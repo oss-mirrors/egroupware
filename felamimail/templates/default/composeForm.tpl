@@ -52,7 +52,7 @@
 		do_onunload=false;
 		return true;
 	}
-	egw.LAB.wait(function(){fm_startTimerSaveAsDraft(_refreshTimeOut)});
+	egw_LAB.wait(function(){fm_startTimerSaveAsDraft(_refreshTimeOut)});
 </script>
 <center>
 <form method="post" name="doit" action="{link_action}" ENCTYPE="multipart/form-data" onsubmit="return check_data();">
@@ -192,7 +192,7 @@
 <script language="javascript1.2">
 // position cursor in top form field of focusElement
 var toFocus = "{focusElement}";
-egw.LAB.wait(function(){setToFocus(toFocus)});
+egw_LAB.wait(function(){setToFocus(toFocus)});
 
 function setToFocus(focusTo)
 {
