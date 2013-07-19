@@ -419,6 +419,8 @@
 							{
 								$name .= '.'.mime_magic::mime2ext($type);
 							}
+							$path = str_replace('+','%2B',$path);
+							//error_log(__METHOD__.__LINE__.'->'.$path);
 							$formData = array(
 								'name' => $name,
 								'type' => $type,
