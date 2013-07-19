@@ -59,8 +59,10 @@ var refreshTimeOut = {refreshTime};
 //refreshTimeOut = 105001;
 //document.title=refreshTimeOut;
 
-fm_startTimerFolderStatusUpdate(refreshTimeOut);
-fm_startTimerMessageListUpdate(refreshTimeOut);
+egw_LAB.wait(function() {
+	fm_startTimerFolderStatusUpdate(refreshTimeOut);
+	fm_startTimerMessageListUpdate(refreshTimeOut);
+});
 
 </script>
 <div id="divMainView">
