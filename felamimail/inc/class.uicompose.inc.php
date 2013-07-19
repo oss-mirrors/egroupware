@@ -413,19 +413,18 @@
 								!(list($app,$id) = array_slice(explode('/',$path),-3)) ||
 								!($name = egw_link::title($app, $id)))
 							{
-								$name = urldecode(egw_vfs::basename($path));
+								$name = egw_vfs::decodePath(egw_vfs::basename($path));
 							}
 							else
 							{
 								$name .= '.'.mime_magic::mime2ext($type);
 							}
-							$path = str_replace('+','%2B',$path);
 							//error_log(__METHOD__.__LINE__.'->'.$path);
 							$formData = array(
 								'name' => $name,
 								'type' => $type,
-								'file' => urldecode($path),
-								'size' => filesize(urldecode($path)),
+								'file' => egw_vfs::decodePath($path),
+								'size' => filesize(egw_vfs::decodePath($path)),
 							);
 							if ($formData['type'] == egw_vfs::DIR_MIME_TYPE) continue;	// ignore directories
 						}
