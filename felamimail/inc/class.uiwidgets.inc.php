@@ -724,6 +724,7 @@ class uiwidgets
 			$js = '<script type="text/javascript">
 if (typeof mailGrid == "undefined") var mailGrid = null;
 $j(document).ready(function() {
+egw_LAB.wait(function() {
 	// Cleanup any old instance
 	mail_cleanup();
 
@@ -780,6 +781,7 @@ $j(document).ready(function() {
 
 	// Enable drag_drop for the folder tree (is also called whenever the foldertree gets refreshed)
 	felamimail_transform_foldertree();
+});
 });
 </script>	';
 			//error_log(__METHOD__.__LINE__.' Rows fetched:'.$rowsFetched);
