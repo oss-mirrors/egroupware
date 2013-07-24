@@ -14,6 +14,7 @@
  * There are no other restrictions on the form of the login name, password, and timestamp.
  *
  * If the password is unacceptable, checkpassword exits 1. If checkpassword is misused, it may instead exit 2.
+ * If user is not found, checkpassword exits 3.
  * If there is a temporary problem checking the password, checkpassword exits 111.
  *
  * If the password is acceptable, checkpassword runs prog. prog consists of one or more arguments.
@@ -191,7 +192,7 @@ $entries = ldap_get_entries($ds, $sr);
 if (!$entries['count'])
 {
 	if ($log_verbose) error_log("User '$username' NOT found!");
-	exit(1);
+	exit(3);
 }
 
 if ($entries['count'] > 1)
