@@ -668,7 +668,7 @@ class felamimail_bo
 
 	function closeConnection() {
 		//if ($icServer->_connected) error_log(__METHOD__.__LINE__.' disconnect from Server');
-		if ($icServer->_connected) $this->icServer->disconnect();
+		if ($this->icServer->_connected) $this->icServer->disconnect();
 	}
 
 	/**
