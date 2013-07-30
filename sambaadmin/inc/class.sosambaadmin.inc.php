@@ -524,9 +524,9 @@
 
 			if(@ldap_mod_replace ($ldap, $accountDN, $newData))
 			{
-				if(isset($_accountData['password']))
+				if(isset($_accountData['account_password']))
 				{
-					return $this->changePassword($_accountID,$_accountData['password']);
+					return $this->changePassword($_accountID,$_accountData['account_password']);
 				}
 				return true;
 			}

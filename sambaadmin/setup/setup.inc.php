@@ -32,8 +32,8 @@ $setup_info['sambaadmin']['index']     = 'sambaadmin.uisambaadmin.listWorkstatio
 #$setup_info['sambaadmin']['hooks'][]	= 'preferences';
 $setup_info['sambaadmin']['hooks'][]	= 'edit_user';
 $setup_info['sambaadmin']['hooks'][]	= 'admin';
-$setup_info['sambaadmin']['hooks'][]	= 'changepassword';
 
+$setup_info['sambaadmin']['hooks']['changepassword']= 'sambaadmin.bosambaadmin.changePassword';
 $setup_info['sambaadmin']['hooks']['addaccount']	= 'sambaadmin.bosambaadmin.updateAccount';
 $setup_info['sambaadmin']['hooks']['editaccount']	= 'sambaadmin.bosambaadmin.updateAccount';
 $setup_info['sambaadmin']['hooks']['addgroup']		= 'sambaadmin.bosambaadmin.updateGroup';

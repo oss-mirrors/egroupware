@@ -16,39 +16,40 @@
 	{
 		var $sessionData;
 		var $LDAPData;
+		/**
+		 * @var sosambaadmin
+		 */
+		var $sosambaadmin;
 
-		function bosambaadmin()
+		function __construct()
 		{
-			#
+			$this->sosambaadmin = CreateObject('sambaadmin.sosambaadmin');
 
-			$this->sosambaadmin =& CreateObject('sambaadmin.sosambaadmin');
-			
 			$this->restoreSessionData();
-
 		}
 
 		function checkLDAPSetup()
 		{
 			return $this->sosambaadmin->checkLDAPSetup();
 		}
-		
-		function changePassword($_accountID, $_newPassword)
+
+		function changePassword($_data)
 		{
 			if (!$GLOBALS['egw_info']['server']['ldap_host']) return false;
 
-			return $this->sosambaadmin->changePassword($_accountID, $_newPassword);
+			return $this->sosambaadmin->changePassword($_data['account_id'], $_data['new_passwd']);
 		}
-		
+
 		function deleteWorkstation($_workstations)
 		{
 			return $this->sosambaadmin->deleteWorkstation($_workstations);
 		}
-		
+
 		function expirePassword($_accountID)
 		{
 			return $this->sosambaadmin->expirePassword($_accountID);
 		}
-		
+
 		function getUserData($_accountID, $_usecache)
 		{
 			if ($_usecache)
@@ -68,7 +69,7 @@
 		{
 			return $this->sosambaadmin->getWorkstationData($_uidnumber);
 		}
-		
+
 		function getWorkstationList($_start, $_sort, $_order, $_searchString)
 		{
 			return $this->sosambaadmin->getWorkstationList($_start, $_sort, $_order, $_searchString);
@@ -79,72 +80,62 @@
 			$this->sessionData = $GLOBALS['egw']->session->appsession('session_data');
 			$this->userSessionData = $GLOBALS['egw']->session->appsession('user_session_data');
 		}
-		
+
 		function saveSessionData()
 		{
 			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
 			$GLOBALS['egw']->session->appsession('user_session_data','',$this->userSessionData);
 		}
-		
+
 		function saveUserData($_accountID, $_formData)
 		{
 			return $this->sosambaadmin->saveUserData($_accountID, $_formData);
 		}
 
-		function updateAccount()
+		function updateAccount($accountData)
 		{
 			if (!$GLOBALS['egw_info']['server']['ldap_host']) return false;
 
-			if($accountID = (int)$GLOBALS['hook_values']['account_id'])
+			if(($accountID = (int)$accountData['account_id']))
 			{
-				$config =& CreateObject('phpgwapi.config','sambaadmin');
-				$config->read_repository();
-				$config = $config->config_data;
+				$config = config::read('sambaadmin');
 
 				$oldAccountData = $this->getUserData($accountID,false);
 
 				// account_status
-				$accountData = array();
-				if($GLOBALS['hook_values']['new_passwd'])
-				{
-					$accountData['password']	= $GLOBALS['hook_values']['new_passwd'];
-				}
 				if(!$oldAccountData['sambahomedrive'] && $config['samba_homedrive'])
 					$accountData['sambahomedrive']		= $config['samba_homedrive'];
 				if(!$oldAccountData['sambahomepath'] && $config['samba_homepath'])
-					$accountData['sambahomepath']		= $config['samba_homepath'].$GLOBALS['hook_values']['account_lid'];
+					$accountData['sambahomepath']		= $config['samba_homepath'].$accountData['account_lid'];
 				if(!$oldAccountData['sambalogonscript'] && $config['samba_logonscript'])
 					$accountData['sambalogonscript']	= $config['samba_logonscript'];
 				if(!$oldAccountData['sambaprofilepath'] && $config['samba_profilepath'])
-					$accountData['sambaprofilepath']	= $config['samba_profilepath'].$GLOBALS['hook_values']['account_lid'];
-				$accountData['status']				= ($GLOBALS['hook_values']['account_status'] == 'A' ? 'activated' : 'deactivated');
-
-				return $this->sosambaadmin->saveUserData($accountID, $accountData);
+					$accountData['sambaprofilepath']	= $config['samba_profilepath'].$accountData['account_lid'];
 			}
+			$accountData['status']				= $accountData['account_status'] == 'A' ? 'activated' : 'deactivated';
 
-			// something went wrong
-			return false;
+			return $this->sosambaadmin->saveUserData($accountID, $accountData);
 		}
 
-		function updateGroup()
+		function updateGroup($data)
 		{
 			if (!$GLOBALS['egw_info']['server']['ldap_host']) return false;
 
-			if($accountID = (int)$GLOBALS['hook_values']['account_id'])
+			if($accountID = (int)$data['account_id'])
 			{
 				return $this->sosambaadmin->updateGroup($accountID);
 			}
 			return false;
 		}
-				
+
 		function updateWorkstation($_newData)
 		{
 			if(!$this->verifyData($_newData))
 				return false;
-				
+
 			return $this->sosambaadmin->updateWorkstation($_newData);
 		}
-		
+
 		function verifyData($_newData)
 		{
 			return true;
