@@ -254,12 +254,22 @@ class felamimail_bo
 			}
 			else
 			{
-				$loadfailed=true;
+				// first try reloading without restore
+				if ($_restoreSession==true) self::$instances[$_profileID] = new felamimail_bo('utf-8',false,$_profileID);
+				if (!self::$instances[$_profileID]->mailPreferences) {
+					error_log(__METHOD__.__LINE__.' something wrong:'.array2string($_restoreSession).' mailPreferences could not be loaded!');
+					$loadfailed=true;
+				}
 			}
-			if ($_profileID>0 && empty(self::$instances[$_profileID]->icServer->host))
+			if ($_profileID>0 && empty(self::$instances[$_profileID]->icServer->host) && $loadfailed==false)
 			{
-				$_profileID = emailadmin_bo::getUserDefaultProfileID();
-				$loadfailed=true;
+				if ($_restoreSession==true) self::$instances[$_profileID] = new felamimail_bo('utf-8',false,$_profileID);
+				if (empty(self::$instances[$_profileID]->icServer->host))
+				{
+					error_log(__METHOD__.__LINE__.' something critically wrong for '.$_profileID.' RestoreSession:'.array2string($_restoreSession).'->'.array2string(self::$instances[$_profileID]->icServer).' No Server host set!');
+					$_profileID = emailadmin_bo::getUserDefaultProfileID();
+					$loadfailed=true;
+				}
 			}
 			if ($loadfailed)
 			{
