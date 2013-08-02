@@ -257,7 +257,7 @@ class felamimail_bo
 				// first try reloading without restore
 				if ($_restoreSession==true) self::$instances[$_profileID] = new felamimail_bo('utf-8',false,$_profileID);
 				if (!self::$instances[$_profileID]->mailPreferences) {
-					error_log(__METHOD__.__LINE__.' something wrong:'.array2string($_restoreSession).' mailPreferences could not be loaded!');
+					if (self::$debug) error_log(__METHOD__.__LINE__.' something wrong:'.array2string($_restoreSession).' mailPreferences could not be loaded!');
 					$loadfailed=true;
 				}
 			}
@@ -266,14 +266,14 @@ class felamimail_bo
 				if ($_restoreSession==true) self::$instances[$_profileID] = new felamimail_bo('utf-8',false,$_profileID);
 				if (empty(self::$instances[$_profileID]->icServer->host))
 				{
-					error_log(__METHOD__.__LINE__.' something critically wrong for '.$_profileID.' RestoreSession:'.array2string($_restoreSession).'->'.array2string(self::$instances[$_profileID]->icServer).' No Server host set!');
+					if (self::$debug) error_log(__METHOD__.__LINE__.' something critically wrong for '.$_profileID.' RestoreSession:'.array2string($_restoreSession).'->'.array2string(self::$instances[$_profileID]->icServer).' No Server host set!');
 					$_profileID = emailadmin_bo::getUserDefaultProfileID();
 					$loadfailed=true;
 				}
 			}
 			if ($loadfailed)
 			{
-				error_log(__METHOD__.__LINE__." ReRead of the Prefs for ProfileID ".$_profileID.' failed for icServer; trigger new instance. called from:'.function_backtrace());
+				if (self::$debug) error_log(__METHOD__.__LINE__." ReRead of the Prefs for ProfileID ".$_profileID.' failed for icServer; trigger new instance. called from:'.function_backtrace());
 				// restore session seems to provide an incomplete session
 				self::$instances[$_profileID] = new felamimail_bo('utf-8',false,$_profileID);
 			}
