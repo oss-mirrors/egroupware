@@ -1414,6 +1414,7 @@ class felamimail_bo
 
 		if($_partID != 1) {
 			foreach($imapPartIDs as $imapPartID) {
+				$filename = '';
 				if(!empty($tempID)) {
 					$tempID .= '.';
 				}
@@ -1428,7 +1429,14 @@ class felamimail_bo
 				    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'RELATED' ||
 				    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT'))
 				{
+					if (!isset($structure->subParts[$tempID]->subParts[$tempID]->filename) &&
+						!isset($structure->subParts[$tempID]->subParts[$tempID]->parameters['NAME']) &&
+						(isset($structure->subParts[$tempID]->filename) || isset($structure->subParts[$tempID]->parameters['NAME']))
+					) {
+						$filename = ($structure->subParts[$tempID]->filename&&$structure->subParts[$tempID]->filename!='NIL'?$structure->subParts[$tempID]->filename:($structure->subParts[$tempID]->parameters['NAME']?$structure->subParts[$tempID]->parameters['NAME']:''));
+					}
 					$structure = $structure->subParts[$tempID]->subParts[$tempID];
+					if (!empty($filename)) $structure->filename=$filename;
 				} else {
 					$structure = $structure->subParts[$tempID];
 				}
@@ -1437,6 +1445,7 @@ class felamimail_bo
 
 		if($structure->partID != $_partID) {
 			foreach($imapPartIDs as $imapPartID) {
+				$filename = '';
 				if(!empty($tempID)) {
 					$tempID .= '.';
 				}
@@ -1449,8 +1458,16 @@ class felamimail_bo
 				   ($structure->subParts[$tempID]->subParts[$tempID]->subType == 'MIXED' ||
 				    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'ALTERNATIVE' ||
 				    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'RELATED' ||
-				    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT')) {
+				    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT'))
+				{
+					if (!isset($structure->subParts[$tempID]->subParts[$tempID]->filename) &&
+						!isset($structure->subParts[$tempID]->subParts[$tempID]->parameters['NAME']) &&
+						(isset($structure->subParts[$tempID]->filename) || isset($structure->subParts[$tempID]->parameters['NAME']))
+					) {
+						$filename = ($structure->subParts[$tempID]->filename&&$structure->subParts[$tempID]->filename!='NIL'?$structure->subParts[$tempID]->filename:($structure->subParts[$tempID]->parameters['NAME']?$structure->subParts[$tempID]->parameters['NAME']:''));
+					}
 					$structure = $structure->subParts[$tempID]->subParts[$tempID];
+					if (!empty($filename)) $structure->filename=$filename;
 				} else {
 					$structure = $structure->subParts[$tempID];
 				}
@@ -1620,7 +1637,8 @@ class felamimail_bo
 		{
 			$attachment = translation::convert($attachment,$structure->parameters['CHARSET'],self::$displayCharset);
 		}
-
+		$ext = mime_magic::mime2ext($structure->type .'/'. $structure->subType);
+		if ($ext && stripos($filename,'.')===false && stripos($filename,$ext)===false) $filename = trim($filename).'.'.$ext;
 		$attachmentData = array(
 			'type'		=> $structure->type .'/'. $structure->subType,
 			'filename'	=> $filename,
@@ -1632,6 +1650,8 @@ class felamimail_bo
 		if ( $filename == 'winmail.dat' && $_winmail_nr > 0 &&
 			( $wmattach = $this->decode_winmail( $_uid, $_partID, $_winmail_nr ) ) )
 		{
+			$ext = mime_magic::mime2ext($wmattach['type']);
+			if ($ext && stripos($wmattach['name'],'.')===false && stripos($wmattach['name'],$ext)===false) $wmattach['name'] = trim($wmattach['name']).'.'.$ext;
 			$attachmentData = array(
 				'type'       => $wmattach['type'],
 				'filename'   => $wmattach['name'],
@@ -3517,7 +3537,8 @@ class felamimail_bo
 			//error_log(__METHOD__.__LINE__.array2string(substr($structure->parameters['NAME'],0,strlen('data:'))));
 			if (!is_array($structure->parameters['NAME']) && substr($structure->parameters['NAME'],0,strlen('data:'))==='data:') {
 				$namecounter++;
-				return lang("unknown").$namecounter.($structure->subType ? ".".$structure->subType : "");
+				$ext = mime_magic::mime2ext($structure->Type.'/'.$structure->subType);
+				return lang("unknown").$namecounter.($ext?$ext:($structure->subType ? ".".$structure->subType : ""));
 			}
 			if (is_array($structure->parameters['NAME'])) $structure->parameters['NAME'] = implode(' ',$structure->parameters['NAME']);
 			return rawurldecode(self::decode_header($structure->parameters['NAME']));
@@ -3567,7 +3588,8 @@ class felamimail_bo
 				}
 			}
 			$namecounter++;
-			return lang("unknown").$namecounter.($structure->subType ? ".".$structure->subType : "");
+			$ext = mime_magic::mime2ext($structure->Type.'/'.$structure->subType);
+			return lang("unknown").$namecounter.($ext?$ext:($structure->subType ? ".".$structure->subType : ""));
 		}
 	}
 
