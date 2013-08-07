@@ -722,9 +722,9 @@ class uiwidgets
 			//error_log(__METHOD__.__LINE__.array2string(array('Foldertype'=>$foldertype,'Foldername'=>$_folderName,'Offset'=>$offset,'getAllIds'=>$getAllIds)));
 			$action_links=array();
 			$js = '<script type="text/javascript">
-if (typeof mailGrid == "undefined") var mailGrid = null;
-$j(document).ready(function() {
 egw_LAB.wait(function() {
+//if (typeof mailGrid == "undefined") var mailGrid = null;
+$j(document).ready(function() {
 	// Cleanup any old instance
 	mail_cleanup();
 
