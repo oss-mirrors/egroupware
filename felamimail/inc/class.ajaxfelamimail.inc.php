@@ -90,6 +90,7 @@ class ajaxfelamimail
 				if (!empty($imapClassName) && stripos(constant($imapClassName.'::CAPABILITIES'),'lowercaseloginname') !== false) $alllowercase=true;
 				if ($alllowercase) $account['account_lid']=strtolower($account['account_lid']);
 				$isgroup=$account['account_id']<0?constant("$imapClassName::ACL_GROUP_PREFIX"):'';
+				$domainName = $this->bofelamimail->icServer->domainName;
 				if ($this->bofelamimail->icServer->loginType=='standard') // means username
 				{
 					$_accountName = $isgroup.$account['account_lid'];
