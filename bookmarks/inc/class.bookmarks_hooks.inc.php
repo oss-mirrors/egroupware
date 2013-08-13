@@ -29,13 +29,13 @@ class bookmarks_hooks
 			),
 			'view_id'    => 'bm_id',
 			'view_list'	=>	'bookmarks.bookmarks_ui.list',
-			'view_popup'  => '750x300', 
+			'view_popup'  => '750x300',
 			'add' => array(
 				'menuaction' => 'bookmarks.bookmarks_ui.create',
 			),
 			'add_app'    => 'bookmarks',
 			'add_id'     => 'bm_id',
-			'add_popup'  => '750x300', 
+			'add_popup'  => '750x300',
 		);
 	}
 
@@ -67,7 +67,7 @@ class bookmarks_hooks
 		if ($GLOBALS['egw_info']['user']['apps']['preferences'] && $location != 'admin')
 		{
 			$file = array(
-				'Preferences'	=> $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname='.$appname),
+				'Preferences'	=> $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname='.$appname,'preferences'),
 				'Grant Access'    => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uiaclprefs.index&acl_app='.$appname),
 				'Edit Categories' => $GLOBALS['egw']->link('/index.php','menuaction=preferences.preferences_categories_ui.index&cats_app=' . $appname . '&cats_level=True&global_cats=True')
 			);

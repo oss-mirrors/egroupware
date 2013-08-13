@@ -164,7 +164,7 @@ $$Content$$'
 		);
 		if($GLOBALS['egw_info']['user']['apps']['preferences'])
 		{
-			$file['Preferences'] = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'preferences.uisettings.index','appname'=>'wiki'));
+			$file['Preferences'] = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'preferences.uisettings.index','appname'=>'wiki'),'preferences');
 		}
 		display_sidebox($appname,$menu_title,$file);
 
