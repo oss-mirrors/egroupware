@@ -31,6 +31,7 @@ $setup_info['phpfreechat']['tables']  = array('egw_phpfreechat');	// handled by 
 
 $setup_info['phpfreechat']['hooks']['admin'] = 'phpfreechat_hooks::all_hooks';
 $setup_info['phpfreechat']['hooks']['tab_closed'] = 'phpfreechat_hooks::all_hooks';
+$setup_info['phpfreechat']['hooks']['clear_cache'] = 'phpfreechat_hooks::all_hooks';
 
 /* Dependencies for this app to work */
 $setup_info['phpfreechat']['depends'][] = array(

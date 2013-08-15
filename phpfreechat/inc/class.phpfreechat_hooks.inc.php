@@ -45,7 +45,16 @@ class phpfreechat_hooks
 		$appname = 'phpfreechat';
 		$location = is_array($args) ? $args['location'] : $args;
 		//echo "<p>admin_prefs_sidebox_hooks::all_hooks(".print_r($args,True).") appname='$appname', location='$location'</p>\n";
-
+		if ($location == 'clear_cache')
+		{
+			//error_log(__METHOD__.__LINE__.' Hook called:'.$location);
+			require_once(EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat/src/phpfreechat.class.php');
+			include(EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat_config.php');
+			$chat = new phpFreeChat($params);
+			// initialize the global config object
+			$c =& pfcGlobalConfig::Instance( $params );
+			$c->destroyCache();
+		}
 		if ($location == 'tab_closed')
 		{
 			//error_log(__METHOD__.__LINE__.' Hook called:'.$location);

@@ -173,6 +173,7 @@ $params["dyn_params"] = array(
  * phpFreeChat caches all params - values (but the dyn_params) in $files_dir/phpfreechat/private/cache/default*.php
  * If you modifiy the config in EGroupware, you need to remove this file!
  */
+$params["cmd_path"] = dirname(__FILE__)."/inc";
 $params["data_private_path"] = $GLOBALS['egw_info']['server']['files_dir'].'/phpfreechat/private';
 $params["data_public_path"] = dirname(__FILE__).'/phpfreechat/data/public';
 $params["data_public_url"] = $GLOBALS['egw_info']['server']['webserver_url']."/phpfreechat/phpfreechat/data/public";

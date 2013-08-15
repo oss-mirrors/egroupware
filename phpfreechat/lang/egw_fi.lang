@@ -2,6 +2,8 @@ are users allowed to change their nicknames in phpfreechat and are allowed to co
 egroupware chat	phpfreechat	fi	Chat
 frozen nick	admin	fi	Pakotettu Chatin käyttäjänimi
 global categories	phpfreechat	fi	Yleiset kategoriat
+maximum nickname length (if not set the length of 64 is used. as it is the maximum lenght of usernames within egroupware)	admin	fi	Lempinimen maksimipituus. Oletus on 64 kirjainta.
+nick length	admin	fi	Lempinimen pituus
 phpfreechat	common	fi	Chat
 phpfreechat configuration	admin	fi	Konfigurointi
 phpfreechat integration into egroupware	phpfreechat	fi	Chatin integraatio EGroupwareen
