@@ -1,4 +1,5 @@
 %1 is leaving channel %2 by closing his chat window	phpfreechat	en	%1 is leaving channel %2 by closing his chat window
+%1 is reconnecting to channel %2	phpfreechat	en	%1 is reconnecting to channel %2
 are users allowed to change their nicknames in phpfreechat and are allowed to connect multiple times	admin	en	Are users allowed to change their nicknames in Chat AND allowed to connect multiple times
 egroupware chat	phpfreechat	en	EGroupware Chat
 frozen nick	admin	en	Frozen nick

@@ -34,13 +34,58 @@ require_once(EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat/src/phpfreechat.class.ph
 include(EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat_config.php');
 $chat = new phpFreeChat($params);
 
+// this section is introduced to enable reconnecting with the same nick, when not properly disconnected before
+// initialize the global config object
+$c =& pfcGlobalConfig::Instance( $params );
+//error_log(__METHOD__.__LINE__.array2string($c));
+// need to initiate the user config object here because it uses sessions
+$u =& pfcUserConfig::Instance();
+$channel2name = $name2channel =array();
+foreach ((array)$u->channels as $key => $values)
+{
+	$channel2name[$values['recipient']] = $values['name'];
+	$name2channel[$values['recipient']] = $values['name'];
+}
+//error_log(__METHOD__.__LINE__.array2string($u));
+$pfcContainer =& pfcContainer::Instance();
+
+$nick = $params['nick'];
+$nickid = $pfcContainer->getNickId($nick);
+$cmd = "notice";
+//error_log(__METHOD__.__LINE__.array2string($nickid));
+// get the current user's channels list
+$channels = array();
+$ret2 = $pfcContainer->getMeta("nickid-to-channelid",$nickid);
+//error_log(__METHOD__.__LINE__.array2string($ret2));
+foreach($ret2["value"] as $userchan)
+{
+	//error_log(__METHOD__.__LINE__.array2string($userchan));
+	$userchan = $pfcContainer->decode($userchan);
+	if ($userchan != 'SERVER')
+	{
+		// tell the others
+		$param = lang("%1 is reconnecting to channel %2",$nick,(!empty($channel2name[$userchan])?$channel2name[$userchan]:$userchan));
+		$pfcContainer->write($userchan, $nick, $cmd, $param);
+		// disconnect the user from each joined channels
+		$pfcContainer->removeNick($userchan, $nickid);
+		$channels[] = $userchan;
+	}
+}
+// now disconnect the user from the server
+// (order is important because the SERVER channel has timestamp informations)
+$userchan = 'SERVER';
+$du = $pfcContainer->removeNick($userchan, $nickid);
+// the above section is introduced to enable reconnecting with the same nick, when not properly disconnected before
+
 //echo "<html>\n";
 //echo "<head>\n";
 //echo "<title>EGroupware Chat</title>\n";
 $GLOBALS['egw']->common->egw_header();
 $chat->printJavaScript();
 $chat->printStyle();
-if (isset($_GET['referer'])) echo "<script>window.focus();</script>\n";
+if (isset($_GET['referer'])) echo '<script language="JavaScript">
+window.focus();
+</script>';
 //echo "</head>\n";
 //echo "<body>\n";
 $chat->printChat();

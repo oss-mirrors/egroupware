@@ -1,4 +1,5 @@
-%1 is leaving channel %2 by closing his chat window	phpfreechat	de	%1 verlässt diesen Chat %2 schlisst das Chat Fenster
+%1 is leaving channel %2 by closing his chat window	phpfreechat	de	%1 verlässt den Chat %2 durch schliessen des Chat Fensters
+%1 is reconnecting to channel %2	phpfreechat	de	%1 verbindet sich erneut mit dem Chat %2
 are users allowed to change their nicknames in phpfreechat and are allowed to connect multiple times	admin	de	Allen Benutzern erlauben in phpFreeChat Ihre Spitznamen zu ändern UND sich mehrfach mit dem Chatmodul zu verbinden.
 egroupware chat	phpfreechat	de	EGroupware Chat
 frozen nick	admin	de	eingefrorener Spitzname
