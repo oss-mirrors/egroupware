@@ -1,6 +1,13 @@
+%1 is leaving channel %2 by closing his chat window	phpfreechat	ru	%1 покинул канал %2, закрыв своё окно чата
 are users allowed to change their nicknames in phpfreechat and are allowed to connect multiple times	admin	ru	Пользователи, имеющие право смены псевдонима и множественного подключения
 egroupware chat	phpfreechat	ru	Чат EGroupware
+frozen nick	admin	ru	Неактивный псевдоним
 global categories	phpfreechat	ru	Глобальные категории
+maximum nickname length (if not set the length of 64 is used. as it is the maximum lenght of usernames within egroupware)	admin	ru	Максимальная длина псевдонима (если не определена, то по умолчанию – 64 знака, как максимально возможная длина имени пользователя в EGroupware)
+nick length	admin	ru	Длина псевдонима
 phpfreechat	common	ru	Чат
 phpfreechat configuration	admin	ru	Конфигурация чата
 phpfreechat integration into egroupware	phpfreechat	ru	Интеграция чата в EGroupware
+the chat opens in a new window.	phpfreechat	ru	Чат открывается в новом окне
+to complete the phpfreechat installation you have to give the webserver write access to:	phpfreechat	ru	Для выполнения установки чата необходимо предоставить Web-серверу права на запись данных
+you should remove the write access, once you see the chat!	phpfreechat	ru	Если страница чата отображается, права записи следует удалить
