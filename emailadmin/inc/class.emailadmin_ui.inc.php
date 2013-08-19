@@ -423,7 +423,7 @@ class emailadmin_ui extends emailadmin_bo
 		$sel_options['ea_appname']	=self::getAllowedApps();
 		$sel_options['ea_imap_login_type'] = self::getIMAPLoginTypes($content['ea_imap_type']);
 		// Stationery settings
-		$bostationery = new felamimail_bostationery();
+		$bostationery = new emailadmin_bostationery();
 		$sel_options['ea_stationery_active_templates'] = $bostationery->get_stored_templates();
 		// setup history
 		$content['history'] = array(
