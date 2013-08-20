@@ -127,7 +127,7 @@ if ($log) ini_set('error_log',$log);
 function usage($extra=null)
 {
 	global $maps;
-	fwrite(STDERR, "\nUsage: $cmd [-v|--verbose] [-h|--help] [-l|--log (syslog|path)] [-q|--query [user@]domain (domains|mailboxes|alias|transport|canonical)] [host]\n\n");
+	fwrite(STDERR, "\nUsage: $cmd [-v|--verbose] [-h|--help] [-l|--log (syslog|path)] [-q|--query <email-addresse> (mailboxes|alias|groups)] [host]\n\n");
 	fwrite(STDERR, print_r($maps,true)."\n");
 	if ($extra) fwrite(STDERR, "\n\n$extra\n\n");
 	exit(2);
