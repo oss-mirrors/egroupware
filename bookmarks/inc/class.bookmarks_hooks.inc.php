@@ -6,7 +6,7 @@
  * @author Nathan Gray
  * @package bookmarks
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
- * @version $Id: $
+ * @version $Id$
  */
 
 /**
@@ -163,5 +163,18 @@ class bookmarks_hooks
 		}
 		return $settings;
 	}
+
+	/**
+	 * ACL rights and labels used by Calendar
+	 *
+	 * @param string|array string with location or array with parameters incl. "location", specially "owner" for selected acl owner
+	 */
+	public static function acl_rights($params)
+	{
+		return array(
+			acl::READ    => 'read',
+			acl::EDIT    => 'edit',
+			acl::DELETE  => 'delete',
+		);
+	}
 }
-?>

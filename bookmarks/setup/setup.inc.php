@@ -38,7 +38,7 @@ $setup_info['bookmarks']['hooks']['settings'] = 'bookmarks_hooks::settings';
 $setup_info['bookmarks']['hooks']['admin'] = 'bookmarks_hooks::all_hooks';
 $setup_info['bookmarks']['hooks']['sidebox_menu'] = 'bookmarks_hooks::all_hooks';
 $setup_info['bookmarks']['hooks']['search_link'] = 'bookmarks_hooks::search_link';
-
+$setup_info['bookmarks']['hooks']['acl_rights'] = 'bookmarks_hooks::acl_rights';
 
 /* Dependencies for this app to work */
 $setup_info['bookmarks']['depends'][] = array(
