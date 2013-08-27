@@ -1,1 +1,14 @@
-global categories	phpfreechat	fr	Catégorie globale
+%1 is leaving channel %2 by closing his chat window	phpfreechat	fr	%1 quitte le canal %2 en  fermant sa fenêtre de tchat
+%1 is reconnecting to channel %2	phpfreechat	fr	%1 se reconnecte au canal %2
+are users allowed to change their nicknames in phpfreechat and are allowed to connect multiple times	admin	fr	Autoriser les utilisateurs à changer leur pseudo de tchat ET autoriser les connexions multiples
+egroupware chat	phpfreechat	fr	Tchat eGroupware
+frozen nick	admin	fr	Pseudo bloqué
+global categories	phpfreechat	fr	Catégories globales
+maximum nickname length (if not set the length of 64 is used. as it is the maximum lenght of usernames within egroupware)	admin	fr	longueur maximal du pseudo (si vide, la longueur 64 est utilisé car il s'agit de la longueur max d'un compte utilisateur dans eGroupware)
+nick length	admin	fr	Longueur de pseudo
+phpfreechat	common	fr	Tchat
+phpfreechat configuration	admin	fr	Configuration du tchat
+phpfreechat integration into egroupware	phpfreechat	fr	Intégration d'un tchat dans eGroupware
+the chat opens in a new window.	phpfreechat	fr	Le tchat ouvre une nouvelle fenêtre
+to complete the phpfreechat installation you have to give the webserver write access to:	phpfreechat	fr	Pour terminer l'installation du tchat, vous devez donner au serveur web un accès en écriture à :
+you should remove the write access, once you see the chat!	phpfreechat	fr	Vous devriez supprimer l'accès en écriture, une fois que vous voyez le tchat !
