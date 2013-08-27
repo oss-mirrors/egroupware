@@ -1,4 +1,7 @@
 accepted	syncml	fr	Accepté
+all incl. rejected	syncml	fr	Tout y compris les rejets
 documentation	common	fr	Documentation
 jobs	syncml	fr	Travaux
+not rejected	syncml	fr	Pas rejeté
+owner too	syncml	fr	Aussi les propriétaires
 primary group	syncml	fr	groupe initial
