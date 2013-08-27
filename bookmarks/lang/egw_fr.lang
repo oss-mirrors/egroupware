@@ -36,6 +36,7 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 existing links	bookmarks	fr	Liens existants
 export	bookmarks	fr	Exportation
 export bookmarks	common	fr	Exporter les Signets
+export definition to use for nextmatch export	bookmarks	fr	Définition de l'export à utiliser pour l'export "nextmatch"
 fewer	bookmarks	fr	Moins
 filter by	bookmarks	fr	Filtrer par
 found a link you might like	bookmarks	fr	J'ai trouvé un lien que vous pourriez aimer
@@ -46,6 +47,7 @@ global categories	bookmarks	fr	Catégories Globales
 highest	bookmarks	fr	Le plus haut
 history	bookmarks	fr	Historique
 i thought you would be interested in the following link(s):	bookmarks	fr	J'ai pensé que vous pourriez être intéressé par le(s) lien(s) suivant(s):
+if you specify an export definition, it will be used when you export	bookmarks	fr	Si vous spécifier un format d'export, il sera utilisé à l'export.
 import bookmarks	common	fr	Importer les signets
 last modified	bookmarks	fr	Dernière modification
 like	bookmarks	fr	comme
