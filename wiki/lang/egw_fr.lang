@@ -1,5 +1,5 @@
-(don't offer the possibility)	admin	fr	(ne pas offrir la possibilité)
-<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	fr	<em>Mais</em> affiche au moins ces entrées dans les changements récents et autres listes de souscription:
+(don't offer the possibility)	admin	fr	Ne pas offrir la possibilité
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	fr	<em>Mais</em> affiche au moins ces entrées dans les changements récents et autres listes de souscription :
 add document to category	wiki	fr	Ajouter un document à la catégorie
 added	wiki	fr	Ajouté
 administration features are disabled for this wiki.	wiki	fr	Les options d'administration sont désactivées pour ce wiki.
@@ -9,18 +9,23 @@ allow anonymous access	admin	fr	Permettre les accès anonymes
 anonymous password	admin	fr	Mot de passe du compte "anonyme"
 anonymous session type	admin	fr	Type de session pour le compte "anonyme"
 anonymous username	admin	fr	Identifiant pour le compte "anonyme"
-automatically convert pages with wiki-syntax to richtext (if edited)?	admin	fr	Convertur automatiquement les pages avec syntaxe wiki vers le format texte enrichi (si édité)?
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	fr	Convertir automatiquement les pages avec syntaxe wiki vers le format texte enrichi (si édité) ?
 block	wiki	fr	Bloquer
 block / unblock hosts	common	fr	Bloquer / Débloquer les hôtes
 blocked ip address ranges	wiki	fr	Plage d'adresses IP bloquées
 cancel without saving	wiki	fr	Annuler sans enregistrer
+change notification	wiki	fr	Notification de changement
 changed	wiki	fr	Modifié
 changes by last author	wiki	fr	Changements par auteur
-choose your current time here, so the server may figure out what time zone you are in.	wiki	fr	Choisissez votre heure courante ici, ainsi le serveur se rend compte dans quelle fuseau horaire vous vous trouvez.
+choose your current time here, so the server may figure out what time zone you are in.	wiki	fr	Choisissez votre heure actuelle ici, ainsi le serveur se rend compte dans quelle fuseau horaire vous vous trouvez.
 columns	wiki	fr	Colonnes
 compute difference	wiki	fr	Voir la différence
 converts the page to richtext	wiki	fr	Convertit cette page vers du texte enrichi
 current version	wiki	fr	Version en cours
+default read permission	wiki	fr	Permission de lecture par défaut
+default read permissions for creating a new page	preferences	fr	Permission de lecture par défaut pour la création d'une nouvelle page
+default write permission	preferences	fr	Permission d'écriture par défaut
+default write permissions for creating a new page	preferences	fr	Permission d'écriture par défaut pour la création d'une nouvelle page
 deleted	wiki	fr	Effacé
 deletes this page	wiki	fr	Supprime cette page
 difference between versions	wiki	fr	Différences entre les versions
@@ -30,12 +35,12 @@ document last modified	wiki	fr	Dernière modification du document
 edit box	wiki	fr	Boîte de modification
 edit this <em>archive version</em> of this document	wiki	fr	Modifier la<em>VERSION ARCHIVEE</em> de ce document
 edit this document	wiki	fr	Modifier le document
-edit with preview	admin	fr	Modifier Avec Prévisualisation
+edit with preview	admin	fr	Modifier avec prévisualisation
 editable	admin	fr	modifiable
 editing	wiki	fr	Modifiant
 emailaddress administrator	admin	fr	Adresse email de l'administrateur
-enable free links	admin	fr	Autoriser les Liens libres
-enable wiki links	admin	fr	Autoriser les Liens Wiki
+enable free links	admin	fr	Autoriser les liens libres
+enable wiki links	admin	fr	Autoriser les liens Wiki
 enter here the maximum number of entries to display in a document's history list.	wiki	fr	Entrez ici le nombre maximal d'entrées à afficher dans la liste d'historique d'un document.
 enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	fr	Entrez ici le nombre de jours à afficher dans les changements récents ou une liste de souscription. Mettez à zéro si vous voulez voir toutes les pages dans les changements récents, sans tenir compte de quand ils furent édités.
 enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	fr	Entrez la plage d'adresses IP sous la forme <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>
@@ -43,16 +48,20 @@ error creating temporary file.	wiki	fr	Erreur en créant le fichier temporaire.
 error writing to temporary file.	wiki	fr	Erreur lors de l'écriture du fichier temporaire.
 everyone	wiki	fr	chacun
 find	wiki	fr	Rechercher
-history	wiki	fr	historique
+history	wiki	fr	Historique
 history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	fr	L'historique devrait montrer <em>toutes</em> les modifications faites par le même auteur. Sinon seules les dernières modifications sont affichées.
 history lists	wiki	fr	Listes d'historique
 history of	wiki	fr	Historique de
+if a page i have read access to is changed, send a notification	wiki	fr	Si une page sur laquelle j'ai accès en lecture est modifiée, envoyer une notification.
+if a page i have write access to is changed, send a notification	wiki	fr	Si une page sur laquelle j'ai accès en lecture est modifiée, envoyer une notification.
+if a page title matches this regular expression, send a notification.  you can look at title, name, lang, text using name: regex	wiki	fr	Si un titre de page correspond à cette expression régulière, alors envoyer une notification. Vous pouvez scruter le titre (title), le nom (name), la langue (lang) et le texte (text) en utilisant la syntaxe "name: pattern"
 interwikiprefix	admin	fr	InterWikiPrefix
 invalid page name.	wiki	fr	Nom de page invalide.
 load	wiki	fr	Charge
 loads the named page in the given language, all change so far get lost !!!	wiki	fr	Charge la page nommée dans la langue données, toutes les modifications seront perdues !!!
 lock / unlock pages	common	fr	Verrouiller / Déverrouiller les Pages
 locked	wiki	fr	Verrouillé
+message to send	wiki	fr	Message à envoyer
 name wiki home link	admin	fr	Nom du Wiki
 newer	wiki	fr	Plus récents
 no never	admin	fr	Non, jamais
@@ -64,7 +73,11 @@ only if browser supports a richtext-editor	admin	fr	Seulement si le navigateur s
 only on the first page	wiki	fr	seulement sur la première page
 page '%1' not found !!!	wiki	fr	Page '%1' introuvable !!!
 page content	wiki	fr	Contenu de la page
+pages i have read access	wiki	fr	Pages avec accès en lecture
+pages i have write access	wiki	fr	Pages avec accès en écriture
+pages that match this regular expression	wiki	fr	Pages respectant cette expression régulière
 path of the upload directory (has to be writable by the webserver!)	admin	fr	Chemin du répertoire de dépôt (le serveur web doit pouvoir y écrire!)
+person who changed the page	wiki	fr	Personne ayant modifié la page
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	fr	Dépôt d'image via un éditeur de texte enrichi (laisser le répertoire de dépôt vide pour désactiver le dépôt)
 please contact the %1administrator%2 for assistance.	wiki	fr	Veuillez contacter l'%1Administrateur%2 pour de l'assistance.
 preview	wiki	fr	Aperçu
@@ -72,6 +85,7 @@ preview of current version	wiki	fr	Aperçu de la Version Actuelle
 rate control / ip blocking disabled	wiki	fr	Contrôle de fréquence / blocage adresse IP désactivé
 readable by	wiki	fr	Lisible par
 readonly	admin	fr	lecture seule
+rebuild links	wiki	fr	Reconstruire les liens
 recent changes	wiki	fr	Modifications Récentes
 renames page to the given name and language	wiki	fr	Renomme la page avec le nom et la langue donnée
 richtext	wiki	fr	Texte enrichi
