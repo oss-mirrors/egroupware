@@ -50,6 +50,7 @@ class emailadmin_bo extends so_sql
 		);
 
 	static $sessionData = array();
+	var $cachedData = true;
 	#var $userSessionData;
 	var $LDAPData;
 
@@ -98,10 +99,11 @@ class emailadmin_bo extends so_sql
 	var $smtpClass;				// holds the smtp class
 	var $tracking;				// holds the tracking object
 
-	function __construct($_profileID=false,$_restoreSesssion=true)
+	function __construct($_profileID=false,$_restoreSesssion=true,$_cachedDataFlag=true)
 	{
 		parent::__construct(self::APP,self::TABLE,null,'',true);
 		//error_log(__METHOD__.function_backtrace());
+		$this->cachedData = $_cachedDataFlag;
 		if (!is_object($GLOBALS['emailadmin_bo']))
 		{
 			$GLOBALS['emailadmin_bo'] = $this;
@@ -306,12 +308,12 @@ class emailadmin_bo extends so_sql
 
 	function getProfile($_profileID)
 	{
-		if (!(is_array(self::$sessionData) && (count(self::$sessionData)>0))) $this->restoreSessionData();
-		if (is_array(self::$sessionData) && (count(self::$sessionData)>0) && self::$sessionData['profile'][$_profileID]) {
+		if ($this->cachedData && !(is_array(self::$sessionData) && (count(self::$sessionData)>0))) $this->restoreSessionData();
+		if ($this->cachedData && is_array(self::$sessionData) && (count(self::$sessionData)>0) && self::$sessionData['profile'][$_profileID]) {
 			//error_log("sessionData Restored for Profile $_profileID <br>");
 			return self::$sessionData['profile'][$_profileID];
 		}
-		$EAuserProfileData= egw_cache::getCache(egw_cache::INSTANCE,'email','EAuserProfileData'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*1);
+		if ( $this->cachedData ) $EAuserProfileData= egw_cache::getCache(egw_cache::INSTANCE,'email','EAuserProfileData'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*1);
 		if (isset($EAuserProfileData[$_profileID]) && is_array($EAuserProfileData[$_profileID]) && !empty($EAuserProfileData[$_profileID]))
 		{
 			return $EAuserProfileData[$_profileID];
@@ -388,9 +390,12 @@ class emailadmin_bo extends so_sql
 		{
 			$profileData['ea_stationery_active_templates'] = explode(',',$profileData['ea_stationery_active_templates']);
 		}
-		self::$sessionData['profile'][$_profileID] = $EAuserProfileData[$_profileID] = $profileData;
-		egw_cache::setCache(egw_cache::INSTANCE,'email','EAuserProfileData'.trim($GLOBALS['egw_info']['user']['account_id']),$EAuserProfileData, $expiration=60*1);
-		$this->saveSessionData();
+		if ( $this->cachedData )
+		{
+			self::$sessionData['profile'][$_profileID] = $EAuserProfileData[$_profileID] = $profileData;
+			egw_cache::setCache(egw_cache::INSTANCE,'email','EAuserProfileData'.trim($GLOBALS['egw_info']['user']['account_id']),$EAuserProfileData, $expiration=60*1);
+			$this->saveSessionData();
+		}
 		return $profileData;
 	}
 
@@ -718,9 +723,12 @@ class emailadmin_bo extends so_sql
 			{
 				$eaPreferences->ea_stationery_active_templates = explode(',',$data['ea_stationery_active_templates']);
 			}
-			self::$sessionData['ea_preferences'] = $eaPreferences;
-			if (empty($_profileID)) egw_cache::setCache(egw_cache::INSTANCE,'email','EASessionEAPrefs'.trim($GLOBALS['egw_info']['user']['account_id']),$eaPreferences, $expiration=60*1);
-			$this->saveSessionData();
+			if ( $this->cachedData )
+			{
+				self::$sessionData['ea_preferences'] = $eaPreferences;
+				if (empty($_profileID)) egw_cache::setCache(egw_cache::INSTANCE,'email','EASessionEAPrefs'.trim($GLOBALS['egw_info']['user']['account_id']),$eaPreferences, $expiration=60*1);
+				$this->saveSessionData();
+			}
 			return $eaPreferences;
 		}
 
