@@ -587,7 +587,7 @@ class emailadmin_bo extends so_sql
 		}
 		else
 		{
-			error_log(__METHOD__.__LINE__.'#'.$appName.','.array2string($groups).','. $_profileID.','.$GLOBALS['egw_info']['user']['account_id']);
+			//error_log(__METHOD__.__LINE__.'#'.$appName.','.array2string($groups).','. $_profileID.','.$GLOBALS['egw_info']['user']['account_id']);
 			$data = $this->soemailadmin->getUserProfile($appName, $groups,$GLOBALS['egw_info']['user']['account_id']);
 		}
 		if($data)
