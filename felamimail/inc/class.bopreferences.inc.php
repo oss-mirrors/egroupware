@@ -31,7 +31,7 @@
 		{
 			//error_log(__METHOD__." called ".print_r($_restoreSession,true).function_backtrace());
 			parent::sopreferences();
-			$this->boemailadmin = new emailadmin_bo(false,$_restoreSession,$_restoreSession); // does read all profiles, no profile?
+			$this->boemailadmin = new emailadmin_bo(false,$_restoreSession); // does read all profiles, no profile?
 			if ($_restoreSession && !(is_array($this->sessionData) && (count($this->sessionData)>0))  ) $this->restoreSessionData();
 			if ($_restoreSession===false && (is_array($this->sessionData) && (count($this->sessionData)>0))  )
 			{
