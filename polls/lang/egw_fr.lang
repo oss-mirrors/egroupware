@@ -1,33 +1,47 @@
-actions	polls	fr	actions
+%1 group	polls	fr	Groupe %1
+actions	polls	fr	Actions
 add answer to poll	polls	fr	Ajouter une réponse au sondage
 add answers	polls	fr	Ajouter des réponses
 add new poll question	polls	fr	Ajouter une nouvelle question au sondage
 add questions	polls	fr	Ajouter les questions
 administrators	polls	fr	Administrateurs
+allow users to change their vote	polls	fr	Autoriser les utilisateurs à changer leurs votes
 allow users to vote more then once	polls	fr	Autoriser les utilisateurs à voter plus d'une fois
+allways use latest poll	polls	fr	Toujours utiliser le dernier sondage
 answer	polls	fr	Réponse
 answer has been added to poll	polls	fr	La réponse a été ajoutée au sondage
-answer has been updated	polls	fr	La réponse a été mise à jour
+answer has been updated	polls	fr	La réponse a été mise à jour.
 answers	polls	fr	Réponses
 are you sure want to delete this answer ?	polls	fr	Etes-vous sûr de vouloir supprimer cette réponse ?
 are you sure want to delete this question ?	polls	fr	Etes-vous sûr de vouloir supprimer cette question ?
+change vote	polls	fr	Changer mon vote
 current poll	polls	fr	Sondage actif
 edit answer	polls	fr	Modifier la réponse
 edit poll question	polls	fr	Modifier la question du sondage
+egroupware users (non-anonymous)	polls	fr	Les utilisateurs eGroupWare
 enter poll question	polls	fr	Entrer la question du sondage
+everyone incl. anonymous users	polls	fr	Tout le monde, y compris les utilisateurs anonymes
 new poll has been added.  you should now add some answers for this poll	polls	fr	Le nouveau sondage a été ajouté. Vous devriez maintenant ajouter des réponses pour ce sondage
 noone	polls	fr	Personne
 poll question	polls	fr	Question du sondage
+poll votable by	polls	fr	Electorat
 polls	common	fr	Sondages
 question has been updated	polls	fr	La question a été mise à jour
+result visible to	polls	fr	Résultat visibles pour
 select current poll	polls	fr	Choisissez le sondage actif
-settings updated	polls	fr	Réglages mis à jour
+settings updated	polls	fr	Réglages mis à jour.
 show answers	polls	fr	Afficher les réponses
+show bullet if allowed to vote and result else	polls	fr	Afficher le sondage si l'utilisateur est autorisé à voter, le résultat sinon
+show only the ballot	polls	fr	N'afficher que le sondage
+show only the result	polls	fr	N'afficher que le résultat
 show questions	common	fr	Afficher les questions
+this module displays polls.	polls	fr	Ce module affiche un système de sondage
 total votes	polls	fr	Total
 view poll	polls	fr	Voir le sondage
-view results	polls	fr	Voir Résultats
+view results	polls	fr	Voir les résultats
 vote	polls	fr	Voter
 voting booth admin	admin	fr	Isoloir
-voting booth administration	polls	fr	Administration des Isoloirs
+voting booth administration	polls	fr	Administration des isoloirs
+what to show	polls	fr	Que montrer
 which poll	polls	fr	Quel sondage
+you are not (yet) allowed view the result of this vote.	polls	fr	Vous n'êtes pas autorisé à voir le résultat de ce vote.
