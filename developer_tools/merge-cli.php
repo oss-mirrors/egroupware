@@ -11,7 +11,7 @@
  * @version $Id$
  */
 
-if (isset($_SERVER['HTTP_HOST']))	// security precaution: forbit calling admin-cli as web-page
+if (php_sapi_name() !== 'cli')	// security precaution: forbit calling admin-cli as web-page
 {
 	die('<h1>merge-cli.php must NOT be called as web-page --> exiting !!!</h1>');
 }
@@ -21,6 +21,8 @@ ini_set('memory_limit', -1);
 
 /**
  * Give usage and exit
+ *
+ * @Todo: Option to merge in a specific langfile for an app and language outside of the tree(s)
  */
 function usage()
 {
@@ -149,7 +151,7 @@ function scan_lang_file($path)
 			fprintf(STDERR, "WARNING: wrong language '$l_lang' on line $line_nr of $path!\n");
 			continue;
 		}
-		@$phrases[$l_id][$l_lang][$tree][$app][$l_app] = $l_translation;
+		@$phrases[strtolower($l_id)][$l_lang][$tree][$app][$l_app] = $l_translation;
 		++$read;
 	}
 	fclose($f);
