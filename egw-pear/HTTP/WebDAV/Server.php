@@ -742,6 +742,13 @@ class HTTP_WebDAV_Server
         header("DAV: "  .join(", ", $dav));
         header('Content-Type: text/xml; charset="utf-8"');
 
+        // add Vary and Preference-Applied header for Prefer: return-minimal
+        if (isset($this->_SERVER['HTTP_PREFER']) && in_array('return-minimal', explode(',', $this->_SERVER['HTTP_PREFER'])))
+        {
+        	header("Preference-Applied: return=minimal");
+        	header("Vary: Prefer");
+        }
+
         // ... and payload
         echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
         echo $this->crrnd ? "<multistatus xmlns=\"DAV:\">\n" : "<D:multistatus xmlns:D=\"DAV:\">\n";
@@ -866,7 +873,7 @@ class HTTP_WebDAV_Server
 	                                                $this->lockdiscovery($file['path']));
 	                        // only collect $file['noprops'] if we have NO Brief: t and NO Prefer: return-minimal HTTP Header
 	                        } elseif ((!isset($this->_SERVER['HTTP_BRIEF']) || $this->_SERVER['HTTP_BRIEF'] != 't') &&
-	                        	(!isset($this->_SERVER['HTTP_PREFER']) || $this->_SERVER['HTTP_PREFER'] != 'return-minimal')) {
+	                        	(!isset($this->_SERVER['HTTP_PREFER']) || !in_array('return-minimal', explode(',', $this->_SERVER['HTTP_PREFER'])))) {
 	                            // add empty value for this property
 	                            $file["noprops"][] =
 	                                $this->mkprop($reqprop["xmlns"], $reqprop["name"], "");
@@ -1274,9 +1281,9 @@ class HTTP_WebDAV_Server
 
                                 if (isset($range['end'])) {
                                     $size = $range['end']-$range['start']+1;
-                                    $this->http_status("206 partial");
-                                    header("Content-length: $size");
-                                    header("Content-range: $range[start]-$range[end]/"
+                                    $this->http_status("206 Partial content");
+                                    header("Content-Length: $size");
+                                    header("Content-Range: bytes $range[start]-$range[end]/"
                                            . (isset($options['size']) ? $options['size'] : "*"));
                                     while ($size && !feof($options['stream'])) {
                                         $buffer = fread($options['stream'], 4096);
@@ -1284,10 +1291,10 @@ class HTTP_WebDAV_Server
                                         echo $buffer;
                                     }
                                 } else {
-                                    $this->http_status("206 partial");
+                                    $this->http_status("206 Partial content");
                                     if (isset($options['size'])) {
-                                        header("Content-length: ".($options['size'] - $range['start']));
-                                        header("Content-range: ".$range['start']."-".$range['end']."/"
+                                        header("Content-Length: ".($options['size'] - $range['start']));
+                                        header("Content-Range: bytes ".$range['start']."-".$range['end']."/"
                                                . (isset($options['size']) ? $options['size'] : "*"));
                                     }
                                     fpassthru($options['stream']);
@@ -1597,6 +1604,10 @@ class HTTP_WebDAV_Server
 			        $this->http_status('501 not implemented');
 			        echo 'The service does not support content MD5 checksum verification';
 			        return;
+
+		        case 'HTTP_CONTENT_DISPOSITION':
+		        	// do NOT care about Content-Disposition in POST requests required by CalDAV managed attachments
+		        	break;
 
 		        default:
 			        // any other unknown Content-* headers
