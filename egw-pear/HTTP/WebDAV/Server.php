@@ -743,7 +743,7 @@ class HTTP_WebDAV_Server
         header('Content-Type: text/xml; charset="utf-8"');
 
         // add Vary and Preference-Applied header for Prefer: return=minimal
-        if (isset($this->_SERVER['HTTP_PREFER']) && in_array('return=minimal', explode(',', $this->_SERVER['HTTP_PREFER'])))
+        if (isset($this->_SERVER['HTTP_PREFER']) && in_array('return=minimal', preg_split('/, ?/', $this->_SERVER['HTTP_PREFER'])))
         {
         	header("Preference-Applied: return=minimal");
         	header("Vary: Prefer");
@@ -784,8 +784,19 @@ class HTTP_WebDAV_Server
         {
         	$files = new ArrayIterator($files);
         }
+        // support for "Prefer: depth-noroot" header on PROPFIND
+        $skip_root = $this->_SERVER['REQUEST_METHOD'] == 'PROPFIND' &&
+        	!isset($initial_ns_hash) &&	// multistatus_response calls itself, do NOT apply skip in that case
+        	isset($this->_SERVER['HTTP_PREFER']) && in_array('depth-noroot', preg_split('/, ?/', $this->_SERVER['HTTP_PREFER']));
+
         // now we loop over all returned file entries
         foreach ($files as $file) {
+
+        	// skip first element (root), if requested by Prefer: depth-noroot
+        	if ($skip_root) {
+        		$skip_root = false;
+        		continue;
+        	}
 
 	        // collect namespaces here
 	        $ns_hash = $initial_ns_hash;
@@ -873,7 +884,7 @@ class HTTP_WebDAV_Server
 	                                                $this->lockdiscovery($file['path']));
 	                        // only collect $file['noprops'] if we have NO Brief: t and NO Prefer: return=minimal HTTP Header
 	                        } elseif ((!isset($this->_SERVER['HTTP_BRIEF']) || $this->_SERVER['HTTP_BRIEF'] != 't') &&
-	                        	(!isset($this->_SERVER['HTTP_PREFER']) || !in_array('return=minimal', explode(',', $this->_SERVER['HTTP_PREFER'])))) {
+	                        	(!isset($this->_SERVER['HTTP_PREFER']) || !in_array('return=minimal', preg_split('/, ?/', $this->_SERVER['HTTP_PREFER'])))) {
 	                            // add empty value for this property
 	                            $file["noprops"][] =
 	                                $this->mkprop($reqprop["xmlns"], $reqprop["name"], "");
