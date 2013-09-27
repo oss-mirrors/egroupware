@@ -343,7 +343,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 				error_log(__METHOD__.__LINE__.'# Instance='.$GLOBALS['egw_info']['user']['domain'].', User='.$GLOBALS['egw_info']['user']['account_lid']." Can not open connection for Profile:".self::$profileID.' Device should wait '.array2string($waitOnFailure[self::$profileID]));
 				header("HTTP/1.1 503 Service Unavailable");
 				header("Retry-After: ".$waitOnFailure[self::$profileID]['howlong']);
-				$waitOnFailure[self::$profileID] = array('howlong'=>$waitOnFailure[self::$profileID]['howlong'] * 2,'lastattempt'=>$hereandnow);
+				$waitOnFailure[self::$profileID] = array('howlong'=>(empty($waitOnFailure[self::$profileID]['howlong'])?$this->waitOnFailureDefault:$waitOnFailure[self::$profileID]['howlong']) * 2,'lastattempt'=>$hereandnow);
 				egw_cache::setCache(egw_cache::INSTANCE,'email','ActiveSyncWaitOnFailure'.trim($GLOBALS['egw_info']['user']['account_id']),$waitOnFailure,$expiration=60*60*2);
 				$ethrown = new egw_exception_not_found(__METHOD__.__LINE__."($account) can not open connection on Profile #".self::$profileID."!".$this->mail->getErrorMessage().' for Instance='.$GLOBALS['egw_info']['user']['domain'].', User='.$GLOBALS['egw_info']['user']['account_lid']);
 				_egw_log_exception($ethrown);
