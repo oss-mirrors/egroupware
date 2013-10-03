@@ -64,23 +64,6 @@ class bookmarks_hooks
 			display_sidebox($appname,$GLOBALS['egw_info']['apps']['bookmarks']['title'].' '.lang('Menu'),$file);
 		}
 
-		if ($GLOBALS['egw_info']['user']['apps']['preferences'] && $location != 'admin')
-		{
-			$file = array(
-				'Preferences'	=> $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname='.$appname,'preferences'),
-				'Grant Access'    => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uiaclprefs.index&acl_app='.$appname),
-				'Edit Categories' => $GLOBALS['egw']->link('/index.php','menuaction=preferences.preferences_categories_ui.index&cats_app=' . $appname . '&cats_level=True&global_cats=True')
-			);
-			if ($location == 'preferences')
-			{
-				display_section($appname,$file);
-			}
-			else
-			{
-				display_sidebox($appname,lang('Preferences'),$file);
-			}
-		}
-
 		if ($GLOBALS['egw_info']['user']['apps']['admin'] && $location != 'preferences')
 		{
 			$file = Array(
@@ -176,5 +159,16 @@ class bookmarks_hooks
 			acl::EDIT    => 'edit',
 			acl::DELETE  => 'delete',
 		);
+	}
+
+	/**
+	 * Hook to tell framework we use standard categories method
+	 *
+	 * @param string|array $data hook-data or location
+	 * @return boolean
+	 */
+	public static function categories($data)
+	{
+		return true;
 	}
 }
