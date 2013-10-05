@@ -203,6 +203,11 @@ class wiki_ui extends wiki_bo
 			$this->tpl->disable_cells('action[convert]');
 			$content['upload_dir'] = $GLOBALS['egw_info']['user']['preferences']['wiki']['upload_dir'];
 		}
+		if ($content['is_html'] || $this->AutoconvertPages != 'never')
+		{
+			// tell framework CK Editor needs eval and inline javascript AND we cant switch via Ajax once page is loaded :(
+			egw_framework::csp_script_src_attrs(array('unsafe-eval', 'unsafe-inline'));
+		}
 		$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['wiki']['title'] . ' - ' .
 			lang('edit') . ' ' . $content['name'] .
 			($content['lang'] && $content['lang'] != $GLOBALS['egw_info']['user']['preferences']['common']['lang'] ?
