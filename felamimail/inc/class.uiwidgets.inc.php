@@ -46,6 +46,9 @@ class uiwidgets
 		 */
 		function uiwidgets()
 		{
+			// tell framework calendar needs eval and inline javascript :(
+			egw_framework::csp_script_src_attrs(array('unsafe-eval', 'unsafe-inline'));
+
 			$this->template = new Template(common::get_tpl_dir('felamimail'));
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
 			$this->charset = translation::charset();
