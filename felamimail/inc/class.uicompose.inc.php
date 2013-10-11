@@ -63,6 +63,9 @@
 
 		function uicompose()
 		{
+			// tell framework felamimail needs eval and inline javascript :(
+			egw_framework::csp_script_src_attrs(array('unsafe-eval', 'unsafe-inline'));
+
 			$this->displayCharset   = $GLOBALS['egw']->translation->charset();
 			if (!isset($_POST['composeid']) && !isset($_GET['composeid']))
 			{
