@@ -35,7 +35,7 @@ class emailadmin_script {
 	 * @static array
 	 */
 	static $btransform_ctype_array = array(
-		'0' => 'default',
+		'0' => 'Non',
 		'1' => 'image',
 		'2' => 'multipart',
 		'3' => 'text',
@@ -353,7 +353,7 @@ class emailadmin_script {
 								$started = 1;
 						}
 						if ($supportsbody){
-							if ($rule['field_bodytransform']){
+							if (!empty($rule['field_bodytransform'])){
 								if ($started) $newruletext .= ", ";
 								$btransform	= " :raw ";
 								$match = ' :contains';
@@ -364,7 +364,7 @@ class emailadmin_script {
 								$started = 1;
 
 							}
-							if ($rule['ctype']!= '0'){
+							if ($rule['ctype']!= '0' && !empty($rule['ctype'])){
 								if ($started) $newruletext .= ", ";
 								$btransform_ctype = emailadmin_script::$btransform_ctype_array[$rule['ctype']];
 								$ctype_subtype = "";
@@ -548,7 +548,7 @@ class emailadmin_script {
 				$newscriptfoot .= "#rule&&" . $rule['priority'] . "&&" . $rule['status'] . "&&" .
 				addslashes($rule['from']) . "&&" . addslashes($rule['to']) . "&&" . addslashes($rule['subject']) . "&&" . $rule['action'] . "&&" .
 				$rule['action_arg'] . "&&" . $rule['flg'] . "&&" . addslashes($rule['field']) . "&&" . addslashes($rule['field_val']) . "&&" . $rule['size'];
-				if ($supportsbody) $newscriptfoot .= "&&" . $rule['bodytransform'] . "&&" . $rule['field_bodytransform']. "&&" . $rule['ctype'] . "&&" . $rule['field_ctype_val'];
+				if ($supportsbody && (!empty($rule['field_bodytransform']) || ($rule['ctype']!= '0' && !empty($rule['ctype'])))) $newscriptfoot .= "&&" . $rule['bodytransform'] . "&&" . $rule['field_bodytransform']. "&&" . $rule['ctype'] . "&&" . $rule['field_ctype_val'];
 				$newscriptfoot .= "\n";
 				$pcount = $pcount+2;
 				//error_log(__CLASS__."::".__METHOD__.__LINE__.array2string($newscriptfoot));
