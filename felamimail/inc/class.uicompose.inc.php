@@ -151,6 +151,8 @@
 					return;
 				}
 				$uidisplay   = CreateObject('felamimail.uidisplay');
+				// since we reuse the bofelamimail object, an open connection may not be reusable
+				if ($uidisplay->bofelamimail->icServer->_connected == 1) $uidisplay->bofelamimail->closeConnection();
 				$uidisplay->printMessage($messageUid, $formData['printit'],$destinationFolder);
 				//egw::link('/index.php',array('menuaction' => 'felamimail.uidisplay.printMessage','uid'=>$messageUid));
 				return;
