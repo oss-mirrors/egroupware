@@ -64,8 +64,7 @@
 		function uicompose()
 		{
 			// tell framework felamimail needs eval and inline javascript :(
-			egw_framework::csp_script_src_attrs(array('unsafe-eval', 'unsafe-inline'));
-
+			egw_ckeditor_config::set_csp_script_src_attrs();
 			$this->displayCharset   = $GLOBALS['egw']->translation->charset();
 			if (!isset($_POST['composeid']) && !isset($_GET['composeid']))
 			{
@@ -624,6 +623,7 @@
 			// the editorobject is needed all the time (since we use CKEDITOR
 			//$editorObject = html::initCKEditor('400px','simple');
 			$this->t->set_var('ckeditorConfig', egw_ckeditor_config::get_ckeditor_config('simple-withimage'));//$editorObject->jsEncode($editorObject->config));
+			
 			$this->t->set_var('refreshTimeOut', 3*60*1000); // 3 minutes till a compose messages will be saved as draft;
 
 			// check for some error messages from last posting attempt
