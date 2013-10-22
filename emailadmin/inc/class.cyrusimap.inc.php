@@ -11,12 +11,10 @@
  * @version $Id$
  */
 
-include_once(EGW_SERVER_ROOT."/emailadmin/inc/class.defaultimap.inc.php");
-
 /**
  * Manages connection to Cyrus IMAP server
  */
-class cyrusimap extends defaultimap
+class cyrusimap extends emailadmin_oldimap
 {
 	/**
 	 * Label shown in EMailAdmin

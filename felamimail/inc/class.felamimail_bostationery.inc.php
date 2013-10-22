@@ -47,7 +47,7 @@ class felamimail_bostationery
 	private function get_active_templates()
 	{
 		$boemailadmin = new emailadmin_bo();
-		$profile_data = $boemailadmin->getUserProfile(self::_appname);
+		$profile_data = $boemailadmin->getUserProfile(self::_appname, '', '', true);
 		$active_templates = $profile_data->ea_stationery_active_templates;
 			
 		return $active_templates;

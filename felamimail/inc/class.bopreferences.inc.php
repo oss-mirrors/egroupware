@@ -150,7 +150,7 @@
 			#_debug_array($accountData);
 			foreach ($AllAccountData as $key => $accountData)
 			{
-				$icServer = CreateObject('emailadmin.defaultimap');
+				$icServer = new emailadmin_oldimap();
 				$icServer->ImapServerId	= $accountData['id'];
 				$icServer->encryption	= isset($accountData['ic_encryption']) ? $accountData['ic_encryption'] : 1;
 				$icServer->host		= $accountData['ic_hostname'];
@@ -195,7 +195,7 @@
 		function getUserDefinedIdentities()
 		{
 			$profileID = emailadmin_bo::getUserDefaultProfileID();
-			$profileData        = $this->boemailadmin->getUserProfile('felamimail');
+			$profileData        = $this->boemailadmin->getUserProfile('felamimail', '', '', true);
 			if(!($profileData instanceof ea_preferences) || !($profileData->ic_server[$profileID] instanceof defaultimap)) {
 				return false;
 			}
@@ -237,7 +237,7 @@
 				$userPreferences = $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 
 				$imapServerTypes	= $this->boemailadmin->getIMAPServerTypes();
-				$profileData = $this->boemailadmin->getUserProfile($_appName,'',($_singleProfileToFetch<0?-$_singleProfileToFetch:'')); // by now we assume only one profile to be returned
+				$profileData = $this->boemailadmin->getUserProfile($_appName,'',($_singleProfileToFetch<0?-$_singleProfileToFetch:''), true); // by now we assume only one profile to be returned
 				$icServerKeys = array_keys((array)$profileData->ic_server);
 				$icProfileID = array_shift($icServerKeys);
 				$ogServerKeys = array_keys((array)$profileData->og_server);

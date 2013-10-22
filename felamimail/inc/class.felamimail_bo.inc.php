@@ -317,7 +317,7 @@ class felamimail_bo
 		// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
 		// as we validate the profile in question and may need to return an emailadminprofile, we fetch this one all the time
 		$boemailadmin = new emailadmin_bo();
-		$defaultProfile = $boemailadmin->getUserProfile() ;
+		$defaultProfile = $boemailadmin->getUserProfile('', '', '', true) ;
 		//error_log(__METHOD__.__LINE__.array2string($defaultProfile));
 		$identitys =& $defaultProfile->identities;
 		$icServers =& $defaultProfile->ic_server;
@@ -532,7 +532,7 @@ class felamimail_bo
 		$foldersNameSpace = array();
 		$delimiter = $this->getHierarchyDelimiter();
 		// TODO: cache by $this->icServer->ImapServerId
-		if (is_null($nameSpace)) $nameSpace = $this->icServer->getNameSpaces();
+		if (is_null($nameSpace)) $nameSpace = $this->icServer->getNameSpaceArray();
 		if (is_array($nameSpace)) {
 			foreach($nameSpace as $type => $singleNameSpace) {
 				$prefix_present = false;
@@ -738,7 +738,7 @@ class felamimail_bo
 		}
 		$rv = $this->icServer->createMailbox($newFolderName);
 		if ( PEAR::isError($rv ) ) {
-			error_log(__METHOD__.__LINE__.' create Folder '.$newFolderName.'->'.$rv->message.' Namespace:'.array2string($this->icServer->getNameSpaces()));
+			error_log(__METHOD__.__LINE__.' create Folder '.$newFolderName.'->'.$rv->message.' Namespace:'.array2string($this->icServer->getNameSpaceArray()));
 			return false;
 		}
 		$srv = $this->icServer->subscribeMailbox($newFolderName);
@@ -2104,7 +2104,7 @@ class felamimail_bo
 		$inboxFolderObject = array('INBOX' => $inboxData);
 		#_debug_array($folders);
 
-		//$nameSpace = $this->icServer->getNameSpaces();
+		//$nameSpace = $this->icServer->getNameSpaceArray();
 		$nameSpace = $this->_getNameSpaces();
 		//_debug_array($nameSpace);
 		//_debug_array($delimiter);

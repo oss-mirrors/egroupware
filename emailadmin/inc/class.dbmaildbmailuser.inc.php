@@ -11,14 +11,12 @@
  * @version $Id$
  */
 
-include_once(EGW_SERVER_ROOT."/emailadmin/inc/class.defaultimap.inc.php");
-
 /**
  * Support for DBMail IMAP with qmailUser LDAP schema
  *
  * @todo base this class on dbmailqmailuser or the other way around
  */
-class dbmaildbmailuser extends defaultimap
+class dbmaildbmailuser extends emailadmin_oldimap
 {
 	/**
 	 * Label shown in EMailAdmin

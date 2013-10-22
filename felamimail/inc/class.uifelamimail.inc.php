@@ -1355,4 +1355,3 @@ class uifelamimail
 			$this->t->set_var('lang_sendnotify',lang('The message sender has requested a response to indicate that you have read this message. Would you like to send a receipt?'));
 		}
 }
-?>

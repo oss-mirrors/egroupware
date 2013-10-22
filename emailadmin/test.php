@@ -37,7 +37,7 @@ function stop_time($total = false)
 function horde_connect(array $data)
 {
 	// Connect to an IMAP server.
-	$client = new Horde_Imap_Client_Socket(array_merge(array(
+/*	$client = new Horde_Imap_Client_Socket(array_merge(array(
 		//'port' => '993',
 		'secure' => 'ssl',
 		//'debug_literal' => true,
@@ -45,15 +45,26 @@ function horde_connect(array $data)
 		'cache' => array(
 			'backend' => new Horde_Imap_Client_Cache_Backend_Cache(array(
 				'cacheob' => new emailadmin_horde_cache(),
-/*				
-				'cacheob' => new Horde_Cache_Storage_Memcache(array(
-					'prefix' => 'test-imap',
-					'memcache' => new Horde_Memcache(),
-				)),
-*/
+//				'cacheob' => new Horde_Cache_Storage_Memcache(array(
+//					'prefix' => 'test-imap',
+//					'memcache' => new Horde_Memcache(),
+//				)),
 			)),
 		),
-	), $data));
+	), $data));*/
+	
+	$client = new emailadmin_imap();
+	$client->ImapServerId	= 'test-'.$data['username'];
+	$client->encryption	= 3;	// ssl
+	$client->host		= $data['hostspec'];
+	$client->port 	= 993;
+	$client->validatecert	= false;
+	$client->username 	= $data['username'];
+	$client->loginName 	= $data['username'];
+	$client->password	= $data['password'];
+	$client->enableSieve	= false;
+
+	$client->openConnection();
 
 	var_dump($client->capability());
 
@@ -100,8 +111,7 @@ function horde_fetch(Horde_Imap_Client_Socket $client, $mailbox, $show=true)
 
 function mail_connect(array $data)
 {
-	include_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.defaultimap.inc.php');
-	$icServer = new defaultimap();
+	$icServer = new emailadmin_oldimap();
 	$icServer->ImapServerId	= 'test-'.$data['username'];
 	$icServer->encryption	= 3;	// ssl
 	$icServer->host		= $data['hostspec'];
@@ -135,7 +145,7 @@ foreach(array(
 	'Horde-IMAP_Client' => array('horde_connect','horde_fetch'),
 //	'EGroupware-mail/Net_IMAP' => array('mail_connect','mail_fetch'),
 ) as $name => $methods)
-{
+{;
 	$request_start = microtime(true);
 	echo "<h1>$name</h1>\n";
 	foreach(array(

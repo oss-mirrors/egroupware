@@ -29,9 +29,7 @@
 \***************************************************************************/
 /* $Id$ */
 
-include_once(EGW_SERVER_ROOT."/emailadmin/inc/class.defaultimap.inc.php");
-
-class pleskimap extends defaultimap
+class pleskimap extends emailadmin_oldimap
 {
 	/**
 	 * Label shown in EMailAdmin

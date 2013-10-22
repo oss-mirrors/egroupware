@@ -137,11 +137,14 @@ class emailadmin_hooks
 			include_once($dir.'/'.$file);
 			if (!class_exists($class_name)) continue;
 
-			$is_imap = $class_name == 'defaultimap' || is_subclass_of($class_name, 'defaultimap');
+			$is_imap = $class_name == is_subclass_of($class_name, 'defaultimap');
 			$is_smtp = $class_name == 'emailadmin_smtp' || is_subclass_of($class_name, 'emailadmin_smtp') && $class_name != 'defaultsmtp';
 
 			if ($is_smtp && $location == 'smtp_server_types' || $is_imap && $location == 'imap_server_types')
 			{
+				// only register new imap-class-names
+				if ($is_imap && $class_name != emailadmin_bo::getIcClass ($class_name)) continue;
+
 				$type = array(
 					'classname' => $class_name,
 					'description' => is_callable($function=$class_name.'::description') ? call_user_func($function) : $class_name,

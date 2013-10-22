@@ -140,7 +140,7 @@ class felamimail_hooks
 				// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
 				if ($activeIdentity->id) {
 					$boemailadmin = new emailadmin_bo();
-					$defaultProfile = $boemailadmin->getUserProfile() ;
+					$defaultProfile = $boemailadmin->getUserProfile('', '', '', true) ;
 					//error_log(__METHOD__.__LINE__.array2string($defaultProfile));
 					$identitys =& $defaultProfile->identities;
 					$icServers =& $defaultProfile->ic_server;
@@ -928,7 +928,7 @@ class felamimail_hooks
 				// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
 				if ($activeIdentity->id) {
 					$boemailadmin = new emailadmin_bo();
-					$defaultProfile = $boemailadmin->getUserProfile() ;
+					$defaultProfile = $boemailadmin->getUserProfile('', '', '', true) ;
 					//error_log(__METHOD__.__LINE__.array2string($defaultProfile));
 					$identitys =& $defaultProfile->identities;
 					$icServers =& $defaultProfile->ic_server;

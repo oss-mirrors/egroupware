@@ -452,9 +452,12 @@ class emailadmin_bo extends so_sql
 		uksort($retData, function($a, $b) {
 			static $prio = array(	// not explicitly mentioned get 0
 				'defaultimap' => 9,
+				'emailadmin_imap' => 9,
 				'managementserver_imap' => 8,
 				'emailadmin_dovecot' => 7,
+				'emailadmin_imap_dovecot' => 7,
 				'cyrusimap' => 6,
+				'emailadmin_imap_cyrus' => 6,
 				'pleskimap' => -1,
 			);
 			return (int)$prio[$b] - (int)$prio[$a];
@@ -548,9 +551,11 @@ class emailadmin_bo extends so_sql
 	 *
 	 * @param string $_appName=''
 	 * @param int|array $_groups=''
+	 * @param int $_profileID=''
+	 * @param boolean $old_ic_server=false true: return emailadmin_oldimap as icServer, false: use new emailadmin_imap
 	 * @return ea_preferences
 	 */
-	function getUserProfile($_appName='', $_groups='', $_profileID='')
+	function getUserProfile($_appName='', $_groups='', $_profileID='', $old_ic_server=false)
 	{
 		//error_log(__METHOD__.__LINE__." $_appName, $_groups, $_profileID".function_backtrace());
 		if (!(is_array(self::$sessionData) && (count(self::$sessionData)>0))) $this->restoreSessionData();
@@ -595,15 +600,7 @@ class emailadmin_bo extends so_sql
 			//error_log(__METHOD__.__LINE__.array2string($data));
 			$eaPreferences = CreateObject('emailadmin.ea_preferences');
 
-			// fetch the IMAP / incomming server data
-			if (!class_exists($icClass=$data['imapType']))
-			{
-				if (!file_exists($file=EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$icClass.'.inc.php'))
-				{
-					$file = EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.($icClass='defaultimap').'.inc.php';
-				}
-				include_once($file);
-			}
+			$icClass = self::getIcClass($data[''], $old_ic_server);
 			$icServer = new $icClass;
 			$icServer->ImapServerId	= $data['profileID']*-1;
 			$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes' ? 1 : (int)$data['imapTLSEncryption']);
@@ -728,6 +725,57 @@ class emailadmin_bo extends so_sql
 	}
 
 	/**
+	 * Get name and evtl. autoload incomming server class
+	 *
+	 * @param string $imap_type
+	 * @param boolean $old_ic_server=false true: return emailadmin_oldimap as icServer, false: use new emailadmin_imap
+	 * @return string
+	 */
+	public static function getIcClass($imap_type, $old_ic_server=false)
+	{
+		static $old2new_icClass = array(
+			'defaultimap' => 'emailadmin_imap',
+			'cyrusimap' => 'emailadmin_imap_cyrus',
+			'emailadmin_dovecot' => 'emailadmin_imap_dovecot',
+			'dbmaildbmailuser' => 'emailadmin_imap_dbmail',
+			'dbmailqmailuser' => 'emailadmin_imap_dbmail_qmail',
+		);
+		static $new2old_icClass = array(
+			'emailadmin_imap' => 'emailadmin_oldimap',
+			'emailadmin_imap_cyrus' => 'cyrusimap',
+			'emailadmin_imap_dovecot' => 'emailadmin_dovecot',
+			'emailadmin_imap_dbmail' => 'dbmaildbmailuser',
+			'emailadmin_imap_dbmail_qmail' => 'dbmailqmailuser',
+		);
+
+		// convert icClass to new name
+		$icClass = $imap_type;
+		if (isset($old2new_icClass[$icClass]))
+		{
+			$icClass = $old2new_icClass[$icClass];
+		}
+		// and if requested back to (new) name of Net_IMAP based class
+		if ($old_ic_server)
+		{
+			$icClass = $new2old_icClass[$icClass];
+		}
+
+		// fetch the IMAP / incomming server data
+		if (!class_exists($icClass))
+		{
+			if (file_exists($file=EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$icClass.'.inc.php'))
+			{
+				include_once($file);
+			}
+			else	// use default imap classes
+			{
+				$icClass = $old_ic_server ? 'emailadmin_oldimap' : 'emailadmin_imap';
+			}
+		}
+		return $icClass;
+	}
+
+	/**
 	 * Query user data from incomming (IMAP) and outgoing (SMTP) mail-server
 	 *
 	 * @param int $_accountID
@@ -843,12 +891,12 @@ class emailadmin_bo extends so_sql
 			'mail_server' => 'imapServer',
 			'mail_server_type' => array(
 				'imap' => array(
-					'imapType' => 'defaultimap',
+					'imapType' => 'emailadmin_imap',
 					'imapPort' => 143,
 					'imapTLSEncryption' => 0,
 				),
 				'imaps' => array(
-					'imapType' => 'defaultimap',
+					'imapType' => 'emailadmin_imap',
 					'imapPort' => 993,
 					'imapTLSEncryption' => '3',
 				),
@@ -876,7 +924,7 @@ class emailadmin_bo extends so_sql
 					{
 						foreach($ea_data as $var => $val)
 						{
-							if ($var != 'imapType' || $val != 'defaultimap') // old code: || $profile[$var] < 3)	// dont kill special imap server types
+							if ($var != 'imapType' || $val != 'emailadmin_imap') // old code: || $profile[$var] < 3)	// dont kill special imap server types
 							{
 								$profile[$var] = $val;
 							}

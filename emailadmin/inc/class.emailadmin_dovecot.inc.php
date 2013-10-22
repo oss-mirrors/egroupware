@@ -9,8 +9,6 @@
  * @version $Id$
  */
 
-include_once(EGW_SERVER_ROOT."/emailadmin/inc/class.defaultimap.inc.php");
-
 /**
  * Manages connection to Dovecot IMAP server
  *
@@ -20,7 +18,7 @@ include_once(EGW_SERVER_ROOT."/emailadmin/inc/class.defaultimap.inc.php");
  *   --> require by webserver writable user_home to be configured, otherwise deleting get ignored like with defaultimap
  * - quota can be read, but not set
  */
-class emailadmin_dovecot extends defaultimap
+class emailadmin_dovecot extends emailadmin_oldimap
 {
 	/**
 	 * Label shown in EMailAdmin
