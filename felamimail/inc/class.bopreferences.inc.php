@@ -89,7 +89,7 @@
 		}
 
 		// get the first active user defined account
-		function getAccountData(&$_profileData, $_accountID=NULL,$old_ic_server=true)
+		function getAccountData(&$_profileData, $_accountID=NULL)
 		{
 			#echo "<p>backtrace: ".function_backtrace()."</p>\n";
 			if(!($_profileData instanceof ea_preferences))
@@ -100,8 +100,7 @@
 			$accountData = array_shift($accountData);
 			//_debug_array($accountData);
 
-			$icClass = emailadmin_bo::getIcClass($data[''], $old_ic_server);
-			$icServer = new $icClass;
+			$icServer = new emailadmin_oldimap();
 			$icServer->ImapServerId	= $accountData['id'];
 			$icServer->encryption	= isset($accountData['ic_encryption']) ? $accountData['ic_encryption'] : 1;
 			$icServer->host		= $accountData['ic_hostname'];
