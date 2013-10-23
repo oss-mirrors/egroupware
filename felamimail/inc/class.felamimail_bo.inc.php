@@ -1227,7 +1227,10 @@ class felamimail_bo
 	function flagMessages($_flag, $_messageUID,$_folder=NULL)
 	{
 		//error_log(__METHOD__.__LINE__.'->' .$_flag." ".array2string($_messageUID).",$_folder /".$this->sessionData['mailbox']);
-		self::$folderStatusCache = egw_cache::getCache(egw_cache::INSTANCE,'email','folderStatus'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*10);
+		if (is_null(self::$folderStatusCache) || empty(self::$folderStatusCache[$this->profileID]) || empty(self::$folderStatusCache[$this->profileID][$_folderName]))
+		{
+			self::$folderStatusCache = egw_cache::getCache(egw_cache::INSTANCE,'email','folderStatus'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*10);
+		}
 
 		if(!is_array($_messageUID)) {
 			#return false;
@@ -2856,7 +2859,10 @@ class felamimail_bo
 	function getSortedList($_folderName, $_sort, &$_reverse, $_filter, &$resultByUid=true, $setSession=true)
 	{
 		//ToDo: FilterSpecific Cache
-		self::$folderStatusCache = egw_cache::getCache(egw_cache::INSTANCE,'email','folderStatus'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*10);
+		if (is_null(self::$folderStatusCache) || empty(self::$folderStatusCache[$this->profileID]) || empty(self::$folderStatusCache[$this->profileID][$_folderName]))
+		{
+			self::$folderStatusCache = egw_cache::getCache(egw_cache::INSTANCE,'email','folderStatus'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*10);
+		}
 
 		if(PEAR::isError($folderStatus = $this->icServer->examineMailbox($_folderName))) {
 			//if (stripos($folderStatus->message,'not connected') !== false); error_log(__METHOD__.__LINE__.$folderStatus->message);
