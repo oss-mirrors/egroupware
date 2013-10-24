@@ -203,7 +203,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			'password' => $password,
 			'hostspec' => $this->host,
 			'port' => $this->port,
-			'secure' => $this->encryption ? ($this->encryption == 2 ? 'tls' : 'ssl') : null,
+			'secure' => $this->encryption ? ($this->encryption == 2 ? 'tls' : ($this->encryption == 1?'tls':'ssl')) : null,
 			'timeout' => $_timeout,
 			//'debug_literal' => true,
 			//'debug' => '/tmp/imap.log',
@@ -294,15 +294,110 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	}
 
 	/**
+	 * mailboxExists
+	 *
+	 * @param string $mailbox
+	 * @return boolean
+	 */
+	function mailboxExist($mailbox)
+	{
+		$mailboxes = $this->listMailboxes($mailbox);
+
+		$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
+		//_debug_array($mboxes->count());
+		foreach ($mboxes->getIterator() as $k =>$box)
+		{
+			if ($k!='user' && $k==$mailbox) return true; //_debug_array(array($k => $client->status($k)));
+		}
+		return false;
+	}
+
+	/**
+	 * getStatus
+	 *
+	 * @param string $mailbox
+	 * @return array with counters
+	 */
+	function getStatus($mailbox)
+	{
+		$mailboxes = $this->listMailboxes($mailbox);
+
+		$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
+		//_debug_array($mboxes->count());
+		foreach ($mboxes->getIterator() as $k =>$box)
+		{
+			if ($k!='user' && $k==$mailbox)
+			{
+				$status = $this->status($k);
+				foreach ($status as $k => $v)
+				{
+					$_status[strtoupper($k)]=$v;
+				}
+				return $_status;
+			}
+		}
+		return false;
+	}
+
+	function getMailboxes($mailbox)
+	{
+		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_ALL, array('flat' => true));
+	}
+
+	function listSubscribedMailboxes($mailbox)
+	{
+		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_SUBSCRIBED, array('flat' => true));
+//_debug_array($mailboxes);
+	}
+
+	/**
+	 * examineMailbox
+	 *
+	 * @param string $_folderName
+	 * @return array of counters for mailbox
+	 */
+	function examineMailbox($_folderName)
+	{
+		$mailboxes = $this->listMailboxes($mailbox);
+
+		$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
+	//_debug_array($mboxes->count());
+		foreach ($mboxes->getIterator() as $k =>$box)
+		{
+			if ($k!='user' && $k==$mailbox)
+			{
+				$status = $this->status($k);
+				foreach ($status as $k => $v)
+				{
+					$_status[strtoupper($k)]=$v;
+				}
+				return $_status;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * returns the supported capabilities of the imap server
 	 * return false if the imap server does not support capabilities
 	 *
- * @deprecated use capability()
+	 * @deprecated use capability()
 	 * @return array the supported capabilites
 	 */
 	function getCapabilities()
 	{
-		return $this->capability();
+		$cap = $this->capability();
+		foreach ($cap as $c => $v)
+		{
+			if (is_array($v))
+			{
+				foreach ($v as $sc => $v)
+				{
+					$cap[$c.'='.$v] = true;
+				}
+			}
+		}
+		return $cap;
 	}
 
 	/**
@@ -314,18 +409,60 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function hasCapability($capability)
 	{
-		return $this->queryCapability($capability);
+		//return $this->queryCapability($capability);
+
+		$cap = $this->capability();
+		foreach ($cap as $c => $v)
+		{
+			if (is_array($v))
+			{
+				foreach ($v as $sc => $v)
+				{
+					$cap[$c.'='.$v] = true;
+				}
+			}
+		}
+		//_debug_array($cap);
+		if (isset($cap[$_capability]) && $cap[$_capability])
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
 	 * return the delimiter used by the current imap server
-	 *
+	 * @param mixed _type (1=personal, 2=user/other, 3=shared)
 	 * @return string the delimimiter
 	 */
-	function getDelimiter()
+	function getDelimiter($_type=1)
 	{
+		switch ($type)
+		{
+			case 'user':
+			case 'other':
+			case 2:
+				$type=2;
+				break;
+			case 'shared':
+			case '':
+			case 3:
+				$type=3;
+				break;
+			case 'personal':
+			case 1:
+			default:
+				$type=1;
+		}
 		$namespaces = $this->getNamespaces();
-		return isset($this->sessionData['delimiter'][$this->host]) ? $this->sessionData['delimiter'][$this->host] : $this->mailboxDelimiter;
+		foreach ($namespaces as $ns => $nsp)
+		{
+			if ($nsp['type']==$type) $this->mailboxDelimiter = $nsp['delimiter'];
+		}
+		return $this->mailboxDelimiter;
 	}
 
 	/**
@@ -367,7 +504,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function getUserMailboxString($_username, $_folderName='')
 	{
-		$nameSpaces = $this->getNameSpaces();
+		$nameSpaces = $this->getNameSpaceArray();
 
 		if(!isset($nameSpaces['others'])) {
 			return false;
@@ -396,7 +533,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			Horde_Imap_Client::NS_SHARED   => 'shared'
 		);
 
-		foreach(parent::getNamespace() as $data)
+		foreach($this->getNamespaces() as $data)
 		{
 			if (isset($types[$data['type']]))
 			{
