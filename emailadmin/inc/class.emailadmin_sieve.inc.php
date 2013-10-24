@@ -156,6 +156,8 @@ class emailadmin_sieve extends Net_Sieve
 			egw_cache::setCache(egw_cache::INSTANCE,'email','icServerSIEVE_connectionError'.trim($GLOBALS['egw_info']['user']['account_id']),$isConError,$expiration=60*15);
 			return false;
 		}
+		//$_icServer->supportedSieveExtensions=$this->_capability['extensions'];
+		//error_log(__METHOD__.__LINE__.array2string($this->_capability));
 		return true;
 	}
 

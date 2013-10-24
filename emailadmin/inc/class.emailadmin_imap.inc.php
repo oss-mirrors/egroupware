@@ -5,7 +5,7 @@
  * @link http://www.stylite.de
  * @package emailadmin
  * @author Ralf Becker <rb@stylite.de>
- * @author Klaus Leithoff <kl@stylite.de>
+ * @author Stylite AG <info@stylite.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */
@@ -307,7 +307,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		//_debug_array($mboxes->count());
 		foreach ($mboxes->getIterator() as $k =>$box)
 		{
-			if ($k!='user' && $k==$mailbox) return true; //_debug_array(array($k => $client->status($k)));
+			if ($k!='user' && $k != '' && $k==$mailbox) return true; //_debug_array(array($k => $client->status($k)));
 		}
 		return false;
 	}
@@ -323,16 +323,17 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		$mailboxes = $this->listMailboxes($mailbox);
 
 		$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
-		//_debug_array($mboxes->count());
+		//error_log(__METHOD__.__LINE__.array2string($mboxes->count()));
 		foreach ($mboxes->getIterator() as $k =>$box)
 		{
-			if ($k!='user' && $k==$mailbox)
+			if ($k!='user' && $k != '' && $k==$mailbox)
 			{
 				$status = $this->status($k);
-				foreach ($status as $k => $v)
+				foreach ($status as $key => $v)
 				{
-					$_status[strtoupper($k)]=$v;
+					$_status[strtoupper($key)]=$v;
 				}
+				//error_log(__METHOD__.__LINE__.$k.'->'.array2string($_status));
 				return $_status;
 			}
 		}
@@ -358,18 +359,19 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function examineMailbox($_folderName)
 	{
+		if ($_folderName=='') return false;
 		$mailboxes = $this->listMailboxes($mailbox);
 
 		$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
-	//_debug_array($mboxes->count());
+		//_debug_array($mboxes->count());
 		foreach ($mboxes->getIterator() as $k =>$box)
 		{
-			if ($k!='user' && $k==$mailbox)
+			if ($k!='user' && $k != '' && $k==$mailbox)
 			{
 				$status = $this->status($k);
-				foreach ($status as $k => $v)
+				foreach ($status as $key => $v)
 				{
-					$_status[strtoupper($k)]=$v;
+					$_status[strtoupper($key)]=$v;
 				}
 				return $_status;
 			}
@@ -422,8 +424,8 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				}
 			}
 		}
-		//_debug_array($cap);
-		if (isset($cap[$_capability]) && $cap[$_capability])
+		//error_log(__METHOD__.__LINE__.$capability.'->'.array2string($cap));
+		if (isset($cap[$capability]) && $cap[$capability])
 		{
 			return true;
 		}
@@ -548,6 +550,25 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	}
 
 	/**
+	 * return the quota for the current user
+	 *
+	 * @param string $mailboxName
+	 * @return mixed the quota for the current user -> array with all available Quota Information, or false
+	 */
+	function getStorageQuotaRoot($mailboxName)
+	{
+		$storageQuota = $this->getQuotaRoot($mailboxName);
+		foreach ($storageQuota as $user => $qInfo)
+		{
+			if ($qInfo['storage'])
+			{
+				return array('USED'=>$qInfo['storage']['usage'],'QMAX'=>$qInfo['storage']['limit']);
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * return the quota for another user
 	 * used by admin connections only
 	 *
@@ -558,7 +579,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	function getQuotaByUser($_username, $_what='QMAX')
 	{
 		$mailboxName = $this->getUserMailboxString($_username);
-		$storageQuota = $this->getStorageQuota($mailboxName);
+		$storageQuota = $this->getQuotaRoot($mailboxName);
 		//error_log(__METHOD__.' Username:'.$_username.' Mailbox:'.$mailboxName.' Quota('.$_what.'):'.array2string($storageQuota));
 		if ( PEAR::isError($storageQuota)) error_log(__METHOD__.$storageQuota->message);
 		if(is_array($storageQuota) && (isset($storageQuota[$_what])||($_what=='ALL' && (isset($storageQuota['QMAX'])||isset($storageQuota['USED']))))) {
