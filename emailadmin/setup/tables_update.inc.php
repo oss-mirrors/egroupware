@@ -417,3 +417,118 @@ function emailadmin_upgrade1_9_005()
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.006';
 }
 
+
+function emailadmin_upgrade1_9_006()
+{
+	$GLOBALS['egw_setup']->oProc->CreateTable('egw_ea_accounts',array(
+		'fd' => array(
+			'acc_id' => array('type' => 'auto','nullable' => False),
+			'acc_name' => array('type' => 'varchar','precision' => '80','comment' => 'description'),
+			'acc_accounts' => array('type' => 'varchar','meta' => 'account-commasep','precision' => '80','comment' => 'used for given accounts or all (NULL)'),
+			'ident_id' => array('type' => 'int','precision' => '4','nullable' => False,'comment' => 'standard identity'),
+			'acc_imap_host' => array('type' => 'varchar','precision' => '80','nullable' => False,'comment' => 'imap hostname'),
+			'acc_imap_ssl' => array('type' => 'int','precision' => '1','nullable' => False,'default' => '0','comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'),
+			'acc_imap_port' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '143','comment' => 'imap port'),
+			'acc_sieve_enabled' => array('type' => 'bool','default' => '0','comment' => 'sieve enabled'),
+			'acc_sieve_host' => array('type' => 'varchar','precision' => '80','comment' => 'sieve host, default imap_host'),
+			'acc_sieve_port' => array('type' => 'int','precision' => '2','default' => '4190'),
+			'acc_folder_sent' => array('type' => 'varchar','precision' => '80','comment' => 'sent folder'),
+			'acc_folder_trash' => array('type' => 'varchar','precision' => '80','comment' => 'trash folder'),
+			'acc_folder_draft' => array('type' => 'varchar','precision' => '80','comment' => 'draft folder'),
+			'acc_folder_template' => array('type' => 'varchar','precision' => '80','comment' => 'template folder'),
+			'acc_smtp_host' => array('type' => 'varchar','precision' => '80','comment' => 'smtp hostname'),
+			'acc_smtp_ssl' => array('type' => 'int','precision' => '1','nullable' => False,'default' => '0','comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'),
+			'acc_smtp_port' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '25','comment' => 'smtp port'),
+			'acc_smtp_type' => array('type' => 'varchar','precision' => '20','default' => 'emailadmin_smtp','comment' => 'smtp class to use'),
+			'acc_imap_type' => array('type' => 'varchar','precision' => '20','default' => 'emailadmin_imap','comment' => 'imap class to use'),
+			'acc_imap_logintype' => array('type' => 'varchar','precision' => '255','comment' => 'standard, vmailmgr, admin, uidNumber'),
+			'acc_domain' => array('type' => 'varchar','precision' => '100','comment' => 'domain name'),
+			'acc_imap_administration' => array('type' => 'bool','nullable' => False,'default' => '0','comment' => '1=enable administration'),
+			'acc_further_identities' => array('type' => 'bool','nullable' => False,'default' => '1','comment' => '0=no, 1=yes'),
+			'acc_user_editable' => array('type' => 'bool','nullable' => False,'default' => '0','comment' => '0=no, 1=yes')
+		),
+		'pk' => array('acc_id'),
+		'fk' => array(),
+		'ix' => array(),
+		'uc' => array()
+	));
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.007';
+}
+
+
+function emailadmin_upgrade1_9_007()
+{
+	$GLOBALS['egw_setup']->oProc->CreateTable('egw_ea_credentials',array(
+		'fd' => array(
+			'cred_id' => array('type' => 'auto','nullable' => False),
+			'acc_id' => array('type' => 'int','precision' => '4','nullable' => False,'comment' => 'into egw_ea_accounts'),
+			'cred_type' => array('type' => 'int','precision' => '1','nullable' => False,'comment' => '&1=imap, &2=smtp, &4=admin'),
+			'account_id' => array('type' => 'int','meta' => 'user','precision' => '4','nullable' => False,'comment' => 'account_id or 0=all'),
+			'cred_username' => array('type' => 'varchar','precision' => '80','nullable' => False,'comment' => 'username'),
+			'cred_password' => array('type' => 'varchar','precision' => '80','comment' => 'password encrypted'),
+			'cred_pw_enc' => array('type' => 'int','precision' => '1','default' => '0','comment' => '0=not, 1=user pw, 2=system')
+		),
+		'pk' => array('cred_id'),
+		'fk' => array(),
+		'ix' => array(),
+		'uc' => array(array('acc_id','account_id','cred_type'))
+	));
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.008';
+}
+
+
+function emailadmin_upgrade1_9_008()
+{
+	$GLOBALS['egw_setup']->oProc->CreateTable('egw_ea_identity',array(
+		'fd' => array(
+			'ident_id' => array('type' => 'auto','nullable' => False),
+			'acc_id' => array('type' => 'int','precision' => '4','nullable' => False,'comment' => 'for which account'),
+			'ident_realname' => array('type' => 'varchar','precision' => '80','nullable' => False,'comment' => 'real name'),
+			'ident_email' => array('type' => 'varchar','precision' => '80','comment' => 'email address'),
+			'ident_org' => array('type' => 'varchar','precision' => '80','comment' => 'organisation'),
+			'ident_signature' => array('type' => 'text','comment' => 'signature text')
+		),
+		'pk' => array('ident_id'),
+		'fk' => array(),
+		'ix' => array(),
+		'uc' => array()
+	));
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.009';
+}
+
+
+function emailadmin_upgrade1_9_009()
+{
+	$GLOBALS['egw_setup']->oProc->RefreshTable('egw_ea_valid',array(
+		'fd' => array(
+			'acc_id' => array('type' => 'int','precision' => '4','nullable' => False),
+			'account_id' => array('type' => 'int','meta' => 'account','precision' => '4','nullable' => False)
+		),
+		'pk' => array(),
+		'fk' => array(),
+		'ix' => array(array('account_id','acc_id')),
+		'uc' => array(array('acc_id','account_id'))
+	));
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.010';
+}
+
+
+/**
+ * Migrate old eMailAdmin profiles to accounts, FMail identities and signatures to identities
+ */
+function emailadmin_upgrade1_9_010()
+{
+	$db = new egw_db;
+	foreach($db->select('egw_emailadmin', '*', 'ea_active=1', __LINE__, __FILE__) as $row)
+	{
+
+	}
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.011';
+}
+
+
