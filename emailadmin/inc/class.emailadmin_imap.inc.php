@@ -347,15 +347,126 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		return false;
 	}
 
-	function getMailboxes($mailbox)
+	/**
+	 * Returns an array containing the names of the selected mailboxes
+	 *
+	 * @param   string  $reference          base mailbox to start the search (default is current mailbox)
+	 * @param   string  $restriction_search false or 0 means return all mailboxes
+	 *                                      true or 1 return only the mailbox that contains that exact name
+	 *                                      2 return all mailboxes in that hierarchy level
+	 * @param   string  $returnAttributes   true means return an assoc array containing mailbox names and mailbox attributes
+	 *                                      false - the default - means return an array of mailboxes
+	 *
+	 * @return  mixed   array of mailboxes
+	 */
+	function getMailboxes($reference = ''  , $restriction_search = 0, $returnAttributes = false)
 	{
-		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_ALL, array('flat' => true));
+		if ( is_bool($restriction_search) ){
+			$restriction_search = (int) $restriction_search;
+		}
+
+		if ( is_int( $restriction_search ) ){
+			switch ( $restriction_search ) {
+			case 0:
+				$mailbox = "*";
+				break;
+			case 1:
+				$mailbox = $reference;
+				$reference = '%';
+				break;
+			case 2:
+				$mailbox = "%";
+				break;
+			}
+		}else{
+			if ( is_string( $restriction_search ) ){
+				$mailbox = $restriction_search;
+			}
+		}
+		//error_log(__METHOD__.__LINE__.$mailbox);
+		$options = array(
+				'attributes'=>true,
+				'children'=>true, //child info
+				'delimiter'=>true,
+				'special_use'=>true,
+				'sort'=>true,
+			);
+		if ($returnAttributes==false)
+		{
+			unset($options['attributes']);
+			unset($options['children']);
+			unset($options['special_use']);
+		}
+		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_ALL, $options);
+		//$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
+		//_debug_array($mboxes->count());
+		foreach ((array)$mailboxes as $k =>$box)
+		{
+			//error_log(__METHOD__.__LINE__.' Box:'.$k.'->'.array2string($box));
+			$ret[]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter']);
+		}
+		return $ret;
 	}
 
-	function listSubscribedMailboxes($mailbox)
+	/**
+	 * Returns an array containing the names of the selected mailboxes
+	 *
+	 * @param   string  $reference          base mailbox to start the search (default is current mailbox)
+	 * @param   string  $restriction_search false or 0 means return all mailboxes
+	 *                                      true or 1 return only the mailbox that contains that exact name
+	 *                                      2 return all mailboxes in that hierarchy level
+	 * @param   string  $returnAttributes   true means return an assoc array containing mailbox names and mailbox attributes
+	 *                                      false - the default - means return an array of mailboxes
+	 *
+	 * @return  mixed   array of mailboxes
+	 */
+	function listSubscribedMailboxes($reference = ''  , $restriction_search = 0, $returnAttributes = false)
 	{
-		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_SUBSCRIBED, array('flat' => true));
-//_debug_array($mailboxes);
+		if ( is_bool($restriction_search) ){
+			$restriction_search = (int) $restriction_search;
+		}
+
+		if ( is_int( $restriction_search ) ){
+			switch ( $restriction_search ) {
+			case 0:
+				$mailbox = "*";
+				break;
+			case 1:
+				$mailbox = $reference;
+				$reference = '%';
+				break;
+			case 2:
+				$mailbox = "%";
+				break;
+			}
+		}else{
+			if ( is_string( $restriction_search ) ){
+				$mailbox = $restriction_search;
+			}
+		}
+		//error_log(__METHOD__.__LINE__.$mailbox);
+		$options = array(
+				'attributes'=>true,
+				'children'=>true, //child info
+				'delimiter'=>true,
+				'special_use'=>true,
+				'sort'=>true,
+			);
+		if ($returnAttributes==false)
+		{
+			unset($options['attributes']);
+			unset($options['children']);
+			unset($options['special_use']);
+		}
+		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_SUBSCRIBED, $options);
+		//$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
+		//_debug_array($mboxes->count());
+		foreach ((array)$mailboxes as $k =>$box)
+		{
+			//error_log(__METHOD__.__LINE__.' Box:'.$k.'->'.array2string($box));
+			$ret[]=$k;
+		}
+		return $ret;
 	}
 
 	/**
@@ -544,15 +655,18 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 
 		foreach($this->getNamespaces() as $data)
 		{
+			//error_log(__METHOD__.__LINE__.array2string($data));
 			if (isset($types[$data['type']]))
 			{
 				$result[$types[$data['type']]] = array(
 					'name' => $data['name'],
+					'prefix' => $data['name'],
+					'prefix_present' => !empty($data['name']),
 					'delimiter' => $data['delimiter'],
 				);
 			}
 		}
-
+		//error_log(__METHOD__.__LINE__.array2string($result));
 		return $result;
 	}
 
