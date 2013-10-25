@@ -333,7 +333,8 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				{
 					$_status[strtoupper($key)]=$v;
 				}
-				//error_log(__METHOD__.__LINE__.$k.'->'.array2string($_status));
+				$_status['HIERACHY_DELIMITER'] = $this->getDelimiter('user');
+				error_log(__METHOD__.__LINE__.$k.'->'.array2string($_status));
 				return $_status;
 			}
 		}
@@ -442,7 +443,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function getDelimiter($_type=1)
 	{
-		switch ($type)
+		switch ($_type)
 		{
 			case 'user':
 			case 'other':
