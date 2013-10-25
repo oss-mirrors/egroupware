@@ -544,6 +544,10 @@ class emailadmin_bo extends so_sql
 		{
 			self::unsetCachedObjects();
 		}
+		if (!empty($hook_data['old_passwd']))
+		{
+			emailadmin_credentials::changepassword($hook_data);
+		}
 	}
 
 	/**

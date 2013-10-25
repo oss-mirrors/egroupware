@@ -25,13 +25,6 @@ define('IMAP_NAMESPACE_ALL'	, 'all');
 interface defaultimap
 {
 	/**
-	 * the construtor
-	 *
-	 * @return void
-	 */
-	function __construct();
-
-	/**
 	 * adds a account on the imap server
 	 *
 	 * @param array $_hookValues

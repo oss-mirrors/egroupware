@@ -582,8 +582,7 @@ function emailadmin_upgrade1_9_010()
 			// add smtp credentials if necessary and different from imap
 			if ($row['fm_og_smtpauth'] && $cred_type != 3)
 			{
-				emailadmin_credentials::write($acc_id, $row['fm_og_username'], $row['fm_og_password'],
-					2, $row['fm_owner'], $cred_id);
+				emailadmin_credentials::write($acc_id, $row['fm_og_username'], $row['fm_og_password'], 2, $row['fm_owner']);
 			}
 		}
 	}
