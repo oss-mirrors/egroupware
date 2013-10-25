@@ -15,7 +15,7 @@
  * acocunt-id, users and types (imap, smtp and optional admin connection).
  *
  * Passwords in credentials are encrypted with either user password from session
- * or a secret from header.inc.php table.
+ * or the database password.
  */
 class emailadmin_credentials
 {
@@ -107,9 +107,9 @@ class emailadmin_credentials
 			{
 				if ($row['cred_type'] & $pattern)
 				{
-					$result[$prefix.'username'] = $row['cred_username'];
-					$result[$prefix.'password'] = $password;
-					$result[$prefix.'cred_id'] = $row['cred_id'];
+					$results[$prefix.'username'] = $row['cred_username'];
+					$results[$prefix.'password'] = $password;
+					$results[$prefix.'cred_id'] = $row['cred_id'];
 				}
 			}
 		}
@@ -130,17 +130,23 @@ class emailadmin_credentials
 	public static function write($acc_id, $username, $password, $type, $account_id=0, $cred_id=null)
 	{
 		$data = array(
+			'acc_id' => $acc_id,
+			'account_id' => $account_id,
 			'cred_username' => $username,
 			'cred_password' => self::encrypt($password, $account_id, $pw_enc=0),
 			'cred_type' => $type,
 			'cred_pw_enc' => $pw_enc,
 		);
-		$where = array(
-			'acc_id' => $acc_id,
-			'account_id' => $account_id,
-		);
-		return !self::$db->update(self::TABLE, $data, $where, __LINE__, __FILE__) ? false :
-			($cred_id > 0 ? $cred_id : self::$db->get_last_insert_id(self::TABLE, 'cred_id'));
+		if ($cred_id > 0)
+		{
+			self::$db->update(self::TABLE, $data, array('cred_id' => $cred_id), __LINE__, __FILE__, self::APP);
+		}
+		else
+		{
+			self::$db->insert(self::TABLE, $data, false, __LINE__, __FILE__, self::APP);
+			$cred_id = self::$db->get_last_insert_id(self::TABLE, 'cred_id');
+		}
+		return $cred_id;
 	}
 
 	/**
@@ -218,7 +224,7 @@ class emailadmin_credentials
 			}
 			else
 			{
-				$key = $GLOBALS['egw_info']['server']['db_pass'].EGW_SERVER_ROOT;
+				$key = $GLOBALS['egw_info']['server']['db_pass'];
 			}
 			if (!check_load_extension('mcrypt'))
 			{
@@ -251,7 +257,7 @@ class emailadmin_credentials
 	 */
 	static public function init_static()
 	{
-		self::$db = $GLOBALS['egw']->db;
+		self::$db = isset($GLOBALS['egw_setup']) ? $GLOBALS['egw_setup']->db : $GLOBALS['egw']->db;
 	}
 }
 emailadmin_credentials::init_static();

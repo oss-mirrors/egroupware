@@ -424,28 +424,27 @@ function emailadmin_upgrade1_9_006()
 		'fd' => array(
 			'acc_id' => array('type' => 'auto','nullable' => False),
 			'acc_name' => array('type' => 'varchar','precision' => '80','comment' => 'description'),
-			'acc_accounts' => array('type' => 'varchar','meta' => 'account-commasep','precision' => '80','comment' => 'used for given accounts or all (NULL)'),
 			'ident_id' => array('type' => 'int','precision' => '4','nullable' => False,'comment' => 'standard identity'),
-			'acc_imap_host' => array('type' => 'varchar','precision' => '80','nullable' => False,'comment' => 'imap hostname'),
+			'acc_imap_host' => array('type' => 'varchar','precision' => '128','nullable' => False,'comment' => 'imap hostname'),
 			'acc_imap_ssl' => array('type' => 'int','precision' => '1','nullable' => False,'default' => '0','comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'),
-			'acc_imap_port' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '143','comment' => 'imap port'),
+			'acc_imap_port' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '143','comment' => 'imap port'),
 			'acc_sieve_enabled' => array('type' => 'bool','default' => '0','comment' => 'sieve enabled'),
-			'acc_sieve_host' => array('type' => 'varchar','precision' => '80','comment' => 'sieve host, default imap_host'),
-			'acc_sieve_port' => array('type' => 'int','precision' => '2','default' => '4190'),
-			'acc_folder_sent' => array('type' => 'varchar','precision' => '80','comment' => 'sent folder'),
-			'acc_folder_trash' => array('type' => 'varchar','precision' => '80','comment' => 'trash folder'),
-			'acc_folder_draft' => array('type' => 'varchar','precision' => '80','comment' => 'draft folder'),
-			'acc_folder_template' => array('type' => 'varchar','precision' => '80','comment' => 'template folder'),
-			'acc_smtp_host' => array('type' => 'varchar','precision' => '80','comment' => 'smtp hostname'),
+			'acc_sieve_host' => array('type' => 'varchar','precision' => '128','comment' => 'sieve host, default imap_host'),
+			'acc_sieve_port' => array('type' => 'int','precision' => '4','default' => '4190'),
+			'acc_folder_sent' => array('type' => 'varchar','precision' => '128','comment' => 'sent folder'),
+			'acc_folder_trash' => array('type' => 'varchar','precision' => '128','comment' => 'trash folder'),
+			'acc_folder_draft' => array('type' => 'varchar','precision' => '128','comment' => 'draft folder'),
+			'acc_folder_template' => array('type' => 'varchar','precision' => '128','comment' => 'template folder'),
+			'acc_smtp_host' => array('type' => 'varchar','precision' => '128','comment' => 'smtp hostname'),
 			'acc_smtp_ssl' => array('type' => 'int','precision' => '1','nullable' => False,'default' => '0','comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'),
-			'acc_smtp_port' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '25','comment' => 'smtp port'),
+			'acc_smtp_port' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '25','comment' => 'smtp port'),
 			'acc_smtp_type' => array('type' => 'varchar','precision' => '20','default' => 'emailadmin_smtp','comment' => 'smtp class to use'),
 			'acc_imap_type' => array('type' => 'varchar','precision' => '20','default' => 'emailadmin_imap','comment' => 'imap class to use'),
-			'acc_imap_logintype' => array('type' => 'varchar','precision' => '255','comment' => 'standard, vmailmgr, admin, uidNumber'),
+			'acc_imap_logintype' => array('type' => 'varchar','precision' => '20','comment' => 'standard, vmailmgr, admin, uidNumber'),
 			'acc_domain' => array('type' => 'varchar','precision' => '100','comment' => 'domain name'),
 			'acc_imap_administration' => array('type' => 'bool','nullable' => False,'default' => '0','comment' => '1=enable administration'),
 			'acc_further_identities' => array('type' => 'bool','nullable' => False,'default' => '1','comment' => '0=no, 1=yes'),
-			'acc_user_editable' => array('type' => 'bool','nullable' => False,'default' => '0','comment' => '0=no, 1=yes')
+			'acc_user_editable' => array('type' => 'bool','nullable' => False,'default' => '1','comment' => '0=no, 1=yes')
 		),
 		'pk' => array('acc_id'),
 		'fk' => array(),
@@ -481,13 +480,13 @@ function emailadmin_upgrade1_9_007()
 
 function emailadmin_upgrade1_9_008()
 {
-	$GLOBALS['egw_setup']->oProc->CreateTable('egw_ea_identity',array(
+	$GLOBALS['egw_setup']->oProc->CreateTable('egw_ea_identities',array(
 		'fd' => array(
 			'ident_id' => array('type' => 'auto','nullable' => False),
 			'acc_id' => array('type' => 'int','precision' => '4','nullable' => False,'comment' => 'for which account'),
-			'ident_realname' => array('type' => 'varchar','precision' => '80','nullable' => False,'comment' => 'real name'),
-			'ident_email' => array('type' => 'varchar','precision' => '80','comment' => 'email address'),
-			'ident_org' => array('type' => 'varchar','precision' => '80','comment' => 'organisation'),
+			'ident_realname' => array('type' => 'varchar','precision' => '128','nullable' => False,'comment' => 'real name'),
+			'ident_email' => array('type' => 'varchar','precision' => '128','comment' => 'email address'),
+			'ident_org' => array('type' => 'varchar','precision' => '128','comment' => 'organisation'),
 			'ident_signature' => array('type' => 'text','comment' => 'signature text')
 		),
 		'pk' => array('ident_id'),
@@ -502,7 +501,7 @@ function emailadmin_upgrade1_9_008()
 
 function emailadmin_upgrade1_9_009()
 {
-	$GLOBALS['egw_setup']->oProc->RefreshTable('egw_ea_valid',array(
+	$GLOBALS['egw_setup']->oProc->CreateTable('egw_ea_valid',array(
 		'fd' => array(
 			'acc_id' => array('type' => 'int','precision' => '4','nullable' => False),
 			'account_id' => array('type' => 'int','meta' => 'account','precision' => '4','nullable' => False)
@@ -518,17 +517,79 @@ function emailadmin_upgrade1_9_009()
 
 
 /**
- * Migrate old eMailAdmin profiles to accounts, FMail identities and signatures to identities
+ * Migrate (personal) FMail accounts to eMailAdmin accounts
  */
 function emailadmin_upgrade1_9_010()
 {
-	$db = new egw_db;
-	foreach($db->select('egw_emailadmin', '*', 'ea_active=1', __LINE__, __FILE__) as $row)
-	{
+	static $prot2ssl = array('ssl' => 3, 'tls' => 2, 'starttls' => 1);
+	// migrate personal felamimail accounts, identities and signatures
+	try {
+		$db = $GLOBALS['egw_setup']->db;
+		foreach($db->select('egw_felamimail_accounts', '*', 'fm_active=1', __LINE__, __FILE__) as $row)
+		{
+			// create standard identity for account
+			$identity = array(
+				'acc_id' => 0,
+				'ident_realname' => $row['fm_realname'],
+				'ident_email' => $row['fm_emailaddress'],
+				'ident_org' => $row['fm_organisation'],
+				'ident_signature' => $db->select('egw_felamimail_signatures', 'fm_signature', array(
+					'fm_signatureid' => $row['fm_signatureid'],
+				), __LINE__, __FILE__, false, '', 'felamimail')->fetchColumn(),
+			);
+			$db->insert('egw_ea_identities', $identity, false, __LINE__, __FILE__, 'emailadmin');
+			$ident_id = $db->get_last_insert_id('egw_ea_identities', 'ident_id');
 
+			// create account
+			$og_ssl = 0;
+			if (strpos($row['fm_og_hostname'], '://') !== false)
+			{
+				list($prot, $row['fm_og_hostname']) = explode('://', $row['fm_og_hostname']);
+				$og_ssl = (int)$prot2ssl[$prot];
+			}
+			$account = array(
+				'acc_name' => $row['fm_emailaddress'],
+				'ident_id' => $ident_id,
+				'acc_imap_host' => $row['fm_ic_hostname'],
+				'acc_imap_ssl' => $row['fm_ic_encryption'] | ($row['fm_ic_validatecertificate'] ? 8 : 0),
+				'acc_imap_port' => $row['fm_ic_port'],
+				'acc_sieve_enabled' => $row['fm_ic_enable_sieve'],
+				'acc_sieve_host' => $row['fm_ic_sieve_server'],
+				'acc_sieve_port' => $row['fm_ic_sieve_port'],
+				'acc_folder_sent' => $row['fm_ic_sentfolder'],
+				'acc_folder_trash' => $row['fm_ic_trashfolder'],
+				'acc_folder_draft' => $row['fm_ic_draftfolder'],
+				'acc_folder_template' => $row['fm_ic_templatefolder'],
+				'acc_smtp_host' => $row['fm_og_hostname'],
+				'acc_smtp_ssl' => $og_ssl,
+				'acc_smtp_port' => $row['fm_og_port'],
+			);
+			$db->insert('egw_ea_accounts', $account, false, __LINE__, __FILE__, 'emailadmin');
+			$acc_id = $db->get_last_insert_id('egw_ea_accounts', 'acc_id');
+			// update above created identity with account acc_id
+			$db->update('egw_ea_identities', array('acc_id' => $acc_id), array('ident_id' => $ident_id), __LINE__, __FILE__, 'emailadmin');
+
+			// make account valid for given owner
+			$db->insert('egw_ea_valid', array(
+				'acc_id' => $acc_id,
+				'account_id' => $row['fm_owner'],
+			), false, __LINE__, __FILE__, 'emailadmin');
+
+			// add imap credentials
+			$cred_type = $row['fm_og_smtpauth'] && $row['fm_ic_username'] == $row['fm_og_username'] &&
+				$row['fm_ic_password'] == $row['fm_og_password'] ? 3 : 1;
+			emailadmin_credentials::write($acc_id, $row['fm_ic_username'], $row['fm_ic_password'], $cred_type, $row['fm_owner']);
+			// add smtp credentials if necessary and different from imap
+			if ($row['fm_og_smtpauth'] && $cred_type != 3)
+			{
+				emailadmin_credentials::write($acc_id, $row['fm_og_username'], $row['fm_og_password'],
+					2, $row['fm_owner'], $cred_id);
+			}
+		}
 	}
-
+	catch(Exception $e) {
+		// ignore all errors, eg. because FMail is not installed
+		echo "<p>".$e->getMessage()."</p>\n";
+	}
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.011';
 }
-
-

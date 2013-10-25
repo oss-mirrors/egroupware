@@ -17,8 +17,9 @@
  * b) accounts for multiple users or groups created by admin
  * c) configuration to administrate a mail-server
  *
- * To store the accounts 3 tables are used
+ * To store the accounts 4 tables are used
  * - egw_ea_accounts all data except credentials and identities (incl. signature)
+ * - egw_ea_valid for which users an account is valid 1:N relation to accounts table
  * - egw_ea_credentials username/password for various accounts and types (imap, smtp, admin)
  * - egw_ea_identities identities of given account and user incl. standard identity of account
  */
@@ -27,7 +28,9 @@ class emailadmin_account
 	const APP = 'emailadmin';
 	const TABLE = 'egw_ea_accounts';
 	const VALID_TABLE = 'egw_ea_valid';
+	const VALID_JOIN = 'LEFT JOIN egw_ea_valid ON egw_ea_valid.acc_id=egw_ea_accounts.acc_id ';
 	const IDENTITIES_TABLE = 'egw_ea_identities';
+	const IDENTITY_JOIN = 'JOIN egw_ea_identities ON egw_ea_identities.ident_id=egw_ea_accounts.ident_id';
 
 	/**
 	 * No SSL
@@ -191,24 +194,58 @@ class emailadmin_account
 	 */
 	public static function read($acc_id, $only_current_user=true)
 	{
-		$memberships = $GLOBALS['egw']->accounts->memberhips();
+		$memberships = $GLOBALS['egw']->accounts->memberships($GLOBALS['egw_info']['user']['account_id'], true);
 		$memberships[] = $GLOBALS['egw_info']['user']['account_id'];
-
-		$join = 'JOIN '.self::IDENTITIES_TABLE.' ON '.self::IDENTITIES_TABLE.'.ident_id='.self::TABLE.'.ident_id ';
-		$join .= 'LEFT JOIN '.self::VALID_TABLE.' ON '.self::VALID_TABLE.'.acc_id='.self::TABLE.'.acc_id ';
+		$memberships[] = 0;	// marks accounts valid for everyone
 
 		$where = array(self::TABLE.'.acc_id='.(int)$acc_id);
 		if ($only_current_user)
 		{
-			$where[] = '(account_id IS NULL OR '.self::$db->expression(self::VALID_TABLE, array('acccount_id' => $memberships)).')';
+			$where[] = self::$db->expression(self::VALID_TABLE, array('account_id' => $memberships));
 		}
-		if (!($data = self::$db->select(self::TABLE, 'DISTINCT *', $where, __LINE__, __FILE__, false, '', self::APP, 0, $join)->fetch()))
+		if (!($data = self::$db->select(self::TABLE, 'DISTINCT '.self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*',
+			$where, __LINE__, __FILE__, false, '', self::APP, 0, self::IDENTITY_JOIN.' '.self::VALID_JOIN)->fetch()))
 		{
 			throw new egw_exception_not_found;
 		}
 		$data += emailadmin_credentials::read($acc_id);
 
 		return new emailadmin_account($data);
+	}
+
+	/**
+	 * Return array with acc_id => acc_name or account-object pairs
+	 *
+	 * @param boolean $only_current_user=true return only accounts for current user
+	 * @param boolean $just_name=true return just acc_name or emailadmin_account objects
+	 * @param string $order_by='acc_name ASC'
+	 * @param int|boolean $offset=false offset or false to return all
+	 * @param int $num_rows=0 number of rows to return, 0=default from prefs (if $offset !== false)
+	 * @return array with acc_id => acc_name or emailadmin_account objects
+	 */
+	public static function search($only_current_user=true, $just_name=true, $order_by='acc_name ASC',$offset=false, $num_rows=0)
+	{
+		$where = array();
+		if ($only_current_user)
+		{
+			$memberships = $GLOBALS['egw']->accounts->memberships($GLOBALS['egw_info']['user']['account_id'], true);
+			$memberships[] = $GLOBALS['egw_info']['user']['account_id'];
+			$memberships[] = 0;	// marks accounts valid for everyone
+			$where[] = self::$db->expression(self::VALID_TABLE, array('account_id' => $memberships));
+		}
+		$cols = $just_name ? '.acc_id,acc_name' : '.*,'.self::IDENTITIES_TABLE.'.*';
+
+		if (!preg_match('/^[a-z_]+ (ASC|DESC)$/i', $order_by)) $order_by = 'acc_name ASC';
+
+		$results = array();
+		foreach(self::$db->select(self::TABLE, 'DISTINCT '.self::TABLE.$cols,
+			$where, __LINE__, __FILE__, $offset, 'ORDER BY '.$order_by, self::APP, $num_rows,
+			self::IDENTITY_JOIN.' '.self::VALID_JOIN) as $row)
+		{
+			if (!$just_name) $row += emailadmin_credentials::read($row['acc_id']);
+			$results[$row['acc_id']] = $just_name ? $row['acc_name'] : new emailadmin_account($row);
+		}
+		return $results;
 	}
 
 	/**
@@ -219,4 +256,30 @@ class emailadmin_account
 		self::$db = $GLOBALS['egw']->db;
 	}
 }
+
+// some testcode, if this file is called via it's URL (you need to uncomment!)
+/*if (isset($_SERVER['SCRIPT_FILENAME']) && $_SERVER['SCRIPT_FILENAME'] == __FILE__)
+{
+	$GLOBALS['egw_info'] = array(
+		'flags' => array(
+			'currentapp' => 'emailadmin',
+			'nonavbar' => true,
+		),
+	);
+	include_once '../../header.inc.php';
+
+	emailadmin_account::init_static();
+
+	foreach(emailadmin_account::search(false) as $acc_id => $acc_name)
+	{
+		echo "<p>$acc_id: <a href='{$_SERVER['PHP_SELF']}?acc_id=$acc_id'>$acc_name</a></p>\n";
+	}
+	if (isset($_GET['acc_id']) && (int)$_GET['acc_id'] > 0)
+	{
+		$account = emailadmin_account::read((int)$_GET['acc_id']);
+		_debug_array($account);
+	}
+}*/
+
+// need to be after test-code!
 emailadmin_account::init_static();

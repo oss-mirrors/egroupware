@@ -32,178 +32,92 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	const CAPABILITIES = 'default|sieve';
 
 	/**
-	 * ImapServerId
-	 *
-	 * @var int
-	 */
-	var $ImapServerId;
-
-	/**
-	 * the password to be used for admin connections
-	 *
-	 * @var string
-	 */
-	var $adminPassword;
-
-	/**
-	 * the username to be used for admin connections
-	 *
-	 * @var string
-	 */
-	var $adminUsername;
-
-	/**
-	 * enable encryption
-	 *
-	 * @var int 0 = no, 2 = TLS, 3 = SSL
-	 */
-	public $encryption;
-
-	/**
-	 * Validate ssl certificate
-	 *
-	 * Currently not supported by Horde_Imap_Client, probably because no default certificate store in PHP!
-	 *
-	 * @var bool
-	 */
-	public $validatecert;
-
-	/**
-	 * the hostname/ip address of the imap server
-	 *
-	 * @var string
-	 */
-	var $host;
-
-	/**
-	 * the password for the user
-	 *
-	 * @var string
-	 */
-	var $password;
-
-	/**
-	 * the port of the imap server
-	 *
-	 * @var integer
-	 */
-	var $port = 143;
-
-	/**
-	 * the username
-	 *
-	 * @var string
-	 */
-	var $username;
-
-	/**
-	 * the domainname to be used for vmailmgr logins
-	 *
-	 * @var string
-	 */
-	var $domainName = false;
-
-	/**
 	 * is the mbstring extension available
 	 *
-	 * @var unknown_type
+	 * @var boolean
 	 */
-	var $mbAvailable;
+	protected $mbAvailable;
 
 	/**
-	 * Mailboxes which get automatic created for new accounts (INBOX == '')
+	 * Login type: 'uid', 'vmailmgr', 'uidNumber', 'email'
 	 *
-	 * @var array
+	 * @var string
 	 */
-	var $imapLoginType;
-	var $defaultDomain;
-
-
-	/**
-	 * disable internal conversion from/to ut7
-	 * get's used by Net_IMAP
-	 *
-	 * @var array
-	 */
-	var $_useUTF_7 = false;
+	protected $imapLoginType;
 
 	/**
 	 * a debug switch
 	 */
-	var $debug = false;
+	public $debug = false;
 
 	/**
 	 * Sieve available
 	 *
 	 * @var boolean
 	 */
-	var $enableSieve = false;
-
-	/**
-	 * Hostname / IP of sieve host
-	 *
-	 * @var string
-	 */
-	var $sieveHost;
-
-	/**
-	 * Port of Sieve service
-	 *
-	 * @var int
-	 */
-	var $sievePort = 4190;
+	protected $enableSieve = false;
 
 	/**
 	 * True if connection is an admin connection
+	 *
 	 * @var boolean
 	 */
-	public $isAdminConnection = false;
+	protected $isAdminConnection = false;
 
 	/**
-	 * the construtor
+	 * Domain name
 	 *
+	 * @var string
+	 */
+	protected $domainName;
+
+	/**
+	 * Parameters passed to constructor from emailadmin_account
+	 *
+	 * @var array
+	 */
+	protected $params = array();
+
+	/**
+	 * Construtor
+	 *
+	 * @param array
+	 * @param bool $_adminConnection create admin connection if true
+	 * @param int $_timeout=null timeout in secs, if none given fmail pref or default of 20 is used
 	 * @return void
 	 */
-	function __construct()
+	function __construct(array $params, $_adminConnection=false, $_timeout=null)
 	{
 		if (function_exists('mb_convert_encoding'))
 		{
 			$this->mbAvailable = true;
 		}
+		$this->params = $params;
+		$this->isAdminConnection = $_adminConnection;
+		$this->enableSieve = (boolean)$this->params['acc_sieve_enabled'];
+		$this->loginType = $this->params['acc_imap_logintype'];
+		$this->domainName = $this->params['acc_domain'];
 
-	}
+		if (is_null($_timeout)) $_timeout = self::getTimeOut ();
 
-	/**
-	 * opens a connection to a imap server
-	 *
-	 * @param bool $_adminConnection create admin connection if true
-	 * @param int $_timeout=null timeout in secs, if none given fmail pref or default of 20 is used
-	 * @return boolean|PEAR_Error true on success, PEAR_Error of false on failure
-	 */
-	function openConnection($_adminConnection=false, $_timeout=null)
-	{
-		// if no explicit $_timeout given with the openConnection call, check mail preferences, defaulting to 20
-		if (is_null($_timeout)) $_timeout = self::getTimeOut();
-
-		if($_adminConnection)
+		switch($this->data['acc_imap_ssl'] & ~emailadmin_account::SSL_VERIFY)
 		{
-			$username	= $this->adminUsername;
-			$password	= $this->adminPassword;
-			$this->isAdminConnection = true;
+			case emailadmin_account::SSL_STARTTLS:
+				$secure = 'tls';	// Horde uses 'tls' for STARTTLS, not ssl connection with tls version >= 1 and no sslv2/3
+				break;
+			case emailadmin_account::SSL_SSL:
+				$secure = 'ssl';
+				break;
+			case emailadmin_account::SSL_TLS:
+				$secure = 'ssl';	// Horde_Imap_Client can currently NOT enforce TLS :( --> using just ssl (allowing ssl+tls) instead
+				break;
 		}
-		else
-		{
-			$username	= $this->loginName;
-			$password	= $this->password;
-			$this->isAdminConnection = false;
-		}
-
-		parent::__construct(array(
-			'username' => $username,
-			'password' => $password,
-			'hostspec' => $this->host,
-			'port' => $this->port,
-			'secure' => $this->encryption ? ($this->encryption == 2 ? 'tls' : ($this->encryption == 1?'tls':'ssl')) : null,
+		$this->imapServer = new $class(array(
+			'username' => $this->params[$_adminConnection ? 'acc_imap_admin_username' : 'acc_imap_username'],
+			'password' => $this->params[$_adminConnection ? 'acc_imap_admin_password' : 'acc_imap_password'],
+			'hostspec' => $this->params['acc_imap_host'],
+			'port' => $this->params['acc_imap_port'],
+			'secure' => $secure,
 			'timeout' => $_timeout,
 			//'debug_literal' => true,
 			//'debug' => '/tmp/imap.log',
@@ -213,6 +127,45 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				)),
 			),
 		));
+		parent::__construct($params);
+	}
+
+	/**
+	 * Allow read access to former public attributes
+	 *
+	 * @param type $name
+	 */
+	public function __get($name)
+	{
+		switch($name)
+		{
+			case 'enableSieve':
+				return $this->params['acc_sieve_enabled'];
+
+			default:
+				// allow readonly access to all class attributes
+				if (isset($this->$name))
+				{
+					return $this->name;
+				}
+				throw new egw_exception_wrong_parameter("Tried to access unknown attribute '$name'!");
+		}
+	}
+
+	/**
+	 * opens a connection to a imap server
+	 *
+	 * @param bool $_adminConnection create admin connection if true
+	 * @param int $_timeout=null timeout in secs, if none given fmail pref or default of 20 is used
+	 * @deprecated allready called by constructor automatic, parameters must be passed to constructor!
+	 * @return boolean|PEAR_Error true on success, PEAR_Error of false on failure
+	 */
+	function openConnection($_adminConnection=false, $_timeout=null)
+	{
+		if ($_adminConnection !== $this->params['adminConnection'])
+		{
+			throw new egw_exception_wrong_parameter('need to set parameters on calling emailadmin_account->imapServer()!');
+		}
 	}
 
 	/**
