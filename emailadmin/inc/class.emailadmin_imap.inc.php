@@ -286,15 +286,22 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		{
 			if ($k!='user' && $k != '' && $k==$mailbox)
 			{
-				$status = $this->status($k);
-				foreach ($status as $key => $v)
+				if (stripos(array2string($box['attributes']),'\noselect')=== false)
 				{
-					$_status[strtoupper($key)]=$v;
+					$status = $this->status($k);
+					foreach ($status as $key => $v)
+					{
+						$_status[strtoupper($key)]=$v;
+					}
+					$_status['HIERACHY_DELIMITER'] = $_status['delimiter'] = $box['delimiter'];//$this->getDelimiter('user');
+					$_status['ATTRIBUTES'] = $box['attributes'];
+					//error_log(__METHOD__.__LINE__.$k.'->'.array2string($_status));
+					return $_status;
 				}
-				$_status['HIERACHY_DELIMITER'] = $_status['delimiter'] = $box['delimiter'];//$this->getDelimiter('user');
-				$_status['ATTRIBUTES'] = $box['attributes'];
-				//error_log(__METHOD__.__LINE__.$k.'->'.array2string($_status));
-				return $_status;
+				else
+				{
+					return false;
+				}
 			}
 		}
 		return false;
