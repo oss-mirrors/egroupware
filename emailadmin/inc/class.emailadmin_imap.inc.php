@@ -320,7 +320,12 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function getStatus($mailbox)
 	{
-		$mailboxes = $this->listMailboxes($mailbox);
+		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_ALL,array(
+				'attributes'=>true,
+				'children'=>true, //child info
+				'delimiter'=>true,
+				'special_use'=>true,
+			));
 
 		$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
 		//error_log(__METHOD__.__LINE__.array2string($mboxes->count()));
@@ -333,8 +338,9 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				{
 					$_status[strtoupper($key)]=$v;
 				}
-				$_status['HIERACHY_DELIMITER'] = $this->getDelimiter('user');
-				error_log(__METHOD__.__LINE__.$k.'->'.array2string($_status));
+				$_status['HIERACHY_DELIMITER'] = $_status['delimiter'] = $box['delimiter'];//$this->getDelimiter('user');
+				$_status['ATTRIBUTES'] = $box['attributes'];
+				//error_log(__METHOD__.__LINE__.$k.'->'.array2string($_status));
 				return $_status;
 			}
 		}
