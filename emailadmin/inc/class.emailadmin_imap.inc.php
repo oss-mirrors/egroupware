@@ -100,7 +100,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 
 		if (is_null($_timeout)) $_timeout = self::getTimeOut ();
 
-		switch($this->data['acc_imap_ssl'] & ~emailadmin_account::SSL_VERIFY)
+		switch($this->params['acc_imap_ssl'] & ~emailadmin_account::SSL_VERIFY)
 		{
 			case emailadmin_account::SSL_STARTTLS:
 				$secure = 'tls';	// Horde uses 'tls' for STARTTLS, not ssl connection with tls version >= 1 and no sslv2/3
