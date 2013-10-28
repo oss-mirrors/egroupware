@@ -26,11 +26,30 @@
 class emailadmin_account
 {
 	const APP = 'emailadmin';
+	/**
+	 * Table with mail-accounts
+	 */
 	const TABLE = 'egw_ea_accounts';
+	/**
+	 * Table holding 1:N relation for which EGroupware accounts a mail-account is valid
+	 */
 	const VALID_TABLE = 'egw_ea_valid';
-	const VALID_JOIN = 'LEFT JOIN egw_ea_valid ON egw_ea_valid.acc_id=egw_ea_accounts.acc_id ';
+	/**
+	 * Join with egw_ea_valid
+	 */
+	const VALID_JOIN = 'JOIN egw_ea_valid ON egw_ea_valid.acc_id=egw_ea_accounts.acc_id ';
+	/**
+	 * Table with identities and signatures
+	 */
 	const IDENTITIES_TABLE = 'egw_ea_identities';
+	/**
+	 * Join with standard identity of main-account
+	 */
 	const IDENTITY_JOIN = 'JOIN egw_ea_identities ON egw_ea_identities.ident_id=egw_ea_accounts.ident_id';
+	/**
+	 * Order for search: first group-profiles, then general profiles, then personal profiles
+	 */
+	const DEFAULT_ORDER = 'account_id ASC,acc_name ASC';
 
 	/**
 	 * No SSL
@@ -223,7 +242,7 @@ class emailadmin_account
 	 * @param int $num_rows=0 number of rows to return, 0=default from prefs (if $offset !== false)
 	 * @return array with acc_id => acc_name or emailadmin_account objects
 	 */
-	public static function search($only_current_user=true, $just_name=true, $order_by='acc_name ASC',$offset=false, $num_rows=0)
+	public static function search($only_current_user=true, $just_name=true, $order_by=null,$offset=false, $num_rows=0)
 	{
 		$where = array();
 		if ($only_current_user)
@@ -235,8 +254,10 @@ class emailadmin_account
 		}
 		$cols = $just_name ? '.acc_id,acc_name' : '.*,'.self::IDENTITIES_TABLE.'.*';
 
-		if (!preg_match('/^[a-z_]+ (ASC|DESC)$/i', $order_by)) $order_by = 'acc_name ASC';
-
+		if (empty($order_by) || !preg_match('/^[a-z_]+ (ASC|DESC)$/i', $order_by))
+		{
+			$order_by = self::DEFAULT_ORDER;
+		}
 		$results = array();
 		foreach(self::$db->select(self::TABLE, 'DISTINCT '.self::TABLE.$cols,
 			$where, __LINE__, __FILE__, $offset, 'ORDER BY '.$order_by, self::APP, $num_rows,
@@ -262,7 +283,7 @@ class emailadmin_account
 {
 	$GLOBALS['egw_info'] = array(
 		'flags' => array(
-			'currentapp' => 'emailadmin',
+			'currentapp' => 'home',
 			'nonavbar' => true,
 		),
 	);
@@ -270,7 +291,7 @@ class emailadmin_account
 
 	emailadmin_account::init_static();
 
-	foreach(emailadmin_account::search(false) as $acc_id => $acc_name)
+	foreach(emailadmin_account::search() as $acc_id => $acc_name)
 	{
 		echo "<p>$acc_id: <a href='{$_SERVER['PHP_SELF']}?acc_id=$acc_id'>$acc_name</a></p>\n";
 	}
