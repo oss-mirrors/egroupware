@@ -112,7 +112,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				$secure = 'ssl';	// Horde_Imap_Client can currently NOT enforce TLS :( --> using just ssl (allowing ssl+tls) instead
 				break;
 		}
-		$this->imapServer = new $class(array(
+		parent::__construct(array(
 			'username' => $this->params[$_adminConnection ? 'acc_imap_admin_username' : 'acc_imap_username'],
 			'password' => $this->params[$_adminConnection ? 'acc_imap_admin_password' : 'acc_imap_password'],
 			'hostspec' => $this->params['acc_imap_host'],
@@ -127,7 +127,6 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				)),
 			),
 		));
-		parent::__construct($params);
 	}
 
 	/**
