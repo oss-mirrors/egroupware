@@ -525,7 +525,7 @@ function emailadmin_upgrade1_9_010()
 	// migrate personal felamimail accounts, identities and signatures
 	try {
 		$db = $GLOBALS['egw_setup']->db;
-		foreach($db->select('egw_felamimail_accounts', '*', 'fm_active=1', __LINE__, __FILE__) as $row)
+		foreach($db->select('egw_felamimail_accounts', '*', array('fm_active' => true), __LINE__, __FILE__, false, '', 'felamimail') as $row)
 		{
 			// create standard identity for account
 			$identity = array(
