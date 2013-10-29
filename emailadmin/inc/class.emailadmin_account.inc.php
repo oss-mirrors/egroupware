@@ -126,10 +126,11 @@ class emailadmin_account
 	 */
 	public function imapServer($_adminConnection=false, $_timeout=null)
 	{
-		if (!isset($this->imapServer) || $this->imapServer->isAdminConnection != $_adminConnection)
+		if (!isset($this->imapServer) )
 		{
 			$class = emailadmin_bo::getIcClass($this->params['acc_imap_type']);
 			$this->imapServer = new $class($this->params, $_adminConnection, $_timeout);
+			$this->imapServer->ImapServerId = $this->params['acc_id'];
 		}
 		return $this->imapServer;
 	}
@@ -145,6 +146,7 @@ class emailadmin_account
 		{
 			$class = emailadmin_bo::getIcClass($this->params['acc_imap_type'], true);
 			$this->oldImapServer = new $class();
+			$this->oldImapServer->ImapServerId = $this->params['acc_id'];
 			$this->oldImapServer->host = $this->params['acc_imap_host'];
 			$this->oldImapServer->encryption = $this->params['acc_imap_ssl'] & ~self::SSL_VERIFY;
 			$this->oldImapServer->port 	= $this->params['acc_imap_port'];;
@@ -168,7 +170,8 @@ class emailadmin_account
 	{
 		if (!isset($this->smtpServer))
 		{
-			$class = $this->params['acc_smpt_type'];
+			$class = $this->params['acc_smtp_type'];
+			if ($class=='defaultsmtp') $class='emailadmin_smtp';
 			$this->smtpServer = new $class($this->params);
 			$this->smtpServer->editForwardingAddress = false;
 			$this->smtpServer->host = $this->params['acc_smtp_host'];
@@ -195,7 +198,7 @@ class emailadmin_account
 	/**
 	 * Get identities object
 	 *
-	 * @return identioties connected to a server object
+	 * @return identities connected to a server object
 	 */
 	public function identities()
 	{
