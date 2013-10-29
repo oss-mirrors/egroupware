@@ -27,13 +27,13 @@ function stop_time($total = false)
 {
 	global $request_start;
 	static $now;
-	
+
 	$start = $total || !isset($now) ? $request_start : $now;
 	$now = microtime(true);
 
 	echo "<b>took ".number_format($now-$start, 3)."s</b>\n";
 }
-	
+
 function horde_connect(array $data)
 {
 	// Connect to an IMAP server.
@@ -52,19 +52,13 @@ function horde_connect(array $data)
 			)),
 		),
 	), $data));*/
-	
-	$client = new emailadmin_imap();
-	$client->ImapServerId	= 'test-'.$data['username'];
-	$client->encryption	= 3;	// ssl
-	$client->host		= $data['hostspec'];
-	$client->port 	= 993;
-	$client->validatecert	= false;
-	$client->username 	= $data['username'];
-	$client->loginName 	= $data['username'];
-	$client->password	= $data['password'];
-	$client->enableSieve	= false;
 
-	$client->openConnection();
+	$client = new emailadmin_imap(array(
+		'acc_imap_username' => $data['username'],
+		'acc_imap_password' => $data['password'],
+		'acc_imap_host' => $data['hostspec'],
+		'acc_imap_ssl'	=> 3,	// ssl
+	));
 
 	var_dump($client->capability());
 
@@ -76,10 +70,10 @@ function horde_connect(array $data)
 
 	echo "\ngetNamespaces():";
 	var_dump($client->getNamespaces());
-	
+
 	return $client;
 }
-		
+
 function horde_fetch(Horde_Imap_Client_Socket $client, $mailbox, $show=true)
 {
 	$squery = new Horde_Imap_Client_Search_Query();
@@ -124,7 +118,7 @@ function mail_connect(array $data)
 
 	$client	= felamimail_bo::getInstance(false, $icServer->ImapServerId, false, $icServer);
 	$client->openConnection($icServer->ImapServerId);
-	
+
 	return $client;
 }
 
