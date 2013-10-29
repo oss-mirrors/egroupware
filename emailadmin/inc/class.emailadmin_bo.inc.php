@@ -603,52 +603,57 @@ class emailadmin_bo extends so_sql
 		{
 			//error_log(__METHOD__.__LINE__.array2string($data));
 			$eaPreferences = CreateObject('emailadmin.ea_preferences');
-
-			$icClass = self::getIcClass($data[''], $old_ic_server);
-			$icServer = new $icClass;
-			$icServer->ImapServerId	= $data['profileID']*-1;
-			$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes' ? 1 : (int)$data['imapTLSEncryption']);
-			$icServer->host		= $data['imapServer'];
-			$icServer->port 	= $data['imapPort'];
-			$icServer->validatecert	= $data['imapTLSAuthentication'] == 'yes';
-			$icServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
-			$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
-			// restore the default loginType and check if there are forced/predefined user access Data ($imapAuthType may be set to admin)
-			//error_log(__METHOD__.__LINE__.' ServerID:'.$icServer->ImapServerId.' Logintype:'.array2string($data['imapLoginType']));
-			list($data['imapLoginType'],$imapAuthType) = explode('#',$data['imapLoginType'],2);
-			if (empty($data['imapLoginType'])) $data['imapLoginType'] = 'standard';
-			if (empty($imapAuthType)) $imapAuthType = $data['imapLoginType'];
-			//error_log(__METHOD__.__LINE__.' ServerID:'.$icServer->ImapServerId.' Logintype:'.array2string($data['imapLoginType']).' AuthType:'.$imapAuthType);
-			$icServer->loginType	= $data['imapLoginType'];
-			$icServer->domainName	= $data['defaultDomain'];
-//			$icServer->loginName 	= $data['imapLoginType'] == 'standard' ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
-			$icServer->loginName 	= emailadmin_smtp_ldap::mailbox_addr($GLOBALS['egw_info']['user'],$data['defaultDomain'],$data['imapLoginType']);
-			$icServer->enableCyrusAdmin = ($data['imapEnableCyrusAdmin'] == 'yes');
-			$icServer->adminUsername = $data['imapAdminUsername'];
-			$icServer->adminPassword = $data['imapAdminPW'];
-			if ( $data['imapEnableCyrusAdmin'] == 'yes' &&
-				isset($GLOBALS['egw_info']['server']['cyrus_admin_user']) && isset($GLOBALS['egw_info']['server']['cyrus_admin_password']) &&
-				!empty($GLOBALS['egw_info']['server']['cyrus_admin_user']) && !empty($GLOBALS['egw_info']['server']['cyrus_admin_password']) )
+			try
 			{
-				$icServer->adminUsername = $GLOBALS['egw_info']['server']['cyrus_admin_user'];
-				$icServer->adminPassword = $GLOBALS['egw_info']['server']['cyrus_admin_password'];
+				$icClass = self::getIcClass($data['imapType'], $old_ic_server);
+				$icServer = new $icClass($data);
+				$icServer->ImapServerId	= $data['profileID']*-1;
+				$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes' ? 1 : (int)$data['imapTLSEncryption']);
+				$icServer->host		= $data['imapServer'];
+				$icServer->port 	= $data['imapPort'];
+				$icServer->validatecert	= $data['imapTLSAuthentication'] == 'yes';
+				$icServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
+				$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
+				// restore the default loginType and check if there are forced/predefined user access Data ($imapAuthType may be set to admin)
+				//error_log(__METHOD__.__LINE__.' ServerID:'.$icServer->ImapServerId.' Logintype:'.array2string($data['imapLoginType']));
+				list($data['imapLoginType'],$imapAuthType) = explode('#',$data['imapLoginType'],2);
+				if (empty($data['imapLoginType'])) $data['imapLoginType'] = 'standard';
+				if (empty($imapAuthType)) $imapAuthType = $data['imapLoginType'];
+				//error_log(__METHOD__.__LINE__.' ServerID:'.$icServer->ImapServerId.' Logintype:'.array2string($data['imapLoginType']).' AuthType:'.$imapAuthType);
+				$icServer->loginType	= $data['imapLoginType'];
+				$icServer->domainName	= $data['defaultDomain'];
+	//			$icServer->loginName 	= $data['imapLoginType'] == 'standard' ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
+				$icServer->loginName 	= emailadmin_smtp_ldap::mailbox_addr($GLOBALS['egw_info']['user'],$data['defaultDomain'],$data['imapLoginType']);
+				$icServer->enableCyrusAdmin = ($data['imapEnableCyrusAdmin'] == 'yes');
+				$icServer->adminUsername = $data['imapAdminUsername'];
+				$icServer->adminPassword = $data['imapAdminPW'];
+				if ( $data['imapEnableCyrusAdmin'] == 'yes' &&
+					isset($GLOBALS['egw_info']['server']['cyrus_admin_user']) && isset($GLOBALS['egw_info']['server']['cyrus_admin_password']) &&
+					!empty($GLOBALS['egw_info']['server']['cyrus_admin_user']) && !empty($GLOBALS['egw_info']['server']['cyrus_admin_password']) )
+				{
+					$icServer->adminUsername = $GLOBALS['egw_info']['server']['cyrus_admin_user'];
+					$icServer->adminPassword = $GLOBALS['egw_info']['server']['cyrus_admin_password'];
+				}
+				$icServer->enableSieve	= ($data['imapEnableSieve'] == 'yes');
+				if (!empty($data['imapSieveServer']))
+				{
+					$icServer->sieveHost = $data['imapSieveServer'];
+				}
+				$icServer->sievePort	= $data['imapSievePort'];
+				if ($imapAuthType == 'admin') {
+					if (!empty($data['imapAuthUsername'])) $icServer->username = $icServer->loginName = $data['imapAuthUsername'];
+					if (!empty($data['imapAuthPassword'])) $icServer->password = $data['imapAuthPassword'];
+				}
+				if ($imapAuthType == 'email' || $icServer->loginType == 'email') {
+					$icServer->username = $icServer->loginName = $GLOBALS['egw_info']['user']['account_email'];
+				}
+				if (method_exists($icServer,'init')) $icServer->init();
+				$eaPreferences->setIncomingServer($icServer,(int)$icServer->ImapServerId);
 			}
-			$icServer->enableSieve	= ($data['imapEnableSieve'] == 'yes');
-			if (!empty($data['imapSieveServer']))
-			{
-				$icServer->sieveHost = $data['imapSieveServer'];
+			catch (egw_exception_assertion_failed $e)
+			{	// not sure that this is needed to pass on exeptions
+				throw new egw_exception_assertion_failed($e->getMessage());
 			}
-			$icServer->sievePort	= $data['imapSievePort'];
-			if ($imapAuthType == 'admin') {
-				if (!empty($data['imapAuthUsername'])) $icServer->username = $icServer->loginName = $data['imapAuthUsername'];
-				if (!empty($data['imapAuthPassword'])) $icServer->password = $data['imapAuthPassword'];
-			}
-			if ($imapAuthType == 'email' || $icServer->loginType == 'email') {
-				$icServer->username = $icServer->loginName = $GLOBALS['egw_info']['user']['account_email'];
-			}
-			if (method_exists($icServer,'init')) $icServer->init();
-			$eaPreferences->setIncomingServer($icServer,(int)$icServer->ImapServerId);
-
 			// fetch the SMTP / outgoing server data
 			if (!class_exists($ogClass=$data['smtpType']))
 			{
@@ -1070,4 +1075,37 @@ class emailadmin_bo extends so_sql
 			return $default_profile;
 		}
 	}
+
+	/**
+	 * Get ID of default new account profile
+	 *
+	 * ID is negative for FMail, which used positive ID's for user profiles!
+	 *
+	 * @return int
+	 */
+	static function getDefaultAccID()
+	{
+		$icServers = emailadmin_account::search($only_current_user=false, $just_name=false, $order_by=null);
+		$_profileIDs = array_keys($icServers);
+		$defaultProfileID = $_profileIDs[0];
+		$defaultProfile = $icServers[$defaultProfileID];
+		return $defaultProfile->__get('acc_id');
+	}
+
+	/**
+	 * Get ID of User specific default new account profile
+	 *
+	 * ID is negative for FMail, which used positive ID's for user profiles!
+	 *
+	 * @return int
+	 */
+	static function getUserDefaultAccID()
+	{
+		$icServers = emailadmin_account::search($only_current_user=true, $just_name=false, $order_by=null);
+		$_profileIDs = array_keys($icServers);
+		$defaultProfileID = $_profileIDs[0];
+		$defaultProfile = $icServers[$defaultProfileID];
+		return $defaultProfile->__get('acc_id');
+	}
+
 }

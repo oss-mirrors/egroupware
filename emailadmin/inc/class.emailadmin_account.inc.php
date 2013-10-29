@@ -193,6 +193,15 @@ class emailadmin_account
 	}
 
 	/**
+	 * Get identities object
+	 *
+	 * @return identioties connected to a server object
+	 */
+	public function identities()
+	{
+	}
+
+	/**
 	 * Give read access to protected parameters in $this->params
 	 *
 	 * @param type $name

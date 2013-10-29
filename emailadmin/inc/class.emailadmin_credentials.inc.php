@@ -202,7 +202,7 @@ class emailadmin_credentials
 				{
 					throw egw_exception_wrong_parameter("Password encryption type $row[cred_pw_enc] NOT available!");
 				}
-				return trim(mdecrypt_generic($mcrypt, base64_decode($row['cred_password'])));
+				return (!empty($row['cred_password'])?trim(mdecrypt_generic($mcrypt, base64_decode($row['cred_password']))):'');
 		}
 		throw egw_exception_wrong_parameter("Unknow password encryption type $row[cred_pw_enc]!");
 	}

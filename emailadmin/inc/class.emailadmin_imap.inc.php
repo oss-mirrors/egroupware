@@ -112,21 +112,28 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				$secure = 'ssl';	// Horde_Imap_Client can currently NOT enforce TLS :( --> using just ssl (allowing ssl+tls) instead
 				break;
 		}
-		parent::__construct(array(
-			'username' => $this->params[$_adminConnection ? 'acc_imap_admin_username' : 'acc_imap_username'],
-			'password' => $this->params[$_adminConnection ? 'acc_imap_admin_password' : 'acc_imap_password'],
-			'hostspec' => $this->params['acc_imap_host'],
-			'port' => $this->params['acc_imap_port'],
-			'secure' => $secure,
-			'timeout' => $_timeout,
-			//'debug_literal' => true,
-			//'debug' => '/tmp/imap.log',
-			'cache' => array(
-				'backend' => new Horde_Imap_Client_Cache_Backend_Cache(array(
-					'cacheob' => new emailadmin_horde_cache(),
-				)),
-			),
-		));
+		try
+		{
+			parent::__construct(array(
+				'username' => $this->params[$_adminConnection ? 'acc_imap_admin_username' : 'acc_imap_username'],
+				'password' => $this->params[$_adminConnection ? 'acc_imap_admin_password' : 'acc_imap_password'],
+				'hostspec' => $this->params['acc_imap_host'],
+				'port' => $this->params['acc_imap_port'],
+				'secure' => $secure,
+				'timeout' => $_timeout,
+				//'debug_literal' => true,
+				//'debug' => '/tmp/imap.log',
+				'cache' => array(
+					'backend' => new Horde_Imap_Client_Cache_Backend_Cache(array(
+						'cacheob' => new emailadmin_horde_cache(),
+					)),
+				),
+			));
+		}
+		catch (exception $e)
+		{
+			throw new egw_exception_assertion_failed($e->getMessage());
+		}
 	}
 
 	/**
