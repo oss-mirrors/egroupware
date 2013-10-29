@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<overlay>
+	<template id="emailadmin.wizard" template="" lang="" group="0" version="">
+		<grid width="100%">
+			<columns>
+				<column width="100"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<description value="Your name" for="ident_realname"/>
+					<textbox id="ident_realname" needed="1" maxlength="128"/>
+				</row>
+				<row>
+					<description value="Organisation" for="ident_org"/>
+					<textbox id="ident_org" maxlength="128"/>
+				</row>
+				<row>
+					<description value="EMail address" href="ident_email"/>
+					<url-email id="ident_email" needed="1" options=",128"/>
+				</row>
+				<row>
+					<description value="Password" for="acc_imap_password"/>
+					<passwd id="acc_imap_password" needed="1" options=",128"/>
+				</row>
+				<row>
+					<description value="Server" for="acc_imap_host"/>
+					<textbox blur="Hostname or IP" id="acc_imap_host" maxlength="128"/>
+				</row>
+				<row>
+					<hbox span="all">
+						<button label="Continue" id="button[continue]"/>
+						<buttononly label="Cancel" id="button[cancel]" onclick="window.close();"/>
+					</hbox>
+				</row>
+				<row>
+					<textbox multiline="true" id="output" readonly="true" span="all"/>
+				</row>
+			</rows>
+		</grid>
+	</template>
+</overlay>
