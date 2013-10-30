@@ -5,13 +5,19 @@
  * @link http://www.stylite.de
  * @package emailadmin
  * @author Ralf Becker <rb@stylite.de>
- * @author Klaus Leithoff <kl@stylite.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */
 
 /**
  * Wizard to create mail accounts
+ *
+ * Wizard uses follow heuristic to search for IMAP accounts:
+ * 1. query Mozilla ISPDB for domain from email (perfering SSL over STARTTLS over insecure connection)
+ * 2. guessing and verifying in DNS server-names based on domain from email:
+ *	- imap.$domain, mail.$domain
+ *  - MX for $domain
+ *  - replace host in MX with imap or mail
  */
 class emailadmin_wizard
 {
@@ -25,6 +31,18 @@ class emailadmin_wizard
 	);
 
 	/**
+	 * Supported ssl types including none
+	 *
+	 * @var array
+	 */
+	public static $ssl_types = array(
+		//'2' => 'TLS',	// SSL with minimum TLS (no SSL v.2 or v.3), requires newer Horde_Imap_Client
+		'1' => 'SSL',
+		'3' => 'STARTTLS',
+		'no' => 'no',
+	);
+
+	/**
 	 * Wizard to add email account
 	 *
 	 * @param array $content
@@ -32,14 +50,16 @@ class emailadmin_wizard
 	 */
 	public function add(array $content=null, $msg='')
 	{
-		_debug_array($this->mozilla_ispdb('ralfbeckerkl@gmail.com'));
-		die('Stop');
 		$tpl = new etemplate_new('emailadmin.wizard');
 		$content = array(
 			'ident_realname' => $GLOBALS['egw_info']['user']['account_fullname'],
 			'ident_email' => $GLOBALS['egw_info']['user']['account_email'],
+			'acc_imap_port' => 993,
+			'manual_class' => 'emailadmin_manual',
 		);
-		$tpl->exec('emailadmin.emailadmin_wizard.autoconfig', $content);
+		$tpl->exec('emailadmin.emailadmin_wizard.autoconfig', $content, array(
+			'acc_imap_ssl' => self::$ssl_types,
+		));
 	}
 
 	/**
@@ -50,27 +70,66 @@ class emailadmin_wizard
 	public function autoconfig(array $content)
 	{
 		$content['output'] = '';
+		$sel_options = $readonlys = $preserv = array();
 
-		$connected = false;
-		$content['acc_imap_username'] = $content['ident_email'];
+		$content['connected'] = $preserv['conected'] = $connected = false;
+		if (empty($content['acc_imap_username']))
+		{
+			$content['acc_imap_username'] = $content['ident_email'];
+		}
+		if (!empty($content['acc_imap_host']))
+		{
+			$hosts = array($content['acc_imap_host'] => true);
+		}
+		elseif (($ispdb = $this->mozilla_ispdb($content['ident_email'])) && count($ispdb['imap']))
+		{
+			$preserv['ispdb'] = $ispdb;
+			$content['output'] .= lang('Using data from Mozilla ISPDB for provider %1', $ispdb['displayName'])."\n";
+			$hosts = array();
+			foreach($ispdb['imap'] as $server)
+			{
+				if (!isset($hosts[$server['hostname']]))
+				{
+					$hosts[$server['hostname']] = array('username' => $server['username']);
+				}
+				$hosts[$server['hostname']][strtoupper($server['socketType'])] = $server['port'];
+				// make sure we prefer SSL over STARTTLS over insecure
+				if (count($hosts[$server['hostname']]) > 2)
+				{
+					$hosts[$server['hostname']] = self::fix_ssl_order($hosts[$server['hostname']]);
+				}
+			}
+		}
+		else
+		{
+			$hosts = $this->get_imap_hosts($content['ident_email']);
+		}
 
-		foreach(empty($content['acc_imap_host']) ? $this->get_imap_hosts($content['ident_email']) :
-			array($content['acc_imap_host']) as $host => $data)
+		// iterate over all hosts and try to connect
+		foreach($hosts as $host => $data)
 		{
 			$content['acc_imap_host'] = $host;
+			// by default we check SSL, STARTTLS and at last an insecure connection
+			if (!is_array($data)) $data = array('SSL' => 993, 'STARTTLS' => 143, 'insecure' => 143);
 
-			foreach(array('ssl' => 'SSL', 'tls' => 'STARTTLS', '' => 'insecure') as $secure => $label)
+			foreach($data as $ssl => $port)
 			{
+				if ($ssl === 'username') continue;
+				static $ssl2secure = array('SSL' => 'ssl', 'STARTTLS' => 'tls', /*'TLS' => 'tlsv1'*/);
+				static $ssl2type = array('SSL' => 1, 'TLS' => 2, 'STARTTLS' => 3, '' => 0);
+				$content['acc_imap_ssl'] = (int)$ssl2type[$ssl];
+
 				try {
-					$content['output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $label connection to $host ...\n";
+					$content['output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $ssl connection to $host:$port ...\n";
+					$content['acc_imap_port'] = $port;
 
 					$imap = new Horde_Imap_Client_Socket(array(
 						'username' => $content['acc_imap_username'],
 						'password' => $content['acc_imap_password'],
 						'hostspec' => $content['acc_imap_host'],
-						//'port' => $content['acc_imap_port'],
-						'secure' => $secure,
-						'timeout' => 1,
+						'port' => $content['acc_imap_port'],
+						'secure' => $ssl2secure[$ssl],
+						'timeout' => 1,	// just connection timeout
 						'debug' => '/tmp/imap.log',
 					));
 					//$content['output'] .= array2string($imap->capability());
@@ -80,8 +139,8 @@ class emailadmin_wizard
 					{
 						$content['output'] .= lang('Connection is NOT secure! Everyone can read eg. your credentials.')."\n";
 					}
-					$content['output'] .= "\n\n".array2string($imap->capability());
-					$connected = true;
+					//$content['output'] .= "\n\n".array2string($imap->capability());
+					$content['connected'] = $preserv['conected'] = $connected = true;
 					break 2;
 				}
 				catch(Horde_Imap_Client_Exception $e)
@@ -94,7 +153,7 @@ class emailadmin_wizard
 
 						case Horde_Imap_Client_Exception::SERVER_CONNECT:
 							$content['output'] .= "\n".$e->getMessage()."\n";
-							if ($secure == 'tls') break 2;	// no need to try insecure connection on same port
+							if ($ssl == 'STARTTLS') break 2;	// no need to try insecure connection on same port
 							break;
 
 						default:
@@ -115,62 +174,87 @@ class emailadmin_wizard
 			{
 				case Horde_Imap_Client_Exception::LOGIN_AUTHENTICATIONFAILED:
 					etemplate_new::set_validation_error('acc_imap_password', lang($e->getMessage()));
-					break;	// no need to try other SSL or non-SSL connections, if auth failed
+					break;
 
 				case Horde_Imap_Client_Exception::SERVER_CONNECT:
 					etemplate_new::set_validation_error('acc_imap_host', lang($e->getMessage()));
 					break;
 			}
 		}
+		$readonlys['button[manual]'] = true;
+		$sel_options['acc_imap_ssl'] = self::$ssl_types;
 		$tpl = new etemplate_new('emailadmin.wizard');
-		$tpl->exec('emailadmin.emailadmin_wizard.autoconfig', $content);
+		$tpl->exec('emailadmin.emailadmin_wizard.autoconfig', $content, $sel_options, $readonlys, $preserv);
 	}
 
 	/**
-	 * Query mozilla ISPDB
+	 * Reorder SSL types to make sure we start with TLS, SSL, STARTTLS and insecure last
+	 *
+	 * @param array $data ssl => port pairs plus other data like value for 'username'
+	 * @return array
+	 */
+	protected static function fix_ssl_order($data)
+	{
+		$ordered = array();
+		foreach(array_merge(array('TLS', 'SSL', 'STARTTLS'), array_keys($data)) as $key)
+		{
+			if (array_key_exists($key, $data)) $ordered[$key] = $data[$key];
+		}
+		return $ordered;
+	}
+
+	/**
+	 * Query Mozilla's ISPDB
 	 *
 	 * @param type $email
-	 * @return array hostname => values for keys 'displayName', 'imap', 'smtp', 'pop3', which contain
+	 * @return array with values for keys 'displayName', 'imap', 'smtp', 'pop3', which each contain
 	 *	array of arrays with values for keys 'hostname', 'port', 'socketType'=(SSL|STARTTLS), 'username'=%EMAILADDRESS%
 	 */
-	protected function mozilla_ispdb($email, $type='imap')
+	protected function mozilla_ispdb($email)
 	{
-		$hosts = array();
 		list(,$domain) = explode('@', $email);
 		$url = 'https://autoconfig.thunderbird.net/v1.1/'.$domain;
 		try {
 			$xml = simplexml_load_file($url);
-			foreach($xml->emailProvider->children() as $name => $server)
+			if (!$xml->emailProvider) throw new egw_exception_not_found();
+			$provider = array(
+				'displayName' => (string)$xml->emailProvider->displayName,
+			);
+			foreach($xml->emailProvider->children() as $tag => $server)
 			{
-				if (!in_array($name, array('incomingServer', 'outgoingServer'))) continue;
+				if (!in_array($tag, array('incomingServer', 'outgoingServer'))) continue;
 				foreach($server->attributes() as $name => $value)
 				{
 					if ($name == 'type') $type = (string)$value;
 				}
-				$host = (string)$server->hostname;
 				$data = array();
 				foreach($server as $name => $value)
 				{
-					$data[$name] = (string)$value;
+					foreach($value->children() as $tag => $val)
+					{
+						$data[$name][$tag] = (string)$val;
+					}
+					if (!isset($data[$name])) $data[$name] = (string)$value;
 				}
-				if (!isset($hosts[$host]))
-				{
-					$hosts[$host]['displayName'] = (string)$xml->emailProvider->displayName;
-				}
-				$hosts[$host][$type][] = $data;
+				$provider[$type][] = $data;
 			}
 		}
 		catch(Exception $e) {
-
+			// ignore own not-found exception or xml parsing execptions
+			$provider = array();
 		}
-		return $hosts;
+		//error_log(__METHOD__."('$email') returning ".array2string($provider));
+		return $provider;
 	}
 
 	/**
-	 * Guess possible imap server hostnames from email address
+	 * Guess possible imap server hostnames from email address:
+	 *	- imap.$domain, mail.$domain
+	 *  - MX for $domain
+	 *  - replace host in MX with imap or mail
 	 *
 	 * @param type $email
-	 * @return array of hostname => data pairs
+	 * @return array of hostname => true pairs
 	 */
 	protected function get_imap_hosts($email)
 	{
@@ -195,7 +279,7 @@ class emailadmin_wizard
 		{
 			if (!dns_get_record($host, DNS_A)) unset($hosts[$host]);
 		}
-		error_log(__METHOD__."('$email') returning ".array2string($hosts));
+		//error_log(__METHOD__."('$email') returning ".array2string($hosts));
 		return $hosts;
 	}
 }

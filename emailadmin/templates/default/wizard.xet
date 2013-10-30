@@ -1,36 +1,50 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <overlay>
-	<template id="emailadmin.wizard" template="" lang="" group="0" version="">
+	<template id="emailadmin.wizard" template="" lang="" group="0" version="1.9.001">
 		<grid width="100%">
 			<columns>
-				<column width="100"/>
+				<column width="120"/>
 				<column/>
 			</columns>
 			<rows>
 				<row>
 					<description value="Your name" for="ident_realname"/>
-					<textbox id="ident_realname" needed="1" maxlength="128"/>
+					<textbox id="ident_realname" needed="1" size="32" maxlength="128"/>
 				</row>
 				<row>
 					<description value="Organisation" for="ident_org"/>
-					<textbox id="ident_org" maxlength="128"/>
+					<textbox id="ident_org" size="32" maxlength="128"/>
 				</row>
 				<row>
 					<description value="EMail address" href="ident_email"/>
-					<url-email id="ident_email" needed="1" options=",128"/>
+					<url-email id="ident_email" needed="1" options="32,128"/>
 				</row>
 				<row>
 					<description value="Password" for="acc_imap_password"/>
-					<passwd id="acc_imap_password" needed="1" options=",128"/>
+					<passwd id="acc_imap_password" needed="1" options="32,128"/>
 				</row>
-				<row>
+				<row class="@manual_class">
 					<description value="Server" for="acc_imap_host"/>
-					<textbox blur="Hostname or IP" id="acc_imap_host" maxlength="128"/>
+					<textbox blur="Hostname or IP" id="acc_imap_host" size="32" maxlength="128"/>
+				</row>
+				<row class="@manual_class">
+					<description value="Secure connection" for="acc_imap_ssl"/>
+					<hbox>
+						<menulist>
+							<menupopup id="acc_imap_ssl" onchange="app.emailadmin.wizard_imap_ssl_onchange"/>
+						</menulist>
+						<textbox type="integer" label="Port" id="acc_imap_port"/>
+					</hbox>
+				</row>
+				<row class="@manual_class">
+					<description value="Username" for="acc_imap_username"/>
+					<textbox blur="if different from EMail address" id="acc_imap_username" size="32" maxlength="128"/>
 				</row>
 				<row>
 					<hbox span="all">
 						<button label="Continue" id="button[continue]"/>
+						<button label="Manual entry" id="button[manual]" onclick="app.emailadmin.wizard_manual"/>
 						<buttononly label="Cancel" id="button[cancel]" onclick="window.close();"/>
 					</hbox>
 				</row>
@@ -39,5 +53,9 @@
 				</row>
 			</rows>
 		</grid>
+		<styles>
+			.emailadmin_manual { display: none; }
+#emailadmin-wizard_acc_imap_port { width: 5em; }
+		</styles>
 	</template>
 </overlay>
