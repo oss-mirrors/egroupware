@@ -9,6 +9,7 @@ admin password	emailadmin	en	Admin password
 admin username	emailadmin	en	Admin user name
 advanced options	emailadmin	en	Advanced options
 alternate email address	emailadmin	en	Alternate email address
+and logged in	emailadmin	en	and logged in
 any application	emailadmin	en	Any application
 any group	emailadmin	en	Any group
 any user	emailadmin	en	Any user
@@ -21,6 +22,8 @@ can be used by application	emailadmin	en	Can be used by application
 can be used by group	emailadmin	en	Can be used by group
 can be used by user	emailadmin	en	Can be used by user
 connection dropped by imap server.	emailadmin	en	Connection dropped by IMAP server.
+connection is not secure! everyone can read eg. your credentials.	emailadmin	en	Connection is NOT secure! Everyone can read eg. your credentials.
+continue	emailadmin	en	Continue
 could not complete request. reason given: %s	emailadmin	en	Could not complete request. %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	en	Could not open secure connection to the IMAP server. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	en	CRAM-MD5 or DIGEST-MD5 requires the Auth_SASL package to be installed.
@@ -55,11 +58,14 @@ forward also to	emailadmin	en	Forward also to
 forward email's to	emailadmin	en	Forward email's to
 forward only	emailadmin	en	Forward only
 global options	emailadmin	en	Global options
+hostname or ip	emailadmin	en	Hostname or IP
+if different from email address	emailadmin	en	if different from EMail address
 if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	en	If using SSL or TLS, you must have the PHP openssl extension loaded.
 if you specify port 5190 as sieve server port, you enforce ssl for sieve (server must support that)	emailadmin	en	if you specify port 5190 as sieve server port, you enforce ssl for sieve (server must support that)
 imap admin password	admin	en	IMAP admin password
 imap admin user	admin	en	IMAP admin user
 imap c-client version < 2001	emailadmin	en	IMAP C-Client Version < 2001
+imap server	emailadmin	en	IMAP server
 imap server closed the connection.	emailadmin	en	IMAP server closed the connection.
 imap server closed the connection. server responded: %s	emailadmin	en	IMAP Server closed the connection. Server Responded: %s
 imap server hostname or ip address	emailadmin	en	IMAP server hostname or ip address
@@ -79,6 +85,7 @@ ldap settings	emailadmin	en	LDAP settings
 leave empty for no quota	emailadmin	en	Leave empty for no quota
 mail settings	admin	en	Mail settings
 manage stationery templates	emailadmin	en	Manage stationery templates
+manual entry	emailadmin	en	Manual entry
 mb used	emailadmin	en	MB used
 name of organisation	emailadmin	en	Name of organization
 no alternate email address	emailadmin	en	No alternate email address
@@ -95,6 +102,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	en	Plesk SMTP-Server (Qmail)
 pop3 server hostname or ip address	emailadmin	en	POP3 server hostname or IP address
 pop3 server port	emailadmin	en	POP3 server port
+port	emailadmin	en	Port
 postfix with ldap	emailadmin	en	Postfix with LDAP
 profile access rights	emailadmin	en	Profile access rights
 profile is active	emailadmin	en	Profile is active
@@ -103,8 +111,10 @@ profile name	emailadmin	en	Profile name
 qmaildotmode	emailadmin	en	qmaildotmode
 quota settings	emailadmin	en	Quota settings
 quota size in mbyte	emailadmin	en	Quota size in MByte
+relay access checked	emailadmin	en	Relay access checked
 remove	emailadmin	en	Remove
 reset filter	emailadmin	en	Reset filter
+secure connection	emailadmin	en	Secure connection
 select type of imap server	emailadmin	en	Select type of IMAP server
 select type of imap/pop3 server	emailadmin	en	Select type of IMAP/POP3 server
 select type of smtp server	emailadmin	en	Select type of SMTP server
@@ -115,6 +125,7 @@ sieve server port	emailadmin	en	Sieve server port
 sieve settings	emailadmin	en	Sieve settings
 smtp authentication	emailadmin	en	SMTP authentication
 smtp options	emailadmin	en	SMTP options
+smtp server	emailadmin	en	SMTP server
 smtp server name	emailadmin	en	SMTP server name
 smtp settings	emailadmin	en	SMTP settings
 smtp-server hostname or ip address	emailadmin	en	SMTP server hostname or IP address
@@ -125,6 +136,7 @@ standard pop3 server	emailadmin	en	Standard POP3 server
 standard smtp-server	emailadmin	en	Standard SMTP server
 starts with	emailadmin	en	Starts with
 stationery	emailadmin	en	Stationery
+successful connected to %1 server%2.	emailadmin	en	Successful connected to %1 server%2.
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	en	The IMAP server does not appear to support the authentication method selected. Contact your system administrator.
 this php has no imap support compiled in!!	emailadmin	en	This PHP has no IMAP support compiled in!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	en	To use a TLS connection, you must be running a version of PHP 5.1.0 or higher.
@@ -149,8 +161,10 @@ users can define their own emailaccounts	emailadmin	en	Users can define their ow
 users can define their own identities	emailadmin	en	Users can define their own identities
 users can define their own signatures	emailadmin	en	Users can define their own signatures
 users can utilize these stationery templates	emailadmin	en	Users can utilize these stationery templates
+using data from mozilla ispdb for provider %1	emailadmin	en	Using data from Mozilla ISPDB for provider %1
 vacation messages with start- and end-date require an admin account to be set	emailadmin	en	Vacation messages with start and end date require an admin account to be set!
 virtual mail manager	emailadmin	en	Virtual MAIL ManaGeR
 yes, use credentials below only for alarms and notifications, otherwise use credentials of current user	emailadmin	en	Yes, use credentials below only for alarms and notifications, otherwise use credentials of current user
 yes, use credentials of current user or if given credentials below	emailadmin	en	Yes, use credentials of current user or if given credentials below
 you have received a new message on the	emailadmin	en	You have received a new message on the
+your name	emailadmin	en	Your name

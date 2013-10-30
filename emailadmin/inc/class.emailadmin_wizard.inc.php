@@ -15,16 +15,16 @@
  * Wizard uses follow heuristic to search for IMAP accounts:
  * 1. query Mozilla ISPDB for domain from email (perfering SSL over STARTTLS over insecure connection)
  * 2. guessing and verifying in DNS server-names based on domain from email:
- *	- imap.$domain, mail.$domain
+ *	- (imap|smtp).$domain, mail.$domain
  *  - MX for $domain
- *  - replace host in MX with imap or mail
+ *  - replace host in MX with (imap|smtp) or mail
  */
 class emailadmin_wizard
 {
 	/**
 	 * Enable logging of IMAP communication to given path, eg. /tmp/imap.log
 	 */
-	const DEBUG_LOG = null;
+	const DEBUG_LOG = '/tmp/imap.log';//null;
 	/**
 	 * Connection timeout in seconds used in wizard, can and should be really short
 	 */
@@ -48,7 +48,7 @@ class emailadmin_wizard
 		//'2' => 'TLS',	// SSL with minimum TLS (no SSL v.2 or v.3), requires newer Horde_Imap_Client
 		'1' => 'SSL',
 		'3' => 'STARTTLS',
-		'no' => 'no',
+		'no' => 'no',	// can NOT use '0' or '', as eT2 moves it to first option!
 	);
 	/**
 	 * Convert ssl-type to Horde secure parameter
@@ -73,7 +73,7 @@ class emailadmin_wizard
 	);
 
 	/**
-	 * Wizard to add email account
+	 * Step 1: IMAP account
 	 *
 	 * @param array $content
 	 * @param type $msg
@@ -119,7 +119,8 @@ class emailadmin_wizard
 			$hosts = array($content['acc_imap_host'] => true);
 			if ($content['acc_imap_port'] > 0 && !in_array($content['acc_imap_port'], array(143,993)))
 			{
-				$ssl_type = (string)array_search($content['acc_imap_ssl'], self::$ssl2types);
+				$ssl_type = (string)array_search($content['acc_imap_ssl'], self::$ssl2type);
+				if ($ssl_type === '') $ssl_type = 'insecure';
 				$hosts[$content['acc_imap_host']] = array(
 					$ssl_type => $content['acc_imap_port'],
 				);
@@ -146,7 +147,7 @@ class emailadmin_wizard
 		}
 		else
 		{
-			$hosts = $this->get_imap_hosts($content['ident_email']);
+			$hosts = $this->guess_hosts($content['ident_email'], 'imap');
 		}
 
 		// iterate over all hosts and try to connect
@@ -162,22 +163,16 @@ class emailadmin_wizard
 
 				$content['acc_imap_ssl'] = (int)self::$ssl2type[$ssl];
 
+				unset($e);
 				try {
 					$content['output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $ssl connection to $host:$port ...\n";
 					$content['acc_imap_port'] = $port;
 
-					$imap = new Horde_Imap_Client_Socket(array(
-						'username' => $content['acc_imap_username'],
-						'password' => $content['acc_imap_password'],
-						'hostspec' => $content['acc_imap_host'],
-						'port' => $content['acc_imap_port'],
-						'secure' => self::$ssl2secure[$ssl],
-						'timeout' => self::TIMEOUT,
-						'debug' => self::DEBUG_LOG,
-					));
+					$imap = self::imap_client($content);
+
 					//$content['output'] .= array2string($imap->capability());
 					$imap->login();
-					$content['output'] .= "\n".lang('Successful connected to server and loged in :-)')."\n";
+					$content['output'] .= "\n".lang('Successful connected to %1 server%2.', 'IMAP', ' '.lang('and logged in'))."\n";
 					if (!$imap->isSecureConnection())
 					{
 						$content['output'] .= lang('Connection is NOT secure! Everyone can read eg. your credentials.')."\n";
@@ -206,14 +201,14 @@ class emailadmin_wizard
 				}
 				catch(Exception $e) {
 					$content['output'] .= "\n".get_class($e).': '.$e->getMessage().' ('.$e->getCode().')'."\n";
-					$content['output'] .= $e->getTraceAsString()."\n";
+					//$content['output'] .= $e->getTraceAsString()."\n";
 				}
 			}
 		}
 		if ($connected)	// continue with next wizard step: define folders
 		{
 			unset($content['button']);
-			return $this->folder($content, lang('Successful connected to server and logged in :-)').
+			return $this->folder($content, lang('Successful connected to %1 server%2.', 'IMAP', ' '.lang('and logged in')).
 				($imap->isSecureConnection() ? '' : "\n".lang('Connection is NOT secure! Everyone can read eg. your credentials.')));
 		}
 		// add validation error, if we can identify a field
@@ -238,7 +233,7 @@ class emailadmin_wizard
 	}
 
 	/**
-	 * Let user select trash, sent, drafs and template folder
+	 * Step 2: Folder - let user select trash, sent, drafs and template folder
 	 *
 	 * @param array $content
 	 * @param string $msg=''
@@ -254,22 +249,15 @@ class emailadmin_wizard
 			{
 				case 'back':
 					return $this->add($content);
+
+				case 'continue':
+					return $this->sieve($content);
 			}
 		}
 		$content['msg'] = $msg;
 
-		if (!isset($imap))
-		{
-			$imap = new Horde_Imap_Client_Socket(array(
-				'username' => $content['acc_imap_username'],
-				'password' => $content['acc_imap_password'],
-				'hostspec' => $content['acc_imap_host'],
-				'port' => $content['acc_imap_port'],
-				'secure' => self::$ssl2secure[(string)array_search($content['acc_imap_ssl'], self::$ssl2type)],
-				'timeout' => self::TIMEOUT,
-				'debug' => self::DEBUG_LOG,
-			));
-		}
+		if (!isset($imap)) $imap = self::imap_client ($content);
+
 		// query all subscribed mailboxes
 		$mailboxes = $imap->listMailboxes('*', Horde_Imap_Client::MBOX_SUBSCRIBED, array(
 			'special_use' => true,
@@ -328,6 +316,275 @@ class emailadmin_wizard
 	}
 
 	/**
+	 * Step 3: Sieve
+	 *
+	 * @param array $content
+	 * @param string $msg=''
+	 */
+	public function sieve(array $content, $msg='')
+	{
+		if (isset($content['button']))
+		{
+			list($button) = each($content['button']);
+			unset($content['button']);
+			switch($button)
+			{
+				case 'back':
+					return $this->folder($content);
+
+				case 'continue':
+					return $this->smtp($content);
+			}
+		}
+		$content['msg'] = $msg;
+
+		$tpl = new etemplate_new('emailadmin.wizard.sieve');
+		$tpl->exec('emailadmin.emailadmin_wizard.sieve', $content, $sel_options, $readonlys, $content);
+	}
+
+	/**
+	 * Step 4: SMTP
+	 *
+	 * @param array $content
+	 * @param string $msg=''
+	 */
+	public function smtp(array $content, $msg='')
+	{
+		static $smtp_ssl2port = array(
+			'0' => 25,
+			'1' => 465,	// SSL
+			'2' => 465,	// TLS
+			'3' => 587,	// STARTTLS
+		);
+		$content['msg'] = $msg;
+
+		if (isset($content['button']))
+		{
+			list($button) = each($content['button']);
+			unset($content['button']);
+			switch($button)
+			{
+				case 'back':
+					return $this->sieve($content);
+			}
+		}
+		// first try hide manual config
+		if (!isset($content['acc_smtp_host']))
+		{
+			$content['output'] = '';
+			$content['manual_class'] = 'emailadmin_manual';
+		}
+		else
+		{
+			unset($content['manual_class']);
+			$readonlys['button[manual]'] = true;
+		}
+		// copy username/password from imap
+		if (!isset($content['acc_smtp_username'])) $content['acc_smtp_username'] = $content['acc_imap_username'];
+		if (!isset($content['acc_smtp_password'])) $content['acc_smtp_password'] = $content['acc_imap_password'];
+		// set default ssl
+		if (!isset($content['acc_smtp_ssl'])) list($content['acc_smtp_ssl']) = each(self::$ssl_types);
+		if (empty($content['acc_smtp_port'])) $content['acc_smtp_port'] = $smtp_ssl2port[1];
+
+		// check smtp connection
+		if ($button == 'continue')
+		{
+			$content['smtp_connected'] = false;
+			$content['output'] = '';
+			unset($content['manual_class']);
+
+			if (!empty($content['acc_smtp_host']))
+			{
+				$hosts = array($content['acc_smtp_host'] => true);
+				if ((string)$content['acc_smtp_ssl'] !== '1' || $content['acc_smtp_port'] != $smtp_ssl2port[$content['acc_smtp_ssl']])
+				{
+					$ssl_type = (string)array_search($content['acc_smtp_ssl'], self::$ssl2type);
+					$hosts[$content['acc_smtp_host']] = array(
+						$ssl_type => $content['acc_smtp_port'],
+					);
+				}
+			}
+			elseif($content['ispdb'] && !empty($content['ispdb']['smtp']))
+			{
+				$content['output'] .= lang('Using data from Mozilla ISPDB for provider %1', $content['ispdb']['displayName'])."\n";
+				$hosts = array();
+				foreach($content['ispdb']['smtp'] as $server)
+				{
+					if (!isset($hosts[$server['hostname']]))
+					{
+						$hosts[$server['hostname']] = array('username' => $server['username']);
+					}
+					$hosts[$server['hostname']][strtoupper($server['socketType'])] = $server['port'];
+					// make sure we prefer SSL over STARTTLS over insecure
+					if (count($hosts[$server['hostname']]) > 2)
+					{
+						$hosts[$server['hostname']] = self::fix_ssl_order($hosts[$server['hostname']]);
+					}
+				}
+			}
+			else
+			{
+				$hosts = $this->guess_hosts($content['ident_email'], 'smtp');
+			}
+			foreach($hosts as $host => $data)
+			{
+				$content['acc_smtp_host'] = $host;
+				if (!is_array($data))
+				{
+					$data = array('SSL' => 465, 'STARTTLS' => 597, '' => 25);
+				}
+				foreach($data as $ssl => $port)
+				{
+					if ($ssl === 'username') continue;
+
+					$content['acc_smtp_ssl'] = (int)self::$ssl2type[$ssl];
+
+					unset($e);
+					try {
+						$content['output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $ssl connection to $host:$port ...\n";
+						$content['acc_smtp_port'] = $port;
+
+						$mail = new Horde_Mail_Transport_Smtphorde($params=array(
+							'username' => $content['acc_smtp_username'],
+							'password' => $content['acc_smtp_password'],
+							'host' => $content['acc_smtp_host'],
+							'port' => $content['acc_smtp_port'],
+							'secure' => self::$ssl2secure[(string)array_search($content['acc_smtp_ssl'], self::$ssl2type)],
+							'timeout' => self::TIMEOUT,
+							'debug' => self::DEBUG_LOG,
+						));
+						// create smtp connection and authenticate, if credentials given
+						$smtp = $mail->getSMTPObject();
+						$content['output'] .= "\n".lang('Successful connected to %1 server%2.', 'SMTP',
+							(!empty($content['acc_smtp_username']) ? ' '.lang('and logged in') : ''))."\n";
+						if (!$smtp->isSecureConnection())
+						{
+							if (!empty($content['acc_smtp_username']))
+							{
+								$content['output'] .= lang('Connection is NOT secure! Everyone can read eg. your credentials.')."\n";
+							}
+						}
+						// Horde_Smtp always try to use STARTTLS, adjust our ssl-parameter if successful
+						elseif (!($content['acc_smtp_ssl'] > 0))
+						{
+							//error_log(__METHOD__."() new Horde_Mail_Transport_Smtphorde(".array2string($params).")->getSMTPObject()->isSecureConnection()=".array2string($smtp->isSecureConnection()));
+							$content['acc_smtp_ssl'] = 3;
+						}
+						// try sending a mail to a different domain, if not authenticated, to see if that's required
+						if (empty($content['acc_smtp_username']))
+						{
+							$smtp->send($content['ident_email'], 'noreply@example.com', '');
+							$content['output'] .= "\n".lang('Relay access checked')."\n";
+						}
+						$content['smtp_connected'] = true;
+						unset($content['button']);
+						return $this->save($content, lang('Successful connected to %1 server%2.', 'SMTP',
+							empty($content['acc_smtp_username']) ? ' - '.lang('Relay access checked') : ' '.lang('and logged in')));
+						break 2;
+					}
+					// unfortunately LOGIN_AUTHENTICATIONFAILED and SERVER_CONNECT are thrown as Horde_Mail_Exception
+					// while others are thrown as Horde_Smtp_Exception --> using common base Horde_Exception_Wrapped
+					catch(Horde_Exception_Wrapped $e)
+					{
+						switch($e->getCode())
+						{
+							case Horde_Smtp_Exception::LOGIN_AUTHENTICATIONFAILED:
+							case Horde_Smtp_Exception::LOGIN_REQUIREAUTHENTICATION:
+							case Horde_Smtp_Exception::UNSPECIFIED:
+								$content['output'] .= "\n".$e->getMessage()."\n";
+								break;
+							case Horde_Smtp_Exception::SERVER_CONNECT:
+								$content['output'] .= "\n".$e->getMessage()."\n";
+								break;
+							default:
+								$content['output'] .= "\n".$e->getMessage().' ('.$e->getCode().')'."\n";
+								break;
+						}
+					}
+					catch(Exception $e) {
+						$content['output'] .= "\n".get_class($e).': '.$e->getMessage().' ('.$e->getCode().')'."\n";
+						//$content['output'] .= $e->getTraceAsString()."\n";
+					}
+				}
+			}
+		}
+		// add validation error, if we can identify a field
+		if (!$content['smtp_connected'] && $e instanceof Horde_Exception_Wrapped)
+		{
+			switch($e->getCode())
+			{
+				case Horde_Smtp_Exception::LOGIN_AUTHENTICATIONFAILED:
+				case Horde_Smtp_Exception::LOGIN_REQUIREAUTHENTICATION:
+				case Horde_Smtp_Exception::UNSPECIFIED:
+					etemplate_new::set_validation_error('acc_smtp_username', lang($e->getMessage()));
+					etemplate_new::set_validation_error('acc_smtp_password', lang($e->getMessage()));
+					break;
+
+				case Horde_Smtp_Exception::SERVER_CONNECT:
+					etemplate_new::set_validation_error('acc_smtp_host', lang($e->getMessage()));
+					etemplate_new::set_validation_error('acc_smtp_port', lang($e->getMessage()));
+					break;
+			}
+		}
+		if ((string)$content['acc_smtp_ssl'] === '0') $content['acc_smtp_ssl'] = 'no';
+		$sel_options['acc_smtp_ssl'] = self::$ssl_types;
+		$tpl = new etemplate_new('emailadmin.wizard.smtp');
+		$tpl->exec('emailadmin.emailadmin_wizard.smtp', $content, $sel_options, $readonlys, $content);
+	}
+
+	/**
+	 * Step 5: Save
+	 *
+	 * @param array $content
+	 * @param string $msg=''
+	 */
+	public function save(array $content, $msg='')
+	{
+		if (empty($content['acc_name']))
+		{
+			$content['acc_name'] = $content['ident_email'];
+		}
+		if (isset($content['button']))
+		{
+			list($button) = each($content['button']);
+			unset($content['button']);
+			switch($button)
+			{
+				case 'back':
+					return $this->smtp($content);
+
+				case 'save':
+					// todo
+					$msg = 'Not (yet) implemented ;-)';
+			}
+		}
+		$content['msg'] = $msg;
+
+		$sel_options['acc_imap_ssl'] = $sel_options['acc_smtp_ssl'] = self::$ssl_types;
+		$tpl = new etemplate_new('emailadmin.wizard.save');
+		$tpl->exec('emailadmin.emailadmin_wizard.save', $content, $sel_options, $readonlys, $content);
+	}
+
+	/**
+	 * Instanciate imap-client
+	 *
+	 * @param array $content
+	 * @return Horde_Imap_Client_Socket
+	 */
+	protected static function imap_client(array $content)
+	{
+		return new Horde_Imap_Client_Socket(array(
+			'username' => $content['acc_imap_username'],
+			'password' => $content['acc_imap_password'],
+			'hostspec' => $content['acc_imap_host'],
+			'port' => $content['acc_imap_port'],
+			'secure' => self::$ssl2secure[(string)array_search($content['acc_imap_ssl'], self::$ssl2type)],
+			'timeout' => self::TIMEOUT,
+			'debug' => self::DEBUG_LOG,
+		));
+	}
+
+	/**
 	 * Reorder SSL types to make sure we start with TLS, SSL, STARTTLS and insecure last
 	 *
 	 * @param array $data ssl => port pairs plus other data like value for 'username'
@@ -355,7 +612,7 @@ class emailadmin_wizard
 		list(,$domain) = explode('@', $email);
 		$url = 'https://autoconfig.thunderbird.net/v1.1/'.$domain;
 		try {
-			$xml = simplexml_load_file($url);
+			$xml = @simplexml_load_file($url);
 			if (!$xml->emailProvider) throw new egw_exception_not_found();
 			$provider = array(
 				'displayName' => (string)$xml->emailProvider->displayName,
@@ -388,29 +645,30 @@ class emailadmin_wizard
 	}
 
 	/**
-	 * Guess possible imap server hostnames from email address:
-	 *	- imap.$domain, mail.$domain
+	 * Guess possible server hostnames from email address:
+	 *	- $type.$domain, mail.$domain
 	 *  - MX for $domain
 	 *  - replace host in MX with imap or mail
 	 *
-	 * @param type $email
+	 * @param string $email email address
+	 * @param string $type='imap' 'imap' or 'smtp', used as hostname beside 'mail'
 	 * @return array of hostname => true pairs
 	 */
-	protected function get_imap_hosts($email)
+	protected function guess_hosts($email, $type='imap')
 	{
 		list(,$domain) = explode('@', $email);
 
 		$hosts = array();
 
 		// try usuall names
-		$hosts['imap.'.$domain] = true;
+		$hosts[$type.'.'.$domain] = true;
 		$hosts['mail.'.$domain] = true;
 
 		if (($dns = dns_get_record($domain, DNS_MX)))
 		{
 			//error_log(__METHOD__."('$email') dns_get_record('$domain', DNS_MX) returned ".array2string($dns));
 			$hosts[$dns[0]['target']] = true;
-			$hosts[preg_replace('/^[^.]+/', 'imap', $dns[0]['target'])] = true;
+			$hosts[preg_replace('/^[^.]+/', $type, $dns[0]['target'])] = true;
 			$hosts[preg_replace('/^[^.]+/', 'mail', $dns[0]['target'])] = true;
 		}
 

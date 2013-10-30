@@ -15,7 +15,7 @@
   display: none;
   padding: 10px;
 }
-#emailadmin-wizard_acc_imap_port { 
+#emailadmin-wizard_acc_imap_port,#emailadmin-wizard_acc_smtp_port { 
   width: 5em; 
 }
 .emailadmin_header { 

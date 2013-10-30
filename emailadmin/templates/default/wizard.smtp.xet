@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<overlay>
+	<template id="emailadmin.wizard.smtp" template="" lang="" group="0" version="1.9.001">
+		<grid width="100%">
+			<columns>
+				<column width="120"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<description value="Step 4: SMTP - outgoing mail" span="all" class="emailadmin_header"/>
+					<description/>
+				</row>
+				<row class="@manual_class">
+					<description value="Username" for="acc_smtp_username"/>
+					<textbox blur="if authentication required" id="acc_smtp_username" size="32" maxlength="128"/>
+				</row>
+				<row class="@manual_class">
+					<description value="Password" for="acc_smtp_password"/>
+					<passwd id="acc_smtp_password" options="32,128"/>
+				</row>
+				<row class="@manual_class">
+					<description value="SMTP server" for="acc_smtp_host"/>
+					<textbox blur="Hostname or IP" id="acc_smtp_host" size="32" maxlength="128"/>
+				</row>
+				<row class="@manual_class">
+					<description value="Secure connection" for="acc_smtp_ssl"/>
+					<hbox>
+						<menulist>
+							<menupopup id="acc_smtp_ssl" onchange="app.emailadmin.wizard_smtp_ssl_onchange"/>
+						</menulist>
+						<textbox type="integer" label="Port" id="acc_smtp_port"/>
+					</hbox>
+				</row>
+				<row>
+					<hbox span="all">
+						<button label="Continue" id="button[continue]" onclick="app.emailadmin.wizard_detect"/>
+						<button label="Back" id="button[back]"/>
+						<button label="Manual entry" id="button[manual]" onclick="app.emailadmin.wizard_manual"/>
+						<buttononly label="Cancel" id="button[cancel]" onclick="window.close();"/>
+					</hbox>
+				</row>
+				<row>
+					<image src="progress" span="all" class="emailadmin_progress"/>
+					<description/>
+				</row>
+				<row>
+					<textbox multiline="true" id="output" readonly="true" span="all"/>
+				</row>
+			</rows>
+		</grid>
+	</template>
+</overlay>

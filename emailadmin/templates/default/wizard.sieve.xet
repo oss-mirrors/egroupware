@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<overlay>
+	<template id="emailadmin.wizard.sieve" template="" lang="" group="0" version="1.9.001">
+		<grid>
+			<columns>
+				<column width="120"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<description id="msg" span="all" class="message"/>
+					<description/>
+				</row>
+				<row>
+					<description value="Step 3: Sieve" span="all" class="emailadmin_header"/>
+					<description/>
+				</row>
+				<row>
+					<description/>
+					<menulist>
+						<menupopup options="Select one ..."/>
+					</menulist>
+				</row>
+				<row>
+					<hbox span="all">
+						<button label="Continue" id="button[continue]"/>
+						<button label="Back" id="button[back]"/>
+						<button label="Cancel" id="button[cancel]" onclick="window.close();"/>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+	</template>
+</overlay>

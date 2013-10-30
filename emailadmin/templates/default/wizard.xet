@@ -33,7 +33,7 @@
 					<passwd id="acc_imap_password" needed="1" options="32,128"/>
 				</row>
 				<row class="@manual_class">
-					<description value="Server" for="acc_imap_host"/>
+					<description value="IMAP server" for="acc_imap_host"/>
 					<textbox blur="Hostname or IP" id="acc_imap_host" size="32" maxlength="128"/>
 				</row>
 				<row class="@manual_class">
