@@ -272,6 +272,31 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	}
 
 	/**
+	 * getSpecialUseFolders
+	 *
+	 * @return array with special use folders
+	 */
+	function getSpecialUseFolders()
+	{
+		$mailboxes = $this->getMailboxes('',0,true);
+		$suF = array();
+		foreach ($mailboxes as $k =>$box)
+		{
+			if ($box['MAILBOX']!='user' && $box['MAILBOX'] != '')
+			{
+				//error_log(__METHOD__.__LINE__.$k.'->'.array2string($box));
+				if (isset($box['ATTRIBUTES'])&&!empty($box['ATTRIBUTES'])&&
+					stripos(strtolower(array2string($box['ATTRIBUTES'])),'\noselect')=== false&&
+					stripos(strtolower(array2string($box['ATTRIBUTES'])),'\nonexistent')=== false)
+				{
+					$suF[$box['MAILBOX']] = $box;
+				}
+			}
+		}
+		return $suF;
+	}
+
+	/**
 	 * getStatus
 	 *
 	 * @param string $mailbox
@@ -321,7 +346,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 *                                      true or 1 return only the mailbox that contains that exact name
 	 *                                      2 return all mailboxes in that hierarchy level
 	 * @param   string  $returnAttributes   true means return an assoc array containing mailbox names and mailbox attributes
-	 *                                      false - the default - means return an array of mailboxes
+	 *                                      false - the default - means return an array of mailboxes with only selected attributes like delimiter
 	 *
 	 * @return  mixed   array of mailboxes
 	 */
@@ -381,12 +406,10 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 * @param   string  $restriction_search false or 0 means return all mailboxes
 	 *                                      true or 1 return only the mailbox that contains that exact name
 	 *                                      2 return all mailboxes in that hierarchy level
-	 * @param   string  $returnAttributes   true means return an assoc array containing mailbox names and mailbox attributes
-	 *                                      false - the default - means return an array of mailboxes
 	 *
 	 * @return  mixed   array of mailboxes
 	 */
-	function listSubscribedMailboxes($reference = ''  , $restriction_search = 0, $returnAttributes = false)
+	function listSubscribedMailboxes($reference = ''  , $restriction_search = 0)
 	{
 		if ( is_bool($restriction_search) ){
 			$restriction_search = (int) $restriction_search;
@@ -412,18 +435,8 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		}
 		//error_log(__METHOD__.__LINE__.$mailbox);
 		$options = array(
-				'attributes'=>true,
-				'children'=>true, //child info
-				'delimiter'=>true,
-				'special_use'=>true,
 				'sort'=>true,
 			);
-		if ($returnAttributes==false)
-		{
-			unset($options['attributes']);
-			unset($options['children']);
-			unset($options['special_use']);
-		}
 		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_SUBSCRIBED, $options);
 		//$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
 		//_debug_array($mboxes->count());
@@ -452,7 +465,8 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		{
 			if ($k!='user' && $k != '' && $k==$mailbox)
 			{
-				$status = $this->status($k);
+				$status = $this->status($k, Horde_Imap_Client::STATUS_ALL | Horde_Imap_Client::STATUS_FLAGS | Horde_Imap_Client::STATUS_PERMFLAGS);
+				error_log(__METHOD__.__LINE__.array2string($status));
 				foreach ($status as $key => $v)
 				{
 					$_status[strtoupper($key)]=$v;
