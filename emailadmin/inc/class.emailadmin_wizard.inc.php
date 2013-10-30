@@ -22,6 +22,15 @@
 class emailadmin_wizard
 {
 	/**
+	 * Enable logging of IMAP communication to given path, eg. /tmp/imap.log
+	 */
+	const DEBUG_LOG = null;
+	/**
+	 * Connection timeout in seconds used in wizard, can and should be really short
+	 */
+	const TIMEOUT = 1;
+
+	/**
 	 * Methods callable via menuaction
 	 *
 	 * @var array
@@ -72,15 +81,22 @@ class emailadmin_wizard
 	public function add(array $content=null, $msg='')
 	{
 		$tpl = new etemplate_new('emailadmin.wizard');
-		$content = array(
-			'ident_realname' => $GLOBALS['egw_info']['user']['account_fullname'],
-			'ident_email' => $GLOBALS['egw_info']['user']['account_email'],
-			'acc_imap_port' => 993,
-			'manual_class' => 'emailadmin_manual',
-		);
+		if (!is_array($content))
+		{
+			$content = array(
+				'ident_realname' => $GLOBALS['egw_info']['user']['account_fullname'],
+				'ident_email' => $GLOBALS['egw_info']['user']['account_email'],
+				'acc_imap_port' => 993,
+				'manual_class' => 'emailadmin_manual',
+			);
+		}
+		else
+		{
+			$readonlys['button[manual]'] = !empty($content['acc_imap_host']) || !empty($content['acc_imap_username']);
+		}
 		$tpl->exec('emailadmin.emailadmin_wizard.autoconfig', $content, array(
 			'acc_imap_ssl' => self::$ssl_types,
-		));
+		), $readonlys);
 	}
 
 	/**
@@ -103,8 +119,7 @@ class emailadmin_wizard
 			$hosts = array($content['acc_imap_host'] => true);
 			if ($content['acc_imap_port'] > 0 && !in_array($content['acc_imap_port'], array(143,993)))
 			{
-				$ssl_type = array_search($content['acc_imap_ssl'], self::$ssl_types);
-				if ($ssl_type == 'no') $ssl_type = '';
+				$ssl_type = (string)array_search($content['acc_imap_ssl'], self::$ssl2types);
 				$hosts[$content['acc_imap_host']] = array(
 					$ssl_type => $content['acc_imap_port'],
 				);
@@ -157,8 +172,8 @@ class emailadmin_wizard
 						'hostspec' => $content['acc_imap_host'],
 						'port' => $content['acc_imap_port'],
 						'secure' => self::$ssl2secure[$ssl],
-						'timeout' => 1,	// just connection timeout
-						'debug' => '/tmp/imap.log',
+						'timeout' => self::TIMEOUT,
+						'debug' => self::DEBUG_LOG,
 					));
 					//$content['output'] .= array2string($imap->capability());
 					$imap->login();
@@ -195,12 +210,19 @@ class emailadmin_wizard
 				}
 			}
 		}
+		if ($connected)	// continue with next wizard step: define folders
+		{
+			unset($content['button']);
+			return $this->folder($content, lang('Successful connected to server and logged in :-)').
+				($imap->isSecureConnection() ? '' : "\n".lang('Connection is NOT secure! Everyone can read eg. your credentials.')));
+		}
 		// add validation error, if we can identify a field
 		if (!$connected && $e instanceof Horde_Imap_Client_Exception)
 		{
 			switch($e->getCode())
 			{
 				case Horde_Imap_Client_Exception::LOGIN_AUTHENTICATIONFAILED:
+					etemplate_new::set_validation_error('acc_imap_username', lang($e->getMessage()));
 					etemplate_new::set_validation_error('acc_imap_password', lang($e->getMessage()));
 					break;
 
@@ -213,6 +235,96 @@ class emailadmin_wizard
 		$sel_options['acc_imap_ssl'] = self::$ssl_types;
 		$tpl = new etemplate_new('emailadmin.wizard');
 		$tpl->exec('emailadmin.emailadmin_wizard.autoconfig', $content, $sel_options, $readonlys, $preserv);
+	}
+
+	/**
+	 * Let user select trash, sent, drafs and template folder
+	 *
+	 * @param array $content
+	 * @param string $msg=''
+	 * @param Horde_Imap_Client_Socket $imap=null
+	 */
+	public function folder(array $content, $msg='', Horde_Imap_Client_Socket $imap=null)
+	{
+		if (isset($content['button']))
+		{
+			list($button) = each($content['button']);
+			unset($content['button']);
+			switch($button)
+			{
+				case 'back':
+					return $this->add($content);
+			}
+		}
+		$content['msg'] = $msg;
+
+		if (!isset($imap))
+		{
+			$imap = new Horde_Imap_Client_Socket(array(
+				'username' => $content['acc_imap_username'],
+				'password' => $content['acc_imap_password'],
+				'hostspec' => $content['acc_imap_host'],
+				'port' => $content['acc_imap_port'],
+				'secure' => self::$ssl2secure[(string)array_search($content['acc_imap_ssl'], self::$ssl2type)],
+				'timeout' => self::TIMEOUT,
+				'debug' => self::DEBUG_LOG,
+			));
+		}
+		// query all subscribed mailboxes
+		$mailboxes = $imap->listMailboxes('*', Horde_Imap_Client::MBOX_SUBSCRIBED, array(
+			'special_use' => true,
+			'attributes' => true,	// otherwise special_use is only queried, but not returned ;-)
+			'delimiter' => true,
+		));
+		//_debug_array($mailboxes);
+		// list mailboxes by special-use attributes
+		$attributes = $all = array();
+		foreach($mailboxes as $mailbox => $data)
+		{
+			foreach($data['attributes'] as $attribute)
+			{
+				$attributes[$attribute][] = $mailbox;
+			}
+		}
+		// pre-select send, trash, ... folder for user, by checking special-use attributes or common name(s)
+		foreach(array(
+			'acc_folder_sent'  => array('\\sent', 'sent'),
+			'acc_folder_trash' => array('\\trash', 'trash'),
+			'acc_folder_draft' => array('\\drafts', 'drafts'),
+			'acc_folder_template' => array('', 'templates'),
+		) as $name => $common_names)
+		{
+			// first check special-use attributes
+			if (($special_use = array_shift($common_names)))
+			{
+				foreach((array)$attributes[$special_use] as $mailbox)
+				{
+					if (!isset($content[$name]) || strlen($mailbox) < strlen($content[$name]))
+					{
+						$content[$name] = $mailbox;
+					}
+				}
+			}
+			// no special use folder found, try common names
+			if (!isset($content[$name]))
+			{
+				foreach($mailboxes as $mailbox => $data)
+				{
+					$name_parts = explode($data['delimiter']?$data['delimiter']:'.', strtolower($mailbox));
+					if (array_intersect($name_parts, $common_names) &&
+						(!isset($content[$name]) || strlen($mailbox) < strlen($content[$name]) && substr($mailbox, 0, 5) == 'INBOX'))
+					{
+						$content[$name] = $mailbox;
+					}
+				}
+			}
+		}
+		//_debug_array($content);
+		$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
+			$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
+				array_combine(array_keys($mailboxes), array_keys($mailboxes));
+		$tpl = new etemplate_new('emailadmin.wizard.folder');
+		$tpl->exec('emailadmin.emailadmin_wizard.folder', $content, $sel_options, $readonlys, $content);
 	}
 
 	/**

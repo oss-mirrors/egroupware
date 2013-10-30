@@ -1,1 +1,25 @@
+/*
+ * CSS for EMailAdmin
+ * $Id$
+ */
+
 .defaultProfile { color:#000000; font-weight:bold; }
+
+/**
+ * mail account wizard
+ */
+.emailadmin_manual {
+  display: none;
+}
+.emailadmin_progress {
+  display: none;
+  padding: 10px;
+}
+#emailadmin-wizard_acc_imap_port { 
+  width: 5em; 
+}
+.emailadmin_header { 
+  font-weight: bold;
+  font-size: 150%;
+  padding-bottom: 20px;
+}

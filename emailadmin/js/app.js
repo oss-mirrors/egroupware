@@ -51,22 +51,36 @@ app.emailadmin = AppJS.extend(
 		this._super.apply(this, arguments);
 	},
 
-    /**
-     * Switch account wizard to manual entry
-     */
-    wizard_manual: function()
-    {
-        jQuery('tr.emailadmin_manual').fadeToggle();    // not sure how to to this et2-isch
-    },
+	/**
+	 * Switch account wizard to manual entry
+	 */
+	wizard_manual: function()
+	{
+		jQuery('tr.emailadmin_manual').fadeToggle();// not sure how to to this et2-isch
+	},
 
-    /**
-     * Set default port, if imap ssl-type changes
-     */
-    wizard_imap_ssl_onchange: function(_event, _widget)
-    {
-        var ssl_type = _widget.get_value();
-        this.et2.getWidgetById('acc_imap_port').set_value(!ssl_type || ssl_type == 1 || ssl_type == 2 ? 993 : 143);
-    }
+	/**
+	 * onclick for continue button to show progress animation
+	 */
+	wizard_detect: function(_event, _widget)
+	{
+		// we need to do a manual asynchronious submit to show progress animation
+		// default synchronious submit stops animation!
+		if (this.et2._inst.submit('button[continue]', true))	// true = async submit
+		{
+			jQuery('td.emailadmin_progress').show();
+		}
+		return false;
+	},
+
+	/**
+	 * Set default port, if imap ssl-type changes
+	 */
+	wizard_imap_ssl_onchange: function(_event, _widget)
+	{
+		var ssl_type = _widget.get_value();
+		this.et2.getWidgetById('acc_imap_port').set_value(!ssl_type || ssl_type == 1 || ssl_type == 2 ? 993 : 143);
+	}
 });
 
 function disableGroupSelector()
