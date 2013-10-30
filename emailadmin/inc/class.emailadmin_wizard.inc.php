@@ -41,6 +41,27 @@ class emailadmin_wizard
 		'3' => 'STARTTLS',
 		'no' => 'no',
 	);
+	/**
+	 * Convert ssl-type to Horde secure parameter
+	 *
+	 * @var array
+	 */
+	public static $ssl2secure = array(
+		'SSL' => 'ssl',
+		'STARTTLS' => 'tls',
+		//'TLS' => 'tlsv1',	// SSL with minimum TLS (no SSL v.2 or v.3), requires newer Horde_Imap_Client
+	);
+	/**
+	 * Convert ssl-type to eMailAdmin acc_(imap|sieve|smtp)_ssl integer value
+	 *
+	 * @var array
+	 */
+	public static $ssl2type = array(
+		'SSL' => 1,
+		'TLS' => 2,
+		'STARTTLS' => 3,
+		'' => 0,
+	);
 
 	/**
 	 * Wizard to add email account
@@ -80,6 +101,14 @@ class emailadmin_wizard
 		if (!empty($content['acc_imap_host']))
 		{
 			$hosts = array($content['acc_imap_host'] => true);
+			if ($content['acc_imap_port'] > 0 && !in_array($content['acc_imap_port'], array(143,993)))
+			{
+				$ssl_type = array_search($content['acc_imap_ssl'], self::$ssl_types);
+				if ($ssl_type == 'no') $ssl_type = '';
+				$hosts[$content['acc_imap_host']] = array(
+					$ssl_type => $content['acc_imap_port'],
+				);
+			}
 		}
 		elseif (($ispdb = $this->mozilla_ispdb($content['ident_email'])) && count($ispdb['imap']))
 		{
@@ -115,9 +144,8 @@ class emailadmin_wizard
 			foreach($data as $ssl => $port)
 			{
 				if ($ssl === 'username') continue;
-				static $ssl2secure = array('SSL' => 'ssl', 'STARTTLS' => 'tls', /*'TLS' => 'tlsv1'*/);
-				static $ssl2type = array('SSL' => 1, 'TLS' => 2, 'STARTTLS' => 3, '' => 0);
-				$content['acc_imap_ssl'] = (int)$ssl2type[$ssl];
+
+				$content['acc_imap_ssl'] = (int)self::$ssl2type[$ssl];
 
 				try {
 					$content['output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $ssl connection to $host:$port ...\n";
@@ -128,7 +156,7 @@ class emailadmin_wizard
 						'password' => $content['acc_imap_password'],
 						'hostspec' => $content['acc_imap_host'],
 						'port' => $content['acc_imap_port'],
-						'secure' => $ssl2secure[$ssl],
+						'secure' => self::$ssl2secure[$ssl],
 						'timeout' => 1,	// just connection timeout
 						'debug' => '/tmp/imap.log',
 					));
