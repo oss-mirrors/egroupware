@@ -274,6 +274,19 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	/**
 	 * getSpecialUseFolders
 	 *
+	 * @return current mailbox, or if none check on INBOX, and return upon existance
+	 */
+	function getCurrentMailbox()
+	{
+		$mailbox = $this->currentMailbox();
+		if (!empty($mailbox)) return $mailbox['mailbox'];
+		if (empty($mailbox) && $this->mailboxExist('INBOX')) return 'INBOX';
+		return null;
+	}
+
+	/**
+	 * getSpecialUseFolders
+	 *
 	 * @return array with special use folders
 	 */
 	function getSpecialUseFolders()
