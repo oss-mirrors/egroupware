@@ -96,7 +96,10 @@ $phpgw_baseline = array(
 			'acc_domain' => array('type' => 'varchar','precision' => '100','comment' => 'domain name'),
 			'acc_imap_administration' => array('type' => 'bool','nullable' => False,'default' => '0','comment' => '1=enable administration'),
 			'acc_further_identities' => array('type' => 'bool','nullable' => False,'default' => '1','comment' => '0=no, 1=yes'),
-			'acc_user_editable' => array('type' => 'bool','nullable' => False,'default' => '1','comment' => '0=no, 1=yes')
+			'acc_user_editable' => array('type' => 'bool','nullable' => False,'default' => '1','comment' => '0=no, 1=yes'),
+			'acc_sieve_ssl' => array('type' => 'int','precision' => '1','default' => '1','comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'),
+			'acc_modified' => array('type' => 'timestamp','nullable' => False,'default' => 'current_timestamp'),
+			'acc_modifier' => array('type' => 'int','meta' => 'user','precision' => '4')
 		),
 		'pk' => array('acc_id'),
 		'fk' => array(),

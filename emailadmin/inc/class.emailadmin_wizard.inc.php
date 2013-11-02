@@ -22,13 +22,13 @@
 class emailadmin_wizard
 {
 	/**
-	 * Enable logging of IMAP communication to given path, eg. /tmp/imap.log
+	 * Enable logging of IMAP communication to given path, eg. /tmp/autoconfig.log
 	 */
-	const DEBUG_LOG = '/tmp/imap.log';//null;
+	const DEBUG_LOG = null;
 	/**
 	 * Connection timeout in seconds used in wizard, can and should be really short
 	 */
-	const TIMEOUT = 1;
+	const TIMEOUT = 2;
 
 	/**
 	 * Methods callable via menuaction
@@ -37,6 +37,7 @@ class emailadmin_wizard
 	 */
 	public $public_functions = array(
 		'add' => true,
+		'edit' => true,
 	);
 
 	/**
@@ -80,6 +81,9 @@ class emailadmin_wizard
 	 */
 	public function add(array $content=null, $msg='')
 	{
+		// otherwise we cant switch to ckeditor in edit
+		egw_ckeditor_config::set_csp_script_src_attrs();
+
 		$tpl = new etemplate_new('emailadmin.wizard');
 		if (!is_array($content))
 		{
@@ -90,13 +94,14 @@ class emailadmin_wizard
 				'manual_class' => 'emailadmin_manual',
 			);
 		}
-		else
+		if (!empty($content['acc_imap_host']) || !empty($content['acc_imap_username']))
 		{
-			$readonlys['button[manual]'] = !empty($content['acc_imap_host']) || !empty($content['acc_imap_username']);
+			$readonlys['button[manual]'] = true;
+			unset($content['manual_class']);
 		}
 		$tpl->exec('emailadmin.emailadmin_wizard.autoconfig', $content, array(
 			'acc_imap_ssl' => self::$ssl_types,
-		), $readonlys);
+		), $readonlys, $content);
 	}
 
 	/**
@@ -107,9 +112,9 @@ class emailadmin_wizard
 	public function autoconfig(array $content)
 	{
 		$content['output'] = '';
-		$sel_options = $readonlys = $preserv = array();
+		$sel_options = $readonlys = array();
 
-		$content['connected'] = $preserv['conected'] = $connected = false;
+		$content['connected'] = $connected = false;
 		if (empty($content['acc_imap_username']))
 		{
 			$content['acc_imap_username'] = $content['ident_email'];
@@ -128,7 +133,7 @@ class emailadmin_wizard
 		}
 		elseif (($ispdb = $this->mozilla_ispdb($content['ident_email'])) && count($ispdb['imap']))
 		{
-			$preserv['ispdb'] = $ispdb;
+			$content['ispdb'] = $ispdb;
 			$content['output'] .= lang('Using data from Mozilla ISPDB for provider %1', $ispdb['displayName'])."\n";
 			$hosts = array();
 			foreach($ispdb['imap'] as $server)
@@ -178,7 +183,7 @@ class emailadmin_wizard
 						$content['output'] .= lang('Connection is NOT secure! Everyone can read eg. your credentials.')."\n";
 					}
 					//$content['output'] .= "\n\n".array2string($imap->capability());
-					$content['connected'] = $preserv['conected'] = $connected = true;
+					$content['connected'] = $connected = true;
 					break 2;
 				}
 				catch(Horde_Imap_Client_Exception $e)
@@ -227,9 +232,10 @@ class emailadmin_wizard
 			}
 		}
 		$readonlys['button[manual]'] = true;
+		unset($content['manual_class']);
 		$sel_options['acc_imap_ssl'] = self::$ssl_types;
 		$tpl = new etemplate_new('emailadmin.wizard');
-		$tpl->exec('emailadmin.emailadmin_wizard.autoconfig', $content, $sel_options, $readonlys, $preserv);
+		$tpl->exec('emailadmin.emailadmin_wizard.autoconfig', $content, $sel_options, $readonlys, $content);
 	}
 
 	/**
@@ -255,9 +261,26 @@ class emailadmin_wizard
 			}
 		}
 		$content['msg'] = $msg;
-
 		if (!isset($imap)) $imap = self::imap_client ($content);
 
+		//_debug_array($content);
+		$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
+			$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
+				self::mailboxes($imap, $content);
+
+		$tpl = new etemplate_new('emailadmin.wizard.folder');
+		$tpl->exec('emailadmin.emailadmin_wizard.folder', $content, $sel_options, $readonlys, $content);
+	}
+
+	/**
+	 * Query mailboxes and (optional) detect special folders
+	 *
+	 * @param Horde_Imap_Client_Socket $imap
+	 * @param array &$content=null on return values for acc_folder_(sent|trash|draft|template)
+	 * @return array with folders as key AND value
+	 */
+	public static function mailboxes(Horde_Imap_Client_Socket $imap, array &$content=null)
+	{
 		// query all subscribed mailboxes
 		$mailboxes = $imap->listMailboxes('*', Horde_Imap_Client::MBOX_SUBSCRIBED, array(
 			'special_use' => true,
@@ -307,12 +330,7 @@ class emailadmin_wizard
 				}
 			}
 		}
-		//_debug_array($content);
-		$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
-			$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
-				array_combine(array_keys($mailboxes), array_keys($mailboxes));
-		$tpl = new etemplate_new('emailadmin.wizard.folder');
-		$tpl->exec('emailadmin.emailadmin_wizard.folder', $content, $sel_options, $readonlys, $content);
+		return array_combine(array_keys($mailboxes), array_keys($mailboxes));
 	}
 
 	/**
@@ -323,6 +341,14 @@ class emailadmin_wizard
 	 */
 	public function sieve(array $content, $msg='')
 	{
+		static $sieve_ssl2port = array(
+			//'2' => 5190,	// TLS
+			'1' => 5190,	// SSL
+			'3' => array(4190, 2000),	// STARTTLS
+			'0' => array(4190, 2000),	// no ssl
+		);
+		$content['msg'] = $msg;
+
 		if (isset($content['button']))
 		{
 			list($button) = each($content['button']);
@@ -333,11 +359,141 @@ class emailadmin_wizard
 					return $this->folder($content);
 
 				case 'continue':
-					return $this->smtp($content);
+					if (!$content['acc_sieve_enabled'])
+					{
+						return $this->smtp($content);
+					}
+					break;
 			}
 		}
-		$content['msg'] = $msg;
+		// first try: hide manual config
+		if (!isset($content['acc_sieve_enabled']))
+		{
+			$content['acc_sieve_enabled'] = 1;
+			$content['manual_class'] = 'emailadmin_manual';
+		}
+		else
+		{
+			unset($content['manual_class']);
+			$readonlys['button[manual]'] = true;
+		}
+		// set default ssl and port
+		if (!isset($content['acc_sieve_ssl'])) list($content['acc_sieve_ssl']) = each(self::$ssl_types);
+		if (empty($content['acc_sieve_port'])) $content['acc_sieve_port'] = $sieve_ssl2port[$content['acc_sieve_ssl']];
 
+		// check smtp connection
+		if ($button == 'continue')
+		{
+			$content['sieve_connected'] = false;
+			$content['sieve_output'] = '';
+			unset($content['manual_class']);
+
+			if (empty($content['acc_sieve_host']))
+			{
+				$content['acc_sieve_host'] = $content['acc_imap_host'];
+			}
+			// if use set non-standard port, use it
+			if (!in_array($content['acc_sieve_port'], (array)$sieve_ssl2port[$content['acc_sieve_ssl']]))
+			{
+				$data = array($content['acc_sieve_ssl'] => $content['acc_sieve_port']);
+			}
+			else	// otherwise try all standard ports
+			{
+				$data = $sieve_ssl2port;
+			}
+			foreach($data as $ssl => $ports)
+			{
+				foreach((array)$ports as $port)
+				{
+					$content['acc_sieve_ssl'] = $ssl;
+					$ssl_label = self::$ssl_types[$ssl];
+
+					unset($e);
+					try {
+						$content['sieve_output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $ssl_label connection to $content[acc_sieve_host]:$port ...\n";
+						$content['acc_sieve_port'] = $port;
+						$useTLS = false;
+						$host = $content['acc_sieve_host'];
+						switch($content['acc_sieve_ssl'])
+						{
+							case 1:	// SSL
+								$host = 'ssl://'.$host;
+								break;
+							case 2:	// TLS, not STARTTLS
+								$host = 'tls://'.$host;
+								break;
+							case 3:	// STARTTLS
+								$useTLS = true;
+						}
+
+						PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
+						$sieve = new Net_Sieve();
+						if (self::DEBUG_LOG)
+						{
+							$sieve->setDebug(true, function($sieve, $_msg) use (&$content)
+							{
+								//$content['sieve_output'] .= "\n".$_msg;
+								if (($fp = fopen(self::DEBUG_LOG, 'a')))
+								{
+									fwrite($fp, $_msg."\n");
+									fclose($fp);
+								}
+							});
+						}
+						// connect to sieve server
+						$sieve->connect($host, $port, $options=null, $useTLS);
+						$content['sieve_output'] .= "\n".lang('Successful connected to %1 server%2.', 'Sieve','');
+						// and log in
+						$sieve->login($content['acc_imap_username'], $content['acc_imap_password']);
+						$content['sieve_output'] .= ' '.lang('and logged in')."\n";
+						$content['sieve_connected'] = true;
+
+						unset($content['button']);
+						return $this->smtp($content, lang('Successful connected to %1 server%2.', 'Sieve',
+							' '.lang('and logged in')));
+						break 2;
+					}
+					// PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION) throws just Exception
+					catch(Exception $e) {
+						switch($e->getCode())
+						{
+							case 61:	// connection refused
+							case 60:	// connection timed out
+							case 65:	// no route ot host (imap.googlemail.com returns that for ssl/5190)
+								$content['sieve_output'] .= "\n".$e->getMessage()."\n";
+								break;
+							default:
+								$content['sieve_output'] .= "\n".$e->getMessage().' ('.$e->getCode().')'."\n";
+								$content['sieve_output'] .= $e->getTraceAsString()."\n";
+								break;
+						}
+					}
+				}
+			}
+			// not connected, and default ssl/port --> reset again to secure settings
+			if ($data == $sieve_ssl2port)
+			{
+				list($content['acc_sieve_ssl']) = each(self::$ssl_types);
+				$content['acc_sieve_port'] = $sieve_ssl2port[$content['acc_sieve_ssl']];
+			}
+		}
+		// add validation error, if we can identify a field
+		if (!$content['sieve_connected'] && $e instanceof Exception)
+		{
+			switch($e->getCode())
+			{
+				case 61:	// connection refused
+				case 60:	// connection timed out (imap.googlemail.com returns that for none-ssl/4190/2000)
+				case 65:	// no route ot host (imap.googlemail.com returns that for ssl/5190)
+					etemplate_new::set_validation_error('acc_sieve_host', lang($e->getMessage()));
+					etemplate_new::set_validation_error('acc_sieve_port', lang($e->getMessage()));
+					break;
+			}
+			$content['msg'] = lang('No sieve support detected, either fix configuration manually or leave it switched off.');
+			$content['acc_sieve_enabled'] = 0;
+		}
+		if ((string)$content['acc_sieve_ssl'] === '0') $content['acc_sieve_ssl'] = 'no';
+		$sel_options['acc_sieve_ssl'] = self::$ssl_types;
 		$tpl = new etemplate_new('emailadmin.wizard.sieve');
 		$tpl->exec('emailadmin.emailadmin_wizard.sieve', $content, $sel_options, $readonlys, $content);
 	}
@@ -368,10 +524,9 @@ class emailadmin_wizard
 					return $this->sieve($content);
 			}
 		}
-		// first try hide manual config
+		// first try: hide manual config
 		if (!isset($content['acc_smtp_host']))
 		{
-			$content['output'] = '';
 			$content['manual_class'] = 'emailadmin_manual';
 		}
 		else
@@ -384,13 +539,13 @@ class emailadmin_wizard
 		if (!isset($content['acc_smtp_password'])) $content['acc_smtp_password'] = $content['acc_imap_password'];
 		// set default ssl
 		if (!isset($content['acc_smtp_ssl'])) list($content['acc_smtp_ssl']) = each(self::$ssl_types);
-		if (empty($content['acc_smtp_port'])) $content['acc_smtp_port'] = $smtp_ssl2port[1];
+		if (empty($content['acc_smtp_port'])) $content['acc_smtp_port'] = $smtp_ssl2port[$content['acc_smtp_ssl']];
 
 		// check smtp connection
 		if ($button == 'continue')
 		{
 			$content['smtp_connected'] = false;
-			$content['output'] = '';
+			$content['smtp_output'] = '';
 			unset($content['manual_class']);
 
 			if (!empty($content['acc_smtp_host']))
@@ -406,7 +561,7 @@ class emailadmin_wizard
 			}
 			elseif($content['ispdb'] && !empty($content['ispdb']['smtp']))
 			{
-				$content['output'] .= lang('Using data from Mozilla ISPDB for provider %1', $content['ispdb']['displayName'])."\n";
+				$content['smtp_output'] .= lang('Using data from Mozilla ISPDB for provider %1', $content['ispdb']['displayName'])."\n";
 				$hosts = array();
 				foreach($content['ispdb']['smtp'] as $server)
 				{
@@ -441,7 +596,7 @@ class emailadmin_wizard
 
 					unset($e);
 					try {
-						$content['output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $ssl connection to $host:$port ...\n";
+						$content['smtp_output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $ssl connection to $host:$port ...\n";
 						$content['acc_smtp_port'] = $port;
 
 						$mail = new Horde_Mail_Transport_Smtphorde($params=array(
@@ -455,13 +610,13 @@ class emailadmin_wizard
 						));
 						// create smtp connection and authenticate, if credentials given
 						$smtp = $mail->getSMTPObject();
-						$content['output'] .= "\n".lang('Successful connected to %1 server%2.', 'SMTP',
+						$content['smtp_output'] .= "\n".lang('Successful connected to %1 server%2.', 'SMTP',
 							(!empty($content['acc_smtp_username']) ? ' '.lang('and logged in') : ''))."\n";
 						if (!$smtp->isSecureConnection())
 						{
 							if (!empty($content['acc_smtp_username']))
 							{
-								$content['output'] .= lang('Connection is NOT secure! Everyone can read eg. your credentials.')."\n";
+								$content['smtp_output'] .= lang('Connection is NOT secure! Everyone can read eg. your credentials.')."\n";
 							}
 						}
 						// Horde_Smtp always try to use STARTTLS, adjust our ssl-parameter if successful
@@ -474,11 +629,11 @@ class emailadmin_wizard
 						if (empty($content['acc_smtp_username']))
 						{
 							$smtp->send($content['ident_email'], 'noreply@example.com', '');
-							$content['output'] .= "\n".lang('Relay access checked')."\n";
+							$content['smtp_output'] .= "\n".lang('Relay access checked')."\n";
 						}
 						$content['smtp_connected'] = true;
 						unset($content['button']);
-						return $this->save($content, lang('Successful connected to %1 server%2.', 'SMTP',
+						return $this->edit($content, lang('Successful connected to %1 server%2.', 'SMTP',
 							empty($content['acc_smtp_username']) ? ' - '.lang('Relay access checked') : ' '.lang('and logged in')));
 						break 2;
 					}
@@ -491,19 +646,19 @@ class emailadmin_wizard
 							case Horde_Smtp_Exception::LOGIN_AUTHENTICATIONFAILED:
 							case Horde_Smtp_Exception::LOGIN_REQUIREAUTHENTICATION:
 							case Horde_Smtp_Exception::UNSPECIFIED:
-								$content['output'] .= "\n".$e->getMessage()."\n";
+								$content['smtp_output'] .= "\n".$e->getMessage()."\n";
 								break;
 							case Horde_Smtp_Exception::SERVER_CONNECT:
-								$content['output'] .= "\n".$e->getMessage()."\n";
+								$content['smtp_output'] .= "\n".$e->getMessage()."\n";
 								break;
 							default:
-								$content['output'] .= "\n".$e->getMessage().' ('.$e->getCode().')'."\n";
+								$content['smtp_output'] .= "\n".$e->getMessage().' ('.$e->getCode().')'."\n";
 								break;
 						}
 					}
 					catch(Exception $e) {
-						$content['output'] .= "\n".get_class($e).': '.$e->getMessage().' ('.$e->getCode().')'."\n";
-						//$content['output'] .= $e->getTraceAsString()."\n";
+						$content['smtp_output'] .= "\n".get_class($e).': '.$e->getMessage().' ('.$e->getCode().')'."\n";
+						//$content['smtp_output'] .= $e->getTraceAsString()."\n";
 					}
 				}
 			}
@@ -533,13 +688,26 @@ class emailadmin_wizard
 	}
 
 	/**
-	 * Step 5: Save
+	 * Edit an account
 	 *
 	 * @param array $content
 	 * @param string $msg=''
 	 */
-	public function save(array $content, $msg='')
+	public function edit(array $content=null, $msg='')
 	{
+		if (!is_array($content))
+		{
+			if (isset($_GET['acc_id']) && (int)$_GET['acc_id'] > 0)
+			{
+				try {
+					$account = emailadmin_account::read($_GET['acc_id']);
+				}
+				catch(Exception $e) {
+					egw_framework::window_close(lang('Account not found!'));
+				}
+				$content = $account->params;
+			}
+		}
 		if (empty($content['acc_name']))
 		{
 			$content['acc_name'] = $content['ident_email'];
@@ -550,19 +718,44 @@ class emailadmin_wizard
 			unset($content['button']);
 			switch($button)
 			{
-				case 'back':
-					return $this->smtp($content);
+				case 'wizard':
+					// if we just came from wizard, go back to last page/step
+					if (isset($content['smtp_connected']))
+					{
+						return $this->smtp($content);
+					}
+					// otherwise start with first step
+					return $this->autoconfig($content);
 
 				case 'save':
-					// todo
-					$msg = 'Not (yet) implemented ;-)';
+				case 'apply':
+					try {
+						$content = emailadmin_account::write($content);
+						$msg = lang('Account saved.');
+					}
+					catch (Exception $e) {
+						$msg = lang('Error saving account!')."\n".$e->getMessage();
+						$button = 'apply';
+					}
+					if ($button == 'save')
+					{
+						egw_framework::refresh_opener($msg, 'emailadmin', $content['acc_id']);
+						egw_framework::window_close();
+					}
 			}
 		}
 		$content['msg'] = $msg;
 
-		$sel_options['acc_imap_ssl'] = $sel_options['acc_smtp_ssl'] = self::$ssl_types;
-		$tpl = new etemplate_new('emailadmin.wizard.save');
-		$tpl->exec('emailadmin.emailadmin_wizard.save', $content, $sel_options, $readonlys, $content);
+		$readonlys['button[delete]'] = empty($content['acc_id']);
+
+		$sel_options['acc_imap_ssl'] = $sel_options['acc_sieve_ssl'] =
+			$sel_options['acc_smtp_ssl'] = self::$ssl_types;
+		if (!isset($imap)) $imap = self::imap_client ($content);
+		$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
+			$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] = self::mailboxes($imap);
+
+		$tpl = new etemplate_new('emailadmin.account');
+		$tpl->exec('emailadmin.emailadmin_wizard.edit', $content, $sel_options, $readonlys, $content);
 	}
 
 	/**

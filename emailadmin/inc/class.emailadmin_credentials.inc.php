@@ -131,6 +131,7 @@ class emailadmin_credentials
 	 */
 	public static function write($acc_id, $username, $password, $type, $account_id=0, $cred_id=null, $mcrypt=null)
 	{
+		error_log(__METHOD__."(acc_id=$acc_id, '$username', \$password, type=$type, account_id=$account_id, cred_id=$cred_id)");
 		$data = array(
 			'acc_id' => $acc_id,
 			'account_id' => $account_id,

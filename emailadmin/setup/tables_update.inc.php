@@ -737,3 +737,33 @@ function emailadmin_upgrade1_9_011()
 	}
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.012';
 }
+
+function emailadmin_upgrade1_9_012()
+{
+	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_accounts','acc_sieve_ssl',array(
+		'type' => 'int',
+		'precision' => '1',
+		'default' => '1',
+		'comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'
+	));
+	$GLOBALS['egw']->db->update('egw_ea_accounts', array(
+		'acc_sieve_ssl' => 3,
+	),
+	array(
+		'acc_sieve_port' => 5190,
+	), __LINE__, __FILE__, 'emailadmin');
+
+	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_accounts','acc_modified',array(
+		'type' => 'timestamp',
+		'nullable' => False,
+		'default' => 'current_timestamp'
+	));
+	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_accounts','acc_modifier',array(
+		'type' => 'int',
+		'meta' => 'user',
+		'precision' => '4'
+	));
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.013';
+}
+

@@ -22,6 +22,44 @@
  * - egw_ea_valid for which users an account is valid 1:N relation to accounts table
  * - egw_ea_credentials username/password for various accounts and types (imap, smtp, admin)
  * - egw_ea_identities identities of given account and user incl. standard identity of account
+ *
+ * @property-read int $acc_id id
+ * @property-read string $acc_name description / display name
+ * @property-read string $acc_imap_host imap hostname
+ * @property-read int $acc_imap_ssl 0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate
+ * @property-read int $acc_imap_port imap port, default 143 or for ssl 993
+ * @property-read string $acc_imap_username
+ * @property-read string $acc_imap_password
+ * @property-read boolean $acc_sieve_enabled sieve enabled
+ * @property-read string $acc_sieve_hostsieve host, default imap_host
+ * @property-read int $acc_sieve_ssl 0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate
+ * @property-read int $acc_sieve_port sieve port, default 4190, old non-ssl port 2000 or ssl 5190
+ * @property-read string $acc_folder_sent sent folder
+ * @property-read string $acc_folder_trash trash folder
+ * @property-read string $acc_folder_draft draft folder
+ * @property-read string $acc_folder_template template folder
+ * @property-read string $acc_smtp_host smtp hostname
+ * @property-read int $acc_smtp_ssl 0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate
+ * @property-read int $acc_smtp_port smtp port
+ * @property-read string $acc_smtp_username if smtp auth required
+ * @property-read string $acc_smtp_password
+ * @property-read string $acc_smtp_type smtp class to use, default emailadmin_smtp
+ * @property-read string $acc_imap_type imap class to use, default emailadmin_imap
+ * @property-read string $acc_imap_logintype how to construct login-name standard, vmailmgr, admin, uidNumber
+ * @property-read string $acc_domain domain name
+ * @property-read boolean $acc_imap_administration enable administration
+ * @property-read string $acc_admin_username
+ * @property-read string $acc_admin_password
+ * @property-read boolean $acc_further_identities are non-admin users allowed to create further identities
+ * @property-read boolean $acc_user_editable are non-admin users allowed to edit this account, if it is for them
+ * @property-read int $acc_modified timestamp of last modification
+ * @property-read int $acc_modifier account_id of last modifier
+ * @property-read int $ident_id standard identity
+ * @property-read string $ident_realname real name
+ * @property-read string $ident_email email address
+ * @property-read string $ident_org organisation
+ * @property-read string $ident_signature signature text (html)
+ * @property-read array $params parameters passed to constructor (all above as array)
  */
 class emailadmin_account
 {
@@ -84,7 +122,7 @@ class emailadmin_account
 	 *
 	 * @var array
 	 */
-	protected $params;
+	protected $params = array();
 
 	/**
 	 * Instance of imap server
@@ -115,6 +153,10 @@ class emailadmin_account
 	protected function __construct(array $params)
 	{
 		$this->params = $params;
+
+		unset($this->imapServer);
+		unset($this->oldImapServer);
+		unset($this->smtpServer);
 	}
 
 	/**
@@ -149,7 +191,7 @@ class emailadmin_account
 			$this->oldImapServer->ImapServerId = $this->params['acc_id'];
 			$this->oldImapServer->host = $this->params['acc_imap_host'];
 			$this->oldImapServer->encryption = $this->params['acc_imap_ssl'] & ~self::SSL_VERIFY;
-			$this->oldImapServer->port 	= $this->params['acc_imap_port'];;
+			$this->oldImapServer->port 	= $this->params['acc_imap_port'];
 			$this->oldImapServer->validatecert	= (boolean)($this->params['acc_imap_ssl'] & self::SSL_VERIFY);
 			$this->oldImapServer->username 	= $this->params['acc_imap_username'];
 			$this->oldImapServer->loginName 	= $this->params['acc_imap_password'];
@@ -212,6 +254,10 @@ class emailadmin_account
 	 */
 	public function __get($name)
 	{
+		if (isset($this->$name))
+		{
+			return $this->$name;
+		}
 		return $this->params[$name];
 	}
 
@@ -240,8 +286,113 @@ class emailadmin_account
 			throw new egw_exception_not_found;
 		}
 		$data += emailadmin_credentials::read($acc_id);
+		error_log(__METHOD__."($acc_id, $only_current_user) returning ".array2string($data));
 
 		return new emailadmin_account($data);
+	}
+
+	/**
+	 * Create new account object from given data AND store it to database
+	 *
+	 * @param array $data
+	 * @return emailadmin_account
+	 * @throws egw_exception_db
+	 */
+	public static function create(array $data)
+	{
+		return new emailadmin_account(self::write($data));
+	}
+
+	/**
+	 * Save account data to db
+	 *
+	 * @param array $data
+	 * @return array
+	 * @throws egw_exception_db
+	 */
+	public function update(array $data=array())
+	{
+		$this->__construct(self::write(array_merge($this->params, (array)$data)));
+
+		return $this;
+	}
+
+	/**
+	 * Save account data to db
+	 *
+	 * @param array $data
+	 * @return array $data plus added values for keys acc_id, ident_id from insert
+	 * @throws egw_exception_wrong_parameter if called static without data-array
+	 * @throws egw_exception_db
+	 */
+	public static function write(array $data)
+	{
+		error_log(__METHOD__."(".array2string($data).")");
+		$data['acc_modifier'] = $GLOBALS['egw_info']['user']['account_id'];
+		$data['acc_modified'] = time();
+
+		// store account data
+		$where = $data['acc_id'] ? array('acc_id' => $data['acc_id']) : false;
+		self::$db->insert(self::TABLE, $data, $where, __LINE__, __FILE__, self::APP);
+		if (!$data['acc_id'])
+		{
+			$data['acc_id'] = self::$db->get_last_insert_id(self::TABLE, 'acc_id');
+		}
+		// store identity
+		$iwhere = $data['ident_id'] ? array('ident_id' => $data['ident_id']) : false;
+		self::$db->insert(self::IDENTITIES_TABLE, $data, $iwhere, __LINE__, __FILE__, self::APP);
+		if (!$data['ident_id'])
+		{
+			$data['ident_id'] = self::$db->get_last_insert_id(self::IDENTITIES_TABLE, 'ident_id');
+			self::$db->update(self::TABLE, array(
+				'ident_id' => $data['ident_id'],
+			), array(
+				'acc_id' => $data['acc_id'],
+			), __LINE__, __FILE__, self::APP);
+		}
+		// make account valid for given owner
+		if (!isset($data['account_id']))
+		{
+			$data['account_id'] = $GLOBALS['egw_info']['user']['account_id'];
+		}
+		$old_account_ids = array();
+		if ($where)
+		{
+			foreach(self::$db->select(self::VALID_TABLE, 'account_id', $where,
+				__LINE__, __FILE__, false, '', self::APP) as $row)
+			{
+				$old_account_ids[] = (int)$row['account_id'];
+			}
+			if (($ids_to_remove = array_diff((array)$data['account_id'], $old_account_ids)))
+			{
+				self::$db->delete(self::VALID_TABLE, $where+array(
+					'account_id' => $ids_to_remove,
+				), __LINE__, __FILE__, self::APP);
+			}
+		}
+		foreach((array)$data['account_id'] as $account_id)
+		{
+			if (!in_array($account_id, $old_account_ids))
+			{
+				self::$db->insert(self::VALID_TABLE, array(
+					'acc_id' => $data['acc_id'],
+					'account_id' => $account_id,
+				), false, __LINE__, __FILE__, self::APP);
+			}
+			// add imap credentials
+			$cred_type = $data['acc_imap_username'] == $data['acc_smtp_username'] &&
+				$data['acc_imap_password'] == $data['acc_smtp_password'] ? 3 : 1;
+			emailadmin_credentials::write($data['acc_id'], $data['acc_imap_username'], $data['acc_imap_password'],
+				$cred_type, $account_id, $data['acc_imap_cred_id']);
+			// add smtp credentials if necessary and different from imap
+			if ($data['acc_smtp_username'] && $cred_type != 3)
+			{
+				emailadmin_credentials::write($data['acc_id'], $data['acc_smtp_username'], $data['acc_smtp_password'],
+					2, $account_id, $data['acc_smtp_cred_id'] != $data['acc_imap_cred_id'] ?
+						$data['acc_smtp_cred_id'] : null);
+			}
+		}
+		return $data;
 	}
 
 	/**

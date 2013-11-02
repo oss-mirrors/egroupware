@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<overlay>
+	<template id="emailadmin.account.imap" template="" lang="" group="0" version="1.9.001">
+		<grid width="100%" height="200">
+			<columns>
+				<column width="120"/>
+				<column/>
+			</columns>
+			<rows>
+				<row class="@manual_class">
+					<description value="Username" for="acc_imap_username"/>
+					<textbox blur="if different from EMail" id="acc_imap_username" size="32" maxlength="128"/>
+				</row>
+				<row>
+					<description value="Password" for="acc_imap_password"/>
+					<passwd id="acc_imap_password" options="32,128"/>
+				</row>
+				<row class="@manual_class">
+					<description value="IMAP server" for="acc_imap_host"/>
+					<textbox blur="Hostname or IP" id="acc_imap_host" needed="1" size="32" maxlength="128"/>
+				</row>
+				<row>
+					<description value="Secure connection" for="acc_imap_ssl"/>
+					<hbox>
+						<menulist>
+							<menupopup id="acc_imap_ssl" needed="1" onchange="app.emailadmin.wizard_imap_ssl_onchange"/>
+						</menulist>
+						<textbox type="integer" label="Port" id="acc_imap_port" needed="1"/>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+	</template>
+	<template id="emailadmin.account.folder" template="" lang="" group="0" version="1.9.001">
+		<grid width="100%" height="200">
+			<columns>
+				<column width="120"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<description value="Sent folder" for="acc_folder_sent"/>
+					<menulist>
+						<menupopup id="acc_folder_sent" options="Select one ..."/>
+					</menulist>
+				</row>
+				<row>
+					<description value="Trash folder" for="acc_folder_trash"/>
+					<menulist>
+						<menupopup id="acc_folder_trash" options="Select one ..."/>
+					</menulist>
+				</row>
+				<row>
+					<description value="Drafts folder" for="acc_folder_draft"/>
+					<menulist>
+						<menupopup id="acc_folder_draft" options="Select one ..."/>
+					</menulist>
+				</row>
+				<row>
+					<description value="Templates folder" for="acc_folder_template"/>
+					<menulist>
+						<menupopup id="acc_folder_template" options="Select one ..."/>
+					</menulist>
+				</row>
+			</rows>
+		</grid>
+	</template>
+	<template id="emailadmin.account.sieve" template="" lang="" group="0" version="1.9.001">
+		<grid width="100%" height="200">
+			<columns>
+				<column width="120"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<description value="Enable Sieve" for="acc_sieve_enabled"/>
+					<menulist>
+						<menupopup type="select-bool" id="acc_sieve_enabled" needed="1"/>
+					</menulist>
+				</row>
+				<row class="@manual_class">
+					<description value="Sieve server" for="acc_sieve_host"/>
+					<textbox blur="Hostname or IP" id="acc_sieve_host" onchange="app.emailadmin.wizard_sieve_onchange" size="32" maxlength="128"/>
+				</row>
+				<row class="@manual_class">
+					<description value="Secure connection" for="acc_sieve_ssl"/>
+					<hbox>
+						<menulist>
+							<menupopup id="acc_sieve_ssl" onchange="app.emailadmin.wizard_sieve_ssl_onchange"/>
+						</menulist>
+						<textbox type="integer" label="Port" id="acc_sieve_port" onchange="app.emailadmin.wizard_sieve_onchange"/>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+	</template>
+	<template id="emailadmin.account.smtp" template="" lang="" group="0" version="1.9.001">
+		<grid width="100%" height="200">
+			<columns>
+				<column width="120"/>
+				<column/>
+			</columns>
+			<rows>
+				<row class="@manual_class">
+					<description value="Username" for="acc_smtp_username"/>
+					<textbox blur="if authentication required" id="acc_smtp_username" size="32" maxlength="128"/>
+				</row>
+				<row class="@manual_class">
+					<description value="Password" for="acc_smtp_password"/>
+					<passwd id="acc_smtp_password" options="32,128"/>
+				</row>
+				<row class="@manual_class">
+					<description value="SMTP server" for="acc_smtp_host"/>
+					<textbox blur="Hostname or IP" id="acc_smtp_host" needed="1" size="32" maxlength="128"/>
+				</row>
+				<row class="@manual_class">
+					<description value="Secure connection" for="acc_smtp_ssl"/>
+					<hbox>
+						<menulist>
+							<menupopup id="acc_smtp_ssl" needed="1" onchange="app.emailadmin.wizard_smtp_ssl_onchange"/>
+						</menulist>
+						<textbox type="integer" label="Port" id="acc_smtp_port" needed="1"/>
+					</hbox>
+				</row>
+			</rows>
+		</grid>
+	</template>
+	<template id="emailadmin.account.signature" template="" lang="" group="0" version="1.9.001">
+		<grid width="100%" height="200">
+			<columns>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<htmlarea id="ident_signature" mode="simple" height="155" toolbar="false"/>
+				</row>
+			</rows>
+		</grid>
+	</template>
+	<template id="emailadmin.account" template="" lang="" group="0" version="1.9.001">
+		<grid width="100%">
+			<columns>
+				<column width="120"/>
+				<column/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<description id="msg" span="all" class="message"/>
+					<description/>
+					<description/>
+				</row>
+				<row>
+					<description for="acc_name" value="Name of account"/>
+					<textbox id="acc_name" needed="1" size="32" maxlength="128"/>
+					<description/>
+				</row>
+				<row>
+					<description for="ident_realname" value="Your name"/>
+					<textbox id="ident_realname" needed="1" size="32" maxlength="128"/>
+					<description/>
+				</row>
+				<row>
+					<description for="ident_org" value="Organisation"/>
+					<textbox id="ident_org" size="32" maxlength="128"/>
+					<description/>
+				</row>
+				<row>
+					<description href="ident_email" value="EMail address"/>
+					<url-email id="ident_email" needed="1" options="32,128"/>
+					<description/>
+				</row>
+				<row>
+					<tabbox id="imap|folder|sieve|smtp|signature" span="all">
+						<tabs>
+							<tab id="imap" label="IMAP" statustext="incoming mail"/>
+							<tab id="folder" label="Folder" statustext="Folder"/>
+							<tab id="sieve" label="Sieve" statustext="serverside filtering"/>
+							<tab id="smtp" label="SMTP" statustext="outgoing mail"/>
+							<tab id="signature" label="Signature" statustext="Signature"/>
+						</tabs>
+						<tabpanels>
+							<template id="emailadmin.account.imap"/>
+							<template id="emailadmin.account.folder"/>
+							<template id="emailadmin.account.sieve"/>
+							<template id="emailadmin.account.smtp"/>
+							<template id="emailadmin.account.signature"/>
+						</tabpanels>
+					</tabbox>
+				</row>
+				<row>
+					<hbox span="2">
+						<button label="Save" id="button[save]"/>
+						<button label="Apply" id="button[apply]"/>
+						<button statustext="Use wizard to detect or verify configuration" label="Wizard" id="button[wizard]"/>
+						<button label="Cancel" id="button[cancel]" onclick="window.close();"/>
+					</hbox>
+					<button align="right" label="Delete" id="button[delete]"/>
+				</row>
+			</rows>
+		</grid>
+	</template>
+</overlay>

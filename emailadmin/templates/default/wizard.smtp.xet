@@ -9,6 +9,10 @@
 			</columns>
 			<rows>
 				<row>
+					<description id="msg" span="all" class="message"/>
+					<description/>
+				</row>
+				<row>
 					<description value="Step 4: SMTP - outgoing mail" span="all" class="emailadmin_header"/>
 					<description/>
 				</row>
@@ -46,7 +50,7 @@
 					<description/>
 				</row>
 				<row>
-					<textbox multiline="true" id="output" readonly="true" span="all"/>
+					<textbox multiline="true" id="smtp_output" readonly="true" span="all"/>
 				</row>
 			</rows>
 		</grid>

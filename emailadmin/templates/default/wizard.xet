@@ -9,16 +9,8 @@
 			</columns>
 			<rows>
 				<row>
-					<description value="Step 1: IMAP account" span="all" class="emailadmin_header"/>
+					<description value="Step 1: IMAP - incoming mail" span="all" class="emailadmin_header"/>
 					<description/>
-				</row>
-				<row>
-					<description value="Your name" for="ident_realname"/>
-					<textbox id="ident_realname" needed="1" size="32" maxlength="128"/>
-				</row>
-				<row>
-					<description value="Organisation" for="ident_org"/>
-					<textbox id="ident_org" size="32" maxlength="128"/>
 				</row>
 				<row>
 					<description value="EMail address" href="ident_email"/>
