@@ -98,13 +98,13 @@ class emailadmin_account
 	 */
 	const SSL_STARTTLS = 1;
 	/**
-	 * require TLS
-	 */
-	const SSL_TLS = 2;
-	/**
-	 * SSL
+	 * SSL (inferior to TLS!)
 	 */
 	const SSL_SSL = 3;
+	/**
+	 * require TLS version 1+, no SSL version 2 or 3
+	 */
+	const SSL_TLS = 2;
 	/**
 	 * if set, verify certifcate (currently not implemented in Horde_Imap_Client!)
 	 */

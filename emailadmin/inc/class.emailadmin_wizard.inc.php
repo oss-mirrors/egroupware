@@ -37,6 +37,27 @@ class emailadmin_wizard
 	const APP_CLASS = 'mail.mail_wizard.';
 
 	/**
+	 * 0: No SSL
+	 */
+	const SSL_NONE = emailadmin_account::SSL_NONE;
+	/**
+	 * 1: STARTTLS on regular tcp connection/port
+	 */
+	const SSL_STARTTLS = emailadmin_account::SSL_STARTTLS;
+	/**
+	 * 3: SSL (inferior to TLS!)
+	 */
+	const SSL_SSL = emailadmin_account::SSL_SSL;
+	/**
+	 * 2: require TLS version 1+, no SSL version 2 or 3
+	 */
+	const SSL_TLS = emailadmin_account::SSL_TLS;
+	/**
+	 * 8: if set, verify certifcate (currently not implemented in Horde_Imap_Client!)
+	 */
+	const SSL_VERIFY = emailadmin_account::SSL_VERIFY;
+
+	/**
 	 * Methods callable via menuaction
 	 *
 	 * @var array
@@ -52,10 +73,10 @@ class emailadmin_wizard
 	 * @var array
 	 */
 	public static $ssl_types = array(
-		//'2' => 'TLS',	// SSL with minimum TLS (no SSL v.2 or v.3), requires newer Horde_Imap_Client
-		'1' => 'SSL',
-		'3' => 'STARTTLS',
-		'no' => 'no',	// can NOT use '0' or '', as eT2 moves it to first option!
+		//self::SSL_TLS => 'TLS',	// SSL with minimum TLS (no SSL v.2 or v.3), requires newer Horde_Imap_Client
+		self::SSL_SSL => 'SSL',
+		self::SSL_STARTTLS => 'STARTTLS',
+		self::SSL_NONE => 'no',
 	);
 	/**
 	 * Convert ssl-type to Horde secure parameter
@@ -73,10 +94,10 @@ class emailadmin_wizard
 	 * @var array
 	 */
 	public static $ssl2type = array(
-		'SSL' => 1,
-		'TLS' => 2,
-		'STARTTLS' => 3,
-		'' => 0,
+		'SSL' => self::SSL_SSL,
+		'TLS' => self::SSL_SSL,
+		'STARTTLS' => self::SSL_STARTTLS,
+		'' => self::SSL_NONE,
 	);
 
 	/**
@@ -108,6 +129,8 @@ class emailadmin_wizard
 				'manual_class' => 'emailadmin_manual',
 			);
 		}
+		$content['msg'] = $msg;
+
 		if (!empty($content['acc_imap_host']) || !empty($content['acc_imap_username']))
 		{
 			$readonlys['button[manual]'] = true;
@@ -116,6 +139,11 @@ class emailadmin_wizard
 		$tpl->exec(static::APP_CLASS.'autoconfig', $content, array(
 			'acc_imap_ssl' => self::$ssl_types,
 		), $readonlys, $content, 2);
+	}
+
+	protected static function stringify_keys(array $options)
+	{
+
 	}
 
 	/**
@@ -249,7 +277,7 @@ class emailadmin_wizard
 		unset($content['manual_class']);
 		$sel_options['acc_imap_ssl'] = self::$ssl_types;
 		$tpl = new etemplate_new('emailadmin.wizard');
-		$tpl->exec(static::APP_CLASS.'autoconfig', $content, $sel_options, $readonlys, $content);
+		$tpl->exec(static::APP_CLASS.'autoconfig', $content, $sel_options, $readonlys, $content, 2);
 	}
 
 	/**
@@ -292,6 +320,7 @@ class emailadmin_wizard
 	 * @param Horde_Imap_Client_Socket $imap
 	 * @param array &$content=null on return values for acc_folder_(sent|trash|draft|template)
 	 * @return array with folders as key AND value
+	 * @throws Horde_Imap_Client_Exception
 	 */
 	public static function mailboxes(Horde_Imap_Client_Socket $imap, array &$content=null)
 	{
@@ -356,10 +385,10 @@ class emailadmin_wizard
 	public function sieve(array $content, $msg='')
 	{
 		static $sieve_ssl2port = array(
-			//'2' => 5190,	// TLS
-			'1' => 5190,	// SSL
-			'3' => array(4190, 2000),	// STARTTLS
-			'0' => array(4190, 2000),	// no ssl
+			//self::SSL_TLS => 5190,
+			self::SSL_SSL => 5190,
+			self::SSL_STARTTLS => array(4190, 2000),
+			self::SSL_NONE => array(4190, 2000),
 		);
 		$content['msg'] = $msg;
 
@@ -430,13 +459,13 @@ class emailadmin_wizard
 						$host = $content['acc_sieve_host'];
 						switch($content['acc_sieve_ssl'])
 						{
-							case 1:	// SSL
+							case self::SSL_SSL:
 								$host = 'ssl://'.$host;
 								break;
-							case 2:	// TLS, not STARTTLS
+							case self::SSL_TLS:
 								$host = 'tls://'.$host;
 								break;
-							case 3:	// STARTTLS
+							case self::SSL_STARTTLS:
 								$useTLS = true;
 						}
 
@@ -465,7 +494,6 @@ class emailadmin_wizard
 						unset($content['button']);
 						return $this->smtp($content, lang('Successful connected to %1 server%2.', 'Sieve',
 							' '.lang('and logged in')));
-						break 2;
 					}
 					// PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION) throws just Exception
 					catch(Exception $e) {
@@ -506,10 +534,9 @@ class emailadmin_wizard
 			$content['msg'] = lang('No sieve support detected, either fix configuration manually or leave it switched off.');
 			$content['acc_sieve_enabled'] = 0;
 		}
-		if ((string)$content['acc_sieve_ssl'] === '0') $content['acc_sieve_ssl'] = 'no';
 		$sel_options['acc_sieve_ssl'] = self::$ssl_types;
 		$tpl = new etemplate_new('emailadmin.wizard.sieve');
-		$tpl->exec(static::APP_CLASS.'sieve', $content, $sel_options, $readonlys, $content);
+		$tpl->exec(static::APP_CLASS.'sieve', $content, $sel_options, $readonlys, $content, 2);
 	}
 
 	/**
@@ -521,10 +548,10 @@ class emailadmin_wizard
 	public function smtp(array $content, $msg='')
 	{
 		static $smtp_ssl2port = array(
-			'0' => 25,
-			'1' => 465,	// SSL
-			'2' => 465,	// TLS
-			'3' => 587,	// STARTTLS
+			self::SSL_NONE => 25,
+			self::SSL_SSL => 465,
+			self::SSL_TLS => 465,
+			self::SSL_STARTTLS => 587,
 		);
 		$content['msg'] = $msg;
 
@@ -565,7 +592,7 @@ class emailadmin_wizard
 			if (!empty($content['acc_smtp_host']))
 			{
 				$hosts = array($content['acc_smtp_host'] => true);
-				if ((string)$content['acc_smtp_ssl'] !== '1' || $content['acc_smtp_port'] != $smtp_ssl2port[$content['acc_smtp_ssl']])
+				if ((string)$content['acc_smtp_ssl'] !== (string)self::SSL_SSL || $content['acc_smtp_port'] != $smtp_ssl2port[$content['acc_smtp_ssl']])
 				{
 					$ssl_type = (string)array_search($content['acc_smtp_ssl'], self::$ssl2type);
 					$hosts[$content['acc_smtp_host']] = array(
@@ -634,10 +661,10 @@ class emailadmin_wizard
 							}
 						}
 						// Horde_Smtp always try to use STARTTLS, adjust our ssl-parameter if successful
-						elseif (!($content['acc_smtp_ssl'] > 0))
+						elseif (!($content['acc_smtp_ssl'] > self::SSL_NONE))
 						{
 							//error_log(__METHOD__."() new Horde_Mail_Transport_Smtphorde(".array2string($params).")->getSMTPObject()->isSecureConnection()=".array2string($smtp->isSecureConnection()));
-							$content['acc_smtp_ssl'] = 3;
+							$content['acc_smtp_ssl'] = self::SSL_STARTTLS;
 						}
 						// try sending a mail to a different domain, if not authenticated, to see if that's required
 						if (empty($content['acc_smtp_username']))
@@ -649,7 +676,6 @@ class emailadmin_wizard
 						unset($content['button']);
 						return $this->edit($content, lang('Successful connected to %1 server%2.', 'SMTP',
 							empty($content['acc_smtp_username']) ? ' - '.lang('Relay access checked') : ' '.lang('and logged in')));
-						break 2;
 					}
 					// unfortunately LOGIN_AUTHENTICATIONFAILED and SERVER_CONNECT are thrown as Horde_Mail_Exception
 					// while others are thrown as Horde_Smtp_Exception --> using common base Horde_Exception_Wrapped
@@ -695,10 +721,9 @@ class emailadmin_wizard
 					break;
 			}
 		}
-		if ((string)$content['acc_smtp_ssl'] === '0') $content['acc_smtp_ssl'] = 'no';
 		$sel_options['acc_smtp_ssl'] = self::$ssl_types;
 		$tpl = new etemplate_new('emailadmin.wizard.smtp');
-		$tpl->exec(static::APP_CLASS.'smtp', $content, $sel_options, $readonlys, $content);
+		$tpl->exec(static::APP_CLASS.'smtp', $content, $sel_options, $readonlys, $content, 2);
 	}
 
 	/**
@@ -764,10 +789,16 @@ class emailadmin_wizard
 
 		$sel_options['acc_imap_ssl'] = $sel_options['acc_sieve_ssl'] =
 			$sel_options['acc_smtp_ssl'] = self::$ssl_types;
-		if (!isset($imap)) $imap = self::imap_client ($content);
-		$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
-			$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] = self::mailboxes($imap);
 
+		try {
+			$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
+				$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
+					self::mailboxes(self::imap_client ($content));
+		}
+		// call wizard, if we have a connection error
+		catch(Horde_Imap_Client_Exception $e) {
+			return $this->add($content, $e->getMessage());
+		}
 		$tpl = new etemplate_new('emailadmin.account');
 		$tpl->exec(static::APP_CLASS.'edit', $content, $sel_options, $readonlys, $content, 2);
 	}

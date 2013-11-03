@@ -17,11 +17,31 @@
 app.emailadmin = AppJS.extend(
 {
 	appname: 'emailadmin',
+	/**
+	 * No SSL
+	 */
+	SSL_NONE: 0,
+	/**
+	 * STARTTLS on regular tcp connection/port
+	 */
+	SSL_STARTTLS: 1,
+	/**
+	 * SSL (inferior to TLS!)
+	 */
+	SSL_SSL: 3,
+	/**
+	 * require TLS version 1+, no SSL version 2 or 3
+	 */
+	SSL_TLS: 2,
+	/**
+	 * if set, verify certifcate (currently not implemented in Horde_Imap_Client!)
+	 */
+	SSL_VERIFY: 8,
 
 	/**
 	 * Constructor
 	 *
-	 * @memberOf app.filemanager
+	 * @memberOf app.emailadmin
 	 */
 	init: function()
 	{
@@ -89,7 +109,8 @@ app.emailadmin = AppJS.extend(
 	wizard_imap_ssl_onchange: function(_event, _widget)
 	{
 		var ssl_type = _widget.get_value();
-		this.et2.getWidgetById('acc_imap_port').set_value(ssl_type == 1 || ssl_type == 2 ? 993 : 143);
+		this.et2.getWidgetById('acc_imap_port').set_value(
+			ssl_type == this.SSL_SSL || ssl_type == this.SSL_TLS ? 993 : 143);
 	},
 
 	/**
@@ -101,8 +122,8 @@ app.emailadmin = AppJS.extend(
 	wizard_smtp_ssl_onchange: function(_event, _widget)
 	{
 		var ssl_type = _widget.get_value();
-		this.et2.getWidgetById('acc_smtp_port').set_value(ssl_type == 'no' ? 25 :
-			(ssl_type == 1 || ssl_type == 2 ? 465 : 597));
+		this.et2.getWidgetById('acc_smtp_port').set_value(
+			ssl_type == 'no' ? 25 : (ssl_type == this.SSL_SSL || ssl_type == this.SSL_TLS ? 465 : 597));
 	},
 
 	/**
@@ -114,7 +135,8 @@ app.emailadmin = AppJS.extend(
 	wizard_sieve_ssl_onchange: function(_event, _widget)
 	{
 		var ssl_type = _widget.get_value();
-		this.et2.getWidgetById('acc_sieve_port').set_value(ssl_type == 1 || ssl_type == 2 ? 5190 : 4190);
+		this.et2.getWidgetById('acc_sieve_port').set_value(
+			ssl_type == this.SSL_SSL || ssl_type == SSL_TLS ? 5190 : 4190);
 		this.wizard_sieve_onchange(_event, _widget);
 	},
 

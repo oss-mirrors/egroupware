@@ -9,6 +9,10 @@
 			</columns>
 			<rows>
 				<row>
+					<description id="msg" span="all" class="message"/>
+					<description/>
+				</row>
+				<row>
 					<description value="Step 1: IMAP - incoming mail" span="all" class="emailadmin_header"/>
 					<description/>
 				</row>
