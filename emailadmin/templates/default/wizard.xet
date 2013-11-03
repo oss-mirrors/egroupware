@@ -45,7 +45,7 @@
 					</hbox>
 				</row>
 				<row>
-					<image src="progress" span="all" class="emailadmin_progress"/>
+					<image src="emailadmin/progress" span="all" class="emailadmin_progress"/>
 					<description/>
 				</row>
 				<row>

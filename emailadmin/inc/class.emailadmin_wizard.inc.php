@@ -29,6 +29,12 @@ class emailadmin_wizard
 	 * Connection timeout in seconds used in wizard, can and should be really short
 	 */
 	const TIMEOUT = 2;
+	/**
+	 * Prefix for callback names
+	 *
+	 * Used as static::APP_CLASS in etemplate::exec(), to allow mail app extending this class.
+	 */
+	const APP_CLASS = 'mail.mail_wizard.';
 
 	/**
 	 * Methods callable via menuaction
@@ -74,6 +80,14 @@ class emailadmin_wizard
 	);
 
 	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+
+	}
+
+	/**
 	 * Step 1: IMAP account
 	 *
 	 * @param array $content
@@ -99,9 +113,9 @@ class emailadmin_wizard
 			$readonlys['button[manual]'] = true;
 			unset($content['manual_class']);
 		}
-		$tpl->exec('emailadmin.emailadmin_wizard.autoconfig', $content, array(
+		$tpl->exec(static::APP_CLASS.'autoconfig', $content, array(
 			'acc_imap_ssl' => self::$ssl_types,
-		), $readonlys, $content);
+		), $readonlys, $content, 2);
 	}
 
 	/**
@@ -235,7 +249,7 @@ class emailadmin_wizard
 		unset($content['manual_class']);
 		$sel_options['acc_imap_ssl'] = self::$ssl_types;
 		$tpl = new etemplate_new('emailadmin.wizard');
-		$tpl->exec('emailadmin.emailadmin_wizard.autoconfig', $content, $sel_options, $readonlys, $content);
+		$tpl->exec(static::APP_CLASS.'autoconfig', $content, $sel_options, $readonlys, $content);
 	}
 
 	/**
@@ -269,7 +283,7 @@ class emailadmin_wizard
 				self::mailboxes($imap, $content);
 
 		$tpl = new etemplate_new('emailadmin.wizard.folder');
-		$tpl->exec('emailadmin.emailadmin_wizard.folder', $content, $sel_options, $readonlys, $content);
+		$tpl->exec(static::APP_CLASS.'folder', $content, $sel_options, $readonlys, $content);
 	}
 
 	/**
@@ -495,7 +509,7 @@ class emailadmin_wizard
 		if ((string)$content['acc_sieve_ssl'] === '0') $content['acc_sieve_ssl'] = 'no';
 		$sel_options['acc_sieve_ssl'] = self::$ssl_types;
 		$tpl = new etemplate_new('emailadmin.wizard.sieve');
-		$tpl->exec('emailadmin.emailadmin_wizard.sieve', $content, $sel_options, $readonlys, $content);
+		$tpl->exec(static::APP_CLASS.'sieve', $content, $sel_options, $readonlys, $content);
 	}
 
 	/**
@@ -684,7 +698,7 @@ class emailadmin_wizard
 		if ((string)$content['acc_smtp_ssl'] === '0') $content['acc_smtp_ssl'] = 'no';
 		$sel_options['acc_smtp_ssl'] = self::$ssl_types;
 		$tpl = new etemplate_new('emailadmin.wizard.smtp');
-		$tpl->exec('emailadmin.emailadmin_wizard.smtp', $content, $sel_options, $readonlys, $content);
+		$tpl->exec(static::APP_CLASS.'smtp', $content, $sel_options, $readonlys, $content);
 	}
 
 	/**
@@ -755,7 +769,7 @@ class emailadmin_wizard
 			$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] = self::mailboxes($imap);
 
 		$tpl = new etemplate_new('emailadmin.account');
-		$tpl->exec('emailadmin.emailadmin_wizard.edit', $content, $sel_options, $readonlys, $content);
+		$tpl->exec(static::APP_CLASS.'edit', $content, $sel_options, $readonlys, $content, 2);
 	}
 
 	/**
