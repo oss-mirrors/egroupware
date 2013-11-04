@@ -191,7 +191,7 @@
 				if (!empty($cachedComposeID) && $cachedComposeID == $this->composeID)
 				{
 					//already send
-					print "<script type=\"text/javascript\">window.close();</script>";
+					if (!($formData['to_infolog']||$formData['to_tracker'])) print "<script type=\"text/javascript\">window.close();</script>";
 					return;
 				}
 				if(!$this->bocompose->send($formData)) {
@@ -623,7 +623,7 @@
 			// the editorobject is needed all the time (since we use CKEDITOR
 			//$editorObject = html::initCKEditor('400px','simple');
 			$this->t->set_var('ckeditorConfig', egw_ckeditor_config::get_ckeditor_config('simple-withimage'));//$editorObject->jsEncode($editorObject->config));
-			
+
 			$this->t->set_var('refreshTimeOut', 3*60*1000); // 3 minutes till a compose messages will be saved as draft;
 
 			// check for some error messages from last posting attempt
