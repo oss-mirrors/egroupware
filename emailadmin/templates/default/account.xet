@@ -133,7 +133,7 @@
 			</columns>
 			<rows>
 				<row>
-					<htmlarea id="ident_signature" mode="simple" height="155" toolbar="false"/>
+					<htmlarea id="ident_signature" mode="simple" height="155" expand_toolbar="false"/>
 				</row>
 			</rows>
 		</grid>
