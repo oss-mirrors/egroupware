@@ -36,9 +36,9 @@
 					<description value="Secure connection" for="acc_imap_ssl"/>
 					<hbox>
 						<menulist>
-							<menupopup id="acc_imap_ssl" onchange="app.emailadmin.wizard_imap_ssl_onchange"/>
+							<menupopup id="acc_imap_ssl" onchange="app.emailadmin.wizard_imap_ssl_onchange" class="emailadmin_ssl"/>
 						</menulist>
-						<textbox type="integer" label="Port" id="acc_imap_port"/>
+						<textbox type="integer" label="Port" id="acc_imap_port" class="emailadmin_port"/>
 					</hbox>
 				</row>
 				<row>

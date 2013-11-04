@@ -30,9 +30,9 @@
 					<description value="Secure connection" for="acc_sieve_ssl"/>
 					<hbox>
 						<menulist>
-							<menupopup id="acc_sieve_ssl" onchange="app.emailadmin.wizard_sieve_ssl_onchange"/>
+							<menupopup id="acc_sieve_ssl" onchange="app.emailadmin.wizard_sieve_ssl_onchange" class="emailadmin_ssl"/>
 						</menulist>
-						<textbox type="integer" label="Port" id="acc_sieve_port" onchange="app.emailadmin.wizard_sieve_onchange"/>
+						<textbox type="integer" label="Port" id="acc_sieve_port" onchange="app.emailadmin.wizard_sieve_onchange" class="emailadmin_port"/>
 					</hbox>
 				</row>
 				<row>

@@ -32,9 +32,9 @@
 					<description value="Secure connection" for="acc_smtp_ssl"/>
 					<hbox>
 						<menulist>
-							<menupopup id="acc_smtp_ssl" onchange="app.emailadmin.wizard_smtp_ssl_onchange"/>
+							<menupopup id="acc_smtp_ssl" onchange="app.emailadmin.wizard_smtp_ssl_onchange" class="emailadmin_ssl"/>
 						</menulist>
-						<textbox type="integer" label="Port" id="acc_smtp_port"/>
+						<textbox type="integer" label="Port" id="acc_smtp_port" class="emailadmin_port"/>
 					</hbox>
 				</row>
 				<row>

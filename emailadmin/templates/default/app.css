@@ -6,7 +6,7 @@
 .defaultProfile { color:#000000; font-weight:bold; }
 
 /**
- * mail account wizard
+ * mail account wizard and edit
  */
 .emailadmin_manual {
   display: none;
@@ -15,18 +15,13 @@
   display: none;
   padding: 10px;
 }
-#emailadmin-wizard_acc_imap_ssl,
-#emailadmin-wizard_acc_sieve_ssl,
-#emailadmin-wizard_acc_smtp_ssl { 
-  margin-right: 10px; 
+.emailadmin_ssl {
+  margin-right: 10px;
 }
-#emailadmin-wizard_acc_imap_port,
-#emailadmin-wizard_acc_smtp_port,
-#emailadmin-wizard_acc_sieve_port { 
-  width: 5em; 
+.emailadmin_port {
+  width: 5em;
 }
-
-.emailadmin_header { 
+.emailadmin_header {
   font-weight: bold;
   font-size: 150%;
   padding-bottom: 20px;
