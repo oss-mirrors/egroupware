@@ -18,6 +18,33 @@ require_once EGW_INCLUDE_ROOT.'/emailadmin/inc/class.defaultimap.inc.php';
  *
  * Also proxies Sieve calls to emailadmin_sieve (eg. it behaves like the former felamimail bosieve),
  * to allow IMAP plugins to also manage Sieve connection.
+ *
+ * @property-read integer $ImapServerId acc_id of mail account (alias for acc_id)
+ * @property-read boolean $enableSieve sieve enabled (alias for acc_sieve_enabled)
+ * @property-read int $acc_id id
+ * @property-read string $acc_name description / display name
+ * @property-read string $acc_imap_host imap hostname
+ * @property-read int $acc_imap_ssl 0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate
+ * @property-read int $acc_imap_port imap port, default 143 or for ssl 993
+ * @property-read string $acc_imap_username
+ * @property-read string $acc_imap_password
+ * @property-read boolean $acc_sieve_enabled sieve enabled
+ * @property-read string $acc_sieve_hostsieve host, default imap_host
+ * @property-read int $acc_sieve_ssl 0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate
+ * @property-read int $acc_sieve_port sieve port, default 4190, old non-ssl port 2000 or ssl 5190
+ * @property-read string $acc_folder_sent sent folder
+ * @property-read string $acc_folder_trash trash folder
+ * @property-read string $acc_folder_draft draft folder
+ * @property-read string $acc_folder_template template folder
+ * @property-read string $acc_imap_type imap class to use, default emailadmin_imap
+ * @property-read string $acc_imap_logintype how to construct login-name standard, vmailmgr, admin, uidNumber
+ * @property-read string $acc_domain domain name
+ * @property-read boolean $acc_imap_administration enable administration
+ * @property-read string $acc_admin_username
+ * @property-read string $acc_admin_password
+ * @property-read boolean $acc_further_identities are non-admin users allowed to create further identities
+ * @property-read boolean $acc_user_editable are non-admin users allowed to edit this account, if it is for them
+ * @property-read array $params parameters passed to constructor (all above as array)
  */
 class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 {
@@ -145,8 +172,11 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	{
 		switch($name)
 		{
+			case 'ImapServerId':
+				return $this->params['acc_id'];
+
 			case 'enableSieve':
-				return $this->params['acc_sieve_enabled'];
+				return (boolean)$this->params['acc_sieve_enabled'];
 
 			default:
 				// allow readonly access to all class attributes

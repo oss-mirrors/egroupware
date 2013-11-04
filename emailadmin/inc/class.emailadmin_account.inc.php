@@ -152,6 +152,14 @@ class emailadmin_account
 	 */
 	protected function __construct(array $params)
 	{
+		// read credentials from database
+		$params += emailadmin_credentials::read($params['acc_id']);
+
+		if (!isset($params['acc_imap_username']))
+		{
+			// get usename/password from current user
+			$params += emailadmin_credentials::from_session($params);
+		}
 		$this->params = $params;
 
 		unset($this->imapServer);
@@ -172,7 +180,6 @@ class emailadmin_account
 		{
 			$class = emailadmin_bo::getIcClass($this->params['acc_imap_type']);
 			$this->imapServer = new $class($this->params, $_adminConnection, $_timeout);
-			$this->imapServer->ImapServerId = $this->params['acc_id'];
 		}
 		return $this->imapServer;
 	}
@@ -285,9 +292,7 @@ class emailadmin_account
 		{
 			throw new egw_exception_not_found;
 		}
-		$data += emailadmin_credentials::read($acc_id);
 		//error_log(__METHOD__."($acc_id, $only_current_user) returning ".array2string($data));
-
 		return new emailadmin_account($data);
 	}
 
@@ -327,7 +332,7 @@ class emailadmin_account
 	 */
 	public static function write(array $data)
 	{
-		error_log(__METHOD__."(".array2string($data).")");
+		//error_log(__METHOD__."(".array2string($data).")");
 		$data['acc_modifier'] = $GLOBALS['egw_info']['user']['account_id'];
 		$data['acc_modified'] = time();
 

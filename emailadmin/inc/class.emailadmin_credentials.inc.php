@@ -99,8 +99,9 @@ class emailadmin_credentials
 		$results = array();
 		foreach(self::$db->select(self::TABLE, '*', array(
 			'acc_id' => $acc_id,
+			'account_id' => array(0, $GLOBALS['egw_info']['user']['account_id']),
 			'cred_type & '.(int)$type,
-		), __LINE__, __FILE__, false, '', self::APP) as $row)
+		), __LINE__, __FILE__, false, 'ORDER BY account_id ASC', self::APP) as $row)
 		{
 			$password = self::decrypt($row);
 
@@ -117,6 +118,52 @@ class emailadmin_credentials
 		return $results;
 	}
 
+
+	/**
+	 * Generate username according to acc_imap_logintype and fetch password from session
+	 *
+	 * @param array $data values for acc_imap_logintype and acc_domain
+	 * @return array with values for keys 'acc_(imap|smtp)_(username|password|cred_id)'
+	 */
+	public static function from_session(array $data)
+	{
+		switch($data['acc_imap_logintype'])
+		{
+			case 'standard':
+				$username = $GLOBALS['egw_info']['user']['account_lid'];
+				break;
+
+			case 'vmailmgr':
+				$username = $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['acc_domain'];
+				break;
+
+			case 'email':
+				$username = $GLOBALS['egw_info']['user']['account_email'];
+				break;
+
+			case 'uidNumber':
+				$username = 'u'.$GLOBALS['egw_info']['user']['account_id'].'@'.$data['acc_domain'];
+				break;
+
+			case 'admin':
+				// data should have been stored in credentials table
+				throw new egw_exception_assertion_failed('data[acc_imap_logintype]=admin and no stored username/password!');
+
+			default:
+				throw new egw_exception_wrong_parameter("Unknown data[acc_imap_logintype]=".array2string($data['acc_imap_logintype']).'!');
+		}
+		$password = base64_decode(egw_cache::getSession('phpgwapi', 'password'));
+
+		return array(
+			'acc_imap_username' => $username,
+			'acc_imap_password' => $password,
+			'acc_imap_cred_id'  => $data['acc_imap_logintype'],	// to NOT store it
+			'acc_smtp_username' => $username,
+			'acc_smtp_password' => $password,
+			'acc_smtp_cred_id'  => $data['acc_imap_logintype'],	// to NOT store it
+		);
+	}
+
 	/**
 	 * Write and encrypt credentials
 	 *
@@ -131,7 +178,11 @@ class emailadmin_credentials
 	 */
 	public static function write($acc_id, $username, $password, $type, $account_id=0, $cred_id=null, $mcrypt=null)
 	{
-		error_log(__METHOD__."(acc_id=$acc_id, '$username', \$password, type=$type, account_id=$account_id, cred_id=$cred_id)");
+		//error_log(__METHOD__."(acc_id=$acc_id, '$username', \$password, type=$type, account_id=$account_id, cred_id=$cred_id)");
+		if (!empty($cred_id) && !is_numeric($cred_id))
+		{
+			return;	// do NOT store credentials from session of current user!
+		}
 		$data = array(
 			'acc_id' => $acc_id,
 			'account_id' => $account_id,
