@@ -14,7 +14,7 @@
  *
  * @augments AppJS
  */
-app.emailadmin = AppJS.extend(
+app.classes.emailadmin = AppJS.extend(
 {
 	appname: 'emailadmin',
 	/**
