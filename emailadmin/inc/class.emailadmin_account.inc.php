@@ -5,7 +5,7 @@
  * @link http://www.stylite.de
  * @package emailadmin
  * @author Ralf Becker <rb@stylite.de>
- * @author Klaus Leithoff <kl@stylite.de>
+ * @author Stylite AG <info@stylite.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */
@@ -286,7 +286,7 @@ class emailadmin_account
 			throw new egw_exception_not_found;
 		}
 		$data += emailadmin_credentials::read($acc_id);
-		error_log(__METHOD__."($acc_id, $only_current_user) returning ".array2string($data));
+		//error_log(__METHOD__."($acc_id, $only_current_user) returning ".array2string($data));
 
 		return new emailadmin_account($data);
 	}
