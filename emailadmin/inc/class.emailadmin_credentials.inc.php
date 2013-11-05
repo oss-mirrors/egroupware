@@ -90,18 +90,24 @@ class emailadmin_credentials
 	 *
 	 * @param int $acc_id
 	 * @param int $type=null default return all credentials
+	 * @param int|array $account_id=null default use current user or all (in that order)
 	 * @return array with values for (imap|smtp|admin)_(username|password|cred_id)
 	 */
-	public static function read($acc_id, $type=null)
+	public static function read($acc_id, $type=null, $account_id=null)
 	{
 		if (is_null($type)) $type = self::ALL;
-
+		if (is_null($account_id))
+		{
+			$account_id = array(0, $GLOBALS['egw_info']['user']['account_id']);
+		}
 		$results = array();
 		foreach(self::$db->select(self::TABLE, '*', array(
 			'acc_id' => $acc_id,
-			'account_id' => array(0, $GLOBALS['egw_info']['user']['account_id']),
+			'account_id' => $account_id,
 			'cred_type & '.(int)$type,
-		), __LINE__, __FILE__, false, 'ORDER BY account_id ASC', self::APP) as $row)
+		), __LINE__, __FILE__, false,
+			// account_id ASC ensures (current) user always overwrites all (0) or groups (<0)
+			'ORDER BY account_id ASC', self::APP) as $row)
 		{
 			$password = self::decrypt($row);
 
@@ -112,6 +118,7 @@ class emailadmin_credentials
 					$results[$prefix.'username'] = $row['cred_username'];
 					$results[$prefix.'password'] = $password;
 					$results[$prefix.'cred_id'] = $row['cred_id'];
+					$results[$prefix.'account_id'] = $row['account_id'];
 				}
 			}
 		}
@@ -158,10 +165,14 @@ class emailadmin_credentials
 			'acc_imap_username' => $username,
 			'acc_imap_password' => $password,
 			'acc_imap_cred_id'  => $data['acc_imap_logintype'],	// to NOT store it
+			'acc_imap_account_id' => 'c',
+		) + ($data['acc_smtp_auth_session'] ? array(
+			// only set smtp
 			'acc_smtp_username' => $username,
 			'acc_smtp_password' => $password,
 			'acc_smtp_cred_id'  => $data['acc_imap_logintype'],	// to NOT store it
-		);
+			'acc_smtp_account_id' => 'c',
+		) : array());
 	}
 
 	/**
@@ -179,7 +190,7 @@ class emailadmin_credentials
 	public static function write($acc_id, $username, $password, $type, $account_id=0, $cred_id=null, $mcrypt=null)
 	{
 		//error_log(__METHOD__."(acc_id=$acc_id, '$username', \$password, type=$type, account_id=$account_id, cred_id=$cred_id)");
-		if (!empty($cred_id) && !is_numeric($cred_id))
+		if (!empty($cred_id) && !is_numeric($cred_id) || !is_numeric($account_id))
 		{
 			return;	// do NOT store credentials from session of current user!
 		}

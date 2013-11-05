@@ -1,24 +1,75 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <overlay>
-	<template id="emailadmin.account.imap" template="" lang="" group="0" version="1.9.001">
-		<grid width="100%" height="200">
+	<template id="emailadmin.account.identity" template="" lang="" group="0" version="1.9.001">
+		<grid width="100%" height="300">
 			<columns>
-				<column width="120"/>
+				<column width="113"/>
+				<column width="200"/>
 				<column/>
 			</columns>
 			<rows>
+				<row>
+					<description value="Identity"/>
+					<menulist>
+						<menupopup options="Standard Identity"/>
+					</menulist>
+					<checkbox label="allow users to create further identities" id="acc_further_identities"/>
+				</row>
+				<row>
+					<description for="ident_realname" value="Your name"/>
+					<textbox id="ident_realname" needed="1" size="80" maxlength="128" span="all"/>
+				</row>
+				<row>
+					<description for="ident_org" value="Organisation"/>
+					<textbox id="ident_org" size="80" maxlength="128" span="all"/>
+				</row>
+				<row>
+					<description href="ident_email" value="EMail address"/>
+					<url-email id="ident_email" needed="1" options="80,128" span="all"/>
+				</row>
+				<row>
+					<htmlarea id="ident_signature" mode="simple" height="155" expand_toolbar="false" span="all"/>
+				</row>
+			</rows>
+		</grid>
+	</template>
+	<template id="emailadmin.account.imap" template="" lang="" group="0" version="1.9.001">
+		<grid width="100%" height="300">
+			<columns>
+				<column width="115"/>
+				<column width="200"/>
+				<column width="60"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<description value="Type" for="acc_imap_logintype"/>
+					<menulist>
+						<menupopup id="acc_imap_type"/>
+					</menulist>
+					<description value="Login" for="acc_imap_logintype"/>
+					<menulist>
+						<menupopup statustext="How username get constructed" id="acc_imap_logintype"/>
+					</menulist>
+				</row>
 				<row class="@manual_class">
 					<description value="Username" for="acc_imap_username"/>
-					<textbox blur="if different from EMail" id="acc_imap_username" size="32" maxlength="128"/>
+					<textbox id="acc_imap_username" size="32" maxlength="128"/>
+					<description value="Domain" for="acc_domain"/>
+					<textbox id="acc_domain" size="32" maxlength="128"/>
 				</row>
 				<row>
 					<description value="Password" for="acc_imap_password"/>
 					<passwd id="acc_imap_password" options="32,128"/>
+					<description id="acc_imap_account_id" class="emailadmin_diagnostic"/>
+					<description/>
 				</row>
 				<row class="@manual_class">
 					<description value="IMAP server" for="acc_imap_host"/>
 					<textbox blur="Hostname or IP" id="acc_imap_host" needed="1" size="32" maxlength="128"/>
+					<description/>
+					<description/>
 				</row>
 				<row>
 					<description value="Secure connection" for="acc_imap_ssl"/>
@@ -28,14 +79,40 @@
 						</menulist>
 						<textbox type="integer" label="Port" id="acc_imap_port" needed="1" class="emailadmin_port"/>
 					</hbox>
+					<description/>
+					<description/>
+				</row>
+				<row>
+					<groupbox span="all" class="emailadmin_imap_admin">
+						<caption label="IMAP administration"/>
+						<grid>
+							<columns>
+								<column width="100"/>
+								<column/>
+							</columns>
+							<rows>
+								<row>
+									<description value="Admin user" for="acc_imap_admin_username"/>
+									<textbox id="acc_imap_admin_username" size="32" maxlength="128"/>
+								</row>
+								<row>
+									<description value="Password" for="acc_imap_admin_password"/>
+									<passwd id="acc_imap_admin_password" options="32,128"/>
+								</row>
+							</rows>
+						</grid>
+					</groupbox>
+					<description/>
+					<description/>
+					<description/>
 				</row>
 			</rows>
 		</grid>
 	</template>
 	<template id="emailadmin.account.folder" template="" lang="" group="0" version="1.9.001">
-		<grid width="100%" height="200">
+		<grid width="100%" height="300">
 			<columns>
-				<column width="120"/>
+				<column width="115"/>
 				<column/>
 			</columns>
 			<rows>
@@ -63,11 +140,15 @@
 						<menupopup id="acc_folder_template" options="Select one ..."/>
 					</menulist>
 				</row>
+				<row height="100">
+					<description/>
+					<description/>
+				</row>
 			</rows>
 		</grid>
 	</template>
 	<template id="emailadmin.account.sieve" template="" lang="" group="0" version="1.9.001">
-		<grid width="100%" height="200">
+		<grid width="100%" height="300">
 			<columns>
 				<column width="120"/>
 				<column/>
@@ -92,23 +173,39 @@
 						<textbox type="integer" label="Port" id="acc_sieve_port" onchange="app.emailadmin.wizard_sieve_onchange" class="emailadmin_port"/>
 					</hbox>
 				</row>
+				<row height="150">
+					<description value="Vacation messages with start and end date require an admin account to be set!" span="all"/>
+				</row>
 			</rows>
 		</grid>
 	</template>
 	<template id="emailadmin.account.smtp" template="" lang="" group="0" version="1.9.001">
-		<grid width="100%" height="200">
+		<grid width="100%" height="300">
 			<columns>
-				<column width="120"/>
+				<column width="115"/>
 				<column/>
 			</columns>
 			<rows>
+				<row>
+					<description value="Type" for="acc_smtp_type"/>
+					<menulist>
+						<menupopup id="acc_smtp_type"/>
+					</menulist>
+				</row>
+				<row>
+					<description value="Authentication" for="acc_smtp_auth_session"/>
+					<checkbox label="Use username+password from current user" id="acc_smtp_auth_session"/>
+				</row>
 				<row class="@manual_class">
 					<description value="Username" for="acc_smtp_username"/>
 					<textbox blur="if authentication required" id="acc_smtp_username" size="32" maxlength="128"/>
 				</row>
 				<row class="@manual_class">
 					<description value="Password" for="acc_smtp_password"/>
-					<passwd id="acc_smtp_password" options="32,128"/>
+					<hbox options="0,0">
+						<passwd id="acc_smtp_password" options="32,128"/>
+						<description id="acc_smtp_account_id" class="emailadmin_diagnostic"/>
+					</hbox>
 				</row>
 				<row class="@manual_class">
 					<description value="SMTP server" for="acc_smtp_host"/>
@@ -123,17 +220,9 @@
 						<textbox type="integer" label="Port" id="acc_smtp_port" needed="1" class="emailadmin_port"/>
 					</hbox>
 				</row>
-			</rows>
-		</grid>
-	</template>
-	<template id="emailadmin.account.signature" template="" lang="" group="0" version="1.9.001">
-		<grid width="100%" height="200">
-			<columns>
-				<column/>
-			</columns>
-			<rows>
-				<row>
-					<htmlarea id="ident_signature" mode="simple" height="155" expand_toolbar="false"/>
+				<row height="50">
+					<description/>
+					<description/>
 				</row>
 			</rows>
 		</grid>
@@ -142,7 +231,7 @@
 		<grid width="100%">
 			<columns>
 				<column width="120"/>
-				<column/>
+				<column width="200"/>
 				<column/>
 			</columns>
 			<rows>
@@ -151,41 +240,35 @@
 					<description/>
 					<description/>
 				</row>
-				<row>
+				<row height="30">
 					<description for="acc_name" value="Name of account"/>
-					<textbox id="acc_name" needed="1" size="32" maxlength="128"/>
-					<description/>
+					<hbox options="0,0" span="all">
+						<textbox id="acc_name" needed="1" size="80"/>
+						<description id="acc_id" class="emailadmin_diagnostic"/>
+					</hbox>
+				</row>
+				<row height="30">
+					<description href="ident_email" value="Valid for" for="account_id"/>
+					<menulist>
+						<menupopup type="select-account" id="account_id" options="Everyone"/>
+					</menulist>
+					<checkbox label="account editable by user" id="acc_user_editable"/>
 				</row>
 				<row>
-					<description for="ident_realname" value="Your name"/>
-					<textbox id="ident_realname" needed="1" size="32" maxlength="128"/>
-					<description/>
-				</row>
-				<row>
-					<description for="ident_org" value="Organisation"/>
-					<textbox id="ident_org" size="32" maxlength="128"/>
-					<description/>
-				</row>
-				<row>
-					<description href="ident_email" value="EMail address"/>
-					<url-email id="ident_email" needed="1" options="32,128"/>
-					<description/>
-				</row>
-				<row>
-					<tabbox id="imap|folder|sieve|smtp|signature" span="all">
+					<tabbox id="tabs" span="all">
 						<tabs>
+							<tab id="identity" label="Identity+Signature" statustext="Identity&amp;Signature"/>
 							<tab id="imap" label="IMAP" statustext="incoming mail"/>
 							<tab id="folder" label="Folder" statustext="Folder"/>
 							<tab id="sieve" label="Sieve" statustext="serverside filtering"/>
 							<tab id="smtp" label="SMTP" statustext="outgoing mail"/>
-							<tab id="signature" label="Signature" statustext="Signature"/>
 						</tabs>
 						<tabpanels>
+							<template id="emailadmin.account.identity"/>
 							<template id="emailadmin.account.imap"/>
 							<template id="emailadmin.account.folder"/>
 							<template id="emailadmin.account.sieve"/>
 							<template id="emailadmin.account.smtp"/>
-							<template id="emailadmin.account.signature"/>
 						</tabpanels>
 					</tabbox>
 				</row>

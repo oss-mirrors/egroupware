@@ -26,3 +26,18 @@
   font-size: 150%;
   padding-bottom: 20px;
 }
+#emailadmin-account_tabs {
+  padding-top: 10px;
+}
+#emailadmin-account_acc_imap_logintype {
+  width: 100%;
+}
+span.emailadmin_diagnostic,.emailadmin_diagnostic {
+  color: lightgray;
+}
+#emailadmin-account_acc_id {
+  float: right;
+}
+#emailadmin-account_acc_smtp_account_id {
+  padding-left: 5px;
+}

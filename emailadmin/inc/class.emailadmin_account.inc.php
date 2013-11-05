@@ -149,16 +149,19 @@ class emailadmin_account
 	 * Constructor
 	 *
 	 * @param array $params
+	 * @param boolean $load_smtp_auth_session=true true: load/set username/password for smtp auth
 	 */
-	protected function __construct(array $params)
+	protected function __construct(array $params, $load_smtp_auth_session=true)
 	{
 		// read credentials from database
 		$params += emailadmin_credentials::read($params['acc_id']);
 
-		if (!isset($params['acc_imap_username']))
+		if (!isset($params['acc_imap_username']) && $GLOBALS['egw_info']['user']['account_id'])
 		{
-			// get usename/password from current user
-			$params += emailadmin_credentials::from_session($params);
+			// get usename/password from current user, let it overwrite credentials for all/no session
+			$params = emailadmin_credentials::from_session(
+				($load_smtp_auth_session ? array() : array('acc_smtp_auth_session' => false)) + $params
+			) + $params;
 		}
 		$this->params = $params;
 
@@ -261,6 +264,11 @@ class emailadmin_account
 	 */
 	public function __get($name)
 	{
+		switch($name)
+		{
+			case 'acc_imap_administration':	// no longer stored in database
+				return !empty($this->params['acc_imap_admin_username']);
+		}
 		if (isset($this->$name))
 		{
 			return $this->$name;
@@ -273,10 +281,11 @@ class emailadmin_account
 	 *
 	 * @param int $acc_id
 	 * @param boolean $only_current_user=true true: only return accounts valid for current user
+	 * @param boolean $load_smtp_auth_session=true true: load/set username/password for smtp auth
 	 * @return email_account
 	 * @throws egw_exception_not_found if account was not found (or not valid for current user)
 	 */
-	public static function read($acc_id, $only_current_user=true)
+	public static function read($acc_id, $only_current_user=true, $load_smtp_auth_session=true)
 	{
 		$memberships = $GLOBALS['egw']->accounts->memberships($GLOBALS['egw_info']['user']['account_id'], true);
 		$memberships[] = $GLOBALS['egw_info']['user']['account_id'];
@@ -293,7 +302,7 @@ class emailadmin_account
 			throw new egw_exception_not_found;
 		}
 		//error_log(__METHOD__."($acc_id, $only_current_user) returning ".array2string($data));
-		return new emailadmin_account($data);
+		return new emailadmin_account($data, $load_smtp_auth_session);
 	}
 
 	/**

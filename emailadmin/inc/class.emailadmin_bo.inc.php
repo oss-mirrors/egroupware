@@ -451,8 +451,8 @@ class emailadmin_bo extends so_sql
 		}
 		uksort($retData, function($a, $b) {
 			static $prio = array(	// not explicitly mentioned get 0
-				'defaultimap' => 9,
 				'emailadmin_imap' => 9,
+				'emailadmin_oldimap' => 9,
 				'managementserver_imap' => 8,
 				'emailadmin_dovecot' => 7,
 				'emailadmin_imap_dovecot' => 7,

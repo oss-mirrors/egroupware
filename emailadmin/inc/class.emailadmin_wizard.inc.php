@@ -101,11 +101,32 @@ class emailadmin_wizard
 	);
 
 	/**
+	 * Available IMAP login types
+	 *
+	 * @var array
+	 */
+	public static $login_types = array(
+		'' => 'Username specified below',
+		'standard'	=> 'username from account',
+		'vmailmgr'	=> 'username@domainname',
+		'admin'		=> 'Username/Password defined by admin',
+		'uidNumber' => 'UserId@domain eg. u1234@domain',
+		'email'	    => 'EMail-address from account',
+	);
+
+	/**
+	 * Is current use a mail administrator / has run rights for EMailAdmin
+	 *
+	 * @var boolean
+	 */
+	protected $is_admin = false;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
 	{
-
+		$this->is_admin = isset($GLOBALS['egw_info']['user']['apps']['emailadmin']);
 	}
 
 	/**
@@ -139,11 +160,6 @@ class emailadmin_wizard
 		$tpl->exec(static::APP_CLASS.'autoconfig', $content, array(
 			'acc_imap_ssl' => self::$ssl_types,
 		), $readonlys, $content, 2);
-	}
-
-	protected static function stringify_keys(array $options)
-	{
-
 	}
 
 	/**
@@ -739,7 +755,7 @@ class emailadmin_wizard
 			if (isset($_GET['acc_id']) && (int)$_GET['acc_id'] > 0)
 			{
 				try {
-					$account = emailadmin_account::read($_GET['acc_id']);
+					$account = emailadmin_account::read($_GET['acc_id'], $this->is_admin, false);
 				}
 				catch(Exception $e) {
 					egw_framework::window_close(lang('Account not found!'));
@@ -799,6 +815,11 @@ class emailadmin_wizard
 		catch(Horde_Imap_Client_Exception $e) {
 			return $this->add($content, $e->getMessage());
 		}
+
+		$sel_options['acc_imap_type'] = emailadmin_bo::getIMAPServerTypes(false);
+		$sel_options['acc_smtp_type'] = emailadmin_bo::getSMTPServerTypes(false);
+		$sel_options['acc_imap_logintype'] = self::$login_types;
+
 		$tpl = new etemplate_new('emailadmin.account');
 		$tpl->exec(static::APP_CLASS.'edit', $content, $sel_options, $readonlys, $content, 2);
 	}
