@@ -94,12 +94,12 @@ $phpgw_baseline = array(
 			'acc_imap_type' => array('type' => 'varchar','precision' => '20','default' => 'emailadmin_imap','comment' => 'imap class to use'),
 			'acc_imap_logintype' => array('type' => 'varchar','precision' => '20','comment' => 'standard, vmailmgr, admin, uidNumber'),
 			'acc_domain' => array('type' => 'varchar','precision' => '100','comment' => 'domain name'),
-			'acc_imap_administration' => array('type' => 'bool','nullable' => False,'default' => '0','comment' => '1=enable administration'),
 			'acc_further_identities' => array('type' => 'bool','nullable' => False,'default' => '1','comment' => '0=no, 1=yes'),
 			'acc_user_editable' => array('type' => 'bool','nullable' => False,'default' => '1','comment' => '0=no, 1=yes'),
 			'acc_sieve_ssl' => array('type' => 'int','precision' => '1','default' => '1','comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'),
 			'acc_modified' => array('type' => 'timestamp','nullable' => False,'default' => 'current_timestamp'),
-			'acc_modifier' => array('type' => 'int','meta' => 'user','precision' => '4')
+			'acc_modifier' => array('type' => 'int','meta' => 'user','precision' => '4'),
+			'acc_smtp_auth_session' => array('type' => 'bool','comment' => '0=no, 1=yes, use username/pw from current user')
 		),
 		'pk' => array('acc_id'),
 		'fk' => array(),
