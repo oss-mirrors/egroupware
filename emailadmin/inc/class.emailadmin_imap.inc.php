@@ -59,6 +59,14 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	const CAPABILITIES = 'default|sieve';
 
 	/**
+	 * does the server with the serverID support keywords
+	 * this information is filled/provided by examineMailbox
+	 *
+	 * @var array of boolean for each known serverID
+	 */
+	static $supports_keywords;
+
+	/**
 	 * is the mbstring extension available
 	 *
 	 * @var boolean
@@ -494,26 +502,28 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	/**
 	 * examineMailbox
 	 *
-	 * @param string $_folderName
+	 * @param string $mailbox
 	 * @return array of counters for mailbox
 	 */
-	function examineMailbox($_folderName)
+	function examineMailbox($mailbox)
 	{
-		if ($_folderName=='') return false;
+		if ($mailbox=='') return false;
 		$mailboxes = $this->listMailboxes($mailbox);
 
 		$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
 		//_debug_array($mboxes->count());
 		foreach ($mboxes->getIterator() as $k =>$box)
 		{
+			//error_log(__METHOD__.__LINE__.array2string($box));
 			if ($k!='user' && $k != '' && $k==$mailbox)
 			{
 				$status = $this->status($k, Horde_Imap_Client::STATUS_ALL | Horde_Imap_Client::STATUS_FLAGS | Horde_Imap_Client::STATUS_PERMFLAGS);
-				error_log(__METHOD__.__LINE__.array2string($status));
+				//error_log(__METHOD__.__LINE__.array2string($status));
 				foreach ($status as $key => $v)
 				{
 					$_status[strtoupper($key)]=$v;
 				}
+				if (!isset(self::$supports_keywords[$this->ImapServerId])) self::$supports_keywords[$this->ImapServerId]=(stripos(array2string($_status['FLAGS']),'$label')?true:false);
 				return $_status;
 			}
 		}
@@ -553,7 +563,11 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	function hasCapability($capability)
 	{
 		//return $this->queryCapability($capability);
-
+		//error_log(__METHOD__.__LINE__.' '.$capability.'->'.array2string(self::$supports_keywords));
+		if ($capability=='SUPPORTS_KEYWORDS')
+		{
+			return self::$supports_keywords[$this->ImapServerId];
+		}
 		$cap = $this->capability();
 		foreach ($cap as $c => $v)
 		{
