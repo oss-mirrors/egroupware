@@ -82,8 +82,8 @@ app.classes.emailadmin = AppJS.extend(
 	/**
 	 * onclick for continue button to show progress animation
 	 *
-	 * @param object _event event-object or information about event
-	 * @param et2_baseWidget _widget widget causing the event
+	 * @param {object} _event event-object or information about event
+	 * @param {et2_baseWidget} _widget widget causing the event
 	 */
 	wizard_detect: function(_event, _widget)
 	{
@@ -103,8 +103,8 @@ app.classes.emailadmin = AppJS.extend(
 	/**
 	 * Set default port, if imap ssl-type changes
 	 *
-	 * @param object _event event-object or information about event
-	 * @param et2_baseWidget _widget widget causing the event
+	 * @param {object} _event event-object or information about event
+	 * @param {et2_baseWidget} _widget widget causing the event
 	 */
 	wizard_imap_ssl_onchange: function(_event, _widget)
 	{
@@ -116,8 +116,8 @@ app.classes.emailadmin = AppJS.extend(
 	/**
 	 * Set default port, if imap ssl-type changes
 	 *
-	 * @param object _event event-object or information about event
-	 * @param et2_baseWidget _widget widget causing the event
+	 * @param {object} _event event-object or information about event
+	 * @param {et2_baseWidget} _widget widget causing the event
 	 */
 	wizard_smtp_ssl_onchange: function(_event, _widget)
 	{
@@ -129,23 +129,42 @@ app.classes.emailadmin = AppJS.extend(
 	/**
 	 * Set default port, if imap ssl-type changes
 	 *
-	 * @param object _event event-object or information about event
-	 * @param et2_baseWidget _widget widget causing the event
+	 * @param {object} _event event-object or information about event
+	 * @param {et2_baseWidget} _widget widget causing the event
 	 */
 	wizard_sieve_ssl_onchange: function(_event, _widget)
 	{
 		var ssl_type = _widget.get_value();
 		this.et2.getWidgetById('acc_sieve_port').set_value(
-			ssl_type == this.SSL_SSL || ssl_type == SSL_TLS ? 5190 : 4190);
+			ssl_type == this.SSL_SSL || ssl_type == this.SSL_TLS ? 5190 : 4190);
 		this.wizard_sieve_onchange(_event, _widget);
 	},
 
 	/**
 	 * Enable sieve, if user changes some setting
+	 *
+	 * @param {object} _event event-object or information about event
+	 * @param {et2_baseWidget} _widget widget causing the event
 	 */
 	wizard_sieve_onchange: function(_event, _widget)
 	{
 		this.et2.getWidgetById('acc_sieve_enabled').set_value(1);
+	},
+
+	/**
+	 * Switch to select multiple accounts
+	 *
+	 * @param {object} _event event-object or information about event
+	 * @param {et2_baseWidget} _widget widget causing the event
+	 */
+	edit_multiple: function(_event, _widget)
+	{
+		// hide multiple button
+		_widget.set_disabled(true);
+
+		// switch account-selection to multiple
+		var account_id = this.et2.getWidgetById('account_id');
+		account_id.set_multiple(true);
 	}
 });
 

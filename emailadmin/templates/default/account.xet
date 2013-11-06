@@ -18,7 +18,7 @@
 				</row>
 				<row>
 					<description for="ident_realname" value="Your name"/>
-					<textbox id="ident_realname" needed="1" size="80" maxlength="128" span="all"/>
+					<textbox id="ident_realname" size="80" maxlength="128" span="all"/>
 				</row>
 				<row>
 					<description for="ident_org" value="Organisation"/>
@@ -26,7 +26,7 @@
 				</row>
 				<row>
 					<description href="ident_email" value="EMail address"/>
-					<url-email id="ident_email" needed="1" options="80,128" span="all"/>
+					<url-email id="ident_email" options="80,128" span="all"/>
 				</row>
 				<row>
 					<htmlarea id="ident_signature" mode="simple" height="155" expand_toolbar="false" span="all"/>
@@ -244,14 +244,17 @@
 					<description for="acc_name" value="Name of account"/>
 					<hbox options="0,0" span="all">
 						<textbox id="acc_name" needed="1" size="80"/>
-						<description id="acc_id" class="emailadmin_diagnostic"/>
+						<description align="right" id="acc_id" class="emailadmin_diagnostic"/>
 					</hbox>
 				</row>
 				<row height="30">
 					<description href="ident_email" value="Valid for" for="account_id"/>
-					<menulist>
-						<menupopup type="select-account" id="account_id" options="Everyone"/>
-					</menulist>
+					<hbox options="0,0">
+						<menulist>
+							<menupopup type="select-account" id="account_id" options="Everyone,both"/>
+						</menulist>
+						<buttononly label="Select multiple" id="button[multiple]" onclick="app.emailadmin.edit_multiple" options="users"/>
+					</hbox>
 					<checkbox label="account editable by user" id="acc_user_editable"/>
 				</row>
 				<row>

@@ -1089,7 +1089,8 @@ class emailadmin_bo extends so_sql
 		$_profileIDs = array_keys($icServers);
 		$defaultProfileID = $_profileIDs[0];
 		$defaultProfile = $icServers[$defaultProfileID];
-		return $defaultProfile->__get('acc_id');
+
+		return $defaultProfile ? $defaultProfile->acc_id : null;
 	}
 
 	/**
@@ -1105,7 +1106,8 @@ class emailadmin_bo extends so_sql
 		$_profileIDs = array_keys($icServers);
 		$defaultProfileID = $_profileIDs[0];
 		$defaultProfile = $icServers[$defaultProfileID];
-		return $defaultProfile->__get('acc_id');
+		
+		return $defaultProfile ? $defaultProfile->acc_id : null;
 	}
 
 }

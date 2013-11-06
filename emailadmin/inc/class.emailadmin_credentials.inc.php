@@ -209,10 +209,33 @@ class emailadmin_credentials
 		}
 		else
 		{
-			self::$db->insert(self::TABLE, $data, false, __LINE__, __FILE__, self::APP);
+			self::$db->insert(self::TABLE, $data, array(
+				'acc_id' => $acc_id,
+				'account_id' => $account_id,
+				'cred_type' => $type,
+			), __LINE__, __FILE__, self::APP);
 			$cred_id = self::$db->get_last_insert_id(self::TABLE, 'cred_id');
 		}
 		return $cred_id;
+	}
+
+	/**
+	 * Delete credentials from database
+	 *
+	 * @param int $acc_id
+	 * @param int|array $account_id
+	 * @param int $type self::IMAP, self::SMTP or self::ADMIN
+	 * @return int number of rows deleted
+	 */
+	public static function delete($acc_id, $account_id, $type)
+	{
+		self::$db->delete(self::TABLE, array(
+			'acc_id' => $acc_id,
+			'account_id' => $account_id,
+			'(cred_type & '.(int)$type.')',
+		), __LINE__, __FILE__, self::APP);
+
+		return self::$db->affected_rows();
 	}
 
 	/**
@@ -267,7 +290,7 @@ class emailadmin_credentials
 				}
 				return (!empty($row['cred_password'])?trim(mdecrypt_generic($mcrypt, base64_decode($row['cred_password']))):'');
 		}
-		throw egw_exception_wrong_parameter("Unknow password encryption type $row[cred_pw_enc]!");
+		throw new egw_exception_wrong_parameter("Unknow password encryption type $row[cred_pw_enc]!");
 	}
 
 	/**

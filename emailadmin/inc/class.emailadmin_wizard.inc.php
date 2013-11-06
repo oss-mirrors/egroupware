@@ -150,7 +150,7 @@ class emailadmin_wizard
 				'manual_class' => 'emailadmin_manual',
 			);
 		}
-		$content['msg'] = $msg;
+		$content['msg'] = $msg ? $msg : $_GET['msg'];
 
 		if (!empty($content['acc_imap_host']) || !empty($content['acc_imap_username']))
 		{
@@ -756,12 +756,17 @@ class emailadmin_wizard
 			{
 				try {
 					$account = emailadmin_account::read($_GET['acc_id'], $this->is_admin, false);
+					$content = $account->params;
+					self::fix_account_id_0($content['account_id']);
 				}
 				catch(Exception $e) {
 					egw_framework::window_close(lang('Account not found!'));
 				}
-				$content = $account->params;
 			}
+		}
+		if (!isset($content['account_id']))
+		{
+			$content['account_id'] = array($GLOBALS['egw_info']['user']['account_id']);
 		}
 		if (empty($content['acc_name']))
 		{
@@ -785,7 +790,9 @@ class emailadmin_wizard
 				case 'save':
 				case 'apply':
 					try {
+						self::fix_account_id_0($content['account_id']);
 						$content = emailadmin_account::write($content);
+						self::fix_account_id_0($content['account_id'], true);
 						$msg = lang('Account saved.');
 					}
 					catch (Exception $e) {
@@ -799,7 +806,7 @@ class emailadmin_wizard
 					}
 			}
 		}
-		$content['msg'] = $msg;
+		$content['msg'] = $msg ? $msg : $_GET['msg'];
 
 		$readonlys['button[delete]'] = empty($content['acc_id']);
 
@@ -811,9 +818,17 @@ class emailadmin_wizard
 				$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
 					self::mailboxes(self::imap_client ($content));
 		}
-		// call wizard, if we have a connection error
+		// call wizard, if we have a connection error: Horde_Imap_Client_Exception
 		catch(Horde_Imap_Client_Exception $e) {
 			return $this->add($content, $e->getMessage());
+		}
+		// call wizard, if we have missing credentials: InvalidArgumentException
+		catch(InvalidArgumentException $e) {
+			return $this->add($content, $e->getMessage());
+		}
+		// and for the rest also ...
+		catch(Exception $e) {
+			return $this->add($content, $e->getMessage().' ('.get_class($e).': '.$e->getCode().')');
 		}
 
 		$sel_options['acc_imap_type'] = emailadmin_bo::getIMAPServerTypes(false);
@@ -821,7 +836,26 @@ class emailadmin_wizard
 		$sel_options['acc_imap_logintype'] = self::$login_types;
 
 		$tpl = new etemplate_new('emailadmin.account');
+		if (count($content['account_id']) > 1)
+		{
+			$tpl->setElementAttribute('account_id', 'multiple', true);
+			$readonlys['button[multiple]'] = true;
+		}
 		$tpl->exec(static::APP_CLASS.'edit', $content, $sel_options, $readonlys, $content, 2);
+	}
+
+	/**
+	 * Replace 0 with '' or back
+	 *
+	 * @param array &$account_id
+	 * @param boolean $back=false
+	 */
+	private static function fix_account_id_0(array &$account_id=null, $back=false)
+	{
+		if (isset($account_id) && ($k = array_search($back?'':'0', $account_id)) !== false)
+		{
+			$account_id[$k] = $back ? '0' : '';
+		}
 	}
 
 	/**

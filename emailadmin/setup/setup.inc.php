@@ -89,7 +89,22 @@ $setup_info['emailadmin']['check_install'] = array(
 		'func' => 'pear_check',
 		'from' => 'EMailAdmin',
 		'version' => '2.15.5',
-	)
+	),
+	'pear.horde.org/Horde_Nls' => array(
+		'func' => 'pear_check',
+		'from' => 'EMailAdmin',
+		'version' => '2.0.3',
+	),
+	'pear.horde.org/Horde_Mail' => array(
+		'func' => 'pear_check',
+		'from' => 'EMailAdmin',
+		'version' => '2.1.2',
+	),
+	'pear.horde.org/Horde_Smtp' => array(
+		'func' => 'pear_check',
+		'from' => 'EMailAdmin',
+		'version' => '1.2.6',
+	),
 );
 
 

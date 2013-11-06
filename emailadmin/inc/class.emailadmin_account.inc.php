@@ -155,13 +155,15 @@ class emailadmin_account
 	{
 		// read credentials from database
 		$params += emailadmin_credentials::read($params['acc_id']);
-
-		if (!isset($params['acc_imap_username']) && $GLOBALS['egw_info']['user']['account_id'])
+error_log(__METHOD__."(".array2string($params).")");
+		if (!empty($params['acc_imap_logintype']) && !isset($params['acc_imap_username']) &&
+			$GLOBALS['egw_info']['user']['account_id'])
 		{
 			// get usename/password from current user, let it overwrite credentials for all/no session
 			$params = emailadmin_credentials::from_session(
 				($load_smtp_auth_session ? array() : array('acc_smtp_auth_session' => false)) + $params
 			) + $params;
+error_log(__METHOD__."() incl. session --> ".array2string($params));
 		}
 		$this->params = $params;
 
@@ -296,10 +298,21 @@ class emailadmin_account
 		{
 			$where[] = self::$db->expression(self::VALID_TABLE, array('account_id' => $memberships));
 		}
-		if (!($data = self::$db->select(self::TABLE, 'DISTINCT '.self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*',
-			$where, __LINE__, __FILE__, false, '', self::APP, 0, self::IDENTITY_JOIN.' '.self::VALID_JOIN)->fetch()))
+		$cols = self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*';
+		if (($accounts_sql = self::$db->group_concat(self::VALID_TABLE.'.account_id')))
 		{
-			throw new egw_exception_not_found;
+			$cols .= ','.$accounts_sql.' AS account_id';
+		}
+		if (!($data = self::$db->select(self::TABLE, $cols, $where, __LINE__, __FILE__,
+			false, 'GROUP BY '.self::TABLE.'.acc_id', self::APP, 0, self::IDENTITY_JOIN.' '.self::VALID_JOIN)->fetch()))
+		{
+			throw new egw_exception_not_found(lang('Account not found!'));
+		}
+		$data['account_id'] = array();
+		foreach(self::$db->select(self::VALID_TABLE, 'account_id', array('acc_id' => $acc_id),
+			__LINE__, __FILE__, false, '', self::APP) as $row)
+		{
+			$data['account_id'][] = $row['account_id'];
 		}
 		//error_log(__METHOD__."($acc_id, $only_current_user) returning ".array2string($data));
 		return new emailadmin_account($data, $load_smtp_auth_session);
@@ -375,7 +388,7 @@ class emailadmin_account
 			foreach(self::$db->select(self::VALID_TABLE, 'account_id', $where,
 				__LINE__, __FILE__, false, '', self::APP) as $row)
 			{
-				$old_account_ids[] = (int)$row['account_id'];
+				$old_account_ids[] = $row['account_id'];
 			}
 			if (($ids_to_remove = array_diff((array)$data['account_id'], $old_account_ids)))
 			{
@@ -393,18 +406,53 @@ class emailadmin_account
 					'account_id' => $account_id,
 				), false, __LINE__, __FILE__, self::APP);
 			}
-			// add imap credentials
-			$cred_type = $data['acc_imap_username'] == $data['acc_smtp_username'] &&
-				$data['acc_imap_password'] == $data['acc_smtp_password'] ? 3 : 1;
-			emailadmin_credentials::write($data['acc_id'], $data['acc_imap_username'], $data['acc_imap_password'],
-				$cred_type, $account_id, $data['acc_imap_cred_id']);
-			// add smtp credentials if necessary and different from imap
-			if ($data['acc_smtp_username'] && $cred_type != 3)
+		}
+		// check if we have an account_id for which to store credentials
+		foreach(array('acc_imap_account_id', 'acc_smtp_account_id') as $name)
+		{
+			if (!isset($data[$name]))
 			{
-				emailadmin_credentials::write($data['acc_id'], $data['acc_smtp_username'], $data['acc_smtp_password'],
-					2, $account_id, $data['acc_smtp_cred_id'] != $data['acc_imap_cred_id'] ?
-						$data['acc_smtp_cred_id'] : null);
+				$data[$name] = count($data['account_id'] == 1) ? $data['account_id'][0] : 0;
 			}
+			// account of credentials is not direct in accounts valid for mail account
+			elseif (!in_array($data[$name], $data['account_id']))
+			{
+				// check further with memberships and 0=all
+				$memberships = $GLOBALS['egw']->accounts->memberships($data[$name]);
+				$memberships[] = $data[$name];
+				$memberships[] = '0';
+				// if still not in, delete current credentials and store new ones
+				if (!array_intersect($memberships, $data['account_id']))
+				{
+					emailadmin_credentials::delete($data['acc_id'], $data[$name],
+						$name == 'acc_imap_account_id' ? emailadmin_credentials::IMAP : emailadmin_credentials::SMTP);
+					$data[$name] = count($data['account_id'] == 1) ? $data['account_id'][0] : 0;
+				}
+			}
+		}
+		// add imap credentials
+		$cred_type = $data['acc_imap_username'] == $data['acc_smtp_username'] &&
+			$data['acc_imap_password'] == $data['acc_smtp_password'] &&
+			$data['acc_imap_account_id'] == $data['acc_smtp_account_id'] ? 3 : 1;
+		emailadmin_credentials::write($data['acc_id'], $data['acc_imap_username'], $data['acc_imap_password'],
+			$cred_type, $account_id, $data['acc_imap_cred_id']);
+		// add smtp credentials if necessary and different from imap
+		if ($data['acc_smtp_username'] && $cred_type != 3)
+		{
+			emailadmin_credentials::write($data['acc_id'], $data['acc_smtp_username'], $data['acc_smtp_password'],
+				2, $data['acc_smtp_account_id'], $data['acc_smtp_cred_id'] != $data['acc_imap_cred_id'] ?
+					$data['acc_smtp_cred_id'] : null);
+		}
+		// store or delete admin credentials
+		if ($data['acc_imap_admin_username'] && $data['acc_imap_admin_password'])
+		{
+			emailadmin_credentials::write($data['acc_id'], $data['acc_imap_admin_username'],
+				$data['acc_imap_admin_password'], emailadmin_credentials::ADMIN, 0,
+				$data['acc_imap_admin_cred_id']);
+		}
+		else
+		{
+			emailadmin_credentials::delete($data['acc_id'], 0, emailadmin_credentials::ADMIN);
 		}
 		return $data;
 	}
@@ -440,7 +488,6 @@ class emailadmin_account
 			$where, __LINE__, __FILE__, $offset, 'ORDER BY '.$order_by, self::APP, $num_rows,
 			self::IDENTITY_JOIN.' '.self::VALID_JOIN) as $row)
 		{
-			if (!$just_name) $row += emailadmin_credentials::read($row['acc_id']);
 			$results[$row['acc_id']] = $just_name ? $row['acc_name'] : new emailadmin_account($row);
 		}
 		return $results;
