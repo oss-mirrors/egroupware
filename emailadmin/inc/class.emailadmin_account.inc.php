@@ -87,7 +87,7 @@ class emailadmin_account
 	/**
 	 * Order for search: first group-profiles, then general profiles, then personal profiles
 	 */
-	const DEFAULT_ORDER = 'account_id ASC,acc_name ASC';
+	const DEFAULT_ORDER = 'account_id ASC,ident_org ASC,ident_realname ASC,acc_name ASC';
 
 	/**
 	 * No SSL
@@ -146,6 +146,15 @@ class emailadmin_account
 	protected $smtpServer;
 
 	/**
+	 * SQL to query valid account_id's as comma-separated as subquery
+	 *
+	 * False if not supported by dbms.
+	 *
+	 * @var string
+	 */
+	protected static $valid_account_id_sql;
+
+	/**
 	 * Constructor
 	 *
 	 * @param array $params
@@ -155,7 +164,7 @@ class emailadmin_account
 	{
 		// read credentials from database
 		$params += emailadmin_credentials::read($params['acc_id']);
-error_log(__METHOD__."(".array2string($params).")");
+
 		if (!empty($params['acc_imap_logintype']) && !isset($params['acc_imap_username']) &&
 			$GLOBALS['egw_info']['user']['account_id'])
 		{
@@ -163,7 +172,6 @@ error_log(__METHOD__."(".array2string($params).")");
 			$params = emailadmin_credentials::from_session(
 				($load_smtp_auth_session ? array() : array('acc_smtp_auth_session' => false)) + $params
 			) + $params;
-error_log(__METHOD__."() incl. session --> ".array2string($params));
 		}
 		$this->params = $params;
 
@@ -299,20 +307,27 @@ error_log(__METHOD__."() incl. session --> ".array2string($params));
 			$where[] = self::$db->expression(self::VALID_TABLE, array('account_id' => $memberships));
 		}
 		$cols = self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*';
-		if (($accounts_sql = self::$db->group_concat(self::VALID_TABLE.'.account_id')))
+		if (self::$valid_account_id_sql)
 		{
-			$cols .= ','.$accounts_sql.' AS account_id';
+			$cols .= ','.self::$valid_account_id_sql.' AS account_id';
 		}
 		if (!($data = self::$db->select(self::TABLE, $cols, $where, __LINE__, __FILE__,
 			false, 'GROUP BY '.self::TABLE.'.acc_id', self::APP, 0, self::IDENTITY_JOIN.' '.self::VALID_JOIN)->fetch()))
 		{
-			throw new egw_exception_not_found(lang('Account not found!'));
+			throw new egw_exception_not_found(lang('Account not found!').' data='.array2string($data));
 		}
-		$data['account_id'] = array();
-		foreach(self::$db->select(self::VALID_TABLE, 'account_id', array('acc_id' => $acc_id),
-			__LINE__, __FILE__, false, '', self::APP) as $row)
+		if (self::$valid_account_id_sql)
 		{
-			$data['account_id'][] = $row['account_id'];
+			$data['account_id'] = explode(',', $data['account_id']);
+		}
+		else
+		{
+			$data['account_id'] = array();
+			foreach(self::$db->select(self::VALID_TABLE, 'account_id', array('acc_id' => $acc_id),
+				__LINE__, __FILE__, false, '', self::APP) as $row)
+			{
+				$data['account_id'][] = $row['account_id'];
+			}
 		}
 		//error_log(__METHOD__."($acc_id, $only_current_user) returning ".array2string($data));
 		return new emailadmin_account($data, $load_smtp_auth_session);
@@ -390,7 +405,7 @@ error_log(__METHOD__."() incl. session --> ".array2string($params));
 			{
 				$old_account_ids[] = $row['account_id'];
 			}
-			if (($ids_to_remove = array_diff((array)$data['account_id'], $old_account_ids)))
+			if (($ids_to_remove = array_diff($old_account_ids, (array)$data['account_id'])))
 			{
 				self::$db->delete(self::VALID_TABLE, $where+array(
 					'account_id' => $ids_to_remove,
@@ -412,7 +427,7 @@ error_log(__METHOD__."() incl. session --> ".array2string($params));
 		{
 			if (!isset($data[$name]))
 			{
-				$data[$name] = count($data['account_id'] == 1) ? $data['account_id'][0] : 0;
+				$data[$name] = count($data['account_id']) == 1 ? $data['account_id'][0] : 0;
 			}
 			// account of credentials is not direct in accounts valid for mail account
 			elseif (!in_array($data[$name], $data['account_id']))
@@ -421,12 +436,10 @@ error_log(__METHOD__."() incl. session --> ".array2string($params));
 				$memberships = $GLOBALS['egw']->accounts->memberships($data[$name]);
 				$memberships[] = $data[$name];
 				$memberships[] = '0';
-				// if still not in, delete current credentials and store new ones
+				// if still not in, update with new account_id
 				if (!array_intersect($memberships, $data['account_id']))
 				{
-					emailadmin_credentials::delete($data['acc_id'], $data[$name],
-						$name == 'acc_imap_account_id' ? emailadmin_credentials::IMAP : emailadmin_credentials::SMTP);
-					$data[$name] = count($data['account_id'] == 1) ? $data['account_id'][0] : 0;
+					$data[$name] = count($data['account_id']) == 1 ? $data['account_id'][0] : 0;
 				}
 			}
 		}
@@ -435,7 +448,7 @@ error_log(__METHOD__."() incl. session --> ".array2string($params));
 			$data['acc_imap_password'] == $data['acc_smtp_password'] &&
 			$data['acc_imap_account_id'] == $data['acc_smtp_account_id'] ? 3 : 1;
 		emailadmin_credentials::write($data['acc_id'], $data['acc_imap_username'], $data['acc_imap_password'],
-			$cred_type, $account_id, $data['acc_imap_cred_id']);
+			$cred_type, $data['acc_imap_account_id'], $data['acc_imap_cred_id']);
 		// add smtp credentials if necessary and different from imap
 		if ($data['acc_smtp_username'] && $cred_type != 3)
 		{
@@ -477,20 +490,60 @@ error_log(__METHOD__."() incl. session --> ".array2string($params));
 			$memberships[] = 0;	// marks accounts valid for everyone
 			$where[] = self::$db->expression(self::VALID_TABLE, array('account_id' => $memberships));
 		}
-		$cols = $just_name ? '.acc_id,acc_name' : '.*,'.self::IDENTITIES_TABLE.'.*';
-
 		if (empty($order_by) || !preg_match('/^[a-z_]+ (ASC|DESC)$/i', $order_by))
 		{
 			$order_by = self::DEFAULT_ORDER;
 		}
 		$results = array();
-		foreach(self::$db->select(self::TABLE, 'DISTINCT '.self::TABLE.$cols,
-			$where, __LINE__, __FILE__, $offset, 'ORDER BY '.$order_by, self::APP, $num_rows,
-			self::IDENTITY_JOIN.' '.self::VALID_JOIN) as $row)
+		foreach(self::$db->select(self::TABLE, self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*',
+			$where, __LINE__, __FILE__, $offset, 'GROUP BY '.self::TABLE.'.acc_id ORDER BY '.$order_by,
+			self::APP, $num_rows, self::IDENTITY_JOIN.' '.self::VALID_JOIN) as $row)
 		{
-			$results[$row['acc_id']] = $just_name ? $row['acc_name'] : new emailadmin_account($row);
+			$results[$row['acc_id']] = $just_name ? self::identity_name($row) : new emailadmin_account($row);
 		}
+		//error_log(__METHOD__."($only_current_user, $just_name) returning ".array2string($results));
 		return $results;
+	}
+
+	/**
+	 * build an identity name
+	 *
+	 * @param array|emailadmin_account $data object or values for keys 'ident_(realname|org|email)', 'acc_(id|name|imap_username)'
+	 * @return string with htmlencoded angle brackets
+	 */
+	public static function identity_name($account)
+	{
+		$data = is_object($account) ? $account->params : $account;
+
+		if (strlen(trim($data['ident_realname'].$data['ident_org'])))
+		{
+			$name = $data['ident_realname'].' '.$data['ident_org'];
+		}
+		else
+		{
+			$name = $data['acc_name'];
+		}
+		if ($data['ident_email'])
+		{
+			$name .= ' &lt;'.$data['ident_email'].'&gt;';
+		}
+		else
+		{
+			if (!is_object($account) && !isset($data['acc_imap_username']) && $data['acc_id'])
+			{
+				$data += emailadmin_credentials::read($data['acc_id']);
+
+				if (empty($data['acc_imap_username']))
+				{
+					$data += emailadmin_credentials::from_session($data);
+				}
+			}
+			if (!empty($data['acc_imap_username']))
+			{
+				$name .= ' &lt;'.$data['acc_imap_username'].'&gt;';
+			}
+		}
+		return $name;
 	}
 
 	/**
@@ -499,6 +552,15 @@ error_log(__METHOD__."() incl. session --> ".array2string($params));
 	static public function init_static()
 	{
 		self::$db = $GLOBALS['egw']->db;
+
+		self::$valid_account_id_sql = self::$db->group_concat('account_id');
+		if (self::$valid_account_id_sql)
+		{
+			self::$valid_account_id_sql = '(SELECT '.self::$valid_account_id_sql.
+				' FROM '.self::VALID_TABLE.
+				' WHERE '.self::VALID_TABLE.'.acc_id='.self::TABLE.'.acc_id'.
+				' GROUP BY '.self::VALID_TABLE.'.acc_id)';
+		}
 	}
 }
 

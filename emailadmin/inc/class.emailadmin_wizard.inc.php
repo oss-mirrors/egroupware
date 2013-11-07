@@ -760,17 +760,36 @@ class emailadmin_wizard
 					self::fix_account_id_0($content['account_id']);
 				}
 				catch(Exception $e) {
-					egw_framework::window_close(lang('Account not found!'));
+					egw_framework::window_close(lang('Account not found!'));//.$e->getMessage().' ('.get_class($e).': '.$e->getCode().')');
 				}
 			}
 		}
 		if (!isset($content['account_id']))
 		{
 			$content['account_id'] = array($GLOBALS['egw_info']['user']['account_id']);
+			$content['acc_user_editable'] = $content['acc_further_identities'] = true;
 		}
 		if (empty($content['acc_name']))
 		{
 			$content['acc_name'] = $content['ident_email'];
+		}
+		// disable some stuff for non-emailadmins (all values are preserved!)
+		if (!isset($GLOBALS['egw_info']['user']['apps']['emailadmin']))
+		{
+			$readonlys = array(
+				'account_id' => true, 'button[multiple]' => true, 'acc_user_editable' => true,
+				'acc_imap_type' => true, 'acc_imap_login_type' => true, 'acc_domain' => true,
+				'acc_imap_admin_username' => true, 'acc_imap_admin_password' => true,
+				'acc_smtp_type' => true, 'acc_smtp_auth_session' => true,
+			);
+		}
+		// ensure correct values for single user mail accounts (we only hide them client-side)
+		if (count($content['account_id']) == 1 && !$content['account_id'][0])
+		{
+			$content['acc_imap_type'] = 'emailadmin_imap';
+			unset($content['acc_imap_login_type']);
+			$content['acc_smtp_type'] = 'emailadmin_smtp';
+			unset($content['acc_smtp_auth_session']);
 		}
 		if (isset($content['button']))
 		{
@@ -790,20 +809,17 @@ class emailadmin_wizard
 				case 'save':
 				case 'apply':
 					try {
-						self::fix_account_id_0($content['account_id']);
-						$content = emailadmin_account::write($content);
 						self::fix_account_id_0($content['account_id'], true);
+						$content = emailadmin_account::write($content);
+						self::fix_account_id_0($content['account_id']);
 						$msg = lang('Account saved.');
 					}
 					catch (Exception $e) {
 						$msg = lang('Error saving account!')."\n".$e->getMessage();
 						$button = 'apply';
 					}
-					if ($button == 'save')
-					{
-						egw_framework::refresh_opener($msg, 'emailadmin', $content['acc_id']);
-						egw_framework::window_close();
-					}
+					egw_framework::refresh_opener($msg, 'emailadmin', $content['acc_id']);
+					if ($button == 'save') egw_framework::window_close();
 			}
 		}
 		$content['msg'] = $msg ? $msg : $_GET['msg'];
@@ -847,12 +863,18 @@ class emailadmin_wizard
 	/**
 	 * Replace 0 with '' or back
 	 *
-	 * @param array &$account_id
+	 * @param string|array &$account_id on return always array
 	 * @param boolean $back=false
 	 */
-	private static function fix_account_id_0(array &$account_id=null, $back=false)
+	private static function fix_account_id_0(&$account_id=null, $back=false)
 	{
-		if (isset($account_id) && ($k = array_search($back?'':'0', $account_id)) !== false)
+		if (!isset($account_id)) return;
+
+		if (!is_array($account_id))
+		{
+			$account_id = explode(',', $account_id);
+		}
+		if (($k = array_search($back?'':'0', $account_id)) !== false)
 		{
 			$account_id[$k] = $back ? '0' : '';
 		}

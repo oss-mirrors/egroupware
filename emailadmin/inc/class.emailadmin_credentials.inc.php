@@ -192,6 +192,7 @@ class emailadmin_credentials
 		//error_log(__METHOD__."(acc_id=$acc_id, '$username', \$password, type=$type, account_id=$account_id, cred_id=$cred_id)");
 		if (!empty($cred_id) && !is_numeric($cred_id) || !is_numeric($account_id))
 		{
+			error_log(__METHOD__."($acc_id, '$username', \$password, $type, $account_id, ".array2string($cred_id).") not storing session credentials!");
 			return;	// do NOT store credentials from session of current user!
 		}
 		$data = array(
@@ -216,6 +217,7 @@ class emailadmin_credentials
 			), __LINE__, __FILE__, self::APP);
 			$cred_id = self::$db->get_last_insert_id(self::TABLE, 'cred_id');
 		}
+		//error_log(__METHOD__."($acc_id, '$username', \$password, $type, $account_id) returning $cred_id");
 		return $cred_id;
 	}
 
@@ -235,7 +237,9 @@ class emailadmin_credentials
 			'(cred_type & '.(int)$type.')',
 		), __LINE__, __FILE__, self::APP);
 
-		return self::$db->affected_rows();
+		$ret = self::$db->affected_rows();
+		//error_log(__METHOD__."($acc_id, ".array2string($account_id).", $type) affected $ret rows");
+		return $ret;
 	}
 
 	/**

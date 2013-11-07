@@ -143,7 +143,7 @@ class emailadmin_hooks
 			if ($is_smtp && $location == 'smtp_server_types' || $is_imap && $location == 'imap_server_types')
 			{
 				// only register new imap-class-names
-				if ($is_imap && $class_name != emailadmin_bo::getIcClass ($class_name)) continue;
+				if ($is_imap && $class_name == emailadmin_bo::getIcClass ($class_name, true)) continue;
 
 				$type = array(
 					'classname' => $class_name,

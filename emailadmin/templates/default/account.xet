@@ -14,7 +14,7 @@
 					<menulist>
 						<menupopup options="Standard Identity"/>
 					</menulist>
-					<checkbox label="allow users to create further identities" id="acc_further_identities"/>
+					<checkbox label="allow users to create further identities" id="acc_further_identities" class="emailadmin_no_user"/>
 				</row>
 				<row>
 					<description for="ident_realname" value="Your name"/>
@@ -43,21 +43,21 @@
 				<column/>
 			</columns>
 			<rows>
-				<row>
+				<row class="emailadmin_no_single">
 					<description value="Type" for="acc_imap_logintype"/>
 					<menulist>
 						<menupopup id="acc_imap_type"/>
 					</menulist>
-					<description value="Login" for="acc_imap_logintype"/>
+					<description value="Login" for="acc_imap_logintype" class="emailadmin_no_single"/>
 					<menulist>
-						<menupopup statustext="How username get constructed" id="acc_imap_logintype"/>
+						<menupopup statustext="How username get constructed" id="acc_imap_logintype" class="emailadmin_no_single"/>
 					</menulist>
 				</row>
 				<row class="@manual_class">
 					<description value="Username" for="acc_imap_username"/>
 					<textbox id="acc_imap_username" size="32" maxlength="128"/>
-					<description value="Domain" for="acc_domain"/>
-					<textbox id="acc_domain" size="32" maxlength="128"/>
+					<description value="Domain" for="acc_domain" class="emailadmin_no_single"/>
+					<textbox id="acc_domain" size="32" maxlength="128" class="emailadmin_no_single"/>
 				</row>
 				<row>
 					<description value="Password" for="acc_imap_password"/>
@@ -67,9 +67,7 @@
 				</row>
 				<row class="@manual_class">
 					<description value="IMAP server" for="acc_imap_host"/>
-					<textbox blur="Hostname or IP" id="acc_imap_host" needed="1" size="32" maxlength="128"/>
-					<description/>
-					<description/>
+					<textbox blur="Hostname or IP" id="acc_imap_host" needed="1" size="32" maxlength="128" span="all"/>
 				</row>
 				<row>
 					<description value="Secure connection" for="acc_imap_ssl"/>
@@ -82,7 +80,7 @@
 					<description/>
 					<description/>
 				</row>
-				<row>
+				<row class="emailadmin_no_single">
 					<groupbox span="all" class="emailadmin_imap_admin">
 						<caption label="IMAP administration"/>
 						<grid>
@@ -174,7 +172,8 @@
 					</hbox>
 				</row>
 				<row height="150">
-					<description value="Vacation messages with start and end date require an admin account to be set!" span="all"/>
+					<description value="Vacation messages with start and end date require an admin account to be set!" span="all" class="emailadmin_no_single"/>
+					<description/>
 				</row>
 			</rows>
 		</grid>
@@ -186,13 +185,13 @@
 				<column/>
 			</columns>
 			<rows>
-				<row>
+				<row class="emailadmin_no_single">
 					<description value="Type" for="acc_smtp_type"/>
 					<menulist>
 						<menupopup id="acc_smtp_type"/>
 					</menulist>
 				</row>
-				<row>
+				<row class="emailadmin_no_single">
 					<description value="Authentication" for="acc_smtp_auth_session"/>
 					<checkbox label="Use username+password from current user" id="acc_smtp_auth_session"/>
 				</row>
@@ -247,11 +246,11 @@
 						<description align="right" id="acc_id" class="emailadmin_diagnostic"/>
 					</hbox>
 				</row>
-				<row height="30">
+				<row class="emailadmin_no_user" height="30">
 					<description href="ident_email" value="Valid for" for="account_id"/>
 					<hbox options="0,0">
 						<menulist>
-							<menupopup type="select-account" id="account_id" options="Everyone,both"/>
+							<menupopup type="select-account" id="account_id" onchange="app.emailadmin.account_hide_not_applying" options="Everyone,both"/>
 						</menulist>
 						<buttononly label="Select multiple" id="button[multiple]" onclick="app.emailadmin.edit_multiple" options="users"/>
 					</hbox>
