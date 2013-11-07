@@ -189,7 +189,7 @@ app.classes.emailadmin = AppJS.extend(
 	account_hide_not_applying: function(_event, _widget)
 	{
 		var account_id = this.et2.getWidgetById('account_id');
-		var ids = account_id.get_value();
+		var ids = account_id && account_id.get_value ? account_id.get_value() : [];
 		if (typeof ids == 'string') ids = ids.split(',');
 
 		var multiple = ids.length >= 2 || ids[0] === '';

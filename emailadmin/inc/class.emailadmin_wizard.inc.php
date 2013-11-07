@@ -778,7 +778,8 @@ class emailadmin_wizard
 		{
 			$readonlys = array(
 				'account_id' => true, 'button[multiple]' => true, 'acc_user_editable' => true,
-				'acc_imap_type' => true, 'acc_imap_login_type' => true, 'acc_domain' => true,
+				'acc_further_identities' => true,
+				'acc_imap_type' => true, 'acc_imap_logintype' => true, 'acc_domain' => true,
 				'acc_imap_admin_username' => true, 'acc_imap_admin_password' => true,
 				'acc_smtp_type' => true, 'acc_smtp_auth_session' => true,
 			);
