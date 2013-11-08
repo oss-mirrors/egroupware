@@ -490,7 +490,8 @@ function emailadmin_upgrade1_9_008()
 			'ident_realname' => array('type' => 'varchar','precision' => '128','nullable' => False,'comment' => 'real name'),
 			'ident_email' => array('type' => 'varchar','precision' => '128','comment' => 'email address'),
 			'ident_org' => array('type' => 'varchar','precision' => '128','comment' => 'organisation'),
-			'ident_signature' => array('type' => 'text','comment' => 'signature text')
+			'ident_signature' => array('type' => 'text','comment' => 'signature text'),
+			'account_id',array('type' => 'int','meta' => 'account','precision' => '4','nullable' => False,'default' => '0','comment' => '0=all users of give mail account')
 		),
 		'pk' => array('ident_id'),
 		'fk' => array(),
@@ -741,7 +742,7 @@ function emailadmin_upgrade1_9_011()
 		// ignore all errors, eg. because FMail is not installed
 		echo "<p>".$e->getMessage()."</p>\n";
 	}
-	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.014';
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.015';
 }
 
 function emailadmin_upgrade1_9_012()
@@ -818,3 +819,16 @@ function emailadmin_upgrade1_9_013()
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.014';
 }
 
+
+function emailadmin_upgrade1_9_014()
+{
+	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_identities','account_id',array(
+		'type' => 'int',
+		'precision' => '4',
+		'nullable' => False,
+		'default' => '0',
+		'comment' => '0=all users of give mail account'
+	));
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.015';
+}

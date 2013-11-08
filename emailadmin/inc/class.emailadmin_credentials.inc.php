@@ -225,17 +225,22 @@ class emailadmin_credentials
 	 * Delete credentials from database
 	 *
 	 * @param int $acc_id
-	 * @param int|array $account_id
-	 * @param int $type self::IMAP, self::SMTP or self::ADMIN
+	 * @param int|array $account_id=null
+	 * @param int $type=self::ALL self::IMAP, self::SMTP or self::ADMIN
 	 * @return int number of rows deleted
 	 */
-	public static function delete($acc_id, $account_id, $type)
+	public static function delete($acc_id, $account_id=null, $type=self::ALL)
 	{
-		self::$db->delete(self::TABLE, array(
-			'acc_id' => $acc_id,
-			'account_id' => $account_id,
-			'(cred_type & '.(int)$type.')',
-		), __LINE__, __FILE__, self::APP);
+		if (!($acc_id > 0) && !isset($account_id))
+		{
+			throw new egw_exception_wrong_parameter(__METHOD__."() no acc_id AND no account_id parameter!");
+		}
+		$where = array();
+		if ($acc_id > 0) $where['acc_id'] = $acc_id;
+		if (isset($account_id)) $where['account_id'] = $account_id;
+		if ($type != self::ALL) $where[] = '(cred_type & '.(int)$type.')';
+
+		self::$db->delete(self::TABLE, $where, __LINE__, __FILE__, self::APP);
 
 		$ret = self::$db->affected_rows();
 		//error_log(__METHOD__."($acc_id, ".array2string($account_id).", $type) affected $ret rows");

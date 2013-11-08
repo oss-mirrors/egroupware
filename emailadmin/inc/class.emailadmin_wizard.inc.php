@@ -26,7 +26,7 @@ class emailadmin_wizard
 	 */
 	const DEBUG_LOG = null;
 	/**
-	 * Connection timeout in seconds used in wizard, can and should be really short
+	 * Connection timeout in seconds used in autoconfig, can and should be really short!
 	 */
 	const TIMEOUT = 2;
 	/**
@@ -34,7 +34,7 @@ class emailadmin_wizard
 	 *
 	 * Used as static::APP_CLASS in etemplate::exec(), to allow mail app extending this class.
 	 */
-	const APP_CLASS = 'mail.mail_wizard.';
+	const APP_CLASS = 'emailadmin.emailadmin_wizard.';
 
 	/**
 	 * 0: No SSL
@@ -231,7 +231,7 @@ class emailadmin_wizard
 					$content['output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $ssl connection to $host:$port ...\n";
 					$content['acc_imap_port'] = $port;
 
-					$imap = self::imap_client($content);
+					$imap = self::imap_client($content, self::TIMEOUT);
 
 					//$content['output'] .= array2string($imap->capability());
 					$imap->login();
@@ -321,10 +321,15 @@ class emailadmin_wizard
 		$content['msg'] = $msg;
 		if (!isset($imap)) $imap = self::imap_client ($content);
 
-		//_debug_array($content);
-		$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
-			$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
-				self::mailboxes($imap, $content);
+		try {
+			//_debug_array($content);
+			$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
+				$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
+					self::mailboxes($imap, $content);
+		}
+		catch(Exception $e) {
+			$content['msg'] = $e->getMessage();
+		}
 
 		$tpl = new etemplate_new('emailadmin.wizard.folder');
 		$tpl->exec(static::APP_CLASS.'folder', $content, $sel_options, $readonlys, $content);
@@ -369,20 +374,20 @@ class emailadmin_wizard
 			{
 				foreach((array)$attributes[$special_use] as $mailbox)
 				{
-					if (!isset($content[$name]) || strlen($mailbox) < strlen($content[$name]))
+					if (empty($content[$name]) || strlen($mailbox) < strlen($content[$name]))
 					{
 						$content[$name] = $mailbox;
 					}
 				}
 			}
 			// no special use folder found, try common names
-			if (!isset($content[$name]))
+			if (empty($content[$name]))
 			{
 				foreach($mailboxes as $mailbox => $data)
 				{
 					$name_parts = explode($data['delimiter']?$data['delimiter']:'.', strtolower($mailbox));
 					if (array_intersect($name_parts, $common_names) &&
-						(!isset($content[$name]) || strlen($mailbox) < strlen($content[$name]) && substr($mailbox, 0, 5) == 'INBOX'))
+						(empty($content[$name]) || strlen($mailbox) < strlen($content[$name]) && substr($mailbox, 0, 5) == 'INBOX'))
 					{
 						$content[$name] = $mailbox;
 					}
@@ -774,7 +779,7 @@ class emailadmin_wizard
 			$content['acc_name'] = $content['ident_email'];
 		}
 		// disable some stuff for non-emailadmins (all values are preserved!)
-		if (!isset($GLOBALS['egw_info']['user']['apps']['emailadmin']))
+		if (!$this->is_admin)
 		{
 			$readonlys = array(
 				'account_id' => true, 'button[multiple]' => true, 'acc_user_editable' => true,
@@ -821,11 +826,36 @@ class emailadmin_wizard
 					}
 					egw_framework::refresh_opener($msg, 'emailadmin', $content['acc_id']);
 					if ($button == 'save') egw_framework::window_close();
+					break;
+
+				case 'delete':
+					if (!emailadmin_account::check_access(EGW_ACL_DELETE, $content))
+					{
+						$msg = lang('Permission denied!');
+					}
+					elseif (emailadmin_account::delete($content['acc_id']) > 0)
+					{
+						egw_framework::refresh_opener(lang('Account deleted.'), 'emailadmin', $content['acc_id']);
+						egw_framework::window_close();
+					}
+					else
+					{
+						$msg = lang('Failed to delete account!');
+					}
 			}
 		}
 		$content['msg'] = $msg ? $msg : $_GET['msg'];
 
-		$readonlys['button[delete]'] = empty($content['acc_id']);
+		// disable delete button for new, not yet saved entries and if no delete rights
+		$readonlys['button[delete]'] = empty($content['acc_id']) ||
+			!emailadmin_account::check_access(EGW_ACL_DELETE, $content);
+
+		// if no edit access, make whole dialog readonly
+		if (!emailadmin_account::check_access(EGW_ACL_EDIT, $content))
+		{
+			$readonlys['__ALL__'] = true;
+			$readonlys['button[cancel]'] = false;
+		}
 
 		$sel_options['acc_imap_ssl'] = $sel_options['acc_sieve_ssl'] =
 			$sel_options['acc_smtp_ssl'] = self::$ssl_types;
@@ -885,9 +915,10 @@ class emailadmin_wizard
 	 * Instanciate imap-client
 	 *
 	 * @param array $content
+	 * @param int $timeout=null default use value returned by emailadmin_imap::getTimeOut()
 	 * @return Horde_Imap_Client_Socket
 	 */
-	protected static function imap_client(array $content)
+	protected static function imap_client(array $content, $timeout=null)
 	{
 		return new Horde_Imap_Client_Socket(array(
 			'username' => $content['acc_imap_username'],
@@ -895,7 +926,7 @@ class emailadmin_wizard
 			'hostspec' => $content['acc_imap_host'],
 			'port' => $content['acc_imap_port'],
 			'secure' => self::$ssl2secure[(string)array_search($content['acc_imap_ssl'], self::$ssl2type)],
-			'timeout' => self::TIMEOUT,
+			'timeout' => $timeout > 0 ? $timeout : emailadmin_imap::getTimeOut(),
 			'debug' => self::DEBUG_LOG,
 		));
 	}

@@ -61,7 +61,7 @@
  * @property-read string $ident_signature signature text (html)
  * @property-read array $params parameters passed to constructor (all above as array)
  */
-class emailadmin_account
+class emailadmin_account implements ArrayAccess
 {
 	const APP = 'emailadmin';
 	/**
@@ -87,7 +87,7 @@ class emailadmin_account
 	/**
 	 * Order for search: first group-profiles, then general profiles, then personal profiles
 	 */
-	const DEFAULT_ORDER = 'account_id ASC,ident_org ASC,ident_realname ASC,acc_name ASC';
+	const DEFAULT_ORDER = 'egw_ea_valid.account_id ASC,ident_org ASC,ident_realname ASC,acc_name ASC';
 
 	/**
 	 * No SSL
@@ -287,6 +287,112 @@ class emailadmin_account
 	}
 
 	/**
+	 * ArrayAccess to emailadmin_account
+	 *
+	 * @param string $offset
+	 * @return mixed
+	 */
+	public function offsetGet($offset)
+	{
+		return __get($offset);
+	}
+
+	/**
+	 * Give read access to protected attributes
+	 *
+	 * @param string $name
+	 * @return boolean
+	 */
+	public function __isset($name)
+	{
+		$val = $this->__get($name);
+
+		return isset($val);
+	}
+
+	/**
+	 * ArrayAccess to emailadmin_account
+	 *
+	 * @param string $offset
+	 * @return boolean
+	 */
+	public function offsetExists($offset)
+	{
+		return __isset($offset);
+	}
+
+	/**
+	 * ArrayAccess requires it but we dont want to give public write access
+	 *
+	 * Protected access has to use protected attributes!
+	 *
+	 * @param string $offset
+	 * @param mixed $value
+	 * @throws egw_exception_wrong_parameter
+	 */
+	public function offsetSet($offset, $value)
+	{
+		throw new egw_exception_wrong_parameter('Now write access through ArrayAccess interface of emailadmin_account!');
+	}
+
+	/**
+	 * ArrayAccess requires it but we dont want to give public write access
+	 *
+	 * Protected access has to use protected attributes!
+	 *
+	 * @param string $offset
+	 * @throws egw_exception_wrong_parameter
+	 */
+	public function offsetUnset($offset)
+	{
+		throw new egw_exception_wrong_parameter('Now write access through ArrayAccess interface of emailadmin_account!');
+	}
+
+	/**
+	 * Check which rights current user has on mail-account
+	 *
+	 * @param int $rights EGW_ACL_(READ|EDIT|DELETE)
+	 * @param array|emailadmin_account $account=null default use this
+	 * @return boolean
+	 */
+	public /*static*/ function check_access($rights, $account=null)
+	{
+		if (!isset($account)) $account = $this;
+
+		if (!is_array($account) && !is_a($account, 'emailadmin_account'))
+		{
+			throw new egw_exception_wrong_parameter('$account must be either an array or an emailadmin_account object!');
+		}
+
+		// emailadmin has all rights
+		if (isset($GLOBALS['egw_info']['user']['apps']['emailadmin']))
+		{
+			return true;
+		}
+		// check if account is for current user, if not deny access
+		$memberships = $GLOBALS['egw']->accounts->memberships($GLOBALS['egw_info']['user']['account_id']);
+		$memberships[] = $GLOBALS['egw_info']['user']['account_id'];
+		$memberships[] = 0;
+		if (!array_intersect((array)$account['account_id'], $memberships))
+		{
+			return false;
+		}
+
+		switch($rights)
+		{
+			case EGW_ACL_READ:
+				return true;
+
+			case EGW_ACL_EDIT:
+			case EGW_ACL_DELETE:
+				// users have only edit/delete rights on accounts marked as user-editable AND belonging to them personally
+				return in_array($GLOBALS['egw_info']['user']['account_id'], (array)$account['account_id']) &&
+					$account['acc_user_editable'];
+		}
+		return false;
+	}
+
+	/**
 	 * Read/return account object for given $acc_id
 	 *
 	 * @param int $acc_id
@@ -304,7 +410,7 @@ class emailadmin_account
 		$where = array(self::TABLE.'.acc_id='.(int)$acc_id);
 		if ($only_current_user)
 		{
-			$where[] = self::$db->expression(self::VALID_TABLE, array('account_id' => $memberships));
+			$where[] = self::$db->expression(self::VALID_TABLE, self::VALID_TABLE.'.', array('account_id' => $memberships));
 		}
 		$cols = self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*';
 		if (self::$valid_account_id_sql)
@@ -471,6 +577,48 @@ class emailadmin_account
 	}
 
 	/**
+	 * Delete accounts or account related data belonging to given mail or user account
+	 *
+	 * @param int|array $acc_id mail account
+	 * @param int $account_id=null user or group
+	 * @return int number of deleted mail accounts or null if only user-data was deleted and no full mail accounts
+	 */
+	public static function delete($acc_id, $account_id=null)
+	{
+		if ( is_array($acc_id) || $acc_id > 0)
+		{
+			self::$db->delete(self::VALID_TABLE, array('acc_id' => $acc_id), __LINE__, __FILE__, self::APP);
+			self::$db->delete(self::IDENTITIES_TABLE, array('acc_id' => $acc_id), __LINE__, __FILE__, self::APP);
+			emailadmin_credentials::delete($acc_id);
+			self::$db->delete(self::TABLE, array('acc_id' => $acc_id), __LINE__, __FILE__, self::APP);
+
+			return self::$db->affected_rows();
+		}
+		if (!$account_id)
+		{
+			throw new egw_exception_wrong_parameter(__METHOD__."() no acc_id AND no account_id parameter!");
+		}
+		// delete all credentials belonging to given account(s)
+		emailadmin_credentials::delete(0, $account_id);
+		// delete all pointers to mail accounts belonging to given user accounts
+		self::$db->delete(self::VALID_TABLE, array('account_id' => $account_id), __LINE__, __FILE__, self::APP);
+		// delete all identities belonging to given user accounts
+		self::$db->delete(self::IDENTITIES_TABLE, array('account_id' => $account_id), __LINE__, __FILE__, self::APP);
+		// find profiles not belonging to anyone else and delete them
+		$acc_ids = array();
+		foreach(self::$db->select(self::TABLE, self::TABLE.'.acc_id', 'account_id IS NULL', __LINE__, __FILE__,
+			false, 'GROUP BY '.self::TABLE.'.acc_id', self::APP, 0, 'LEFT '.self::VALID_JOIN) as $row)
+		{
+			$acc_ids[] = $row['acc_id'];
+		}
+		if ($acc_ids)
+		{
+			return self::delete($acc_ids);
+		}
+		return null;
+	}
+
+	/**
 	 * Return array with acc_id => acc_name or account-object pairs
 	 *
 	 * @param boolean $only_current_user=true return only accounts for current user
@@ -488,7 +636,7 @@ class emailadmin_account
 			$memberships = $GLOBALS['egw']->accounts->memberships($GLOBALS['egw_info']['user']['account_id'], true);
 			$memberships[] = $GLOBALS['egw_info']['user']['account_id'];
 			$memberships[] = 0;	// marks accounts valid for everyone
-			$where[] = self::$db->expression(self::VALID_TABLE, array('account_id' => $memberships));
+			$where[] = self::$db->expression(self::VALID_TABLE, self::VALID_TABLE.'.', array('account_id' => $memberships));
 		}
 		if (empty($order_by) || !preg_match('/^[a-z_]+ (ASC|DESC)$/i', $order_by))
 		{

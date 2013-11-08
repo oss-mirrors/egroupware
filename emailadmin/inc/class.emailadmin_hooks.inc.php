@@ -82,6 +82,9 @@ class emailadmin_hooks
      */
 	static function deleteaccount(array $data)
 	{
+		// as mail accounts contain credentials, we do NOT assign them to user users
+		emailadmin_account::delete(0, $data['account_id']);
+
 		if((int)$data['account_id'] > 0 &&
 			$GLOBALS['egw_info']['user']['apps']['emailadmin'])
 		{
@@ -105,6 +108,8 @@ class emailadmin_hooks
      */
 	static function deletegroup(array $data)
 	{
+		emailadmin_account::delete(0, $data['account_id']);
+
 		if ((int)$data['account_id'] < 0 &&
 			$GLOBALS['egw_info']['user']['apps']['emailadmin'])
 		{
