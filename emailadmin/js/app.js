@@ -103,7 +103,7 @@ app.classes.emailadmin = AppJS.extend(
 		if (this.et2._inst.submit('button[continue]', true))	// true = async submit
 		{
 			var sieve_enabled = this.et2.getWidgetById('acc_sieve_enabled');
-			if (!sieve_enabled || !sieve_enabled.get_value())
+			if (!sieve_enabled || sieve_enabled.get_value())
 			{
 				jQuery('td.emailadmin_progress').show();
 			}

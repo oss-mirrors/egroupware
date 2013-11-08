@@ -144,7 +144,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				$secure = 'ssl';
 				break;
 			case emailadmin_account::SSL_TLS:
-				$secure = 'ssl';	// Horde_Imap_Client can currently NOT enforce TLS :( --> using just ssl (allowing ssl+tls) instead
+				$secure = 'tlsv1';	// since Horde_Imap_Client-1.16.0 requiring Horde_Socket_Client-1.1.0
 				break;
 		}
 		parent::__construct(array(

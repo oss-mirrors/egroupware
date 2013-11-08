@@ -73,10 +73,10 @@ class emailadmin_wizard
 	 * @var array
 	 */
 	public static $ssl_types = array(
-		//self::SSL_TLS => 'TLS',	// SSL with minimum TLS (no SSL v.2 or v.3), requires newer Horde_Imap_Client
+		self::SSL_TLS => 'TLS',	// SSL with minimum TLS (no SSL v.2 or v.3), requires Horde_Imap_Client-2.16.0/Horde_Socket_Client-1.1.0
 		self::SSL_SSL => 'SSL',
 		self::SSL_STARTTLS => 'STARTTLS',
-		self::SSL_NONE => 'no',
+		'no' => 'no',
 	);
 	/**
 	 * Convert ssl-type to Horde secure parameter
@@ -86,7 +86,7 @@ class emailadmin_wizard
 	public static $ssl2secure = array(
 		'SSL' => 'ssl',
 		'STARTTLS' => 'tls',
-		//'TLS' => 'tlsv1',	// SSL with minimum TLS (no SSL v.2 or v.3), requires newer Horde_Imap_Client
+		'TLS' => 'tlsv1',	// SSL with minimum TLS (no SSL v.2 or v.3), requires Horde_Imap_Client-2.16.0/Horde_Socket_Client-1.1.0
 	);
 	/**
 	 * Convert ssl-type to eMailAdmin acc_(imap|sieve|smtp)_ssl integer value
@@ -94,10 +94,10 @@ class emailadmin_wizard
 	 * @var array
 	 */
 	public static $ssl2type = array(
+		'TLS' => self::SSL_TLS,
 		'SSL' => self::SSL_SSL,
-		'TLS' => self::SSL_SSL,
 		'STARTTLS' => self::SSL_STARTTLS,
-		'' => self::SSL_NONE,
+		'no' => self::SSL_NONE,
 	);
 
 	/**
@@ -200,6 +200,10 @@ class emailadmin_wizard
 				{
 					$hosts[$server['hostname']] = array('username' => $server['username']);
 				}
+				if (strtoupper($server['socketType']) == 'SSL')	// try TLS first
+				{
+					$hosts[$server['hostname']]['TLS'] = $server['port'];
+				}
 				$hosts[$server['hostname']][strtoupper($server['socketType'])] = $server['port'];
 				// make sure we prefer SSL over STARTTLS over insecure
 				if (count($hosts[$server['hostname']]) > 2)
@@ -218,7 +222,7 @@ class emailadmin_wizard
 		{
 			$content['acc_imap_host'] = $host;
 			// by default we check SSL, STARTTLS and at last an insecure connection
-			if (!is_array($data)) $data = array('SSL' => 993, 'STARTTLS' => 143, 'insecure' => 143);
+			if (!is_array($data)) $data = array('TLS' => 993, 'SSL' => 993, 'STARTTLS' => 143, 'insecure' => 143);
 
 			foreach($data as $ssl => $port)
 			{
@@ -406,7 +410,7 @@ class emailadmin_wizard
 	public function sieve(array $content, $msg='')
 	{
 		static $sieve_ssl2port = array(
-			//self::SSL_TLS => 5190,
+			self::SSL_TLS => 5190,
 			self::SSL_SSL => 5190,
 			self::SSL_STARTTLS => array(4190, 2000),
 			self::SSL_NONE => array(4190, 2000),
@@ -613,7 +617,7 @@ class emailadmin_wizard
 			if (!empty($content['acc_smtp_host']))
 			{
 				$hosts = array($content['acc_smtp_host'] => true);
-				if ((string)$content['acc_smtp_ssl'] !== (string)self::SSL_SSL || $content['acc_smtp_port'] != $smtp_ssl2port[$content['acc_smtp_ssl']])
+				if ((string)$content['acc_smtp_ssl'] !== (string)self::SSL_TLS || $content['acc_smtp_port'] != $smtp_ssl2port[$content['acc_smtp_ssl']])
 				{
 					$ssl_type = (string)array_search($content['acc_smtp_ssl'], self::$ssl2type);
 					$hosts[$content['acc_smtp_host']] = array(
@@ -630,6 +634,10 @@ class emailadmin_wizard
 					if (!isset($hosts[$server['hostname']]))
 					{
 						$hosts[$server['hostname']] = array('username' => $server['username']);
+					}
+					if (strtoupper($server['socketType']) == 'SSL')	// try TLS first
+					{
+						$hosts[$server['hostname']]['TLS'] = $server['port'];
 					}
 					$hosts[$server['hostname']][strtoupper($server['socketType'])] = $server['port'];
 					// make sure we prefer SSL over STARTTLS over insecure
@@ -648,7 +656,7 @@ class emailadmin_wizard
 				$content['acc_smtp_host'] = $host;
 				if (!is_array($data))
 				{
-					$data = array('SSL' => 465, 'STARTTLS' => 597, '' => 25);
+					$data = array('TLS' => 465, 'SSL' => 465, 'STARTTLS' => 597, '' => 25);
 				}
 				foreach($data as $ssl => $port)
 				{
