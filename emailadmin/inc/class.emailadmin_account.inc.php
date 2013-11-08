@@ -294,20 +294,7 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public function offsetGet($offset)
 	{
-		return __get($offset);
-	}
-
-	/**
-	 * Give read access to protected attributes
-	 *
-	 * @param string $name
-	 * @return boolean
-	 */
-	public function __isset($name)
-	{
-		$val = $this->__get($name);
-
-		return isset($val);
+		return $this->__get($offset);
 	}
 
 	/**
@@ -318,7 +305,9 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public function offsetExists($offset)
 	{
-		return __isset($offset);
+		$val = $this->__get($name);
+
+		return isset($val);
 	}
 
 	/**
@@ -651,7 +640,7 @@ class emailadmin_account implements ArrayAccess
 	 * @param string $order_by='acc_name ASC'
 	 * @param int|boolean $offset=false offset or false to return all
 	 * @param int $num_rows=0 number of rows to return, 0=default from prefs (if $offset !== false)
-	 * @return array with acc_id => acc_name or emailadmin_account objects
+	 * @return Iterator with acc_id => acc_name or emailadmin_account objects
 	 */
 	public static function search($only_current_user=true, $just_name=true, $order_by=null,$offset=false, $num_rows=0)
 	{
@@ -667,56 +656,72 @@ class emailadmin_account implements ArrayAccess
 		{
 			$order_by = self::DEFAULT_ORDER;
 		}
-		$results = array();
-		foreach(self::$db->select(self::TABLE, self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*',
+		$rs = self::$db->select(self::TABLE, self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*',
 			$where, __LINE__, __FILE__, $offset, 'GROUP BY '.self::TABLE.'.acc_id ORDER BY '.$order_by,
-			self::APP, $num_rows, self::IDENTITY_JOIN.' '.self::VALID_JOIN) as $row)
-		{
-			$results[$row['acc_id']] = $just_name ? self::identity_name($row) : new emailadmin_account($row);
-		}
-		//error_log(__METHOD__."($only_current_user, $just_name) returning ".array2string($results));
-		return $results;
+			self::APP, $num_rows, self::IDENTITY_JOIN.' '.self::VALID_JOIN);
+
+		return new egw_db_callback_iterator($rs,
+			// process each row
+			function($row) use ($just_name)
+			{
+				return $just_name ? self::identity_name($row) : new emailadmin_account($row);
+
+			}, array(),
+			// return acc_id as key
+			function($row)
+			{
+				return $row['acc_id'];
+			});
 	}
 
 	/**
 	 * build an identity name
 	 *
-	 * @param array|emailadmin_account $data object or values for keys 'ident_(realname|org|email)', 'acc_(id|name|imap_username)'
+	 * @param array|emailadmin_account $account object or values for keys 'ident_(realname|org|email)', 'acc_(id|name|imap_username)'
 	 * @return string with htmlencoded angle brackets
 	 */
 	public static function identity_name($account)
 	{
-		$data = is_object($account) ? $account->params : $account;
-
-		if (strlen(trim($data['ident_realname'].$data['ident_org'])))
+		if (strlen(trim($account['ident_realname'].$account['ident_org'])))
 		{
-			$name = $data['ident_realname'].' '.$data['ident_org'];
+			$name = $account['ident_realname'].' '.$account['ident_org'];
 		}
 		else
 		{
-			$name = $data['acc_name'];
+			$name = $account['acc_name'];
 		}
-		if ($data['ident_email'])
+		if ($account['ident_email'])
 		{
-			$name .= ' &lt;'.$data['ident_email'].'&gt;';
+			$name .= ' &lt;'.$account['ident_email'].'&gt;';
 		}
 		else
 		{
-			if (!is_object($account) && !isset($data['acc_imap_username']) && $data['acc_id'])
+			if (is_array($account) && !isset($account['acc_imap_username']) && $account['acc_id'])
 			{
-				$data += emailadmin_credentials::read($data['acc_id']);
+				$account += emailadmin_credentials::read($account['acc_id']);
 
-				if (empty($data['acc_imap_username']))
+				if (empty($account['acc_imap_username']))
 				{
-					$data += emailadmin_credentials::from_session($data);
+					$account += emailadmin_credentials::from_session($account);
 				}
 			}
-			if (!empty($data['acc_imap_username']))
+			if (!empty($account['acc_imap_username']))
 			{
-				$name .= ' &lt;'.$data['acc_imap_username'].'&gt;';
+				$name .= ' &lt;'.$account['acc_imap_username'].'&gt;';
 			}
 		}
+		//error_log(__METHOD__."(".array2string($account).") returning ".array2string($name));
 		return $name;
+	}
+
+	/**
+	 * Magic method to convert account to a string: identity_name
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return self::identity_name($this);
 	}
 
 	/**
@@ -750,9 +755,9 @@ class emailadmin_account implements ArrayAccess
 
 	emailadmin_account::init_static();
 
-	foreach(emailadmin_account::search() as $acc_id => $acc_name)
+	foreach(emailadmin_account::search(true, false) as $acc_id => $account)
 	{
-		echo "<p>$acc_id: <a href='{$_SERVER['PHP_SELF']}?acc_id=$acc_id'>$acc_name</a></p>\n";
+		echo "<p>$acc_id: <a href='{$_SERVER['PHP_SELF']}?acc_id=$acc_id'>$account</a></p>\n";
 	}
 	if (isset($_GET['acc_id']) && (int)$_GET['acc_id'] > 0)
 	{
