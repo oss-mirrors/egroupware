@@ -364,32 +364,57 @@ class emailadmin_account implements ArrayAccess
 			throw new egw_exception_wrong_parameter('$account must be either an array or an emailadmin_account object!');
 		}
 
+		$access = false;
 		// emailadmin has all rights
 		if (isset($GLOBALS['egw_info']['user']['apps']['emailadmin']))
 		{
-			return true;
+			$access = true;
+			$reason = 'user is EMailAdmin';
 		}
-		// check if account is for current user, if not deny access
-		$memberships = $GLOBALS['egw']->accounts->memberships($GLOBALS['egw_info']['user']['account_id']);
-		$memberships[] = $GLOBALS['egw_info']['user']['account_id'];
-		$memberships[] = 0;
-		if (!array_intersect((array)$account['account_id'], $memberships))
+		else
 		{
-			return false;
-		}
+			// check if account is for current user, if not deny access
+			$memberships = $GLOBALS['egw']->accounts->memberships($GLOBALS['egw_info']['user']['account_id']);
+			$memberships[] = $GLOBALS['egw_info']['user']['account_id'];
+			$memberships[] = 0;
+			$memberships[] = '';	// edit uses '' for everyone
 
-		switch($rights)
-		{
-			case EGW_ACL_READ:
-				return true;
+			if (array_intersect((array)$account['account_id'], $memberships))
+			{
+				switch($rights)
+				{
+					case EGW_ACL_READ:
+						$access = true;
+						break;
 
-			case EGW_ACL_EDIT:
-			case EGW_ACL_DELETE:
-				// users have only edit/delete rights on accounts marked as user-editable AND belonging to them personally
-				return in_array($GLOBALS['egw_info']['user']['account_id'], (array)$account['account_id']) &&
-					$account['acc_user_editable'];
+					case EGW_ACL_EDIT:
+					case EGW_ACL_DELETE:
+						// users have only edit/delete rights on accounts marked as user-editable AND belonging to them personally
+						if (!$account['acc_user_editable'])
+						{
+							$access = false;
+							$reason = 'account not user editable';
+						}
+						elseif (!in_array($GLOBALS['egw_info']['user']['account_id'], (array)$account['account_id']))
+						{
+							$access = false;
+							$reason = 'no edit/delete for public (not personal) account';
+						}
+						else
+						{
+							$access = true;
+							$reason = 'user editable personal account';
+						}
+						break;
+				}
+			}
+			else
+			{
+				$reason = 'account not valid for current user'.array2string($account['account_id']);
+			}
 		}
-		return false;
+		//error_log(__METHOD__."($rights, $account[acc_id]: $account[acc_name]) returning ".array2string($access).' '.$reason);
+		return $access;
 	}
 
 	/**
