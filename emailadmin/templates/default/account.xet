@@ -10,7 +10,7 @@
 			</columns>
 			<rows>
 				<row>
-					<description value="Identity"/>
+					<description value="Identity" for="ident_id"/>
 					<menulist>
 						<menupopup options="Standard Identity"/>
 					</menulist>
@@ -25,7 +25,7 @@
 					<textbox id="ident_org" size="80" maxlength="128" span="all"/>
 				</row>
 				<row>
-					<description href="ident_email" value="EMail address"/>
+					<description value="EMail address" for="ident_email"/>
 					<url-email id="ident_email" options="80,128" span="all"/>
 				</row>
 				<row>
@@ -247,7 +247,7 @@
 					</hbox>
 				</row>
 				<row class="emailadmin_no_user" height="30">
-					<description href="ident_email" value="Valid for" for="account_id"/>
+					<description value="Valid for" for="account_id"/>
 					<hbox options="0,0">
 						<menulist>
 							<menupopup type="select-account" id="account_id" onchange="app.emailadmin.account_hide_not_applying" options="Everyone,both"/>
