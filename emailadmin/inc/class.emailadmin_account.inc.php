@@ -715,6 +715,22 @@ class emailadmin_account implements ArrayAccess
 	}
 
 	/**
+	 * Check if account is for multiple users
+	 *
+	 * account_id == 0 == everyone, is multiple too!
+	 *
+	 * @param array|emailadmin_account $account value for key account_id (can be an array too!)
+	 * @return boolean
+	 */
+	public static function is_multiple($account)
+	{
+		$is_multiple = !is_array($account['account_id']) ? !$account['account_id'] :
+			(count($account['account_id']) > 1 || !$account['account_id'][0]);
+		error_log(__METHOD__."(account_id=".array2string($account['account_id']).") returning ".array2string($is_multiple));
+		return $is_multiple;
+	}
+
+	/**
 	 * Magic method to convert account to a string: identity_name
 	 *
 	 * @return string

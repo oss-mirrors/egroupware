@@ -777,7 +777,8 @@ class emailadmin_wizard
 				}
 			}
 		}
-		if (!isset($content['account_id']))
+		// some defaults for new accounts
+		if (!isset($content['account_id']) || empty($content['acc_id']))
 		{
 			$content['account_id'] = array($GLOBALS['egw_info']['user']['account_id']);
 			$content['acc_user_editable'] = $content['acc_further_identities'] = true;
@@ -798,7 +799,7 @@ class emailadmin_wizard
 			);
 		}
 		// ensure correct values for single user mail accounts (we only hide them client-side)
-		if (count($content['account_id']) == 1 && !$content['account_id'][0])
+		if (!emailadmin_account::is_multiple($content))
 		{
 			$content['acc_imap_type'] = 'emailadmin_imap';
 			unset($content['acc_imap_login_type']);
