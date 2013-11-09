@@ -21,7 +21,10 @@
 				</row>
 				<row>
 					<description for="ident_realname" value="Your name"/>
-					<textbox id="ident_realname" size="80" maxlength="128" span="all"/>
+					<hbox options="0,0" span="all">
+						<textbox id="ident_realname" size="80" maxlength="128"/>
+						<buttononly label="Placeholders" id="button[placeholders]" onclick="window.open(egw::link('/index.php','menuaction=addressbook.addressbook_merge.show_replacements&amp;nonavbar=1'),'_blank','dependent=yes,width=860,height=620,scrollbars=yes,status=yes'); return false;" options="dialog_help"/>
+					</hbox>
 				</row>
 				<row>
 					<description for="ident_org" value="Organisation"/>

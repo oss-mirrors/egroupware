@@ -265,28 +265,70 @@ class emailadmin_account implements ArrayAccess
 	 * @param int|array|emailadmin_account $account=null default this account
 	 * @return Iterator ident_id => identity_name of identity
 	 */
-	public function identities($account=null)
+	public function identities($account=null, $replace_placeholders=true)
 	{
 		if (!$account) $account = $this;
 		$acc_id = is_scalar($account) ? $account : $account['acc_id'];
 
-		$rs = self::$db->select(self::IDENTITIES_TABLE, '*', array(
+		$rs = self::$db->select(self::IDENTITIES_TABLE, 'ident_id,ident_realname,ident_org,ident_email', array(
 			'acc_id' => $acc_id,
 			'account_id' => self::memberships(),
 		), __LINE__, __FILE__, false, 'ORDER BY account_id,ident_realname,ident_org,ident_email', self::APP);
 
-		return new egw_db_callback_iterator($rs, __CLASS__.'::identity_name', array(),
+		return new egw_db_callback_iterator($rs, __CLASS__.'::identity_name', array($replace_placeholders),
 			function($row) { return $row['ident_id'];});
+	}
+
+	/**
+	 * Replace placeholders like {{n_fn}} in an identity
+	 *
+	 * For full list of placeholders see addressbook_merge.
+	 *
+	 * @param array|emailadmin_account $identity=null
+	 * @param boolean $replace_placeholders=false should placeholders like {{n_fn}} be replaced
+	 * @return array with modified fields
+	 */
+	public /*static*/ function replace_placeholders($identity=null)
+	{
+		static $fields = array('ident_realname','ident_org','ident_email','ident_signature');
+
+		if (!$identity && isset($this)) $identity = $this;
+		if (!is_array($identity) && !is_a($identity, 'emailadmin_account'))
+		{
+			throw new egw_exception_wrong_parameter(__METHOD__."() requires an identity or account as first parameter!");
+		}
+		$to_replace = array();
+		foreach($fields as $name)
+		{
+			if (strpos($identity[$name], '{{') !== false || strpos($identity[$name], '$$') !== false)
+			{
+				$to_replace[$name] = $identity[$name];
+			}
+		}
+		if ($to_replace)
+		{
+			static $merge=null;
+			if (!isset($merge)) $merge = new addressbook_merge();
+			foreach($to_replace as $name => &$value)
+			{
+				$value = $merge->merge_string($value,
+					(array)accounts::id2name($GLOBALS['egw_info']['user']['account_id'], 'person_id'),
+					$err=null, $name == 'ident_signature' ? 'text/html' : 'text/plain');
+			}
+		}
+		//error_log(__METHOD__."(".array2string($identity).") returning ".array2string($to_replace));
+		return $to_replace;
 	}
 
 	/**
 	 * Read an identity
 	 *
 	 * @param int $ident_id
+	 * @param boolean $replace_placeholders=false should placeholders like {{n_fn}} be replaced
 	 * @return array
 	 * @throws egw_exception_not_found
 	 */
-	public static function read_identity($ident_id)
+	public static function read_identity($ident_id, $replace_placeholders=false)
 	{
 		if (!($data = self::$db->select(self::IDENTITIES_TABLE, '*', array(
 			'ident_id' => $ident_id,
@@ -294,6 +336,10 @@ class emailadmin_account implements ArrayAccess
 		), __LINE__, __FILE__, false, '', self::APP)->fetch()))
 		{
 			throw new egw_exception_not_found();
+		}
+		if ($replace_placeholders)
+		{
+			$data = array_merge($data, self::replace_placeholders($data));
 		}
 		return $data;
 	}
@@ -534,8 +580,27 @@ class emailadmin_account implements ArrayAccess
 				$data['account_id'][] = $row['account_id'];
 			}
 		}
+		$data = self::db2data($data);
 		//error_log(__METHOD__."($acc_id, $only_current_user) returning ".array2string($data));
 		return new emailadmin_account($data, $load_smtp_auth_session);
+	}
+
+	/**
+	 * Transform data returned from database (currently only fixing bool values)
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	protected static function db2data(array $data)
+	{
+		foreach(array('acc_sieve_enabled','acc_further_identities','acc_user_editable','acc_smtp_auth_session') as $name)
+		{
+			if (isset($data[$name]))
+			{
+				$data[$name] = self::$db->from_bool($data[$name]);
+			}
+		}
+		return $data;
 	}
 
 	/**
@@ -722,9 +787,10 @@ class emailadmin_account implements ArrayAccess
 	 * @param string $order_by='acc_name ASC'
 	 * @param int|boolean $offset=false offset or false to return all
 	 * @param int $num_rows=0 number of rows to return, 0=default from prefs (if $offset !== false)
+	 * @param boolean $replace_placeholders=true should placeholders like {{n_fn}} be replaced
 	 * @return Iterator with acc_id => acc_name or emailadmin_account objects
 	 */
-	public static function search($only_current_user=true, $just_name=true, $order_by=null,$offset=false, $num_rows=0)
+	public static function search($only_current_user=true, $just_name=true, $order_by=null,$offset=false, $num_rows=0, $replace_placeholders=true)
 	{
 		$where = array();
 		if ($only_current_user)
@@ -741,10 +807,10 @@ class emailadmin_account implements ArrayAccess
 
 		return new egw_db_callback_iterator($rs,
 			// process each row
-			function($row) use ($just_name)
+			function($row) use ($just_name, $replace_placeholders)
 			{
-				return $just_name ? self::identity_name($row) : new emailadmin_account($row);
-
+				$row = self::db2data($row);
+				return $just_name ? self::identity_name($row, $replace_placeholders) : new emailadmin_account($row);
 			}, array(),
 			// return acc_id as key
 			function($row)
@@ -757,10 +823,27 @@ class emailadmin_account implements ArrayAccess
 	 * build an identity name
 	 *
 	 * @param array|emailadmin_account $account object or values for keys 'ident_(realname|org|email)', 'acc_(id|name|imap_username)'
+	 * @param boolean $replace_placeholders=true should placeholders like {{n_fn}} be replaced
 	 * @return string with htmlencoded angle brackets
 	 */
-	public static function identity_name($account)
+	public static function identity_name($account, $replace_placeholders=true)
 	{
+		if ($replace_placeholders)
+		{
+			$data = array(
+				'ident_realname' => $account['ident_realname'],
+				'ident_org' => $account['ident_org'],
+				'ident_email' => $account['ident_email'],
+				'acc_name' => $account['acc_name'],
+				'acc_imap_username' => $account['acc_imap_username'],
+				'acc_imap_logintype' => $account['acc_imap_logintype'],
+				'acc_id' => $account['acc_id'],
+			);
+			unset($account);
+			//$start = microtime(true);
+			$account = array_merge($data, self::replace_placeholders($data));
+			//error_log(__METHOD__."() account=".array2string($account).' took '.number_format(microtime(true)-$start,3));
+		}
 		if (strlen(trim($account['ident_realname'].$account['ident_org'])))
 		{
 			$name = $account['ident_realname'].' '.$account['ident_org'];
@@ -779,7 +862,7 @@ class emailadmin_account implements ArrayAccess
 			{
 				$account += emailadmin_credentials::read($account['acc_id']);
 
-				if (empty($account['acc_imap_username']))
+				if (empty($account['acc_imap_username']) && $account['acc_imap_logintype'])
 				{
 					$account += emailadmin_credentials::from_session($account);
 				}
@@ -789,7 +872,7 @@ class emailadmin_account implements ArrayAccess
 				$name .= ' &lt;'.$account['acc_imap_username'].'&gt;';
 			}
 		}
-		//error_log(__METHOD__."(".array2string($account).") returning ".array2string($name));
+		//error_log(__METHOD__."(".array2string($account).", $replace_placeholders) returning ".array2string($name));
 		return $name;
 	}
 
@@ -805,7 +888,7 @@ class emailadmin_account implements ArrayAccess
 	{
 		$is_multiple = !is_array($account['account_id']) ? !$account['account_id'] :
 			(count($account['account_id']) > 1 || !$account['account_id'][0]);
-		error_log(__METHOD__."(account_id=".array2string($account['account_id']).") returning ".array2string($is_multiple));
+		//error_log(__METHOD__."(account_id=".array2string($account['account_id']).") returning ".array2string($is_multiple));
 		return $is_multiple;
 	}
 

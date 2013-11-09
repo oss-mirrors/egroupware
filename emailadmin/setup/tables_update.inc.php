@@ -611,6 +611,7 @@ function emailadmin_upgrade1_9_010()
 					'acc_id' => $fm_id2acc_id[$row['fm_accountid']],
 				), __LINE__, __FILE__, false, '', 'emailadmin')->fetch()))
 			{
+				// todo: check emailadmin profiles
 				continue;	// no std identity for given account found --> ignore signature
 			}
 			$identity = array(
@@ -619,6 +620,7 @@ function emailadmin_upgrade1_9_010()
 				'ident_email' => $std_identity['ident_email'],
 				'ident_org' => $std_identity['ident_org'],
 				'ident_signature' => $row['fm_signature'],
+				'account_id' => $row['fm_accountid'],
 			);
 			$db->insert('egw_ea_identities', $identity, false, __LINE__, __FILE__, 'emailadmin');
 		}
