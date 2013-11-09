@@ -230,7 +230,7 @@ class emailadmin_wizard
 
 				$content['acc_imap_ssl'] = (int)self::$ssl2type[$ssl];
 
-				unset($e);
+				$e = null;
 				try {
 					$content['output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $ssl connection to $host:$port ...\n";
 					$content['acc_imap_port'] = $port;
@@ -336,7 +336,7 @@ class emailadmin_wizard
 		}
 
 		$tpl = new etemplate_new('emailadmin.wizard.folder');
-		$tpl->exec(static::APP_CLASS.'folder', $content, $sel_options, $readonlys, $content);
+		$tpl->exec(static::APP_CLASS.'folder', $content, $sel_options, array(), $content);
 	}
 
 	/**
@@ -476,7 +476,7 @@ class emailadmin_wizard
 					$content['acc_sieve_ssl'] = $ssl;
 					$ssl_label = self::$ssl_types[$ssl];
 
-					unset($e);
+					$e = null;
 					try {
 						$content['sieve_output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $ssl_label connection to $content[acc_sieve_host]:$port ...\n";
 						$content['acc_sieve_port'] = $port;
@@ -664,7 +664,7 @@ class emailadmin_wizard
 
 					$content['acc_smtp_ssl'] = (int)self::$ssl2type[$ssl];
 
-					unset($e);
+					$e = null;
 					try {
 						$content['smtp_output'] .= "\n".egw_time::to('now', 'H:i:s').": Trying $ssl connection to $host:$port ...\n";
 						$content['acc_smtp_port'] = $port;
@@ -771,9 +771,17 @@ class emailadmin_wizard
 					$account = emailadmin_account::read($_GET['acc_id'], $this->is_admin, false);
 					$content = $account->params;
 					self::fix_account_id_0($content['account_id']);
+
+					// read identities (of current user) and mark std identity
+					$content['identities'] = iterator_to_array($account->identities());
+					$content['std_ident_id'] = $content['ident_id'];
+					$content[$content['std_ident_id']] = lang('Standard identity');
+				}
+				catch(egw_exception_not_found $e) {
+					egw_framework::window_close(lang('Account not found!'));
 				}
 				catch(Exception $e) {
-					egw_framework::window_close(lang('Account not found!'));//.$e->getMessage().' ('.get_class($e).': '.$e->getCode().')');
+					egw_framework::window_close($e->getMessage().' ('.get_class($e).': '.$e->getCode().')');
 				}
 			}
 		}
@@ -782,6 +790,7 @@ class emailadmin_wizard
 		{
 			$content['account_id'] = array($GLOBALS['egw_info']['user']['account_id']);
 			$content['acc_user_editable'] = $content['acc_further_identities'] = true;
+			$readonlys['ident_id'] = true;	// need to create standard identity first
 		}
 		if (empty($content['acc_name']))
 		{
@@ -806,6 +815,8 @@ class emailadmin_wizard
 			$content['acc_smtp_type'] = 'emailadmin_smtp';
 			unset($content['acc_smtp_auth_session']);
 		}
+		$edit_access = emailadmin_account::check_access(EGW_ACL_EDIT, $content);
+
 		if (isset($content['button']))
 		{
 			list($button) = each($content['button']);
@@ -821,13 +832,42 @@ class emailadmin_wizard
 					// otherwise start with first step
 					return $this->autoconfig($content);
 
+				case 'delete_identity':
+					// delete none-standard identity of current user
+					if ($content['acc_further_identities'] && $content['ident_id'] > 0 &&
+						$content['std_ident_id'] != $content['ident_id'])
+					{
+						emailadmin_account::delete_identity($content['ident_id']);
+						$msg = lang('Identity deleted');
+						unset($content['identities'][$content['ident_id']]);
+						$content['ident_id'] = $content['std_ident_id'];
+					}
+					break;
+
 				case 'save':
 				case 'apply':
 					try {
-						self::fix_account_id_0($content['account_id'], true);
-						$content = emailadmin_account::write($content);
-						self::fix_account_id_0($content['account_id']);
-						$msg = lang('Account saved.');
+						// save none-standard identity for current user
+						if ($content['acc_further_identities'] && $content['std_ident_id'] != $content['ident_id'])
+						{
+							$content['ident_id'] = emailadmin_account::save_identity(array(
+								'account_id' => $GLOBALS['egw_info']['user']['account_id'],
+							)+$content);
+							$content['identities'][$content['ident_id']] = emailadmin_account::identity_name($content);
+							$msg = lang('Identity saved.');
+							if ($edit_access) $msg .= ' '.lang('Switch back to standard identity to save account.');
+						}
+						elseif ($edit_access)
+						{
+							self::fix_account_id_0($content['account_id'], true);
+							$content = emailadmin_account::write($content);
+							self::fix_account_id_0($content['account_id']);
+							$msg = lang('Account saved.');
+						}
+						else
+						{
+							$msg = lang('Permission denied!');
+						}
 					}
 					catch (Exception $e) {
 						$msg = lang('Error saving account!')."\n".$e->getMessage();
@@ -860,7 +900,7 @@ class emailadmin_wizard
 			!emailadmin_account::check_access(EGW_ACL_DELETE, $content);
 
 		// if no edit access, make whole dialog readonly
-		if (!emailadmin_account::check_access(EGW_ACL_EDIT, $content))
+		if (!$edit_access)
 		{
 			$readonlys['__ALL__'] = true;
 			$readonlys['button[cancel]'] = false;
@@ -890,6 +930,46 @@ class emailadmin_wizard
 		$sel_options['acc_imap_type'] = emailadmin_bo::getIMAPServerTypes(false);
 		$sel_options['acc_smtp_type'] = emailadmin_bo::getSMTPServerTypes(false);
 		$sel_options['acc_imap_logintype'] = self::$login_types;
+		$sel_options['ident_id'] = $content['identities'];
+
+		// user is allowed to create or edit further identities
+		if ($edit_access || $content['acc_further_identities'])
+		{
+			$sel_options['ident_id']['new'] = lang('Create new identity');
+			$readonlys['ident_id'] = false;
+
+			// if no edit-access and identity is not standard identity --> allow to edit identity
+			if (!$edit_access && $content['ident_id'] != $content['std_ident_id'])
+			{
+				$readonlys += array(
+					'button[save]' => false, 'button[apply]' => false,
+					'ident_realname' => false, 'ident_email' => false,
+					'ident_org' => false, 'ident_signature' => false,
+				);
+			}
+			if ($content['ident_id'] != $content['old_ident_id'] &&
+				($content['old_ident_id'] || $content['ident_id'] != $content['std_ident_id']))
+			{
+				if ($content['ident_id'] > 0)
+				{
+					$identity = emailadmin_account::read_identity($content['ident_id']);
+					unset($identity['account_id']);
+					$content = array_merge($content, $identity);
+				}
+				else
+				{
+					$content['ident_realname'] = $content['ident_email'] =
+						$content['ident_org'] = $content['ident_signature'] = '';
+				}
+				if (empty($content['msg']) && $edit_access)
+				{
+					$content['msg'] = lang('Switch back to standard identity to save other account data.');
+				}
+				$content['old_ident_id'] = $content['ident_id'];
+			}
+		}
+		// only allow to delete further identities, not a standard identity
+		$readonlys['button[delete_identity]'] = !($content['ident_id'] > 0 && $content['ident_id'] != $content['std_ident_id']);
 
 		$tpl = new etemplate_new('emailadmin.account');
 		if (count($content['account_id']) > 1)
@@ -995,6 +1075,7 @@ class emailadmin_wizard
 		catch(Exception $e) {
 			// ignore own not-found exception or xml parsing execptions
 			$provider = array();
+			unset($e);
 		}
 		//error_log(__METHOD__."('$email') returning ".array2string($provider));
 		return $provider;
@@ -1029,7 +1110,7 @@ class emailadmin_wizard
 		}
 
 		// verify hosts in dns
-		foreach($hosts as $host => $data)
+		foreach(array_keys($hosts) as $host)
 		{
 			if (!dns_get_record($host, DNS_A)) unset($hosts[$host]);
 		}

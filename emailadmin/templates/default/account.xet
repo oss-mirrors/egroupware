@@ -11,9 +11,12 @@
 			<rows>
 				<row>
 					<description value="Identity" for="ident_id"/>
-					<menulist>
-						<menupopup options="Standard Identity"/>
-					</menulist>
+					<hbox options="0,0">
+						<menulist>
+							<menupopup id="ident_id" no_lang="1" onchange="1"/>
+						</menulist>
+						<button label="Delete identity" id="button[delete_identity]" onclick="return confirm('Delete identity');" image="delete"/>
+					</hbox>
 					<checkbox label="allow users to create further identities" id="acc_further_identities" class="emailadmin_no_user"/>
 				</row>
 				<row>

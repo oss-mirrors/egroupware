@@ -195,6 +195,7 @@ class emailadmin_credentials
 			error_log(__METHOD__."($acc_id, '$username', \$password, $type, $account_id, ".array2string($cred_id).") not storing session credentials!");
 			return;	// do NOT store credentials from session of current user!
 		}
+		$pw_enc = self::CLEARTEXT;
 		$data = array(
 			'acc_id' => $acc_id,
 			'account_id' => $account_id,
@@ -316,6 +317,7 @@ class emailadmin_credentials
 	{
 		if (empty($data['old_passwd'])) return;
 
+		$old_mcrypt = null;
 		foreach(self::$db->select(self::TABLE, self::TABLE.'.*', array(
 			'account_id' => $data['account_id']
 		),__LINE__, __FILE__, false, '', 'emailadmin', 0, self::USER_EDITABLE_JOIN) as $row)
@@ -364,9 +366,9 @@ class emailadmin_credentials
 			}
 			elseif ($user)
 			{
-				$key = egw_cache::getSession('phpgwapi', 'password');
-				if (empty($key)) return false;
-				$key = base64_decode($key);
+				$session_key = egw_cache::getSession('phpgwapi', 'password');
+				if (empty($session_key)) return false;
+				$key = base64_decode($session_key);
 			}
 			else
 			{

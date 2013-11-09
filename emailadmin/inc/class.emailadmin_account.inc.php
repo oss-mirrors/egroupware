@@ -258,12 +258,103 @@ class emailadmin_account implements ArrayAccess
 	}
 
 	/**
-	 * Get identities object
+	 * Get identities of given or current account (for current user!)
 	 *
-	 * @return identities connected to a server object
+	 * Standard identity is always first (as it has account_id=0 and we order account_id ASC).
+	 *
+	 * @param int|array|emailadmin_account $account=null default this account
+	 * @return Iterator ident_id => identity_name of identity
 	 */
-	public function identities()
+	public function identities($account=null)
 	{
+		if (!$account) $account = $this;
+		$acc_id = is_scalar($account) ? $account : $account['acc_id'];
+
+		$rs = self::$db->select(self::IDENTITIES_TABLE, '*', array(
+			'acc_id' => $acc_id,
+			'account_id' => self::memberships(),
+		), __LINE__, __FILE__, false, 'ORDER BY account_id,ident_realname,ident_org,ident_email', self::APP);
+
+		return new egw_db_callback_iterator($rs, __CLASS__.'::identity_name', array(),
+			function($row) { return $row['ident_id'];});
+	}
+
+	/**
+	 * Read an identity
+	 *
+	 * @param int $ident_id
+	 * @return array
+	 * @throws egw_exception_not_found
+	 */
+	public static function read_identity($ident_id)
+	{
+		if (!($data = self::$db->select(self::IDENTITIES_TABLE, '*', array(
+			'ident_id' => $ident_id,
+			'account_id' => self::memberships(),
+		), __LINE__, __FILE__, false, '', self::APP)->fetch()))
+		{
+			throw new egw_exception_not_found();
+		}
+		return $data;
+	}
+
+	/**
+	 * Store an identity in database
+	 *
+	 * Can be called static, if identity is given as parameter
+	 *
+	 * @param array|emailadmin_account $identity=null default standard identity of current account
+	 * @return int ident_id of new/updated identity
+	 */
+	public /*static*/ function save_identity($identity=null)
+	{
+		if (!$identity && isset($this)) $identity = $this;
+		if (!is_array($identity) && !is_a($identity, 'emailadmin_account'))
+		{
+			throw new egw_exception_wrong_parameter(__METHOD__."() requires an identity or account as first parameter!");
+		}
+		if (!($identity['acc_id'] > 0))
+		{
+			throw new egw_exception_wrong_parameter(__METHOD__."() no account / acc_id specified in identity!");
+		}
+		$data = array(
+			'acc_id' => $identity['acc_id'],
+			'ident_realname' => $identity['ident_realname'],
+			'ident_org' => $identity['ident_org'],
+			'ident_email' => $identity['ident_email'],
+			'ident_signature' => $identity['ident_signature'],
+			'account_id' => $identity['account_id'],
+		);
+		if ($identity['ident_id'] > 0)
+		{
+			self::$db->update(self::IDENTITIES_TABLE, $data, array(
+				'ident_id' => $identity['ident_id'],
+			), __LINE__, __FILE__, self::APP);
+
+			return $identity['ident_id'];
+		}
+		self::$db->insert(self::IDENTITIES_TABLE, $data, false, __LINE__, __FILE__, self::APP);
+
+		return self::$db->get_last_insert_id(self::IDENTITIES_TABLE, 'ident_id');
+	}
+
+	/**
+	 * Delete given identity
+	 *
+	 * @param int $ident_id
+	 * @return int number off affected rows
+	 * @throws egw_exception_wrong_parameter if identity is standard identity of existing account
+	 */
+	public static function delete_identity($ident_id)
+	{
+		if (($acc_id = self::$db->select(self::TABLE, 'acc_id', array('ident_id' => $ident_id),
+			__LINE__, __FILE__, 0, '', self::APP, 1)->fetchColumn()))
+		{
+			throw new egw_exception_wrong_parameter("Can not delete identity #$ident_id used as standard identity in account #$acc_id!");
+		}
+		self::$db->delete(self::IDENTITIES_TABLE, array('ident_id' => $ident_id), __LINE__, __FILE__, self::APP);
+
+		return self::$db->affected_rows();
 	}
 
 	/**
@@ -305,7 +396,7 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public function offsetExists($offset)
 	{
-		$val = $this->__get($name);
+		$val = $this->__get($offset);
 
 		return isset($val);
 	}
@@ -321,7 +412,7 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public function offsetSet($offset, $value)
 	{
-		throw new egw_exception_wrong_parameter('Now write access through ArrayAccess interface of emailadmin_account!');
+		throw new egw_exception_wrong_parameter(__METHOD__."($offset, $value) No write access through ArrayAccess interface of emailadmin_account!");
 	}
 
 	/**
@@ -334,7 +425,7 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public function offsetUnset($offset)
 	{
-		throw new egw_exception_wrong_parameter('Now write access through ArrayAccess interface of emailadmin_account!');
+		throw new egw_exception_wrong_parameter(__METHOD__."($offset) No write access through ArrayAccess interface of emailadmin_account!");
 	}
 
 	/**
@@ -363,9 +454,7 @@ class emailadmin_account implements ArrayAccess
 		else
 		{
 			// check if account is for current user, if not deny access
-			$memberships = $GLOBALS['egw']->accounts->memberships($GLOBALS['egw_info']['user']['account_id']);
-			$memberships[] = $GLOBALS['egw_info']['user']['account_id'];
-			$memberships[] = 0;
+			$memberships = self::memberships();
 			$memberships[] = '';	// edit uses '' for everyone
 
 			if (array_intersect((array)$account['account_id'], $memberships))
@@ -417,14 +506,10 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public static function read($acc_id, $only_current_user=true, $load_smtp_auth_session=true)
 	{
-		$memberships = $GLOBALS['egw']->accounts->memberships($GLOBALS['egw_info']['user']['account_id'], true);
-		$memberships[] = $GLOBALS['egw_info']['user']['account_id'];
-		$memberships[] = 0;	// marks accounts valid for everyone
-
 		$where = array(self::TABLE.'.acc_id='.(int)$acc_id);
 		if ($only_current_user)
 		{
-			$where[] = self::$db->expression(self::VALID_TABLE, self::VALID_TABLE.'.', array('account_id' => $memberships));
+			$where[] = self::$db->expression(self::VALID_TABLE, self::VALID_TABLE.'.', array('account_id' => self::memberships()));
 		}
 		$cols = self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*';
 		if (self::$valid_account_id_sql)
@@ -553,11 +638,8 @@ class emailadmin_account implements ArrayAccess
 			elseif (!in_array($data[$name], $data['account_id']))
 			{
 				// check further with memberships and 0=all
-				$memberships = $GLOBALS['egw']->accounts->memberships($data[$name]);
-				$memberships[] = $data[$name];
-				$memberships[] = '0';
 				// if still not in, update with new account_id
-				if (!array_intersect($memberships, $data['account_id']))
+				if (!array_intersect(self::memberships(), $data['account_id']))
 				{
 					$data[$name] = count($data['account_id']) == 1 ? $data['account_id'][0] : 0;
 				}
@@ -647,10 +729,7 @@ class emailadmin_account implements ArrayAccess
 		$where = array();
 		if ($only_current_user)
 		{
-			$memberships = $GLOBALS['egw']->accounts->memberships($GLOBALS['egw_info']['user']['account_id'], true);
-			$memberships[] = $GLOBALS['egw_info']['user']['account_id'];
-			$memberships[] = 0;	// marks accounts valid for everyone
-			$where[] = self::$db->expression(self::VALID_TABLE, self::VALID_TABLE.'.', array('account_id' => $memberships));
+			$where[] = self::$db->expression(self::VALID_TABLE, self::VALID_TABLE.'.', array('account_id' => self::memberships()));
 		}
 		if (empty($order_by) || !preg_match('/^[a-z_]+ (ASC|DESC)$/i', $order_by))
 		{
@@ -738,6 +817,23 @@ class emailadmin_account implements ArrayAccess
 	public function __toString()
 	{
 		return self::identity_name($this);
+	}
+
+	/**
+	 * Get memberships of current or given user incl. our 0=Everyone
+	 *
+	 * @param type $user
+	 * @return array
+	 */
+	protected static function memberships($user=null)
+	{
+		if (!$user) $user = $GLOBALS['egw_info']['user']['account_id'];
+
+		$memberships = $GLOBALS['egw']->accounts->memberships($user, true);
+		$memberships[] = $user;
+		$memberships[] = 0;	// marks accounts valid for everyone
+
+		return $memberships;
 	}
 
 	/**
