@@ -588,10 +588,13 @@ class emailadmin_account implements ArrayAccess
 	/**
 	 * Transform data returned from database (currently only fixing bool values)
 	 *
+	 * Can NOT be protected, as PHP 5.3 does not allow to use self::db2data in
+	 * closure of egw_db_callback_iterator in search! Works from 5.4 on :(
+	 *
 	 * @param array $data
 	 * @return array
 	 */
-	protected static function db2data(array $data)
+	/*protected*/ static function db2data(array $data)
 	{
 		foreach(array('acc_sieve_enabled','acc_further_identities','acc_user_editable','acc_smtp_auth_session') as $name)
 		{
@@ -809,8 +812,10 @@ class emailadmin_account implements ArrayAccess
 			// process each row
 			function($row) use ($just_name, $replace_placeholders)
 			{
-				$row = self::db2data($row);
-				return $just_name ? self::identity_name($row, $replace_placeholders) : new emailadmin_account($row);
+				// Can NOT be self::db2data, as PHP 5.3 does not allow to use self in
+				// closure "no class scope". Works from 5.4 on :(
+				$row = emailadmin_account::db2data($row);
+				return $just_name ? emailadmin_account::identity_name($row, $replace_placeholders) : new emailadmin_account($row);
 			}, array(),
 			// return acc_id as key
 			function($row)
