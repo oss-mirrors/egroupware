@@ -1079,35 +1079,29 @@ class emailadmin_bo extends so_sql
 	/**
 	 * Get ID of default new account profile
 	 *
-	 * ID is negative for FMail, which used positive ID's for user profiles!
-	 *
 	 * @return int
 	 */
 	static function getDefaultAccID()
 	{
-		$icServers = emailadmin_account::search($only_current_user=false, $just_name=false, $order_by=null);
-		$_profileIDs = array_keys($icServers);
-		$defaultProfileID = $_profileIDs[0];
-		$defaultProfile = $icServers[$defaultProfileID];
-
-		return $defaultProfile ? $defaultProfile->acc_id : null;
+		foreach(emailadmin_account::search($only_current_user=true, $just_name=true) as $acc_id => $name)
+		{
+			return $acc_id;
+		}
+		return null;
 	}
 
 	/**
 	 * Get ID of User specific default new account profile
 	 *
-	 * ID is negative for FMail, which used positive ID's for user profiles!
-	 *
 	 * @return int
 	 */
 	static function getUserDefaultAccID()
 	{
-		$icServers = emailadmin_account::search($only_current_user=true, $just_name=false, $order_by=null);
-		$_profileIDs = array_keys($icServers);
-		$defaultProfileID = $_profileIDs[0];
-		$defaultProfile = $icServers[$defaultProfileID];
-		
-		return $defaultProfile ? $defaultProfile->acc_id : null;
+		foreach(emailadmin_account::search($only_current_user=true, $just_name=true) as $acc_id => $name)
+		{
+			return $acc_id;
+		}
+		return null;
 	}
 
 }
