@@ -656,7 +656,7 @@ class emailadmin_account implements ArrayAccess
 		// store identity
 		$iwhere = $data['ident_id'] ? array('ident_id' => $data['ident_id']) : false;
 		self::$db->insert(self::IDENTITIES_TABLE, $data, $iwhere, __LINE__, __FILE__, self::APP);
-		if (!$data['ident_id'])
+		if (!($data['ident_id'] > 0))
 		{
 			$data['ident_id'] = self::$db->get_last_insert_id(self::IDENTITIES_TABLE, 'ident_id');
 			self::$db->update(self::TABLE, array(

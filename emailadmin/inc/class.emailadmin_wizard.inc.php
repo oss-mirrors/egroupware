@@ -775,7 +775,7 @@ class emailadmin_wizard
 					// read identities (of current user) and mark std identity
 					$content['identities'] = iterator_to_array($account->identities());
 					$content['std_ident_id'] = $content['ident_id'];
-					$content[$content['std_ident_id']] = lang('Standard identity');
+					$content['identities'][$content['std_ident_id']] = lang('Standard identity');
 				}
 				catch(egw_exception_not_found $e) {
 					egw_framework::window_close(lang('Account not found!'));
@@ -848,7 +848,8 @@ class emailadmin_wizard
 				case 'apply':
 					try {
 						// save none-standard identity for current user
-						if ($content['acc_further_identities'] && $content['std_ident_id'] != $content['ident_id'])
+						if ($content['acc_id'] && $content['acc_further_identities'] &&
+							$content['std_ident_id'] != $content['ident_id'])
 						{
 							$content['ident_id'] = emailadmin_account::save_identity(array(
 								'account_id' => $GLOBALS['egw_info']['user']['account_id'],
@@ -859,10 +860,18 @@ class emailadmin_wizard
 						}
 						elseif ($edit_access)
 						{
+							$new_account = !($content['acc_id'] > 0);
 							self::fix_account_id_0($content['account_id'], true);
 							$content = emailadmin_account::write($content);
 							self::fix_account_id_0($content['account_id']);
 							$msg = lang('Account saved.');
+							// add new std identity entry
+							if ($new_account)
+							{
+								$content['std_ident_id'] = $content['ident_id'];
+								$content['identities'] = array(
+									$content['std_ident_id'] => lang('Standard identity'));
+							}
 						}
 						else
 						{
