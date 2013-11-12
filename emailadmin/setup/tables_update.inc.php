@@ -491,7 +491,7 @@ function emailadmin_upgrade1_9_008()
 			'ident_email' => array('type' => 'varchar','precision' => '128','comment' => 'email address'),
 			'ident_org' => array('type' => 'varchar','precision' => '128','comment' => 'organisation'),
 			'ident_signature' => array('type' => 'text','comment' => 'signature text'),
-			'account_id',array('type' => 'int','meta' => 'account','precision' => '4','nullable' => False,'default' => '0','comment' => '0=all users of give mail account')
+			'account_id' => array('type' => 'int','meta' => 'account','precision' => '4','nullable' => False,'default' => '0','comment' => '0=all users of give mail account')
 		),
 		'pk' => array('ident_id'),
 		'fk' => array(),
