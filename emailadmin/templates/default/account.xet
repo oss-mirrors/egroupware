@@ -287,7 +287,7 @@
 						<button statustext="Use wizard to detect or verify configuration" label="Wizard" id="button[wizard]"/>
 						<button label="Cancel" id="button[cancel]" onclick="window.close();"/>
 					</hbox>
-					<button align="right" label="Delete" id="button[delete]"/>
+					<button align="right" label="Delete" id="button[delete]" onclick="return confirm('Delete this account');"/>
 				</row>
 			</rows>
 		</grid>

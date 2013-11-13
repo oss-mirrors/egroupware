@@ -30,6 +30,7 @@ cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmi
 cyrus imap server	emailadmin	de	Cyrus IMAP-Server
 cyrus imap server administration	emailadmin	de	Cyrus IMAP-Server Administration
 default	emailadmin	de	Vorgabe
+delete this account	emailadmin	de	Diese Konto löschen
 deliver extern	emailadmin	de	extern ausliefern
 do not validate certificate	emailadmin	de	Zertifikat nicht überprüfen
 do you really want to delete this profile	emailadmin	de	Wollen Sie dieses Profil wirklich löschen
