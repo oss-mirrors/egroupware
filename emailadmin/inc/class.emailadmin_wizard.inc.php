@@ -58,6 +58,13 @@ class emailadmin_wizard
 	const SSL_VERIFY = emailadmin_account::SSL_VERIFY;
 
 	/**
+	 * Log exception including trace to error-log, instead of just displaying the message.
+	 *
+	 * @var boolean
+	 */
+	public static $debug = false;
+
+	/**
 	 * Methods callable via menuaction
 	 *
 	 * @var array
@@ -268,10 +275,12 @@ class emailadmin_wizard
 							$content['output'] .= "\n".get_class($e).': '.$e->getMessage().' ('.$e->getCode().')'."\n";
 							//$content['output'] .= $e->getTraceAsString()."\n";
 					}
+					if (self::$debug) _egw_log_exception($e);
 				}
 				catch(Exception $e) {
 					$content['output'] .= "\n".get_class($e).': '.$e->getMessage().' ('.$e->getCode().')'."\n";
 					//$content['output'] .= $e->getTraceAsString()."\n";
+					if (self::$debug) _egw_log_exception($e);
 				}
 			}
 		}
@@ -336,6 +345,7 @@ class emailadmin_wizard
 		}
 		catch(Exception $e) {
 			$content['msg'] = $e->getMessage();
+			if (self::$debug) _egw_log_exception($e);
 		}
 
 		$tpl = new etemplate_new('emailadmin.wizard.folder');
@@ -537,6 +547,7 @@ class emailadmin_wizard
 								$content['sieve_output'] .= $e->getTraceAsString()."\n";
 								break;
 						}
+						if (self::$debug) _egw_log_exception($e);
 					}
 				}
 			}
@@ -727,10 +738,12 @@ class emailadmin_wizard
 								$content['smtp_output'] .= "\n".$e->getMessage().' ('.$e->getCode().')'."\n";
 								break;
 						}
+						if (self::$debug) _egw_log_exception($e);
 					}
 					catch(Exception $e) {
 						$content['smtp_output'] .= "\n".get_class($e).': '.$e->getMessage().' ('.$e->getCode().')'."\n";
 						//$content['smtp_output'] .= $e->getTraceAsString()."\n";
+						if (self::$debug) _egw_log_exception($e);
 					}
 				}
 			}
@@ -782,9 +795,11 @@ class emailadmin_wizard
 				}
 				catch(egw_exception_not_found $e) {
 					egw_framework::window_close(lang('Account not found!'));
+					if (self::$debug) _egw_log_exception($e);
 				}
 				catch(Exception $e) {
 					egw_framework::window_close($e->getMessage().' ('.get_class($e).': '.$e->getCode().')');
+					if (self::$debug) _egw_log_exception($e);
 				}
 			}
 		}
