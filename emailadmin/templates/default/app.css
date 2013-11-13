@@ -45,3 +45,8 @@ span.emailadmin_diagnostic,.emailadmin_diagnostic {
   height: auto;
   padding-left: 5px;
 }
+#emailadmin-account_button\[placeholders\] {
+  height: 16px;
+  padding-left: 5px;
+  vertical-align: middle;
+}
