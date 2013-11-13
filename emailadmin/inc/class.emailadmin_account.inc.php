@@ -415,12 +415,30 @@ class emailadmin_account implements ArrayAccess
 		{
 			case 'acc_imap_administration':	// no longer stored in database
 				return !empty($this->params['acc_imap_admin_username']);
-		}
-		if (isset($this->$name))
-		{
-			return $this->$name;
+
+			case 'params':
+				return $this->params;
 		}
 		return $this->params[$name];
+	}
+
+	/**
+	 * Give read access to protected parameters in $this->params
+	 *
+	 * @param type $name
+	 * @return mixed
+	 */
+	public function __isset($name)
+	{
+		switch($name)
+		{
+			case 'acc_imap_administration':	// no longer stored in database
+				return true;
+
+			case 'params':
+				return isset($this->params);
+		}
+		return isset($this->params[$name]);
 	}
 
 	/**
@@ -442,9 +460,7 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public function offsetExists($offset)
 	{
-		$val = $this->__get($offset);
-
-		return isset($val);
+		return $this->__isset($offset);
 	}
 
 	/**
@@ -565,7 +581,7 @@ class emailadmin_account implements ArrayAccess
 		if (!($data = self::$db->select(self::TABLE, $cols, $where, __LINE__, __FILE__,
 			false, 'GROUP BY '.self::TABLE.'.acc_id', self::APP, 0, self::IDENTITY_JOIN.' '.self::VALID_JOIN)->fetch()))
 		{
-			throw new egw_exception_not_found(lang('Account not found!').' data='.array2string($data));
+			throw new egw_exception_not_found(lang('Account not found!').' (acc_id='.array2string($acc_id).')');
 		}
 		if (self::$valid_account_id_sql)
 		{
