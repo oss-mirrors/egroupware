@@ -127,6 +127,9 @@ class emailadmin_wizard
 	public function __construct()
 	{
 		$this->is_admin = isset($GLOBALS['egw_info']['user']['apps']['emailadmin']);
+
+		// Horde use locale for translation of error messages
+		common::setlocale(LC_MESSAGES);
 	}
 
 	/**

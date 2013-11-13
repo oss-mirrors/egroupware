@@ -147,6 +147,9 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				$secure = 'tlsv1';	// since Horde_Imap_Client-1.16.0 requiring Horde_Socket_Client-1.1.0
 				break;
 		}
+		// Horde use locale for translation of error messages
+		common::setlocale(LC_MESSAGES);
+
 		parent::__construct(array(
 			'username' => $this->params[$_adminConnection ? 'acc_imap_admin_username' : 'acc_imap_username'],
 			'password' => $this->params[$_adminConnection ? 'acc_imap_admin_password' : 'acc_imap_password'],
