@@ -155,6 +155,25 @@ class emailadmin_account implements ArrayAccess
 	protected static $valid_account_id_sql;
 
 	/**
+	 * Instanciated account object by acc_id, read acts as singelton
+	 *
+	 * @var array
+	 */
+	protected static $instances = array();
+
+	/**
+	 * Cache for emailadmin_account::read() to minimize database access
+	 *
+	 * @var array
+	 */
+	protected static $cache = array();
+
+	/**
+	 * Cache for emailadmin_account::search() to minimize database access
+	 */
+	protected static $search_cache = array();
+
+	/**
 	 * Constructor
 	 *
 	 * @param array $params
@@ -568,6 +587,24 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public static function read($acc_id, $only_current_user=true, $load_smtp_auth_session=true)
 	{
+		error_log(__METHOD__."($acc_id, $only_current_user, $load_smtp_auth_session)");
+		// some caching, but only for regular usage/users
+		if ($only_current_user && $load_smtp_auth_session)
+		{
+			// act as singleton: if we already have an instance, return it
+			if (isset(self::$instances[$acc_id]))
+			{
+				error_log(__METHOD__."($acc_id) returned existing instance");
+				return self::$instances[$acc_id];
+			}
+			// not yet an instance, create one
+			if (isset(self::$cache[$acc_id]))
+			{
+				error_log(__METHOD__."($acc_id) created instance from cached data");
+				return self::$instances[$acc_id] = new emailadmin_account(self::$cache[$acc_id]);
+			}
+			$data =& self::$cache[$acc_id];
+		}
 		$where = array(self::TABLE.'.acc_id='.(int)$acc_id);
 		if ($only_current_user)
 		{
@@ -583,11 +620,7 @@ class emailadmin_account implements ArrayAccess
 		{
 			throw new egw_exception_not_found(lang('Account not found!').' (acc_id='.array2string($acc_id).')');
 		}
-		if (self::$valid_account_id_sql)
-		{
-			$data['account_id'] = explode(',', $data['account_id']);
-		}
-		else
+		if (!self::$valid_account_id_sql)
 		{
 			$data['account_id'] = array();
 			foreach(self::$db->select(self::VALID_TABLE, 'account_id', array('acc_id' => $acc_id),
@@ -598,19 +631,22 @@ class emailadmin_account implements ArrayAccess
 		}
 		$data = self::db2data($data);
 		//error_log(__METHOD__."($acc_id, $only_current_user) returning ".array2string($data));
-		return new emailadmin_account($data, $load_smtp_auth_session);
+
+		if ($only_current_user && $load_smtp_auth_session)
+		{
+			error_log(__METHOD__."($acc_id) creating instance and caching data read from db");
+			$ret =& self::$instances[$acc_id];
+		}
+		return $ret = new emailadmin_account($data, $load_smtp_auth_session);
 	}
 
 	/**
 	 * Transform data returned from database (currently only fixing bool values)
 	 *
-	 * Can NOT be protected, as PHP 5.3 does not allow to use self::db2data in
-	 * closure of egw_db_callback_iterator in search! Works from 5.4 on :(
-	 *
 	 * @param array $data
 	 * @return array
 	 */
-	/*protected*/ static function db2data(array $data)
+	protected static function db2data(array $data)
 	{
 		foreach(array('acc_sieve_enabled','acc_further_identities','acc_user_editable','acc_smtp_auth_session') as $name)
 		{
@@ -619,33 +655,11 @@ class emailadmin_account implements ArrayAccess
 				$data[$name] = self::$db->from_bool($data[$name]);
 			}
 		}
+		if (isset($data['account_id']) && !is_array($data['account_id']))
+		{
+			$data['account_id'] = explode(',', $data['account_id']);
+		}
 		return $data;
-	}
-
-	/**
-	 * Create new account object from given data AND store it to database
-	 *
-	 * @param array $data
-	 * @return emailadmin_account
-	 * @throws egw_exception_db
-	 */
-	public static function create(array $data)
-	{
-		return new emailadmin_account(self::write($data));
-	}
-
-	/**
-	 * Save account data to db
-	 *
-	 * @param array $data
-	 * @return array
-	 * @throws egw_exception_db
-	 */
-	public function update(array $data=array())
-	{
-		$this->__construct(self::write(array_merge($this->params, (array)$data)));
-
-		return $this;
 	}
 
 	/**
@@ -753,6 +767,8 @@ class emailadmin_account implements ArrayAccess
 		{
 			emailadmin_credentials::delete($data['acc_id'], 0, emailadmin_credentials::ADMIN);
 		}
+		self::cache_invalidate($data['acc_id']);
+
 		return $data;
 	}
 
@@ -765,13 +781,18 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public static function delete($acc_id, $account_id=null)
 	{
-		if ( is_array($acc_id) || $acc_id > 0)
+		if (is_array($acc_id) || $acc_id > 0)
 		{
 			self::$db->delete(self::VALID_TABLE, array('acc_id' => $acc_id), __LINE__, __FILE__, self::APP);
 			self::$db->delete(self::IDENTITIES_TABLE, array('acc_id' => $acc_id), __LINE__, __FILE__, self::APP);
 			emailadmin_credentials::delete($acc_id);
 			self::$db->delete(self::TABLE, array('acc_id' => $acc_id), __LINE__, __FILE__, self::APP);
 
+			// invalidate caches
+			foreach((array)$acc_id as $acc_id)
+			{
+				self::cache_invalidate($acc_id);
+			}
 			return self::$db->affected_rows();
 		}
 		if (!$account_id)
@@ -802,15 +823,17 @@ class emailadmin_account implements ArrayAccess
 	 * Return array with acc_id => acc_name or account-object pairs
 	 *
 	 * @param boolean $only_current_user=true return only accounts for current user
-	 * @param boolean $just_name=true return just acc_name or emailadmin_account objects
+	 * @param boolean|string $just_name=true true: return self::identity_name, false: return emailadmin_account objects,
+	 *	string with attribute-name: return that attribute, eg. acc_imap_host or 'params' to return all attributes as array
 	 * @param string $order_by='acc_name ASC'
 	 * @param int|boolean $offset=false offset or false to return all
 	 * @param int $num_rows=0 number of rows to return, 0=default from prefs (if $offset !== false)
 	 * @param boolean $replace_placeholders=true should placeholders like {{n_fn}} be replaced
 	 * @return Iterator with acc_id => acc_name or emailadmin_account objects
 	 */
-	public static function search($only_current_user=true, $just_name=true, $order_by=null,$offset=false, $num_rows=0, $replace_placeholders=true)
+	public static function search($only_current_user=true, $just_name=true, $order_by=null, $offset=false, $num_rows=0, $replace_placeholders=true)
 	{
+		error_log(__METHOD__."($only_current_user, $just_name, '$order_by', $offset, $num_rows)");
 		$where = array();
 		if ($only_current_user)
 		{
@@ -820,18 +843,55 @@ class emailadmin_account implements ArrayAccess
 		{
 			$order_by = self::DEFAULT_ORDER;
 		}
-		$rs = self::$db->select(self::TABLE, self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*',
-			$where, __LINE__, __FILE__, $offset, 'GROUP BY '.self::TABLE.'.acc_id ORDER BY '.$order_by,
-			self::APP, $num_rows, self::IDENTITY_JOIN.' '.self::VALID_JOIN);
+		$cache_key = json_encode($where).$order_by;
 
-		return new egw_db_callback_iterator($rs,
+		if (!$only_current_user || !isset(self::$search_cache[$cache_key]))
+		{
+			$cols = self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*';
+			if (self::$valid_account_id_sql)
+			{
+				$cols .= ','.self::$valid_account_id_sql.' AS account_id';
+			}
+			$rs = self::$db->select(self::TABLE, $cols,	$where, __LINE__, __FILE__,
+				$offset, 'GROUP BY '.self::TABLE.'.acc_id ORDER BY '.$order_by,
+				self::APP, $num_rows, self::IDENTITY_JOIN.' '.self::VALID_JOIN);
+
+			$ids = array();
+			foreach($rs as $row)
+			{
+				$row = self::db2data($row);
+
+				if ($only_current_user)
+				{
+					error_log(__METHOD__."(TRUE, $just_name) caching data for acc_id=$row[acc_id]");
+					self::$search_cache[$cache_key][$row['acc_id']] =& self::$cache[$row['acc_id']];
+					self::$cache[$row['acc_id']] = $row;
+				}
+				$ids[] = $row['acc_id'];
+			}
+			// fetch valid_id, if not yet fetched
+			if (!self::$valid_account_id_sql && $ids)
+			{
+				foreach(self::$db->select(self::VALID_TABLE, 'account_id', array('acc_id' => $ids),
+					__LINE__, __FILE__, false, '', self::APP) as $row)
+				{
+					self::$cache[$row['acc_id']]['account_id'][] = $row['account_id'];
+				}
+			}
+		}
+		return new egw_db_callback_iterator(new ArrayIterator(self::$search_cache[$cache_key]),
 			// process each row
 			function($row) use ($just_name, $replace_placeholders)
 			{
-				// Can NOT be self::db2data, as PHP 5.3 does not allow to use self in
-				// closure "no class scope". Works from 5.4 on :(
-				$row = emailadmin_account::db2data($row);
-				return $just_name ? emailadmin_account::identity_name($row, $replace_placeholders) : new emailadmin_account($row);
+				if (is_string($just_name))
+				{
+					return $just_name == 'params' ? $row : $row[$just_name];
+				}
+				elseif ($just_name)
+				{
+					return emailadmin_account::identity_name($row, $replace_placeholders);
+				}
+				return new emailadmin_account($row);
 			}, array(),
 			// return acc_id as key
 			function($row)
@@ -938,6 +998,19 @@ class emailadmin_account implements ArrayAccess
 		$memberships[] = 0;	// marks accounts valid for everyone
 
 		return $memberships;
+	}
+
+	/**
+	 * Invalidate various caches
+	 *
+	 * @param int $acc_id
+	 */
+	protected static function cache_invalidate($acc_id)
+	{
+		error_log(__METHOD__."($acc_id) invalidating cache");
+		unset(self::$cache[$acc_id]);
+		unset(self::$instances[$acc_id]);
+		self::$search_cache = array();
 	}
 
 	/**

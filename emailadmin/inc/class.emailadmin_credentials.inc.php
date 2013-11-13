@@ -86,6 +86,13 @@ class emailadmin_credentials
 	static protected $user_mcrypt;
 
 	/**
+	 * Cache for credentials to minimize database access
+	 *
+	 * @var array
+	 */
+	protected static $cache = array();
+
+	/**
 	 * Read credentials for a given mail account
 	 *
 	 * @param int $acc_id
@@ -100,15 +107,35 @@ class emailadmin_credentials
 		{
 			$account_id = array(0, $GLOBALS['egw_info']['user']['account_id']);
 		}
-		$results = array();
-		foreach(self::$db->select(self::TABLE, '*', array(
-			'acc_id' => $acc_id,
-			'account_id' => $account_id,
-			'cred_type & '.(int)$type,
-		), __LINE__, __FILE__, false,
-			// account_id ASC ensures (current) user always overwrites all (0) or groups (<0)
-			'ORDER BY account_id ASC', self::APP) as $row)
+
+		// check cache, if nothing found, query database
+		// check assumes always same accounts (eg. 0=all plus own account_id) are asked
+		if (!isset(self::$cache[$acc_id]) ||
+			!($rows = array_intersect_key(self::$cache[$acc_id], array_flip((array)$account_id))))
 		{
+			$rows = self::$db->select(self::TABLE, '*', array(
+				'acc_id' => $acc_id,
+				'account_id' => $account_id,
+				'cred_type & '.(int)$type,
+			), __LINE__, __FILE__, false,
+				// account_id ASC ensures (current) user always overwrites all (0) or groups (<0)
+				'ORDER BY account_id ASC', self::APP);
+			//error_log(__METHOD__."($acc_id, $type, ".array2string($account_id).") nothing in cache");
+		}
+		else
+		{
+			ksort($rows);
+			//error_log(__METHOD__."($acc_id, $type, ".array2string($account_id).") read from cache ".array2string($rows));
+		}
+		$results = array();
+		foreach($rows as $row)
+		{
+			// update cache (only if we have database-iterator and all credentials asked!)
+			if (!is_array($rows) && $type == self::ALL)
+			{
+				self::$cache[$acc_id][$row['account_id']][$row['cred_type']] = $row;
+				//error_log(__METHOD__."($acc_id, $type, ".array2string($account_id).") stored to cache ".array2string($row));
+			}
 			$password = self::decrypt($row);
 
 			foreach(self::$type2prefix as $pattern => $prefix)
@@ -124,7 +151,6 @@ class emailadmin_credentials
 		}
 		return $results;
 	}
-
 
 	/**
 	 * Generate username according to acc_imap_logintype and fetch password from session
@@ -218,6 +244,9 @@ class emailadmin_credentials
 			), __LINE__, __FILE__, self::APP);
 			$cred_id = self::$db->get_last_insert_id(self::TABLE, 'cred_id');
 		}
+		// invalidate cache
+		unset(self::$cache[$acc_id][$account_id]);
+
 		//error_log(__METHOD__."($acc_id, '$username', \$password, $type, $account_id) returning $cred_id");
 		return $cred_id;
 	}
@@ -243,6 +272,11 @@ class emailadmin_credentials
 
 		self::$db->delete(self::TABLE, $where, __LINE__, __FILE__, self::APP);
 
+		// invalidate cache: we allways unset everything about an account to simplify cache handling
+		foreach($acc_id > 0 ? (array)$acc_id : array_keys(self::$cache) as $acc_id)
+		{
+			unset(self::$cache[$acc_id]);
+		}
 		$ret = self::$db->affected_rows();
 		//error_log(__METHOD__."($acc_id, ".array2string($account_id).", $type) affected $ret rows");
 		return $ret;
