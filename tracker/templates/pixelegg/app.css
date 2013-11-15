@@ -5,11 +5,10 @@
  *
  * @link http://www.egroupware.org
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
- * @author Stefan Reinhard <stefan.reinhard@pixelegg.de>
- * @package timesheet
+ * @author Stefan Reinhardt <stefan.reinhardt@pixelegg.de>
+ * @package tracker
  * @version $Id$
  */
-#timesheet-index .nextmatch_header #timesheet-index_timesheet-index-add button[id*="timesheet-index_favorite"] img {
-  height: 16px;
-  width: 16px;
+#egw_fw_sidebar #egw_fw_sidemenu .egw_fw_ui_scrollarea_outerdiv .egw_fw_ui_sidemenu_entry_header_active h1 {
+  font-size: 1.15em !important;
 }
