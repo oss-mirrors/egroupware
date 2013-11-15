@@ -786,6 +786,7 @@ class emailadmin_wizard
 				try {
 					$account = emailadmin_account::read($_GET['acc_id'], $this->is_admin, false);
 					$content = $account->params;
+					$content['acc_sieve_enabled'] = (string)($content['acc_sieve_enabled']);
 					self::fix_account_id_0($content['account_id']);
 
 					// read identities (of current user) and mark std identity
