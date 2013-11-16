@@ -511,8 +511,9 @@ class emailadmin_wizard
 						$sieve = new Net_Sieve();
 						if (self::DEBUG_LOG)
 						{
-							$sieve->setDebug(true, function($sieve, $_msg) use (&$content)
+							$sieve->setDebug(true, function($sieve, $_msg) //use (&$content)
 							{
+								unset($sieve);	// not used here
 								//$content['sieve_output'] .= "\n".$_msg;
 								if (($fp = fopen(self::DEBUG_LOG, 'a')))
 								{

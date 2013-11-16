@@ -330,9 +330,10 @@ class emailadmin_account implements ArrayAccess
 			if (!isset($merge)) $merge = new addressbook_merge();
 			foreach($to_replace as $name => &$value)
 			{
+				$err = null;
 				$value = $merge->merge_string($value,
 					(array)accounts::id2name($GLOBALS['egw_info']['user']['account_id'], 'person_id'),
-					$err=null, $name == 'ident_signature' ? 'text/html' : 'text/plain');
+					$err, $name == 'ident_signature' ? 'text/html' : 'text/plain');
 			}
 		}
 		//error_log(__METHOD__."(".array2string($identity).") returning ".array2string($to_replace));
