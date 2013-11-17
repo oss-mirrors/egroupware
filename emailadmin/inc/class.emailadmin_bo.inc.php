@@ -98,6 +98,11 @@ class emailadmin_bo extends so_sql
 	var $smtpClass;				// holds the smtp class
 	var $tracking;				// holds the tracking object
 
+	/**
+	 * @var emailadmin_so
+	 */
+	var $soemailadmin;
+
 	function __construct($_profileID=false,$_restoreSesssion=true)
 	{
 		parent::__construct(self::APP,self::TABLE,null,'',true);
@@ -394,6 +399,14 @@ class emailadmin_bo extends so_sql
 		return $profileData;
 	}
 
+	/**
+	 *
+	 * @param int $_profileID
+	 * @param string $_appName
+	 * @param int $_groupID
+	 * @param int $_accountID
+	 * @return type
+	 */
 	function getProfileList($_profileID='',$_appName=false,$_groupID=false,$_accountID=false)
 	{
 		if ($_appName!==false ||$_groupID!==false ||$_accountID!==false) {

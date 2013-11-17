@@ -206,6 +206,12 @@ app.classes.emailadmin = AppJS.extend(
 			{
 				jQuery('.emailadmin_no_user,#button\\[multiple\\]').hide();
 			}
+			if (ids.length == 1)
+			{
+				// switch back to single selectbox
+				account_id.set_multiple(false);
+				this.et2.getWidgetById('button[multiple]').set_disabled(false);
+			}
 		}
 		// switched to single user
 		else if (!multiple)
@@ -222,6 +228,18 @@ app.classes.emailadmin = AppJS.extend(
 		}
 		if (_event && _event.stopPropagation) _event.stopPropagation();
 		return false;
+	},
+
+	/**
+	 * Callback if user changed account selction
+	 *
+	 * @param {object} _event event-object or information about event
+	 * @param {et2_baseWidget} _widget widget causing the event
+	 */
+	change_account: function(_event, _widget)
+	{
+		// todo check dirty and query user to a) save changes, b) discard changes, c) cancel selection
+		_widget.getInstanceManager().submit();
 	}
 });
 

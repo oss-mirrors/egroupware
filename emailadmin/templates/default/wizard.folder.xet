@@ -2,7 +2,7 @@
 <!-- $Id$ -->
 <overlay>
 	<template id="emailadmin.wizard.folder" template="" lang="" group="0" version="1.9.001">
-		<grid>
+		<grid width="100%">
 			<columns>
 				<column width="120"/>
 				<column/>

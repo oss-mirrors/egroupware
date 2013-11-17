@@ -177,19 +177,21 @@ class emailadmin_account implements ArrayAccess
 	 * Constructor
 	 *
 	 * @param array $params
-	 * @param boolean $load_smtp_auth_session=true true: load/set username/password for smtp auth
+	 * @param int $called_for=null if set access to given user (without smtp credentials!),
+	 *	default current user AND read username/password from current users session
 	 */
-	protected function __construct(array $params, $load_smtp_auth_session=true)
+	protected function __construct(array $params, $called_for=null)
 	{
 		// read credentials from database
-		$params += emailadmin_credentials::read($params['acc_id']);
+		$params += emailadmin_credentials::read($params['acc_id'], null, $called_for ? array(0, $called_for) : $called_for);
 
 		if (!empty($params['acc_imap_logintype']) && !isset($params['acc_imap_username']) &&
-			$GLOBALS['egw_info']['user']['account_id'])
+			$GLOBALS['egw_info']['user']['account_id'] &&
+			(!isset($called_for) || $called_for == $GLOBALS['egw_info']['user']['account_id']))
 		{
 			// get usename/password from current user, let it overwrite credentials for all/no session
 			$params = emailadmin_credentials::from_session(
-				($load_smtp_auth_session ? array() : array('acc_smtp_auth_session' => false)) + $params
+				(!isset($called_for) ? array() : array('acc_smtp_auth_session' => false)) + $params
 			) + $params;
 		}
 		$this->params = $params;
@@ -581,16 +583,16 @@ class emailadmin_account implements ArrayAccess
 	 * Read/return account object for given $acc_id
 	 *
 	 * @param int $acc_id
-	 * @param boolean $only_current_user=true true: only return accounts valid for current user
-	 * @param boolean $load_smtp_auth_session=true true: load/set username/password for smtp auth
+	 * @param int $called_for=null if set admin access to given user, default current user
+	 *	AND read username/password from current users session, 0: find accounts from all users
 	 * @return email_account
 	 * @throws egw_exception_not_found if account was not found (or not valid for current user)
 	 */
-	public static function read($acc_id, $only_current_user=true, $load_smtp_auth_session=true)
+	public static function read($acc_id, $called_for=null)
 	{
-		error_log(__METHOD__."($acc_id, $only_current_user, $load_smtp_auth_session)");
+		error_log(__METHOD__."($acc_id, ".array2string($called_for).")");
 		// some caching, but only for regular usage/users
-		if ($only_current_user && $load_smtp_auth_session)
+		if (!isset($called_for))
 		{
 			// act as singleton: if we already have an instance, return it
 			if (isset(self::$instances[$acc_id]))
@@ -607,9 +609,9 @@ class emailadmin_account implements ArrayAccess
 			$data =& self::$cache[$acc_id];
 		}
 		$where = array(self::TABLE.'.acc_id='.(int)$acc_id);
-		if ($only_current_user)
+		if (!isset($called_for) || $called_for !== '0')
 		{
-			$where[] = self::$db->expression(self::VALID_TABLE, self::VALID_TABLE.'.', array('account_id' => self::memberships()));
+			$where[] = self::$db->expression(self::VALID_TABLE, self::VALID_TABLE.'.', array('account_id' => self::memberships($called_for)));
 		}
 		$cols = self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*';
 		if (self::$valid_account_id_sql)
@@ -633,12 +635,12 @@ class emailadmin_account implements ArrayAccess
 		$data = self::db2data($data);
 		//error_log(__METHOD__."($acc_id, $only_current_user) returning ".array2string($data));
 
-		if ($only_current_user && $load_smtp_auth_session)
+		if (!isset($called_for))
 		{
 			error_log(__METHOD__."($acc_id) creating instance and caching data read from db");
 			$ret =& self::$instances[$acc_id];
 		}
-		return $ret = new emailadmin_account($data, $load_smtp_auth_session);
+		return $ret = new emailadmin_account($data, $called_for);
 	}
 
 	/**
@@ -678,14 +680,14 @@ class emailadmin_account implements ArrayAccess
 		$data['acc_modified'] = time();
 
 		// store account data
-		$where = $data['acc_id'] ? array('acc_id' => $data['acc_id']) : false;
+		$where = $data['acc_id'] > 0 ? array('acc_id' => $data['acc_id']) : false;
 		self::$db->insert(self::TABLE, $data, $where, __LINE__, __FILE__, self::APP);
-		if (!$data['acc_id'])
+		if (!($data['acc_id'] > 0))
 		{
 			$data['acc_id'] = self::$db->get_last_insert_id(self::TABLE, 'acc_id');
 		}
 		// store identity
-		$iwhere = $data['ident_id'] ? array('ident_id' => $data['ident_id']) : false;
+		$iwhere = $data['ident_id'] > 0 ? array('ident_id' => $data['ident_id']) : false;
 		self::$db->insert(self::IDENTITIES_TABLE, $data, $iwhere, __LINE__, __FILE__, self::APP);
 		if (!($data['ident_id'] > 0))
 		{
@@ -823,7 +825,7 @@ class emailadmin_account implements ArrayAccess
 	/**
 	 * Return array with acc_id => acc_name or account-object pairs
 	 *
-	 * @param boolean $only_current_user=true return only accounts for current user
+	 * @param boolean|int $only_current_user=true return only accounts for current user or integer account_id of a user
 	 * @param boolean|string $just_name=true true: return self::identity_name, false: return emailadmin_account objects,
 	 *	string with attribute-name: return that attribute, eg. acc_imap_host or 'params' to return all attributes as array
 	 * @param string $order_by='acc_name ASC'
@@ -838,7 +840,12 @@ class emailadmin_account implements ArrayAccess
 		$where = array();
 		if ($only_current_user)
 		{
-			$where[] = self::$db->expression(self::VALID_TABLE, self::VALID_TABLE.'.', array('account_id' => self::memberships()));
+			$account_id = $only_current_user === true ? $GLOBALS['egw_info']['user']['account_id'] : $only_current_user;
+			if (!is_numeric($account_id))
+			{
+				throw new egw_exception_wrong_parameter(__METHOD__."(".array2string($only_current_user).") is NO valid account_id");
+			}
+			$where[] = self::$db->expression(self::VALID_TABLE, self::VALID_TABLE.'.', array('account_id' => self::memberships($account_id)));
 		}
 		if (empty($order_by) || !preg_match('/^[a-z_]+ (ASC|DESC)$/i', $order_by))
 		{

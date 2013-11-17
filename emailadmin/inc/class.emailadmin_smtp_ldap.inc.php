@@ -285,7 +285,7 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 				}
 			}
 		}
-		if ($this->debug) error_log(__METHOD__."('$_acountName') returning ".array2string($emailAddresses));
+		if ($this->debug) error_log(__METHOD__."('$_accountName') returning ".array2string($emailAddresses));
 
 		return $emailAddresses;
 	}
@@ -334,13 +334,13 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 			}
 			else
 			{
-				$filter = array('(mail='.ldap::quote($user).')');
-				if ($match_uid_at_domain) $filter[] = '('.static::USER_ATTR.'='.ldap::quote($namepart).')';
+				$to_or = array('(mail='.ldap::quote($user).')');
+				if ($match_uid_at_domain) $to_or[] = '('.static::USER_ATTR.'='.ldap::quote($namepart).')';
 				if (static::ALIAS_ATTR)
 				{
-					$filter[] = '('.static::ALIAS_ATTR.'='.static::ALIAS_PREFIX.ldap::quote($user).')';
+					$to_or[] = '('.static::ALIAS_ATTR.'='.static::ALIAS_PREFIX.ldap::quote($user).')';
 				}
-				$filter = count($filter) > 1 ? '(|'.explode('', $filter).')' : $filter[0];
+				$filter = count($to_or) > 1 ? '(|'.explode('', $to_or).')' : $to_or[0];
 
 				// if an enable attribute is set, only return enabled accounts
 				if (static::MAIL_ENABLE_ATTR)
@@ -486,6 +486,8 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 	function setUserData($_uidnumber, array $_mailAlternateAddress, array $_mailForwardingAddress, $_deliveryMode,
 		$_accountStatus, $_mailLocalAddress, $_quota, $_forwarding_only=false, $_setMailbox=null)
 	{
+		unset($_forwarding_only);	// not used
+
 		if (static::USERID_ATTR)
 		{
 			$filter = static::USERID_ATTR.'='.(int)$_uidnumber;
@@ -660,7 +662,7 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 				// merge in again all new set forwards incl. opt. prefix
 				self::getAttributePrefix($newData[static::FORWARD_ATTR], $forwards, static::FORWARD_PREFIX);
 			}
-			if ($this->debug) error_log(__METHOD__.'('.array2string(func_get_args()).") --> ldap_mod_replace(,'$accountDN',".array2string($newData).')');
+			if ($this->debug) error_log(__METHOD__.'('.array2string(func_get_args()).") --> ldap_mod_replace(,'{$allValues[0]['dn']}',".array2string($newData).')');
 
 			return ldap_modify ($ds, $allValues[0]['dn'], $newData);
 		}
@@ -722,7 +724,7 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 	 */
 	protected static function setAttributePrefix(&$attribute, $values, $prefix='')
 	{
-		$attribute_in = $attribute;
+		//$attribute_in = $attribute;
 		if (!isset($attribute)) $attribute = array();
 		if (!is_array($attribute)) $attribute = array($attribute);
 
@@ -743,7 +745,7 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 	 */
 	protected static function getAttributePrefix(&$attribute, $prefix='', $remove=true)
 	{
-		$attribute_in = $attribute;
+		//$attribute_in = $attribute;
 		$values = array();
 
 		if (isset($attribute))
@@ -770,7 +772,7 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 	 */
 	protected function getLdapConnection()
 	{
-		static $ldap;
+		static $ldap=null;
 
 		if (is_null($ldap)) $ldap = $GLOBALS['egw']->ldap->ldapConnect();
 

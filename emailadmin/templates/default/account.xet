@@ -10,7 +10,7 @@
 			</columns>
 			<rows>
 				<row>
-					<description value="Identity" for="ident_id"/>
+					<description for="ident_id" value="Identity"/>
 					<hbox options="0,0">
 						<menulist>
 							<menupopup id="ident_id" no_lang="1" onchange="1"/>
@@ -31,11 +31,11 @@
 					<textbox id="ident_org" size="80" maxlength="128" span="all"/>
 				</row>
 				<row>
-					<description value="EMail address" for="ident_email"/>
+					<description for="ident_email" value="EMail address"/>
 					<url-email id="ident_email" options="80,128" span="all"/>
 				</row>
 				<row>
-					<htmlarea id="ident_signature" mode="simple" height="155" expand_toolbar="false" span="all"/>
+					<htmlarea expand_toolbar="false" height="125px" mode="simple" id="ident_signature" span="all"/>
 				</row>
 			</rows>
 		</grid>
@@ -50,36 +50,36 @@
 			</columns>
 			<rows>
 				<row class="emailadmin_no_single">
-					<description value="Type" for="acc_imap_logintype"/>
+					<description for="acc_imap_logintype" value="Type"/>
 					<menulist>
 						<menupopup id="acc_imap_type"/>
 					</menulist>
-					<description value="Login" for="acc_imap_logintype" class="emailadmin_no_single"/>
+					<description for="acc_imap_logintype" value="Login" class="emailadmin_no_single"/>
 					<menulist>
-						<menupopup statustext="How username get constructed" id="acc_imap_logintype" class="emailadmin_no_single"/>
+						<menupopup class="emailadmin_no_single" statustext="How username get constructed" id="acc_imap_logintype"/>
 					</menulist>
 				</row>
 				<row class="@manual_class">
-					<description value="Username" for="acc_imap_username"/>
+					<description for="acc_imap_username" value="Username"/>
 					<textbox id="acc_imap_username" size="32" maxlength="128"/>
-					<description value="Domain" for="acc_domain" class="emailadmin_no_single"/>
+					<description for="acc_domain" value="Domain" class="emailadmin_no_single"/>
 					<textbox id="acc_domain" size="32" maxlength="128" class="emailadmin_no_single"/>
 				</row>
 				<row>
-					<description value="Password" for="acc_imap_password"/>
+					<description for="acc_imap_password" value="Password"/>
 					<passwd id="acc_imap_password" options="32,128"/>
 					<description id="acc_imap_account_id" class="emailadmin_diagnostic"/>
 					<description/>
 				</row>
 				<row class="@manual_class">
-					<description value="IMAP server" for="acc_imap_host"/>
+					<description for="acc_imap_host" value="IMAP server"/>
 					<textbox blur="Hostname or IP" id="acc_imap_host" needed="1" size="32" maxlength="128" span="all"/>
 				</row>
 				<row>
-					<description value="Secure connection" for="acc_imap_ssl"/>
+					<description for="acc_imap_ssl" value="Secure connection"/>
 					<hbox>
 						<menulist>
-							<menupopup id="acc_imap_ssl" needed="1" onchange="app.emailadmin.wizard_imap_ssl_onchange" class="emailadmin_ssl"/>
+							<menupopup class="emailadmin_ssl" id="acc_imap_ssl" needed="1" onchange="app.emailadmin.wizard_imap_ssl_onchange"/>
 						</menulist>
 						<textbox type="integer" label="Port" id="acc_imap_port" needed="1" class="emailadmin_port"/>
 					</hbox>
@@ -96,16 +96,19 @@
 							</columns>
 							<rows>
 								<row>
-									<description value="Admin user" for="acc_imap_admin_username"/>
+									<description for="acc_imap_admin_username" value="Admin user"/>
 									<textbox id="acc_imap_admin_username" size="32" maxlength="128"/>
 								</row>
 								<row>
-									<description value="Password" for="acc_imap_admin_password"/>
+									<description for="acc_imap_admin_password" value="Password"/>
 									<passwd id="acc_imap_admin_password" options="32,128"/>
 								</row>
 							</rows>
 						</grid>
 					</groupbox>
+					<description/>
+					<description/>
+					<description/>
 					<description/>
 					<description/>
 					<description/>
@@ -121,28 +124,20 @@
 			</columns>
 			<rows>
 				<row>
-					<description value="Sent folder" for="acc_folder_sent"/>
-					<menulist>
-						<menupopup id="acc_folder_sent" options="Select one ..."/>
-					</menulist>
+					<description for="acc_folder_sent" value="Sent folder"/>
+					<taglist id="acc_folder_sent" empty_label="Select one ..." maxSelection="1" autocomplete_url=""/>
 				</row>
 				<row>
-					<description value="Trash folder" for="acc_folder_trash"/>
-					<menulist>
-						<menupopup id="acc_folder_trash" options="Select one ..."/>
-					</menulist>
+					<description for="acc_folder_trash" value="Trash folder"/>
+					<taglist id="acc_folder_trash" empty_label="Select one ..." maxSelection="1" autocomplete_url=""/>
 				</row>
 				<row>
-					<description value="Drafts folder" for="acc_folder_draft"/>
-					<menulist>
-						<menupopup id="acc_folder_draft" options="Select one ..."/>
-					</menulist>
+					<description for="acc_folder_draft" value="Drafts folder"/>
+					<taglist id="acc_folder_draft" empty_label="Select one ..." maxSelection="1" autocomplete_url=""/>
 				</row>
 				<row>
-					<description value="Templates folder" for="acc_folder_template"/>
-					<menulist>
-						<menupopup id="acc_folder_template" options="Select one ..."/>
-					</menulist>
+					<description for="acc_folder_template" value="Templates folder"/>
+					<taglist id="acc_folder_template" empty_label="Select one ..." maxSelection="1" autocomplete_url=""/>
 				</row>
 				<row height="100">
 					<description/>
@@ -159,26 +154,27 @@
 			</columns>
 			<rows>
 				<row>
-					<description value="Enable Sieve" for="acc_sieve_enabled"/>
+					<description for="acc_sieve_enabled" value="Enable Sieve"/>
 					<menulist>
 						<menupopup type="select-bool" id="acc_sieve_enabled" needed="1"/>
 					</menulist>
 				</row>
 				<row class="@manual_class">
-					<description value="Sieve server" for="acc_sieve_host"/>
+					<description for="acc_sieve_host" value="Sieve server"/>
 					<textbox blur="Hostname or IP" id="acc_sieve_host" onchange="app.emailadmin.wizard_sieve_onchange" size="32" maxlength="128"/>
 				</row>
 				<row class="@manual_class">
-					<description value="Secure connection" for="acc_sieve_ssl"/>
+					<description for="acc_sieve_ssl" value="Secure connection"/>
 					<hbox>
 						<menulist>
-							<menupopup id="acc_sieve_ssl" onchange="app.emailadmin.wizard_sieve_ssl_onchange" class="emailadmin_ssl"/>
+							<menupopup class="emailadmin_ssl" id="acc_sieve_ssl" onchange="app.emailadmin.wizard_sieve_ssl_onchange"/>
 						</menulist>
 						<textbox type="integer" label="Port" id="acc_sieve_port" onchange="app.emailadmin.wizard_sieve_onchange" class="emailadmin_port"/>
 					</hbox>
 				</row>
 				<row height="150">
 					<description value="Vacation messages with start and end date require an admin account to be set!" span="all" class="emailadmin_no_single"/>
+					<description/>
 					<description/>
 				</row>
 			</rows>
@@ -192,35 +188,35 @@
 			</columns>
 			<rows>
 				<row class="emailadmin_no_single">
-					<description value="Type" for="acc_smtp_type"/>
+					<description for="acc_smtp_type" value="Type"/>
 					<menulist>
 						<menupopup id="acc_smtp_type"/>
 					</menulist>
 				</row>
 				<row class="emailadmin_no_single">
-					<description value="Authentication" for="acc_smtp_auth_session"/>
+					<description for="acc_smtp_auth_session" value="Authentication"/>
 					<checkbox label="Use username+password from current user" id="acc_smtp_auth_session"/>
 				</row>
 				<row class="@manual_class">
-					<description value="Username" for="acc_smtp_username"/>
+					<description for="acc_smtp_username" value="Username"/>
 					<textbox blur="if authentication required" id="acc_smtp_username" size="32" maxlength="128"/>
 				</row>
 				<row class="@manual_class">
-					<description value="Password" for="acc_smtp_password"/>
+					<description for="acc_smtp_password" value="Password"/>
 					<hbox options="0,0">
 						<passwd id="acc_smtp_password" options="32,128"/>
 						<description id="acc_smtp_account_id" class="emailadmin_diagnostic"/>
 					</hbox>
 				</row>
 				<row class="@manual_class">
-					<description value="SMTP server" for="acc_smtp_host"/>
+					<description for="acc_smtp_host" value="SMTP server"/>
 					<textbox blur="Hostname or IP" id="acc_smtp_host" needed="1" size="32" maxlength="128"/>
 				</row>
 				<row class="@manual_class">
-					<description value="Secure connection" for="acc_smtp_ssl"/>
+					<description for="acc_smtp_ssl" value="Secure connection"/>
 					<hbox>
 						<menulist>
-							<menupopup id="acc_smtp_ssl" needed="1" onchange="app.emailadmin.wizard_smtp_ssl_onchange" class="emailadmin_ssl"/>
+							<menupopup class="emailadmin_ssl" id="acc_smtp_ssl" needed="1" onchange="app.emailadmin.wizard_smtp_ssl_onchange"/>
 						</menulist>
 						<textbox type="integer" label="Port" id="acc_smtp_port" needed="1" class="emailadmin_port"/>
 					</hbox>
@@ -232,11 +228,47 @@
 			</rows>
 		</grid>
 	</template>
+	<template id="emailadmin.account.aliases" template="" lang="" group="0" version="1.9.001">
+		<grid width="100%" height="300">
+			<columns>
+				<column width="113"/>
+				<column width="400"/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<description for="mailLocalAddress" value="EMail address"/>
+					<url-email id="mailLocalAddress" options="32,128"/>
+					<checkbox label="Email account active"/>
+				</row>
+				<row>
+					<description for="mailAlternateAddress" value="Alternate email address"/>
+					<taglist id="mailAlternateAddress" autocomplete_url=""/>
+					<description/>
+				</row>
+				<row>
+					<description for="mailForwardingAddress" value="Forward email's to"/>
+					<taglist id="mailForwardingAddress" autocomplete_url=""/>
+					<checkbox label="Forward only" id="forwardOnly"/>
+				</row>
+				<row>
+					<description for="quotaLimit" value="Quota (MB)"/>
+					<hbox>
+						<textbox type="integer" id="quotaLimit"/>
+						<description value="(Leave empty for no quota)"/>
+					</hbox>
+					<textbox type="integer" label="Currently:" id="quota" readonly="true"/>
+				</row>
+			</rows>
+		</grid>
+	</template>
 	<template id="emailadmin.account" template="" lang="" group="0" version="1.9.001">
 		<grid width="100%">
 			<columns>
 				<column width="120"/>
 				<column width="200"/>
+				<column/>
+				<column/>
 				<column/>
 			</columns>
 			<rows>
@@ -244,6 +276,14 @@
 					<description id="msg" span="all" class="message"/>
 					<description/>
 					<description/>
+					<description/>
+					<description/>
+				</row>
+				<row disabled="!@accounts">
+					<description for="acc_id" value="Mail account"/>
+					<menulist span="all">
+						<menupopup id="acc_id" onchange="app.emailadmin.change_account"/>
+					</menulist>
 				</row>
 				<row height="30">
 					<description for="acc_name" value="Name of account"/>
@@ -253,7 +293,7 @@
 					</hbox>
 				</row>
 				<row class="emailadmin_no_user" height="30">
-					<description value="Valid for" for="account_id"/>
+					<description for="account_id" value="Valid for"/>
 					<hbox options="0,0">
 						<menulist>
 							<menupopup type="select-account" id="account_id" onchange="app.emailadmin.account_hide_not_applying" options="Everyone,both"/>
@@ -265,11 +305,12 @@
 				<row>
 					<tabbox id="tabs" span="all">
 						<tabs>
-							<tab id="identity" label="Identity+Signature" statustext="Identity&amp;Signature"/>
-							<tab id="imap" label="IMAP" statustext="incoming mail"/>
-							<tab id="folder" label="Folder" statustext="Folder"/>
-							<tab id="sieve" label="Sieve" statustext="serverside filtering"/>
-							<tab id="smtp" label="SMTP" statustext="outgoing mail"/>
+							<tab id="emailadmin.account.identity" label="Identity+Signature" statustext="Identity&amp;Signature"/>
+							<tab id="emailadmin.account.imap" label="IMAP" statustext="incoming mail"/>
+							<tab id="emailadmin.account.folder" label="Folder" statustext="Folder"/>
+							<tab id="emailadmin.account.sieve" label="Sieve" statustext="serverside filtering"/>
+							<tab id="emailadmin.account.smtp" label="SMTP" statustext="outgoing mail"/>
+							<tab id="emailadmin.account.aliases" label="Aliases+Forwards" statustext="Aliases, Forwarding, Quota, ..."/>
 						</tabs>
 						<tabpanels>
 							<template id="emailadmin.account.identity"/>
@@ -277,6 +318,7 @@
 							<template id="emailadmin.account.folder"/>
 							<template id="emailadmin.account.sieve"/>
 							<template id="emailadmin.account.smtp"/>
+							<template id="emailadmin.account.aliases"/>
 						</tabpanels>
 					</tabbox>
 				</row>

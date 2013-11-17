@@ -202,6 +202,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function openConnection($_adminConnection=false, $_timeout=null)
 	{
+		unset($_timeout);	// not used
 		if ($_adminConnection !== $this->params['adminConnection'])
 		{
 			throw new egw_exception_wrong_parameter('need to set parameters on calling emailadmin_account->imapServer()!');
@@ -239,6 +240,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function addAccount($_hookValues)
 	{
+		unset($_hookValues);	// not used
 		return true;
 	}
 
@@ -250,6 +252,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function updateAccount($_hookValues)
 	{
+		unset($_hookValues);	// not used
 		return true;
 	}
 
@@ -261,6 +264,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function deleteAccount($_hookValues)
 	{
+		unset($_hookValues);	// not used
 		return true;
 	}
 
@@ -540,7 +544,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		{
 			if (is_array($v))
 			{
-				foreach ($v as $sc => $v)
+				foreach ($v as $v)
 				{
 					$cap[$c.'='.$v] = true;
 				}
@@ -569,7 +573,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		{
 			if (is_array($v))
 			{
-				foreach ($v as $sc => $v)
+				foreach ($v as $v)
 				{
 					$cap[$c.'='.$v] = true;
 				}
@@ -611,7 +615,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				$type=1;
 		}
 		$namespaces = $this->getNamespaces();
-		foreach ($namespaces as $ns => $nsp)
+		foreach ($namespaces as $nsp)
 		{
 			if ($nsp['type']==$type) $this->mailboxDelimiter = $nsp['delimiter'];
 		}
@@ -712,7 +716,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	function getStorageQuotaRoot($mailboxName)
 	{
 		$storageQuota = $this->getQuotaRoot($mailboxName);
-		foreach ($storageQuota as $user => $qInfo)
+		foreach ($storageQuota as $qInfo)
 		{
 			if ($qInfo['storage'])
 			{
@@ -754,6 +758,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function getUserData($_username)
 	{
+		unset($_username);	// not used
 		return array();
 	}
 
@@ -766,6 +771,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function setUserData($_username, $_quota)
 	{
+		unset($_username, $_quota);	// not used
 		return true;
 	}
 

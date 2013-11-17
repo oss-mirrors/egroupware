@@ -29,23 +29,21 @@ class emailadmin_hooks
 	}
 
     /**
-     * Hook called if account emailadim settings has to be modified
+     * Hook called to add action to user
      *
      * @param array $data
      * @param int $data['account_id'] numerical id
      */
 	static function edit_user($data)
 	{
-		//echo "called hook and function<br>".function_backtrace()."<br>";
-		//_debug_array($data);
-
-		if ($data['account_id'] && // can't set it on add
-			$GLOBALS['egw_info']['user']['apps']['emailadmin'])
+		unset($data);	// not used
+		if ($GLOBALS['egw_info']['user']['apps']['emailadmin'])
 		{
 			$GLOBALS['menuData'][] = array(
-				'description' => 'eMailAdmin: User assigned Profile',
-				'url' => '/index.php',
-				'extradata' => 'menuaction=emailadmin.emailadmin_ui.index'
+				'description' => 'mail account',
+				'url'         => '/index.php',
+				'extradata'   => 'menuaction=emailadmin.emailadmin_wizard.edit',
+				'options'     => "onclick=\"egw_openWindowCentered2(this,'_blank',720,530,'yes'); return false;\"",
 			);
 		}
 	}
@@ -60,6 +58,7 @@ class emailadmin_hooks
     {
 		#echo "called hook and function<br>";
 		#_debug_array($data);
+		unset($data);	// not used
 		# somehow the $data var seems to be quite sparsely populated, so we dont check any further
         if (#!empty($data['account_id']) && $data['account_id'] < 0 && // can't set it on add
             $GLOBALS['egw_info']['user']['apps']['emailadmin'])
@@ -89,9 +88,9 @@ class emailadmin_hooks
 			$GLOBALS['egw_info']['user']['apps']['emailadmin'])
 		{
 			$boemailadmin = new emailadmin_bo();
-			$profileList = $boemailadmin->getProfileList($profileID,$appName,$groupID,(int) $data['account_id']);
+			$profileList = $boemailadmin->getProfileList(null, null, null,(int) $data['account_id']);
 			if (is_array($profileList)) {
-				foreach ($profileList as $key => $value) {
+				foreach ($profileList as $value) {
 					$boemailadmin->delete($value['profileID']);
 				}
 			}
@@ -114,9 +113,9 @@ class emailadmin_hooks
 			$GLOBALS['egw_info']['user']['apps']['emailadmin'])
 		{
 			$boemailadmin = new emailadmin_bo();
-			$profileList = $boemailadmin->getProfileList($profileID,$appName,(int) $data['account_id'],$accountID);
+			$profileList = $boemailadmin->getProfileList(null, null,(int) $data['account_id']);
 			if (is_array($profileList)) {
-				foreach ($profileList as $key => $value) {
+				foreach ($profileList as $value) {
 					$boemailadmin->soemailadmin->deleteProfile($value['profileID']);
 				}
 			}
@@ -137,6 +136,7 @@ class emailadmin_hooks
 		$types = array();
 		foreach(scandir($dir=EGW_INCLUDE_ROOT.'/emailadmin/inc') as $file)
 		{
+			$matches = null;
 			if (!preg_match('/^class\.([^.]*(smtp|imap|postfix|dovecot|dbmail)[^.*]*)\.inc\.php$/', $file, $matches)) continue;
 			$class_name = $matches[1];
 			include_once($dir.'/'.$file);

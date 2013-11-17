@@ -35,7 +35,7 @@
 span.emailadmin_diagnostic,.emailadmin_diagnostic {
   color: lightgray;
 }
-#emailadmin-account_acc_id {
+span#emailadmin-account_acc_id {
   float: right;
 }
 #emailadmin-account_acc_smtp_account_id {
@@ -49,4 +49,7 @@ span.emailadmin_diagnostic,.emailadmin_diagnostic {
   height: 16px;
   padding-left: 5px;
   vertical-align: middle;
+}
+#emailadmin-account_mailLocalAddress {
+  width: 98%;
 }

@@ -122,6 +122,17 @@ class emailadmin_wizard
 	);
 
 	/**
+	 * List of domains know to not support Sieve
+	 *
+	 * Used to switch Sieve off by default, thought users can allways try switching it on.
+	 * Testing not existing Sieve with google takes a long time, as ports are open,
+	 * but not answering ...
+	 *
+	 * @var array
+	 */
+	public static $no_sieve_blacklist = array('gmail.com', 'googlemail.com');
+
+	/**
 	 * Is current use a mail administrator / has run rights for EMailAdmin
 	 *
 	 * @var boolean
@@ -145,21 +156,23 @@ class emailadmin_wizard
 	 * @param array $content
 	 * @param type $msg
 	 */
-	public function add(array $content=null, $msg='')
+	public function add(array $content=array(), $msg='')
 	{
 		// otherwise we cant switch to ckeditor in edit
 		egw_ckeditor_config::set_csp_script_src_attrs();
 
 		$tpl = new etemplate_new('emailadmin.wizard');
-		if (!is_array($content))
+		if (empty($content['account_id']))
 		{
-			$content = array(
-				'ident_realname' => $GLOBALS['egw_info']['user']['account_fullname'],
-				'ident_email' => $GLOBALS['egw_info']['user']['account_email'],
-				'acc_imap_port' => 993,
-				'manual_class' => 'emailadmin_manual',
-			);
+			$content['account_id'] = $GLOBALS['egw_info']['user']['account_id'];
 		}
+		// add some defaults if not already set (+= does not overwrite existing values!)
+		$content += array(
+			'ident_realname' => $GLOBALS['egw']->accounts->id2name($content['account_id'], 'account_fullname'),
+			'ident_email' => $GLOBALS['egw']->accounts->id2name($content['account_id'], 'account_email'),
+			'acc_imap_port' => 993,
+			'manual_class' => 'emailadmin_manual',
+		);
 		$content['msg'] = $msg ? $msg : $_GET['msg'];
 
 		if (!empty($content['acc_imap_host']) || !empty($content['acc_imap_username']))
@@ -450,7 +463,8 @@ class emailadmin_wizard
 		// first try: hide manual config
 		if (!isset($content['acc_sieve_enabled']))
 		{
-			$content['acc_sieve_enabled'] = 1;
+			list(, $domain) = explode('@', $content['acc_imap_username']);
+			$content['acc_sieve_enabled'] = (int)!in_array($domain, self::$no_sieve_blacklist);
 			$content['manual_class'] = 'emailadmin_manual';
 		}
 		else
@@ -773,20 +787,46 @@ class emailadmin_wizard
 	}
 
 	/**
-	 * Edit an account
+	 * Edit mail account(s)
 	 *
-	 * @param array $content
+	 * Gets either called with GET parameter:
+	 *
+	 * a) account_id from admin >> Manage users to edit / add mail accounts for a user
+	 *    --> shows selectbox to switch between different mail accounts of user and "create new account"
+	 *
+	 * b) via mail_wizard proxy class by regular mail user to edit (acc_id GET parameter) or create new mail account
+	 *
+	 * @param array $content=null
 	 * @param string $msg=''
 	 */
 	public function edit(array $content=null, $msg='')
 	{
-		if (!is_array($content))
+		if (!is_array($content) || !empty($content['acc_id']) && $content['acc_id'] != $content['old_acc_id'])
 		{
+			if (!is_array($content)) $content = array();
+			if ($this->is_admin && isset($_GET['account_id']))
+			{
+				$content['called_for'] = (int)$_GET['account_id'];
+				$content['accounts'] = iterator_to_array(emailadmin_account::search($content['called_for']));
+				if ($content['accounts'])
+				{
+					list($content['acc_id']) = each($content['accounts']);
+				}
+				$content['accounts']['new'] = lang('Create new account');
+			}
 			if (isset($_GET['acc_id']) && (int)$_GET['acc_id'] > 0)
 			{
+				$content['acc_id'] = (int)$_GET['acc_id'];
+			}
+			// clear current account-data, as account has changed and we going to read selected one
+			$content = array_intersect_key($content, array_flip(array('called_for', 'accounts', 'acc_id', 'tabs')));
+
+			if ($content['acc_id'] > 0)
+			{
 				try {
-					$account = emailadmin_account::read($_GET['acc_id'], $this->is_admin, false);
-					$content = $account->params;
+					$account = emailadmin_account::read($content['acc_id'], $this->is_admin && $content['called_for'] ?
+						$content['called_for'] : $GLOBALS['egw_info']['user']['account_id']);
+					$content += $account->params;
 					$content['acc_sieve_enabled'] = (string)($content['acc_sieve_enabled']);
 					self::fix_account_id_0($content['account_id']);
 
@@ -804,11 +844,18 @@ class emailadmin_wizard
 					if (self::$debug) _egw_log_exception($e);
 				}
 			}
+			elseif ($content['acc_id'] === 'new')
+			{
+				$content['account_id'] = $content['called_for'];
+				$content['old_acc_id'] = $content['acc_id'];	// to not call add/wizard, if we return from to
+				unset($content['tabs']);
+				return $this->add($content);
+			}
 		}
 		// some defaults for new accounts
-		if (!isset($content['account_id']) || empty($content['acc_id']))
+		if (!isset($content['account_id']) || empty($content['acc_id']) || $content['acc_id'] === 'new')
 		{
-			$content['account_id'] = array($GLOBALS['egw_info']['user']['account_id']);
+			if (!isset($content['account_id'])) $content['account_id'] = array($GLOBALS['egw_info']['user']['account_id']);
 			$content['acc_user_editable'] = $content['acc_further_identities'] = true;
 			$readonlys['ident_id'] = true;	// need to create standard identity first
 		}
@@ -868,7 +915,8 @@ class emailadmin_wizard
 				case 'apply':
 					try {
 						// save none-standard identity for current user
-						if ($content['acc_id'] && $content['acc_further_identities'] &&
+						if ($content['acc_id'] && $content['acc_id'] !== 'new' &&
+							$content['acc_further_identities'] &&
 							$content['std_ident_id'] != $content['ident_id'])
 						{
 							$content['ident_id'] = emailadmin_account::save_identity(array(
@@ -891,6 +939,14 @@ class emailadmin_wizard
 								$content['std_ident_id'] = $content['ident_id'];
 								$content['identities'] = array(
 									$content['std_ident_id'] => lang('Standard identity'));
+							}
+							if (isset($content['accounts']))
+							{
+								if (!isset($content['accounts'][$content['acc_id']]))	// insert new account as top, not bottom
+								{
+									$content['accounts'] = array($content['acc_id'] => '') + $content['accounts'];
+								}
+								$content['accounts'][$content['acc_id']] = emailadmin_account::identity_name($content, false);
 							}
 						}
 						else
@@ -938,28 +994,42 @@ class emailadmin_wizard
 		$sel_options['acc_imap_ssl'] = $sel_options['acc_sieve_ssl'] =
 			$sel_options['acc_smtp_ssl'] = self::$ssl_types;
 
-		try {
-			$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
-				$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
-					self::mailboxes(self::imap_client ($content));
-		}
-		// call wizard, if we have a connection error: Horde_Imap_Client_Exception
-		catch(Horde_Imap_Client_Exception $e) {
-			return $this->add($content, $e->getMessage());
-		}
-		// call wizard, if we have missing credentials: InvalidArgumentException
-		catch(InvalidArgumentException $e) {
-			return $this->add($content, $e->getMessage());
-		}
-		// and for the rest also ...
-		catch(Exception $e) {
-			return $this->add($content, $e->getMessage().' ('.get_class($e).': '.$e->getCode().')');
-		}
+		$tpl = new etemplate_new('emailadmin.account');
 
+		// admin access to account with no credentials available
+		if ($this->is_admin && empty($content['acc_imap_username']))
+		{
+			// cant connection to imap --> allow free entries in taglists
+			foreach(array('acc_folder_sent', 'acc_folder_trash', 'acc_folder_draft', 'acc_folder_template') as $folder)
+			{
+				$tpl->setElementAttribute($folder, 'allowFreeEntries', true);
+			}
+		}
+		else
+		{
+			try {
+				$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
+					$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
+						self::mailboxes(self::imap_client ($content));
+			}
+			// call wizard, if we have a connection error: Horde_Imap_Client_Exception
+			catch(Horde_Imap_Client_Exception $e) {
+				return $this->add($content, $e->getMessage());
+			}
+			// call wizard, if we have missing credentials: InvalidArgumentException
+			catch(InvalidArgumentException $e) {
+				return $this->add($content, $e->getMessage());
+			}
+			// and for the rest also ...
+			catch(Exception $e) {
+				return $this->add($content, $e->getMessage().' ('.get_class($e).': '.$e->getCode().')');
+			}
+		}
 		$sel_options['acc_imap_type'] = emailadmin_bo::getIMAPServerTypes(false);
 		$sel_options['acc_smtp_type'] = emailadmin_bo::getSMTPServerTypes(false);
 		$sel_options['acc_imap_logintype'] = self::$login_types;
 		$sel_options['ident_id'] = $content['identities'];
+		$sel_options['acc_id'] = $content['accounts'];
 
 		// user is allowed to create or edit further identities
 		if ($edit_access || $content['acc_further_identities'])
@@ -998,10 +1068,14 @@ class emailadmin_wizard
 				$content['old_ident_id'] = $content['ident_id'];
 			}
 		}
+		$content['old_acc_id'] = $content['acc_id'];
+
 		// only allow to delete further identities, not a standard identity
 		$readonlys['button[delete_identity]'] = !($content['ident_id'] > 0 && $content['ident_id'] != $content['std_ident_id']);
 
-		$tpl = new etemplate_new('emailadmin.account');
+		// disable aliases tab for now
+		$readonlys['tabs']['emailadmin.account.aliases'] = true;
+
 		if (count($content['account_id']) > 1)
 		{
 			$tpl->setElementAttribute('account_id', 'multiple', true);
