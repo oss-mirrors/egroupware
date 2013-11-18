@@ -180,7 +180,7 @@ class emailadmin_credentials
 
 			case 'admin':
 				// data should have been stored in credentials table
-				throw new egw_exception_assertion_failed('data[acc_imap_logintype]=admin and no stored username/password!');
+				throw new egw_exception_assertion_failed('data[acc_imap_logintype]=admin and no stored username/password for data[acc_id]='.$data['acc_id'].'!');
 
 			default:
 				throw new egw_exception_wrong_parameter("Unknown data[acc_imap_logintype]=".array2string($data['acc_imap_logintype']).'!');
