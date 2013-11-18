@@ -720,6 +720,8 @@ function emailadmin_upgrade1_9_011()
 					'account_id' => $owner,
 				), false, __LINE__, __FILE__, 'emailadmin');
 			}
+			// credentials are either stored for specific user or all users (account_id=0), not group-specific
+			if (!($owner > 0)) $owner = 0;
 			// add imap credentials if necessary
 			$cred_type = $row['ea_smpt_auth'] != 'no' && $row['ea_imap_auth_username'] && $row['ea_smtp_auth_username'] &&
 				$row['ea_imap_auth_username'] == $row['ea_smtp_auth_username'] &&
