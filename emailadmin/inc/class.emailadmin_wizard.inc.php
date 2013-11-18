@@ -1014,14 +1014,28 @@ class emailadmin_wizard
 			}
 			// call wizard, if we have a connection error: Horde_Imap_Client_Exception
 			catch(Horde_Imap_Client_Exception $e) {
-				return $this->add($content, $e->getMessage());
+				_egw_log_exception($e);
+				// if we are not comming from wizard --> try it
+				if (!$content['output'])
+				{
+					return $this->add($content, $e->getMessage());
+				}
+				// we already been in wizard, wont get better, let admin try fixing it
+				$content['msg'] = $e->getMessage();
+				// cant connection to imap --> allow free entries in taglists
+				foreach(array('acc_folder_sent', 'acc_folder_trash', 'acc_folder_draft', 'acc_folder_template') as $folder)
+				{
+					$tpl->setElementAttribute($folder, 'allowFreeEntries', true);
+				}
 			}
 			// call wizard, if we have missing credentials: InvalidArgumentException
 			catch(InvalidArgumentException $e) {
+				_egw_log_exception($e);
 				return $this->add($content, $e->getMessage());
 			}
 			// and for the rest also ...
 			catch(Exception $e) {
+				_egw_log_exception($e);
 				return $this->add($content, $e->getMessage().' ('.get_class($e).': '.$e->getCode().')');
 			}
 		}
