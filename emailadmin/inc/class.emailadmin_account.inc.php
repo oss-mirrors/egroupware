@@ -733,7 +733,8 @@ class emailadmin_account implements ArrayAccess
 		{
 			if (!isset($data[$name]))
 			{
-				$data[$name] = count($data['account_id']) == 1 ? $data['account_id'][0] : 0;
+				// credentials are either stored for specific user or all users (account_id=0), not group-specific
+				$data[$name] = count($data['account_id']) == 1 && $data['account_id'][0] > 0 ? $data['account_id'][0] : 0;
 			}
 			// account of credentials is not direct in accounts valid for mail account
 			elseif (!in_array($data[$name], $data['account_id']))
