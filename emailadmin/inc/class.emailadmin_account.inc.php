@@ -947,18 +947,24 @@ class emailadmin_account implements ArrayAccess
 		}
 		else
 		{
-			if (is_array($account) && !isset($account['acc_imap_username']) && $account['acc_id'])
-			{
-				$account += emailadmin_credentials::read($account['acc_id']);
-
-				if (empty($account['acc_imap_username']) && $account['acc_imap_logintype'])
+			try {
+				if (is_array($account) && !isset($account['acc_imap_username']) && $account['acc_id'])
 				{
-					$account += emailadmin_credentials::from_session($account);
+					$account += emailadmin_credentials::read($account['acc_id']);
+
+					if (empty($account['acc_imap_username']) && $account['acc_imap_logintype'])
+					{
+						$account += emailadmin_credentials::from_session($account);
+					}
+				}
+				if (!empty($account['acc_imap_username']))
+				{
+					$name .= ' &lt;'.$account['acc_imap_username'].'&gt;';
 				}
 			}
-			if (!empty($account['acc_imap_username']))
-			{
-				$name .= ' &lt;'.$account['acc_imap_username'].'&gt;';
+			catch(Exception $e) {
+				_egw_log_exception($e);
+				$name .= ' '.lang('Error, no username!');
 			}
 		}
 		//error_log(__METHOD__."(".array2string($account).", $replace_placeholders) returning ".array2string($name));
