@@ -590,20 +590,20 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public static function read($acc_id, $called_for=null)
 	{
-		error_log(__METHOD__."($acc_id, ".array2string($called_for).")");
+		//error_log(__METHOD__."($acc_id, ".array2string($called_for).")");
 		// some caching, but only for regular usage/users
 		if (!isset($called_for))
 		{
 			// act as singleton: if we already have an instance, return it
 			if (isset(self::$instances[$acc_id]))
 			{
-				error_log(__METHOD__."($acc_id) returned existing instance");
+				//error_log(__METHOD__."($acc_id) returned existing instance");
 				return self::$instances[$acc_id];
 			}
 			// not yet an instance, create one
 			if (isset(self::$cache[$acc_id]))
 			{
-				error_log(__METHOD__."($acc_id) created instance from cached data");
+				//error_log(__METHOD__."($acc_id) created instance from cached data");
 				return self::$instances[$acc_id] = new emailadmin_account(self::$cache[$acc_id]);
 			}
 			$data =& self::$cache[$acc_id];
@@ -637,7 +637,7 @@ class emailadmin_account implements ArrayAccess
 
 		if (!isset($called_for))
 		{
-			error_log(__METHOD__."($acc_id) creating instance and caching data read from db");
+			//error_log(__METHOD__."($acc_id) creating instance and caching data read from db");
 			$ret =& self::$instances[$acc_id];
 		}
 		return $ret = new emailadmin_account($data, $called_for);
@@ -837,7 +837,7 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public static function search($only_current_user=true, $just_name=true, $order_by=null, $offset=false, $num_rows=0, $replace_placeholders=true)
 	{
-		error_log(__METHOD__."($only_current_user, $just_name, '$order_by', $offset, $num_rows)");
+		//error_log(__METHOD__."($only_current_user, $just_name, '$order_by', $offset, $num_rows)");
 		$where = array();
 		if ($only_current_user)
 		{
@@ -872,7 +872,7 @@ class emailadmin_account implements ArrayAccess
 
 				if ($only_current_user)
 				{
-					error_log(__METHOD__."(TRUE, $just_name) caching data for acc_id=$row[acc_id]");
+					//error_log(__METHOD__."(TRUE, $just_name) caching data for acc_id=$row[acc_id]");
 					self::$search_cache[$cache_key][$row['acc_id']] =& self::$cache[$row['acc_id']];
 					self::$cache[$row['acc_id']] = $row;
 				}
