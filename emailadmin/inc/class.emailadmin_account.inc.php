@@ -272,7 +272,7 @@ class emailadmin_account implements ArrayAccess
 			}
 			$this->smtpServer->smtpAuth = !empty($this->params['acc_smtp_username']);
 			$this->smtpServer->username = $this->params['acc_smtp_username'];
-			$this->smtpServer->password = $this->params['acc_smtp_username'];
+			$this->smtpServer->password = $this->params['acc_smtp_password'];
 			$this->smtpServer->defaultDomain = $this->params['acc_domain'];
 		}
 		return $this->smtpServer;
