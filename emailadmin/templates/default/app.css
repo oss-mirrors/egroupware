@@ -53,3 +53,6 @@ span#emailadmin-account_acc_id {
 #emailadmin-account_mailLocalAddress {
   width: 98%;
 }
+select#emailadmin-account_ident_id {
+  width: 95%;
+}

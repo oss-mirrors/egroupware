@@ -5,13 +5,13 @@
 		<grid width="100%" height="300">
 			<columns>
 				<column width="113"/>
-				<column width="200"/>
+				<column width="300"/>
 				<column/>
 			</columns>
 			<rows>
 				<row>
 					<description for="ident_id" value="Identity"/>
-					<hbox options="0,0">
+					<hbox>
 						<menulist>
 							<menupopup id="ident_id" no_lang="1" onchange="1"/>
 						</menulist>
@@ -21,7 +21,7 @@
 				</row>
 				<row>
 					<description for="ident_realname" value="Your name"/>
-					<hbox options="0,0" span="all">
+					<hbox span="all">
 						<textbox id="ident_realname" size="80" maxlength="128"/>
 						<buttononly label="Placeholders" id="button[placeholders]" onclick="window.open(egw::link('/index.php','menuaction=addressbook.addressbook_merge.show_replacements&amp;nonavbar=1'),'_blank','dependent=yes,width=860,height=620,scrollbars=yes,status=yes'); return false;" options="dialog_help"/>
 					</hbox>
@@ -203,7 +203,7 @@
 				</row>
 				<row class="@manual_class">
 					<description for="acc_smtp_password" value="Password"/>
-					<hbox options="0,0">
+					<hbox>
 						<passwd id="acc_smtp_password" options="32,128"/>
 						<description id="acc_smtp_account_id" class="emailadmin_diagnostic"/>
 					</hbox>
@@ -287,14 +287,14 @@
 				</row>
 				<row height="30">
 					<description for="acc_name" value="Name of account"/>
-					<hbox options="0,0" span="all">
+					<hbox span="all">
 						<textbox id="acc_name" needed="1" size="80"/>
 						<description align="right" id="acc_id" class="emailadmin_diagnostic"/>
 					</hbox>
 				</row>
 				<row class="emailadmin_no_user" height="30">
 					<description for="account_id" value="Valid for"/>
-					<hbox options="0,0">
+					<hbox>
 						<menulist>
 							<menupopup type="select-account" id="account_id" onchange="app.emailadmin.account_hide_not_applying" options="Everyone,both"/>
 						</menulist>
@@ -324,10 +324,10 @@
 				</row>
 				<row>
 					<hbox span="2">
-						<button label="Save" id="button[save]"/>
-						<button label="Apply" id="button[apply]"/>
-						<button statustext="Use wizard to detect or verify configuration" label="Wizard" id="button[wizard]"/>
-						<button label="Cancel" id="button[cancel]" onclick="window.close();"/>
+						<button label="Save" id="button[save]" image="save" background_image="1"/>
+						<button label="Apply" id="button[apply]" image="apply" background_image="1"/>
+						<button statustext="Use wizard to detect or verify configuration" label="Wizard" id="button[wizard]" image="wizard" background_image="1"/>
+						<button label="Cancel" id="button[cancel]" onclick="window.close();" image="cancel" background_image="1"/>
 					</hbox>
 					<button align="right" label="Delete" id="button[delete]" onclick="return confirm('Delete this account');"/>
 				</row>
