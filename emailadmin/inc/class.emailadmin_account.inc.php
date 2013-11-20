@@ -283,20 +283,40 @@ class emailadmin_account implements ArrayAccess
 	 *
 	 * Standard identity is always first (as it has account_id=0 and we order account_id ASC).
 	 *
-	 * @param int|array|emailadmin_account $account=null default this account
+	 * @param int|array|emailadmin_account $account=null default this account, empty array() to get all identities of current user
+	 * @param boolean $replace_placeholders=false should placeholders like {{n_fn}} be replaced
+	 * @param string $field='name' what to return as value: "ident_(realname|org|email|signature)" or default "name"=result from identity_name
 	 * @return Iterator ident_id => identity_name of identity
 	 */
-	public function identities($account=null, $replace_placeholders=true)
+	public function identities($account=null, $replace_placeholders=true, $field='name')
 	{
-		if (!$account) $account = $this;
+		if (is_null($account)) $account = $this;
 		$acc_id = is_scalar($account) ? $account : $account['acc_id'];
 
-		$rs = self::$db->select(self::IDENTITIES_TABLE, 'ident_id,ident_realname,ident_org,ident_email', array(
-			'acc_id' => $acc_id,
-			'account_id' => self::memberships(),
-		), __LINE__, __FILE__, false, 'ORDER BY account_id,ident_realname,ident_org,ident_email', self::APP);
+		$cols = array('ident_id', 'ident_realname', 'ident_org', 'ident_email');
+		if (!in_array($field, array_merge($cols, array('name', 'params'))))
+		{
+			$cols[] = $field;
+		}
+		$where = array('account_id' => self::memberships());
+		if ($acc_id)
+		{
+			$where[] = self::$db->expression(self::IDENTITIES_TABLE, self::IDENTITIES_TABLE.'.', array('acc_id' => $acc_id));
+		}
+		$rs = self::$db->select(self::IDENTITIES_TABLE, $cols, $where, __LINE__, __FILE__, false,
+			'ORDER BY account_id,ident_realname,ident_org,ident_email', self::APP);
 
-		return new egw_db_callback_iterator($rs, __CLASS__.'::identity_name', array($replace_placeholders),
+		return new egw_db_callback_iterator($rs,
+			// process each row
+			function($row) use ($replace_placeholders, $field)
+			{
+				if ($field != 'name')
+				{
+					$data = $replace_placeholders ? self::replace_placeholders($row) : $row;
+					return $field == 'params' ? $data : $data[$field];
+				}
+				return emailadmin_account::identity_name($row, $replace_placeholders);
+			}, array(),
 			function($row) { return $row['ident_id'];});
 	}
 
@@ -944,7 +964,7 @@ class emailadmin_account implements ArrayAccess
 		}
 		if ($account['ident_email'])
 		{
-			$name .= ' &lt;'.$account['ident_email'].'&gt;';
+			$name .= ' <'.$account['ident_email'].'>';
 		}
 		else
 		{
@@ -960,7 +980,7 @@ class emailadmin_account implements ArrayAccess
 				}
 				if (!empty($account['acc_imap_username']))
 				{
-					$name .= ' &lt;'.$account['acc_imap_username'].'&gt;';
+					$name .= ' <'.$account['acc_imap_username'].'>';
 				}
 			}
 			catch(Exception $e) {
