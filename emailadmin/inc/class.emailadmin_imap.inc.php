@@ -188,7 +188,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				{
 					return $this->name;
 				}
-				if (isset($this->params[$name]))
+				if (array_key_exists($name,$this->params))
 				{
 					return $this->params[$name];
 				}
