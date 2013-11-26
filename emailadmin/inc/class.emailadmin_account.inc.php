@@ -882,7 +882,7 @@ class emailadmin_account implements ArrayAccess
 				$cols .= ','.self::$valid_account_id_sql.' AS account_id';
 			}
 			$rs = self::$db->select(self::TABLE, $cols,	$where, __LINE__, __FILE__,
-				$offset, 'GROUP BY '.self::TABLE.'.acc_id ORDER BY '.$order_by,
+				$offset, 'GROUP BY '.self::TABLE.'.acc_id ,'.self::IDENTITIES_TABLE.'.ident_id,'.self::VALID_TABLE.'.account_id ORDER BY '.$order_by,
 				self::APP, $num_rows, self::IDENTITY_JOIN.' '.self::VALID_JOIN);
 
 			$ids = array();
