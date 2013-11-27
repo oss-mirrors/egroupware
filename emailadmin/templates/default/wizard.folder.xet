@@ -12,7 +12,7 @@
 					<description id="msg" span="all" class="message"/>
 					<description/>
 				</row>
-				<row>
+				<row class="dialog-header">
 					<description value="Step 2: Folder" span="all" class="emailadmin_header"/>
 					<description/>
 				</row>
@@ -40,11 +40,11 @@
 						<menupopup id="acc_folder_template" options="Select one ..."/>
 					</menulist>
 				</row>
-				<row>
+				<row class="dialog-footer-toolbar">
 					<hbox span="all">
-						<button label="Continue" id="button[continue]"/>
-						<button label="Back" id="button[back]"/>
-						<button label="Cancel" id="button[cancel]" onclick="window.close();"/>
+						<button label="Continue" id="button[continue]" image="continue" background_image="1"/>
+						<button label="Back" id="button[back]" image="back" background_image="1"/>
+						<button label="Cancel" id="button[cancel]" onclick="window.close();" image="cancel" background_image="1"/>
 					</hbox>
 				</row>
 			</rows>

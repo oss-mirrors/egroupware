@@ -12,7 +12,7 @@
 					<description id="msg" span="all" class="message"/>
 					<description/>
 				</row>
-				<row>
+				<row class="dialog-header">
 					<description value="Step 1: IMAP - incoming mail" span="all" class="emailadmin_header"/>
 					<description/>
 				</row>
@@ -41,11 +41,11 @@
 						<textbox type="integer" label="Port" id="acc_imap_port" class="emailadmin_port"/>
 					</hbox>
 				</row>
-				<row>
+				<row class="dialog-footer-toolbar">
 					<hbox span="all">
-						<button label="Continue" id="button[continue]" onclick="app.emailadmin.wizard_detect"/>
-						<button label="Manual entry" id="button[manual]" onclick="app.emailadmin.wizard_manual"/>
-						<buttononly label="Cancel" id="button[cancel]" onclick="window.close();"/>
+						<button label="Continue" id="button[continue]" onclick="app.emailadmin.wizard_detect" image="continue" background_image="1"/>
+						<button label="Manual entry" id="button[manual]" onclick="app.emailadmin.wizard_manual" image="manual" background_image="1"/>
+						<buttononly label="Cancel" id="button[cancel]" onclick="window.close();" image="cancel" background_image="1"/>
 					</hbox>
 				</row>
 				<row>

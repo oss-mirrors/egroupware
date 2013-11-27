@@ -285,14 +285,14 @@
 						<menupopup id="acc_id" onchange="app.emailadmin.change_account"/>
 					</menulist>
 				</row>
-				<row height="30">
+				<row height="30"  class="dialog-header">
 					<description for="acc_name" value="Name of account"/>
 					<hbox span="all">
 						<textbox id="acc_name" needed="1" size="80"/>
 						<description align="right" id="acc_id" class="emailadmin_diagnostic"/>
 					</hbox>
 				</row>
-				<row class="emailadmin_no_user" height="30">
+				<row class="emailadmin_no_user dialog-header" height="30">
 					<description for="account_id" value="Valid for"/>
 					<hbox>
 						<menulist>
@@ -322,7 +322,7 @@
 						</tabpanels>
 					</tabbox>
 				</row>
-				<row>
+				<row class="dialog-footer-toolbar">
 					<hbox span="2">
 						<button label="Save" id="button[save]" image="save" background_image="1"/>
 						<button label="Apply" id="button[apply]" image="apply" background_image="1"/>
