@@ -116,7 +116,7 @@ class emailadmin_credentials
 			$rows = self::$db->select(self::TABLE, '*', array(
 				'acc_id' => $acc_id,
 				'account_id' => $account_id,
-				'cred_type & '.(int)$type,
+				'(cred_type & '.(int)$type.') > 0',	// postgreSQL require > 0, or gives error as it expects boolean
 			), __LINE__, __FILE__, false,
 				// account_id ASC ensures (current) user always overwrites all (0) or groups (<0)
 				'ORDER BY account_id ASC', self::APP);
@@ -268,7 +268,7 @@ class emailadmin_credentials
 		$where = array();
 		if ($acc_id > 0) $where['acc_id'] = $acc_id;
 		if (isset($account_id)) $where['account_id'] = $account_id;
-		if ($type != self::ALL) $where[] = '(cred_type & '.(int)$type.')';
+		if ($type != self::ALL) $where[] = '(cred_type & '.(int)$type.') > 0';	// postgreSQL require > 0, or gives error as it expects boolean
 
 		self::$db->delete(self::TABLE, $where, __LINE__, __FILE__, self::APP);
 
