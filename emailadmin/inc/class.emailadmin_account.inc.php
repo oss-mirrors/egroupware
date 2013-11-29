@@ -699,6 +699,7 @@ class emailadmin_account implements ArrayAccess
 		$data['acc_modified'] = time();
 
 		// store account data
+		if (!($data['acc_id'] > 0)) unset($data['acc_id']);
 		$where = $data['acc_id'] > 0 ? array('acc_id' => $data['acc_id']) : false;
 		self::$db->insert(self::TABLE, $data, $where, __LINE__, __FILE__, self::APP);
 		if (!($data['acc_id'] > 0))
@@ -706,6 +707,7 @@ class emailadmin_account implements ArrayAccess
 			$data['acc_id'] = self::$db->get_last_insert_id(self::TABLE, 'acc_id');
 		}
 		// store identity
+		if (!($data['ident_id'] > 0)) unset($data['ident_id']);
 		$iwhere = $data['ident_id'] > 0 ? array('ident_id' => $data['ident_id']) : false;
 		self::$db->insert(self::IDENTITIES_TABLE, $data, $iwhere, __LINE__, __FILE__, self::APP);
 		if (!($data['ident_id'] > 0))
@@ -791,7 +793,7 @@ class emailadmin_account implements ArrayAccess
 			emailadmin_credentials::delete($data['acc_id'], 0, emailadmin_credentials::ADMIN);
 		}
 		self::cache_invalidate($data['acc_id']);
-
+		//error_log(__METHOD__."() returning ".array2string($data));
 		return $data;
 	}
 

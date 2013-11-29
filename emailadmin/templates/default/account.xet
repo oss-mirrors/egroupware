@@ -73,7 +73,7 @@
 				</row>
 				<row class="@manual_class">
 					<description for="acc_imap_host" value="IMAP server"/>
-					<textbox blur="Hostname or IP" id="acc_imap_host" needed="1" size="32" maxlength="128" span="all"/>
+					<textbox blur="Hostname or IP" id="acc_imap_host" size="32" maxlength="128" span="all"/>
 				</row>
 				<row>
 					<description for="acc_imap_ssl" value="Secure connection"/>

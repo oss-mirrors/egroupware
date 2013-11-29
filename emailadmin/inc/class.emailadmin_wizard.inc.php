@@ -997,7 +997,7 @@ class emailadmin_wizard
 		$tpl = new etemplate_new('emailadmin.account');
 
 		// admin access to account with no credentials available
-		if ($this->is_admin && empty($content['acc_imap_username']))
+		if ($this->is_admin && (empty($content['acc_imap_username']) || empty($content['acc_imap_hostname'])))
 		{
 			// cant connection to imap --> allow free entries in taglists
 			foreach(array('acc_folder_sent', 'acc_folder_trash', 'acc_folder_draft', 'acc_folder_template') as $folder)
