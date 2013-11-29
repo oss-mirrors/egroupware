@@ -77,6 +77,10 @@ class emailadmin_account implements ArrayAccess
 	 */
 	const VALID_JOIN = 'JOIN egw_ea_valid ON egw_ea_valid.acc_id=egw_ea_accounts.acc_id ';
 	/**
+	 * Join with egw_ea_valid
+	 */
+	const ALL_VALID_JOIN = 'LEFT JOIN egw_ea_valid all_valid ON all_valid.acc_id=egw_ea_accounts.acc_id ';
+	/**
 	 * Table with identities and signatures
 	 */
 	const IDENTITIES_TABLE = 'egw_ea_identities';
@@ -144,15 +148,6 @@ class emailadmin_account implements ArrayAccess
 	 * @var emailadmin_smtp
 	 */
 	protected $smtpServer;
-
-	/**
-	 * SQL to query valid account_id's as comma-separated as subquery
-	 *
-	 * False if not supported by dbms.
-	 *
-	 * @var string
-	 */
-	protected static $valid_account_id_sql;
 
 	/**
 	 * Instanciated account object by acc_id, read acts as singelton
@@ -633,17 +628,21 @@ class emailadmin_account implements ArrayAccess
 		{
 			$where[] = self::$db->expression(self::VALID_TABLE, self::VALID_TABLE.'.', array('account_id' => self::memberships($called_for)));
 		}
-		$cols = self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*';
-		if (self::$valid_account_id_sql)
+		$cols = array(self::TABLE.'.*', self::IDENTITIES_TABLE.'.*');
+		$group_by = 'GROUP BY '.self::TABLE.'.acc_id,'.self::IDENTITIES_TABLE.'.ident_id';
+		$join = self::IDENTITY_JOIN.' '.self::VALID_JOIN;
+		if (($valid_account_id_sql = self::$db->group_concat('all_valid.account_id')))
 		{
-			$cols .= ','.self::$valid_account_id_sql.' AS account_id';
+			$cols[] = $valid_account_id_sql.' AS account_id';
+			$join .= ' '.self::ALL_VALID_JOIN;
 		}
 		if (!($data = self::$db->select(self::TABLE, $cols, $where, __LINE__, __FILE__,
-			false, 'GROUP BY '.self::TABLE.'.acc_id', self::APP, 0, self::IDENTITY_JOIN.' '.self::VALID_JOIN)->fetch()))
+			false, so_sql::fix_group_by_columns($group_by, $cols, self::TABLE, 'acc_id'),
+			self::APP, 0, $join)->fetch()))
 		{
 			throw new egw_exception_not_found(lang('Account not found!').' (acc_id='.array2string($acc_id).')');
 		}
-		if (!self::$valid_account_id_sql)
+		if (!$valid_account_id_sql)
 		{
 			$data['account_id'] = array();
 			foreach(self::$db->select(self::VALID_TABLE, 'account_id', array('acc_id' => $acc_id),
@@ -876,14 +875,17 @@ class emailadmin_account implements ArrayAccess
 
 		if (!$only_current_user || !isset(self::$search_cache[$cache_key]))
 		{
-			$cols = self::TABLE.'.*,'.self::IDENTITIES_TABLE.'.*';
-			if (self::$valid_account_id_sql)
+			$cols = array(self::TABLE.'.*', self::IDENTITIES_TABLE.'.*');
+			$group_by = 'GROUP BY '.self::TABLE.'.acc_id,'.self::IDENTITIES_TABLE.'.ident_id,'.self::VALID_TABLE.'.account_id';
+			$join = self::IDENTITY_JOIN.' '.self::VALID_JOIN;
+			if (($valid_account_id_sql = self::$db->group_concat('all_valid.account_id')))
 			{
-				$cols .= ','.self::$valid_account_id_sql.' AS account_id';
+				$cols[] = $valid_account_id_sql.' AS account_id';
+				$join .= ' '.self::ALL_VALID_JOIN;
 			}
 			$rs = self::$db->select(self::TABLE, $cols,	$where, __LINE__, __FILE__,
-				$offset, 'GROUP BY '.self::TABLE.'.acc_id ,'.self::IDENTITIES_TABLE.'.ident_id,'.self::VALID_TABLE.'.account_id ORDER BY '.$order_by,
-				self::APP, $num_rows, self::IDENTITY_JOIN.' '.self::VALID_JOIN);
+				$offset, so_sql::fix_group_by_columns($group_by, $cols, self::TABLE, 'acc_id').' ORDER BY '.$order_by,
+				self::APP, $num_rows, $join);
 
 			$ids = array();
 			foreach($rs as $row)
@@ -899,7 +901,7 @@ class emailadmin_account implements ArrayAccess
 				$ids[] = $row['acc_id'];
 			}
 			// fetch valid_id, if not yet fetched
-			if (!self::$valid_account_id_sql && $ids)
+			if (!$valid_account_id_sql && $ids)
 			{
 				foreach(self::$db->select(self::VALID_TABLE, 'account_id', array('acc_id' => $ids),
 					__LINE__, __FILE__, false, '', self::APP) as $row)
@@ -1054,15 +1056,6 @@ class emailadmin_account implements ArrayAccess
 	static public function init_static()
 	{
 		self::$db = $GLOBALS['egw']->db;
-
-		self::$valid_account_id_sql = self::$db->group_concat('account_id');
-		if (self::$valid_account_id_sql)
-		{
-			self::$valid_account_id_sql = '(SELECT '.self::$valid_account_id_sql.
-				' FROM '.self::VALID_TABLE.
-				' WHERE '.self::VALID_TABLE.'.acc_id='.self::TABLE.'.acc_id'.
-				' GROUP BY '.self::VALID_TABLE.'.acc_id)';
-		}
 	}
 }
 
