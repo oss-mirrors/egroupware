@@ -930,7 +930,7 @@ class emailadmin_wizard
 						{
 							$new_account = !($content['acc_id'] > 0);
 							self::fix_account_id_0($content['account_id'], true);
-							$content = emailadmin_account::write($content);
+							$content = emailadmin_account::write($content, $content['called_for']);
 							self::fix_account_id_0($content['account_id']);
 							$msg = lang('Account saved.');
 							// add new std identity entry
@@ -1087,8 +1087,9 @@ class emailadmin_wizard
 		// only allow to delete further identities, not a standard identity
 		$readonlys['button[delete_identity]'] = !($content['ident_id'] > 0 && $content['ident_id'] != $content['std_ident_id']);
 
-		// disable aliases tab for now
-		$readonlys['tabs']['emailadmin.account.aliases'] = true;
+		// disable aliases tab for default smtp class emailadmin_smtp
+		$readonlys['tabs']['emailadmin.account.aliases'] = !$content['acc_smtp_type'] ||
+			$content['acc_smtp_type'] == 'emailadmin_smtp';
 
 		if (count($content['account_id']) > 1)
 		{

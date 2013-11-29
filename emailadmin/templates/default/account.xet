@@ -190,7 +190,7 @@
 				<row class="emailadmin_no_single">
 					<description for="acc_smtp_type" value="Type"/>
 					<menulist>
-						<menupopup id="acc_smtp_type"/>
+						<menupopup id="acc_smtp_type" onchange="1"/>
 					</menulist>
 				</row>
 				<row class="emailadmin_no_single">
@@ -239,7 +239,7 @@
 				<row>
 					<description for="mailLocalAddress" value="EMail address"/>
 					<url-email id="mailLocalAddress" options="32,128"/>
-					<checkbox label="Email account active"/>
+					<checkbox label="Email account active" id="accountStatus" selected_value="active"/>
 				</row>
 				<row>
 					<description for="mailAlternateAddress" value="Alternate email address"/>
@@ -249,7 +249,7 @@
 				<row>
 					<description for="mailForwardingAddress" value="Forward email's to"/>
 					<taglist id="mailForwardingAddress" autocomplete_url=""/>
-					<checkbox label="Forward only" id="forwardOnly"/>
+					<checkbox label="Forward only" id="deliveryMode" selected_value="forwardOnly"/>
 				</row>
 				<row>
 					<description for="quotaLimit" value="Quota (MB)"/>

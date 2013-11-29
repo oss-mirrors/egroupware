@@ -60,6 +60,14 @@
  * @property-read string $ident_org organisation
  * @property-read string $ident_signature signature text (html)
  * @property-read array $params parameters passed to constructor (all above as array)
+ * @property-read array $account_id account-ids this mail account is valid for, 0=everyone
+ * @property-read int $user account-id class is instanciated for
+ * @property-read string $mailLocalAddress mail email address
+ * @property-read array $mailAlternateAddress further email addresses
+ * @property-read array $mailForwardingAddress address(es) to forward to
+ * @property-read string $accountStatus "active", if account is enabled to receive mail
+ * @property-read string $deliveryMode "forwardOnly", if account only forwards (no imap account!)
+ * @property-read int $quotaLimit quota in MB
  */
 class emailadmin_account implements ArrayAccess
 {
@@ -169,6 +177,13 @@ class emailadmin_account implements ArrayAccess
 	protected static $search_cache = array();
 
 	/**
+	 * account_id class was instanciated for ($called_for parameter of constructor or current user)
+	 *
+	 * @var int
+	 */
+	protected $user;
+
+	/**
 	 * Constructor
 	 *
 	 * @param array $params
@@ -194,6 +209,15 @@ class emailadmin_account implements ArrayAccess
 		unset($this->imapServer);
 		unset($this->oldImapServer);
 		unset($this->smtpServer);
+
+		$this->user = $called_for ? $called_for : $GLOBALS['egw_info']['user']['account_id'];
+
+		// if we manage the mail-account, include that data too
+		if ($this->acc_smtp_type != 'emailadmin_smtp' && $this->smtpServer() &&
+			($data = $this->smtpServer->getUserData($this->user)))
+		{
+			$this->params += $data;
+		}
 	}
 
 	/**
@@ -248,29 +272,43 @@ class emailadmin_account implements ArrayAccess
 	{
 		if (!isset($this->smtpServer))
 		{
-			$class = $this->params['acc_smtp_type'];
-			if ($class=='defaultsmtp') $class='emailadmin_smtp';
-			$this->smtpServer = new $class($this->params);
-			$this->smtpServer->editForwardingAddress = false;
-			$this->smtpServer->host = $this->params['acc_smtp_host'];
-			$this->smtpServer->port = $this->params['acc_smtp_port'];
-			switch($this->params['acc_smtp_ssl'])
-			{
-				case self::SSL_SSL:
-					$this->smtpServer->host = 'ssl://'.$this->smtpServer->host;
-					break;
-				case self::SSL_TLS:
-					$this->smtpServer->host = 'tls://'.$this->smtpServer->host;
-					break;
-				case self::SSL_STARTTLS:
-					throw new egw_exception_wrong_parameter('STARTTLS currently not supported for SMTP');
-			}
-			$this->smtpServer->smtpAuth = !empty($this->params['acc_smtp_username']);
-			$this->smtpServer->username = $this->params['acc_smtp_username'];
-			$this->smtpServer->password = $this->params['acc_smtp_password'];
-			$this->smtpServer->defaultDomain = $this->params['acc_domain'];
+			$this->smtpServer = self::_smtp($this->params);
 		}
 		return $this->smtpServer;
+	}
+
+	/**
+	 * Factory method to instanciate smtp server object
+	 *
+	 * @param array $params
+	 * @return emailadmin_smtp
+	 * @throws egw_exception_wrong_parameter
+	 */
+	protected static function _smtp(array $params)
+	{
+		$class = $params['acc_smtp_type'];
+		if ($class=='defaultsmtp') $class='emailadmin_smtp';
+		$smtp = new $class($params);
+		$smtp->editForwardingAddress = false;
+		$smtp->host = $params['acc_smtp_host'];
+		$smtp->port = $params['acc_smtp_port'];
+		switch($params['acc_smtp_ssl'])
+		{
+			case self::SSL_SSL:
+				$smtp->host = 'ssl://'.$smtp->host;
+				break;
+			case self::SSL_TLS:
+				$smtp->host = 'tls://'.$smtp->host;
+				break;
+			case self::SSL_STARTTLS:
+				throw new egw_exception_wrong_parameter('STARTTLS currently not supported for SMTP');
+		}
+		$smtp->smtpAuth = !empty($params['acc_smtp_username']);
+		$smtp->username = $params['acc_smtp_username'];
+		$smtp->password = $params['acc_smtp_password'];
+		$smtp->defaultDomain = $params['acc_domain'];
+
+		return $smtp;
 	}
 
 	/**
@@ -688,11 +726,12 @@ class emailadmin_account implements ArrayAccess
 	 * Save account data to db
 	 *
 	 * @param array $data
+	 * @param int $user=null account-id to store account-infos of managed mail-server
 	 * @return array $data plus added values for keys acc_id, ident_id from insert
 	 * @throws egw_exception_wrong_parameter if called static without data-array
 	 * @throws egw_exception_db
 	 */
-	public static function write(array $data)
+	public static function write(array $data, $user=null)
 	{
 		//error_log(__METHOD__."(".array2string($data).")");
 		$data['acc_modifier'] = $GLOBALS['egw_info']['user']['account_id'];
@@ -792,6 +831,15 @@ class emailadmin_account implements ArrayAccess
 		{
 			emailadmin_credentials::delete($data['acc_id'], 0, emailadmin_credentials::ADMIN);
 		}
+
+		// store account-information of managed mail server
+		if ($user > 0 && $data['acc_smtp_type'] && $data['acc_smtp_type'] != 'emailadmin_smtp')
+		{
+			$smtp = self::_smtp($data);
+			$smtp->setUserData($user, $data['mailAlternateAddress'], $data['mailForwardingAddress'],
+				$data['deliveryMode'], $data['accountStatus'], $data['mailLocalAddress'], $data['quotaLimit']);
+		}
+
 		self::cache_invalidate($data['acc_id']);
 		//error_log(__METHOD__."() returning ".array2string($data));
 		return $data;
