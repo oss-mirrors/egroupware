@@ -299,6 +299,39 @@
 				return false;
 			}
 		}
+		/**
+		 * Check if passed email address(s) is valid
+		 *
+		 * @param type $addresses
+		 *
+		 *@return boolean Returns TRUE in case of succes and FALSE in case of failure
+		 */
+		function email_validation($addresses)
+		{
+			if(is_array($addresses))
+			{
+				$regexp="/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
+				foreach ($addresses as $addr)
+				{
+					if (!preg_match($regexp,$addr))
+					{
+						$this->errorStack['addresses'] = lang('One address is not valid').'!';
+					}
+				}
+			}
+			else
+			{
+				$this->errorStack['addresses'] = lang('Please select a address').'!';
+			}
+			if (!empty($this->errorStack['addresses']))
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
 
 		function display_app_header() {
 			if(preg_match('/^(vacation|filter)$/',get_var('editmode',array('GET'))))
@@ -314,6 +347,7 @@
 				$GLOBALS['egw']->js->set_onunload('opener.fm_sieve_cancelReload();');
 			}
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
+
 			$GLOBALS['egw']->common->egw_header();
 
 			switch($_GET['menuaction']) {
@@ -466,7 +500,15 @@
 							$preferences->preferences['prefpreventforwarding'] == 0 )
 						{
 							$newRule['action']	= 'address';
-							$newRule['action_arg']	= get_var('address',array('POST'));
+
+							if ($this->email_validation(preg_split('/, ?/',get_var('address',array('POST')))))
+							{
+								$newRule['action_arg']	= get_var('address',array('POST'));
+							}
+							else
+							{
+								$msg .= lang($this->errorStack['addresses']);
+							}
 						}
 						else
 						{
