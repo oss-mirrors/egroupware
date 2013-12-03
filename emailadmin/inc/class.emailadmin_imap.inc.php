@@ -418,10 +418,10 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				break;
 			case 1:
 				$mailbox = $reference;
-				$reference = '%';
+				//$reference = '%';
 				break;
 			case 2:
-				$mailbox = "%";
+				$mailbox = $reference."%";
 				break;
 			}
 		}else{
@@ -429,7 +429,8 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				$mailbox = $restriction_search;
 			}
 		}
-		//error_log(__METHOD__.__LINE__.$mailbox);
+		//error_log(__METHOD__.__LINE__.array2string($mailbox));
+		//if (is_array($mailbox))error_log(__METHOD__.__LINE__.function_backtrace());
 		$options = array(
 				'attributes'=>true,
 				'children'=>true, //child info
