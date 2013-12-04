@@ -499,7 +499,6 @@ test connection	felamimail	sk	Testovať aktívne pripojenie
 test connection and display basic information about the selected profile	felamimail	sk	Testovať pripojenie a zobraziť základné informácie o vybranom profile
 text only	felamimail	sk	Iba text
 text/plain	felamimail	sk	Čistý text
-the action will be applied to all messages of the current folder.ndo you want to proceed?	felamimail	sk	Akcia sa vykoná pre všetky správy v aktuálnom priečinku.\nPokračovať?
 the connection to the imap server failed!!	felamimail	sk	Pripojenie na IMAP server sa nepodarilo!!!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	sk	Tento IMAP server nepodporuje vybranú metódu overovania. Prosím kontaktujte správcu systému.
 the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	sk	Odosielateľ správy si vyžiadal potvrdenie o tom, že ste si jeho správu už prečítali. Chcete, aby sa mu toto potvrdenie odoslalo?

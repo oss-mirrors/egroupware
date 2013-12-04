@@ -18,6 +18,7 @@ can be used by application	emailadmin	nl	Kan gebruikt worden door toepassing
 can be used by group	emailadmin	nl	Kan gebruikt worden door groep
 can be used by user	emailadmin	nl	kan door gebruiker gebruikt worden
 connection dropped by imap server.	emailadmin	nl	Verbinding viel uit door IMAP server
+continue	emailadmin	nl	Doorgaan
 could not complete request. reason given: %s	emailadmin	nl	Kan verzoek niet afmaken. Opgegeven reden: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	nl	Kon geen veilige verbinding openen met de IMAP server. %s : %s
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	nl	CRAM-MDS of DIGEST-MDS vereist de installatie van het Auth_SASL pakket.
@@ -55,6 +56,7 @@ if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	
 imap admin password	admin	nl	IMAP beheerders wachtwoord
 imap admin user	admin	nl	IMAP beheerdersgebruiker
 imap c-client version < 2001	emailadmin	nl	IMAP C-Client Versie < 2001
+imap server	emailadmin	nl	IMAP server
 imap server closed the connection.	emailadmin	nl	IMAP server sloot de verbinding
 imap server closed the connection. server responded: %s	emailadmin	nl	IMAP Server sloot de verbinding. Server reageerde: %s
 imap server hostname or ip address	emailadmin	nl	IMAP-server hostnaam of IP-adres
@@ -88,6 +90,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	nl	Plesk SMTP-Server (Qmail)
 pop3 server hostname or ip address	emailadmin	nl	POP3-server hostnaam of IP-adres
 pop3 server port	emailadmin	nl	POP3-serverpoort
+port	emailadmin	nl	poort
 postfix with ldap	emailadmin	nl	Postfix met LDAP
 profile access rights	emailadmin	nl	profiel toegangsrechten
 profile is active	emailadmin	nl	profiel is actief
@@ -139,3 +142,4 @@ users can define their own identities	emailadmin	nl	gebruikers kunnen hun eigen 
 users can define their own signatures	emailadmin	nl	gebruikers kunnen hun eigen ondertekening instellen
 virtual mail manager	emailadmin	nl	Virtual MAIL ManaGeR
 you have received a new message on the	emailadmin	nl	U heeft een nieuw bericht ontvangen op de
+your name	emailadmin	nl	Uw naam

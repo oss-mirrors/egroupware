@@ -438,7 +438,6 @@ template folder	felamimail	sl	Mapa s predlogami
 templates	felamimail	sl	Predloge
 text only	felamimail	sl	Le besedilo
 text/plain	felamimail	sl	Navadno besedilo
-the action will be applied to all messages of the current folder.ndo you want to proceed?	felamimail	sl	To dejanje bo izvedeno nad vsemi sporočili v trenutni mapi.\nŽelite nadaljevati?
 the connection to the imap server failed!!	felamimail	sl	Povezava na strežnik IMAP ni uspela.
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	sl	Strežnik IMAP verjetno ne podpira izbrane metode avtentikacije. Kontaktirajte sistemskega administratorja.
 the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	sl	Pošiljatelj sporočila je zahteval potrdilo, da ste sporočilo prebrali. Želite poslati obvestilo o tem?

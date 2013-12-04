@@ -3,12 +3,12 @@
 add document to category	wiki	fr	Ajouter un document à la catégorie
 added	wiki	fr	Ajouté
 administration features are disabled for this wiki.	wiki	fr	Les options d'administration sont désactivées pour ce wiki.
-admins	wiki	fr	administrateurs
+admins	wiki	fr	Administrateurs
 after how many days should old versions of a page be removed (0 for never)	admin	fr	Après combien de jours les anciennes versions de pages devraient être supprimées (0 pour jamais)
 allow anonymous access	admin	fr	Permettre les accès anonymes
 anonymous password	admin	fr	Mot de passe du compte "anonyme"
 anonymous session type	admin	fr	Type de session pour le compte "anonyme"
-anonymous username	admin	fr	Identifiant pour le compte "anonyme"
+anonymous username	admin	fr	Identifiant du compte "anonyme"
 automatically convert pages with wiki-syntax to richtext (if edited)?	admin	fr	Convertir automatiquement les pages avec syntaxe wiki vers le format texte enrichi (si édité) ?
 block	wiki	fr	Bloquer
 block / unblock hosts	common	fr	Bloquer / Débloquer les hôtes
@@ -16,7 +16,7 @@ blocked ip address ranges	wiki	fr	Plage d'adresses IP bloquées
 cancel without saving	wiki	fr	Annuler sans enregistrer
 change notification	wiki	fr	Notification de changement
 changed	wiki	fr	Modifié
-changes by last author	wiki	fr	Changements par auteur
+changes by last author	wiki	fr	Changements par dernier auteur
 choose your current time here, so the server may figure out what time zone you are in.	wiki	fr	Choisissez votre heure actuelle ici, ainsi le serveur se rend compte dans quelle fuseau horaire vous vous trouvez.
 columns	wiki	fr	Colonnes
 compute difference	wiki	fr	Voir la différence
@@ -30,13 +30,13 @@ deleted	wiki	fr	Effacé
 deletes this page	wiki	fr	Supprime cette page
 difference between versions	wiki	fr	Différences entre les versions
 differences in	wiki	fr	Différences dans
-different languages can have different titles	wiki	fr	différentes langues peuvent avoir différents titres
+different languages can have different titles	wiki	fr	Différentes langues peuvent avoir différents titres
 document last modified	wiki	fr	Dernière modification du document
 edit box	wiki	fr	Boîte de modification
-edit this <em>archive version</em> of this document	wiki	fr	Modifier la<em>VERSION ARCHIVEE</em> de ce document
+edit this <em>archive version</em> of this document	wiki	fr	Modifier la<em>VERSION ARCHIVÉE</em> de ce document
 edit this document	wiki	fr	Modifier le document
 edit with preview	admin	fr	Modifier avec prévisualisation
-editable	admin	fr	modifiable
+editable	admin	fr	Modifiable
 editing	wiki	fr	Modifiant
 emailaddress administrator	admin	fr	Adresse email de l'administrateur
 enable free links	admin	fr	Autoriser les liens libres
@@ -46,7 +46,7 @@ enter here the number of days of edits to display on recentchanges or any other 
 enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	fr	Entrez la plage d'adresses IP sous la forme <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>
 error creating temporary file.	wiki	fr	Erreur en créant le fichier temporaire.
 error writing to temporary file.	wiki	fr	Erreur lors de l'écriture du fichier temporaire.
-everyone	wiki	fr	chacun
+everyone	wiki	fr	Tout le monde
 find	wiki	fr	Rechercher
 history	wiki	fr	Historique
 history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	fr	L'historique devrait montrer <em>toutes</em> les modifications faites par le même auteur. Sinon seules les dernières modifications sont affichées.
@@ -56,21 +56,21 @@ if a page i have read access to is changed, send a notification	wiki	fr	Si une p
 if a page i have write access to is changed, send a notification	wiki	fr	Si une page sur laquelle j'ai accès en lecture est modifiée, envoyer une notification.
 if a page title matches this regular expression, send a notification.  you can look at title, name, lang, text using name: regex	wiki	fr	Si un titre de page correspond à cette expression régulière, alors envoyer une notification. Vous pouvez scruter le titre (title), le nom (name), la langue (lang) et le texte (text) en utilisant la syntaxe "name: pattern"
 interwikiprefix	admin	fr	InterWikiPrefix
-invalid page name.	wiki	fr	Nom de page invalide.
-load	wiki	fr	Charge
+invalid page name.	wiki	fr	Nom de page invalide !
+load	wiki	fr	Charger
 loads the named page in the given language, all change so far get lost !!!	wiki	fr	Charge la page nommée dans la langue données, toutes les modifications seront perdues !!!
-lock / unlock pages	common	fr	Verrouiller / Déverrouiller les Pages
+lock / unlock pages	common	fr	Verrouiller / déverrouiller les pages
 locked	wiki	fr	Verrouillé
 message to send	wiki	fr	Message à envoyer
 name wiki home link	admin	fr	Nom du Wiki
 newer	wiki	fr	Plus récents
 no never	admin	fr	Non, jamais
 no only on request	admin	fr	Non, seulement sur demande
-not set	wiki	fr	pas spécifié
+not set	wiki	fr	Non spécifié
 older	wiki	fr	Plus anciens
-on all pages	wiki	fr	sur toutesles pages
+on all pages	wiki	fr	sur toutes les pages
 only if browser supports a richtext-editor	admin	fr	Seulement si le navigateur supporte un éditeur de texte enrichi
-only on the first page	wiki	fr	seulement sur la première page
+only on the first page	wiki	fr	Seulement sur la première page
 page '%1' not found !!!	wiki	fr	Page '%1' introuvable !!!
 page content	wiki	fr	Contenu de la page
 pages i have read access	wiki	fr	Pages avec accès en lecture
@@ -81,12 +81,12 @@ person who changed the page	wiki	fr	Personne ayant modifié la page
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	fr	Dépôt d'image via un éditeur de texte enrichi (laisser le répertoire de dépôt vide pour désactiver le dépôt)
 please contact the %1administrator%2 for assistance.	wiki	fr	Veuillez contacter l'%1Administrateur%2 pour de l'assistance.
 preview	wiki	fr	Aperçu
-preview of current version	wiki	fr	Aperçu de la Version Actuelle
+preview of current version	wiki	fr	Aperçu de la version actuelle
 rate control / ip blocking disabled	wiki	fr	Contrôle de fréquence / blocage adresse IP désactivé
 readable by	wiki	fr	Lisible par
-readonly	admin	fr	lecture seule
+readonly	admin	fr	Lecture seule
 rebuild links	wiki	fr	Reconstruire les liens
-recent changes	wiki	fr	Modifications Récentes
+recent changes	wiki	fr	Modifications récentes
 renames page to the given name and language	wiki	fr	Renomme la page avec le nom et la langue donnée
 richtext	wiki	fr	Texte enrichi
 rows	wiki	fr	Lignes
@@ -98,7 +98,7 @@ show a search	wiki	fr	Montrer une requête
 show the title of the wiki page	wiki	fr	Montrer le titre d'une page wiki
 summary	wiki	fr	Sommaire
 summary of change	wiki	fr	Résumé des changements
-the search returned no result!	wiki	fr	La requête n'a rien retourné!
+the search returned no result!	wiki	fr	La requête n'a pas de résultat !
 this page can not be edited.	wiki	fr	Cette page ne peut pas être modifiée
 twin pages	wiki	fr	Pages jumelles
 unblock	wiki	fr	Débloquer

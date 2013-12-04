@@ -4,6 +4,7 @@ admin password	emailadmin	iw	סיסמת מנהל
 admin username	emailadmin	iw	שם משתמש של המנהל
 advanced options	emailadmin	iw	אופציות מתקדמות
 alternate email address	emailadmin	iw	כתובת דואר אלקטרוני חילופי
+continue	emailadmin	iw	המשך
 cyrus imap server	emailadmin	iw	Cyrus IMAP שרת
 cyrus imap server administration	emailadmin	iw	Cyrus IMAP ניהול שרת
 default	emailadmin	iw	ברירת מחדל
@@ -23,6 +24,7 @@ forward only	emailadmin	iw	העבר בלבד
 imap admin password	admin	iw	IMAP סיסמת ניהול
 imap admin user	admin	iw	IMAP שם מנהל
 imap c-client version < 2001	emailadmin	iw	IMAP C-Client Version < 2001
+imap server	emailadmin	iw	שרת IMAP
 imap server hostname or ip address	emailadmin	iw	שלו IP- או כתובת הIMAP שם שרת
 imap server logintyp	emailadmin	iw	IMAP סוג כניסה לשרת
 imap server port	emailadmin	iw	IMAP פורט שרת
@@ -69,3 +71,4 @@ use tls authentication	emailadmin	iw	TLS השתמש באימות
 use tls encryption	emailadmin	iw	TLS השתמש בהצפנת
 users can define their own emailaccounts	emailadmin	iw	משתמשים יכולים להגדיר בעצמם את חשבונות דואר האלקטרוני שלהם
 virtual mail manager	emailadmin	iw	מלהל דואר וירטואלי
+your name	emailadmin	iw	השם שלך

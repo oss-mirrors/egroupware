@@ -4,6 +4,7 @@ admin password	emailadmin	hr	admin password
 admin username	emailadmin	hr	admin username
 advanced options	emailadmin	hr	advanced options
 alternate email address	emailadmin	hr	alternate email address
+continue	emailadmin	hr	Continue
 cyrus imap server	emailadmin	hr	Cyrus IMAP Server
 cyrus imap server administration	emailadmin	hr	Cyrus IMAP server administration
 default	emailadmin	hr	default
@@ -22,6 +23,7 @@ forward email's to	emailadmin	hr	forward email's to
 forward only	emailadmin	hr	forward only
 imap admin password	admin	hr	IMAP admin password
 imap admin user	admin	hr	IMAP admin user
+imap server	emailadmin	hr	IMAP Poslužitelj
 imap server hostname or ip address	emailadmin	hr	IMAP server hostname or ip address
 imap server logintyp	emailadmin	hr	IMAP server login type
 imap server port	emailadmin	hr	IMAP server port

@@ -19,6 +19,7 @@ can be used by application	emailadmin	pl	Może być używane przez aplikację
 can be used by group	emailadmin	pl	Może byc używane przez grupę
 can be used by user	emailadmin	pl	Może być używane przez użytkownika
 connection dropped by imap server.	emailadmin	pl	Połączenie zerwane przez serwer IMAP
+continue	emailadmin	pl	Kontunuj
 could not complete request. reason given: %s	emailadmin	pl	Nie udało się zrealizować żądania. Powód: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	pl	Nie udało się stworzyć bezpiecznego połączenia do serwera IMAP. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	pl	CRAM-MD5 lub DIGEST-MD5 wymagają, aby pakiet Auth_SASL (Perl) był zainstalowany
@@ -56,6 +57,7 @@ if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	
 imap admin password	admin	pl	Hasło administratora IMAP
 imap admin user	admin	pl	Login administratora IMAP
 imap c-client version < 2001	emailadmin	pl	Wersja C-Client IMAP < 2001
+imap server	emailadmin	pl	Serwer IMAP
 imap server closed the connection.	emailadmin	pl	Serwer IMAP zakończył połączenie.
 imap server closed the connection. server responded: %s	emailadmin	pl	Serwer IMAP zakończył połączenie. Jego odpowiedź: %s
 imap server hostname or ip address	emailadmin	pl	Nazwa hosta lub IP serwera IMAP
@@ -90,6 +92,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	pl	Plesk Serwera SMTP (Qmail)
 pop3 server hostname or ip address	emailadmin	pl	Nazwa hosta lub IP serwera POP3
 pop3 server port	emailadmin	pl	Port serwera POP3
+port	emailadmin	pl	port
 postfix with ldap	emailadmin	pl	Postfix z LDAP
 profile access rights	emailadmin	pl	prawa dostępu do profilu
 profile is active	emailadmin	pl	Profil jest aktywny
@@ -144,3 +147,4 @@ users can define their own signatures	emailadmin	pl	Użytkownicy mogą definiowa
 users can utilize these stationery templates	emailadmin	pl	Użytkownicy mogą użyć tych szablonów stacjonarnych
 virtual mail manager	emailadmin	pl	Wirtualny Serwer Pocztowy - zarządca
 you have received a new message on the	emailadmin	pl	Otrzymałeś nową wiadomość o
+your name	emailadmin	pl	Twoje Imę

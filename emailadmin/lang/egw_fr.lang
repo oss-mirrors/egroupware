@@ -20,6 +20,7 @@ can be used by application	emailadmin	fr	Peut être utilisée par application
 can be used by group	emailadmin	fr	Peut être utilisée par un groupe
 can be used by user	emailadmin	fr	Peut être utilisée par un utilisateur
 connection dropped by imap server.	emailadmin	fr	Connexion interrompue par le serveur IMAP.
+continue	emailadmin	fr	Continuer
 could not complete request. reason given: %s	emailadmin	fr	Impossible d'effectuer la requête. Raison invoquée: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	fr	Impossible d'ouvrir la connexion sécurisée avec le serveur IMAP. %s: %s
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	fr	CRAM-MD5 ou DIGEST-MD5 requiert l'installation du progiciel Auth_SASL
@@ -59,6 +60,7 @@ if you specify port 5190 as sieve server port, you enforce ssl for sieve (server
 imap admin password	admin	fr	Mot de passe de l'administrateur IMAP
 imap admin user	admin	fr	ID administrateur IMAP
 imap c-client version < 2001	emailadmin	fr	IMAP C-Client Version < 2001
+imap server	emailadmin	fr	Serveur IMAP
 imap server closed the connection.	emailadmin	fr	Le serveur IMAP a interrompu la connexion.
 imap server closed the connection. server responded: %s	emailadmin	fr	Le serveur IMAP a interrompu la connexion. Réponse du serveur: %s.
 imap server hostname or ip address	emailadmin	fr	Nom du serveur IMAP ou adresse IP
@@ -93,6 +95,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	fr	Serveur SMTP Plesk (Qmail)
 pop3 server hostname or ip address	emailadmin	fr	Nom d'hôte ou adresse IP du serveur POP3
 pop3 server port	emailadmin	fr	Port du serveur POP3
+port	emailadmin	fr	port
 postfix with ldap	emailadmin	fr	Postfix avec support LDAP
 profile access rights	emailadmin	fr	Droits d'accès du profil
 profile is active	emailadmin	fr	Le profil est actif
@@ -151,3 +154,4 @@ virtual mail manager	emailadmin	fr	Virtual MAIL ManaGeR
 yes, use credentials below only for alarms and notifications, otherwise use credentials of current user	emailadmin	fr	Oui, utiliser les infos ci-dessous  seulement pour les alarmes et les notifications, autrement utiliser les informations du compte utilisateur actif.
 yes, use credentials of current user or if given credentials below	emailadmin	fr	Oui, utiliser les informations du compte utilisateur actif ou bien de ces informations ci-dessous si elles sont renseignées
 you have received a new message on the	emailadmin	fr	Vous avez reçu un nouveau message sur le
+your name	emailadmin	fr	Votre nom

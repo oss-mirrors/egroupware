@@ -4,6 +4,7 @@ admin password	emailadmin	ca	Contrasenya del administrador
 admin username	emailadmin	ca	Mom d'usuari del administrador
 advanced options	emailadmin	ca	Opcions avançades
 alternate email address	emailadmin	ca	Adreça de correu alternativa
+continue	emailadmin	ca	Continuar
 cyrus imap server	emailadmin	ca	Servidor IMAP Cyrus
 cyrus imap server administration	emailadmin	ca	Administració del servidor IMAP Cyrus
 default	emailadmin	ca	predeterminada
@@ -23,6 +24,7 @@ forward only	emailadmin	ca	Només reenviar
 imap admin password	admin	ca	Contrasenya de l'administrador IMAP
 imap admin user	admin	ca	Usuari administrador IMAP
 imap c-client version < 2001	emailadmin	ca	Versió C-Client IMAP < 2001
+imap server	emailadmin	ca	Servidor IMAP
 imap server hostname or ip address	emailadmin	ca	Servidor IMAP o adreça IP
 imap server logintyp	emailadmin	ca	Tipus de sessió del servidor IMAP
 imap server port	emailadmin	ca	Port del servidor IMAP

@@ -439,7 +439,6 @@ template folder	felamimail	pl	Katalog szablnów
 templates	felamimail	pl	Szablony
 text only	felamimail	pl	Tylko tekst
 text/plain	felamimail	pl	zwykły tekst
-the action will be applied to all messages of the current folder.ndo you want to proceed?	felamimail	pl	Ta akcja zostanie użyta na wszystkich wiadomościach aktualnego folderu.\nCzy chcesz kontynuować?
 the connection to the imap server failed!!	felamimail	pl	Nieudane połączenie z serwerem SMTP!!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	pl	Serwer IMAP nie obsługuje wskazanej metody autentykacji. Proszę skontaktować się z administratorem.
 the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	pl	Nadawca wiadomości poprosił o potwierdzenie przeczytania wiadomości. Czy chcesz je wysłać?

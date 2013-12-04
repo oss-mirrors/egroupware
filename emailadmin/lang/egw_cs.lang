@@ -19,6 +19,7 @@ can be used by application	emailadmin	cs	Může být použit aplikací
 can be used by group	emailadmin	cs	Může být použit skupinou
 can be used by user	emailadmin	cs	Může být použit uživatelem
 connection dropped by imap server.	emailadmin	cs	Připojení ukončeno IMAP serverem.
+continue	emailadmin	cs	Pokračovat
 could not complete request. reason given: %s	emailadmin	cs	Nemohu dokončit požadavek. Důvod: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	cs	Nemohu otevřít zabezpečené připojení na IMAP server. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	cs	CRAM-MD5 nebo DIGEST-MD5 vyžadují nainstalovaný balíček Auth_SASL.
@@ -56,6 +57,7 @@ if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	
 imap admin password	admin	cs	Heslo IMAP administrátora
 imap admin user	admin	cs	Uživatelský účet IMAP administrátora
 imap c-client version < 2001	emailadmin	cs	IMAP C-klient verze < 2001
+imap server	emailadmin	cs	IMAP Server
 imap server closed the connection.	emailadmin	cs	IMAP server ukončil spojení.
 imap server closed the connection. server responded: %s	emailadmin	cs	IMAP server ukončil spojení. Server odpověděl: %s
 imap server hostname or ip address	emailadmin	cs	DNS jméno nebo IP adresa IMAP serveru
@@ -90,6 +92,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	cs	Plesk SMTP server (Qmail)
 pop3 server hostname or ip address	emailadmin	cs	DNS jméno nebo IP adresa POP3 serveru
 pop3 server port	emailadmin	cs	Port POP3 serveru
+port	emailadmin	cs	port
 postfix with ldap	emailadmin	cs	Postfix s LDAP
 profile access rights	emailadmin	cs	přístupová práva profilu
 profile is active	emailadmin	cs	Profil je aktivní
@@ -143,3 +146,4 @@ users can define their own signatures	emailadmin	cs	Uživatelé smí definovat s
 users can utilize these stationery templates	emailadmin	cs	Uživatelé mohou využívat tyto šablony dopisů
 virtual mail manager	emailadmin	cs	Virtuální správce pošty
 you have received a new message on the	emailadmin	cs	Přišla Vám nová zpráva na
+your name	emailadmin	cs	Vaše jméno

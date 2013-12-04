@@ -4,6 +4,7 @@ bad login name or password.	emailadmin	bg	Невалидно име или па�
 bad or malformed request. server responded: %s	emailadmin	bg	Некоректна заявка. Сървърът отговори: %s
 bad request: %s	emailadmin	bg	Некоректна заявка: %s
 connection dropped by imap server.	emailadmin	bg	Връзката е прекъсната от IMAP сървъра.
+continue	emailadmin	bg	Продължаване
 could not complete request. reason given: %s	emailadmin	bg	Неуспешно изпълнение на заявката поради: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	bg	Неуспешно изграждане на криптирана връзка с IMAP сървъра. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	bg	CRAM-MD5 или DIGEST-MD5 изискват инсталиране на пакета Auth_SASL.
@@ -16,6 +17,7 @@ error connecting to imap server. %s : %s.	emailadmin	bg	Грешка при вр
 error connecting to imap server: [%s] %s.	emailadmin	bg	Грешка при връзка с IMAP сървъра: [%s] %s.
 error saving the entry!!!	emailadmin	bg	Грешка при запис!!!
 if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	bg	Ако използвате SSL или TLS, трябва да заредите OpenSSL разширението на PHP.
+imap server	emailadmin	bg	IMAP сървър
 imap server closed the connection.	emailadmin	bg	IMAP сървъра прекрати връзката.
 imap server closed the connection. server responded: %s	emailadmin	bg	IMAP сървъра прекрати връзката с отговор: %s
 mail settings	admin	bg	Настройки на пощата
@@ -24,6 +26,7 @@ no message returned.	emailadmin	bg	Не са открити съобщения
 no supported imap authentication method could be found.	emailadmin	bg	Не се поддържа зададеният метод за IMAP оторизация.
 order	emailadmin	bg	Ред
 organisation	emailadmin	bg	организация
+port	emailadmin	bg	порт
 remove	emailadmin	bg	премахване
 sieve settings	emailadmin	bg	Настройки на Sieve
 smtp settings	emailadmin	bg	SMTP настройки

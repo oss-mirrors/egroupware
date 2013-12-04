@@ -20,6 +20,7 @@ can be used by application	emailadmin	sk	môže byť použité aplikáciou
 can be used by group	emailadmin	sk	môže byť použité skupinou
 can be used by user	emailadmin	sk	môže byť použité používateľom
 connection dropped by imap server.	emailadmin	sk	Spojenie prerušené IMAP serverom.
+continue	emailadmin	sk	Pokračovať
 could not complete request. reason given: %s	emailadmin	sk	Nemožno dokončiť požiadavku. Dôvod: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	sk	Nepodarilo sa nadviazať zabezpečené pripojenie k IMAP serveru. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	sk	CRAM-MD5 alebo DIGEST-MD5 vyžaduje, aby bol nainštalovaný balík Auth_SASL.
@@ -58,6 +59,7 @@ if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	
 imap admin password	admin	sk	heslo správcu IMAP
 imap admin user	admin	sk	používateľ pre správu IMAP
 imap c-client version < 2001	emailadmin	sk	IMAP C-klient verzia < 2001
+imap server	emailadmin	sk	IMAP server
 imap server closed the connection.	emailadmin	sk	IMAP server ukončil spojenie.
 imap server closed the connection. server responded: %s	emailadmin	sk	IMAP server ukončil spojenie. Odpoveď servera: %s
 imap server hostname or ip address	emailadmin	sk	názov (hostname) alebo IP adresa IMAP servera
@@ -91,6 +93,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	sk	Plesk SMTP-Server (qmail)
 pop3 server hostname or ip address	emailadmin	sk	názov (hostname) alebo IP adresa POP3 servera
 pop3 server port	emailadmin	sk	port POP3 servera
+port	emailadmin	sk	Port
 postfix with ldap	emailadmin	sk	Postfix + LDAP
 profile access rights	emailadmin	sk	prístupové práva profilu
 profile is active	emailadmin	sk	profil je aktívny

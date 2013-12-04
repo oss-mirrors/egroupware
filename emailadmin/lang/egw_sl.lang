@@ -18,6 +18,7 @@ can be used by application	emailadmin	sl	Je lahko uporabljen iz aplikacije
 can be used by group	emailadmin	sl	Je lahko uporabljen iz skupine
 can be used by user	emailadmin	sl	Lahko uporablja uporabnik
 connection dropped by imap server.	emailadmin	sl	Strežnik IMAP je prekinil povezavo.
+continue	emailadmin	sl	Nadaljuj
 could not complete request. reason given: %s	emailadmin	sl	Ne morem dokončati zahteve. Podan vzrok: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	sl	Ne morem odpreti varne povezave s strežnikom IMAP. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	sl	CRAM-MD5 ali DIGEST-MD5 zahteva, da je nameščen paket Auth_SASL.
@@ -55,6 +56,7 @@ if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	
 imap admin password	admin	sl	Geslo oskrbnika IMAPa
 imap admin user	admin	sl	Uporabniško ime oskrbnika IMAP-a
 imap c-client version < 2001	emailadmin	sl	IMAP C-klient različica pred 2001
+imap server	emailadmin	sl	Strežnik IMAP
 imap server closed the connection.	emailadmin	sl	Strežnik IMAP je prekinil povezavo.
 imap server closed the connection. server responded: %s	emailadmin	sl	Strežnik IMAP je prekinil povezavo. Odgovor strežnika: %s
 imap server hostname or ip address	emailadmin	sl	Ime ali IP strežnika IMAP
@@ -88,6 +90,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	sl	Strežnik Plesk IMAP (Qmail)
 pop3 server hostname or ip address	emailadmin	sl	Ime ali IP POP3 strežnika
 pop3 server port	emailadmin	sl	Vrata POP3 strežnika
+port	emailadmin	sl	Vrata
 postfix with ldap	emailadmin	sl	Končnica pri LDAP
 profile access rights	emailadmin	sl	Pravice dostopa do profila
 profile is active	emailadmin	sl	Profil je aktiven
@@ -139,3 +142,4 @@ users can define their own identities	emailadmin	sl	Uporabniki lahko določijo l
 users can define their own signatures	emailadmin	sl	Uporabniki lahko določijo lastne podpise
 virtual mail manager	emailadmin	sl	Virtualni upravljalec E-pošte
 you have received a new message on the	emailadmin	sl	Prejeli ste novo sporočilo na
+your name	emailadmin	sl	Vaše ime

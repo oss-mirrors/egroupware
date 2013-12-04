@@ -19,6 +19,7 @@ can be used by application	emailadmin	hu	Ez a modul használhatja
 can be used by group	emailadmin	hu	Ez a csoport használhatja
 can be used by user	emailadmin	hu	a felhasználó alkalmazhatja
 connection dropped by imap server.	emailadmin	hu	A kapcsolatot az IMAP szerver eldobta.
+continue	emailadmin	hu	Folytat
 could not complete request. reason given: %s	emailadmin	hu	Kérést nem lehet teljesíteni. Az ok: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	hu	Nem létesíthető titkos csatorna az IMAP szerverhez. %s : %s
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	hu	CRAM-MD5 vagy DIGEST-MD5 használatához az Auth_SASL csomagot telepíteni kell.
@@ -56,6 +57,7 @@ if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	
 imap admin password	admin	hu	IMAP adminisztrátor jelszava
 imap admin user	admin	hu	IMAP adminisztrátor felhasználóneve
 imap c-client version < 2001	emailadmin	hu	IMAP C-Client verzió < 2001
+imap server	emailadmin	hu	IMAP szerver
 imap server closed the connection.	emailadmin	hu	Az IMAP szerver lezárta a kapcsolatot.
 imap server closed the connection. server responded: %s	emailadmin	hu	Az IMAP szerver lezárta a kapcsolatot: %s
 imap server hostname or ip address	emailadmin	hu	IMAP szerver hosztneve vagy IP címe
@@ -90,6 +92,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	hu	Plesk SMTP-Szerver (Qmail)
 pop3 server hostname or ip address	emailadmin	hu	POP3 szerver hosztneve vagy IP címe
 pop3 server port	emailadmin	hu	POP3 szerver portja
+port	emailadmin	hu	portcím
 postfix with ldap	emailadmin	hu	Postfix LDAP-vel
 profile access rights	emailadmin	hu	profil elérési jogosultságok
 profile is active	emailadmin	hu	a profil inaktív
@@ -143,3 +146,4 @@ users can define their own signatures	emailadmin	hu	A felhasználók beállítha
 users can utilize these stationery templates	emailadmin	hu	A felhasználók alkalmazhatják az irodaszer mintákat
 virtual mail manager	emailadmin	hu	Virtuális MAIL ManaGeR
 you have received a new message on the	emailadmin	hu	Új üzenet érkezett a
+your name	emailadmin	hu	Az ön neve

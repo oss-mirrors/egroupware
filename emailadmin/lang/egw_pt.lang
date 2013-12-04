@@ -8,6 +8,7 @@ any application	emailadmin	pt	Qualquer aplicação
 any group	emailadmin	pt	Qualquer grupo
 can be used by application	emailadmin	pt	Pode ser utilizado pela aplicação
 can be used by group	emailadmin	pt	Pode ser utilizado pelo grupo
+continue	emailadmin	pt	Continuar
 cyrus imap server	emailadmin	pt	Servidor IMAP Cyrus
 cyrus imap server administration	emailadmin	pt	Administração do servidor IMAP Cyrus
 default	emailadmin	pt	Por omissão
@@ -30,6 +31,7 @@ global options	emailadmin	pt	Opções gerais
 imap admin password	admin	pt	Senha do administrador IMAP
 imap admin user	admin	pt	Utilizador do administrador IMAP
 imap c-client version < 2001	emailadmin	pt	Versão C-Client IMAP < 2001
+imap server	emailadmin	pt	Servidor IMAP
 imap server hostname or ip address	emailadmin	pt	Nome do servidor ou endereço IP do servidor IMAP
 imap server logintyp	emailadmin	pt	Tipo de acesso do servidor IMAP
 imap server port	emailadmin	pt	Porto do servidor IMAP
@@ -85,3 +87,4 @@ username (standard)	emailadmin	pt	Nome de utilizador (por omissão)
 username@domainname (virtual mail manager)	emailadmin	pt	utilizador@dominio (Gestor virtual de correio electrónico)
 users can define their own emailaccounts	emailadmin	pt	Os utilizadores podem definir as suas contas de correio electrónico
 virtual mail manager	emailadmin	pt	Gestor virtual de correio electrónico
+your name	emailadmin	pt	O seu nome

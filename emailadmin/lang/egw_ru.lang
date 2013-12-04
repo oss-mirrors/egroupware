@@ -21,6 +21,7 @@ can be used by application	emailadmin	ru	Может быть использов�
 can be used by group	emailadmin	ru	Может быть использовано группой
 can be used by user	emailadmin	ru	может быть использовано пользователем
 connection dropped by imap server.	emailadmin	ru	Соединение разорвано сервером IMAP
+continue	emailadmin	ru	Продолжить
 could not complete request. reason given: %s	emailadmin	ru	Не могу завершить запрос. Возможная Причина: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	ru	Не могу установить защищенное соединение с сервером IMAP. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	ru	CRAM-MD5 и DIGEST-MD5 требуют установленного пакета Auth_SASL.
@@ -59,6 +60,7 @@ if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	
 imap admin password	admin	ru	пароль администратора IMAP
 imap admin user	admin	ru	Имя пользователя для администратора IMAP
 imap c-client version < 2001	emailadmin	ru	Версия C-клиента IMAP < 2001
+imap server	emailadmin	ru	Сервер IMAP
 imap server closed the connection.	emailadmin	ru	Сервер IMAP разорвал соединение.
 imap server closed the connection. server responded: %s	emailadmin	ru	Сервер IMAP разорвал соединение. Сервер сообщил: %s
 imap server hostname or ip address	emailadmin	ru	Имя сервера IMAP или его ip-адрес
@@ -94,6 +96,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	ru	Plesk SMTP сервер (Qmail)
 pop3 server hostname or ip address	emailadmin	ru	Имя компьютера или ip-адрес сервера POP3
 pop3 server port	emailadmin	ru	Порт сервера POP3
+port	emailadmin	ru	Порт
 postfix with ldap	emailadmin	ru	Postfix с LDAP
 profile access rights	emailadmin	ru	права доступа к профилю
 profile is active	emailadmin	ru	профиль активен
@@ -153,3 +156,4 @@ virtual mail manager	emailadmin	ru	Менеджер Виртуальной по�
 yes, use credentials below only for alarms and notifications, otherwise use credentials of current user	emailadmin	ru	Да, использовать учётные данные, указанные ниже только для предупреждений и напоминаний, в остальных случаях использовать учётные данные текущего пользователя.
 yes, use credentials of current user or if given credentials below	emailadmin	ru	Да, использовать учётные данные текущего пользователя, или если указаны учётные данные ниже.
 you have received a new message on the	emailadmin	ru	Вы получили сообщения на
+your name	emailadmin	ru	Ваше имя

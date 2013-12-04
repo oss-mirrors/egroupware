@@ -19,6 +19,7 @@ can be used by application	emailadmin	es-es	puede usarse por la aplicación
 can be used by group	emailadmin	es-es	puede usarse por el grupo
 can be used by user	emailadmin	es-es	puede usarse por el usuario
 connection dropped by imap server.	emailadmin	es-es	El servidor IMAP ha interrumpido la conexión
+continue	emailadmin	es-es	Continuar
 could not complete request. reason given: %s	emailadmin	es-es	No se pudo completar la solicitud. Motivo: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	es-es	No se pudo abrir una conexión segura con el servidor IMAP. %s: %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	es-es	CRAM-MD5 o DIGEST-MD5 necesitan el paquete Auth_SASL para estar instalado.
@@ -56,6 +57,7 @@ if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	
 imap admin password	admin	es-es	contraseña del administrador IMAP
 imap admin user	admin	es-es	usuario administrador IMAP
 imap c-client version < 2001	emailadmin	es-es	Versión C-Cliente IMAP < 2001
+imap server	emailadmin	es-es	Servidor IMAP
 imap server closed the connection.	emailadmin	es-es	El servidor IMAP cerró la conexión.
 imap server closed the connection. server responded: %s	emailadmin	es-es	El servidor IMAP cerró la conexión. El servidor respondió: %s
 imap server hostname or ip address	emailadmin	es-es	Servidor IMAP o dirección IP
@@ -90,6 +92,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	es-es	Servidor SMTP de Plesk (Qmail)
 pop3 server hostname or ip address	emailadmin	es-es	Nombre del servidor POP3 o dirección IP
 pop3 server port	emailadmin	es-es	Puerto del servidor POP3
+port	emailadmin	es-es	puerto
 postfix with ldap	emailadmin	es-es	Postfix con LDAP
 profile access rights	emailadmin	es-es	Derechos de acceso del perfil
 profile is active	emailadmin	es-es	el perfil está activo
@@ -143,3 +146,4 @@ users can define their own signatures	emailadmin	es-es	Los usuarios pueden defin
 users can utilize these stationery templates	emailadmin	es-es	Los usuarios pueden utilizar estas plantillas preimpresas
 virtual mail manager	emailadmin	es-es	Gestor de correo virtual
 you have received a new message on the	emailadmin	es-es	Ha recibido un mensaje nuevo en la
+your name	emailadmin	es-es	Su nombre

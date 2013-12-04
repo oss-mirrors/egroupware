@@ -22,6 +22,7 @@ forward only	emailadmin	da	videresend kun
 imap admin password	admin	da	IMAP admin adgangskode
 imap admin user	admin	da	IMAP admin bruger
 imap c-client version < 2001	emailadmin	da	IMAP C-Klient Version < 2001
+imap server	emailadmin	da	IMAP Server
 imap server hostname or ip address	emailadmin	da	IMAP server domænenavn eller IP adresse
 imap server logintyp	emailadmin	da	IMAP server login type
 imap server port	emailadmin	da	IMAP server port

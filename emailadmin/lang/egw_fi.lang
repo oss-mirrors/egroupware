@@ -20,6 +20,7 @@ can be used by application	emailadmin	fi	Sovellukselle
 can be used by group	emailadmin	fi	Ryhmälle
 can be used by user	emailadmin	fi	Käyttäjälle
 connection dropped by imap server.	emailadmin	fi	Yhteys IMAP palvelimeen katkesi.
+continue	emailadmin	fi	Jatka
 could not complete request. reason given: %s	emailadmin	fi	Pyyntöä ei voitu toteuttaa. %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	fi	Turvattua yhteyttä IMAP palvelimeen ei voitu avata. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	fi	CRAM-MD5 tai DIGEST-MD5 käyttö edellyttää Auth_SASL paketin asentamista.
@@ -58,6 +59,7 @@ if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	
 imap admin password	admin	fi	IMAP admin salasana
 imap admin user	admin	fi	IMAP admin käyttäjätunnus
 imap c-client version < 2001	emailadmin	fi	IMAP C-Client versio < 2001
+imap server	emailadmin	fi	IMAP -palvelin
 imap server closed the connection.	emailadmin	fi	IMAP palvelin katkaisi yhteyden.
 imap server closed the connection. server responded: %s	emailadmin	fi	IMAP palvelin katkaisi yhteyden. %s
 imap server hostname or ip address	emailadmin	fi	IMAP -palvelimen nimi tai IP-osoite
@@ -93,6 +95,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	fi	Plesk SMTP-palvelin (Qmail)
 pop3 server hostname or ip address	emailadmin	fi	POP3 -palvelimen nimi tai IP-osoite
 pop3 server port	emailadmin	fi	POP3 -palvelimen portti
+port	emailadmin	fi	Portti
 postfix with ldap	emailadmin	fi	Postfix ja LDAP
 profile access rights	emailadmin	fi	Profiilin käyttöoikeudet
 profile is active	emailadmin	fi	Profiili on aktiivinen
@@ -151,3 +154,4 @@ virtual mail manager	emailadmin	fi	Virtual MAIL ManaGeR
 yes, use credentials below only for alarms and notifications, otherwise use credentials of current user	emailadmin	fi	Kyllä, Käytä annettua salasanaa vain hälytyksiin ja huomautusviesteihin, muulloin käyttäjän tunnuksia
 yes, use credentials of current user or if given credentials below	emailadmin	fi	Kyllä, käyttäjän tunnukset, tai mahdolliset allaolevat tunnukset
 you have received a new message on the	emailadmin	fi	Sinulle on uusi viesti
+your name	emailadmin	fi	Nimesi

@@ -4,6 +4,7 @@ admin password	emailadmin	no	Admin passord
 admin username	emailadmin	no	Admin brukernavn
 advanced options	emailadmin	no	Avanserte valg
 alternate email address	emailadmin	no	Alternativ e-mailadresse
+continue	emailadmin	no	Fortsette
 cyrus imap server	emailadmin	no	Cyrus IMAP tjener
 cyrus imap server administration	emailadmin	no	Cyrys IMAP tjeneradministrasjon
 default	emailadmin	no	standard
@@ -24,6 +25,7 @@ forward only	emailadmin	no	bare videresending
 imap admin password	admin	no	IMAP Administrasjonspassord
 imap admin user	admin	no	IMAP Administrasjonsbruker
 imap c-client version < 2001	emailadmin	no	IMAP C-klient versjon < 2001
+imap server	emailadmin	no	IMAP Tjener
 imap server hostname or ip address	emailadmin	no	Tjenernavn eller IP-adresse for IMAP tjener
 imap server logintyp	emailadmin	no	IMAP Tjener påloggingstype
 imap server port	emailadmin	no	IMAP Tjenerport
@@ -72,3 +74,4 @@ use tls authentication	emailadmin	no	Bruk TLS autentisering
 use tls encryption	emailadmin	no	Bruk TLS kryptering
 users can define their own emailaccounts	emailadmin	no	Brukere kan definere egne e-post kontoer
 virtual mail manager	emailadmin	no	Virtuell Mail Manager
+your name	emailadmin	no	Ditt navn

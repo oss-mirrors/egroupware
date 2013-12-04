@@ -18,6 +18,7 @@ error connecting to imap server: [%s] %s.	emailadmin	el	Σφάλμα κατά τ
 forward also to	emailadmin	el	προώθηση επίσης στο
 forward only	emailadmin	el	μόνο προώθηση
 if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	el	Αν χρησιμοποιείται SSL ή TLS, πρέπει να έχετε την PHP openssl επέκταση φορτωμένη.
+imap server	emailadmin	el	IMAP Server
 imap server closed the connection.	emailadmin	el	Ο IMAP Server έκλεισε τη σύνδεση
 imap server closed the connection. server responded: %s	emailadmin	el	Ο IMAP Server έκλεισε τη σύνδεση. Ο Server απάντησε: %s
 in mbyte	emailadmin	el	σε MByte
@@ -29,6 +30,7 @@ no message returned.	emailadmin	el	Δεν επεστράφη κάποιο μήν
 no supported imap authentication method could be found.	emailadmin	el	Δεν βρέθηκε καμία υποστηριζόμενη IMAP επικυρωμένη μέθοδος.
 order	emailadmin	el	Ταξινόμηση
 organisation	emailadmin	el	οργανισμός
+port	emailadmin	el	θύρα
 quota settings	emailadmin	el	ρυθμίσεις ποσοστών
 quota size in mbyte	emailadmin	el	μέγεθος ποσοστών σε MByte
 remove	emailadmin	el	αφαίρεση

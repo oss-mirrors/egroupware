@@ -20,6 +20,7 @@ can be used by application	emailadmin	it	può essere usato da applicazione
 can be used by group	emailadmin	it	può essere usato da gruppo
 can be used by user	emailadmin	it	può essere usato dall'utente
 connection dropped by imap server.	emailadmin	it	Connessione interrotta dal sever IMAP.
+continue	emailadmin	it	Continua
 could not complete request. reason given: %s	emailadmin	it	Impossibile completare la richiesta. Motivazione data: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	it	Non è possibile aprire una connessione sicura al server IMAP. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	it	CRAM-MD5 o DIGEST-MD5 richiede che il pacchetto Auth_SASL sia installato.
@@ -58,6 +59,7 @@ if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	
 imap admin password	admin	it	Password amministratore IMAP
 imap admin user	admin	it	User amministratore IMAP
 imap c-client version < 2001	emailadmin	it	Versione C-Cliente < 2001
+imap server	emailadmin	it	Server IMAP
 imap server closed the connection.	emailadmin	it	Il server IMAP ha chiuso la connessione
 imap server closed the connection. server responded: %s	emailadmin	it	Il server IMAP ha chiuso la connessione. Risposta del server: %s
 imap server hostname or ip address	emailadmin	it	Nome Host o IP del server IMAP
@@ -92,6 +94,7 @@ plesk requires passwords to have at least 5 characters and not contain the accou
 plesk smtp-server (qmail)	emailadmin	it	Server SMTP Plesk (Qmail)
 pop3 server hostname or ip address	emailadmin	it	Nome host o IP server POP3
 pop3 server port	emailadmin	it	porta server POP3
+port	emailadmin	it	Porta
 postfix with ldap	emailadmin	it	Postfix con LDAP
 profile access rights	emailadmin	it	diritti di accesso profilo
 profile is active	emailadmin	it	Il profilo è attivo
@@ -150,3 +153,4 @@ virtual mail manager	emailadmin	it	ManaGeR MAIL Virtuale
 yes, use credentials below only for alarms and notifications, otherwise use credentials of current user	emailadmin	it	Sì, utilizza le credenziali sottostanti solo per allarmi e notifiche, altrimenti usa le credenziali dell'utente attuale
 yes, use credentials of current user or if given credentials below	emailadmin	it	Sì, utilizza le credenziali dell'utente attuale oppure, se date, e credenziali qui sotto
 you have received a new message on the	emailadmin	it	Hai ricevuto un nuovo messaggio sul
+your name	emailadmin	it	Il tuo nome

@@ -6,6 +6,7 @@ email address	emailadmin	eu	Helbide elektronikoa
 encrypted connection	emailadmin	eu	konexioa enkriptatua
 entry saved	emailadmin	eu	Sarrera gordeta
 error saving the entry!!!	emailadmin	eu	Errorea sarrera gordetzerakoan
+imap server	emailadmin	eu	IMAP Zerbitzaria
 imap server closed the connection.	emailadmin	eu	IMAP zerbitzariak konexioa itxi du
 in mbyte	emailadmin	eu	MByte-sen
 leave empty for no quota	emailadmin	eu	zurian utzi kuotarik ez badago
@@ -14,6 +15,7 @@ no alternate email address	emailadmin	eu	ez da ordezko helbide elektronikorik
 no message returned.	emailadmin	eu	Ez da mezurik itzuli
 order	emailadmin	eu	Ordena
 organisation	emailadmin	eu	antolaketa
+port	emailadmin	eu	ataka
 postfix with ldap	emailadmin	eu	Postfix-ak LDAP-arekin
 quota settings	emailadmin	eu	kuotaren konfigurazioa
 quota size in mbyte	emailadmin	eu	kuotaren tamaina MBytes-etan

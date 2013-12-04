@@ -8,6 +8,7 @@ any application	emailadmin	fa	همه کاربردها
 any group	emailadmin	fa	همه گروهها
 can be used by application	emailadmin	fa	استفاده شود توسط کاربرد
 can be used by group	emailadmin	fa	استفاده شود توسط گروه
+continue	emailadmin	fa	ادامه
 default	emailadmin	fa	پیش فرض
 deliver extern	emailadmin	fa	حمل بیرونی
 do you really want to delete this profile	emailadmin	fa	آیا واقعا می خواهید این مجموعه تنظیمات را حذف کنید؟
@@ -27,6 +28,7 @@ forward only	emailadmin	fa	فقط ارسال به
 global options	emailadmin	fa	گزینه های عمومی
 imap admin password	admin	fa	گذرواژه مدیر IMAP
 imap admin user	admin	fa	کاربر مدیر IMAP
+imap server	emailadmin	fa	کارگزار آی مپ
 imap server hostname or ip address	emailadmin	fa	نام میزبان یا نشانی IP کارگزار IMAP
 imap server logintyp	emailadmin	fa	نوع ورود کارگزار IMAP
 imap server port	emailadmin	fa	درگاه کارگزار IMAP
@@ -66,3 +68,4 @@ this php has no imap support compiled in!!	emailadmin	fa	این PHP پشتیبا
 use ldap defaults	emailadmin	fa	از پیش فرضهای LDAP استفاده شود
 use smtp auth	emailadmin	fa	استفاده از تصدیق در SMTP
 users can define their own emailaccounts	emailadmin	fa	کاربران می توانند حسابهای کاربری را خودشان تعریف کنند
+your name	emailadmin	fa	نام شما

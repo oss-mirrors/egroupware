@@ -1,7 +1,7 @@
 %1 is not writable by you!	felamimail	de	%1 ist von Ihnen NICHT beschreibbar!
 (no subject)	felamimail	de	(kein Betreff)
 (only cc/bcc)	felamimail	de	(nur Kopie/Blindkopie)
-(see wikipedia for information on POSIX regular expressions)	felamimail	de	(siehe Wikipedia Artikel bzgl. POSIX Regular Expressions)
+(see wikipedia for information on posix regular expressions)	felamimail	de	(siehe Wikipedia Artikel bzgl. POSIX Regular Expressions)
 (select mails by clicking on the line, like a checkbox)	felamimail	de	(auswählen von E-Mails durch anklicken der Zeile (wie Auswahl über eine Checkbox))
 (separate multiple addresses by comma)	felamimail	de	(mehrere Adressen durch Komma trennen)
 (unknown sender)	felamimail	de	(unbekannter Absender)
@@ -286,7 +286,7 @@ if shown, which folders should appear on the home page	felamimail	de	Welche E-Ma
 if subject contains	felamimail	de	wenn Betreff enthält
 if to contains	felamimail	de	wenn An enthält
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	de	Wenn Sie SSL oder TLS benutzen, muss die openssl PHP Erweiterung geladen sein.
-if you choose NOT to keep a copy, you are setting your mailbox to FORWARD ONLY!	felamimail	de	Wenn Sie KEINE Kopie der eingehenden E-Mail(s) behalten, stellen Sie Ihre Mailkonto auf NUR WEITERLEITEN um!
+if you choose not to keep a copy, you are setting your mailbox to forward only!	felamimail	de	Wenn Sie KEINE Kopie der eingehenden E-Mail(s) behalten, stellen Sie Ihre Mailkonto auf NUR WEITERLEITEN um!
 if you leave this page without saving to draft, the message will be discarded completely	felamimail	de	Wenn Sie diese Seite verlassen, ohne die Nachricht als Entwurf zu speichern, wird diese komplett verworfen.
 if you select all messages there will be no pagination for mail message list. beware, as some actions on all selected messages may be problematic depending on the amount of selected messages.	felamimail	de	Wenn Sie alle Nachrichten wählen, können Sie mit der Maus nach unten Scrollen und sehen dann automatisch weitere E-Mails. Die Blätterfunktion mit Pfeilen wird dadurch deaktiviert.
 if you specify port 5190 as sieve server port, you enforce ssl for sieve (server must support that)	felamimail	de	Wenn Sie als SIEVE Server Port 5190 eintragen, wird für die Kommunikation mit dem SIEVE-Server eine SSL-Verbindung verwendet (der Server muss das natürlich unterstützen)
@@ -340,9 +340,9 @@ loading	felamimail	de	lade
 location of buttons when composing	felamimail	de	Ort der Knöpfe beim E-Mail schreiben
 look up the name of the mailbox (but not its contents).	felamimail	de	Prüfen des Namens der Mailbox (jedoch nicht deren Inhalt).
 mail server login type	admin	de	Typ der Mailserver Anmeldung
-mailserver reported:\n%1 \ndo you want to proceed by deleting the selected messages immediately (click ok)?\nif not, please try to empty your trashfolder before continuing. (click cancel)	felamimail	de	Mailserver Meldung:\n%1 \nWollen Sie fortfahren, indem Sie die ausgewählten Nachrichten sofort löschen (Klicken Sie OK)?\nWenn nicht, dann versuchen Sie Platz freizugeben indem Sie Ihren Papierkorb leeren. (Klicken Sie Abbrechen)
 mail settings	felamimail	de	E-Mail-Einstellungen
 mail source	felamimail	de	Nachrichtenquelltext
+mailserver reported:\n%1 \ndo you want to proceed by deleting the selected messages immediately (click ok)?\nif not, please try to empty your trashfolder before continuing. (click cancel)	felamimail	de	Mailserver Meldung:\n%1 \nWollen Sie fortfahren, indem Sie die ausgewählten Nachrichten sofort löschen (Klicken Sie OK)?\nWenn nicht, dann versuchen Sie Platz freizugeben indem Sie Ihren Papierkorb leeren. (Klicken Sie Abbrechen)
 mainmessage	felamimail	de	Hauptnachricht
 manage email accounts and identities	common	de	Verwaltung von E-Mail-Konten/Identitäten
 manage emailaccounts	common	de	E-Mail-Konten verwalten
@@ -569,7 +569,6 @@ test connection and display basic information about the selected profile	felamim
 text only	felamimail	de	Nur Text
 text/plain	felamimail	de	text/plain
 the action will be applied to all messages of the current folder.\ndo you want to proceed?	felamimail	de	Die Aktion wird auf ALLE Nachrichten des aktuellen Ordners angewendet.\nMöchten Sie fortfahren?
-the action will be applied to all messages of the current folder.ndo you want to proceed?	felamimail	de	Die Aktion wird auf ALLE Nachrichten des aktuellen Ordners angewendet.\nMöchten Sie fortfahren?
 the connection to the imap server failed!!	felamimail	de	Die Verbindung zum IMAP Server ist fehlgeschlagen
 the folder <b>%1</b> will be used, if there is nothing set here, and no valid predefine given.	felamimail	de	Der Ordner <b>%1</b> wird verwendet, wenn hier nichts gesetzt ist und kein gültiger Vorgabewert eingetragen ist.
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	de	Der IMAP Server scheint die ausgewählte Authentifizierungsmethode nicht zu unterstützen. Bitte sprechen Sie mit Ihrem Systemadministrator.
@@ -653,7 +652,7 @@ when sending messages	felamimail	de	Wenn Nachrichten versendet werden
 which folders (additional to the sent folder) should be displayed using the sent folder view schema	felamimail	de	Welche E-Mailordner, zusätzlich zum Gesendet-Ordner, sollen im Anzeigenschema analog des Gesendet-Ordners  dargestellt werden (Empfänger-Adresse, anstatt der Absender-Adresse).
 which folders - in general - should not be automatically created, if not existing	felamimail	de	Welche E-Mailordner sollen generell NICHT automatisch angelegt werden, wenn Sie nicht existieren? Wählen Sie hier die Ordner aus, die NICHT von EGroupware automatisch angelegt werden dürfen.
 which method to use when forwarding a message	felamimail	de	Wählen Sie die Methode zum Weiterleiten von Nachrichten.
-wildcards (*,?) may be used. If you are trying to match * or ? itself, you must escape them with a backslash (\). If you check "%1" you must use valid regular expressions.	felamimail	de	Platzhalter (*,?) können verwendet werden. Wenn Sie * oder ? selbst finden wollen, dann müssen Sie diesen Zeichen je einen Backslash (\) voranstellen. Wenn Sie "%1" aktivieren, dann müssen Sie jedoch gültige reguläre Ausdrücke angeben.
+wildcards (*,?) may be used. if you are trying to match * or ? itself, you must escape them with a backslash (\). if you check "%1" you must use valid regular expressions.	felamimail	de	Platzhalter (*,?) können verwendet werden. Wenn Sie * oder ? selbst finden wollen, dann müssen Sie diesen Zeichen je einen Backslash (\) voranstellen. Wenn Sie "%1" aktivieren, dann müssen Sie jedoch gültige reguläre Ausdrücke angeben.
 with message	felamimail	de	mit folgender Nachricht
 with message "%1"	felamimail	de	mit der Nachricht "%1"
 wrap incoming text at	felamimail	de	Text umbrechen nach
