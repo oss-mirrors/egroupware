@@ -71,7 +71,7 @@
 					<description id="${row}[ea_active]"/>
 					<hbox>
 						<button statustext="Edit this Profile" label="Edit" id="edit[$row_cont[ea_profile_id]]" onclick="window.open(egw::link('/index.php','menuaction=emailadmin.emailadmin_ui.edit&amp;profileid=$row_cont[ea_profile_id]'),'ea_profile','dependent=yes,width=850,height=540,scrollbars=yes,status=yes'); return false;" image="edit"/>
-						<button statustext="Delete this Profile" label="Delete" id="delete[$row_cont[ea_profile_id]]" onclick="return confirm('Do you really want to delete this Profile');" image="delete"/>
+						<button statustext="Delete this Profile" label="Delete" id="delete[$row_cont[ea_profile_id]]" onclick="et2_dialog.confirm(widget,'Do you really want to delete this Profile','Delete')" image="delete"/>
 						<checkbox id="selected[]" options="$row_cont[ea_profile_id]"/>
 						<description/>
 					</hbox>
@@ -102,7 +102,7 @@
 				</row>
 				<row>
 					<hbox align="right">
-						<button label="Delete" id="delete" onclick="return confirm('Delete Profiles');" image="delete"/>
+						<button label="Delete" id="delete" onclick="et2_dialog.confirm(widget,'Delete Profiles','Delete')" image="delete"/>
 						<buttononly onclick="toggle_all(this.form,form::name('nm[rows][selected][]')); return false;" options="arrow_ltr" class="selectAllArrow"/>
 						<description/>
 					</hbox>

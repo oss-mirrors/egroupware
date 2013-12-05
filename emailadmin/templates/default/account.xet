@@ -15,7 +15,7 @@
 						<menulist>
 							<menupopup id="ident_id" no_lang="1" onchange="1"/>
 						</menulist>
-						<button label="Delete identity" id="button[delete_identity]" onclick="return confirm('Delete identity');" image="delete"/>
+						<button label="Delete identity" id="button[delete_identity]" onclick="et2_dialog.confirm(widget,'Delete identity','Delete')" image="delete"/>
 					</hbox>
 					<checkbox label="allow users to create further identities" id="acc_further_identities" class="emailadmin_no_user"/>
 				</row>
@@ -329,7 +329,7 @@
 						<button statustext="Use wizard to detect or verify configuration" label="Wizard" id="button[wizard]" image="wizard" background_image="1"/>
 						<button label="Cancel" id="button[cancel]" onclick="window.close();" image="cancel" background_image="1"/>
 					</hbox>
-					<button align="right" label="Delete" id="button[delete]" onclick="return confirm('Delete this account');"/>
+					<button align="right" label="Delete" id="button[delete]" onclick="et2_dialog.confirm(widget,'Delete this account','Delete')"/>
 				</row>
 			</rows>
 		</grid>

@@ -469,7 +469,7 @@
 							<button label="Apply" id="apply" image="apply" background_image="1"/>
 							<button label="Cancel" id="cancel" image="cancel" background_image="1"/>
 						</hbox>
-						<button align="right" label="Delete" id="delete" onclick="return confirm('Do you really want to delete this Profile');"/>
+						<button align="right" label="Delete" id="delete" onclick="et2_dialog.confirm(widget,'Do you really want to delete this Profile','Delete')"/>
 					</hbox>
 				</row>
 			</rows>
