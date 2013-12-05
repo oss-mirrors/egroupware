@@ -960,6 +960,7 @@ class emailadmin_account implements ArrayAccess
 				}
 			}
 		}
+		if (is_null(self::$search_cache[$cache_key])) self::$search_cache[$cache_key]=array();
 		return new egw_db_callback_iterator(new ArrayIterator(self::$search_cache[$cache_key]),
 			// process each row
 			function($row) use ($just_name, $replace_placeholders)

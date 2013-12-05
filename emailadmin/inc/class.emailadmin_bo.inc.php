@@ -1096,9 +1096,15 @@ class emailadmin_bo extends so_sql
 	 */
 	static function getDefaultAccID()
 	{
-		foreach(emailadmin_account::search($only_current_user=true, $just_name=true) as $acc_id => $name)
+		try
 		{
-			return $acc_id;
+			foreach(emailadmin_account::search($only_current_user=true, $just_name=true) as $acc_id => $name)
+			{
+				return $acc_id;
+			}
+		} catch (Exception $e)
+		{
+			error_log(__METHOD__.__LINE__.' Error no Default available.'.$e->getMessage());
 		}
 		return null;
 	}
@@ -1110,9 +1116,15 @@ class emailadmin_bo extends so_sql
 	 */
 	static function getUserDefaultAccID()
 	{
-		foreach(emailadmin_account::search($only_current_user=true, $just_name=true) as $acc_id => $name)
+		try
 		{
-			return $acc_id;
+			foreach(emailadmin_account::search($only_current_user=true, $just_name=true) as $acc_id => $name)
+			{
+				return $acc_id;
+			}
+		} catch (Exception $e)
+		{
+			error_log(__METHOD__.__LINE__.' Error no UserDefault available.'.$e->getMessage());
 		}
 		return null;
 	}
