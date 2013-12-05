@@ -654,7 +654,7 @@ class emailadmin_account implements ArrayAccess
 				return self::$instances[$acc_id];
 			}
 			// not yet an instance, create one
-			if (isset(self::$cache[$acc_id]))
+			if (isset(self::$cache[$acc_id]) && is_array(self::$cache[$acc_id]))
 			{
 				//error_log(__METHOD__."($acc_id) created instance from cached data");
 				return self::$instances[$acc_id] = new emailadmin_account(self::$cache[$acc_id]);
