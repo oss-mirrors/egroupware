@@ -1,6 +1,9 @@
 %1 entries deleted.	emailadmin	en	%1 entries deleted.
 (imapclass must support this feature by querying the corresponding config value and pass it as defaultquota to the imapserver)	emailadmin	en	(imapclass must support this feature by querying the corresponding config value and pass it as defaultquota to the imapserver)
 account '%1' not found !!!	emailadmin	en	Account '%1' not found!
+account deleted.	emailadmin	en	Account deleted.
+account not found!	emailadmin	en	Account not found!
+account saved.	emailadmin	en	Account saved.
 active templates	emailadmin	en	Active templates
 add new email address:	emailadmin	en	Add new email address:
 add profile	emailadmin	en	Add profile
@@ -27,6 +30,8 @@ continue	emailadmin	en	Continue
 could not complete request. reason given: %s	emailadmin	en	Could not complete request. %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	en	Could not open secure connection to the IMAP server. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	en	CRAM-MD5 or DIGEST-MD5 requires the Auth_SASL package to be installed.
+create new account	emailadmin	en	Create new account
+create new identity	emailadmin	en	Create new identity
 cyrus imap server	emailadmin	en	Cyrus IMAP server
 cyrus imap server administration	emailadmin	en	Cyrus IMAP server administration
 default	emailadmin	en	Default
@@ -52,7 +57,10 @@ entry saved	emailadmin	en	Entry saved
 error connecting to imap server. %s : %s.	emailadmin	en	Error connecting to IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	en	Error connecting to IMAP server: [%s] %s.
 error deleting entry!	emailadmin	en	Error deleting entry!
+error saving account!	emailadmin	en	Error saving account!
 error saving the entry!!!	emailadmin	en	Error saving the entry!
+error, no username!	emailadmin	en	Error, no username!
+failed to delete account!	emailadmin	en	Failed to delete account!
 filtered by account	emailadmin	en	Filtered by account
 filtered by group	emailadmin	en	Filtered by group
 forward also to	emailadmin	en	Forward also to
@@ -60,6 +68,8 @@ forward email's to	emailadmin	en	Forward email's to
 forward only	emailadmin	en	Forward only
 global options	emailadmin	en	Global options
 hostname or ip	emailadmin	en	Hostname or IP
+identity deleted	emailadmin	en	Identity deleted
+identity saved.	emailadmin	en	Identity saved.
 if different from email address	emailadmin	en	if different from EMail address
 if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	en	If using SSL or TLS, you must have the PHP openssl extension loaded.
 if you specify port 5190 as sieve server port, you enforce ssl for sieve (server must support that)	emailadmin	en	if you specify port 5190 as sieve server port, you enforce ssl for sieve (server must support that)
@@ -93,6 +103,7 @@ no alternate email address	emailadmin	en	No alternate email address
 no encryption	emailadmin	en	No encryption
 no forwarding email address	emailadmin	en	No forwarding email address
 no message returned.	emailadmin	en	No message returned
+no sieve support detected, either fix configuration manually or leave it switched off.	emailadmin	en	No sieve support detected, either fix configuration manually or leave it switched off.
 no supported imap authentication method could be found.	emailadmin	en	No supported IMAP authentication method could be found.
 order	emailadmin	en	Order
 organisation	emailadmin	en	Organisation
@@ -132,12 +143,15 @@ smtp settings	emailadmin	en	SMTP settings
 smtp-server hostname or ip address	emailadmin	en	SMTP server hostname or IP address
 smtp-server port	emailadmin	en	SMTP server port
 standard	emailadmin	en	Standard
+standard identity	emailadmin	en	Standard identity
 standard imap server	emailadmin	en	Standard IMAP server
 standard pop3 server	emailadmin	en	Standard POP3 server
 standard smtp-server	emailadmin	en	Standard SMTP server
 starts with	emailadmin	en	Starts with
 stationery	emailadmin	en	Stationery
 successful connected to %1 server%2.	emailadmin	en	Successful connected to %1 server%2.
+switch back to standard identity to save account.	emailadmin	en	Switch back to standard identity to save account.
+switch back to standard identity to save other account data.	emailadmin	en	Switch back to standard identity to save other account data.
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	en	The IMAP server does not appear to support the authentication method selected. Contact your system administrator.
 this php has no imap support compiled in!!	emailadmin	en	This PHP has no IMAP support compiled in!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	en	To use a TLS connection, you must be running a version of PHP 5.1.0 or higher.

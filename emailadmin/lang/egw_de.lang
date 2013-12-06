@@ -1,6 +1,9 @@
 %1 entries deleted.	emailadmin	de	%1 Einträge gelöscht
 (imapclass must support this feature by querying the corresponding config value and pass it as defaultquota to the imapserver)	emailadmin	de	(Die IMAP Klasse muss dieses Verfahren unterstützen indem es den entsprechenden Konfig Wert der Instanz ausliest und als Default Quota an den IMAP Server meldet.)
-account '%1' not found !!!	emailadmin	de	Benutzerkonto '%1' nicht gefunden !!!
+account '%1' not found !!!	emailadmin	de	Benutzerkonto '%1' nicht gefunden !
+account deleted.	emailadmin	de	Benutzerkonto gelöscht.
+account not found!	emailadmin	de	Benutzerkonto nicht gefunden.
+account saved.	emailadmin	de	Benutzerkonto gespeichert.
 active templates	emailadmin	de	Aktive Vorlagen
 add new email address:	emailadmin	de	Neue E-Mailadresse hinzufügen
 add profile	emailadmin	de	Profil hinzufügen
@@ -27,6 +30,8 @@ continue	emailadmin	de	Weiter
 could not complete request. reason given: %s	emailadmin	de	Konnte Anfrage nicht beenden. Grund: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	de	Konnte keine sichere Verbindung zum IMAP Server aufbauen. %s: %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	de	CRAM-MD5 oder DIGEST-MD5 erfordert, das das Auth_SASL Packet installiert ist.
+create new account	emailadmin	de	Neues Benutzerkonto erstellen
+create new identity	emailadmin	de	Neue Identität erstellen
 cyrus imap server	emailadmin	de	Cyrus IMAP-Server
 cyrus imap server administration	emailadmin	de	Cyrus IMAP-Server Administration
 default	emailadmin	de	Vorgabe
@@ -52,7 +57,10 @@ entry saved	emailadmin	de	Eintrag gespeichert
 error connecting to imap server. %s : %s.	emailadmin	de	Fehler beim Verbinden mit dem IMAP Server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	de	Fehler beim Verbinden mit dem IMAP Server. [%s] %s.
 error deleting entry!	emailadmin	de	Fehler beim Löschen des Eintrags
-error saving the entry!!!	emailadmin	de	Fehler beim Speichern !!!
+error saving account!	emailadmin	de	Fehler beim Speichern des Benutzerkontos!
+error saving the entry!!!	emailadmin	de	Fehler beim Speichern !
+error, no username!	emailadmin	de	Fehler, kein Benutzername!
+failed to delete account!	emailadmin	de	Fehler beim Löschen des Benutzerkontos!
 filtered by account	emailadmin	de	Suche nach Benutzerprofilen
 filtered by group	emailadmin	de	Suche nach Gruppenprofilen
 forward also to	emailadmin	de	zusätzlich weiterleiten
@@ -60,6 +68,8 @@ forward email's to	emailadmin	de	E-Mails weiterleiten an
 forward only	emailadmin	de	nur weiterleiten
 global options	emailadmin	de	Globale Optionen
 hostname or ip	emailadmin	de	Hostname oder IP
+identity deleted	emailadmin	de	Identität gelöscht.
+identity saved.	emailadmin	de	Identität gespeichert.
 if different from email address	emailadmin	de	falls unterschiedlich zu E-Mail-Adresse
 if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	de	Wenn Sie SSL oder TLS benutzen, müssen Sie die openssl PHP Erweiterung geladen haben.
 if you specify port 5190 as sieve server port, you enforce ssl for sieve (server must support that)	emailadmin	de	Wenn Sie als SIEVE Server Port 5190 eintragen, wird für die Kommunikation mit dem SIEVE-Server eine SSL-Verbindung verwendet (der Server muss das natürlich unterstützen)
@@ -93,6 +103,7 @@ no alternate email address	emailadmin	de	keine zusätzlichen E-Mail-Adressen
 no encryption	emailadmin	de	keine Verschlüsselung
 no forwarding email address	emailadmin	de	keine Weiterleitungsadresse definiert
 no message returned.	emailadmin	de	Keine Nachricht zurückgeliefert.
+no sieve support detected, either fix configuration manually or leave it switched off.	emailadmin	de	Keine Sieve-Unterstützung gefunden. Konfiguration entweder manuell anpassen oder Sieve ausgeschalten lassen.
 no supported imap authentication method could be found.	emailadmin	de	Keine unterstützte IMAP-Authentifizierungsmethode gefunden.
 order	emailadmin	de	Reihenfolge
 organisation	emailadmin	de	Organisation
@@ -132,12 +143,15 @@ smtp settings	emailadmin	de	SMTP Einstellungen
 smtp-server hostname or ip address	emailadmin	de	SMTP Server Hostname oder IP-Adresse
 smtp-server port	emailadmin	de	SMTP Server Port
 standard	emailadmin	de	Vorgabe
+standard identity	emailadmin	de	Standard Identität
 standard imap server	emailadmin	de	Standard IMAP-Server
 standard pop3 server	emailadmin	de	Standard POP3-Server
 standard smtp-server	emailadmin	de	Standard SMTP-Server
 starts with	emailadmin	de	startet mit
 stationery	emailadmin	de	Briefpapier
 successful connected to %1 server%2.	emailadmin	de	Erfolgreich zu %1 Server verbunden%2.
+switch back to standard identity to save account.	emailadmin	de	Kehren Sie zur Standard-Identität zurück um das Konto zu speichern.
+switch back to standard identity to save other account data.	emailadmin	de	Kehren Sie zur Standard-Identität zurück um andere Kontndaten zu speichern.
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	de	Der IMAP Server scheint die eingestellte Authentifizierungsmethode nicht zu unterstützen. Bitte fragen Sie Ihren Systemadministrator.
 this php has no imap support compiled in!!	emailadmin	de	Dieses PHP hat keine IMAP Unterstützung!!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	de	Um eine TLS Verbindung zu verwenden, benötigen Sie PHP 5.1.0 oder aktueller.
