@@ -528,7 +528,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				{
 					$_status[strtoupper($key)]=$v;
 				}
-				if (!isset(self::$supports_keywords[$this->ImapServerId])) self::$supports_keywords[$this->ImapServerId]=(stripos(array2string($_status['FLAGS']),'$label')?true:false);
+				self::$supports_keywords[$this->ImapServerId]=(stripos(array2string($_status['FLAGS']),'$label')!==false?true:false);
 				return $_status;
 			}
 		}
@@ -568,9 +568,9 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	function hasCapability($capability)
 	{
 		//return $this->queryCapability($capability);
-		//error_log(__METHOD__.__LINE__.' '.$capability.'->'.array2string(self::$supports_keywords));
 		if ($capability=='SUPPORTS_KEYWORDS')
 		{
+			//error_log(__METHOD__.__LINE__.' '.$capability.'->'.array2string(self::$supports_keywords));
 			return self::$supports_keywords[$this->ImapServerId];
 		}
 		$cap = $this->capability();
