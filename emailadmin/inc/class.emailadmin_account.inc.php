@@ -68,6 +68,8 @@
  * @property-read string $accountStatus "active", if account is enabled to receive mail
  * @property-read string $deliveryMode "forwardOnly", if account only forwards (no imap account!)
  * @property-read int $quotaLimit quota in MB
+ *
+ * @todo remove comments from protected in __construct and db2data, once we require PHP 5.4 (keeping class contect in closures)
  */
 class emailadmin_account implements ArrayAccess
 {
@@ -186,11 +188,14 @@ class emailadmin_account implements ArrayAccess
 	/**
 	 * Constructor
 	 *
+	 * Should be protected, but php5.3 does NOT keep class context in closures.
+	 * So 'til we require 5.4, it is public BUT SHOULD NOT BE USED!
+	 *
 	 * @param array $params
 	 * @param int $called_for=null if set access to given user (without smtp credentials!),
 	 *	default current user AND read username/password from current users session
 	 */
-	protected function __construct(array $params, $called_for=null)
+	/*protected*/ function __construct(array $params, $called_for=null)
 	{
 		// read credentials from database
 		$params += emailadmin_credentials::read($params['acc_id'], null, $called_for ? array(0, $called_for) : $called_for);
