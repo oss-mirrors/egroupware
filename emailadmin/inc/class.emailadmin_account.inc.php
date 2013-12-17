@@ -259,7 +259,7 @@ class emailadmin_account implements ArrayAccess
 			$this->oldImapServer->port 	= $this->params['acc_imap_port'];
 			$this->oldImapServer->validatecert	= (boolean)($this->params['acc_imap_ssl'] & self::SSL_VERIFY);
 			$this->oldImapServer->username 	= $this->params['acc_imap_username'];
-			$this->oldImapServer->loginName 	= $this->params['acc_imap_password'];
+			$this->oldImapServer->loginName 	= $this->params['acc_imap_username'];
 			$this->oldImapServer->password	= $this->params['acc_imap_password'];
 			$this->oldImapServer->enableSieve = (boolean)$this->params['acc_sieve_enabled'];
 			$this->oldImapServer->loginType = $this->params['acc_imap_logintype'];
