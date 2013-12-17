@@ -249,7 +249,7 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public function oldImapServer()
 	{
-		if (!isset($this->imapServer))
+		if (!isset($this->oldImapServer))
 		{
 			$class = emailadmin_bo::getIcClass($this->params['acc_imap_type'], true);
 			$this->oldImapServer = new $class();
