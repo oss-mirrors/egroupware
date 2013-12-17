@@ -350,7 +350,7 @@ class emailadmin_account implements ArrayAccess
 			{
 				if ($field != 'name')
 				{
-					$data = $replace_placeholders ? self::replace_placeholders($row) : $row;
+					$data = $replace_placeholders ? emailadmin_account::replace_placeholders($row) : $row;
 					return $field == 'params' ? $data : $data[$field];
 				}
 				return emailadmin_account::identity_name($row, $replace_placeholders);
