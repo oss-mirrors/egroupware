@@ -295,6 +295,25 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	}
 
 	/**
+	 * getMailbox
+	 *
+	 * @param string $mailbox
+	 * @return mailbox object
+	 */
+	function getMailbox($mailbox)
+	{
+		$mailboxes = $this->listMailboxes($mailbox);
+
+		$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
+		//_debug_array($mboxes->count());
+		foreach ($mboxes->getIterator() as $k =>$box)
+		{
+			if ($k!='user' && $k != '' && $k==$mailbox) return $box['mailbox']; //_debug_array(array($k => $client->status($k)));
+		}
+		return false;
+	}
+
+	/**
 	 * mailboxExists
 	 *
 	 * @param string $mailbox
