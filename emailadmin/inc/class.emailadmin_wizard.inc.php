@@ -1203,8 +1203,8 @@ class emailadmin_wizard
 	/**
 	 * Guess possible server hostnames from email address:
 	 *	- $type.$domain, mail.$domain
-	 *  - MX for $domain
 	 *  - replace host in MX with imap or mail
+	 *  - MX for $domain
 	 *
 	 * @param string $email email address
 	 * @param string $type='imap' 'imap' or 'smtp', used as hostname beside 'mail'
@@ -1223,9 +1223,9 @@ class emailadmin_wizard
 		if (($dns = dns_get_record($domain, DNS_MX)))
 		{
 			//error_log(__METHOD__."('$email') dns_get_record('$domain', DNS_MX) returned ".array2string($dns));
-			$hosts[$dns[0]['target']] = true;
 			$hosts[preg_replace('/^[^.]+/', $type, $dns[0]['target'])] = true;
 			$hosts[preg_replace('/^[^.]+/', 'mail', $dns[0]['target'])] = true;
+			$hosts[$dns[0]['target']] = true;
 		}
 
 		// verify hosts in dns
