@@ -17,7 +17,7 @@
 					<description/>
 				</row>
 				<row>
-					<description value="EMail address" href="ident_email"/>
+					<description value="EMail address"/>
 					<url-email id="ident_email" needed="1" options="32,128"/>
 				</row>
 				<row class="@manual_class">
