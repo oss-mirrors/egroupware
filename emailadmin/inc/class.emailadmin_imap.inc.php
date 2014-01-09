@@ -475,9 +475,9 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	}
 
 	/**
-	 * Returns an array containing the names of the selected mailboxes
+	 * Returns an array containing the names of the subscribed selected mailboxes
 	 *
-	 * @param   string  $reference          base mailbox to start the search (default is current mailbox)
+	 * @param   string  $reference          base mailbox to start the search
 	 * @param   string  $restriction_search false or 0 means return all mailboxes
 	 *                                      true or 1 return only the mailbox that contains that exact name
 	 *                                      2 return all mailboxes in that hierarchy level
@@ -512,13 +512,67 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		$options = array(
 				'sort'=>true,
 			);
-		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_SUBSCRIBED, $options);
+		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_SUBSCRIBED_EXISTS, $options);
 		//$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
 		//_debug_array($mboxes->count());
 		foreach ((array)$mailboxes as $k =>$box)
 		{
 			//error_log(__METHOD__.__LINE__.' Box:'.$k.'->'.array2string($box));
 			$ret[]=$k;
+		}
+		return $ret;
+	}
+
+	/**
+	 * Returns an array containing the names of the selected unsubscribed mailboxes
+	 *
+	 * @param   string  $reference          base mailbox to start the search
+	 * @param   string  $restriction_search false or 0 means return all mailboxes
+	 *                                      true or 1 return only the mailbox that contains that exact name
+	 *                                      2 return all mailboxes in that hierarchy level
+	 *
+	 * @return  mixed   array of mailboxes
+	 */
+	function listUnSubscribedMailboxes($reference = ''  , $restriction_search = 0)
+	{
+		if ( is_bool($restriction_search) ){
+			$restriction_search = (int) $restriction_search;
+		}
+
+		if ( is_int( $restriction_search ) ){
+			switch ( $restriction_search ) {
+			case 0:
+				$mailbox = "*";
+				break;
+			case 1:
+				$mailbox = $reference;
+				$reference = '%';
+				break;
+			case 2:
+				$mailbox = "%";
+				break;
+			}
+		}else{
+			if ( is_string( $restriction_search ) ){
+				$mailbox = $restriction_search;
+			}
+		}
+		//error_log(__METHOD__.__LINE__.$mailbox);
+		$options = array(
+				'sort'=>true,
+				//'flat'=>true,
+			);
+		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_SUBSCRIBED_EXISTS, $options);
+		foreach ($mailboxes as $k =>$box)
+		{
+			//error_log(__METHOD__.__LINE__.' Box:'.$k.'->'.array2string($box['mailbox']->utf8));
+			$sret[]=$box['mailbox']->utf8;
+		}
+		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_UNSUBSCRIBED, $options);
+		foreach ($mailboxes as $k =>$box)
+		{
+			//error_log(__METHOD__.__LINE__.' Box:'.$k.'->'.array2string($box['mailbox']->utf8));
+			if (!in_array($box['mailbox']->utf8,$sret) && $box['mailbox']->utf8!='INBOX') $ret[]=$box['mailbox']->utf8;
 		}
 		return $ret;
 	}
