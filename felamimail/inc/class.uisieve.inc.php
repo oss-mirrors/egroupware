@@ -52,6 +52,9 @@
 
 		function uisieve()
 		{
+			// tell framework felamimail needs eval and inline javascript :(
+			egw_ckeditor_config::set_csp_script_src_attrs();
+
 			if(empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName'])) {
 				$GLOBALS['egw']->preferences->add('felamimail','sieveScriptName','felamimail', 'forced');
 				$GLOBALS['egw']->preferences->save_repository();

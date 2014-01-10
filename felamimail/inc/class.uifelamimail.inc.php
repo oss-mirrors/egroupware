@@ -275,7 +275,7 @@ class uifelamimail
 				}
 				else
 				{
-					_debug_array(array(lang('Successfully connected'),$rules));
+					//_debug_array(array(lang('Successfully connected'),array('Supported Extensions'=>$sieveServer->supportedSieveExtensions,'Rules'=>$rules)));
 				}
 			}
 			echo "<hr /><h3 style='color:red'>".lang('Effective Folder Settings')."</h3>";

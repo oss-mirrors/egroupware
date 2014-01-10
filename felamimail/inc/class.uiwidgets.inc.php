@@ -673,6 +673,13 @@ class uiwidgets
 					'group' => ++$group,
 					'onExecute' => 'javaScript:mail_delete',
 				),
+/*
+				'select_all' => array(
+					'caption' => 'Select all',
+					'group' => ++$group,
+					'shortcut' => egw_keymanager::shortcut(egw_keymanager::A, false, true),
+				),
+*/
 				'drag_mail' => array(
 					'dragType' => 'mail',
 					'type' => 'drag',

@@ -41,6 +41,8 @@
 
 		function uipreferences()
 		{
+			// tell framework felamimail needs eval and inline javascript :(
+			egw_ckeditor_config::set_csp_script_src_attrs();
 			$this->t = $GLOBALS['egw']->template;
 			$this->charset = translation::charset();
 			$icServerID =& egw_cache::getSession('felamimail','activeProfileID');
@@ -93,7 +95,7 @@
 					if (isset($lemailAddress) && !empty($bofelamimail->icServer->domainName) && stripos($lemailAddress,$bofelamimail->icServer->domainName)===false)
 					{
 						$imapClassName = 'defaultimap'; // fake the imapclass to deny accountselectionbox
-					}										
+					}
 				}
 				// if users active profile domainName is differing from default domainName
 				if ($lprofileID<0 && isset($ldomainName) && $bofelamimail->icServer->domainName != $ldomainName)

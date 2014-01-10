@@ -4198,6 +4198,7 @@ class felamimail_bo
 		if ($_icServerID==0 && !empty($this->profileID))$_icServerID = $this->profileID;
 		//error_log(__METHOD__.__LINE__.'->'.$_icServerID.' called from '.function_backtrace());
 		if (is_null($isError)) $isError = egw_cache::getCache(egw_cache::INSTANCE,'email','icServerIMAP_connectionError'.trim($GLOBALS['egw_info']['user']['account_id']),null,array(),$expiration=60*5);
+		if ($_icServerID<0) unset($isError[$_icServerID]);
 		if ( isset($isError[$_icServerID]) || (($this->icServer instanceof defaultimap) && PEAR::isError($this->icServer->_connectionErrorObject)))
 		{
 			if (trim($isError[$_icServerID])==',' || trim($this->icServer->_connectionErrorObject->message) == ',')

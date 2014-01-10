@@ -1155,4 +1155,104 @@ class felamimail_hooks
 			display_sidebox($appname,lang('Admin'),$file);
 		}
 	}
+
+	/**
+	 * checks users mailbox and sends a notification if new mails have arrived
+	 *
+	 * @return boolean true or false
+	 */
+	static function notification_check_mailbox()
+	{
+		$recipient = (object)$GLOBALS['egw']->accounts->read($GLOBALS['egw_info']['user']['account_id']);
+
+		$prefs = new preferences($recipient->account_id);
+		$preferences = $prefs->read();
+		//error_log(__METHOD__.__LINE__.array2string($preferences['felamimail']['notify_folders']));
+		if(!isset($preferences['felamimail']['notify_folders'])||empty($preferences['felamimail']['notify_folders'])||$preferences['felamimail']['notify_folders']=='none') {
+			return true; //no pref set for notifying - exit
+		}
+		$notify_folders = explode(',', $preferences['felamimail']['notify_folders']);
+		if(count($notify_folders) == 0) {
+			return true; //no folders configured for notifying - exit
+		}
+
+		$activeProfile = (int)$GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'];
+		//error_log(__METHOD__.__LINE__.' (user: '.$recipient->account_lid.') Active Profile:'.$activeProfile);
+		$bofelamimail = felamimail_bo::getInstance(true, $activeProfile);
+		$activeProfile = $GLOBALS['egw_info']['user']['preferences']['felamimail']['ActiveProfileID'] = $bofelamimail->profileID;
+
+		if( !$bofelamimail->openConnection($activeProfile) ) {
+			// TODO: This is ugly. Log a bit nicer!
+			$error = $bofelamimail->getErrorMessage();
+			error_log(__METHOD__.__LINE__.' # '.self::_appname.' (user: '.$recipient->account_lid.'): cannot connect to mailbox with Profile:'.$activeProfile.'. Please check your prefs!');
+			if (!empty($error)) error_log(__METHOD__.__LINE__.' # '.$error);
+			error_log(__METHOD__.__LINE__.' # Instance='.$GLOBALS['egw_info']['user']['domain'].', User='.$GLOBALS['egw_info']['user']['account_lid']);
+			return false; // cannot connect to mailbox
+		}
+		$notified_mail_uidsCache = /*array();*/egw_cache::getCache(egw_cache::INSTANCE,'felamimail','notified_mail_uids'.trim($GLOBALS['egw_info']['user']['account_id']),null,array(),$expiration=60*60*24*2);
+
+		$recent_messages = array();
+		$folder_status = array();
+		foreach($notify_folders as $id=>$notify_folder) {
+			if(!is_array($notified_mail_uidsCache[$activeProfile][$notify_folder])) {
+				$notified_mail_uidsCache[$activeProfile][$notify_folder] = array();
+			}
+			$folder_status[$notify_folder] = $bofelamimail->getFolderStatus($notify_folder);
+			$cutoffdate = time();
+			$cutoffdate = $cutoffdate - (60*60*24*14); // last 14 days
+			$_filter = array('status'=>array('UNSEEN','UNDELETED'),'type'=>"SINCE",'string'=> date("d-M-Y", $cutoffdate));
+			//error_log(__METHOD__.__LINE__.' (user: '.$recipient->account_lid.') Mailbox:'.$notify_folder.' filter:'.array2string($_filter));
+			// $_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse, $_filter, $_thisUIDOnly=null, $_cacheResult=true
+			$headers = $bofelamimail->getHeaders($notify_folder, 1, 999, 0, true, $_filter,null,false);
+			if(is_array($headers['header']) && count($headers['header']) > 0) {
+				foreach($headers['header'] as $id=>$header) {
+					//error_log(__METHOD__.__LINE__.' Found Message:'.$header['uid'].' Subject:'.$header['subject']);
+					// check if unseen mail has already been notified
+				 	if(!in_array($header['uid'], $notified_mail_uidsCache[$activeProfile][$notify_folder])) {
+				 		// got a REAL recent message
+				 		$header['folder'] = $notify_folder;
+				 		$header['folder_display_name'] = $folder_status[$notify_folder]['displayName'];
+				 		$header['folder_base64'] =  base64_encode($notify_folder);
+				 		$recent_messages[] = $header;
+				 	}
+				}
+			}
+		}
+		// restore the felamimail session data, as they are needed by the app itself
+		if(count($recent_messages) > 0) {
+			// create notify message
+			$notification_subject = lang("You've got new mail");
+			$values = array();
+			$values[] = array(); // content array starts at index 1
+			foreach($recent_messages as $id=>$recent_message) {
+				$values[] =	array(
+					'mail_uid'				=> $recent_message['uid'],
+					'mail_folder' 			=> $recent_message['folder_display_name'],
+					'mail_folder_base64' 	=> $recent_message['folder_base64'],
+					'mail_subject'			=> $recent_message['subject'],
+					'mail_from'				=> !empty($recent_message['sender_name']) ? $recent_message['sender_name'] : $recent_message['sender_address'],
+					'mail_received'			=> $recent_message['date'],
+				);
+				// save notification status
+				$notified_mail_uidsCache[$activeProfile][$recent_message['folder']][] = $recent_message['uid'];
+			}
+
+			// create etemplate
+			$tpl = new etemplate();
+			$tpl->read('felamimail.checkmailbox');
+			$notification_message = $tpl->exec(false, $values, array(), array(), array(), 1);
+
+			// send notification
+			$notification = new notifications();
+			$notification->set_receivers(array($recipient->account_id));
+			$notification->set_message($notification_message);
+			$notification->set_sender($recipient->account_id);
+			$notification->set_subject($notification_subject);
+			$notification->set_skip_backends(array('email'));
+			$notification->send();
+		}
+		egw_cache::setCache(egw_cache::INSTANCE,'felamimail','notified_mail_uids'.trim($GLOBALS['egw_info']['user']['account_id']),$notified_mail_uidsCache, $expiration=60*60*24*2);
+
+		return true;
+	}
 }
