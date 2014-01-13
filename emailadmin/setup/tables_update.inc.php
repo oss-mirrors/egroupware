@@ -521,110 +521,9 @@ function emailadmin_upgrade1_9_009()
 
 
 /**
- * Migrate (personal) FMail accounts to eMailAdmin accounts
- */
-function emailadmin_upgrade1_9_010()
-{
-	static $prot2ssl = array('ssl' => 3, 'tls' => 2, 'starttls' => 1);
-	$std_identity = null;
-	// migrate personal felamimail accounts, identities and signatures
-	try {
-		$db = $GLOBALS['egw_setup']->db;
-		foreach($db->select('egw_felamimail_accounts', '*', false, __LINE__, __FILE__, false, '', 'felamimail') as $row)
-		{
-			$prefs = new preferences($row['fm_owner']);
-			$all_prefs = $prefs->read_repository();
-			$pref_values = $all_prefs['felamimail'];
-
-			// create standard identity for account
-			$identity = array(
-				'acc_id' => 0,
-				'ident_realname' => $row['fm_realname'],
-				'ident_email' => $row['fm_emailaddress'],
-				'ident_org' => $row['fm_organisation'],
-				'ident_signature' => $db->select('egw_felamimail_signatures', 'fm_signature', array(
-					'fm_signatureid' => $row['fm_signatureid'],
-				), __LINE__, __FILE__, false, '', 'felamimail')->fetchColumn(),
-			);
-			$db->insert('egw_ea_identities', $identity, false, __LINE__, __FILE__, 'emailadmin');
-			$ident_id = $db->get_last_insert_id('egw_ea_identities', 'ident_id');
-
-			// create account
-			$og_ssl = 0;
-			if (strpos($row['fm_og_hostname'], '://') !== false)
-			{
-				list($prot, $row['fm_og_hostname']) = explode('://', $row['fm_og_hostname']);
-				$og_ssl = (int)$prot2ssl[$prot];
-			}
-			$account = array(
-				'acc_name' => $row['fm_emailaddress'],
-				'ident_id' => $ident_id,
-				'acc_imap_host' => $row['fm_ic_hostname'],
-				'acc_imap_ssl' => $row['fm_ic_encryption'] | ($row['fm_ic_validatecertificate'] ? 8 : 0),
-				'acc_imap_port' => $row['fm_ic_port'],
-				'acc_sieve_enabled' => $row['fm_ic_enable_sieve'],
-				'acc_sieve_host' => $row['fm_ic_sieve_server'],
-				'acc_sieve_ssl' => $row['fm_ic_sieve_port'] == 5190,
-				'acc_sieve_port' => $row['fm_ic_sieve_port'],
-				'acc_folder_sent' => $row['fm_ic_sentfolder'] ? $row['fm_ic_sentfolder'] : $pref_values['sentFolder'],
-				'acc_folder_trash' => $row['fm_ic_trashfolder'] ? $row['fm_ic_trashfolder'] : $pref_values['trashFolder'],
-				'acc_folder_draft' => $row['fm_ic_draftfolder'] ? $row['fm_ic_draftfolder'] : $pref_values['draftFolder'],
-				'acc_folder_template' => $row['fm_ic_templatefolder'] ? $row['fm_ic_templatefolder'] : $pref_values['templateFolder'],
-				'acc_smtp_host' => $row['fm_og_hostname'],
-				'acc_smtp_ssl' => $og_ssl,
-				'acc_smtp_port' => $row['fm_og_port'],
-			);
-			$db->insert('egw_ea_accounts', $account, false, __LINE__, __FILE__, 'emailadmin');
-			$acc_id = $db->get_last_insert_id('egw_ea_accounts', 'acc_id');
-			$identity['acc_id'] = $acc_id;
-			if (!isset($std_identity[$row['fm_owner']])) $std_identity[$row['fm_owner']] = $identity;
-			// update above created identity with account acc_id
-			$db->update('egw_ea_identities', array('acc_id' => $acc_id), array('ident_id' => $ident_id), __LINE__, __FILE__, 'emailadmin');
-
-			// make account valid for given owner
-			$db->insert('egw_ea_valid', array(
-				'acc_id' => $acc_id,
-				'account_id' => $row['fm_owner'],
-			), false, __LINE__, __FILE__, 'emailadmin');
-
-			// add imap credentials
-			$cred_type = $row['fm_og_smtpauth'] && $row['fm_ic_username'] == $row['fm_og_username'] &&
-				$row['fm_ic_password'] == $row['fm_og_password'] ? 3 : 1;
-			emailadmin_credentials::write($acc_id, $row['fm_ic_username'], $row['fm_ic_password'], $cred_type, $row['fm_owner']);
-			// add smtp credentials if necessary and different from imap
-			if ($row['fm_og_smtpauth'] && $cred_type != 3)
-			{
-				emailadmin_credentials::write($acc_id, $row['fm_og_username'], $row['fm_og_password'], 2, $row['fm_owner']);
-			}
-		}
-		// migrate all not yet as standard-signatures migrated signatures to identities of first migrated fmail profile
-		// completing them with realname, email and org from standard-signature of given account
-		foreach($db->select('egw_felamimail_signatures', '*',
-			"fm_signatureid NOT IN (SELECT fm_signatureid FROM egw_felamimail_accounts) AND fm_signature=!'' AND fm_signature IS NOT NULL",
-			__LINE__, __FILE__, false, '', 'felamimail') as $row)
-		{
-			if (!isset($std_identity[$row['fm_accountid']]))
-			{
-				continue;	// ignore signatures for whos owner (fm_accountid!) we have no personal profile
-			}
-			$identity = $std_identity; unset($identity['ident_id']);
-			$identity['ident_realname'] = $std_identity['ident_realname'].' ('.$row['fm_description'].')';
-			$identity['ident_signature'] = $row['fm_signature'];
-			$db->insert('egw_ea_identities', $identity, false, __LINE__, __FILE__, 'emailadmin');
-		}
-	}
-	catch(Exception $e) {
-		// ignore all errors, eg. because FMail is not installed
-		echo "<p>".$e->getMessage()."</p>\n";
-	}
-	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.011';
-}
-
-
-/**
  * Migrate eMailAdmin profiles to accounts
  */
-function emailadmin_upgrade1_9_011()
+function emailadmin_upgrade1_9_010()
 {
 	static $prot2ssl = array('ssl' => 3, 'tls' => 2, 'starttls' => 1);
 	$acc_ids = array();
@@ -735,93 +634,148 @@ function emailadmin_upgrade1_9_011()
 		// ignore all errors, eg. because FMail is not installed
 		echo "<p>".$e->getMessage()."</p>\n";
 	}
-	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.015';
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.011';
 }
 
-function emailadmin_upgrade1_9_012()
+/**
+ * Helper function for 1.9.011 upgrade to query standard identity of a given user
+ *
+ * There's no defined standard identity, we simply pick first one we find
+ * sorting results by prefering personal accounts over all-user ones.
+ * For all-user ones we prefer a personal identitiy (account_id!=0).
+ *
+ * @param int $account_id
+ * @return array with ident_* and acc_id
+ */
+function emailadmin_std_identity($account_id)
 {
-	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_accounts','acc_sieve_ssl',array(
-		'type' => 'int',
-		'precision' => '1',
-		'default' => '1',
-		'comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'
-	));
-	$GLOBALS['egw']->db->update('egw_ea_accounts', array(
-		'acc_sieve_ssl' => 3,
-	),
-	array(
-		'acc_sieve_port' => 5190,
-	), __LINE__, __FILE__, 'emailadmin');
-
-	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_accounts','acc_modified',array(
-		'type' => 'timestamp',
-		'nullable' => False,
-		'default' => 'current_timestamp'
-	));
-	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_accounts','acc_modifier',array(
-		'type' => 'int',
-		'meta' => 'user',
-		'precision' => '4'
-	));
-
-	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.013';
+	return $GLOBALS['egw_setup']->db->select('egw_ea_account', 'egw_ea_identities.*',
+		'egw_ea_valid.account_id IN (0,'.(int)$account_id.') AND egw_ea_identities.account_id IN (0,'.(int)$account_id.')',
+		__LINE__, __FILE__, 0, 'ORDER BY egw_ea_identities.account_id DESC,egw_ea_valid.account_id DESC', 'emailadmin', 1,
+		'JOIN egw_ea_valid ON egw_ea_accounts.acc_id=egw_ea_valid.acc_id '.
+		'JOIN egw_ea_identities ON  egw_ea_accounts.acc_id=egw_ea_identities.acc_id')->fetch();
 }
 
-
-function emailadmin_upgrade1_9_013()
+/**
+ * Migrate (personal) FMail accounts to eMailAdmin accounts
+ */
+function emailadmin_upgrade1_9_011()
 {
-	$GLOBALS['egw_setup']->oProc->DropColumn('egw_ea_accounts',array(
-		'fd' => array(
-			'acc_id' => array('type' => 'auto','nullable' => False),
-			'acc_name' => array('type' => 'varchar','precision' => '80','comment' => 'description'),
-			'ident_id' => array('type' => 'int','precision' => '4','nullable' => False,'comment' => 'standard identity'),
-			'acc_imap_host' => array('type' => 'varchar','precision' => '128','nullable' => False,'comment' => 'imap hostname'),
-			'acc_imap_ssl' => array('type' => 'int','precision' => '1','nullable' => False,'default' => '0','comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'),
-			'acc_imap_port' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '143','comment' => 'imap port'),
-			'acc_sieve_enabled' => array('type' => 'bool','default' => '0','comment' => 'sieve enabled'),
-			'acc_sieve_host' => array('type' => 'varchar','precision' => '128','comment' => 'sieve host, default imap_host'),
-			'acc_sieve_port' => array('type' => 'int','precision' => '4','default' => '4190'),
-			'acc_folder_sent' => array('type' => 'varchar','precision' => '128','comment' => 'sent folder'),
-			'acc_folder_trash' => array('type' => 'varchar','precision' => '128','comment' => 'trash folder'),
-			'acc_folder_draft' => array('type' => 'varchar','precision' => '128','comment' => 'draft folder'),
-			'acc_folder_template' => array('type' => 'varchar','precision' => '128','comment' => 'template folder'),
-			'acc_smtp_host' => array('type' => 'varchar','precision' => '128','comment' => 'smtp hostname'),
-			'acc_smtp_ssl' => array('type' => 'int','precision' => '1','nullable' => False,'default' => '0','comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'),
-			'acc_smtp_port' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '25','comment' => 'smtp port'),
-			'acc_smtp_type' => array('type' => 'varchar','precision' => '20','default' => 'emailadmin_smtp','comment' => 'smtp class to use'),
-			'acc_imap_type' => array('type' => 'varchar','precision' => '20','default' => 'emailadmin_imap','comment' => 'imap class to use'),
-			'acc_imap_logintype' => array('type' => 'varchar','precision' => '20','comment' => 'standard, vmailmgr, admin, uidNumber'),
-			'acc_domain' => array('type' => 'varchar','precision' => '100','comment' => 'domain name'),
-			'acc_further_identities' => array('type' => 'bool','nullable' => False,'default' => '1','comment' => '0=no, 1=yes'),
-			'acc_user_editable' => array('type' => 'bool','nullable' => False,'default' => '1','comment' => '0=no, 1=yes'),
-			'acc_sieve_ssl' => array('type' => 'int','precision' => '1','default' => '1','comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'),
-			'acc_modified' => array('type' => 'timestamp','nullable' => False,'default' => 'current_timestamp'),
-			'acc_modifier' => array('type' => 'int','meta' => 'user','precision' => '4')
-		),
-		'pk' => array('acc_id'),
-		'fk' => array(),
-		'ix' => array(),
-		'uc' => array()
-	),'acc_imap_administration');
+	static $prot2ssl = array('ssl' => 3, 'tls' => 2, 'starttls' => 1);
+	$std_identity = null;
+	// migrate personal felamimail accounts, identities and signatures
+	try {
+		$db = $GLOBALS['egw_setup']->db;
+		// migrate real fmail accounts, but not yet identities (fm_ic_hostname is NULL)
+		foreach($db->select('egw_felamimail_accounts', '*', 'fm_ic_hostname IS NOT NULL', __LINE__, __FILE__, false, '', 'felamimail') as $row)
+		{
+			$prefs = new preferences($row['fm_owner']);
+			$all_prefs = $prefs->read_repository();
+			$pref_values = $all_prefs['felamimail'];
 
-	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_accounts','acc_smtp_auth_session',array(
-		'type' => 'bool',
-		'comment' => '0=no, 1=yes, use username/pw from current user'
-	));
+			// create standard identity for account
+			$identity = array(
+				'acc_id' => 0,
+				'ident_realname' => $row['fm_realname'],
+				'ident_email' => $row['fm_emailaddress'],
+				'ident_org' => $row['fm_organisation'],
+				'ident_signature' => $db->select('egw_felamimail_signatures', 'fm_signature', array(
+					'fm_signatureid' => $row['fm_signatureid'],
+				), __LINE__, __FILE__, false, '', 'felamimail')->fetchColumn(),
+			);
+			$db->insert('egw_ea_identities', $identity, false, __LINE__, __FILE__, 'emailadmin');
+			$ident_id = $db->get_last_insert_id('egw_ea_identities', 'ident_id');
 
-	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.014';
-}
+			// create account
+			$og_ssl = 0;
+			if (strpos($row['fm_og_hostname'], '://') !== false)
+			{
+				list($prot, $row['fm_og_hostname']) = explode('://', $row['fm_og_hostname']);
+				$og_ssl = (int)$prot2ssl[$prot];
+			}
+			$account = array(
+				'acc_name' => $row['fm_emailaddress'],
+				'ident_id' => $ident_id,
+				'acc_imap_host' => $row['fm_ic_hostname'],
+				'acc_imap_ssl' => $row['fm_ic_encryption'] | ($row['fm_ic_validatecertificate'] ? 8 : 0),
+				'acc_imap_port' => $row['fm_ic_port'],
+				'acc_sieve_enabled' => $row['fm_ic_enable_sieve'],
+				'acc_sieve_host' => $row['fm_ic_sieve_server'],
+				'acc_sieve_ssl' => $row['fm_ic_sieve_port'] == 5190,
+				'acc_sieve_port' => $row['fm_ic_sieve_port'],
+				'acc_folder_sent' => $row['fm_ic_sentfolder'] ? $row['fm_ic_sentfolder'] : $pref_values['sentFolder'],
+				'acc_folder_trash' => $row['fm_ic_trashfolder'] ? $row['fm_ic_trashfolder'] : $pref_values['trashFolder'],
+				'acc_folder_draft' => $row['fm_ic_draftfolder'] ? $row['fm_ic_draftfolder'] : $pref_values['draftFolder'],
+				'acc_folder_template' => $row['fm_ic_templatefolder'] ? $row['fm_ic_templatefolder'] : $pref_values['templateFolder'],
+				'acc_smtp_host' => $row['fm_og_hostname'],
+				'acc_smtp_ssl' => $og_ssl,
+				'acc_smtp_port' => $row['fm_og_port'],
+			);
+			$db->insert('egw_ea_accounts', $account, false, __LINE__, __FILE__, 'emailadmin');
+			$acc_id = $db->get_last_insert_id('egw_ea_accounts', 'acc_id');
+			$identity['acc_id'] = $acc_id;
+			if (!isset($std_identity[$row['fm_owner']])) $std_identity[$row['fm_owner']] = $identity;
+			// update above created identity with account acc_id
+			$db->update('egw_ea_identities', array('acc_id' => $acc_id), array('ident_id' => $ident_id), __LINE__, __FILE__, 'emailadmin');
 
+			// make account valid for given owner
+			$db->insert('egw_ea_valid', array(
+				'acc_id' => $acc_id,
+				'account_id' => $row['fm_owner'],
+			), false, __LINE__, __FILE__, 'emailadmin');
 
-function emailadmin_upgrade1_9_014()
-{
-	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_identities','account_id',array(
-		'type' => 'int',
-		'precision' => '4',
-		'nullable' => False,
-		'default' => '0',
-		'comment' => '0=all users of give mail account'
-	));
+			// add imap credentials
+			$cred_type = $row['fm_og_smtpauth'] && $row['fm_ic_username'] == $row['fm_og_username'] &&
+				$row['fm_ic_password'] == $row['fm_og_password'] ? 3 : 1;
+			emailadmin_credentials::write($acc_id, $row['fm_ic_username'], $row['fm_ic_password'], $cred_type, $row['fm_owner']);
+			// add smtp credentials if necessary and different from imap
+			if ($row['fm_og_smtpauth'] && $cred_type != 3)
+			{
+				emailadmin_credentials::write($acc_id, $row['fm_og_username'], $row['fm_og_password'], 2, $row['fm_owner']);
+			}
+		}
 
+		// migrate fmail identities (fm_ic_hostname is NULL), not real fmail account done above
+		foreach($db->select('egw_felamimail_accounts', '*', 'fm_ic_hostname IS NULL', __LINE__, __FILE__, false, '', 'felamimail') as $row)
+		{
+			if (!($std_identity = emailadmin_std_identity($row['fm_owner'])))
+			{
+				continue;	// no account found to add identity to
+			}
+			// create standard identity for account
+			$identity = array(
+				'acc_id' => $std_identity['acc_id'],
+				'ident_realname' => $row['fm_realname'],
+				'ident_email' => $row['fm_emailaddress'],
+				'ident_org' => $row['fm_organisation'],
+				'ident_signature' => $db->select('egw_felamimail_signatures', 'fm_signature', array(
+					'fm_signatureid' => $row['fm_signatureid'],
+				), __LINE__, __FILE__, false, '', 'felamimail')->fetchColumn(),
+				'account_id' => $row['fm_owner'],
+			);
+			$db->insert('egw_ea_identities', $identity, false, __LINE__, __FILE__, 'emailadmin');
+		}
+
+		// migrate all not yet as standard-signatures migrated signatures to identities of first migrated fmail profile
+		// completing them with realname, email and org from standard-signature of given account
+		foreach($db->select('egw_felamimail_signatures', '*',
+			"fm_signatureid NOT IN (SELECT fm_signatureid FROM egw_felamimail_accounts)",
+			__LINE__, __FILE__, false, '', 'felamimail') as $row)
+		{
+			if (!($std_identity = emailadmin_std_identity($row['fm_accountid'])))
+			{
+				continue;	// ignore signatures for whos owner (fm_accountid!) we have no personal profile
+			}
+			$identity = $std_identity; unset($identity['ident_id']);
+			$identity['ident_realname'] = $std_identity['ident_realname'].' ('.$row['fm_description'].')';
+			$identity['ident_signature'] = $row['fm_signature'];
+			$identity['account_id'] = $row['fm_accountid'];
+			$db->insert('egw_ea_identities', $identity, false, __LINE__, __FILE__, 'emailadmin');
+		}
+	}
+	catch(Exception $e) {
+		// ignore all errors, eg. because FMail is not installed
+		echo "<p>".$e->getMessage()."</p>\n";
+	}
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.015';
 }
