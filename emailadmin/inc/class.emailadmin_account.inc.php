@@ -38,6 +38,7 @@
  * @property-read string $acc_folder_trash trash folder
  * @property-read string $acc_folder_draft draft folder
  * @property-read string $acc_folder_template template folder
+ * @property-read string $acc_folder_junk junk/spam folder
  * @property-read string $acc_smtp_host smtp hostname
  * @property-read int $acc_smtp_ssl 0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate
  * @property-read int $acc_smtp_port smtp port

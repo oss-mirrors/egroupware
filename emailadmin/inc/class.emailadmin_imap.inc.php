@@ -36,6 +36,7 @@ require_once EGW_INCLUDE_ROOT.'/emailadmin/inc/class.defaultimap.inc.php';
  * @property-read string $acc_folder_trash trash folder
  * @property-read string $acc_folder_draft draft folder
  * @property-read string $acc_folder_template template folder
+ * @property-read string $acc_folder_junk junk/spam folder
  * @property-read string $acc_imap_type imap class to use, default emailadmin_imap
  * @property-read string $acc_imap_logintype how to construct login-name standard, vmailmgr, admin, uidNumber
  * @property-read string $acc_domain domain name
