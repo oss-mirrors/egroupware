@@ -338,7 +338,7 @@ class emailadmin_account implements ArrayAccess
 			$cols[] = $field;
 		}
 		$where = array('account_id' => self::memberships());
-		if ($acc_id && $account!='all')
+		if ($acc_id)
 		{
 			$where[] = self::$db->expression(self::IDENTITIES_TABLE, self::IDENTITIES_TABLE.'.', array('acc_id' => $acc_id));
 		}
