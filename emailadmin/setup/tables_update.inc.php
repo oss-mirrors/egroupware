@@ -649,7 +649,7 @@ function emailadmin_upgrade1_9_010()
  */
 function emailadmin_std_identity($account_id)
 {
-	return $GLOBALS['egw_setup']->db->select('egw_ea_account', 'egw_ea_identities.*',
+	return $GLOBALS['egw_setup']->db->select('egw_ea_accounts', 'egw_ea_identities.*',
 		'egw_ea_valid.account_id IN (0,'.(int)$account_id.') AND egw_ea_identities.account_id IN (0,'.(int)$account_id.')',
 		__LINE__, __FILE__, 0, 'ORDER BY egw_ea_identities.account_id DESC,egw_ea_valid.account_id DESC', 'emailadmin', 1,
 		'JOIN egw_ea_valid ON egw_ea_accounts.acc_id=egw_ea_valid.acc_id '.
