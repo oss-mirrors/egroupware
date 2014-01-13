@@ -526,15 +526,15 @@ function emailadmin_upgrade1_9_009()
 function emailadmin_upgrade1_9_010()
 {
 	static $prot2ssl = array('ssl' => 3, 'tls' => 2, 'starttls' => 1);
+	$std_identity = null;
 	// migrate personal felamimail accounts, identities and signatures
 	try {
 		$db = $GLOBALS['egw_setup']->db;
-		$fm_id2acc_id = array();
 		foreach($db->select('egw_felamimail_accounts', '*', false, __LINE__, __FILE__, false, '', 'felamimail') as $row)
 		{
 			$prefs = new preferences($row['fm_owner']);
-			$pref_values = $prefs->read_repository();
-			$pref_values = $pref_values['felamimail'];
+			$all_prefs = $prefs->read_repository();
+			$pref_values = $all_prefs['felamimail'];
 
 			// create standard identity for account
 			$identity = array(
@@ -576,7 +576,8 @@ function emailadmin_upgrade1_9_010()
 			);
 			$db->insert('egw_ea_accounts', $account, false, __LINE__, __FILE__, 'emailadmin');
 			$acc_id = $db->get_last_insert_id('egw_ea_accounts', 'acc_id');
-			$fm_id2acc_id[$row['fm_id']] = $acc_id;
+			$identity['acc_id'] = $acc_id;
+			if (!isset($std_identity[$row['fm_owner']])) $std_identity[$row['fm_owner']] = $identity;
 			// update above created identity with account acc_id
 			$db->update('egw_ea_identities', array('acc_id' => $acc_id), array('ident_id' => $ident_id), __LINE__, __FILE__, 'emailadmin');
 
@@ -596,32 +597,19 @@ function emailadmin_upgrade1_9_010()
 				emailadmin_credentials::write($acc_id, $row['fm_og_username'], $row['fm_og_password'], 2, $row['fm_owner']);
 			}
 		}
-		// migrate all not yet as standard-signatures migrated signatures to identities
+		// migrate all not yet as standard-signatures migrated signatures to identities of first migrated fmail profile
 		// completing them with realname, email and org from standard-signature of given account
 		foreach($db->select('egw_felamimail_signatures', '*',
-			'fm_signatureid NOT IN (SELECT fm_signatureid FROM egw_felamimail_accounts)',
+			"fm_signatureid NOT IN (SELECT fm_signatureid FROM egw_felamimail_accounts) AND fm_signature=!'' AND fm_signature IS NOT NULL",
 			__LINE__, __FILE__, false, '', 'felamimail') as $row)
 		{
-			if (empty($row['fm_signature']) || !$fm_id2acc_id[$row['fm_accountid']])
+			if (!isset($std_identity[$row['fm_accountid']]))
 			{
-				continue;	// ignoring empty signatures or ones not belonging to a mail-account
+				continue;	// ignore signatures for whos owner (fm_accountid!) we have no personal profile
 			}
-			if ((!isset($std_identity) || $std_identity['acc_id'] != $fm_id2acc_id[$row['fm_accountid']]) &&
-				!($std_identity = $db->select('egw_ea_identities', '*', array(
-					'acc_id' => $fm_id2acc_id[$row['fm_accountid']],
-				), __LINE__, __FILE__, false, '', 'emailadmin')->fetch()))
-			{
-				// todo: check emailadmin profiles
-				continue;	// no std identity for given account found --> ignore signature
-			}
-			$identity = array(
-				'acc_id' => $fm_id2acc_id[$row['fm_accountid']],
-				'ident_realname' => $std_identity['ident_realname'].' ('.$row['fm_description'].')',
-				'ident_email' => $std_identity['ident_email'],
-				'ident_org' => $std_identity['ident_org'],
-				'ident_signature' => $row['fm_signature'],
-				'account_id' => $row['fm_accountid'],
-			);
+			$identity = $std_identity; unset($identity['ident_id']);
+			$identity['ident_realname'] = $std_identity['ident_realname'].' ('.$row['fm_description'].')';
+			$identity['ident_signature'] = $row['fm_signature'];
 			$db->insert('egw_ea_identities', $identity, false, __LINE__, __FILE__, 'emailadmin');
 		}
 	}
@@ -657,8 +645,8 @@ function emailadmin_upgrade1_9_011()
 					isset($acc_ids[$primary_group]) ? $acc_ids[$primary_group] : $acc_ids['0']))
 			{
 				$prefs = new preferences($owner);
-				$pref_values = $prefs->read_repository();
-				$pref_values = $pref_values['felamimail'];
+				$all_prefs = $prefs->read_repository();
+				$pref_values = $all_prefs['felamimail'];
 
 				// create standard identity for account
 				$identity = array(
@@ -741,6 +729,7 @@ function emailadmin_upgrade1_9_011()
 				emailadmin_credentials::write($acc_id, $row['ea_imap_admin_user'], $row['ea_imap_admin_pw'], 8, $owner);
 			}
 		}
+		// ToDo: migrate all not yet via personal fmail profiles migrated signatures
 	}
 	catch(Exception $e) {
 		// ignore all errors, eg. because FMail is not installed
