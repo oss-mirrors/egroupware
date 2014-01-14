@@ -4,10 +4,8 @@
 <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="28.347px" height="28.347px" viewBox="0 0 28.347 28.347" enable-background="new 0 0 28.347 28.347" xml:space="preserve">
 <g>
-	<path fill-rule="evenodd" clip-rule="evenodd" fill="#ECEDED" d="M24.805,0.001H3.543C1.586,0.001,0,1.587,0,3.545v21.258
-		c0,1.957,1.586,3.543,3.543,3.543h21.262c1.957,0,3.543-1.586,3.543-3.543V3.545C28.348,1.587,26.762,0.001,24.805,0.001z
-		 M21.579,26.104H6.769V8.003c0,0,4.114-5.76,7.405-5.76s7.405,5.76,7.405,5.76V26.104z"/>
-	<path fill-rule="evenodd" clip-rule="evenodd" fill="#ECEDED" d="M14.174,5.535c1.362,0,2.469,1.105,2.469,2.469
-		c0,1.363-1.106,2.468-2.469,2.468c-1.363,0-2.469-1.105-2.469-2.468C11.705,6.64,12.811,5.535,14.174,5.535z"/>
+	<path fill-rule="evenodd" clip-rule="evenodd" fill="#ECEDED" d="M-0.001,0v28.347h28.348V0H-0.001z M21.574,26.101H6.764V8
+		c0,0,4.114-5.76,7.405-5.76S21.574,8,21.574,8V26.101z"/>
+	<circle fill-rule="evenodd" clip-rule="evenodd" fill="#ECEDED" cx="14.169" cy="7.999" r="2.469"/>
 </g>
 </svg>
