@@ -641,17 +641,25 @@ function emailadmin_upgrade1_9_010()
  * Helper function for 1.9.011 upgrade to query standard identity of a given user
  *
  * There's no defined standard identity, we simply pick first one we find
- * sorting results by prefering personal accounts over all-user ones.
- * For all-user ones we prefer a personal identitiy (account_id!=0).
+ * sorting results by:
+ * - prefering identical email or same-domain
+ * - prefering personal accounts over all-user ones
+ * - for all-user ones we prefer a personal identitiy (account_id!=0)
  *
  * @param int $account_id
+ * @param string $email optional email to be used to find matching account/identity with identical email or same domain
  * @return array with ident_* and acc_id
  */
-function emailadmin_std_identity($account_id)
+function emailadmin_std_identity($account_id, $email=null)
 {
+	if ($email) list(, $domain) = explode('@', $email);
 	return $GLOBALS['egw_setup']->db->select('egw_ea_accounts', 'egw_ea_identities.*',
 		'egw_ea_valid.account_id IN (0,'.(int)$account_id.') AND egw_ea_identities.account_id IN (0,'.(int)$account_id.')',
-		__LINE__, __FILE__, 0, 'ORDER BY egw_ea_identities.account_id DESC,egw_ea_valid.account_id DESC', 'emailadmin', 1,
+		__LINE__, __FILE__, 0,
+		'ORDER BY '.($email ?
+			'ident_email='.$GLOBALS['egw_setup']->db->quote($email).' DESC,'.
+			'ident_email LIKE '.$GLOBALS['egw_setup']->db->quote('%@'.$domain).' DESC,' : '').
+			'egw_ea_identities.account_id DESC,egw_ea_valid.account_id DESC', 'emailadmin', 1,
 		'JOIN egw_ea_valid ON egw_ea_accounts.acc_id=egw_ea_valid.acc_id '.
 		'JOIN egw_ea_identities ON  egw_ea_accounts.acc_id=egw_ea_identities.acc_id')->fetch();
 }
