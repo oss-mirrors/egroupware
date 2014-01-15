@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<?xml-stylesheet type="text/css" href="../../../../pixelegg/less/svg.css" ?>
+<svg version="1.1" id="phpfreechat_navbar" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" width="28.347px" height="28.347px" viewBox="0 0 28.347 28.347" enable-background="new 0 0 28.347 28.347"
+	 xml:space="preserve">
+<g>
+	<path fill-rule="evenodd" clip-rule="evenodd" fill="#ECEDED" d="M20.09,13.904c-3.644,0-6.599,1.608-6.599,3.592
+		c0,0.978,0.718,1.864,1.883,2.512c0.7,0.39,9.335,5.442,9.335,5.442l-3.3-4.329c3.645,0,5.279-1.642,5.279-3.625
+		S23.734,13.904,20.09,13.904z"/>
+	<path fill-rule="evenodd" clip-rule="evenodd" fill="#ECEDED" d="M7.861,23.802c-1.901,0-2.06-0.232-2.617-0.825
+		c-0.533-0.593-0.825-0.717-0.825-2.618v-5.63l-2.475,0.068v6.53c0,2.732,2.217,4.949,4.949,4.949h12.439l-0.068-2.475H7.861z"/>
+	<path fill-rule="evenodd" clip-rule="evenodd" fill="#ECEDED" d="M21.739,1.531h-2.475v2.475h1.507
+		c1.901,0,3.442,1.541,3.442,3.442v4.807h2.475V6.48C26.688,3.747,24.472,1.531,21.739,1.531z"/>
+	<path fill-rule="evenodd" clip-rule="evenodd" fill="#ECEDED" d="M9.368,13.904l-3.299,5.773c0,0,9.967-6.931,10.843-7.554
+		c1.456-1.037,2.353-2.456,2.353-4.02c0-3.175-3.692-5.747-8.247-5.747S2.77,4.93,2.77,8.104C2.77,11.278,4.812,13.904,9.368,13.904
+		z"/>
+</g>
+</svg>
