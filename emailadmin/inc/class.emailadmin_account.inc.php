@@ -23,6 +23,8 @@
  * - egw_ea_credentials username/password for various accounts and types (imap, smtp, admin)
  * - egw_ea_identities identities of given account and user incl. standard identity of account
  *
+ * Most methods return iterators: use iterator_to_array() to cast them to an array eg. for eTemplate use.
+ *
  * @property-read int $acc_id id
  * @property-read string $acc_name description / display name
  * @property-read string $acc_imap_host imap hostname
@@ -332,23 +334,39 @@ class emailadmin_account implements ArrayAccess
 		if (is_null($account)) $account = $this;
 		$acc_id = is_scalar($account) ? $account : $account['acc_id'];
 
-		$cols = array('ident_id', 'ident_realname', 'ident_org', 'ident_email');
+		$cols = array('ident_id', 'ident_realname', 'ident_org', 'ident_email', 'acc_id', 'acc_imap_username', 'acc_imap_logintype', 'acc_domain');
 		if (!in_array($field, array_merge($cols, array('name', 'params'))))
 		{
 			$cols[] = $field;
 		}
-		$where = array('account_id' => self::memberships());
+		$cols[array_search('ident_id', $cols)] = self::IDENTITIES_TABLE.'.ident_id AS ident_id';
+		$cols[array_search('acc_id', $cols)] = self::IDENTITIES_TABLE.'.acc_id AS acc_id';
+		$cols[array_search('acc_imap_username', $cols)] = emailadmin_credentials::TABLE.'.cred_username AS acc_imap_username';
+
+		$where[] = self::$db->expression(self::IDENTITIES_TABLE, self::IDENTITIES_TABLE.'.', array('account_id' => self::memberships()));
 		if ($acc_id)
 		{
 			$where[] = self::$db->expression(self::IDENTITIES_TABLE, self::IDENTITIES_TABLE.'.', array('acc_id' => $acc_id));
 		}
 		$rs = self::$db->select(self::IDENTITIES_TABLE, $cols, $where, __LINE__, __FILE__, false,
-			'ORDER BY account_id,ident_realname,ident_org,ident_email', self::APP);
+			'ORDER BY '.self::IDENTITIES_TABLE.'.account_id,ident_realname,ident_org,ident_email', self::APP, null,
+			' JOIN '.self::TABLE.' ON '.self::TABLE.'.acc_id='.self::IDENTITIES_TABLE.'.acc_id'.
+			' LEFT JOIN '.emailadmin_credentials::TABLE.' ON '.self::TABLE.'.acc_id='.emailadmin_credentials::TABLE.'.acc_id AND '.
+				emailadmin_credentials::TABLE.'.account_id='.(int)$GLOBALS['egw_info']['user']['account_id'].' AND '.
+				'cred_type&'.emailadmin_credentials::IMAP);
 
 		return new egw_db_callback_iterator($rs,
 			// process each row
 			function($row) use ($replace_placeholders, $field)
 			{
+				// set email from imap-username (evtl. set from session, if acc_imap_logintype specified)
+				if (in_array($field, array('name', 'ident_email', 'params')) &&
+					empty($row['ident_email']) && empty($row['acc_imap_username']) && $row['acc_imap_logintype'])
+				{
+					$row = array_merge($row, emailadmin_credentials::from_session($row));
+				}
+				$row['ident_email'] = $row['acc_imap_username'];
+
 				if ($field != 'name')
 				{
 					$data = $replace_placeholders ? emailadmin_account::replace_placeholders($row) : $row;
@@ -1006,12 +1024,37 @@ class emailadmin_account implements ArrayAccess
 				'acc_name' => $account['acc_name'],
 				'acc_imap_username' => $account['acc_imap_username'],
 				'acc_imap_logintype' => $account['acc_imap_logintype'],
+				'acc_domain' => $account['acc_domain'],
 				'acc_id' => $account['acc_id'],
 			);
 			unset($account);
 			//$start = microtime(true);
 			$account = array_merge($data, self::replace_placeholders($data));
 			//error_log(__METHOD__."() account=".array2string($account).' took '.number_format(microtime(true)-$start,3));
+		}
+		if (empty($account['ident_email']))
+		{
+			try {
+				if (is_array($account) && empty($account['acc_imap_username']) && $account['acc_id'])
+				{
+					if (!isset($account['acc_imap_username']))
+					{
+						$account += emailadmin_credentials::read($account['acc_id']);
+					}
+					if (empty($account['acc_imap_username']) && $account['acc_imap_logintype'])
+					{
+						$account = array_merge($account, emailadmin_credentials::from_session($account));
+					}
+				}
+				if (empty($account['ident_email']) && !empty($account['acc_imap_username']))
+				{
+					$account['ident_email'] = $account['acc_imap_username'];
+				}
+			}
+			catch(Exception $e) {
+				_egw_log_exception($e);
+			}
+
 		}
 		if (strlen(trim($account['ident_realname'].$account['ident_org'])))
 		{
@@ -1024,28 +1067,6 @@ class emailadmin_account implements ArrayAccess
 		if ($account['ident_email'])
 		{
 			$name .= ' <'.$account['ident_email'].'>';
-		}
-		else
-		{
-			try {
-				if (is_array($account) && !isset($account['acc_imap_username']) && $account['acc_id'])
-				{
-					$account += emailadmin_credentials::read($account['acc_id']);
-
-					if (empty($account['acc_imap_username']) && $account['acc_imap_logintype'])
-					{
-						$account += emailadmin_credentials::from_session($account);
-					}
-				}
-				if (!empty($account['acc_imap_username']))
-				{
-					$name .= ' <'.$account['acc_imap_username'].'>';
-				}
-			}
-			catch(Exception $e) {
-				_egw_log_exception($e);
-				$name .= ' '.lang('Error, no username!');
-			}
 		}
 		//error_log(__METHOD__."(".array2string($account).", $replace_placeholders) returning ".array2string($name));
 		return $name;
