@@ -29,6 +29,7 @@
 
 		function changePassword($_accountID, $_newPassword)
 		{
+			require_once EGW_INCLUDE_ROOT.'/sambaadmin/inc/class.smbhash.inc.php';
 			$smbHash = new smbhash();
 			$ldap = common::ldapConnect();
 			$filter = "(&(uidnumber=$_accountID)(objectclass=sambasamaccount))";
