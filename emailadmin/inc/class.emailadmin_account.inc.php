@@ -365,7 +365,7 @@ class emailadmin_account implements ArrayAccess
 				{
 					$row = array_merge($row, emailadmin_credentials::from_session($row));
 				}
-				$row['ident_email'] = $row['acc_imap_username'];
+				if (empty($row['ident_email'])) $row['ident_email'] = $row['acc_imap_username'];
 
 				if ($field != 'name')
 				{
@@ -439,6 +439,16 @@ class emailadmin_account implements ArrayAccess
 		if ($replace_placeholders)
 		{
 			$data = array_merge($data, self::replace_placeholders($data));
+
+			// set empty email&realname from session / account
+			if (empty($data['ident_email']) || empty($data['ident_realname']))
+			{
+				if (($account = self::read($data['acc_id'])))
+				{
+					if (empty($data['ident_email'])) $data['ident_email'] = $account->ident_email;
+					if (empty($data['ident_realname'])) $data['ident_realname'] = $account->ident_realname;
+				}
+			}
 		}
 		return $data;
 	}
