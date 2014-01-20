@@ -77,6 +77,9 @@ $userchan = 'SERVER';
 $du = $pfcContainer->removeNick($userchan, $nickid);
 // the above section is introduced to enable reconnecting with the same nick, when not properly disconnected before
 
+// tell framework freechat needs eval and inline javascript :(
+egw_ckeditor_config::set_csp_script_src_attrs();
+
 //echo "<html>\n";
 //echo "<head>\n";
 //echo "<title>EGroupware Chat</title>\n";
