@@ -209,7 +209,7 @@ class emailadmin_account implements ArrayAccess
 		{
 			// get usename/password from current user, let it overwrite credentials for all/no session
 			$params = emailadmin_credentials::from_session(
-				(!isset($called_for) ? array() : array('acc_smtp_auth_session' => false)) + $params
+				(!isset($called_for) ? array() : array('acc_smtp_auth_session' => false)) + $params, !isset($called_for)
 			) + $params;
 		}
 		$this->params = $params;

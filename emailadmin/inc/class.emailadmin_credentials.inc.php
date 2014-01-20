@@ -156,9 +156,10 @@ class emailadmin_credentials
 	 * Generate username according to acc_imap_logintype and fetch password from session
 	 *
 	 * @param array $data values for acc_imap_logintype and acc_domain
+	 * @param boolean $set_identity=true true: also set identity values realname&email, if not yet set
 	 * @return array with values for keys 'acc_(imap|smtp)_(username|password|cred_id)'
 	 */
-	public static function from_session(array $data)
+	public static function from_session(array $data, $set_identity=true)
 	{
 		switch($data['acc_imap_logintype'])
 		{
@@ -186,8 +187,10 @@ class emailadmin_credentials
 				throw new egw_exception_wrong_parameter("Unknown data[acc_imap_logintype]=".array2string($data['acc_imap_logintype']).'!');
 		}
 		$password = base64_decode(egw_cache::getSession('phpgwapi', 'password'));
-		$realname = $data['ident_realname'] ? $data['ident_realname'] : $GLOBALS['egw_info']['user']['account_fullname'];
-		$email = $data['ident_email'] ? $data['ident_email'] : $GLOBALS['egw_info']['user']['account_email'];
+		$realname = !$set_identity || $data['ident_realname'] ? $data['ident_realname'] :
+			$GLOBALS['egw_info']['user']['account_fullname'];
+		$email = !$set_identity || $data['ident_email'] ? $data['ident_email'] :
+			$GLOBALS['egw_info']['user']['account_email'];
 
 		return array(
 			'ident_realname' => $realname,
