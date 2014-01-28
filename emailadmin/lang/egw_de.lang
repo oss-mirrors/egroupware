@@ -151,7 +151,7 @@ starts with	emailadmin	de	startet mit
 stationery	emailadmin	de	Briefpapier
 successful connected to %1 server%2.	emailadmin	de	Erfolgreich zu %1 Server verbunden%2.
 switch back to standard identity to save account.	emailadmin	de	Kehren Sie zur Standard-Identität zurück um das Konto zu speichern.
-switch back to standard identity to save other account data.	emailadmin	de	Kehren Sie zur Standard-Identität zurück um andere Kontndaten zu speichern.
+switch back to standard identity to save other account data.	emailadmin	de	Kehren Sie zur Standard-Identität zurück um andere Kontendaten zu speichern.
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	de	Der IMAP Server scheint die eingestellte Authentifizierungsmethode nicht zu unterstützen. Bitte fragen Sie Ihren Systemadministrator.
 this php has no imap support compiled in!!	emailadmin	de	Dieses PHP hat keine IMAP Unterstützung!!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	de	Um eine TLS Verbindung zu verwenden, benötigen Sie PHP 5.1.0 oder aktueller.
