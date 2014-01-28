@@ -1,10 +1,10 @@
 (don't offer the possibility)	admin	de	(Möglichkeit dazu auch nicht anbieten)
 <em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	de	<em>Aber</em> mindestens so viele Einträge in Letzten Änderungen und anderen Listen anzeigen:
-add document to category	wiki	de	Dokument zu Kategroie zufügen
+add document to category	wiki	de	Dokument zu dieser Kategorie hinzufügen
 added	wiki	de	Zugefügt
 administration features are disabled for this wiki.	wiki	de	Administrationszugang ist ausgeschaltet für diese Wiki.
 admins	wiki	de	Administratoren
-after how many days should old versions of a page be removed (0 for never)	admin	de	Nach wievielen Tagen sollen alter Versionen einer Seite gelöscht werden (0 für niemals)
+after how many days should old versions of a page be removed (0 for never)	admin	de	Nach wie vielen Tagen sollen alter Versionen einer Seite gelöscht werden (0 für niemals)
 allow anonymous access	admin	de	Anonymen Zugriff erlauben
 anonymous password	admin	de	Passwort des anonymen Benutzers
 anonymous session type	admin	de	Typ der anonymen Sitzung
@@ -14,6 +14,7 @@ block	wiki	de	Blockieren
 block / unblock hosts	common	de	Sperren/Freigeben von Rechnern
 blocked ip address ranges	wiki	de	IP Adressenbereich blockieren
 cancel without saving	wiki	de	Abruch ohne zu Speichern
+change notification	wiki	de	Ändern der Benachrichtigung
 changed	wiki	de	Geändert
 changes by last author	wiki	de	Änderungen des letzten Autors
 choose your current time here, so the server may figure out what time zone you are in.	wiki	de	Wählen Sie hier ihre aktuelle Zeit aus, damit der Rechner bestimmen kann in welche Zeitzone Sie sind.
@@ -21,6 +22,10 @@ columns	wiki	de	Spalten
 compute difference	wiki	de	Unterschiede anzeigen
 converts the page to richtext	wiki	de	Wandelt die Seite in formatierten Text um
 current version	wiki	de	Aktuelle Version
+default read permission	wiki	de	Standard Leseberechtigung
+default read permissions for creating a new page	preferences	de	Standard Leseberechtigung, bei der Erstellung neuer Seiten
+default write permission	preferences	de	Standard Schreibberechtigung
+default write permissions for creating a new page	preferences	de	Standard Schreibberechtigung, bei der Erstellung neuer Seiten
 deleted	wiki	de	Gelöscht
 deletes this page	wiki	de	Löscht die Seite
 difference between versions	wiki	de	Unterschiede zwischen Versionen
@@ -47,12 +52,15 @@ history	wiki	de	Bearbeitungshistorie
 history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	de	Die Bearbeitungshistorie soll <em>alle</em> Änderungen des letzten Autors anzeigen. Ansonsten werden nur die letzten Änderungen angezeigt.
 history lists	wiki	de	Bearbeitungshistorie
 history of	wiki	de	Bearbeitungshistorie von
+if a page i have read access to is changed, send a notification	wiki	de	Wenn eine Seite verändert wurde, zu der ich Leseberechtigung besitze, sendet das System eine Benachrichtigung.
+if a page i have write access to is changed, send a notification	wiki	de	Wenn eine Seite verändert wurde, zu der ich Schreibberechtigung besitze, sendet das System eine Benachrichtigung.
 interwikiprefix	admin	de	InterWikiPrefix
 invalid page name.	wiki	de	Ungültiger Seitenname.
 load	wiki	de	Laden
-loads the named page in the given language, all change so far get lost !!!	wiki	de	Läde die angebeben Seite in der Sprache, alle bisherigen Änderungen gehen verloren !!!
+loads the named page in the given language, all change so far get lost !!!	wiki	de	Ladet die angegebene Seite in der Sprache, alle bisherigen Änderungen gehen verloren !!!
 lock / unlock pages	common	de	Sperren / freigeben von Seiten
 locked	wiki	de	Gesperrt
+message to send	wiki	de	Mitteilung zum versenden
 name wiki home link	admin	de	Namen der Wiki Startseite
 newer	wiki	de	Neuer
 no never	admin	de	Nein niemals
@@ -60,18 +68,22 @@ no only on request	admin	de	Nein nur auf Anforderung
 not set	wiki	de	nicht gesetzt
 older	wiki	de	Älter
 on all pages	wiki	de	auf allen Seiten
-only if browser supports a richtext-editor	admin	de	Nur wenn der Webbrowser das Bearbeiten von formatiertem Text unterstütz
+only if browser supports a richtext-editor	admin	de	Nur wenn der Webbrowser das Bearbeiten von formatiertem Text unterstützt
 only on the first page	wiki	de	nur auf der ersten Seite
 page '%1' not found !!!	wiki	de	Seite '%1' nicht gefunden !!!
 page content	wiki	de	Seiteninhalt
+pages i have read access	wiki	de	Seiten, zu denen ich Leseberechtigung besitze
+pages i have write access	wiki	de	Seiten, zu denen ich Schreibberechtigung besitze
 path of the upload directory (has to be writable by the webserver!)	admin	de	Pfad des Verzeichnisses zum Hochladen (muß vom Webserver beschreibbar sein!)
+person who changed the page	wiki	de	Die Person, die diese Seite verändert hat
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	de	Hochladen von Bildern über den Editor für formatierten Text (das Verzeichnis leer lassen um das Hochladen abzuschalten)
 please contact the %1administrator%2 for assistance.	wiki	de	Bitte wenden Sie sich für weitere Hilfe an den %1Administrator%2..
 preview	wiki	de	Vorschau
 preview of current version	wiki	de	Vorschau der aktuellen Version
-rate control / ip blocking disabled	wiki	de	Kontrolle der Zugriffsfrequenz / IP Sperrungen abgeschalted
+rate control / ip blocking disabled	wiki	de	Kontrolle der Zugriffsfrequenz / IP Sperrungen abgeschaltet
 readable by	wiki	de	Lesbar von
 readonly	admin	de	Nur lesbar
+rebuild links	wiki	de	Links neu aufbauen
 recent changes	wiki	de	Letzte Änderungen
 renames page to the given name and language	wiki	de	Benennt die Seite in angegebenen Namen und Sprache um
 richtext	wiki	de	Formatiert
@@ -106,7 +118,7 @@ yes always	admin	de	Ja immer
 yes with navbar	admin	de	Ja mit Navigation
 you have been denied access to this site.	wiki	de	Ihr Zugriff auf diese Seite wurde gesperrt.
 you have entered an invalid user name.	wiki	de	Sie haben einen ungültigen Benutzernamen eingegeben.
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	de	Sie haben die maximale Anzahl Seiten überschritten, die Sie in einer vorgegebenen Zeitspannebesuchen dürfen. Bitte kommen Sie später wieder.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	de	Sie haben die maximale Anzahl Seiten überschritten, die Sie in einer vorgegebenen Zeitspanne besuchen dürfen. Bitte kommen Sie später wieder.
 you have no rights to view wiki content !!!	wiki	de	Sie haben keine Rechte um Wiki Inhalte anzusehen !!!
 your changes	wiki	de	Ihre Änderungen
 your user name is "%1".	wiki	de	Ihr Benutzername ist "%1".

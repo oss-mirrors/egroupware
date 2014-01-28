@@ -1,5 +1,5 @@
 %1 entries deleted.	emailadmin	de	%1 Einträge gelöscht
-(imapclass must support this feature by querying the corresponding config value and pass it as defaultquota to the imapserver)	emailadmin	de	(Die IMAP Klasse muss dieses Verfahren unterstützen indem es den entsprechenden Konfig Wert der Instanz ausliest und als Default Quota an den IMAP Server meldet.)
+(imapclass must support this feature by querying the corresponding config value and pass it as defaultquota to the imapserver)	emailadmin	de	(Die IMAP Klasse muss dieses Verfahren unterstützen indem es den entsprechenden Konfigurationswert der Instanz ausliest und als Default Quota an den IMAP Server meldet.)
 account '%1' not found !!!	emailadmin	de	Benutzerkonto '%1' nicht gefunden !
 account deleted.	emailadmin	de	Benutzerkonto gelöscht.
 account not found!	emailadmin	de	Benutzerkonto nicht gefunden.
@@ -12,7 +12,7 @@ admin password	emailadmin	de	Admin Passwort
 admin username	emailadmin	de	Administrator Benutzername
 advanced options	emailadmin	de	erweiterte Einstellungen
 alternate email address	emailadmin	de	zusätzliche E-Mail-Adressen
-and logged in	emailadmin	de	und eingelogt
+and logged in	emailadmin	de	und eingeloggt
 any application	emailadmin	de	jede Anwendung
 any group	emailadmin	de	jede Gruppe
 any user	emailadmin	de	jeder Benutzer
