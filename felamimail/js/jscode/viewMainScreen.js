@@ -895,19 +895,6 @@ function toggleFolderRadio(inputBox, _refreshTimeOut) {
 	}
 }
 
-function extendedSearch(_selectBox) {
-	mail_resetMessageSelect();
-	//disable select allMessages in Folder Checkbox, as it is not implemented for filters
-	document.getElementById('selectAllMessagesCheckBox').disabled  = true;
-	egw_appWindow('felamimail').setStatusMessage('<span style="font-weight: bold;">Applying filter '+_selectBox.options[_selectBox.selectedIndex].text+'</span>');
-	mail_cleanup();
-	document.getElementById('divMessageList').innerHTML = '';
-
-	document.getElementById('quickSearch').value = '';
-
-	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.extendedSearch',_selectBox.options[_selectBox.selectedIndex].value);
-}
-
 function mail_flagMessages(_flag)
 {
 	var Check=true;
@@ -1292,7 +1279,6 @@ function fm_compose(_url, _windowName, _node) {
 	mailGrid.dataRoot.actionObject.setAllSelected(false);
 }
 
-
 function fm_clearSearch() {
 	var inputQuickSearch = document.getElementById('quickSearch');
 	var status 	= document.getElementById('status').value;
@@ -1306,6 +1292,7 @@ function fm_clearSearch() {
 	}
 	
 	inputQuickSearch.focus();
+	egw_appWindow('felamimail').xajax_doXMLHTTP('felamimail.ajaxfelamimail.clearSearch');
 }
 
 function changeActiveAccount(_accountSelection)

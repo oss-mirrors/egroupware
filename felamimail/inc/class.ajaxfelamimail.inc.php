@@ -199,13 +199,11 @@ class ajaxfelamimail
 			$this->bofelamimail->restoreSessionData();
 			$this->bofelamimail->compressFolder($this->sessionData['mailbox']);
 
-			$bofilter = new felamimail_bofilter();
-
 			$sortResult = $this->bofelamimail->getSortedList(
 				$this->sessionData['mailbox'],
 				$this->sessionData['sort'],
 				$this->sessionData['sortReverse'],
-				$bofilter->getFilter($this->sessionData['activeFilter'])
+				$this->sessionData['messageFilter']
 			);
 
 			if(!is_array($sortResult) || empty($sortResult)) {
@@ -1105,10 +1103,20 @@ class ajaxfelamimail
 			}
 		}
 
+		function clearSearch()
+		{
+			$this->sessionData['messageFilter'] = array();
+
+			$this->sessionData['startMessage'] = 1;
+
+			$this->saveSessionData(true);
+
+			// generate the new messageview
+			return $this->generateMessageList($this->sessionData['mailbox']);
+		}
+
 		function quickSearch($_searchType, $_searchString, $_status)
 		{
-			// save the filter
-			$bofilter		= new felamimail_bofilter();
 
 			$filter['filterName']	= lang('Quicksearch');
 			$filter['type']		= $_searchType;
