@@ -14,7 +14,7 @@ class DatabaseAccess
 	 */
 	function connect()
 	{
-		copyobj($GLOBALS['egw']->db,$this->db);
+		$this->db = clone $GLOBALS['egw']->db;
 	}
 
 	/**
