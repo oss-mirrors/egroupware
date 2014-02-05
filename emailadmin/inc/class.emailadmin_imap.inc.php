@@ -470,10 +470,25 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_ALL, $options);
 		//$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
 		//_debug_array($mboxes->count());
+		$boxexists=array();
 		foreach ((array)$mailboxes as $k =>$box)
 		{
 			//error_log(__METHOD__.__LINE__.' Box:'.$k.'->'.array2string($box));
 			$ret[]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter']);
+			$boxexists[$k]=true;
+		}
+		// for unknown reasons on ALL, UNSUBSCRIBED are not returned
+		if (!isset($boxexists[$mailbox]))
+		{
+			$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_UNSUBSCRIBED, $options);
+			//$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
+			//_debug_array($mboxes->count());
+			//error_log(__METHOD__.__LINE__.' '.$mailbox.':'.count((array)$mailboxes).'->'.function_backtrace());
+			foreach ((array)$mailboxes as $k =>$box)
+			{
+				//error_log(__METHOD__.__LINE__.' Box:'.$k.' already In?'.array_key_exists($k,$boxexists).'->'.array2string($box));
+				if(!array_key_exists($k,$boxexists)) $ret[]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter']);
+			}
 		}
 		return $ret;
 	}
