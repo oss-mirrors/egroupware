@@ -322,16 +322,14 @@
 						</tabpanels>
 					</tabbox>
 				</row>
-				<row class="dialog-footer-toolbar">
-					<hbox span="2">
-						<button label="Save" id="button[save]" image="save" background_image="1"/>
-						<button label="Apply" id="button[apply]" image="apply" background_image="1"/>
-						<button statustext="Use wizard to detect or verify configuration" label="Wizard" id="button[wizard]" image="wizard" background_image="1"/>
-						<button label="Cancel" id="button[cancel]" onclick="window.close();" image="cancel" background_image="1"/>
-					</hbox>
-					<button align="right" label="Delete" id="button[delete]" onclick="et2_dialog.confirm(widget,'Delete this account','Delete')"/>
-				</row>
 			</rows>
 		</grid>
+		<hbox class="dialog-footer-toolbar">
+			<button label="Save" id="button[save]"/>
+			<button label="Apply" id="button[apply]" />
+			<button statustext="Use wizard to detect or verify configuration" label="Wizard" id="button[wizard]" image="magicwand" background_image="1"/>
+			<button label="Cancel" id="button[cancel]" onclick="window.close();"/>
+			<button align="right" label="Delete" id="button[delete]" onclick="et2_dialog.confirm(widget,'Delete this account','Delete')"/>
+		</hbox>
 	</template>
 </overlay>
