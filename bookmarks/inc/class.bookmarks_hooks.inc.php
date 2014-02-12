@@ -67,9 +67,9 @@ class bookmarks_hooks
 		if ($GLOBALS['egw_info']['user']['apps']['admin'] && $location != 'preferences')
 		{
 			$file = Array(
-				'Site Configuration' => egw::link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
-				'Global Categories' => egw::link('/index.php','menuaction=admin.admin_categories.index&appname=' . $appname),
-				'Custom fields' => egw::link('/index.php','menuaction=admin.customfields.edit&appname=' . $appname),
+				'Site Configuration' => egw::link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname, 'admin'),
+				'Global Categories' => egw::link('/index.php','menuaction=admin.admin_categories.index&appname=' . $appname, 'admin'),
+				'Custom fields' => egw::link('/index.php','menuaction=admin.customfields.edit&appname=' . $appname, 'admin'),
 			);
 			if ($location == 'admin')
 			{
@@ -77,7 +77,7 @@ class bookmarks_hooks
 			}
 			else
 			{
-				display_sidebox($appname,lang('Admin'),$file);
+				$GLOBALS['egw']->framework->sidebox($appname,lang('Admin'),$file,'admin');
 			}
 		}
 	}
