@@ -53,15 +53,16 @@ function mailGridGetSelected()
 {
 	// select messagesv from mailGrid
 	var allSelected = mailGrid.dataRoot.actionObject.getSelectedObjects();
-	var messages = {};
+	var messages = {msg:[]};
 	// allSelected[i].id hält die id
 	// zurückseten iteration über allSelected (getSelectedObjects) und dann allSelected[i].setSelected(false);
 	if (allSelected.length>0) messages['msg'] = [];
+	var j =0;
 	for (var i=0; i<allSelected.length; i++) 
 	{
 		if (allSelected[i].id.length>0)
 		{
-			messages['msg'][i] = allSelected[i].id;
+			messages['msg'].push(allSelected[i].id);
 			//alert(i+': ID->'+messages['msg'][i]);
 		}
 	}
@@ -487,8 +488,10 @@ function mail_deleteMessages(_messageList,_method) {
 		//mail_cleanup();
 		//document.getElementById('divMessageList').innerHTML = '';
 		//divMessageList.innerHTML = '';
+		var msgListClean = {msg:[]};
 		for(var i=0;i<_messageList['msg'].length;i++) {
 			_id = _messageList['msg'][i];
+			if (_id) msgListClean['msg'].push(_messageList.msg[i]);
 			//alert(i+'->'+_id+': ID->'+messageList['msg'][i]);
 			var dataElem = egw_appWindow('felamimail').mailGrid.dataRoot.getElementById(_id);
 			if (dataElem)
