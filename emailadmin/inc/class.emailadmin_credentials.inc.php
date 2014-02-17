@@ -337,7 +337,7 @@ class emailadmin_credentials
 				if (($row['cred_pw_enc'] != self::USER || !$mcrypt) &&
 					!($mcrypt = self::init_crypt($row['cred_pw_enc'] == self::USER)))
 				{
-					throw egw_exception_wrong_parameter("Password encryption type $row[cred_pw_enc] NOT available!");
+					throw new egw_exception_wrong_parameter("Password encryption type $row[cred_pw_enc] NOT available!");
 				}
 				return (!empty($row['cred_password'])?trim(mdecrypt_generic($mcrypt, base64_decode($row['cred_password']))):'');
 		}
