@@ -723,16 +723,23 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 
 	/**
 	 * get the effective Username for the Mailbox, as it is depending on the loginType
-	 * @param string $_username
+	 *
+	 * @param string|int $_username account_id or account_lid
 	 * @return string the effective username to be used to access the Mailbox
 	 */
 	function getMailBoxUserName($_username)
 	{
+		if (is_numeric($_username))
+		{
+			$_username = $GLOBALS['egw']->accounts->id2name($_username);
+		}
+		else
+		{
+			$accountID = $GLOBALS['egw']->accounts->name2id($_username);
+		}
 		switch ($this->loginType)
 		{
 			case 'email':
-				$_username = $_username;
-				$accountID = $GLOBALS['egw']->accounts->name2id($_username);
 				$accountemail = $GLOBALS['egw']->accounts->id2name($accountID,'account_email');
 				//$accountemail = $GLOBALS['egw']->accounts->read($GLOBALS['egw']->accounts->name2id($_username,'account_email'));
 				if (!empty($accountemail))
@@ -746,10 +753,39 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				break;
 
 			case 'uidNumber':
-				$_username = 'u'.$GLOBALS['egw']->accounts->name2id($_username);
+				$_username = 'u'.$accountID;
 				break;
 		}
 		return strtolower($_username);
+	}
+
+	/**
+	 * Get account_id from a mailbox username
+	 *
+	 * @param string $_username
+	 * @return int|boolean account_id of user or false if no matching user found
+	 */
+	function getMailBoxAccountId($_username)
+	{
+		switch ($this->loginType)
+		{
+			case 'email':
+				$account_id = $GLOBALS['egw']->accounts->name2id($_username, 'account_email');
+				if (!$account_id)
+				{
+					list($uid) = explode('@', $_username);
+					$account_id = $GLOBALS['egw']->accounts->name2id($uid, 'account_lid');
+				}
+				break;
+
+			case 'uidNumber':
+				$account_id = (int)substr($_username, 1);
+				break;
+
+			default:
+				$account_id = $GLOBALS['egw']->accounts->name2id($_username, 'account_lid');
+		}
+		return $account_id;
 	}
 
 	/**
