@@ -435,23 +435,23 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		if ( is_bool($restriction_search) ){
 			$restriction_search = (int) $restriction_search;
 		}
-
+		$mailbox = '';
 		if ( is_int( $restriction_search ) ){
 			switch ( $restriction_search ) {
 			case 0:
-				$mailbox = $reference."*";
+				$searchstring = $reference."*";
 				break;
 			case 1:
-				$mailbox = $reference;
+				$mailbox = $searchstring = $reference;
 				//$reference = '%';
 				break;
 			case 2:
-				$mailbox = $reference."%";
+				$searchstring = $reference."%";
 				break;
 			}
 		}else{
 			if ( is_string( $restriction_search ) ){
-				$mailbox = $restriction_search;
+				$mailbox = $searchstring = $restriction_search;
 			}
 		}
 		//error_log(__METHOD__.__LINE__.array2string($mailbox));
@@ -469,27 +469,25 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			unset($options['children']);
 			unset($options['special_use']);
 		}
-		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_ALL, $options);
+		$mailboxes = $this->listMailboxes($searchstring,Horde_Imap_Client::MBOX_ALL, $options);
 		//$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
 		//_debug_array($mboxes->count());
-		$boxexists=array();
 		foreach ((array)$mailboxes as $k =>$box)
 		{
 			//error_log(__METHOD__.__LINE__.' Box:'.$k.'->'.array2string($box));
-			$ret[]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter']);
-			$boxexists[$k]=true;
+			$ret[$k]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter']);
 		}
 		// for unknown reasons on ALL, UNSUBSCRIBED are not returned
-		if (!isset($boxexists[$mailbox]))
+		if (!empty($mailbox) && !isset($ret[$mailbox]))
 		{
-			$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_UNSUBSCRIBED, $options);
+			$mailboxes = $this->listMailboxes($searchstring,Horde_Imap_Client::MBOX_UNSUBSCRIBED, $options);
 			//$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
 			//_debug_array($mboxes->count());
 			//error_log(__METHOD__.__LINE__.' '.$mailbox.':'.count((array)$mailboxes).'->'.function_backtrace());
 			foreach ((array)$mailboxes as $k =>$box)
 			{
 				//error_log(__METHOD__.__LINE__.' Box:'.$k.' already In?'.array_key_exists($k,$boxexists).'->'.array2string($box));
-				if(!array_key_exists($k,$boxexists)) $ret[]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter']);
+				if(!array_key_exists($k,$ret)) $ret[$k]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter']);
 			}
 		}
 		return $ret;
@@ -512,23 +510,23 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		if ( is_bool($restriction_search) ){
 			$restriction_search = (int) $restriction_search;
 		}
-
+		$mailbox = '';
 		if ( is_int( $restriction_search ) ){
 			switch ( $restriction_search ) {
 			case 0:
-				$mailbox = $reference."*";
+				$searchstring = $reference."*";
 				break;
 			case 1:
-				$mailbox = $reference;
-				$reference = '%';
+				$mailbox = $searchstring = $reference;
+				//$reference = '%';
 				break;
 			case 2:
-				$mailbox = "%";
+				$searchstring = $reference."%";
 				break;
 			}
 		}else{
 			if ( is_string( $restriction_search ) ){
-				$mailbox = $restriction_search;
+				$mailbox = $searchstring = $restriction_search;
 			}
 		}
 		//error_log(__METHOD__.__LINE__.$mailbox);
@@ -545,7 +543,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			unset($options['children']);
 			unset($options['special_use']);
 		}
-		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_SUBSCRIBED_EXISTS, $options);
+		$mailboxes = $this->listMailboxes($searchstring,Horde_Imap_Client::MBOX_SUBSCRIBED_EXISTS, $options);
 		//$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
 		//_debug_array($mboxes->count());
 		foreach ((array)$mailboxes as $k =>$box)
