@@ -334,6 +334,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		}
 		catch(Exception $e)
 		{
+			unset($e);
 			return false;
 		}
 	}
@@ -360,7 +361,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	{
 		$mailboxes = $this->getMailboxes('',0,true);
 		$suF = array();
-		foreach ($mailboxes as $k =>$box)
+		foreach ($mailboxes as $box)
 		{
 			if ($box['MAILBOX']!='user' && $box['MAILBOX'] != '')
 			{
@@ -597,17 +598,17 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		}
 		//error_log(__METHOD__.__LINE__.$mailbox);
 		$options = array(
-				'sort'=>true,
-				//'flat'=>true,
-			);
+			'sort'=>true,
+			//'flat'=>true,
+		);
 		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_SUBSCRIBED_EXISTS, $options);
-		foreach ($mailboxes as $k =>$box)
+		foreach ($mailboxes as $box)
 		{
 			//error_log(__METHOD__.__LINE__.' Box:'.$k.'->'.array2string($box['mailbox']->utf8));
 			$sret[]=$box['mailbox']->utf8;
 		}
-		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_UNSUBSCRIBED, $options);
-		foreach ($mailboxes as $k =>$box)
+		$unsubscribed = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_UNSUBSCRIBED, $options);
+		foreach ($unsubscribed as $box)
 		{
 			//error_log(__METHOD__.__LINE__.' Box:'.$k.'->'.array2string($box['mailbox']->utf8));
 			if (!in_array($box['mailbox']->utf8,$sret) && $box['mailbox']->utf8!='INBOX') $ret[]=$box['mailbox']->utf8;
@@ -628,9 +629,10 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 
 		$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
 		//_debug_array($mboxes->count());
-		foreach ($mboxes->getIterator() as $k =>$box)
+		foreach ($mboxes->getIterator() as $k => $box)
 		{
 			//error_log(__METHOD__.__LINE__.array2string($box));
+			unset($box);
 			if ($k!='user' && $k != '' && $k==$mailbox)
 			{
 				$status = $this->status($k, Horde_Imap_Client::STATUS_ALL | Horde_Imap_Client::STATUS_FLAGS | Horde_Imap_Client::STATUS_PERMFLAGS);
@@ -639,7 +641,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				{
 					$_status[strtoupper($key)]=$v;
 				}
-				self::$supports_keywords[$this->ImapServerId]=(stripos(array2string($_status['FLAGS']),'$label')!==false?true:false);
+				self::$supports_keywords[$this->ImapServerId] = stripos(array2string($_status['FLAGS']),'$label')!==false;
 				return $_status;
 			}
 		}
@@ -736,6 +738,19 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			if ($nsp['type']==$type) $this->mailboxDelimiter = $nsp['delimiter'];
 		}
 		return $this->mailboxDelimiter;
+	}
+
+	/**
+	 * Check if IMAP server supports group ACL, can be overwritten in extending classes
+	 *
+	 * If group ACL is supported getMailBoxUserName and getMailBoxAccountId should be
+	 * modified too, to return correct values for groups.
+	 *
+	 * @return boolean true if group ACL is supported, false if not
+	 */
+	function supportsGroupAcl()
+	{
+		return false;
 	}
 
 	/**
