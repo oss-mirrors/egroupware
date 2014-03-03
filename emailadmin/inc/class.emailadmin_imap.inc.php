@@ -735,9 +735,9 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		$namespaces = $this->getNamespaces();
 		foreach ($namespaces as $nsp)
 		{
-			if ($nsp['type']==$type) $this->mailboxDelimiter = $nsp['delimiter'];
+			if ($nsp['type']==$type) return $nsp['delimiter'];
 		}
-		return $this->mailboxDelimiter;
+		return "/";
 	}
 
 	/**
