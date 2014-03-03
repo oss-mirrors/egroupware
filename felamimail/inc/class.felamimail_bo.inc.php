@@ -2766,7 +2766,6 @@ class felamimail_bo
 		if ($_useCache===false) unset($HierarchyDelimiter[$this->icServer->ImapServerId]);
 		if (isset($HierarchyDelimiter[$this->icServer->ImapServerId])&&!empty($HierarchyDelimiter[$this->icServer->ImapServerId]))
 		{
-			$this->icServer->mailboxDelimiter = $HierarchyDelimiter[$this->icServer->ImapServerId];
 			return $HierarchyDelimiter[$this->icServer->ImapServerId];
 		}
 		$HierarchyDelimiter[$this->icServer->ImapServerId] = '/';
@@ -2775,7 +2774,6 @@ class felamimail_bo
 			$HierarchyDelimiter[$this->icServer->ImapServerId] = $this->icServer->getHierarchyDelimiter();
 			if (PEAR::isError($HierarchyDelimiter[$this->icServer->ImapServerId])) $HierarchyDelimiter[$this->icServer->ImapServerId] = '/';
 		}
-		$this->icServer->mailboxDelimiter = $HierarchyDelimiter[$this->icServer->ImapServerId];
 		return $HierarchyDelimiter[$this->icServer->ImapServerId];
 	}
 
