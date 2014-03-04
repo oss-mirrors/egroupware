@@ -177,8 +177,13 @@ class emailadmin_imapbase
 	{
 		//$_restoreSession=false;
 		//error_log(__METHOD__.' ('.__LINE__.') '.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID.' called from:'.function_backtrace());
+		//error_log(__METHOD__.' ('.__LINE__.') '.array2string($_oldImapServerObject));
 		if ($_oldImapServerObject instanceof emailadmin_imap)
 		{
+			if (!is_object(self::$instances[$_profileID]))
+			{
+				self::$instances[$_profileID] = new emailadmin_imapbase('utf-8',false,$_profileID,false);
+			}
 			self::$instances[$_profileID]->icServer = $_oldImapServerObject;
 			self::$instances[$_profileID]->accountid= $_oldImapServerObject->ImapServerId;
 			self::$instances[$_profileID]->profileID= $_oldImapServerObject->ImapServerId;
@@ -314,12 +319,14 @@ class emailadmin_imapbase
 	 *
 	 * @param string $_displayCharset='utf-8'
 	 * @param boolean $_restoreSession=true
-	 * @param int $_profileID=0
+	 * @param int $_profileID=0 if not nummeric, we assume we only want an empty class object
 	 * @param boolean $_oldImapServerObject=false
 	 */
 	private function __construct($_displayCharset='utf-8',$_restoreSession=true, $_profileID=0, $_oldImapServerObject=false)
 	{
 		if (!empty($_displayCharset)) self::$displayCharset = $_displayCharset;
+		// not nummeric, we assume we only want an empty class object
+		if (!is_numeric($_profileID)) return true;
 		if ($_restoreSession)
 		{
 			//error_log(__METHOD__." Session restore ".function_backtrace());
