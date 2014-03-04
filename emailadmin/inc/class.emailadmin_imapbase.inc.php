@@ -4025,14 +4025,13 @@ class emailadmin_imapbase
 
 	/**
 	 * normalizeBodyParts - function to gather and normalize all body Information
+	 * as we may recieve a bodyParts structure from within getMessageBody nested deeper than expected
+	 * so this is used to normalize the output, so we are able to rely on our expectation
 	 * @param _bodyParts - Body Array
 	 * @return array - a normalized Bodyarray
 	 */
 	static function normalizeBodyParts($_bodyParts)
 	{
-		// RB: dont think this is still necessary
-		return $_bodyParts;
-
 		if (is_array($_bodyParts))
 		{
 			foreach($_bodyParts as $singleBodyPart)
