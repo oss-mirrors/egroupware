@@ -737,8 +737,8 @@ class uifelamimail
 				// this call loads js and css for the treeobject
 				html::tree(false,false,false,null,'foldertree','','',false,'/',null,false);
 				egw_framework::validate_file('jquery','jquery-ui');
-				egw_framework::validate_file('dhtmlxtree','dhtmlxTenu/sources/dhtmlxcommon');
-				egw_framework::validate_file('dhtmlxtree','dhtmlxTenu/sources/dhtmlxtree');
+				egw_framework::validate_file('dhtmlxtree','dhtmlxTree/sources/dhtmlxcommon');
+				egw_framework::validate_file('dhtmlxtree','dhtmlxTree/sources/dhtmlxtree');
 				egw_framework::validate_file('dhtmlxtree','dhtmlxMenu/sources/dhtmlxmenu');
 				egw_framework::validate_file('egw_action','egw_action');
 				egw_framework::validate_file('egw_action','egw_keymanager');
