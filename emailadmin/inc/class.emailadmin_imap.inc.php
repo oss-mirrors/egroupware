@@ -304,7 +304,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	function getMailbox($mailbox)
 	{
 		$mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_ALL);
-		if (empty($mailboxes)) $mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_UNSUBSCRIBED_EXISTS);
+		if (empty($mailboxes)) $mailboxes = $this->listMailboxes($mailbox,Horde_Imap_Client::MBOX_UNSUBSCRIBED);
 		//error_log(__METHOD__.__LINE__.'->'.$mailbox.'/'.array2string($mailboxes));
 		$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
 		//_debug_array($mboxes->count());
