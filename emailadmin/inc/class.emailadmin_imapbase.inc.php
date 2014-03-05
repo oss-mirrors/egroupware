@@ -5021,6 +5021,11 @@ class emailadmin_imapbase
 					else
 					{
 						$attachments[$num] = array_merge($attachments[$num],$mailClass->getAttachment($uid, $attachment['partID'],0,false,false));
+						if (empty($attachments[$num]['attachment'])&&$attachments[$num]['cid'])
+						{
+							$c = $mailClass->getAttachmentByCID($uid, $attachment['cid'], $attachment['partID'],true);
+							$attachments[$num]['attachment'] = $c->getContents();
+						}
 						if (isset($attachments[$num]['charset'])) {
 							if ($attachments[$num]['charset']===false) $attachments[$num]['charset'] = translation::detect_encoding($attachments[$num]['attachment']);
 							translation::convert($attachments[$num]['attachment'],$attachments[$num]['charset']);
