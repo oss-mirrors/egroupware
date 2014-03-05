@@ -1299,8 +1299,8 @@ class emailadmin_imapbase
 				$headerForPrio = $_headerObject->getHeaderText(0,Horde_Imap_Client_Data_Fetch::HEADER_PARSE)->toArray();
 				//error_log(__METHOD__.' ('.__LINE__.') '.array2string($headerForPrio));
 				$headerObject['DATE'] = $headerForPrio['Date'];// $_headerObject->getEnvelope()->date;
-				$headerObject['SUBJECT'] = $headerForPrio['Subject'];// $_headerObject->getEnvelope()->subject;
-				$headerObject['FROM'] = (array)$headerForPrio['From'];// $_headerObject->getEnvelope()->from->addresses;
+				$headerObject['SUBJECT'] = (is_array($headerForPrio['Subject'])?$headerForPrio['Subject'][0]:$headerForPrio['Subject']);// $_headerObject->getEnvelope()->subject;
+				$headerObject['FROM'] = (array)($headerForPrio['From']?$headerForPrio['From']:($headerForPrio['Reply-To']?$headerForPrio['Reply-To']:$headerForPrio['Return-Path']));// $_headerObject->getEnvelope()->from->addresses;
 				$headerObject['TO'] = (array)$headerForPrio['To'];// $_headerObject->getEnvelope()->to->addresses;
 				$headerObject['CC'] = (array)$headerForPrio['Cc'];// $_headerObject->getEnvelope()->cc->addresses;
 				$headerObject['PRIORITY'] = $headerForPrio['X-Priority'];
@@ -4684,7 +4684,7 @@ class emailadmin_imapbase
 				($fetchEmbeddedImages && ($partDisposition == 'inline' || empty($partDisposition)) && $partPrimaryType == 'image') ||
 				($fetchTextCalendar && $partPrimaryType == 'text' && $part->getSubType() == 'calendar'))
 			{
-				// if type is message/rfc822 and _partID is gien, and MimeID equals partID
+				// if type is message/rfc822 and _partID is given, and MimeID equals partID
 				// we attempt to fetch "ourselves"
 				if ($_partID==$part->getMimeId() && $part->getPrimaryType()=='message') continue;
 				$attachment = $part->getAllDispositionParameters();
@@ -4701,7 +4701,7 @@ class emailadmin_imapbase
 				}
 				$attachment['size'] = $part->getBytes();
 				if (($cid = $part->getContentId())) $attachment['cid'] = $cid;
-
+				if (empty($attachment['name'])) $attachment['name'] = (isset($attachment['cid'])&&!empty($attachment['cid'])?$attachment['cid']:lang("unknown").'_Uid'.$_uid.'_Part'.$mime_id).'.'.mime_magic::mime2ext($mime_type);
 				$attachments[] = $attachment;
 			}
 		}
@@ -4976,7 +4976,7 @@ class emailadmin_imapbase
 			elseif (isset($headers['FROM'])) $mailaddress = $headers['FROM'];
 			elseif (isset($headers['SENDER'])) $mailaddress = $headers['SENDER'];
 			if (isset($headers['CC'])) $mailaddress .= ','.$headers['CC'];
-			//_debug_array($headers);
+			//_debug_array(array($headers,$mailaddress));
 			$subject = $headers['SUBJECT'];
 
 			$message = self::getdisplayableBody($mailClass, $bodyParts, $preserveHTML);
