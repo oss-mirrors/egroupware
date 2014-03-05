@@ -2964,7 +2964,14 @@ class emailadmin_imapbase
 					if (self::$debug) error_log(__METHOD__.' ('.__LINE__.') '.implode(' : ', $_messageUID));
 					if (self::$debug) error_log(__METHOD__.' ('.__LINE__.') '."$trashFolder <= $_folder / ". $this->sessionData['mailbox']);
 					// copy messages
-					$retValue = $this->icServer->copy($_folder, $trashFolder, array('ids'=>$uidsToDelete,'move'=>true));
+					try
+					{
+						$retValue = $this->icServer->copy($_folder, $trashFolder, array('ids'=>$uidsToDelete,'move'=>true));
+					}
+					catch (Exception $e)
+					{
+						throw new egw_exception("Failed to move Messages (".array2string($uidsToDelete).") from Folder $_folder to $trashFolder Error:".$e->getMessage());
+					}
 				}
 				break;
 
