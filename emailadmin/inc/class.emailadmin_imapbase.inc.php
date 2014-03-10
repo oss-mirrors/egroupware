@@ -3245,6 +3245,7 @@ class emailadmin_imapbase
 			$target = emailadmin_account::read($_targetProfileID)->imapServer();
 			$foldername = $target->getMailbox($_foldername);
 			//error_log(__METHOD__.' ('.__LINE__.') '.' Sourceserver:'.$this->icServer->ImapServerId.' TargetServer:'.$_targetProfileID.' TargetFolderObject:'.array2string($foldername));
+			$this->icServer->openMailbox($sourceFolder);
 			$uidsToFetch = new Horde_Imap_Client_Ids();
 			$uidsToFetch->add($_messageUID);
 
@@ -3257,6 +3258,8 @@ class emailadmin_imapbase
 			if (is_object($headersNew)) {
 				$c=0;
 				$retUid = new Horde_Imap_Client_Ids();
+				// make sure the target folder is open and ready
+				$target->openMailbox($foldername);
 				// we copy chunks of 5 to avoid too much memory and/or server stress
 				foreach($headersNew as $id=>$_headerObject) {
 					$c++;
@@ -3279,6 +3282,8 @@ class emailadmin_imapbase
 					$retUid->add($ret);
 					unset($dataNflags);
 				}
+				// make sure we are back to source
+				$this->icServer->openMailbox($sourceFolder);
 				if ($deleteAfterMove)
 				{
 					$this->deleteMessages($_messageUID, $sourceFolder, $_forceDeleteMethod='remove_immediately');
