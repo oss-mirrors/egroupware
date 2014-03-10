@@ -193,6 +193,10 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				{
 					return $this->params[$name];
 				}
+				if ($this->getParam($name))
+				{
+					return $this->getParam($name);
+				}
 				throw new egw_exception_wrong_parameter("Tried to access unknown attribute '$name'!");
 		}
 	}
