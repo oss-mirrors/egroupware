@@ -1336,12 +1336,16 @@ class emailadmin_imapbase
 					$partdisposition = $part->getDisposition();
 					$partPrimaryType = $part->getPrimaryType();
 					$cid = $part->getContentId();
+					if (empty($partdisposition) && $partPrimaryType != 'multipart' && $partPrimaryType != 'text')
+					{
+						$partdisposition=($partPrimaryType == 'image'&&!empty($cid)?'inline':'attachment');
+					}
 					if ($mime_type=='message/rfc822')
 					{
 						//error_log(__METHOD__.' ('.__LINE__.') '.' Uid:'.$uid.'->'.$mime_id.':'.array2string($part->contentTypeMap()));
 						foreach($part->contentTypeMap() as $sub_id => $sub_type) if ($sub_id != $mime_id) $skipParts[$sub_id] = $sub_type;
 					}
-					//error_log(__METHOD__.' ('.__LINE__.') '.' Uid:'.$uid.'->'.$mime_id.':'.array2string($skipParts));
+					//error_log(__METHOD__.' ('.__LINE__.') '.' Uid:'.$uid.'->'.$mime_id.' Disp:'.$partdisposition.' Type:'.$partPrimaryType.' Skip:'.array2string($skipParts));
 					if (array_key_exists($mime_id,$skipParts)) continue;
 					if ($partdisposition=='attachment' ||
 						($partdisposition=='inline'&&$partPrimaryType == 'image'&&empty($cid)) ||
@@ -4696,7 +4700,7 @@ class emailadmin_imapbase
 				$attachment['mimeType'] = $mime_type;
 				$attachment['uid'] = $_uid;
 				$attachment['partID'] = $mime_id;
-				if (!isset($attachment['name'])) $attachment['name'] = $part->getName();
+				if (!isset($attachment['name'])||empty($attachment['name'])) $attachment['name'] = $part->getName();
 				if ($fetchTextCalendar)
 				{
 					//error_log(__METHOD__.' ('.__LINE__.') '.array2string($part->getAllContentTypeParameters()));
@@ -4746,7 +4750,11 @@ class emailadmin_imapbase
 					$mailStructureObject = $_headerObject->getStructure();
 					$mailStructureObject->contentTypeMap();
 					$part = $mailStructureObject->getPart($_partID);
-					if ($part->getDisposition()=='attachment' || $part->getDisposition()=='inline' || $part->getPrimaryType() == 'text' && $part->getSubType() == 'calendar')
+					$partDisposition = $part->getDisposition();
+					// if $partDisposition is empty, we assume attachment, and hope that the function
+					// itself is only triggered to fetch attachments
+					if (empty($partDisposition)) $partDisposition='attachment';
+					if ($partDisposition=='attachment' || $partDisposition=='inline' || $part->getPrimaryType() == 'text' && $part->getSubType() == 'calendar')
 					{
 						$headerObject['ATTACHMENTS'][$mime_id]=$part->getAllDispositionParameters();
 
