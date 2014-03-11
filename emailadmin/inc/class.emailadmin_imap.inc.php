@@ -690,7 +690,15 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			//error_log(__METHOD__.__LINE__.' '.$capability.'->'.array2string(self::$supports_keywords));
 			return self::$supports_keywords[$this->ImapServerId];
 		}
-		$cap = $this->capability();
+		try
+		{
+			$cap = $this->capability();
+		}
+		catch (Exception $e)
+		{
+			if ($this->debug) error_log(__METHOD__.__LINE__.' error querying for capability:'.$capability.' ->'.$e->getMessage());
+			return false;
+		}
 		foreach ($cap as $c => $v)
 		{
 			if (is_array($v))
