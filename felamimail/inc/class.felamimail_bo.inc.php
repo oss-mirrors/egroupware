@@ -191,16 +191,18 @@ class felamimail_bo
 	 * @param boolean $_validate=true - flag wether the profileid should be validated or not, if validation is true, you may receive a profile
 	 *                                  not matching the input profileID, if we can not find a profile matching the given ID
 	 * @param object $_icServerObject=null
+	 * @param boolean $_reuseCache=null if null it is set to the value of $_restoreSession
 	 * @return object instance of felamimail_bo
 	 */
-	public static function getInstance($_restoreSession=true, $_profileID=0, $_validate=true, $_icServerObject=null)
+	public static function getInstance($_restoreSession=true, $_profileID=0, $_validate=true, $_icServerObject=null, $_reuseCache=null)
 	{
+		if (is_null($_reuseCache)) $_reuseCache = $_restoreSession;
 		//special case; we get the desired object passed as we need it for the occasion.
 		if (!is_null($_icServerObject)&&(!isset(self::$instances[$_profileID]) || $_restoreSession===false))
 		{
 			self::unsetInstance($_profileID); //make sure we reconstruct it
 			emailadmin_bo::unsetCachedObjects($_profileID);
-			self::$instances[$_profileID] = new felamimail_bo('utf-8',$_restoreSession,$_profileID,$_icServerObject);
+			self::$instances[$_profileID] = new felamimail_bo('utf-8',$_restoreSession,$_profileID,$_icServerObject,$_reuseCache);
 //error_log(__METHOD__.__LINE__.array2string(self::$instances[$_profileID]->mailPreferences->getIncomingServer($_profileID)));
 			return self::$instances[$_profileID];
 		}
@@ -238,7 +240,7 @@ class felamimail_bo
 		//error_log(__METHOD__.__LINE__.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID.' called from:'.function_backtrace());
 		if (!isset(self::$instances[$_profileID]) || $_restoreSession===false)
 		{
-			self::$instances[$_profileID] = new felamimail_bo('utf-8',$_restoreSession,$_profileID);
+			self::$instances[$_profileID] = new felamimail_bo('utf-8',$_restoreSession,$_profileID,null,$_reuseCache);
 		}
 		else
 		{
@@ -259,7 +261,7 @@ class felamimail_bo
 			else
 			{
 				// first try reloading without restore
-				if ($_restoreSession==true) self::$instances[$_profileID] = new felamimail_bo('utf-8',false,$_profileID);
+				if ($_restoreSession==true) self::$instances[$_profileID] = new felamimail_bo('utf-8',false,$_profileID,null,$_reuseCache);
 				if (!self::$instances[$_profileID]->mailPreferences) {
 					if (self::$debug) error_log(__METHOD__.__LINE__.' something wrong:'.array2string($_restoreSession).' mailPreferences could not be loaded!');
 					$loadfailed=$alreadytriedreloading=true;
@@ -267,7 +269,7 @@ class felamimail_bo
 			}
 			if ($_profileID>0 && empty(self::$instances[$_profileID]->icServer->host)&&$alreadytriedreloading==false)
 			{
-				if ($_restoreSession==true) self::$instances[$_profileID] = new felamimail_bo('utf-8',false,$_profileID);
+				if ($_restoreSession==true) self::$instances[$_profileID] = new felamimail_bo('utf-8',false,$_profileID,null,$_reuseCache);
 				if (empty(self::$instances[$_profileID]->icServer->host))
 				{
 					if (self::$debug) error_log(__METHOD__.__LINE__.' something critically wrong for '.$_profileID.' RestoreSession:'.array2string($_restoreSession).'->'.array2string(self::$instances[$_profileID]->icServer).' No Server host set!');
@@ -279,7 +281,7 @@ class felamimail_bo
 				$newprofileID = ($alreadytriedreloading ? emailadmin_bo::getUserDefaultProfileID():$_profileID);
 				if ($alreadytriedreloading) error_log(__METHOD__.__LINE__." Loading the Profile for ProfileID ".$_profileID.' failed for icServer; trigger new instance for Default-Profile '.$newprofileID.'. called from:'.function_backtrace());
 				// try loading the default profile for the user
-				self::$instances[$newprofileID] = new felamimail_bo('utf-8',false,$newprofileID);
+				self::$instances[$newprofileID] = new felamimail_bo('utf-8',false,$newprofileID,null,$_reuseCache);
 				$_profileID = $newprofileID;
 			}
 		}
@@ -311,7 +313,7 @@ class felamimail_bo
 	public static function validateProfileID($_restoreSession=true, $_profileID=0)
 	{
 		$identities = array();
-		$mail = felamimail_bo::getInstance($_restoreSession, $_profileID, $validate=false); // we need an instance of felamimail_bo
+		$mail = felamimail_bo::getInstance($_restoreSession, $_profileID, $validate=false,null,true); // we need an instance of felamimail_bo
 		$selectedID = $mail->getIdentitiesWithAccounts($identities);
 		if (is_object($mail->mailPreferences)) $activeIdentity =& $mail->mailPreferences->getIdentity($_profileID, true);
 		// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
@@ -366,9 +368,11 @@ class felamimail_bo
 	 * @param boolean $_restoreSession=true
 	 * @param int $_profileID=0
 	 * @param object $_icServerObject=null
+	 * @param boolean $_reuseCache=null if null it is set to the value of $_restoreSession
 	 */
-	private function __construct($_displayCharset='utf-8',$_restoreSession=true, $_profileID=0, $_icServerObject=null)
+	private function __construct($_displayCharset='utf-8',$_restoreSession=true, $_profileID=0, $_icServerObject=null, $_reuseCache=null)
 	{
+		if (is_null($_reuseCache)) $_reuseCache = $_restoreSession;
 		$this->profileID = $_profileID;
 		if (!is_null($_icServerObject))
 		{
@@ -392,8 +396,8 @@ class felamimail_bo
 			$lv_mailbox = $this->sessionData['mailbox'];
 			$firstMessage = $this->sessionData['previewMessage'];
 			$this->sessionData = array();
-			$this->forcePrefReload();
 		}
+		if (!$_reuseCache) $this->forcePrefReload();
 		//error_log(array2string(array($firstMessage,$lv_mailbox)));
 		// FIXME: this->foldername seems to be unused
 		//$this->foldername	= $this->sessionData['mailbox'];

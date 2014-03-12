@@ -158,7 +158,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		$identities = array();
 		if (!isset($params['setup']))
 		{
-			if (!$this->mail) $this->mail = felamimail_bo::getInstance(true,(self::$profileID=='G'?emailadmin_bo::getUserDefaultProfileID():self::$profileID));
+			if (!$this->mail) $this->mail = felamimail_bo::getInstance(true,(self::$profileID=='G'?emailadmin_bo::getUserDefaultProfileID():self::$profileID),true,null,true);
 			$selectedID = $this->mail->getIdentitiesWithAccounts($identities);
 			if (self::$profileID=='G')
 			{
@@ -305,7 +305,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		{
 			$this->account = $account;
 			// todo: tell fmail which account to use
-			$this->mail = felamimail_bo::getInstance(false,self::$profileID);
+			$this->mail = felamimail_bo::getInstance(false,self::$profileID,true,null,true);
 			if (self::$profileID == 0 && isset($this->mail->icServer->ImapServerId) && !empty($this->mail->icServer->ImapServerId)) self::$profileID = $this->mail->icServer->ImapServerId;
 			//error_log(__METHOD__.__LINE__.' create object with ProfileID:'.array2string(self::$profileID));
 			if (!$this->mail->openConnection(self::$profileID,false))
@@ -463,7 +463,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 			return false;
 		}
 		// initialize our felamimail_bo
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID,true,null,true);
 		$activeMailProfile = $this->mail->mailPreferences->getIdentity(self::$profileID, true);
 		if ($this->debugLevel>2) debugLog(__METHOD__.__LINE__.' ProfileID:'.self::$profileID.' ActiveMailProfile:'.array2string($activeMailProfile));
 
@@ -1452,7 +1452,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 
 		$this->splitID($folderid, $account, $folder);
 
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID,true,null,true);
 
 		$this->mail->reopen($folder);
 		$attachment = $this->mail->getAttachment($id,$part);
@@ -1478,7 +1478,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 
 		$this->splitID($folderid, $account, $folder);
 
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false, self::$profileID);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false, self::$profileID,true,null,true);
 
 		$this->mail->reopen($folder);
 		$att = $this->mail->getAttachment($id,$part);
@@ -1543,7 +1543,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		$this->splitID($folderid, $account, $srcFolder);
 		$this->splitID($newfolderid, $account, $destFolder);
 		debugLog("IMAP-MoveMessage: (SourceFolder: '$srcFolder'  id: '$id'  DestFolder: '$destFolder' )");
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID,true,null,true);
 		$this->mail->reopen($destFolder);
 		$status = $this->mail->getFolderStatus($destFolder);
 		$uidNext = $status['uidnext'];
@@ -1878,7 +1878,7 @@ class felamimail_activesync implements activesync_plugin_write, activesync_plugi
 		if (is_numeric($account)) $type = 'felamimail';
 		if ($type != 'felamimail') return false;
 
-		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID);
+		if (!isset($this->mail)) $this->mail = felamimail_bo::getInstance(false,self::$profileID,true,null,true);
 
 		$changes = array();
         debugLog("AlterPingChanges on $folderid ($folder) stat: ". $syncstate);
