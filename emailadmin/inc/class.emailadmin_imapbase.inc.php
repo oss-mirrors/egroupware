@@ -171,18 +171,20 @@ class emailadmin_imapbase
 	 *                                  not matching the input profileID, if we can not find a profile matching the given ID
 	 * @param mixed boolean/object $_icServerObject - if object, return instance with object set as icServer
 	 *												  immediately, if boolean === true use oldImapServer in constructor
+	 * @param boolean $_reuseCache=null if null it is set to the value of $_restoreSession
 	 * @return emailadmin_imapbase
 	 */
-	public static function getInstance($_restoreSession=true, &$_profileID=0, $_validate=true, $_oldImapServerObject=false)
+	public static function getInstance($_restoreSession=true, &$_profileID=0, $_validate=true, $_oldImapServerObject=false, $_reuseCache=null)
 	{
 		//$_restoreSession=false;
+		if (is_null($_reuseCache)) $_reuseCache = $_restoreSession;
 		//error_log(__METHOD__.' ('.__LINE__.') '.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID.' called from:'.function_backtrace());
 		//error_log(__METHOD__.' ('.__LINE__.') '.array2string($_oldImapServerObject));
 		if ($_oldImapServerObject instanceof emailadmin_imap)
 		{
 			if (!is_object(self::$instances[$_profileID]))
 			{
-				self::$instances[$_profileID] = new emailadmin_imapbase('utf-8',false,$_profileID,false);
+				self::$instances[$_profileID] = new emailadmin_imapbase('utf-8',false,$_profileID,false,$_reuseCache);
 			}
 			self::$instances[$_profileID]->icServer = $_oldImapServerObject;
 			self::$instances[$_profileID]->accountid= $_oldImapServerObject->ImapServerId;
@@ -208,7 +210,7 @@ class emailadmin_imapbase
 		// no validation or restoreSession for old ImapServer Object, just fetch it and return it
 		if ($_oldImapServerObject===true)
 		{
-			return new emailadmin_imapbase('utf-8',false,$_profileID,true);
+			return new emailadmin_imapbase('utf-8',false,$_profileID,true,$_reuseCache);
 		}
 		if ($_profileID != 0 && $_validate)
 		{
@@ -230,7 +232,7 @@ class emailadmin_imapbase
 		//error_log(__METHOD__.' ('.__LINE__.') '.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID.' called from:'.function_backtrace());
 		if ($_profileID && (!isset(self::$instances[$_profileID]) || $_restoreSession===false))
 		{
-			self::$instances[$_profileID] = new emailadmin_imapbase('utf-8',$_restoreSession,$_profileID);
+			self::$instances[$_profileID] = new emailadmin_imapbase('utf-8',$_restoreSession,$_profileID,false,$_reuseCache);
 		}
 		else
 		{
@@ -251,7 +253,7 @@ class emailadmin_imapbase
 				{
 					try
 					{
-						self::$instances[$newprofileID] = new emailadmin_imapbase('utf-8',false,$newprofileID);
+						self::$instances[$newprofileID] = new emailadmin_imapbase('utf-8',false,$newprofileID,false,$_reuseCache);
 					}
 					catch (Exception $e)
 					{
@@ -321,9 +323,11 @@ class emailadmin_imapbase
 	 * @param boolean $_restoreSession=true
 	 * @param int $_profileID=0 if not nummeric, we assume we only want an empty class object
 	 * @param boolean $_oldImapServerObject=false
+	 * @param boolean $_reuseCache=null if null it is set to the value of $_restoreSession
 	 */
-	private function __construct($_displayCharset='utf-8',$_restoreSession=true, $_profileID=0, $_oldImapServerObject=false)
+	private function __construct($_displayCharset='utf-8',$_restoreSession=true, $_profileID=0, $_oldImapServerObject=false, $_reuseCache=null)
 	{
+		if (is_null($_reuseCache)) $_reuseCache = $_restoreSession;
 		if (!empty($_displayCharset)) self::$displayCharset = $_displayCharset;
 		// not nummeric, we assume we only want an empty class object
 		if (!is_numeric($_profileID)) return true;
@@ -340,8 +344,8 @@ class emailadmin_imapbase
 			$lv_mailbox = $this->sessionData['mailbox'];
 			$firstMessage = $this->sessionData['previewMessage'];
 			$this->sessionData = array();
-			$this->forcePrefReload();
 		}
+		if (!$_reuseCache) $this->forcePrefReload();
 		try
 		{
 			$this->profileID = self::validateProfileID($_profileID);
