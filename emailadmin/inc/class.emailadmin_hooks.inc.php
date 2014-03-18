@@ -96,6 +96,34 @@ class emailadmin_hooks
 			}
 		}
 
+		self::accountHooks($data);
+	}
+
+	/**
+	 * Several hooks calling an instanciated emailadmin_imapbase
+	 *
+	 * @param string|array $hookData
+	 */
+	static public function accountHooks($hookData)
+	{
+		if (($default_profile_id = emailadmin_bo::getDefaultAccID()))
+		{
+			$imapbase = emailadmin_imapbase::forceEAProfileLoad($default_profile_id);
+
+			switch(is_array($hookData) ? $hookData['location'] : $hookData)
+			{
+				case 'addaccount':
+					$imapbase->addAccount($hookData);
+					break;
+				case 'deleteaccount':
+					$imapbase->deleteAccount($hookData);
+					break;
+				case 'editaccount':
+					$imapbase->updateAccount($hookData);
+					break;
+			}
+			emailadmin_bo::unsetCachedObjects($default_profile_id);
+		}
 	}
 
     /**

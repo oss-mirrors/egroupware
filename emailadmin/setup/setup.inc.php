@@ -45,6 +45,8 @@ $setup_info['emailadmin']['hooks']['group_manager'] = 'emailadmin_hooks::edit_gr
 $setup_info['emailadmin']['hooks']['deleteaccount'] = 'emailadmin_hooks::deleteaccount';
 $setup_info['emailadmin']['hooks']['deletegroup'] = 'emailadmin_hooks::deletegroup';
 $setup_info['emailadmin']['hooks']['changepassword'] = 'emailadmin_bo::changepassword';
+$setup_info['emailadmin']['hooks']['addaccount']	= 'emailadmin_hooks::accountHooks';
+$setup_info['emailadmin']['hooks']['editaccount']	= 'emailadmin_hooks::accountHooks';
 
 // SMTP and IMAP support
 $setup_info['emailadmin']['hooks']['smtp_server_types'] = 'emailadmin_hooks::server_types';
