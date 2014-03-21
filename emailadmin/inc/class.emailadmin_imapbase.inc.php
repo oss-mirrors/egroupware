@@ -446,11 +446,6 @@ class emailadmin_imapbase
 		}
 		else
 		{
-			$buff = egw_cache::getCache(egw_cache::INSTANCE,'email','icServerIMAP_connectionError'.trim($account_id));
-			if (isset($buff[$_ImapServerId]))
-			{
-				unset($buff[$_ImapServerId]);
-			}
 			$isConError = egw_cache::getCache(egw_cache::INSTANCE,'email','icServerSIEVE_connectionError'.trim($account_id));
 			if (isset($isConError[$_ImapServerId]))
 			{
@@ -462,7 +457,6 @@ class emailadmin_imapbase
 				unset($waitOnFailure[$_ImapServerId]);
 			}
 		}
-		egw_cache::setCache(egw_cache::INSTANCE,'email','icServerIMAP_connectionError'.trim($account_id),$buff,$expiration=60*15);
 		egw_cache::setCache(egw_cache::INSTANCE,'email','icServerSIEVE_connectionError'.trim($account_id),$isConError,$expiration=60*15);
 		egw_cache::setCache(egw_cache::INSTANCE,'email','ActiveSyncWaitOnFailure'.trim($GLOBALS['egw_info']['user']['account_id']),$waitOnFailure,$expiration=60*60*2);
 	}
