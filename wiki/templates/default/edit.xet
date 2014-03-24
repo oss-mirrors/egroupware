@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <overlay>
-	<template id="wiki.edit" template="" lang="" group="0" version="1.2">
+	<template id="wiki.edit" template="" lang="" group="0" version="1.9.001">
 		<grid width="100%">
 			<columns>
 				<column/>
@@ -10,55 +10,51 @@
 			<rows>
 				<row class="th">
 					<description value="Name"/>
-					<hbox options="0" orient="0">
-						<textbox size="60" id="name"/>
-						<menulist class="leftpadding5">
-							<menupopup label="Lang" no_lang="1" id="lang"/>
+					<hbox options="0">
+						<textbox id="name" size="60"/>
+						<menulist>
+							<menupopup label="Lang" id="lang" no_lang="1" class="leftpadding5"/>
 						</menulist>
-						<button class="leftpadding5" label="Load" id="action[load]" statustext="Loads the named page in the given language, all change so far get lost !!!"/>
-						<button class="leftpadding5" label="Rename" id="action[rename]" statustext="Renames page to the given name and language"/>
+						<button statustext="Loads the named page in the given language, all change so far get lost !!!" label="Load" id="action[load]" class="leftpadding5"/>
+						<button statustext="Renames page to the given name and language" label="Rename" id="action[rename]" class="leftpadding5"/>
 					</hbox>
 				</row>
-				<row class="row">
+				<row class="row" valign="top">
 					<description value="Title"/>
-					<hbox options="0" orient="0">
-						<textbox size="60" id="title" statustext="different languages can have different titles"/>
-						<description class="leftpadding5" value="Writable by"/>
-						<menulist class="leftpadding5">
-							<menupopup type="select-account" options=",groups" no_lang="1" id="writable" statustext="who should be able to edit this page"/>
-						</menulist>
-						<description class="leftpadding5" value="Readable by"/>
-						<menulist class="leftpadding5">
-							<menupopup type="select-account" options=",groups" no_lang="1" id="readable" statustext="who should be able to read this page"/>
-						</menulist>
+					<hbox options="0">
+						<textbox statustext="different languages can have different titles" id="title" size="60"/>
+						<description value="Writable by" class="leftpadding5"/>
+						<listbox type="select-account" statustext="who should be able to edit this page" id="writable" no_lang="1" rows="4" options="groups" class="leftpadding5"/>
+						<description value="Readable by" class="leftpadding5"/>
+						<listbox type="select-account" statustext="who should be able to read this page" id="readable" no_lang="1" rows="4" options="groups" class="leftpadding5"/>
 					</hbox>
 				</row>
 				<row class="row" disabled="!@is_html">
-					<htmlarea span="all" id="text" height="320px" width="100%" toolbar="true" base_href="$cont[upload_dir]"/>
+					<htmlarea id="text" mode="$cont[rtfEditorFeatures]" height="320px" width="100%" expand_toolbar="true" base_href="$cont[upload_dir]" span="all"/>
 				</row>
 				<row disabled="@is_html">
-					<textbox multiline="true" rows="15" cols="120" span="all" id="text"/>
+					<textbox multiline="true" id="text" rows="15" cols="120" span="all"/>
 				</row>
 				<row class="row">
 					<description value="Summary"/>
-					<textbox size="80" id="summary" statustext="Summary of change"/>
+					<textbox statustext="Summary of change" id="summary" size="80"/>
 				</row>
 				<row class="row">
 					<description value="Category"/>
-					<textbox size="80" id="category" statustext="Add document to category"/>
+					<textbox statustext="Add document to category" id="category" size="80"/>
 				</row>
 				<row>
 					<hbox span="2">
-						<button label="Save" id="action[save]" statustext="Save the changes and exit"/>
-						<button label="Apply" id="action[apply]" statustext="Saves and continues editing"/>
-						<button label="Preview" id="action[preview]" statustext="Updates the preview"/>
-						<button label="Delete" id="action[delete]" statustext="Deletes this page"/>
-						<button label="Richtext" id="action[convert]" statustext="Converts the page to richtext"/>
-						<button label="Cancel" id="action[cancel]" statustext="Cancel without saving"/>
+						<button statustext="Save the changes and exit" label="Save" id="action[save]"/>
+						<button statustext="Saves and continues editing" label="Apply" id="action[apply]"/>
+						<button statustext="Updates the preview" label="Preview" id="action[preview]"/>
+						<button statustext="Deletes this page" label="Delete" id="action[delete]"/>
+						<button statustext="Converts the page to richtext" label="Richtext" id="action[convert]"/>
+						<button statustext="Cancel without saving" label="Cancel" id="action[cancel]"/>
 					</hbox>
 				</row>
 				<row>
-					<htmlarea span="2" id="preview" readonly="true"/>
+					<htmlarea id="preview" readonly="true" span="2" class="wikipage"/>
 				</row>
 			</rows>
 		</grid>
