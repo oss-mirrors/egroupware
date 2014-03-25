@@ -1296,6 +1296,14 @@ class emailadmin_imapbase
 				// fetching both headers and envelope takes too much time
 				$headerForPrio = $_headerObject->getHeaderText(0,Horde_Imap_Client_Data_Fetch::HEADER_PARSE)->toArray();
 				//error_log(__METHOD__.' ('.__LINE__.') '.array2string($headerForPrio));
+				if ( isset($headerForPrio['Disposition-Notification-To']) ) {
+					$headerObject['DISPOSITION-NOTIFICATION-TO'] = self::decode_header(trim($headerForPrio['Disposition-Notification-To']));
+				} else if ( isset($headerForPrio['Return-Receipt-To']) ) {
+					$headerObject['DISPOSITION-NOTIFICATION-TO'] = self::decode_header(trim($headerForPrio['Return-Receipt-To']));
+				} else if ( isset($headerForPrio['X-Confirm-Reading-To']) ) {
+					$headerObject['DISPOSITION-NOTIFICATION-TO'] = self::decode_header(trim($headerForPrio['X-Confirm-Reading-To']));
+				} /*else $sent_not = "";*/
+
 				$headerObject['DATE'] = $headerForPrio['Date'];// $_headerObject->getEnvelope()->date;
 				$headerObject['SUBJECT'] = (is_array($headerForPrio['Subject'])?$headerForPrio['Subject'][0]:$headerForPrio['Subject']);// $_headerObject->getEnvelope()->subject;
 				$headerObject['FROM'] = (array)($headerForPrio['From']?$headerForPrio['From']:($headerForPrio['Reply-To']?$headerForPrio['Reply-To']:$headerForPrio['Return-Path']));// $_headerObject->getEnvelope()->from->addresses;
@@ -1466,14 +1474,14 @@ class emailadmin_imapbase
 		$retValue['deleted']	= in_array('\\deleted', $headerFlags);
 		$retValue['seen']		= in_array('\\seen', $headerFlags);
 		$retValue['draft']		= in_array('\\draft', $headerFlags);
-		$retValue['mdnsent']	= in_array('mdnsent', $headerFlags);
-		$retValue['mdnnotsent']	= in_array('mdnnotsent', $headerFlags);
+		$retValue['mdnsent']	= in_array('$mdnsent', $headerFlags)||in_array('mdnsent', $headerFlags);
+		$retValue['mdnnotsent']	= in_array('$mdnnotsent', $headerFlags)||in_array('mdnnotsent', $headerFlags);
 		$retValue['label1']   = in_array('$label1', $headerFlags);
 		$retValue['label2']   = in_array('$label2', $headerFlags);
 		$retValue['label3']   = in_array('$label3', $headerFlags);
 		$retValue['label4']   = in_array('$label4', $headerFlags);
 		$retValue['label5']   = in_array('$label5', $headerFlags);
-		//error_log(__METHOD__.' ('.__LINE__.') '.array2string($retValue));
+		//error_log(__METHOD__.' ('.__LINE__.') '.$headerObject['SUBJECT'].':'.array2string($retValue));
 		return $retValue;
 	}
 
@@ -6093,6 +6101,77 @@ class emailadmin_imapbase
 			}
 			if ($alternatebodyneeded == false) $mailObject->AltBody = '';
 		}
+	}
+
+	function sendMDN($uid,$_folder)
+	{
+		try
+		{
+			$acc = emailadmin_account::read($this->profileID);
+			//error_log(__METHOD__.__LINE__.array2string($acc));
+			$identity = emailadmin_account::read_identity($acc['ident_id'],true);
+
+			//$identity = emailadmin_account::read_identity($this->sessionData['mailaccount'],true);
+		}
+		catch (Exception $e)
+		{
+			$identity=array();
+		}
+		$headers = $this->getMessageHeader($uid,'',true,true,$_folder);
+		$send = CreateObject('phpgwapi.send');
+		$send->ClearAddresses();
+		$send->ClearAttachments();
+		$send->IsHTML(False);
+		$send->IsSMTP();
+
+		$array_to = explode(",",$headers['TO']);
+		$send->From = $identity['ident_email'];
+		$send->FromName = self::generateIdentityString($identity,false);
+
+		if (isset($headers['DISPOSITION-NOTIFICATION-TO'])) {
+			$toAddr = $headers['DISPOSITION-NOTIFICATION-TO'];
+		} else if ( isset($headers['RETURN-RECEIPT-TO']) ) {
+			$toAddr = $headers['RETURN-RECEIPT-TO'];
+		} else if ( isset($headers['X-CONFIRM-READING-TO']) ) {
+			$toAddr = $headers['X-CONFIRM-READING-TO'];
+		} else return false;
+		$singleAddress = imap_rfc822_parse_adrlist($toAddr,'');
+		if (self::$debug) error_log(__METHOD__.__LINE__.' To Address:'.$singleAddress[0]->mailbox."@".$singleAddress[0]->host.", ".$singleAddress[0]->personal);
+		$send->AddAddress($singleAddress[0]->mailbox."@".$singleAddress[0]->host, $singleAddress[0]->personal);
+		$send->AddCustomHeader('References: '.$headers['MESSAGE-ID']);
+		$send->Subject = $send->encode_subject( lang('Read')." : ".$headers['SUBJECT'] );
+
+		$sep = "-----------mdn".$uniq_id = md5(uniqid(time()));
+
+		$body = "--".$sep."\r\n".
+			"Content-Type: text/plain; charset=ISO-8859-1\r\n".
+			"Content-Transfer-Encoding: 7bit\r\n\r\n".
+			$send->EncodeString(lang("Your message to  %1 was displayed." ,$send->From),"7bit").
+			"\r\n";
+
+		$body .= "--".$sep."\r\n".
+			"Content-Type: message/disposition-notification; name=\"MDNPart2.txt\"\r\n" .
+			"Content-Disposition: inline\r\n".
+			"Content-Transfer-Encoding: 7bit\r\n\r\n";
+		$body.= $send->EncodeString("Reporting-UA: eGroupWare\r\n" .
+					   "Final-Recipient: rfc822;".$send->From."\r\n" .
+					   "Original-Message-ID: ".$headers['MESSAGE-ID']."\r\n".
+					   "Disposition: manual-action/MDN-sent-manually; displayed",'7bit')."\r\n";
+
+		$body .= "--".$sep."\r\n".
+			"Content-Type: text/rfc822-headers; name=\"MDNPart3.txt\"\r\n" .
+			"Content-Transfer-Encoding: 7bit\r\n" .
+			"Content-Disposition: inline\r\n\r\n";
+		$body .= $send->EncodeString($this->getMessageRawHeader($uid,'',$_folder),'7bit')."\r\n";
+		$body .= "--".$sep."--";
+
+
+		$header = rtrim($send->CreateHeader())."\r\n"."Content-Type: multipart/report; report-type=disposition-notification;\r\n".
+			"\tboundary=\"".$sep."\"\r\n\r\n";
+		//error_log(__METHOD__.array2string($send));
+		$rv = $send->SmtpSend($header,$body);
+		//error_log(__METHOD__.'#'.array2string($rv).'#');
+		return $rv;
 	}
 
 	/**
