@@ -1288,6 +1288,7 @@ class emailadmin_imapbase
 			foreach($headersNew->ids() as $id) {
 				$_headerObject = $headersNew->get($id);
 				//error_log(__METHOD__.' ('.__LINE__.') '.array2string($_headerObject));
+				$headerObject = array();
 				$uid = $headerObject['UID']= ($_headerObject->getUid()?$_headerObject->getUid():$id);
 				$headerObject['MSG_NUM'] = $_headerObject->getSeq();
 				$headerObject['SIZE'] = $_headerObject->getSize();
@@ -1303,7 +1304,7 @@ class emailadmin_imapbase
 				} else if ( isset($headerForPrio['X-Confirm-Reading-To']) ) {
 					$headerObject['DISPOSITION-NOTIFICATION-TO'] = self::decode_header(trim($headerForPrio['X-Confirm-Reading-To']));
 				} /*else $sent_not = "";*/
-
+				//error_log(__METHOD__.' ('.__LINE__.') '.array2string($headerObject));
 				$headerObject['DATE'] = $headerForPrio['Date'];// $_headerObject->getEnvelope()->date;
 				$headerObject['SUBJECT'] = (is_array($headerForPrio['Subject'])?$headerForPrio['Subject'][0]:$headerForPrio['Subject']);// $_headerObject->getEnvelope()->subject;
 				$headerObject['FROM'] = (array)($headerForPrio['From']?$headerForPrio['From']:($headerForPrio['Reply-To']?$headerForPrio['Reply-To']:$headerForPrio['Return-Path']));// $_headerObject->getEnvelope()->from->addresses;
@@ -1391,6 +1392,7 @@ class emailadmin_imapbase
 				$retValue['header'][$sortOrder[$uid]]['id']		= $headerObject['MSG_NUM'];
 				$retValue['header'][$sortOrder[$uid]]['uid']		= $headerObject['UID'];
 				$retValue['header'][$sortOrder[$uid]]['priority']		= ($headerObject['PRIORITY']?$headerObject['PRIORITY']:3);
+				if (isset($headerObject['DISPOSITION-NOTIFICATION-TO'])) $retValue['header'][$sortOrder[$uid]]['disposition-notification-to'] = $headerObject['DISPOSITION-NOTIFICATION-TO'];
 				if (is_array($headerObject['FLAGS'])) {
 					$retValue['header'][$sortOrder[$uid]] = array_merge($retValue['header'][$sortOrder[$uid]],self::prepareFlagsArray($headerObject));
 				}
@@ -5864,7 +5866,7 @@ class emailadmin_imapbase
 					//case 'priority': // priority is a cusom header field
 					//	$mailObject->Priority = $val;
 					//	break;
-					case 'disposition-notification-To':
+					case 'disposition-notification-to':
 					case 'organization':
 						foreach((array)$val as $i => $v) $mailObject->AddCustomHeader($key.': '. $v);
 						break;
