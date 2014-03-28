@@ -3672,15 +3672,21 @@ class emailadmin_imapbase
 		if (self::$debug) _debug_array($_structure);
 
 		$ignore_first_part = true;
+		$skipParts = array();
 		foreach($_structure->contentTypeMap() as $mime_id => $mime_type)
 		{
 			//error_log(__METHOD__."($_uid, ".$_structure->getMimeId().") $mime_id: $mime_type");
 			if (self::$debug) echo __METHOD__."($_uid, partID=".$_structure->getMimeId().") $mime_id: $mime_type<br>";
-
 			if ($ignore_first_part)
 			{
 				$ignore_first_part = false;
+				//error_log(__METHOD__."($_uid, ".$_structure->getMimeId().") SKIPPED FirstPart $mime_id: $mime_type");
 				continue;	// ignore multipart/mixed itself
+			}
+			if (array_key_exists($mime_id,$skipParts))
+			{
+				//error_log(__METHOD__."($_uid, ".$_structure->getMimeId().") SKIPPED $mime_id: $mime_type");
+				continue;
 			}
 
 			$part = $_structure->getPart($mime_id);
@@ -3688,6 +3694,7 @@ class emailadmin_imapbase
 			switch($part->getPrimaryType())
 			{
 				case 'multipart':
+					if ($part->getDisposition() == 'attachment') continue;
 					switch($part->getSubType())
 					{
 						case 'alternative':
@@ -3720,9 +3727,18 @@ class emailadmin_imapbase
 					break;
 
 				case 'message':
-					if($part->getSubType() == 'delivery-status')
+					//skip attachments
+					if($part->getSubType() == 'delivery-status' && $part->getDisposition() != 'attachment')
 					{
 						$bodyPart[] = $this->getTextPart($_uid, $part, $_htmlMode, $_preserveSeen);
+					}
+					// do not descend into attached Messages
+					if($part->getSubType() == 'rfc822' || $part->getDisposition() == 'attachment')
+					{
+						$skipParts[$mime_id.'.0'] = $mime_type;
+						foreach($part->contentTypeMap() as $sub_id => $sub_type) $skipParts[$sub_id] = $sub_type;
+						//error_log(__METHOD__.' ('.__LINE__.') '.' Uid:'.$_uid.' Part:'.$mime_id.':'.array2string($skipParts));
+						//break 2;
 					}
 					break;
 
@@ -3731,7 +3747,6 @@ class emailadmin_imapbase
 					// the part is a attachment
 			}
 		}
-
 		return $bodyPart;
 	}
 
