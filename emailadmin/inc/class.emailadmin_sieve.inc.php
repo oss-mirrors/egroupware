@@ -24,7 +24,7 @@ class emailadmin_sieve extends Net_Sieve
 	var $icServer;
 
 	/**
-	* @var object $icServer object containing the information about the imapserver
+	* @var string name of active script queried from Sieve server
 	*/
 	var $scriptName;
 
@@ -62,6 +62,11 @@ class emailadmin_sieve extends Net_Sieve
 	var $debug = false;
 
 	/**
+	 * Default script name used if no active script found on server
+	 */
+	const DEFAULT_SCRIPT_NAME = 'felamimail';
+
+	/**
 	 * Constructor
 	 *
 	 * @param defaultimap $_icServer
@@ -80,9 +85,7 @@ class emailadmin_sieve extends Net_Sieve
 			$this->supportedAuthMethods = array('PLAIN' , 'LOGIN');
 		}
 
-		$this->scriptName = !empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName']) ? $GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName'] : 'felamimail';
-
-		$this->displayCharset	= $GLOBALS['egw']->translation->charset();
+		$this->displayCharset	= translation::charset();
 
 		if (!is_null($_icServer) && $this->_connect($_icServer) === 'die') {
 			die('Sieve not activated');
@@ -98,8 +101,8 @@ class emailadmin_sieve extends Net_Sieve
 	 */
 	function _connect($_icServer,$euser='')
 	{
-		static $isConError;
-		static $sieveAuthMethods;
+		static $isConError = null;
+		static $sieveAuthMethods = null;
 		$_icServerID = $_icServer->ImapServerId;
 		if (is_null($isConError)) $isConError =& egw_cache::getCache(egw_cache::INSTANCE,'email','icServerSIEVE_connectionError'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*15);
 		if ( isset($isConError[$_icServerID]) )
@@ -156,6 +159,14 @@ class emailadmin_sieve extends Net_Sieve
 			egw_cache::setCache(egw_cache::INSTANCE,'email','icServerSIEVE_connectionError'.trim($GLOBALS['egw_info']['user']['account_id']),$isConError,$expiration=60*15);
 			return false;
 		}
+
+		// query active script from Sieve server
+		if (empty($this->scriptName))
+		{
+			$this->scriptName = $this->getActive();
+			if (empty($this->scriptName)) $this->scriptName = self::DEFAULT_SCRIPT_NAME;
+		}
+
 		//$_icServer->supportedSieveExtensions=$this->_capability['extensions'];
 		//error_log(__METHOD__.__LINE__.array2string($this->_capability));
 		return true;
