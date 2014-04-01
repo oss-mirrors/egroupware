@@ -354,7 +354,7 @@ class emailadmin_wizard
 			//_debug_array($content);
 			$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
 				$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
-					self::mailboxes($imap, $content);
+					$sel_options['acc_folder_junk'] = self::mailboxes($imap, $content);
 		}
 		catch(Exception $e) {
 			$content['msg'] = $e->getMessage();
@@ -397,6 +397,7 @@ class emailadmin_wizard
 			'acc_folder_trash' => array('\\trash', 'trash'),
 			'acc_folder_draft' => array('\\drafts', 'drafts'),
 			'acc_folder_template' => array('', 'templates'),
+			'acc_folder_junk'  => array('\\junk', 'junk', 'spam'),
 		) as $name => $common_names)
 		{
 			// first check special-use attributes
@@ -886,6 +887,7 @@ class emailadmin_wizard
 
 		if (isset($content['button']))
 		{
+			$msg_type = 'success';
 			list($button) = each($content['button']);
 			unset($content['button']);
 			switch($button)
@@ -952,13 +954,15 @@ class emailadmin_wizard
 						else
 						{
 							$msg = lang('Permission denied!');
+							$msg_type = 'error';
 						}
 					}
 					catch (Exception $e) {
 						$msg = lang('Error saving account!')."\n".$e->getMessage();
 						$button = 'apply';
+						$msg_type = 'error';
 					}
-					egw_framework::refresh_opener($msg, 'emailadmin', $content['acc_id']);
+					egw_framework::refresh_opener($msg, 'emailadmin', $content['acc_id'], null, null, null, null, $msg_type);
 					if ($button == 'save') egw_framework::window_close();
 					break;
 
@@ -966,6 +970,7 @@ class emailadmin_wizard
 					if (!emailadmin_account::check_access(EGW_ACL_DELETE, $content))
 					{
 						$msg = lang('Permission denied!');
+						$msg_type = 'error';
 					}
 					elseif (emailadmin_account::delete($content['acc_id']) > 0)
 					{
@@ -978,7 +983,7 @@ class emailadmin_wizard
 					}
 			}
 		}
-		$content['msg'] = $msg ? $msg : $_GET['msg'];
+		egw_framework::message($msg ? $msg : (string)$_GET['msg'], $msg_type);
 
 		// disable delete button for new, not yet saved entries and if no delete rights
 		$readonlys['button[delete]'] = empty($content['acc_id']) ||
@@ -1000,7 +1005,7 @@ class emailadmin_wizard
 		if ($this->is_admin && (empty($content['acc_imap_username']) || empty($content['acc_imap_hostname'])))
 		{
 			// cant connection to imap --> allow free entries in taglists
-			foreach(array('acc_folder_sent', 'acc_folder_trash', 'acc_folder_draft', 'acc_folder_template') as $folder)
+			foreach(array('acc_folder_sent', 'acc_folder_trash', 'acc_folder_draft', 'acc_folder_template', 'acc_folder_junk') as $folder)
 			{
 				$tpl->setElementAttribute($folder, 'allowFreeEntries', true);
 			}
@@ -1010,7 +1015,7 @@ class emailadmin_wizard
 			try {
 				$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
 					$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
-						self::mailboxes(self::imap_client ($content));
+						$sel_options['acc_folder_junk'] = self::mailboxes(self::imap_client ($content));
 			}
 			// call wizard, if we have a connection error: Horde_Imap_Client_Exception
 			catch(Horde_Imap_Client_Exception $e) {
@@ -1021,7 +1026,7 @@ class emailadmin_wizard
 					return $this->add($content, $e->getMessage());
 				}
 				// we already been in wizard, wont get better, let admin try fixing it
-				$content['msg'] = $e->getMessage();
+				egw_framework::message($e->getMessage(), 'error');
 				// cant connection to imap --> allow free entries in taglists
 				foreach(array('acc_folder_sent', 'acc_folder_trash', 'acc_folder_draft', 'acc_folder_template') as $folder)
 				{

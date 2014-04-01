@@ -5,6 +5,7 @@
  * @link http://www.egroupware.org
  * @author Lars Kneschke
  * @author Klaus Leithoff <kl@stylite.de>
+ * @author Ralf Becker <rb@stylite.de>
  * @package emailadmin
  * @subpackage setup
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
@@ -99,7 +100,10 @@ $phpgw_baseline = array(
 			'acc_sieve_ssl' => array('type' => 'int','precision' => '1','default' => '1','comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'),
 			'acc_modified' => array('type' => 'timestamp','nullable' => False,'default' => 'current_timestamp'),
 			'acc_modifier' => array('type' => 'int','meta' => 'user','precision' => '4'),
-			'acc_smtp_auth_session' => array('type' => 'bool','comment' => '0=no, 1=yes, use username/pw from current user')
+			'acc_smtp_auth_session' => array('type' => 'bool','comment' => '0=no, 1=yes, use username/pw from current user'),
+			'acc_folder_junk' => array('type' => 'varchar','precision' => '128','comment' => 'junk folder'),
+			'acc_imap_default_quota' => array('type' => 'int','precision' => '4','comment' => 'default quota, if no user specific one set'),
+			'acc_imap_timeout' => array('type' => 'int','precision' => '2','comment' => 'timeout for imap connection')
 		),
 		'pk' => array('acc_id'),
 		'fk' => array(),
@@ -129,7 +133,8 @@ $phpgw_baseline = array(
 			'ident_email' => array('type' => 'varchar','precision' => '128','comment' => 'email address'),
 			'ident_org' => array('type' => 'varchar','precision' => '128','comment' => 'organisation'),
 			'ident_signature' => array('type' => 'text','comment' => 'signature text'),
-			'account_id' => array('type' => 'int','meta' => 'account','precision' => '4','nullable' => False,'default' => '0','comment' => '0=all users of give mail account')
+			'account_id' => array('type' => 'int','meta' => 'account','precision' => '4','nullable' => False,'default' => '0','comment' => '0=all users of give mail account'),
+			'ident_name' => array('type' => 'varchar','precision' => '128','comment' => 'name of identity to display')
 		),
 		'pk' => array('ident_id'),
 		'fk' => array(),
@@ -144,6 +149,18 @@ $phpgw_baseline = array(
 		'pk' => array(),
 		'fk' => array(),
 		'ix' => array(array('acc_id','account_id'),array('account_id','acc_id')),
+		'uc' => array()
+	),
+	'egw_ea_notifications' => array(
+		'fd' => array(
+			'notif_id' => array('type' => 'auto','nullable' => False),
+			'acc_id' => array('type' => 'int','precision' => '4','nullable' => False,'comment' => 'mail account'),
+			'account_id' => array('type' => 'int','meta' => 'user','precision' => '4','nullable' => False,'comment' => 'user account'),
+			'notif_folder' => array('type' => 'varchar','precision' => '255','nullable' => False,'comment' => 'folder name')
+		),
+		'pk' => array('notif_id'),
+		'fk' => array(),
+		'ix' => array(array('account_id','acc_id')),
 		'uc' => array()
 	)
 );

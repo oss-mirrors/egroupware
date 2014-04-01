@@ -1,9 +1,10 @@
 <?php
 /**
- * eGroupware EMailAdmin - Setup
+ * EGroupware EMailAdmin - Setup
  *
  * @link http://www.egroupware.org
  * @author Klaus Leithoff <kl@stylite.de>
+ * @author Ralf Becker <rb@stylite.de>
  * @package emailadmin
  * @subpackage setup
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
@@ -12,7 +13,7 @@
 
 $setup_info['emailadmin']['name']      = 'emailadmin';
 $setup_info['emailadmin']['title']     = 'EMailAdmin';
-$setup_info['emailadmin']['version']   = '1.9.015';
+$setup_info['emailadmin']['version']   = '1.9.018';
 $setup_info['emailadmin']['app_order'] = 10;
 $setup_info['emailadmin']['enable']    = 2;
 $setup_info['emailadmin']['index']     = 'emailadmin.emailadmin_ui.listProfiles';
@@ -34,6 +35,7 @@ $setup_info['emailadmin']['tables'][]	= 'egw_ea_accounts';
 $setup_info['emailadmin']['tables'][]	= 'egw_ea_credentials';
 $setup_info['emailadmin']['tables'][]	= 'egw_ea_identities';
 $setup_info['emailadmin']['tables'][]	= 'egw_ea_valid';
+$setup_info['emailadmin']['tables'][]	= 'egw_ea_notifications';
 
 /* The hooks this app includes, needed for hooks registration */
 #$setup_info['emailadmin']['hooks'][] = 'preferences';

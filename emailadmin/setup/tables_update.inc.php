@@ -5,6 +5,7 @@
  * @link http://www.egroupware.org
  * @author Lars Kneschke
  * @author Klaus Leithoff <kl@stylite.de>
+ * @author Ralf Becker <rb@stylite.de>
  * @package emailadmin
  * @subpackage setup
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
@@ -787,3 +788,56 @@ function emailadmin_upgrade1_9_011()
 	}
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.015';
 }
+
+function emailadmin_upgrade1_9_015()
+{
+	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_accounts','acc_folder_junk',array(
+		'type' => 'varchar',
+		'precision' => '128',
+		'comment' => 'junk folder'
+	));
+	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_accounts','acc_imap_default_quota',array(
+		'type' => 'int',
+		'precision' => '4',
+		'comment' => 'default quota, if no user specific one set'
+	));
+	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_accounts','acc_imap_timeout',array(
+		'type' => 'int',
+		'precision' => '2',
+		'comment' => 'timeout for imap connection'
+	));
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.016';
+}
+
+
+function emailadmin_upgrade1_9_016()
+{
+	$GLOBALS['egw_setup']->oProc->AddColumn('egw_ea_identities','ident_name',array(
+		'type' => 'varchar',
+		'precision' => '128',
+		'comment' => 'name of identity to display'
+	));
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.017';
+}
+
+
+function emailadmin_upgrade1_9_017()
+{
+	$GLOBALS['egw_setup']->oProc->CreateTable('egw_ea_notifications',array(
+		'fd' => array(
+			'notif_id' => array('type' => 'auto','nullable' => False),
+			'acc_id' => array('type' => 'int','precision' => '4','nullable' => False,'comment' => 'mail account'),
+			'account_id' => array('type' => 'int','meta' => 'user','precision' => '4','nullable' => False,'comment' => 'user account'),
+			'notif_folder' => array('type' => 'varchar','precision' => '255','nullable' => False,'comment' => 'folder name')
+		),
+		'pk' => array('notif_id'),
+		'fk' => array(),
+		'ix' => array(array('account_id','acc_id')),
+		'uc' => array()
+	));
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.018';
+}
+

@@ -8,11 +8,7 @@
 				<column/>
 			</columns>
 			<rows>
-				<row>
-					<description id="msg" span="all" class="message"/>
-					<description/>
-				</row>
-				<row class="dialog-header">
+				<row class="dialogHeader">
 					<description value="Step 1: IMAP - incoming mail" span="all" class="emailadmin_header"/>
 					<description/>
 				</row>
@@ -41,7 +37,7 @@
 						<textbox type="integer" label="Port" id="acc_imap_port" class="emailadmin_port"/>
 					</hbox>
 				</row>
-				<row class="dialog-footer-toolbar">
+				<row class="dialogFooterToolbar">
 					<hbox span="all">
 						<button label="Continue" id="button[continue]" onclick="app.emailadmin.wizard_detect" image="continue" background_image="1"/>
 						<button label="Manual entry" id="button[manual]" onclick="app.emailadmin.wizard_manual" image="manual" background_image="1"/>

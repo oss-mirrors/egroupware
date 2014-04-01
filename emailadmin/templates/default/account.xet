@@ -139,9 +139,9 @@
 					<description for="acc_folder_template" value="Templates folder"/>
 					<taglist id="acc_folder_template" empty_label="Select one ..." maxSelection="1" autocomplete_url=""/>
 				</row>
-				<row height="100">
-					<description/>
-					<description/>
+				<row>
+					<description for="acc_folder_junk" value="Junk folder"/>
+					<taglist id="acc_folder_junk" empty_label="Select one ..." maxSelection="1" autocomplete_url=""/>
 				</row>
 			</rows>
 		</grid>
@@ -272,27 +272,20 @@
 				<column/>
 			</columns>
 			<rows>
-				<row>
-					<description id="msg" span="all" class="message"/>
-					<description/>
-					<description/>
-					<description/>
-					<description/>
-				</row>
-				<row disabled="!@accounts">
+				<row disabled="!@accounts" class="dialogHeader">
 					<description for="acc_id" value="Mail account"/>
 					<menulist span="all">
 						<menupopup id="acc_id" onchange="app.emailadmin.change_account"/>
 					</menulist>
 				</row>
-				<row height="30"  class="dialog-header">
+				<row class="dialogHeader">
 					<description for="acc_name" value="Name of account"/>
 					<hbox span="all">
 						<textbox id="acc_name" needed="1" size="80"/>
 						<description align="right" id="acc_id" class="emailadmin_diagnostic"/>
 					</hbox>
 				</row>
-				<row class="emailadmin_no_user dialog-header" height="30">
+				<row class="emailadmin_no_user dialogHeader2">
 					<description for="account_id" value="Valid for"/>
 					<hbox>
 						<menulist>
@@ -324,7 +317,7 @@
 				</row>
 			</rows>
 		</grid>
-		<hbox class="dialog-footer-toolbar">
+		<hbox class="dialogFooterToolbar">
 			<button label="Save" id="button[save]"/>
 			<button label="Apply" id="button[apply]" />
 			<button statustext="Use wizard to detect or verify configuration" label="Wizard" id="button[wizard]" image="magicwand" background_image="1"/>

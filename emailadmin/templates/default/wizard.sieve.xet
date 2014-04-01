@@ -8,11 +8,7 @@
 				<column/>
 			</columns>
 			<rows>
-				<row>
-					<description id="msg" span="all" class="message"/>
-					<description/>
-				</row>
-				<row class="dialog-header">
+				<row class="dialogHeader">
 					<description value="Step 3: Sieve - server side mail filtering" span="all" class="emailadmin_header"/>
 					<description/>
 				</row>
@@ -35,7 +31,7 @@
 						<textbox type="integer" label="Port" id="acc_sieve_port" onchange="app.emailadmin.wizard_sieve_onchange" class="emailadmin_port"/>
 					</hbox>
 				</row>
-				<row  class="dialog-footer-toolbar">
+				<row  class="dialogFooterToolbar">
 					<hbox span="all">
 						<button label="Continue" id="button[continue]" onclick="app.emailadmin.wizard_detect" image="continue" background_image="1"/>
 						<button label="Back" id="button[back]" image="back" background_image="1"/>
