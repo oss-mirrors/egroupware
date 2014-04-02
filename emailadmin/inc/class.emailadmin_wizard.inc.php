@@ -146,6 +146,9 @@ class emailadmin_wizard
 	{
 		$this->is_admin = isset($GLOBALS['egw_info']['user']['apps']['emailadmin']);
 
+		// for some reason most translation for account-wizard are in mail
+		translation::add_app('mail');
+
 		// Horde use locale for translation of error messages
 		common::setlocale(LC_MESSAGES);
 	}
@@ -156,7 +159,7 @@ class emailadmin_wizard
 	 * @param array $content
 	 * @param type $msg
 	 */
-	public function add(array $content=array(), $msg='')
+	public function add(array $content=array(), $msg='', $msg_type='success')
 	{
 		// otherwise we cant switch to ckeditor in edit
 		egw_ckeditor_config::set_csp_script_src_attrs();
@@ -173,7 +176,7 @@ class emailadmin_wizard
 			'acc_imap_port' => 993,
 			'manual_class' => 'emailadmin_manual',
 		);
-		$content['msg'] = $msg ? $msg : $_GET['msg'];
+		egw_framework::message($msg ? $msg : (string)$_GET['msg'], $msg_type);
 
 		if (!empty($content['acc_imap_host']) || !empty($content['acc_imap_username']))
 		{
@@ -799,8 +802,9 @@ class emailadmin_wizard
 	 *
 	 * @param array $content=null
 	 * @param string $msg=''
+	 * @param string $msg_type='success'
 	 */
-	public function edit(array $content=null, $msg='')
+	public function edit(array $content=null, $msg='', $msg_type='success')
 	{
 		if (!is_array($content) || !empty($content['acc_id']) && $content['acc_id'] != $content['old_acc_id'])
 		{
@@ -887,7 +891,6 @@ class emailadmin_wizard
 
 		if (isset($content['button']))
 		{
-			$msg_type = 'success';
 			list($button) = each($content['button']);
 			unset($content['button']);
 			switch($button)
@@ -980,10 +983,10 @@ class emailadmin_wizard
 					else
 					{
 						$msg = lang('Failed to delete account!');
+						$msg_type = 'error';
 					}
 			}
 		}
-		egw_framework::message($msg ? $msg : (string)$_GET['msg'], $msg_type);
 
 		// disable delete button for new, not yet saved entries and if no delete rights
 		$readonlys['button[delete]'] = empty($content['acc_id']) ||
@@ -1023,7 +1026,7 @@ class emailadmin_wizard
 				// if we are not comming from wizard --> try it
 				if (!$content['output'])
 				{
-					return $this->add($content, $e->getMessage());
+					return $this->add($content, $e->getMessage(), 'error');
 				}
 				// we already been in wizard, wont get better, let admin try fixing it
 				egw_framework::message($e->getMessage(), 'error');
@@ -1062,6 +1065,7 @@ class emailadmin_wizard
 				$readonlys += array(
 					'button[save]' => false, 'button[apply]' => false,
 					'button[placeholders]' => false,
+					'ident_name' => false,
 					'ident_realname' => false, 'ident_email' => false,
 					'ident_org' => false, 'ident_signature' => false,
 				);
@@ -1077,12 +1081,13 @@ class emailadmin_wizard
 				}
 				else
 				{
-					$content['ident_realname'] = $content['ident_email'] =
+					$content['ident_name'] = $content['ident_realname'] = $content['ident_email'] =
 						$content['ident_org'] = $content['ident_signature'] = '';
 				}
-				if (empty($content['msg']) && $edit_access)
+				if (empty($msg) && $edit_access && $content['ident_id'] && $content['ident_id'] != $content['std_ident_id'])
 				{
-					$content['msg'] = lang('Switch back to standard identity to save other account data.');
+					$msg = lang('Switch back to standard identity to save other account data.');
+					$msg_type = 'help';
 				}
 				$content['old_ident_id'] = $content['ident_id'];
 			}
@@ -1095,6 +1100,8 @@ class emailadmin_wizard
 		// disable aliases tab for default smtp class emailadmin_smtp
 		$readonlys['tabs']['emailadmin.account.aliases'] = !$content['acc_smtp_type'] ||
 			$content['acc_smtp_type'] == 'emailadmin_smtp';
+
+		egw_framework::message($msg ? $msg : (string)$_GET['msg'], $msg_type);
 
 		if (count($content['account_id']) > 1)
 		{

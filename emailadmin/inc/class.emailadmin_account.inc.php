@@ -58,6 +58,7 @@
  * @property-read int $acc_modified timestamp of last modification
  * @property-read int $acc_modifier account_id of last modifier
  * @property-read int $ident_id standard identity
+ * @property-read string $ident_name name of identity
  * @property-read string $ident_realname real name
  * @property-read string $ident_email email address
  * @property-read string $ident_org organisation
@@ -71,6 +72,8 @@
  * @property-read string $accountStatus "active", if account is enabled to receive mail
  * @property-read string $deliveryMode "forwardOnly", if account only forwards (no imap account!)
  * @property-read int $quotaLimit quota in MB
+ * @property-read int $acc_imap_default_quota quota in MB, if no user specific one set
+ * @property-read int $acc_imap_timeout timeout for imap connection, default 20s
  *
  * @todo remove comments from protected in __construct and db2data, once we require PHP 5.4 (keeping class contect in closures)
  */
@@ -126,6 +129,11 @@ class emailadmin_account implements ArrayAccess
 	 * if set, verify certifcate (currently not implemented in Horde_Imap_Client!)
 	 */
 	const SSL_VERIFY = 8;
+
+	/**
+	 * Default timeout, if no account specific one is set
+	 */
+	const DEFAULT_TIMEOUT = 20;
 
 	/**
 	 * Reference to global db object
@@ -329,12 +337,12 @@ class emailadmin_account implements ArrayAccess
 	 * @param string $field='name' what to return as value: "ident_(realname|org|email|signature)" or default "name"=result from identity_name
 	 * @return Iterator ident_id => identity_name of identity
 	 */
-	public function identities($account=null, $replace_placeholders=true, $field='name')
+	public /*static*/ function identities($account=null, $replace_placeholders=true, $field='name')
 	{
 		if (is_null($account)) $account = $this;
 		$acc_id = is_scalar($account) ? $account : $account['acc_id'];
 
-		$cols = array('ident_id', 'ident_realname', 'ident_org', 'ident_email', 'acc_id', 'acc_imap_username', 'acc_imap_logintype', 'acc_domain');
+		$cols = array('ident_id', 'ident_name', 'ident_realname', 'ident_org', 'ident_email', 'acc_id', 'acc_imap_username', 'acc_imap_logintype', 'acc_domain');
 		if (!in_array($field, array_merge($cols, array('name', 'params'))))
 		{
 			$cols[] = $field;
@@ -354,6 +362,7 @@ class emailadmin_account implements ArrayAccess
 			' LEFT JOIN '.emailadmin_credentials::TABLE.' ON '.self::TABLE.'.acc_id='.emailadmin_credentials::TABLE.'.acc_id AND '.
 				emailadmin_credentials::TABLE.'.account_id='.(int)$GLOBALS['egw_info']['user']['account_id'].' AND '.
 				'cred_type&'.emailadmin_credentials::IMAP);
+		//error_log(__METHOD__."(acc_id=$acc_id, replace_placeholders=$replace_placeholders, field='$field') sql=".$rs->sql);
 
 		return new egw_db_callback_iterator($rs,
 			// process each row
@@ -369,7 +378,7 @@ class emailadmin_account implements ArrayAccess
 
 				if ($field != 'name')
 				{
-					$data = $replace_placeholders ? emailadmin_account::replace_placeholders($row) : $row;
+					$data = $replace_placeholders ? array_merge($row, emailadmin_account::replace_placeholders($row)) : $row;
 					return $field == 'params' ? $data : $data[$field];
 				}
 				return emailadmin_account::identity_name($row, $replace_placeholders);
@@ -378,17 +387,108 @@ class emailadmin_account implements ArrayAccess
 	}
 
 	/**
+	 * Get rfc822 email address from given identity or account
+	 *
+	 * @param array|emailadmin_account $identity
+	 * @return string rfc822 email address from given identity or account
+	 */
+	public function rfc822($identity)
+	{
+		$address = $identity['ident_realname'];
+		if ($identity['ident_org'])
+		{
+			$address .= ($address && $identity['ident_org'] ? ' ' : '').$identity['ident_org'];
+		}
+		if (strpos($address, ',') !== false)	// need to quote comma
+		{
+			$address = '"'.str_replace('"', '\\"', $address).'"';
+		}
+		if (!strpos($identity['ident_email'], '@'))
+		{
+			$address = null;
+		}
+		elseif ($address)
+		{
+			$address = $address.' <'.$identity['ident_email'].'>';
+		}
+		else
+		{
+			$address = $identity['ident_email'];
+		}
+		//error_log(__METHOD__."(acc_id=$identity[acc_id], ident_id=$identity[ident_id], realname=$identity[ident_realname], org=$identity[ident_org], email=$identity[ident_email]) returning ".array2string($address));
+		return $address;
+	}
+
+	/**
+	 * Get list of rfc822 addresses for current user eg. to use as from address selection when sending mail
+	 *
+	 * @param callback $formatter=null function to format identity as rfc822 address, default self::rfc822(),
+	 * @return array acc_id:ident_id:email => rfc822 address pairs, eg. '1:1:rb@stylite.de' => 'Ralf Becker Stylite AG <rb@stylite.de>'
+	 * @todo add aliases for manged mail servers
+	 */
+	public static function rfc822_addresses($formatter=null)
+	{
+		if (!$formatter || !is_callable($formatter))
+		{
+			$formatter = __CLASS__.'::rfc822';
+		}
+		$addresses = array();
+		foreach(self::search(true, false) as $acc_id => $account)
+		{
+			$added = false;	// make sure each account get's at least added once, even if it uses an identical email address
+			foreach($account->identities(null, true, 'params') as $identity)
+			{
+				if (($address = call_user_func($formatter, $identity)) && (!$added || !in_array($address, $addresses)))
+				{
+					$addresses[$acc_id.':'.$identity['ident_id'].':'.$identity['ident_email']] = $address;
+					$added = true;
+				}
+			}
+		}
+		// sort caseinsensitiv alphabetical
+		uasort($addresses, 'strcasecmp');
+		//error_log(__METHOD__."() returning ".array2string($addresses));
+		return $addresses;
+	}
+
+	/**
+	 * Return list of identities/signatures for given account ordered by give email on top and then by identity name
+	 *
+	 * @param int|array|emailadmin_account $account=null default this account, empty array() to get all identities of current user
+	 * @param string $order_email_top email address to order top
+	 * @return array ident_id => ident_name pairs
+	 */
+	public /*static*/ function identities_ordered($account, $order_email_top)
+	{
+		$identities = iterator_to_array(self::identities($account, true, 'params'));
+		uasort($identities, function($a, $b) use ($order_email_top)
+		{
+			$cmp = !strcasecmp($order_email_top, $a['ident_email']) - !strcasecmp($order_email_top, $b['ident_email']);
+			if (!$cmp)
+			{
+				$cmp = strcasecmp($a['ident_name'], $b['ident_name']);
+			}
+			return $cmp;
+		});
+		foreach($identities as &$identity)
+		{
+			$identity = self::identity_name($identity);
+		}
+		//error_log(__METHOD__."(".array2string($account).", '$order_email_top') returning ".array2string($identities));
+		return $identities;
+	}
+
+	/**
 	 * Replace placeholders like {{n_fn}} in an identity
 	 *
 	 * For full list of placeholders see addressbook_merge.
 	 *
 	 * @param array|emailadmin_account $identity=null
-	 * @param boolean $replace_placeholders=false should placeholders like {{n_fn}} be replaced
 	 * @return array with modified fields
 	 */
 	public /*static*/ function replace_placeholders($identity=null)
 	{
-		static $fields = array('ident_realname','ident_org','ident_email','ident_signature');
+		static $fields = array('ident_name','ident_realname','ident_org','ident_email','ident_signature');
 
 		if (!$identity && isset($this)) $identity = $this;
 		if (!is_array($identity) && !is_a($identity, 'emailadmin_account'))
@@ -449,6 +549,10 @@ class emailadmin_account implements ArrayAccess
 					if (empty($data['ident_realname'])) $data['ident_realname'] = $account->ident_realname;
 				}
 			}
+			if (empty($data['ident_name']))
+			{
+				$data['ident_name'] = self::identity_name($data);
+			}
 		}
 		return $data;
 	}
@@ -474,6 +578,7 @@ class emailadmin_account implements ArrayAccess
 		}
 		$data = array(
 			'acc_id' => $identity['acc_id'],
+			'ident_name' => $identity['ident_name'] ? $identity['ident_name'] : null,
 			'ident_realname' => $identity['ident_realname'],
 			'ident_org' => $identity['ident_org'],
 			'ident_email' => $identity['ident_email'],
@@ -999,13 +1104,17 @@ class emailadmin_account implements ArrayAccess
 			// process each row
 			function($row) use ($just_name, $replace_placeholders)
 			{
+				if ($replace_placeholders)
+				{
+					$row = array_merge($row, emailadmin_account::replace_placeholders($row));
+				}
 				if (is_string($just_name))
 				{
 					return $just_name == 'params' ? $row : $row[$just_name];
 				}
 				elseif ($just_name)
 				{
-					return emailadmin_account::identity_name($row, $replace_placeholders);
+					return emailadmin_account::identity_name($row, false);
 				}
 				return new emailadmin_account($row);
 			}, array(),
@@ -1028,6 +1137,7 @@ class emailadmin_account implements ArrayAccess
 		if ($replace_placeholders)
 		{
 			$data = array(
+				'ident_name' => $account['ident_name'],
 				'ident_realname' => $account['ident_realname'],
 				'ident_org' => $account['ident_org'],
 				'ident_email' => $account['ident_email'],
@@ -1042,41 +1152,49 @@ class emailadmin_account implements ArrayAccess
 			$account = array_merge($data, self::replace_placeholders($data));
 			//error_log(__METHOD__."() account=".array2string($account).' took '.number_format(microtime(true)-$start,3));
 		}
-		if (empty($account['ident_email']))
+		// user specified an own name --> use just it
+		if (!empty($account['ident_name']))
 		{
-			try {
-				if (is_array($account) && empty($account['acc_imap_username']) && $account['acc_id'])
-				{
-					if (!isset($account['acc_imap_username']))
-					{
-						$account += emailadmin_credentials::read($account['acc_id']);
-					}
-					if (empty($account['acc_imap_username']) && $account['acc_imap_logintype'])
-					{
-						$account = array_merge($account, emailadmin_credentials::from_session($account));
-					}
-				}
-				if (empty($account['ident_email']) && !empty($account['acc_imap_username']))
-				{
-					$account['ident_email'] = $account['acc_imap_username'];
-				}
-			}
-			catch(Exception $e) {
-				_egw_log_exception($e);
-			}
-
-		}
-		if (strlen(trim($account['ident_realname'].$account['ident_org'])))
-		{
-			$name = $account['ident_realname'].' '.$account['ident_org'];
+			$name = $account['ident_name'];
 		}
 		else
 		{
-			$name = $account['acc_name'];
-		}
-		if ($account['ident_email'])
-		{
-			$name .= ' <'.$account['ident_email'].'>';
+			if (empty($account['ident_email']))
+			{
+				try {
+					if (is_array($account) && empty($account['acc_imap_username']) && $account['acc_id'])
+					{
+						if (!isset($account['acc_imap_username']))
+						{
+							$account += emailadmin_credentials::read($account['acc_id']);
+						}
+						if (empty($account['acc_imap_username']) && $account['acc_imap_logintype'])
+						{
+							$account = array_merge($account, emailadmin_credentials::from_session($account));
+						}
+					}
+					if (empty($account['ident_email']) && !empty($account['acc_imap_username']))
+					{
+						$account['ident_email'] = $account['acc_imap_username'];
+					}
+				}
+				catch(Exception $e) {
+					_egw_log_exception($e);
+				}
+
+			}
+			if (strlen(trim($account['ident_realname'].$account['ident_org'])))
+			{
+				$name = $account['ident_realname'].' '.$account['ident_org'];
+			}
+			else
+			{
+				$name = $account['acc_name'];
+			}
+			if ($account['ident_email'])
+			{
+				$name .= ' <'.$account['ident_email'].'>';
+			}
 		}
 		//error_log(__METHOD__."(".array2string($account).", $replace_placeholders) returning ".array2string($name));
 		return $name;

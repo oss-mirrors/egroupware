@@ -20,6 +20,10 @@
 					<checkbox label="allow users to create further identities" id="acc_further_identities" class="emailadmin_no_user"/>
 				</row>
 				<row>
+					<description for="ident_name" value="Name"/>
+					<textbox id="ident_name" size="80" maxlength="128" span="all" blur="default your name and email"/>
+				</row>
+				<row>
 					<description for="ident_realname" value="Your name"/>
 					<hbox span="all">
 						<textbox id="ident_realname" size="80" maxlength="128"/>
@@ -266,24 +270,21 @@
 		<grid width="100%">
 			<columns>
 				<column width="120"/>
-				<column width="200"/>
-				<column/>
-				<column/>
+				<column width="500"/>
 				<column/>
 			</columns>
 			<rows>
 				<row disabled="!@accounts" class="dialogHeader">
 					<description for="acc_id" value="Mail account"/>
-					<menulist span="all">
-						<menupopup id="acc_id" onchange="app.emailadmin.change_account"/>
+					<menulist>
+						<menupopup id="acc_id" onchange="app.emailadmin.change_account" class="et2_fullWidth"/>
 					</menulist>
+					<description/>
 				</row>
 				<row class="dialogHeader">
 					<description for="acc_name" value="Name of account"/>
-					<hbox span="all">
-						<textbox id="acc_name" needed="1" size="80"/>
-						<description align="right" id="acc_id" class="emailadmin_diagnostic"/>
-					</hbox>
+					<textbox id="acc_name" needed="1" size="80" class="et2_fullWidth"/>
+					<description align="right" value="$cont[acc_id]" class="emailadmin_diagnostic"/>
 				</row>
 				<row class="emailadmin_no_user dialogHeader2">
 					<description for="account_id" value="Valid for"/>
@@ -292,8 +293,9 @@
 							<menupopup type="select-account" id="account_id" onchange="app.emailadmin.account_hide_not_applying" options="Everyone,both"/>
 						</menulist>
 						<buttononly label="Select multiple" id="button[multiple]" onclick="app.emailadmin.edit_multiple" options="users"/>
+						<checkbox label="account editable by user" id="acc_user_editable"/>
 					</hbox>
-					<checkbox label="account editable by user" id="acc_user_editable"/>
+					<description/>
 				</row>
 				<row>
 					<tabbox id="tabs" span="all">
