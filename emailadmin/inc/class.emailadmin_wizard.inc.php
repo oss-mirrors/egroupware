@@ -5,6 +5,7 @@
  * @link http://www.stylite.de
  * @package emailadmin
  * @author Ralf Becker <rb@stylite.de>
+ * @copyright (c) 2013-14 by Ralf Becker <rb@stylite.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */
@@ -806,6 +807,8 @@ class emailadmin_wizard
 	 */
 	public function edit(array $content=null, $msg='', $msg_type='success')
 	{
+		$tpl = new etemplate_new('emailadmin.account');
+
 		if (!is_array($content) || !empty($content['acc_id']) && $content['acc_id'] != $content['old_acc_id'])
 		{
 			if (!is_array($content)) $content = array();
@@ -833,6 +836,7 @@ class emailadmin_wizard
 						$content['called_for'] : $GLOBALS['egw_info']['user']['account_id']);
 					$content += $account->params;
 					$content['acc_sieve_enabled'] = (string)($content['acc_sieve_enabled']);
+					$content['notify_use_default'] = !$content['notify_account_id'];
 					self::fix_account_id_0($content['account_id']);
 
 					// read identities (of current user) and mark std identity
@@ -880,7 +884,7 @@ class emailadmin_wizard
 			);
 		}
 		// ensure correct values for single user mail accounts (we only hide them client-side)
-		if (!emailadmin_account::is_multiple($content))
+		if (!($is_multiple = emailadmin_account::is_multiple($content)))
 		{
 			$content['acc_imap_type'] = 'emailadmin_imap';
 			unset($content['acc_imap_login_type']);
@@ -888,6 +892,10 @@ class emailadmin_wizard
 			unset($content['acc_smtp_auth_session']);
 		}
 		$edit_access = emailadmin_account::check_access(EGW_ACL_EDIT, $content);
+
+		// disable notification save-default and use-default, if only one account or no edit-rights
+		$tpl->disableElement('notify_save_default', !$is_multiple || !$edit_access);
+		$tpl->disableElement('notify_use_default', !$is_multiple);
 
 		if (isset($content['button']))
 		{
@@ -934,10 +942,29 @@ class emailadmin_wizard
 						elseif ($edit_access)
 						{
 							$new_account = !($content['acc_id'] > 0);
+							// set notifications to store according to checkboxes
+							if ($content['notify_save_default'])
+							{
+								$content['notify_account_id'] = 0;
+							}
+							elseif (!$content['notify_use_default'])
+							{
+								$content['notify_account_id'] = $content['called_for'] ?
+									$content['called_for'] : $GLOBALS['egw_info']['user']['account_id'];
+							}
 							self::fix_account_id_0($content['account_id'], true);
 							$content = emailadmin_account::write($content, $content['called_for']);
 							self::fix_account_id_0($content['account_id']);
 							$msg = lang('Account saved.');
+							// user wants default notifications
+							if ($content['acc_id'] && $content['notify_use_default'])
+							{
+								// delete own ones
+								emailadmin_notifications::delete($content['acc_id'], $content['called_for'] ?
+									$content['called_for'] : $GLOBALS['egw_info']['user']['account_id']);
+								// load default ones
+								$content = array_merge($content, emailadmin_notifications::read($content['acc_id'], 0));
+							}
 							// add new std identity entry
 							if ($new_account)
 							{
@@ -956,8 +983,27 @@ class emailadmin_wizard
 						}
 						else
 						{
-							$msg = lang('Permission denied!');
-							$msg_type = 'error';
+							if ($content['notify_use_default'] && $content['notify_account_id'])
+							{
+								// delete own ones
+								if (emailadmin_notifications::delete($content['acc_id'], $content['called_for'] ?
+									$content['called_for'] : $GLOBALS['egw_info']['user']['account_id']))
+								{
+									$msg = lang('Notification folders updated.');
+								}
+								// load default ones
+								$content = array_merge($content, emailadmin_notifications::read($content['acc_id'], 0));
+							}
+							if (!$content['notify_use_default'])
+							{
+								$content['notify_account_id'] = $content['called_for'] ?
+									$content['called_for'] : $GLOBALS['egw_info']['user']['account_id'];
+								if (emailadmin_notifications::write($content['acc_id'], $content['notify_account_id'],
+									$content['notify_folders']))
+								{
+									$msg = lang('Notification folders updated.');
+								}
+							}
 						}
 					}
 					catch (Exception $e) {
@@ -997,12 +1043,13 @@ class emailadmin_wizard
 		{
 			$readonlys['__ALL__'] = true;
 			$readonlys['button[cancel]'] = false;
+			// allow to edit notification-folders
+			$readonlys['button[save]'] = $readonlys['button[apply]'] =
+				$readonlys['notify_folders'] = $readonlys['notify_use_default'] = false;
 		}
 
 		$sel_options['acc_imap_ssl'] = $sel_options['acc_sieve_ssl'] =
 			$sel_options['acc_smtp_ssl'] = self::$ssl_types;
-
-		$tpl = new etemplate_new('emailadmin.account');
 
 		// admin access to account with no credentials available
 		if ($this->is_admin && (empty($content['acc_imap_username']) || empty($content['acc_imap_hostname'])))
@@ -1018,7 +1065,8 @@ class emailadmin_wizard
 			try {
 				$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
 					$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
-						$sel_options['acc_folder_junk'] = self::mailboxes(self::imap_client ($content));
+					$sel_options['acc_folder_junk'] = $sel_options['notification_folders'] =
+						self::mailboxes(self::imap_client ($content));
 			}
 			// call wizard, if we have a connection error: Horde_Imap_Client_Exception
 			catch(Horde_Imap_Client_Exception $e) {

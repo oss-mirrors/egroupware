@@ -147,6 +147,14 @@
 					<description for="acc_folder_junk" value="Junk folder"/>
 					<taglist id="acc_folder_junk" empty_label="Select one ..." maxSelection="1" autocomplete_url=""/>
 				</row>
+				<row>
+					<description for="acc_folder_junk" value="Notify about new mail in this folders"/>
+					<vbox>
+						<taglist id="notify_folders" empty_label="Select one ..." autocomplete_url=""/>
+						<checkbox id="notify_save_default" label="save as default"/>
+						<checkbox id="notify_use_default" label="use default"/>
+					</vbox>
+				</row>
 			</rows>
 		</grid>
 	</template>

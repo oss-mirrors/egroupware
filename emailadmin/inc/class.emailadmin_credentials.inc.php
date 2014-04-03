@@ -5,6 +5,7 @@
  * @link http://www.stylite.de
  * @package emailadmin
  * @author Ralf Becker <rb@stylite.de>
+ * @copyright (c) 2013-14 by Ralf Becker <rb@stylite.de>
  * @author Stylite AG <info@stylite.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$

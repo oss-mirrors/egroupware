@@ -6,6 +6,7 @@
  * @package emailadmin
  * @author Ralf Becker <rb@stylite.de>
  * @author Stylite AG <info@stylite.de>
+ * @copyright (c) 2013-14 by Ralf Becker <rb@stylite.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */
@@ -22,6 +23,7 @@
  * - egw_ea_valid for which users an account is valid 1:N relation to accounts table
  * - egw_ea_credentials username/password for various accounts and types (imap, smtp, admin)
  * - egw_ea_identities identities of given account and user incl. standard identity of account
+ * - egw_ea_notifications folders a user wants to be notified about new mails
  *
  * Most methods return iterators: use iterator_to_array() to cast them to an array eg. for eTemplate use.
  *
@@ -74,6 +76,7 @@
  * @property-read int $quotaLimit quota in MB
  * @property-read int $acc_imap_default_quota quota in MB, if no user specific one set
  * @property-read int $acc_imap_timeout timeout for imap connection, default 20s
+ * @property-read array $notif_folders folders user wants to be notified about new mails
  *
  * @todo remove comments from protected in __construct and db2data, once we require PHP 5.4 (keeping class contect in closures)
  */
@@ -211,6 +214,10 @@ class emailadmin_account implements ArrayAccess
 		// read credentials from database
 		$params += emailadmin_credentials::read($params['acc_id'], null, $called_for ? array(0, $called_for) : $called_for);
 
+		if (!isset($params['notify_folders']))
+		{
+			$params += emailadmin_notifications::read($params['acc_id'], $called_for ? array(0, $called_for) : $called_for);
+		}
 		if (!empty($params['acc_imap_logintype']) && !isset($params['acc_imap_username']) &&
 			$GLOBALS['egw_info']['user']['account_id'] &&
 			(!isset($called_for) || $called_for == $GLOBALS['egw_info']['user']['account_id']))
@@ -392,7 +399,7 @@ class emailadmin_account implements ArrayAccess
 	 * @param array|emailadmin_account $identity
 	 * @return string rfc822 email address from given identity or account
 	 */
-	public function rfc822($identity)
+	public static function rfc822($identity)
 	{
 		$address = $identity['ident_realname'];
 		if ($identity['ident_org'])
@@ -583,7 +590,8 @@ class emailadmin_account implements ArrayAccess
 			'ident_org' => $identity['ident_org'],
 			'ident_email' => $identity['ident_email'],
 			'ident_signature' => $identity['ident_signature'],
-			'account_id' => $identity['account_id'],
+			'account_id' => self::is_multiple($identity) ? 0 :
+				(is_array($identity['account_id']) ? $identity['account_id'][0] : $identity['account_id']),
 		);
 		if ($identity['ident_id'] > 0)
 		{
@@ -885,12 +893,10 @@ class emailadmin_account implements ArrayAccess
 			$data['acc_id'] = self::$db->get_last_insert_id(self::TABLE, 'acc_id');
 		}
 		// store identity
-		if (!($data['ident_id'] > 0)) unset($data['ident_id']);
-		$iwhere = $data['ident_id'] > 0 ? array('ident_id' => $data['ident_id']) : false;
-		self::$db->insert(self::IDENTITIES_TABLE, $data, $iwhere, __LINE__, __FILE__, self::APP);
+		$new_ident_id = self::save_identity($data);
 		if (!($data['ident_id'] > 0))
 		{
-			$data['ident_id'] = self::$db->get_last_insert_id(self::IDENTITIES_TABLE, 'ident_id');
+			$data['ident_id'] = $new_ident_id;
 			self::$db->update(self::TABLE, array(
 				'ident_id' => $data['ident_id'],
 			), array(
@@ -971,6 +977,9 @@ class emailadmin_account implements ArrayAccess
 			emailadmin_credentials::delete($data['acc_id'], 0, emailadmin_credentials::ADMIN);
 		}
 
+		// store notification folders
+		emailadmin_notifications::write($data['acc_id'], $data['notify_account_id'], $data['notify_folders']);
+
 		// store account-information of managed mail server
 		if ($user > 0 && $data['acc_smtp_type'] && $data['acc_smtp_type'] != 'emailadmin_smtp')
 		{
@@ -998,6 +1007,7 @@ class emailadmin_account implements ArrayAccess
 			self::$db->delete(self::VALID_TABLE, array('acc_id' => $acc_id), __LINE__, __FILE__, self::APP);
 			self::$db->delete(self::IDENTITIES_TABLE, array('acc_id' => $acc_id), __LINE__, __FILE__, self::APP);
 			emailadmin_credentials::delete($acc_id);
+			emailadmin_notifications::delete($acc_id);
 			self::$db->delete(self::TABLE, array('acc_id' => $acc_id), __LINE__, __FILE__, self::APP);
 
 			// invalidate caches
@@ -1013,6 +1023,7 @@ class emailadmin_account implements ArrayAccess
 		}
 		// delete all credentials belonging to given account(s)
 		emailadmin_credentials::delete(0, $account_id);
+		emailadmin_notifications::delete(0, $account_id);
 		// delete all pointers to mail accounts belonging to given user accounts
 		self::$db->delete(self::VALID_TABLE, array('account_id' => $account_id), __LINE__, __FILE__, self::APP);
 		// delete all identities belonging to given user accounts
@@ -1210,8 +1221,8 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public static function is_multiple($account)
 	{
-		$is_multiple = !is_array($account['account_id']) ? !$account['account_id'] :
-			(count($account['account_id']) > 1 || !$account['account_id'][0]);
+		$is_multiple = !is_array($account['account_id']) ? $account['account_id'] <= 0 :
+			(count($account['account_id']) > 1 || $account['account_id'][0] <= 0);
 		//error_log(__METHOD__."(account_id=".array2string($account['account_id']).") returning ".array2string($is_multiple));
 		return $is_multiple;
 	}
