@@ -216,7 +216,7 @@ class emailadmin_wizard
 				);
 			}
 		}
-		elseif (($ispdb = $this->mozilla_ispdb($content['ident_email'])) && count($ispdb['imap']))
+		elseif (($ispdb = self::mozilla_ispdb($content['ident_email'])) && count($ispdb['imap']))
 		{
 			$content['ispdb'] = $ispdb;
 			$content['output'] .= lang('Using data from Mozilla ISPDB for provider %1', $ispdb['displayName'])."\n";
@@ -387,13 +387,14 @@ class emailadmin_wizard
 		));
 		//_debug_array($mailboxes);
 		// list mailboxes by special-use attributes
-		$attributes = $all = array();
+		$folders = $attributes = $all = array();
 		foreach($mailboxes as $mailbox => $data)
 		{
 			foreach($data['attributes'] as $attribute)
 			{
 				$attributes[$attribute][] = $mailbox;
 			}
+			$folders[$mailbox] = $mailbox.': '.implode(', ', $data['attributes']);
 		}
 		// pre-select send, trash, ... folder for user, by checking special-use attributes or common name(s)
 		foreach(array(
@@ -422,13 +423,19 @@ class emailadmin_wizard
 				{
 					$name_parts = explode($data['delimiter']?$data['delimiter']:'.', strtolower($mailbox));
 					if (array_intersect($name_parts, $common_names) &&
-						(empty($content[$name]) || strlen($mailbox) < strlen($content[$name]) && substr($mailbox, 0, 5) == 'INBOX'))
+						(empty($content[$name]) || strlen($mailbox) < strlen($content[$name])))// && substr($mailbox, 0, 5) == 'INBOX'))
 					{
+						//error_log(__METHOD__."() $mailbox --> ".substr($name, 11).' folder');
 						$content[$name] = $mailbox;
 					}
+					//else error_log(__METHOD__."() $mailbox does NOT match array_intersect(".array2string($name_parts).', '.array2string($common_names).')='.array2string(array_intersect($name_parts, $common_names)));
 				}
 			}
+			$folders[$content[$name]] .= ' --> '.substr($name, 11).' folder';
 		}
+		// uncomment for infos about selection process
+		//$content['folder_output'] = implode("\n", $folders);
+
 		return array_combine(array_keys($mailboxes), array_keys($mailboxes));
 	}
 
@@ -1218,13 +1225,18 @@ class emailadmin_wizard
 	/**
 	 * Query Mozilla's ISPDB
 	 *
-	 * @param type $email
+	 * Some providers eg. 1-and-1 do not report their hosted domains to ISPDB,
+	 * therefore we try it with the found MX and it's domain-part (host-name removed).
+	 *
+	 * @param string $domain domain or email
+	 * @param boolean $try_mx=true if domain itself is not found, try mx or domain-part (host removed) of mx
 	 * @return array with values for keys 'displayName', 'imap', 'smtp', 'pop3', which each contain
 	 *	array of arrays with values for keys 'hostname', 'port', 'socketType'=(SSL|STARTTLS), 'username'=%EMAILADDRESS%
 	 */
-	protected function mozilla_ispdb($email)
+	protected static function mozilla_ispdb($domain, $try_mx=true)
 	{
-		list(,$domain) = explode('@', $email);
+		if (strpos($domain, '@') !== false) list(,$domain) = explode('@', $domain);
+
 		$url = 'https://autoconfig.thunderbird.net/v1.1/'.$domain;
 		try {
 			$xml = @simplexml_load_file($url);
@@ -1253,8 +1265,21 @@ class emailadmin_wizard
 		}
 		catch(Exception $e) {
 			// ignore own not-found exception or xml parsing execptions
-			$provider = array();
 			unset($e);
+
+			if ($try_mx && ($dns = dns_get_record($domain, DNS_MX)))
+			{
+				$domain = $dns[0]['target'];
+				if (!($provider = self::mozilla_ispdb($domain, false)))
+				{
+					list(,$domain) = explode('.', $domain, 2);
+					$provider = self::mozilla_ispdb($domain, false);
+				}
+			}
+			else
+			{
+				$provider = array();
+			}
 		}
 		//error_log(__METHOD__."('$email') returning ".array2string($provider));
 		return $provider;

@@ -49,6 +49,9 @@
 						<button label="Cancel" id="button[cancel]" onclick="window.close();" image="cancel" background_image="1"/>
 					</hbox>
 				</row>
+				<row>
+					<textbox multiline="true" id="folder_output" readonly="true" span="all"/>
+				</row>
 			</rows>
 		</grid>
 	</template>

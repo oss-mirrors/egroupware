@@ -317,14 +317,14 @@ class emailadmin_account implements ArrayAccess
 		$smtp->port = $params['acc_smtp_port'];
 		switch($params['acc_smtp_ssl'])
 		{
+			case self::SSL_TLS:			// requires modified PHPMailer, or comment next two lines to use just ssl!
+				$smtp->host = 'tlsv1://'.$smtp->host;
+				break;
 			case self::SSL_SSL:
 				$smtp->host = 'ssl://'.$smtp->host;
 				break;
-			case self::SSL_TLS:
+			case self::SSL_STARTTLS:	// PHPMailer uses 'tls' for STARTTLS, not ssl connection with tls version >= 1 and no sslv2/3
 				$smtp->host = 'tls://'.$smtp->host;
-				break;
-			case self::SSL_STARTTLS:
-				throw new egw_exception_wrong_parameter('STARTTLS currently not supported for SMTP');
 		}
 		$smtp->smtpAuth = !empty($params['acc_smtp_username']);
 		$smtp->username = $params['acc_smtp_username'];
