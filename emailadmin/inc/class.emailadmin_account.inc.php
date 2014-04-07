@@ -35,7 +35,7 @@
  * @property-read string $acc_imap_username
  * @property-read string $acc_imap_password
  * @property-read boolean $acc_sieve_enabled sieve enabled
- * @property-read string $acc_sieve_hostsieve host, default imap_host
+ * @property-read string $acc_sieve_host sieve host, default imap_host
  * @property-read int $acc_sieve_ssl 0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate
  * @property-read int $acc_sieve_port sieve port, default 4190, old non-ssl port 2000 or ssl 5190
  * @property-read string $acc_folder_sent sent folder
@@ -273,6 +273,7 @@ class emailadmin_account implements ArrayAccess
 			$this->oldImapServer = new $class();
 			$this->oldImapServer->ImapServerId = $this->params['acc_id'];
 			$this->oldImapServer->host = $this->params['acc_imap_host'];
+			$this->oldImapServer->sieveHost = $this->params['acc_sieve_host'];
 			$this->oldImapServer->encryption = $this->params['acc_imap_ssl'] & ~self::SSL_VERIFY;
 			$this->oldImapServer->port 	= $this->params['acc_imap_port'];
 			$this->oldImapServer->validatecert	= (boolean)($this->params['acc_imap_ssl'] & self::SSL_VERIFY);

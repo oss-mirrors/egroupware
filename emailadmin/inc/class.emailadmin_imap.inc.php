@@ -29,7 +29,7 @@ require_once EGW_INCLUDE_ROOT.'/emailadmin/inc/class.defaultimap.inc.php';
  * @property-read string $acc_imap_username
  * @property-read string $acc_imap_password
  * @property-read boolean $acc_sieve_enabled sieve enabled
- * @property-read string $acc_sieve_hostsieve host, default imap_host
+ * @property-read string $acc_sieve_host possible sieve hostname, default imap_host
  * @property-read int $acc_sieve_ssl 0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate
  * @property-read int $acc_sieve_port sieve port, default 4190, old non-ssl port 2000 or ssl 5190
  * @property-read string $acc_folder_sent sent folder
