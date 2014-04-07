@@ -1180,6 +1180,8 @@ class emailadmin_imapbase
 			//$_filter = array('status'=>array('UNDELETED'),'type'=>"SINCE",'string'=> date("d-M-Y", $starttime-(3600*24*7*12)));
 			$_sortResult = $this->getSortedList($_folderName, $_sort, $reverse, $_filter, $rByUid, $_cacheResult);
 			$sortResult = $_sortResult['match']->ids;
+			//$modseq = $_sortResult['modseq'];
+			//error_log(__METHOD__.' ('.__LINE__.') '.'Modsequence:'.$modseq);
 			if (self::$debug||self::$debugTimes) self::logRunTimes($starttime,null,' call getSortedList for Folder:'.$_folderName.' Filter:'.array2string($_filter).' Ids:'.array2string($_thisUIDOnly),__METHOD__.' ('.__LINE__.') ');
 
 			if (self::$debug) error_log(__METHOD__.' ('.__LINE__.') '.array2string($sortResult));
@@ -2044,6 +2046,7 @@ class emailadmin_imapbase
 	 * @param boolean _getCounters   get get messages counters
 	 * @param boolean _alwaysGetDefaultFolders  this triggers to ignore the possible notavailableautofolders - preference
 	 *			as activeSync needs all folders like sent, trash, drafts, templates and outbox - if not present devices may crash
+	 *			-> autoFolders should be created if needed / accessed (if possible and configured)
 	 * @param boolean _useCacheIfPossible  - if set to false cache will be ignored and reinitialized
 	 *
 	 * @return array with folder objects. eg.: INBOX => {inbox object}
@@ -2281,6 +2284,7 @@ class emailadmin_imapbase
 				}
 			  }
 			}
+/*
 			// check for autocreated folders
 			if(isset($foldersNameSpace['personal']['prefix'])) {
 				$personalPrefix = $foldersNameSpace['personal']['prefix'];
@@ -2381,6 +2385,7 @@ class emailadmin_imapbase
 					}
 				}
 			}
+*/
 		}
 		//echo "<br>FolderNameSpace To Process:";_debug_array($foldersNameSpace);
 		$autoFolderObjects = array();
@@ -2610,6 +2615,7 @@ class emailadmin_imapbase
 			'Trash'=>array('prefName'=>'trashFolder','profileKey'=>'acc_folder_trash','autoFolderName'=>'Trash'),
 			'Sent'=>array('prefName'=>'sentFolder','profileKey'=>'acc_folder_sent','autoFolderName'=>'Sent'),
 			'Junk'=>array('prefName'=>'junkFolder','profileKey'=>'acc_folder_junk','autoFolderName'=>'Junk'),
+			'Outbox'=>array('prefName'=>'outboxFolder','profileKey'=>'acc_folder_outbox','autoFolderName'=>'Outbox'),
 		);
 		if (!isset($types[$_type]))
 		{
@@ -2625,15 +2631,24 @@ class emailadmin_imapbase
 		}
 		catch (Exception $e)
 		{
+			// we know that outbox is not supported, but we use this here, as we autocreate expected SpecialUseFolders in this function
+			if ($_type != 'Outbox') error_log(__METHOD__.' ('.__LINE__.') '.' Failed to retrieve Folder'.$_folderName." for ".array2string($types[$_type]).":".$e->getMessage());
 			$_folderName = false;
 		}
-		// No folder Prefs any more
-		//check prefs next
-		//if (empty($_folderName)) $_folderName = $this->mailPreferences[$types[$_type]['prefName']];
-		// does the folder exist???
-		if ($_checkexistance && $_folderName !='none' && !$this->folderExists($_folderName)) {
-			$_folderName = false;
+		// does the folder exist??? (is configured/preset, but non-existent)
+		if ($_folderName && $_checkexistance && $_folderName !='none' && !$this->folderExists($_folderName)) {
+			try
+			{
+				$this->createFolder('', $_folderName, true);
+			}
+			catch(Exception $e)
+			{
+				error_log(__METHOD__.' ('.__LINE__.') '.' Failed to create Folder '.$_folderName." for $_type:".$e->getMessage());
+				$_folderName = false;
+			}
 		}
+		// not sure yet if false is the correct behavior on none
+		if ($_folderName =='none') return false;
 		//no (valid) folder found yet; try specialUseFolders
 		if (empty($_folderName) && is_array(self::$specialUseFolders) && ($f = array_search($_type,self::$specialUseFolders))) $_folderName = $f;
 		//no specialUseFolder; try some Defaults
@@ -2642,7 +2657,22 @@ class emailadmin_imapbase
 			$nameSpace = $this->_getNameSpaces();
 			$prefix='';
 			if (isset($nameSpace['personal'])) $prefix = $nameSpace['personal']['prefix'];
-			if ($this->folderExists($prefix.$types[$_type]['autoFolderName'])) $_folderName = $prefix.$types[$_type]['autoFolderName'];
+			if ($this->folderExists($prefix.$types[$_type]['autoFolderName']))
+			{
+				$_folderName = $prefix.$types[$_type]['autoFolderName'];
+			}
+			else
+			{
+				try
+				{
+					$this->createFolder('', $_folderName, true);
+				}
+				catch(Exception $e)
+				{
+					error_log(__METHOD__.' ('.__LINE__.') '.' Failed to create Folder '.$_folderName." for $_type:".$e->getMessage());
+					$_folderName = false;
+				}
+			}
 		}
 		return $_folderName;
 	}
@@ -2698,6 +2728,16 @@ class emailadmin_imapbase
 	}
 
 	/**
+	 * getOutboxFolder wrapper for _getSpecialUseFolder Type Outbox
+	 * @param boolean $_checkexistance, trigger check for existance
+	 * @return mixed string or false
+	 */
+	function getOutboxFolder($_checkexistance=TRUE)
+	{
+		return $this->_getSpecialUseFolder('Outbox', $_checkexistance);
+	}
+
+	/**
 	 * isSentFolder is the given folder the sent folder or at least a subfolder of it
 	 * @param string $_foldername, folder to perform the check on
 	 * @param boolean $_checkexistance, trigger check for existance
@@ -2705,7 +2745,7 @@ class emailadmin_imapbase
 	 */
 	function isSentFolder($_folderName, $_checkexistance=TRUE)
 	{
-		$sentFolder = $this->getSentFolder();
+		$sentFolder = $this->getSentFolder($_checkexistance);
 		if(empty($sentFolder)) {
 			return false;
 		}
@@ -2733,8 +2773,13 @@ class emailadmin_imapbase
 			return false;
 		}
 		// does the folder exist???
-		if ($_checkexistance && !$this->folderExists($_folderName)) {
-			return false;
+		if ($_checkexistance && $GLOBALS['egw_info']['user']['apps']['activesync'] && !$this->folderExists($_folderName)) {
+			$outboxFolder = $this->getOutboxFolder($_checkexistance);
+			if(false !== stripos($_folderName, $outboxFolder)) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -2747,7 +2792,7 @@ class emailadmin_imapbase
 	 */
 	function isDraftFolder($_folderName, $_checkexistance=TRUE)
 	{
-		$draftFolder = $this->getDraftFolder();
+		$draftFolder = $this->getDraftFolder($_checkexistance);
 		if(empty($draftFolder)) {
 			return false;
 		}
@@ -2771,7 +2816,7 @@ class emailadmin_imapbase
 	 */
 	function isTrashFolder($_folderName, $_checkexistance=TRUE)
 	{
-		$trashFolder = $this->getTrashFolder();
+		$trashFolder = $this->getTrashFolder($_checkexistance);
 		if(empty($trashFolder)) {
 			return false;
 		}
@@ -2795,7 +2840,7 @@ class emailadmin_imapbase
 	 */
 	function isTemplateFolder($_folderName, $_checkexistance=TRUE)
 	{
-		$templateFolder = $this->getTemplateFolder();
+		$templateFolder = $this->getTemplateFolder($_checkexistance);
 		if(empty($templateFolder)) {
 			return false;
 		}
@@ -2852,42 +2897,13 @@ class emailadmin_imapbase
 			//return false;
 			//try to connect
 		}
-		if(($this->icServer instanceof defaultimap))
+		try
 		{
 			$folderInfo[$this->profileID][$_folder] = $this->icServer->mailboxExist($_folder);
-			//error_log(__METHOD__.' ('.__LINE__.') '.' Profile:'.$this->profileID.'->'.$_folder.':'.array2string($folderInfo[$this->profileID][$_folder]));
-			// we are NOT DOING the below, as we switched the method in mailboxExist from list to
-			// the opening of the mailbox
-			/*
-			if ($folderInfo[$this->profileID][$_folder]==false)
-			{
-				// some servers dont serve the LIST command in certain cases; this is a ServerBUG and
-				// we try to work around it here.
-				if ((isset($this->mailPreferences['trustServersUnseenInfo']) &&
-					$this->mailPreferences['trustServersUnseenInfo']==false) ||
-					(isset($this->mailPreferences['trustServersUnseenInfo']) &&
-					$this->mailPreferences['trustServersUnseenInfo']==2)
-				)
-				{
-					$nameSpace = $this->_getNameSpaces();
-					if (isset($nameSpace['personal'])) unset($nameSpace['personal']);
-					$prefix = $this->getFolderPrefixFromNamespace($nameSpace, $_folder);
-					if ($prefix != '' && stripos($_folder,$prefix) !== false)
-					{
-						try
-						{
-							$r = $this->_getStatus($_folder);
-							if (is_array($r)) $folderInfo[$this->profileID][$_folder] = true;
-						}
-						catch (Exception $e)
-						{
-							error_log(__METHOD__." returned FolderStatus for Folder $_folder:".$e->getMessage());
-							$folderInfo[$this->profileID][$_folder]=false;
-						}
-					}
-				}
-			}
-			*/
+		}
+		catch (Exception $e)
+		{
+			$folderInfo[$this->profileID][$_folder] = false;
 		}
 		//error_log(__METHOD__.' ('.__LINE__.') '.' Folder Exists:'.$folderInfo[$this->profileID][$_folder].function_backtrace());
 
