@@ -422,26 +422,11 @@ class emailadmin_bo extends so_sql
 	 * Calls hook "smtp_server_types" to allow applications to supply own server-types
 	 *
 	 * @return array classname => label pairs
+	 * @deprecated use emailadmin_base::getSMTPServerTypes()
 	 */
 	static public function getSMTPServerTypes($extended=true)
 	{
-		$retData = array();
-		foreach($GLOBALS['egw']->hooks->process(array(
-			'location' => 'smtp_server_types',
-			'extended' => $extended,
-		), array('managementserver', 'emailadmin'), true) as $app => $data)
-		{
-			if ($data) $retData += $data;
-		}
-		uksort($retData, function($a, $b) {
-			static $prio = array(	// not explicitly mentioned get 0
-				'emailadmin_smtp' => 9,
-				'emailadmin_smtp_sql' => 8,
-				'smtpplesk' => -1,
-			);
-			return (int)$prio[$b] - (int)$prio[$a];
-		});
-		return $retData;
+		return emailadmin_base::getSMTPServerTypes($extended);
 	}
 
 	/**
@@ -451,31 +436,11 @@ class emailadmin_bo extends so_sql
 	 *
 	 * @param boolean $extended=true
 	 * @return array classname => label pairs
+	 * @deprecated use emailadmin_base::getIMAPServerTypes()
 	 */
 	static public function getIMAPServerTypes($extended=true)
 	{
-		$retData = array();
-		foreach($GLOBALS['egw']->hooks->process(array(
-			'location' => 'imap_server_types',
-			'extended' => $extended,
-		), array('managementserver', 'emailadmin'), true) as $app => $data)
-		{
-			if ($data) $retData += $data;
-		}
-		uksort($retData, function($a, $b) {
-			static $prio = array(	// not explicitly mentioned get 0
-				'emailadmin_imap' => 9,
-				'emailadmin_oldimap' => 9,
-				'managementserver_imap' => 8,
-				'emailadmin_dovecot' => 7,
-				'emailadmin_imap_dovecot' => 7,
-				'cyrusimap' => 6,
-				'emailadmin_imap_cyrus' => 6,
-				'pleskimap' => -1,
-			);
-			return (int)$prio[$b] - (int)$prio[$a];
-		});
-		return $retData;
+		return emailadmin_base::getIMAPServerTypes($extended);
 	}
 
 	/**
@@ -618,7 +583,7 @@ class emailadmin_bo extends so_sql
 			$eaPreferences = CreateObject('emailadmin.ea_preferences');
 			try
 			{
-				$icClass = self::getIcClass($data['imapType'], $old_ic_server);
+				$icClass = emailadmin_account::getIcClass($data['imapType'], $old_ic_server);
 				$icServer = new $icClass($data);
 				$icServer->ImapServerId	= $data['profileID']*-1;
 				$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes' ? 1 : (int)$data['imapTLSEncryption']);
@@ -744,57 +709,6 @@ class emailadmin_bo extends so_sql
 		}
 
 		return false;
-	}
-
-	/**
-	 * Get name and evtl. autoload incomming server class
-	 *
-	 * @param string $imap_type
-	 * @param boolean $old_ic_server=false true: return emailadmin_oldimap as icServer, false: use new emailadmin_imap
-	 * @return string
-	 */
-	public static function getIcClass($imap_type, $old_ic_server=false)
-	{
-		static $old2new_icClass = array(
-			'defaultimap' => 'emailadmin_imap',
-			'cyrusimap' => 'emailadmin_imap_cyrus',
-			'emailadmin_dovecot' => 'emailadmin_imap_dovecot',
-			'dbmaildbmailuser' => 'emailadmin_imap_dbmail',
-			'dbmailqmailuser' => 'emailadmin_imap_dbmail_qmail',
-		);
-		static $new2old_icClass = array(
-			'emailadmin_imap' => 'emailadmin_oldimap',
-			'emailadmin_imap_cyrus' => 'cyrusimap',
-			'emailadmin_imap_dovecot' => 'emailadmin_dovecot',
-			'emailadmin_imap_dbmail' => 'dbmaildbmailuser',
-			'emailadmin_imap_dbmail_qmail' => 'dbmailqmailuser',
-		);
-
-		// convert icClass to new name
-		$icClass = $imap_type;
-		if (isset($old2new_icClass[$icClass]))
-		{
-			$icClass = $old2new_icClass[$icClass];
-		}
-		// and if requested back to (new) name of Net_IMAP based class
-		if ($old_ic_server)
-		{
-			$icClass = $new2old_icClass[$icClass];
-		}
-
-		// fetch the IMAP / incomming server data
-		if (!class_exists($icClass))
-		{
-			if (file_exists($file=EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$icClass.'.inc.php'))
-			{
-				include_once($file);
-			}
-			else	// use default imap classes
-			{
-				$icClass = $old_ic_server ? 'emailadmin_oldimap' : 'emailadmin_imap';
-			}
-		}
-		return $icClass;
 	}
 
 	/**
@@ -1093,40 +1007,21 @@ class emailadmin_bo extends so_sql
 	 * Get ID of default new account profile
 	 *
 	 * @return int
+	 * @deprecated use emailadmin_account::get_default_acc_id()
 	 */
 	static function getDefaultAccID()
 	{
-		try
-		{
-			foreach(emailadmin_account::search($only_current_user=true, $just_name=true) as $acc_id => $name)
-			{
-				return $acc_id;
-			}
-		} catch (Exception $e)
-		{
-			error_log(__METHOD__.__LINE__.' Error no Default available.'.$e->getMessage());
-		}
-		return null;
+		return emailadmin_account::get_default_acc_id();
 	}
 
 	/**
 	 * Get ID of User specific default new account profile
 	 *
 	 * @return int
+	 * @deprecated use emailadmin_account::get_default_acc_id()
 	 */
 	static function getUserDefaultAccID()
 	{
-		try
-		{
-			foreach(emailadmin_account::search($only_current_user=true, $just_name=true) as $acc_id => $name)
-			{
-				return $acc_id;
-			}
-		} catch (Exception $e)
-		{
-			error_log(__METHOD__.__LINE__.' Error no UserDefault available.'.$e->getMessage());
-		}
-		return null;
+		return emailadmin_account::get_default_acc_id();
 	}
-
 }

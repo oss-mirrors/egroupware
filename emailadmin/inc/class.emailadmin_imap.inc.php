@@ -41,8 +41,8 @@ require_once EGW_INCLUDE_ROOT.'/emailadmin/inc/class.defaultimap.inc.php';
  * @property-read string $acc_imap_logintype how to construct login-name standard, vmailmgr, admin, uidNumber
  * @property-read string $acc_domain domain name
  * @property-read boolean $acc_imap_administration enable administration
- * @property-read string $acc_admin_username
- * @property-read string $acc_admin_password
+ * @property-read string $acc_imap_admin_username
+ * @property-read string $acc_imap_admin_password
  * @property-read boolean $acc_further_identities are non-admin users allowed to create further identities
  * @property-read boolean $acc_user_editable are non-admin users allowed to edit this account, if it is for them
  * @property-read array $params parameters passed to constructor (all above as array)
@@ -169,6 +169,20 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	}
 
 	/**
+	 * Check admin credientials and connection (if supported)
+	 *
+	 * @throws Horde_IMAP_Client_Exception
+	 */
+	public function checkAdminConnection()
+	{
+		if ($this->acc_imap_administration && method_exists($this, 'adminConnection'))
+		{
+			$this->adminConnection();
+			$this->login();
+		}
+	}
+
+	/**
 	 * Allow read access to former public attributes
 	 *
 	 * @param type $name
@@ -177,6 +191,9 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	{
 		switch($name)
 		{
+			case 'acc_imap_administration':
+				return !empty($this->params['acc_imap_admin_username']);
+
 			case 'ImapServerId':
 				return $this->params['acc_id'];
 
@@ -856,7 +873,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			$_username .= '@'. $this->domainName;
 		}
 
-		$mailboxString = $nameSpaces['others'][0]['name'] . $_username . (!empty($_folderName) ? $nameSpaces['others'][0]['delimiter'] . $_folderName : '');
+		$mailboxString = $nameSpaces['others']['name'] . $_username . (!empty($_folderName) ? $nameSpaces['others']['delimiter'] . $_folderName : '');
 
 		return $mailboxString;
 	}
@@ -915,18 +932,29 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 * used by admin connections only
 	 *
 	 * @param string $_username
-	 * @param string $_what - what to retrieve either QMAX, USED or ALL is supported
-	 * @returnmixed the quota for specified user (by what) or array with all available Quota Information, or false
+	 * @param string $_what - what to retrieve either limit/QMAX, usage/USED or ALL is supported
+	 * @return int|array|boolean the quota for specified user (by what) or array with values for "limit" and "usage", or false
 	 */
 	function getQuotaByUser($_username, $_what='QMAX')
 	{
 		$mailboxName = $this->getUserMailboxString($_username);
 		$storageQuota = $this->getQuotaRoot($mailboxName);
-		//error_log(__METHOD__.' Username:'.$_username.' Mailbox:'.$mailboxName.' Quota('.$_what.'):'.array2string($storageQuota));
-		if ( PEAR::isError($storageQuota)) error_log(__METHOD__.$storageQuota->message);
-		if(is_array($storageQuota) && (isset($storageQuota[$_what])||($_what=='ALL' && (isset($storageQuota['QMAX'])||isset($storageQuota['USED']))))) {
-			//error_log(__METHOD__.' '.array2string($storageQuota).' '.$_what.' => '.(int)$storageQuota[$_what]);
-			return ($_what=='ALL'?$storageQuota:(int)$storageQuota[$_what]);
+		//error_log(__METHOD__.' Username:'.$_username.' Mailbox:'.$mailboxName.' getQuotaRoot('.$_what.'):'.array2string($storageQuota));
+
+		if (is_array($storageQuota) && isset($storageQuota[$mailboxName]) && is_array($storageQuota[$mailboxName]) &&
+			isset($storageQuota[$mailboxName]['storage']) && is_array($storageQuota[$mailboxName]['storage']))
+		{
+			switch($_what)
+			{
+				case 'QMAX':
+					$_what = 'limit';
+					break;
+				case 'USED':
+					$_what = 'usage';
+				case 'ALL':
+					return $storageQuota[$mailboxName]['storage'];
+			}
+			return isset($storageQuota[$mailboxName]['storage'][$_what]) ? (int)$storageQuota[$mailboxName]['storage'][$_what] : false;
 		}
 
 		return false;
@@ -1059,4 +1087,14 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			if ($_reschedule) $async->set_timer($time,$async_id,'felamimail.bosieve.async_vacation',$_vacation+array('scriptName'=>$_scriptName),$user);
 		}
  	}
+
+	/**
+	 * Return fields or tabs which should be readonly in UI for given imap implementation
+	 *
+	 * @return array fieldname => true pairs or 'tabs' => array(tabname => true)
+	 */
+	public static function getUIreadonlys()
+	{
+		return array();
+	}
 }

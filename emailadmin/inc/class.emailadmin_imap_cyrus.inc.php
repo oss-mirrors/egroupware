@@ -14,7 +14,7 @@
 /**
  * Manages connection to Cyrus IMAP server
  */
-class cyrusimap extends emailadmin_oldimap
+class emailadmin_imap_cyrus extends emailadmin_imap
 {
 	/**
 	 * Label shown in EMailAdmin
@@ -37,11 +37,18 @@ class cyrusimap extends emailadmin_oldimap
 	// mailbox prefix
 	var $mailboxPrefix = '';
 
-	var $enableCyrusAdmin = false;
+	/**
+	 * Ensure we use an admin connection
+	 */
+	function adminConnection()
+	{
+		if (!$this->isAdminConnection)
+		{
+			$this->logout();
 
-	var $cyrusAdminUsername;
-
-	var $cyrusAdminPassword;
+			$this->__construct($this->params, true);
+		}
+	}
 
 	/**
 	 * Updates an account
@@ -79,33 +86,32 @@ class cyrusimap extends emailadmin_oldimap
 	 */
 	function deleteUsers($username='%')
 	{
-		if(!$this->enableCyrusAdmin || empty($username)) {
+		if(!$this->acc_imap_administration || empty($username))
+		{
 			return false;
 		}
 
-		// we need a admin connection, but check connected status as well, in case we are not
-		if(($this->_connected === true && !$this->isAdminConnection) || !($this->_connected === true)) {
-			if ($this->_connected === true) $this->disconnect();
-			if(!$this->openConnection(true)) {
-				return false;
-			}
-		}
+		// we need a admin connection
+		$this->adminConnection();
+
 		$mailboxName = $this->getUserMailboxString($username);
 		list($reference,$restriction) = explode($username,$mailboxName,2);
-		$mboxes = $this->getMailboxes($reference,$username.$restriction);
-		//error_log(__METHOD__."('$username') getMailboxes('$reference','$username$restriction') = ".array2string($mboxes));
 
-		foreach($mboxes as $mbox) {
-			// give the admin account the rights to delete this mailbox
-			if(PEAR::isError($this->setACL($mbox, $this->adminUsername, 'lrswipcda'))) {
-				$this->disconnect();
-				return false;
-			}
+		try {
+			$mboxes = $this->getMailboxes($reference,$username.$restriction);
+			//error_log(__METHOD__."('$username') getMailboxes('$reference','$username$restriction') = ".array2string($mboxes));
 
-			if(PEAR::isError($this->deleteMailbox($mbox))) {
-				$this->disconnect();
-				return false;
+			foreach($mboxes as $mbox)
+			{
+				// give the admin account the rights to delete this mailbox
+				$this->setACL($mbox, $this->adminUsername, 'lrswipcda');
+				$this->deleteMailbox($mbox);
 			}
+		}
+		catch(Horde_Imap_Client_Exception $e) {
+			_egw_log_exception($e);
+			$this->disconnect();
+			return false;
 		}
 		$this->disconnect();
 
@@ -121,18 +127,15 @@ class cyrusimap extends emailadmin_oldimap
 	 */
 	function getUserData($_username)
 	{
-		if($this->_connected === true) {
-			//error_log(__METHOD__."try to disconnect");
-			$this->disconnect();
-		}
-
-		$this->openConnection(true);
+		$this->adminConnection();
 		$userData = array();
 
-		if($quota = $this->getQuotaByUser($_username,'ALL')) {
-			$userData['quotaLimit'] = (int)($quota['QMAX'] / 1024);
-			$userData['quotaUsed'] = (int)($quota['USED'] / 1024);
+		if(($quota = $this->getQuotaByUser($_username,'ALL')))
+		{
+			$userData['quotaLimit'] = (int)($quota['limit'] / 1024);
+			$userData['quotaUsed'] = (int)($quota['usage'] / 1024);
 		}
+		//error_log(__LINE__.': '.__METHOD__."('$_username') quota=".array2string($quota).' returning '.array2string($userData));
 
 		$this->disconnect();
 
@@ -148,28 +151,17 @@ class cyrusimap extends emailadmin_oldimap
 	 */
 	function setUserData($_username, $_quota)
 	{
-		if(!$this->enableCyrusAdmin) {
+		if(!$this->acc_imap_administration)
+		{
 			return false;
-		}
-
-		if($this->_connected === true) {
-			$this->disconnect();
 		}
 
 		// create a admin connection
-		if(!$this->openConnection(true)) {
-			return false;
-		}
+		$this->adminConnection();
 
 		$mailboxName = $this->getUserMailboxString($_username);
 
-		if((int)$_quota > 0) {
-			// enable quota
-			$quota_value = $this->setStorageQuota($mailboxName, (int)$_quota*1024);
-		} else {
-			// disable quota
-			$quota_value = $this->setStorageQuota($mailboxName, -1);
-		}
+		$this->setQuota($mailboxName, array('STORAGE' => (int)$_quota > 0 ? (int)$_quota*1024 : -1));
 
 		$this->disconnect();
 
@@ -183,34 +175,27 @@ class cyrusimap extends emailadmin_oldimap
 	 */
 	function updateAccount($_hookValues)
 	{
-		if(!$this->enableCyrusAdmin) {
+		if(!$this->acc_imap_administration)
+		{
 			return false;
-		}
-		#_debug_array($_hookValues);
-		$username 	= $_hookValues['account_lid'];
-		if(isset($_hookValues['new_passwd'])) {
-			$userPassword	= $_hookValues['new_passwd'];
-		}
-
-		if($this->_connected === true) {
-			$this->disconnect();
 		}
 
 		// we need a admin connection
-		if(!$this->openConnection(true)) {
-			return false;
-		}
+		$this->adminConnection();
 
 		// create the mailbox, with the account_lid, as it is passed from the hook values (gets transformed there if needed)
-		$mailboxName = $this->getUserMailboxString($username, $mailboxName);
+		$mailboxName = $this->getUserMailboxString($_hookValues['account_lid'], $mailboxName);
 		// make sure we use the correct username here.
-		$username = $this->getMailBoxUserName($username);
+		$username = $this->getMailBoxUserName($_hookValues['account_lid']);
 		$folderInfo = $this->getMailboxes('', $mailboxName, true);
-		if(empty($folderInfo)) {
-			if(!PEAR::isError($this->createMailbox($mailboxName))) {
-				if(PEAR::isError($this->setACL($mailboxName, $username, "lrswipcda"))) {
-					# log error message
-				}
+		if(empty($folderInfo))
+		{
+			try {
+				$this->createMailbox($mailboxName);
+				$this->setACL($mailboxName, $username, "lrswipcda");
+			}
+			catch(Horde_Imap_Client_Exception $e) {
+				_egw_log_exception($e);
 			}
 		}
 		$this->disconnect();

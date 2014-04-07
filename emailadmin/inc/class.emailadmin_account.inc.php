@@ -73,7 +73,8 @@
  * @property-read array $mailForwardingAddress address(es) to forward to
  * @property-read string $accountStatus "active", if account is enabled to receive mail
  * @property-read string $deliveryMode "forwardOnly", if account only forwards (no imap account!)
- * @property-read int $quotaLimit quota in MB
+ * @property-read int $quotaLimit quota limit in MB
+ * @property-read int $quotaUsed quota usage in MB
  * @property-read int $acc_imap_default_quota quota in MB, if no user specific one set
  * @property-read int $acc_imap_timeout timeout for imap connection, default 20s
  * @property-read array $notif_folders folders user wants to be notified about new mails
@@ -235,7 +236,13 @@ class emailadmin_account implements ArrayAccess
 
 		$this->user = $called_for ? $called_for : $GLOBALS['egw_info']['user']['account_id'];
 
-		// if we manage the mail-account, include that data too
+		// if we manage the mail-account, include that data too (imap has higher precedence)
+		if ($this->acc_imap_type != 'emailadmin_imap' && $this->imapServer() &&
+			is_a($this->imapServer, 'emailadmin_imap') &&
+			($data = $this->imapServer->getUserData($this->user)))
+		{
+			$this->params += $data;
+		}
 		if ($this->acc_smtp_type != 'emailadmin_smtp' && $this->smtpServer() &&
 			($data = $this->smtpServer->getUserData($this->user)))
 		{
@@ -254,7 +261,7 @@ class emailadmin_account implements ArrayAccess
 	{
 		if (!isset($this->imapServer) )
 		{
-			$class = emailadmin_bo::getIcClass($this->params['acc_imap_type']);
+			$class = self::getIcClass($this->params['acc_imap_type']);
 			$this->imapServer = new $class($this->params, $_adminConnection, $_timeout);
 		}
 		return $this->imapServer;
@@ -269,7 +276,7 @@ class emailadmin_account implements ArrayAccess
 	{
 		if (!isset($this->oldImapServer))
 		{
-			$class = emailadmin_bo::getIcClass($this->params['acc_imap_type'], true);
+			$class = self::getIcClass($this->params['acc_imap_type'], true);
 			$this->oldImapServer = new $class();
 			$this->oldImapServer->ImapServerId = $this->params['acc_id'];
 			$this->oldImapServer->host = $this->params['acc_imap_host'];
@@ -285,6 +292,50 @@ class emailadmin_account implements ArrayAccess
 			$this->oldImapServer->domainName = $this->params['acc_domain'];
 		}
 		return $this->oldImapServer;
+	}
+
+	/**
+	 * Get name and evtl. autoload incomming server class
+	 *
+	 * @param string $imap_type
+	 * @param boolean $old_ic_server=false true: return emailadmin_oldimap as icServer, false: use new emailadmin_imap
+	 * @return string
+	 */
+	public static function getIcClass($imap_type, $old_ic_server=false)
+	{
+		static $old2new_icClass = array(
+			'defaultimap' => 'emailadmin_imap',
+			'cyrusimap' => 'emailadmin_imap_cyrus',
+			'emailadmin_dovecot' => 'emailadmin_imap_dovecot',
+			'dbmaildbmailuser' => 'emailadmin_imap_dbmail',
+			'dbmailqmailuser' => 'emailadmin_imap_dbmail_qmail',
+		);
+
+		// convert icClass to new name
+		$icClass = $imap_type;
+		if (isset($old2new_icClass[$icClass]))
+		{
+			$icClass = $old2new_icClass[$icClass];
+		}
+		// if old Net_IMAP based class requested, always return emailadmin_oldimap
+		if ($old_ic_server)
+		{
+			$icClass = 'emailadmin_oldimap';
+		}
+
+		// fetch the IMAP / incomming server data
+		if (!class_exists($icClass))
+		{
+			if (file_exists($file=EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$icClass.'.inc.php'))
+			{
+				include_once($file);
+			}
+			else	// use default imap classes
+			{
+				$icClass = $old_ic_server ? 'emailadmin_oldimap' : 'emailadmin_imap';
+			}
+		}
+		return $icClass;
 	}
 
 	/**
@@ -988,6 +1039,12 @@ class emailadmin_account implements ArrayAccess
 			$smtp->setUserData($user, $data['mailAlternateAddress'], $data['mailForwardingAddress'],
 				$data['deliveryMode'], $data['accountStatus'], $data['mailLocalAddress'], $data['quotaLimit']);
 		}
+		if ($user > 0 && $data['acc_imap_type'] && $data['acc_imap_type'] != 'emailadmin_imap')
+		{
+			$class = self::getIcClass($data['acc_imap_type']);
+			$imap = new $class($data, true);
+			$imap->setUserData($user, $data['quotaLimit']);
+		}
 
 		self::cache_invalidate($data['acc_id']);
 		//error_log(__METHOD__."() returning ".array2string($data));
@@ -1135,6 +1192,30 @@ class emailadmin_account implements ArrayAccess
 			{
 				return $row['acc_id'];
 			});
+	}
+
+	/**
+	 * Get ID of default mail account
+	 *
+	 *
+	 *
+	 * @return int
+	 */
+	static function get_default_acc_id()
+	{
+		try
+		{
+			foreach(emailadmin_account::search() as $acc_id => $name)
+			{
+				unset($name);
+				return $acc_id;
+			}
+		}
+		catch (Exception $e)
+		{
+			error_log(__METHOD__.__LINE__.' Error no Default available.'.$e->getMessage());
+		}
+		return null;
 	}
 
 	/**

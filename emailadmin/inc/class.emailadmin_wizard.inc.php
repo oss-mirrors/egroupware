@@ -852,12 +852,12 @@ class emailadmin_wizard
 					$content['identities'][$content['std_ident_id']] = lang('Standard identity');
 				}
 				catch(egw_exception_not_found $e) {
-					egw_framework::window_close(lang('Account not found!'));
 					if (self::$debug) _egw_log_exception($e);
+					egw_framework::window_close(lang('Account not found!'));
 				}
 				catch(Exception $e) {
-					egw_framework::window_close($e->getMessage().' ('.get_class($e).': '.$e->getCode().')');
 					if (self::$debug) _egw_log_exception($e);
+					egw_framework::window_close($e->getMessage().' ('.get_class($e).': '.$e->getCode().')');
 				}
 			}
 			elseif ($content['acc_id'] === 'new')
@@ -934,6 +934,10 @@ class emailadmin_wizard
 				case 'save':
 				case 'apply':
 					try {
+						// if admin username/password given, check if it is valid
+						$account = new emailadmin_account($content);
+						$imap = $account->imapServer();
+						if ($imap) $imap->checkAdminConnection();
 						// save none-standard identity for current user
 						if ($content['acc_id'] && $content['acc_id'] !== 'new' &&
 							$content['acc_further_identities'] &&
@@ -1012,6 +1016,14 @@ class emailadmin_wizard
 								}
 							}
 						}
+					}
+					catch (Horde_Imap_Client_Exception $e)
+					{
+						_egw_log_exception($e);
+						$tpl->set_validation_error('acc_imap_admin_username', $msg=lang($e->getMessage()));
+						$msg_type = 'error';
+						$content['tabs'] = 'emailadmin.account.imap';	// should happen automatic
+						break;
 					}
 					catch (Exception $e) {
 						$msg = lang('Error saving account!')."\n".$e->getMessage();
@@ -1102,8 +1114,8 @@ class emailadmin_wizard
 				return $this->add($content, $e->getMessage().' ('.get_class($e).': '.$e->getCode().')');
 			}
 		}
-		$sel_options['acc_imap_type'] = emailadmin_bo::getIMAPServerTypes(false);
-		$sel_options['acc_smtp_type'] = emailadmin_bo::getSMTPServerTypes(false);
+		$sel_options['acc_imap_type'] = emailadmin_base::getIMAPServerTypes(false);
+		$sel_options['acc_smtp_type'] = emailadmin_base::getSMTPServerTypes(false);
 		$sel_options['acc_imap_logintype'] = self::$login_types;
 		$sel_options['ident_id'] = $content['identities'];
 		$sel_options['acc_id'] = $content['accounts'];
@@ -1155,6 +1167,12 @@ class emailadmin_wizard
 		// disable aliases tab for default smtp class emailadmin_smtp
 		$readonlys['tabs']['emailadmin.account.aliases'] = !$content['acc_smtp_type'] ||
 			$content['acc_smtp_type'] == 'emailadmin_smtp';
+
+		// allow imap classes to disable certain tabs or fields
+		if (($class = emailadmin_account::getIcClass($content['acc_imap_type'])) && class_exists($class))
+		{
+			$readonlys = array_merge_recursive($readonlys, call_user_func(array($class, 'getUIreadonlys')));
+		}
 
 		egw_framework::message($msg ? $msg : (string)$_GET['msg'], $msg_type);
 

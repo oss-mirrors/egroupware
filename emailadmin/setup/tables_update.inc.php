@@ -439,8 +439,8 @@ function emailadmin_upgrade1_9_006()
 			'acc_smtp_host' => array('type' => 'varchar','precision' => '128','comment' => 'smtp hostname'),
 			'acc_smtp_ssl' => array('type' => 'int','precision' => '1','nullable' => False,'default' => '0','comment' => '0=none, 1=starttls, 2=tls, 3=ssl, &8=validate certificate'),
 			'acc_smtp_port' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '25','comment' => 'smtp port'),
-			'acc_smtp_type' => array('type' => 'varchar','precision' => '20','default' => 'emailadmin_smtp','comment' => 'smtp class to use'),
-			'acc_imap_type' => array('type' => 'varchar','precision' => '20','default' => 'emailadmin_imap','comment' => 'imap class to use'),
+			'acc_smtp_type' => array('type' => 'varchar','precision' => '32','default' => 'emailadmin_smtp','comment' => 'smtp class to use'),
+			'acc_imap_type' => array('type' => 'varchar','precision' => '32','default' => 'emailadmin_imap','comment' => 'imap class to use'),
 			'acc_imap_logintype' => array('type' => 'varchar','precision' => '20','comment' => 'standard, vmailmgr, admin, uidNumber'),
 			'acc_domain' => array('type' => 'varchar','precision' => '100','comment' => 'domain name'),
 			'acc_further_identities' => array('type' => 'bool','nullable' => False,'default' => '1','comment' => '0=no, 1=yes'),
@@ -569,7 +569,7 @@ function emailadmin_upgrade1_9_010()
 				$account = array(
 					'acc_name' => $row['ea_description'],
 					'ident_id' => $ident_id,
-					'acc_imap_type' => emailadmin_bo::getIcClass($row['ea_imap_type']),
+					'acc_imap_type' => emailadmin_account::getIcClass($row['ea_imap_type']),
 					'acc_imap_logintype' => $row['ea_imap_login_type'],
 					'acc_imap_host' => $row['ea_imap_server'],
 					'acc_imap_ssl' => $row['ea_imap_tsl_encryption'] | ($row['ea_imap_tsl_auth'] === 'yes' ? 8 : 0),
@@ -841,3 +841,21 @@ function emailadmin_upgrade1_9_017()
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.018';
 }
 
+
+function emailadmin_upgrade1_9_018()
+{
+	$GLOBALS['egw_setup']->oProc->AlterColumn('egw_ea_accounts','acc_smtp_type',array(
+		'type' => 'varchar',
+		'precision' => '32',
+		'default' => 'emailadmin_smtp',
+		'comment' => 'smtp class to use'
+	));
+	$GLOBALS['egw_setup']->oProc->AlterColumn('egw_ea_accounts','acc_imap_type',array(
+		'type' => 'varchar',
+		'precision' => '32',
+		'default' => 'emailadmin_imap',
+		'comment' => 'imap class to use'
+	));
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.019';
+}

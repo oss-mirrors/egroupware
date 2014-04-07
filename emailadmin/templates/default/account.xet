@@ -267,9 +267,9 @@
 					<description for="quotaLimit" value="Quota (MB)"/>
 					<hbox>
 						<textbox type="integer" id="quotaLimit"/>
-						<description value="(Leave empty for no quota)"/>
+						<description value="Leave empty for no quota"/>
 					</hbox>
-					<textbox type="integer" label="Currently:" id="quota" readonly="true"/>
+					<textbox type="integer" label="Currently:" id="quotaUsed" readonly="true"/>
 				</row>
 			</rows>
 		</grid>

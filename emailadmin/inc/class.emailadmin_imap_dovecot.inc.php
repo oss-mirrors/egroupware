@@ -18,7 +18,7 @@
  *   --> require by webserver writable user_home to be configured, otherwise deleting get ignored like with defaultimap
  * - quota can be read, but not set
  */
-class emailadmin_dovecot extends emailadmin_oldimap
+class emailadmin_imap_dovecot extends emailadmin_imap
 {
 	/**
 	 * Label shown in EMailAdmin
@@ -40,12 +40,6 @@ class emailadmin_dovecot extends emailadmin_oldimap
 	// mailbox prefix
 	var $mailboxPrefix = '';
 
-	var $enableCyrusAdmin = false;
-
-	var $cyrusAdminUsername;
-
-	var $cyrusAdminPassword;
-
 	/**
 	 * To enable deleting of a mailbox user_home has to be set and be writable by webserver
 	 *
@@ -59,24 +53,24 @@ class emailadmin_dovecot extends emailadmin_oldimap
 	var $user_home;	// = '/var/dovecot/imap/%d/%u';
 
 	/**
-	 * Opens a connection to a imap server
+	 * Ensure we use an admin connection
 	 *
-	 * Reimplemented to prefix adminUsername with real username (separated by an asterisk)
-	 *
-	 * @param bool $_adminConnection create admin connection if true
-	 * @return resource the imap connection
+	 * Prefixes adminUsername with real username (separated by an asterisk)
 	 */
-	function openConnection($_adminConnection=false, $_timeout=20)
+	function adminConnection()
 	{
-		if ($_adminConnection)
+		if (($pos = strpos($this->acc_imap_admin_username, '*')) !== false)	// remove evtl. set username
 		{
-			if (($pos = strpos($this->adminUsername, '*')) !== false)	// remove evtl. set username
-			{
-				$this->adminUsername = substr($this->adminUsername, $pos+1);
-			}
-			$this->adminUsername = $this->loginName.'*'.$this->adminUsername;
+			$this->params['acc_imap_admin_username'] = substr($this->acc_imap_admin_username, $pos+1);
 		}
-		return parent::openConnection($_adminConnection, $_timeout);
+		$this->params['acc_imap_admin_username'] = $this->acc_imap_username.'*'.$this->acc_imap_admin_username;
+
+		if (!$this->isAdminConnection)
+		{
+			$this->logout();
+
+			$this->__construct($this->params, true);
+		}
 	}
 
 	/**
@@ -115,7 +109,7 @@ class emailadmin_dovecot extends emailadmin_oldimap
 	 */
 	function deleteUsers($username='%')
 	{
-		if(!$this->enableCyrusAdmin || empty($username))
+		if(!$this->acc_imap_administration || empty($username))
 		{
 			return false;
 		}
@@ -195,32 +189,28 @@ class emailadmin_dovecot extends emailadmin_oldimap
 	 */
 	function getUserData($_username)
 	{
-		// we need a connection to fetch the namespace to get the users mailbox string
-		if($this->_connected === false) $this->openConnection();
 		$bufferUsername = $this->username;
 		$bufferLoginName = $this->loginName;
 		$this->username = $_username;
 		$nameSpaces = $this->getNameSpaces();
 		$mailBoxName = $this->getUserMailboxString($this->username);
 		$this->loginName = str_replace((is_array($nameSpaces)?$nameSpaces['others'][0]['name']:'user/'),'',$mailBoxName); // we need to strip the namespacepart
+
 		// now disconnect to be able to reestablish the connection with the targetUser while we go on
-		if($this->_connected === true)
-		{
-			//error_log(__METHOD__."try to disconnect");
-			$this->disconnect();
-		}
+		$this->adminConnection();
 
 		$userData = array();
 		// we are authenticated with master but for current user
-		if($this->openConnection(true) === true && ($quota = $this->getStorageQuotaRoot('INBOX')) && !PEAR::isError($quota))
+		if(($quota = $this->getStorageQuotaRoot('INBOX')))
 		{
-			$userData['quotaLimit'] = (int) ($quota['QMAX'] / 1024);
-			$userData['quotaUsed'] = (int) ($quota['USED'] / 1024);
+			$userData['quotaLimit'] = (int) ($quota['limit'] / 1024);
+			$userData['quotaUsed'] = (int) ($quota['usage'] / 1024);
 		}
 		$this->username = $bufferUsername;
 		$this->loginName = $bufferLoginName;
 		$this->disconnect();
 
+		//error_log(__METHOD__."('$_username') getStorageQuotaRoot('INBOX')=".array2string($quota).' returning '.array2string($userData));
 		return $userData;
 	}
 
@@ -236,6 +226,8 @@ class emailadmin_dovecot extends emailadmin_oldimap
 	 */
 	function setUserData($_username, $_quota)
 	{
+		unset($_username); unset($_quota);	// not used, but required by function signature
+
 		return true;
 	}
 
@@ -246,7 +238,9 @@ class emailadmin_dovecot extends emailadmin_oldimap
 	 */
 	function updateAccount($_hookValues)
 	{
-		if(!$this->enableCyrusAdmin)
+		unset($_hookValues);	// not used, but required by function signature
+
+		if(!$this->acc_imap_administration)
 		{
 			return false;
 		}
