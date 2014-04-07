@@ -1,5 +1,6 @@
 %1 entries deleted.	emailadmin	en	%1 entries deleted.
 (imapclass must support this feature by querying the corresponding config value and pass it as defaultquota to the imapserver)	emailadmin	en	(imapclass must support this feature by querying the corresponding config value and pass it as defaultquota to the imapserver)
+(no subject)	emailadmin	en	(no subject)
 account '%1' not found !!!	emailadmin	en	Account '%1' not found!
 account deleted.	emailadmin	en	Account deleted.
 account not found!	emailadmin	en	Account not found!
@@ -27,6 +28,7 @@ can be used by user	emailadmin	en	Can be used by user
 connection dropped by imap server.	emailadmin	en	Connection dropped by IMAP server.
 connection is not secure! everyone can read eg. your credentials.	emailadmin	en	Connection is NOT secure! Everyone can read eg. your credentials.
 continue	emailadmin	en	Continue
+could not append message:	emailadmin	en	Could not append Message:
 could not complete request. reason given: %s	emailadmin	en	Could not complete request. %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	en	Could not open secure connection to the IMAP server. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	en	CRAM-MD5 or DIGEST-MD5 requires the Auth_SASL package to be installed.
@@ -37,6 +39,8 @@ cyrus imap server administration	emailadmin	en	Cyrus IMAP server administration
 default	emailadmin	en	Default
 delete this account	emailadmin	en	Delete this account
 deliver extern	emailadmin	en	Deliver extern
+displaying html messages is disabled	emailadmin	en	displaying html messages is disabled
+displaying plain messages is disabled	emailadmin	en	displaying plain messages is disabled
 do not validate certificate	emailadmin	en	Do not validate certificate
 do you really want to delete this profile	emailadmin	en	Do you really want to delete this profile?
 do you really want to reset the filter for the profile listing	emailadmin	en	Do you really want to reset the filter for the profile listing?
@@ -60,7 +64,9 @@ error deleting entry!	emailadmin	en	Error deleting entry!
 error saving account!	emailadmin	en	Error saving account!
 error saving the entry!!!	emailadmin	en	Error saving the entry!
 error, no username!	emailadmin	en	Error, no username!
+event details follow	emailadmin	en	Event Details follow
 failed to delete account!	emailadmin	en	Failed to delete account!
+file rejected, no %2. is:%1	emailadmin	en	File rejected, no %2. Is:%1
 filtered by account	emailadmin	en	Filtered by account
 filtered by group	emailadmin	en	Filtered by group
 forward also to	emailadmin	en	Forward also to
@@ -84,6 +90,7 @@ imap server logintyp	emailadmin	en	IMAP server login type
 imap server name	emailadmin	en	IMAP server name
 imap server port	emailadmin	en	IMAP server port
 imap/pop3 server name	emailadmin	en	IMAP/POP3 server name
+importance	emailadmin	en	importance
 in mbyte	emailadmin	en	in MByte
 inactive	emailadmin	en	Inactive
 ldap basedn	emailadmin	en	LDAP basedn
@@ -103,6 +110,7 @@ no alternate email address	emailadmin	en	No alternate email address
 no encryption	emailadmin	en	No encryption
 no forwarding email address	emailadmin	en	No forwarding email address
 no message returned.	emailadmin	en	No message returned
+no plain text part found	emailadmin	en	no plain text part found
 no sieve support detected, either fix configuration manually or leave it switched off.	emailadmin	en	No sieve support detected, either fix configuration manually or leave it switched off.
 no supported imap authentication method could be found.	emailadmin	en	No supported IMAP authentication method could be found.
 order	emailadmin	en	Order
@@ -116,6 +124,7 @@ pop3 server hostname or ip address	emailadmin	en	POP3 server hostname or IP addr
 pop3 server port	emailadmin	en	POP3 server port
 port	emailadmin	en	Port
 postfix with ldap	emailadmin	en	Postfix with LDAP
+processing of file %1 failed. failed to meet basic restrictions.	emailadmin	en	Processing of file %1 failed. Failed to meet basic restrictions.
 profile access rights	emailadmin	en	Profile access rights
 profile is active	emailadmin	en	Profile is active
 profile list	emailadmin	en	Profile list
@@ -125,7 +134,10 @@ quota settings	emailadmin	en	Quota settings
 quota size in mbyte	emailadmin	en	Quota size in MByte
 relay access checked	emailadmin	en	Relay access checked
 remove	emailadmin	en	Remove
+required pear class mail/mimedecode.php not found.	emailadmin	en	Required PEAR class Mail/mimeDecode.php not found.
 reset filter	emailadmin	en	Reset filter
+save of message %1 failed. could not save message to folder %2 due to: %3	emailadmin	en	Save of message %1 failed. Could not save message to folder %2 due to: %3
+saving of message %1 failed. destination folder %2 does not exist.	emailadmin	en	Saving of message %1 failed. Destination Folder %2 does not exist.
 secure connection	emailadmin	en	Secure connection
 select type of imap server	emailadmin	en	Select type of IMAP server
 select type of imap/pop3 server	emailadmin	en	Select type of IMAP/POP3 server
@@ -152,7 +164,9 @@ stationery	emailadmin	en	Stationery
 successful connected to %1 server%2.	emailadmin	en	Successful connected to %1 server%2.
 switch back to standard identity to save account.	emailadmin	en	Switch back to standard identity to save account.
 switch back to standard identity to save other account data.	emailadmin	en	Switch back to standard identity to save other account data.
+templates	emailadmin	en	Templates
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	en	The IMAP server does not appear to support the authentication method selected. Contact your system administrator.
+the mimeparser can not parse this message.	emailadmin	en	The mimeparser can not parse this message.
 this php has no imap support compiled in!!	emailadmin	en	This PHP has no IMAP support compiled in!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	en	To use a TLS connection, you must be running a version of PHP 5.1.0 or higher.
 unexpected response from server to authenticate command.	emailadmin	en	Unexpected response from server to AUTHENTICATE command.
@@ -182,4 +196,5 @@ virtual mail manager	emailadmin	en	Virtual MAIL ManaGeR
 yes, use credentials below only for alarms and notifications, otherwise use credentials of current user	emailadmin	en	Yes, use credentials below only for alarms and notifications, otherwise use credentials of current user
 yes, use credentials of current user or if given credentials below	emailadmin	en	Yes, use credentials of current user or if given credentials below
 you have received a new message on the	emailadmin	en	You have received a new message on the
+your message to  %1 was displayed.	emailadmin	en	Your message to  %1 was displayed.
 your name	emailadmin	en	Your name
