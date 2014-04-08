@@ -1,9 +1,0 @@
-compose	messenger	id	Tulis
-delete selected	messenger	id	Hapus selected
-forward	messenger	id	Forward
-from	messenger	id	Dari
-inbox	messenger	id	INBOX
-message from	messenger	id	Pesan dari
-new	messenger	id	Baru
-replied	messenger	id	dibalas
-reply	messenger	id	Balas
