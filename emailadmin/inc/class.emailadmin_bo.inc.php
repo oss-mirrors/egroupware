@@ -444,74 +444,6 @@ class emailadmin_bo extends so_sql
 	}
 
 	/**
-	 * unset certain CachedObjects for the given profile id, unsets the profile for default ID=0 as well
-	 *
-	 * 1) icServerIMAP_connectionError
-	 * 2) icServerSIEVE_connectionError
-	 * 3) defaultimap_nameSpace
-	 * 4) StructureCache (emailStructure Objects)
-	 * 5) SummaryCache (emailSummary Objects)
-	 * 6) INSTANCE OF FELAMIMAIL_BO
-	 *
-	 * @param int $_profileID=null default profile of user as returned by getUserDefaultProfileID
-	 * @return void
-	 */
-	static function unsetCachedObjects($_profileID=null)
-	{
-		if (is_null($_profileID)) $_profileID = self::getUserDefaultProfileID();
-		//error_log(__METHOD__.__LINE__.' called with ProfileID:'.$_profileID.' from '.function_backtrace());
-		if (!is_array($_profileID) && (is_numeric($_profileID) || !(stripos($_profileID,'tracker_')===false)))
-		{
-			felamimail_bo::resetConnectionErrorCache($_profileID);
-			$structure = egw_cache::getCache(egw_cache::INSTANCE,'email','structureCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
-			if (isset($structure[$_profileID]))
-			{
-				unset($structure[$_profileID]);
-				egw_cache::setCache(egw_cache::INSTANCE,'email','structureCache'.trim($GLOBALS['egw_info']['user']['account_id']),$structure, $expiration=60*60*1);
-			}
-			$summary = egw_cache::getCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
-			if (isset($summary[$_profileID]))
-			{
-				unset($summary[$_profileID]);
-				egw_cache::setCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$summary, $expiration=60*60*1);
-			}
-			$rawHeadersCache = egw_cache::getCache(egw_cache::INSTANCE,'email','rawHeadersCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
-			if (isset($rawHeadersCache[$_profileID]))
-			{
-				unset($rawHeadersCache[$_profileID]);
-				egw_cache::setCache(egw_cache::INSTANCE,'email','rawHeadersCache'.trim($GLOBALS['egw_info']['user']['account_id']),$rawHeadersCache, $expiration=60*60*1);
-			}
-			//reset folderObject cache, to trigger reload
-			felamimail_bo::resetFolderObjectCache($_profileID);
-			//reset counter of deleted messages per folder
-			$eMailListContainsDeletedMessages = egw_cache::getCache(egw_cache::INSTANCE,'email','eMailListContainsDeletedMessages'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
-			if (isset($eMailListContainsDeletedMessages[$_profileID]))
-			{
-				unset($eMailListContainsDeletedMessages[$_profileID]);
-				egw_cache::setCache(egw_cache::INSTANCE,'email','eMailListContainsDeletedMessages'.trim($GLOBALS['egw_info']['user']['account_id']),$eMailListContainsDeletedMessages, $expiration=60*60*1);
-			}
-			//resetSessionCache['ea_preferences'], and cache to reduce database traffic
-			unset(self::$sessionData['ea_preferences']);
-			egw_cache::setCache(egw_cache::INSTANCE,'email','EASessionEAPrefs'.trim($GLOBALS['egw_info']['user']['account_id']),array(), $expiration=60*1);
-			$EAuserProfileData= egw_cache::getCache(egw_cache::INSTANCE,'email','EAuserProfileData'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*1);
-			if (isset($EAuserProfileData[$_profileID]))
-			{
-				unset($EAuserProfileData[$_profileID]);
-			}
-			egw_cache::setCache(egw_cache::INSTANCE,'email','EAuserProfileData'.trim($GLOBALS['egw_info']['user']['account_id']),$EAuserProfileData, $expiration=60*1);
-
-			$nameSpace = egw_cache::getSession('email','defaultimap_nameSpace');
-			if (isset($nameSpace[$_profileID]))
-			{
-				unset($nameSpace[$_profileID]);
-				egw_cache::setSession('email','defaultimap_nameSpace',$nameSpace);
-			}
-			felamimail_bo::unsetInstance($_profileID);
-			if ($_profileID != 0) self::unsetCachedObjects(0); // reset the default ServerID as well
-		}
-	}
-
-	/**
 	 * Password changed hook --> unset cached objects, as password might be used for email connection
 	 *
 	 * @param array $hook_data
@@ -958,49 +890,6 @@ class emailadmin_bo extends so_sql
 		}
 		self::$sessionData = array();
 		$this->saveSessionData();
-	}
-
-	/**
-	 * Get ID of default profile
-	 *
-	 * ID is negative for FMail, which used positive ID's for user profiles!
-	 *
-	 * @return int
-	 */
-	static function getDefaultProfileID()
-	{
-		$soemailadmin = new emailadmin_so();
-		if (($profiles = $soemailadmin->getProfileList(0, true)))
-		{
-			$default_profile = array_shift($profiles);
-
-			return -$default_profile['profileID'];
-		}
-	}
-
-	/**
-	 * Get ID of User specific default profile
-	 *
-	 * ID is negative for FMail, which used positive ID's for user profiles!
-	 *
-	 * @return int
-	 */
-	static function getUserDefaultProfileID()
-	{
-		$groups = array(0);
-		// set the second entry to the users primary group
-		$groups[] = $GLOBALS['egw_info']['user']['account_primary_group'];
-		$userGroups = $GLOBALS['egw']->accounts->membership($GLOBALS['egw_info']['user']['account_id']);
-		foreach((array)$userGroups as $groupInfo) {
-			$groups[] = $groupInfo['account_id'];
-		}
-		$soemailadmin = new emailadmin_so();
-		if (($profile = $soemailadmin->getUserProfile('felamimail',$groups,$GLOBALS['egw_info']['user']['account_id'])))
-		{
-			$default_profile = $profile['profileID']*-1;;
-
-			return $default_profile;
-		}
 	}
 
 	/**

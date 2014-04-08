@@ -541,7 +541,7 @@ class emailadmin_oldimap extends Net_IMAP implements defaultimap
 		// if no explicit $_timeout given with the openConnection call, check fmail preferences, or use default of 20
 		if (is_null($_timeout))
 		{
-			$timeout = felamimail_bo::getTimeOut();
+			$timeout = emailadmin_imap::getTimeOut();
 			$_timeout = $timeout > 0 ? $timeout : 20;
 		}
 
@@ -716,14 +716,14 @@ class emailadmin_oldimap extends Net_IMAP implements defaultimap
 		if ($_vacation['status'] == 'by_date' && time() < $end_date && $_reschedule===false)
 		{
 			$time = time() < $_vacation['start_date'] ? $_vacation['start_date'] : $end_date;
-			$async->set_timer($time,$async_id,'felamimail.bosieve.async_vacation',$_vacation+array('scriptName'=>$_scriptName),$user);
+			$async->set_timer($time,$async_id,'mail.mail_bosieve.async_vacation',$_vacation+array('scriptName'=>$_scriptName),$user);
 		}
 		if ($_reschedule===true)
 		{
 			$time = time() + 60*3;
 			unset($_vacation['next']);
 			unset($_vacation['times']);
-			if ($_reschedule) $async->set_timer($time,$async_id,'felamimail.bosieve.async_vacation',$_vacation+array('scriptName'=>$_scriptName),$user);
+			if ($_reschedule) $async->set_timer($time,$async_id,'mail.mail_bosieve.async_vacation',$_vacation+array('scriptName'=>$_scriptName),$user);
 		}
  	}
 }

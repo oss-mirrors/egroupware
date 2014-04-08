@@ -138,7 +138,7 @@ class emailadmin_sieve extends Net_Sieve
 			return 'die';
 		}
 		$this->_timeout = 10; // socket::connect sets the/this timeout on connection
-		$timeout = felamimail_bo::getTimeOut('SIEVE');
+		$timeout = emailadmin_imap::getTimeOut('SIEVE');
 		if ($timeout>$this->_timeout) $this->_timeout = $timeout;
 		$options = $_icServer->_getTransportOptions(($sievePort==5190?3:1));
 		$sieveHost = $_icServer->_getTransportString($sieveHost,($sievePort==5190?3:1));
