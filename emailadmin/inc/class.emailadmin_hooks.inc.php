@@ -1,11 +1,12 @@
 <?php
 /**
- * eGroupWare - eMailAdmin hooks
+ * EGroupware - eMailAdmin hooks
  *
  * @link http://www.egroupware.org
  * @package emailadmin
  * @author Klaus Leithoff <leithoff-AT-stylite.de>
- * @copyright (c) 2008-8 by leithoff-At-stylite.de
+ * @author Ralf Becker <rb@stylite.de>
+ * @copyright (c) 2008-14 by leithoff-At-stylite.de
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */
@@ -15,19 +16,6 @@
  */
 class emailadmin_hooks
 {
-	// hook to plug in into admin (managable) applications list
-	static function admin()
-	{
-		// Only Modify the $file and $title variables.....
-		$title = $appname = 'emailadmin';
-		$file = Array(
-			'Site Configuration'	=> $GLOBALS['egw']->link('/index.php','menuaction=emailadmin.emailadmin_ui.index')
-		);
-
-		//Do not modify below this line
-		display_section($appname,$title,$file);
-	}
-
     /**
      * Hook called to add action to user
      *
@@ -37,39 +25,34 @@ class emailadmin_hooks
 	static function edit_user($data)
 	{
 		unset($data);	// not used
+
+		$actions = array();
+
 		if ($GLOBALS['egw_info']['user']['apps']['emailadmin'])
 		{
-			$GLOBALS['menuData'][] = array(
-				'description' => 'mail account',
-				'url'         => '/index.php',
-				'extradata'   => 'menuaction=emailadmin.emailadmin_wizard.edit',
-				'options'     => "onclick=\"egw_openWindowCentered2(this,'_blank',720,530,'yes'); return false;\"",
+			$actions[] = array(
+				'id'      => 'mail_account',
+				'caption' => 'mail account',
+				'url'     => 'menuaction=emailadmin.emailadmin_wizard.edit&account_id=$id',
+				'popup'   => '720x530',
+				'icon'    => 'emailadmin/navbar',
 			);
 		}
+		return $actions;
 	}
 
-    /**
-     * Hook called after group emailadim settings has to be modified
-     *
-     * @param array $data
-     * @param int $data['account_id'] numerical id
-     */
-    static function edit_group($data)
-    {
-		#echo "called hook and function<br>";
-		#_debug_array($data);
-		unset($data);	// not used
-		# somehow the $data var seems to be quite sparsely populated, so we dont check any further
-        if (#!empty($data['account_id']) && $data['account_id'] < 0 && // can't set it on add
-            $GLOBALS['egw_info']['user']['apps']['emailadmin'])
-        {
-            $GLOBALS['menuData'][] = array(
-                'description' => 'eMailAdmin: Group assigned Profile',
-                'url' => '/index.php',
-                'extradata' => 'menuaction=emailadmin.emailadmin_ui.index'
-            );
-        }
-    }
+	/**
+	 * Password changed hook --> unset cached objects, as password might be used for email connection
+	 *
+	 * @param array $hook_data
+	 */
+	public static function changepassword($hook_data)
+	{
+		if (!empty($hook_data['old_passwd']))
+		{
+			emailadmin_credentials::changepassword($hook_data);
+		}
+	}
 
     /**
      * Hook called before an account get deleted
@@ -83,47 +66,6 @@ class emailadmin_hooks
 	{
 		// as mail accounts contain credentials, we do NOT assign them to user users
 		emailadmin_account::delete(0, $data['account_id']);
-
-		if((int)$data['account_id'] > 0 &&
-			$GLOBALS['egw_info']['user']['apps']['emailadmin'])
-		{
-			$boemailadmin = new emailadmin_bo();
-			$profileList = $boemailadmin->getProfileList(null, null, null,(int) $data['account_id']);
-			if (is_array($profileList)) {
-				foreach ($profileList as $value) {
-					$boemailadmin->delete($value['profileID']);
-				}
-			}
-		}
-
-		self::accountHooks($data);
-	}
-
-	/**
-	 * Several hooks calling an instanciated emailadmin_imapbase
-	 *
-	 * @param string|array $hookData
-	 */
-	static public function accountHooks($hookData)
-	{
-		if (($default_profile_id = emailadmin_bo::getDefaultAccID()))
-		{
-			$imapbase = emailadmin_imapbase::forceEAProfileLoad($default_profile_id);
-
-			switch(is_array($hookData) ? $hookData['location'] : $hookData)
-			{
-				case 'addaccount':
-					$imapbase->addAccount($hookData);
-					break;
-				case 'deleteaccount':
-					$imapbase->deleteAccount($hookData);
-					break;
-				case 'editaccount':
-					$imapbase->updateAccount($hookData);
-					break;
-			}
-			emailadmin_bo::unsetCachedObjects($default_profile_id);
-		}
 	}
 
     /**
@@ -136,18 +78,6 @@ class emailadmin_hooks
 	static function deletegroup(array $data)
 	{
 		emailadmin_account::delete(0, $data['account_id']);
-
-		if ((int)$data['account_id'] < 0 &&
-			$GLOBALS['egw_info']['user']['apps']['emailadmin'])
-		{
-			$boemailadmin = new emailadmin_bo();
-			$profileList = $boemailadmin->getProfileList(null, null,(int) $data['account_id']);
-			if (is_array($profileList)) {
-				foreach ($profileList as $value) {
-					$boemailadmin->soemailadmin->deleteProfile($value['profileID']);
-				}
-			}
-		}
 	}
 
 	/**

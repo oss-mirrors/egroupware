@@ -38,17 +38,10 @@ $setup_info['emailadmin']['tables'][]	= 'egw_ea_valid';
 $setup_info['emailadmin']['tables'][]	= 'egw_ea_notifications';
 
 /* The hooks this app includes, needed for hooks registration */
-#$setup_info['emailadmin']['hooks'][] = 'preferences';
-$setup_info['emailadmin']['hooks']['admin'] = 'emailadmin_hooks::admin';
 $setup_info['emailadmin']['hooks']['edit_user'] = 'emailadmin_hooks::edit_user';
-$setup_info['emailadmin']['hooks']['view_user'] = 'emailadmin_hooks::edit_user';
-$setup_info['emailadmin']['hooks']['edit_group'] = 'emailadmin_hooks::edit_group';
-$setup_info['emailadmin']['hooks']['group_manager'] = 'emailadmin_hooks::edit_group';
 $setup_info['emailadmin']['hooks']['deleteaccount'] = 'emailadmin_hooks::deleteaccount';
 $setup_info['emailadmin']['hooks']['deletegroup'] = 'emailadmin_hooks::deletegroup';
-$setup_info['emailadmin']['hooks']['changepassword'] = 'emailadmin_bo::changepassword';
-$setup_info['emailadmin']['hooks']['addaccount']	= 'emailadmin_hooks::accountHooks';
-$setup_info['emailadmin']['hooks']['editaccount']	= 'emailadmin_hooks::accountHooks';
+$setup_info['emailadmin']['hooks']['changepassword'] = 'emailadmin_hooks::changepassword';
 
 // SMTP and IMAP support
 $setup_info['emailadmin']['hooks']['smtp_server_types'] = 'emailadmin_hooks::server_types';
