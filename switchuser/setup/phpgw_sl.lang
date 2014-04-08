@@ -1,5 +1,0 @@
-switch now	switchuser	sl	Zamenjaj zdaj
-switchuser	common	sl	Zamenjaj uporabnika
-to which user you want to switch?	switchuser	sl	v katerega uporabnika se želiš zamenjati?
-with this application you can login as other user without knowing or changing any passwords. only administrators can use this application	switchuser	sl	S to aplikacijo se lahko prijaviš kot drugi uporabnik, ne da bi vedel ali spremenil katerololi geslo. Samo skrbniki lahko to naredijo
-you're not allowed to switch identity.	switchuser	sl	Ni ti dovoljeno spremeniti identitete.

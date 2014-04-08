@@ -1,5 +1,0 @@
-switch now	switchuser	pt-br	Trocar agora
-switchuser	common	pt-br	Trocar de usuário
-to which user you want to switch?	switchuser	pt-br	Para qual usuário você deseja trocar ?
-with this application you can login as other user without knowing or changing any passwords. only administrators can use this application	switchuser	pt-br	Com este aplicativo você pode conectar como outro usuário sem saber ou alterar nenhum senha. Somente administradores podem usar este aplicativo.
-you're not allowed to switch identity.	switchuser	pt-br	Você não tem permissão para trocar de usuário.

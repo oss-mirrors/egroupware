@@ -1,5 +1,0 @@
-switch now	switchuser	sv	Skifta nu
-switchuser	common	sv	IDSkifte
-to which user you want to switch?	switchuser	sv	Till vilket användar ID vill du skifta?
-with this application you can login as other user without knowing or changing any passwords. only administrators can use this application	switchuser	sv	Med denna applikation kan du logga in som vilken annan användare som helst utan att känna till eller ändra något lösenord. Endast administratörer kan använda applikationen.
-you're not allowed to switch identity.	switchuser	sv	Du är inte behörig att skifta användar ID.
