@@ -32,6 +32,7 @@ class emailadmin_imapbase
 	static $displayCharset;
 	static $activeFolderCache;
 	static $folderStatusCache;
+	static $supportsORinQuery;
 
 	/**
 	 * Active preferences
@@ -1598,7 +1599,13 @@ class emailadmin_imapbase
 			if (self::$debugTimes) self::logRunTimes($starttime,null,'setting eMailListContainsDeletedMessages for Profile:'.$this->profileID.' Folder:'.$_folderName.' to '.$eMailListContainsDeletedMessages[$this->profileID][$_folderName],__METHOD__.' ('.__LINE__.') ');			//error_log(__METHOD__.' ('.__LINE__.') '.' Profile:'.$this->profileID.' Folder:'.$_folderName.' -> EXISTS/SessStat:'.array2string($folderStatus['MESSAGES']).'/'.self::$folderStatusCache[$this->profileID][$_folderName]['messages'].' ListContDelMsg/SessDeleted:'.$eMailListContainsDeletedMessages[$this->profileID][$_folderName].'/'.self::$folderStatusCache[$this->profileID][$_folderName]['deleted']);
 		}
 		$try2useCache = false;
-		$filter = $this->createIMAPFilter($_folderName, $_filter);
+		//self::$supportsORinQuery[$this->profileID]=true;
+		if (is_null(self::$supportsORinQuery) || !isset(self::$supportsORinQuery[$this->profileID]))
+		{
+			self::$supportsORinQuery = egw_cache::getCache(egw_cache::INSTANCE,'email','supportsORinQuery'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*10);
+			if (!isset(self::$supportsORinQuery[$this->profileID])) self::$supportsORinQuery[$this->profileID]=true;
+		}
+		$filter = $this->createIMAPFilter($_folderName, $_filter,self::$supportsORinQuery[$this->profileID]);
 		//_debug_array($filter);
 		//error_log(__METHOD__.' ('.__LINE__.') '.array2string($filter));
 		if($this->icServer->hasCapability('SORT')) {
@@ -1624,6 +1631,7 @@ class emailadmin_imapbase
 				}
 				catch(Exception $e)
 				{
+					error_log(__METHOD__.'('.__LINE__.'):'.$e->getMessage());
 					$sortResult = self::$folderStatusCache[$this->profileID][$_folderName]['sortResult'];
 				}
 			}
@@ -1639,6 +1647,20 @@ class emailadmin_imapbase
 			}
 			catch(Exception $e)
 			{
+				//error_log(__METHOD__.'('.__LINE__.'):'.$e->getMessage());
+				// possible error OR Query. But Horde gives no detailed Info :-(
+				self::$supportsORinQuery[$this->profileID]=false;
+				egw_cache::setCache(egw_cache::INSTANCE,'email','supportsORinQuery'.trim($GLOBALS['egw_info']['user']['account_id']),self::$supportsORinQuery,$expiration=60*60*10);
+				if (self::$debug) error_log(__METHOD__.__LINE__." Mailserver seems to have NO OR Capability for Search:".$sortResult->message);
+				$filter = $this->createIMAPFilter($_folderName, $_filter, self::$supportsORinQuery[$this->profileID]);
+				try
+				{
+					$sortResult = $this->icServer->search($_folderName, $filter, array()/*array(
+						'sort' => $sortOrder)*/);
+				}
+				catch(Exception $e)
+				{
+				}
 			}
 			if(is_array($sortResult['match'])) {
 					// not sure that this is going so succeed as $sortResult['match'] is a hordeObject
@@ -1730,9 +1752,10 @@ class emailadmin_imapbase
 	 *
 	 * @param string $_folder used to determine the search to TO or FROM on QUICK Search wether it is a send-folder or not
 	 * @param array $_criterias contains the search/filter criteria
+	 * @param boolean $_supportsOrInQuery wether to use the OR Query on QuickSearch
 	 * @return Horde_Imap_Client_Search_Query the IMAP filter
 	 */
-	function createIMAPFilter($_folder, $_criterias)
+	function createIMAPFilter($_folder, $_criterias, $_supportsOrInQuery=true)
 	{
 		$imapFilter = new Horde_Imap_Client_Search_Query();
 
@@ -1755,7 +1778,14 @@ class emailadmin_imapbase
 					} else {
 						$imapFilter2->headerText('FROM', $_criterias['string'], $not=false);
 					}
-					$imapFilter->orSearch($imapFilter2);
+					if ($_supportsOrInQuery)
+					{
+						$imapFilter->orSearch($imapFilter2);
+					}
+					else
+					{
+						$imapFilter->andSearch($imapFilter2);
+					}
 					$queryValid = true;
 					break;
 				case 'FROM':
