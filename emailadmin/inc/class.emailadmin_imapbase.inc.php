@@ -915,16 +915,13 @@ class emailadmin_imapbase
 			return $HierarchyDelimiter[$this->icServer->ImapServerId];
 		}
 		$HierarchyDelimiter[$this->icServer->ImapServerId] = '/';
-		if(($this->icServer instanceof defaultimap))
+		try
 		{
-			try
-			{
-				$HierarchyDelimiter[$this->icServer->ImapServerId] = $this->icServer->getDelimiter();
-			}
-			catch(Exception $e)
-			{
-				$HierarchyDelimiter[$this->icServer->ImapServerId] = '/';
-			}
+			$HierarchyDelimiter[$this->icServer->ImapServerId] = $this->icServer->getDelimiter();
+		}
+		catch(Exception $e)
+		{
+			$HierarchyDelimiter[$this->icServer->ImapServerId] = '/';
 		}
 		return $HierarchyDelimiter[$this->icServer->ImapServerId];
 	}
@@ -1978,7 +1975,7 @@ class emailadmin_imapbase
 		if (self::$debug) error_log(__METHOD__.' ('.__LINE__.') '.'->'.$newFolderName);
 		if ($this->folderExists($newFolderName,true))
 		{
-			error_log(__METHOD__.' ('.__LINE__.') '." Folder $newFolderName already exists.");
+			if (self::$debug) error_log(__METHOD__.' ('.__LINE__.') '." Folder $newFolderName already exists.");
 			return $newFolderName;
 		}
 		try
@@ -1987,7 +1984,7 @@ class emailadmin_imapbase
 		}
 		catch (Exception $e)
 		{
-			error_log(__METHOD__.' ('.__LINE__.') '.' create Folder '.$newFolderName.'->'.$e->getMessage().' Namespace:'.array2string($this->icServer->getNameSpaces()));
+			error_log(__METHOD__.' ('.__LINE__.') '.' create Folder '.$newFolderName.'->'.$e->getMessage().' Namespace:'.array2string($this->icServer->getNameSpaces()).function_backtrace());
 			return false;
 		}
 		try
@@ -2644,7 +2641,8 @@ class emailadmin_imapbase
 		#_debug_array($mbx);
 //error_log(__METHOD__.' ('.__LINE__.') '.' Delimiter:'.array2string($delimiter));
 //error_log(__METHOD__.' ('.__LINE__.') '.array2string($mbx));
-		if (is_array($mbx[$mbxkeys[0]]["ATTRIBUTES"]) && (in_array('\HasChildren',$mbx[$mbxkeys[0]]["ATTRIBUTES"]) || in_array('\Haschildren',$mbx[0]["ATTRIBUTES"]) || in_array('\haschildren',$mbx[0]["ATTRIBUTES"]))) {
+		// Example: Array([INBOX/GaGa] => Array([MAILBOX] => INBOX/GaGa[ATTRIBUTES] => Array([0] => \\unmarked)[delimiter] => /))
+		if (is_array($mbx[$mbxkeys[0]]["ATTRIBUTES"]) && (in_array('\HasChildren',$mbx[$mbxkeys[0]]["ATTRIBUTES"]) || in_array('\Haschildren',$mbx[$mbxkeys[0]]["ATTRIBUTES"]) || in_array('\haschildren',$mbx[$mbxkeys[0]]["ATTRIBUTES"]))) {
 			// if there are children fetch them
 			//echo $mbx[$mbxkeys[0]]['MAILBOX']."<br>";
 			unset($buff);
@@ -2704,7 +2702,7 @@ class emailadmin_imapbase
 			$_folderName = false;
 		}
 		// does the folder exist??? (is configured/preset, but non-existent)
-		if ($_folderName && $_checkexistance && $_folderName !='none' && !$this->folderExists($_folderName)) {
+		if ($_folderName && $_checkexistance && $_folderName !='none' && !$this->folderExists($_folderName,true)) {
 			try
 			{
 				$this->createFolder('', $_folderName, true);
@@ -2725,7 +2723,7 @@ class emailadmin_imapbase
 			$nameSpace = $this->_getNameSpaces();
 			$prefix='';
 			if (isset($nameSpace['personal'])) $prefix = $nameSpace['personal']['prefix'];
-			if ($this->folderExists($prefix.$types[$_type]['autoFolderName']))
+			if ($this->folderExists($prefix.$types[$_type]['autoFolderName'],true))
 			{
 				$_folderName = $prefix.$types[$_type]['autoFolderName'];
 			}
