@@ -970,9 +970,9 @@ class emailadmin_imapbase
 				{
 					$_specialUseFolders[$this->icServer->ImapServerId]=array();
 					if (!empty($this->icServer->acc_folder_trash)) $_specialUseFolders[$this->icServer->ImapServerId][$this->icServer->acc_folder_trash]='Trash';
-					if (!empty($this->icServer->acc_folder_drafts)) $_specialUseFolders[$this->icServer->ImapServerId][$this->icServer->acc_folder_draft]='Drafts';
+					if (!empty($this->icServer->acc_folder_draft)) $_specialUseFolders[$this->icServer->ImapServerId][$this->icServer->acc_folder_draft]='Drafts';
 					if (!empty($this->icServer->acc_folder_sent)) $_specialUseFolders[$this->icServer->ImapServerId][$this->icServer->acc_folder_sent]='Sent';
-					if (!empty($this->icServer->acc_folder_templates)) $_specialUseFolders[$this->icServer->ImapServerId][$this->icServer->acc_folder_template]='Templates';
+					if (!empty($this->icServer->acc_folder_template)) $_specialUseFolders[$this->icServer->ImapServerId][$this->icServer->acc_folder_template]='Templates';
 				}
 				else
 				{
