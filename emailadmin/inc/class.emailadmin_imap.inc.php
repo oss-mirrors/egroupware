@@ -842,6 +842,10 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				}
 				break;
 
+			case 'vmailmgr':
+				$_username .= '@'.$this->domainName;
+				break;
+
 			case 'uidNumber':
 				$_username = 'u'.$accountID;
 				break;
