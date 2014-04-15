@@ -4387,14 +4387,15 @@ class emailadmin_imapbase
 	 * @param string/int $_partID='' , the partID, may be omitted
 	 * @param boolean $decode flag to do the decoding on the fly
 	 * @param string $_folder folder to work on
+	 * @param boolean $_useHeaderInsteadOfEnvelope - force getMessageHeader method to be used for fetching Envelope Information
 	 * @return array the message header
 	 */
-	function getMessageEnvelope($_uid, $_partID = '',$decode=false, $_folder='')
+	function getMessageEnvelope($_uid, $_partID = '',$decode=false, $_folder='', $_useHeaderInsteadOfEnvelope=false)
 	{
 		//error_log(__METHOD__.' ('.__LINE__.') '.":$_uid,$_partID,$decode,$_folder".function_backtrace());
 		if (empty($_folder)) $_folder = ($this->sessionData['mailbox']? $this->sessionData['mailbox'] : $this->icServer->getCurrentMailbox());
 		//error_log(__METHOD__.' ('.__LINE__.') '.":$_uid,$_partID,$decode,$_folder");
-		if(empty($_partID)||$_partID=='null') {
+		if((empty($_partID)||$_partID=='null')&&$_useHeaderInsteadOfEnvelope===false) {
 			$uidsToFetch = new Horde_Imap_Client_Ids();
 			if (!(is_object($_uid) || is_array($_uid))) $_uid = (array)$_uid;
 			$uidsToFetch->add($_uid);
@@ -4461,7 +4462,7 @@ class emailadmin_imapbase
 				'MESSAGE_ID'	=> $headers['MESSAGE-ID']
 			);
 			//_debug_array($newData);
-			$recepientList = array('FROM', 'TO', 'CC', 'BCC', 'SENDER', 'REPLY_TO');
+			$recepientList = array('FROM', 'TO', 'CC', 'BCC', 'SENDER', 'REPLY-TO');
 			foreach($recepientList as $recepientType) {
 				if(isset($headers[$recepientType])) {
 					if ($decode) $headers[$recepientType] =  self::decode_header($headers[$recepientType],true);
@@ -4482,7 +4483,7 @@ class emailadmin_imapbase
 						$newData[$recepientType][] = ($addressData['RFC822_EMAIL']!='NIL'?$addressData['RFC822_EMAIL']:$addressData['EMAIL']);//$addressData;
 					}
 				} else {
-					if($recepientType == 'SENDER' || $recepientType == 'REPLY_TO') {
+					if($recepientType == 'SENDER' || $recepientType == 'REPLY-TO') {
 						$newData[$recepientType] = $newData['FROM'];
 					} else {
 						$newData[$recepientType] = array();
