@@ -237,11 +237,16 @@ class emailadmin_account implements ArrayAccess
 		$this->user = $called_for ? $called_for : $GLOBALS['egw_info']['user']['account_id'];
 
 		// if we manage the mail-account, include that data too (imap has higher precedence)
-		if ($this->acc_imap_type != 'emailadmin_imap' && $this->imapServer() &&
-			is_a($this->imapServer, 'emailadmin_imap') &&
-			($data = $this->imapServer->getUserData($this->user)))
-		{
-			$this->params += $data;
+		try {
+			if ($this->acc_imap_type != 'emailadmin_imap' && $this->imapServer() &&
+				is_a($this->imapServer, 'emailadmin_imap') &&
+				($data = $this->imapServer->getUserData($this->user)))
+			{
+				$this->params += $data;
+			}
+		}
+		catch(Horde_Imap_Client_Exception $e) {
+			// ignore eg. connection errors
 		}
 		if ($this->acc_smtp_type != 'emailadmin_smtp' && $this->smtpServer() &&
 			($data = $this->smtpServer->getUserData($this->user)))
