@@ -42,7 +42,7 @@ $phpgw_baseline = array(
 		),
 		'pk' => array('wiki_id','wiki_name','wiki_lang','wiki_version'),
 		'fk' => array(),
-		'ix' => array('wiki_title',array('wiki_body','options' => array('mysql' => 'FULLTEXT','  mssql' => '','  pgsql' => '','  maxdb' => '','  sapdb' => ''))),
+		'ix' => array('wiki_title'),
 		'uc' => array()
 	),
 	'egw_wiki_rate' => array(

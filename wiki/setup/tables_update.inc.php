@@ -311,3 +311,15 @@ wiki_writable = ".$GLOBALS['egw_setup']->db->concat('wiki_writable', "','");
 
 	return $GLOBALS['setup_info']['wiki']['currentver'] = '1.9.002';
 }
+
+/**
+ * Drop not used and under InnoDB not supported FULLTEXT index
+ *
+ * @return string
+ */
+function wiki_upgrade1_9_002()
+{
+	$GLOBALS['egw_setup']->oProc->DropIndex('egw_wiki_pages', array('wiki_body'));
+
+	return $GLOBALS['setup_info']['wiki']['currentver'] = '1.9.003';
+}
