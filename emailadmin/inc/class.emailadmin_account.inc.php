@@ -1052,6 +1052,12 @@ class emailadmin_account implements ArrayAccess
 			$imap->setUserData($user, $data['quotaLimit']);
 		}
 
+		// store domain of an account for all user like before as "mail_suffix" config
+		if ($data['acc_domain'] && (!$data['account_id'] || $data['account_id'] == array(0)))
+		{
+			config::save_value('mail_suffix', $data['acc_domain'], 'phpgwapi', true);
+		}
+
 		self::cache_invalidate($data['acc_id']);
 		//error_log(__METHOD__."() returning ".array2string($data));
 		return $data;
