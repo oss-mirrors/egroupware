@@ -189,8 +189,8 @@ class emailadmin_imap_dovecot extends emailadmin_imap
 	 */
 	function getUserData($_username)
 	{
-		$bufferUsername = $this->username;
-		$bufferLoginName = $this->loginName;
+		if (isset($this->username)) $bufferUsername = $this->username;
+		if (isset($this->loginName)) $bufferLoginName = $this->loginName;
 		$this->username = $_username;
 		$nameSpaces = $this->getNameSpaces();
 		$mailBoxName = $this->getUserMailboxString($this->username);

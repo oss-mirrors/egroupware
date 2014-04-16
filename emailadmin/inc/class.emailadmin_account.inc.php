@@ -246,6 +246,7 @@ class emailadmin_account implements ArrayAccess
 			}
 		}
 		catch(Horde_Imap_Client_Exception $e) {
+			unset($e);
 			// ignore eg. connection errors
 		}
 		if ($this->acc_smtp_type != 'emailadmin_smtp' && $this->smtpServer() &&
