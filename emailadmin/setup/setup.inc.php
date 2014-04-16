@@ -16,18 +16,15 @@ $setup_info['emailadmin']['title']     = 'EMailAdmin';
 $setup_info['emailadmin']['version']   = '1.9.019';
 $setup_info['emailadmin']['app_order'] = 10;
 $setup_info['emailadmin']['enable']    = 2;
-$setup_info['emailadmin']['index']     = 'emailadmin.emailadmin_ui.listProfiles';
 
-$setup_info['emailadmin']['author'] = 'Klaus Leithoff';
+$setup_info['emailadmin']['author'] =
+$setup_info['emailadmin']['maintainer'] = array(
+	'name'  => 'Ralf Becker',
+	'email' => 'rb@stylite.de',
+);
 $setup_info['emailadmin']['license']  = 'GPL';
 $setup_info['emailadmin']['description'] =
-	'A central Mailserver management application for EGroupWare. Completely rewritten by K.Leithoff in 10-2009';
-$setup_info['emailadmin']['note'] =
-	'';
-$setup_info['emailadmin']['maintainer'] = array(
-	'name'  => 'Leithoff, Klaus',
-	'email' => 'kl@stylite.de'
-);
+	'A central Mailserver management application for EGroupWare. Completely rewritten by Ralf Becker in 2013/14';
 
 $setup_info['emailadmin']['tables'][]	= 'egw_emailadmin';
 $setup_info['emailadmin']['tables'][]	= 'egw_mailaccounts';
@@ -40,6 +37,8 @@ $setup_info['emailadmin']['tables'][]	= 'egw_ea_notifications';
 /* The hooks this app includes, needed for hooks registration */
 $setup_info['emailadmin']['hooks']['edit_user'] = 'emailadmin_hooks::edit_user';
 $setup_info['emailadmin']['hooks']['deleteaccount'] = 'emailadmin_hooks::deleteaccount';
+$setup_info['emailadmin']['hooks']['addaccount'] = 'emailadmin_hooks::addaccount';
+$setup_info['emailadmin']['hooks']['editaccount'] = 'emailadmin_hooks::addaccount';
 $setup_info['emailadmin']['hooks']['deletegroup'] = 'emailadmin_hooks::deletegroup';
 $setup_info['emailadmin']['hooks']['changepassword'] = 'emailadmin_hooks::changepassword';
 
