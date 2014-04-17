@@ -4420,9 +4420,10 @@ class emailadmin_imapbase
 							case 'cc':
 							case 'bcc':
 							case 'sender':
-								//error_log(__METHOD__.' ('.__LINE__.') '.array2string($env->$v->addresses));
+								//error_log(__METHOD__.' ('.__LINE__.') '.$v.'->'.array2string($env->$v->addresses));
 								$envelope[$v]=$env->$v->addresses;
 								$address = array();
+								if (!is_array($envelope[$v])) break;
 								foreach ($envelope[$v] as $k => $ad)
 								{
 									if (stripos($ad,'@')===false)
