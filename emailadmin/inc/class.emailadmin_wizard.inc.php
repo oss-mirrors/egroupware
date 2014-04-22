@@ -697,7 +697,7 @@ class emailadmin_wizard
 				$content['acc_smtp_host'] = $host;
 				if (!is_array($data))
 				{
-					$data = array('TLS' => 465, 'SSL' => 465, 'STARTTLS' => 597, '' => 25);
+					$data = array('TLS' => 465, 'SSL' => 465, 'STARTTLS' => 587, '' => 25);
 				}
 				foreach($data as $ssl => $port)
 				{
