@@ -270,6 +270,7 @@ class emailadmin_wizard
 					if (!$imap->isSecureConnection())
 					{
 						$content['output'] .= lang('Connection is NOT secure! Everyone can read eg. your credentials.')."\n";
+						$content['acc_imap_ssl'] = 'no';
 					}
 					//$content['output'] .= "\n\n".array2string($imap->capability());
 					$content['connected'] = $connected = true;
@@ -729,6 +730,7 @@ class emailadmin_wizard
 							{
 								$content['smtp_output'] .= lang('Connection is NOT secure! Everyone can read eg. your credentials.')."\n";
 							}
+							$content['acc_smtp_ssl'] = 'no';
 						}
 						// Horde_Smtp always try to use STARTTLS, adjust our ssl-parameter if successful
 						elseif (!($content['acc_smtp_ssl'] > self::SSL_NONE))
