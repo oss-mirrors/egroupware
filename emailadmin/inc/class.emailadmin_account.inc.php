@@ -219,7 +219,7 @@ class emailadmin_account implements ArrayAccess
 		{
 			$params += emailadmin_notifications::read($params['acc_id'], $called_for ? array(0, $called_for) : $called_for);
 		}
-		if (!empty($params['acc_imap_logintype']) && !isset($params['acc_imap_username']) &&
+		if (!empty($params['acc_imap_logintype']) && empty($params['acc_imap_username']) &&
 			$GLOBALS['egw_info']['user']['account_id'] &&
 			(!isset($called_for) || $called_for == $GLOBALS['egw_info']['user']['account_id']))
 		{
