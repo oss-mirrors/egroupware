@@ -13,7 +13,7 @@
 
 /* $Id$ */
 
-$GLOBALS['egw_info']['server']['found_validation_hook'] = True;
+$GLOBALS['egw_info']['server']['found_validation_hook'] = array('final_validation');
 
 function final_validation($settings)
 {
