@@ -432,7 +432,7 @@ class emailadmin_imapbase
 	 * 3) defaultimap_nameSpace
 	 * 4) StructureCache (emailStructure Objects)
 	 * 5) SummaryCache (emailSummary Objects)
-	 * 6) INSTANCE OF FELAMIMAIL_BO
+	 * 6) INSTANCE OF MAIL_BO
 	 *
 	 * @param int $_profileID=null default profile of user as returned by getUserDefaultProfileID
 	 * @return void
@@ -471,15 +471,6 @@ class emailadmin_imapbase
 				unset($eMailListContainsDeletedMessages[$_profileID]);
 				egw_cache::setCache(egw_cache::INSTANCE,'email','eMailListContainsDeletedMessages'.trim($GLOBALS['egw_info']['user']['account_id']),$eMailListContainsDeletedMessages, $expiration=60*60*1);
 			}
-			//resetSessionCache['ea_preferences'], and cache to reduce database traffic
-			unset(self::$sessionData['ea_preferences']);
-			egw_cache::setCache(egw_cache::INSTANCE,'email','EASessionEAPrefs'.trim($GLOBALS['egw_info']['user']['account_id']),array(), $expiration=60*1);
-			$EAuserProfileData= egw_cache::getCache(egw_cache::INSTANCE,'email','EAuserProfileData'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*1);
-			if (isset($EAuserProfileData[$_profileID]))
-			{
-				unset($EAuserProfileData[$_profileID]);
-			}
-			egw_cache::setCache(egw_cache::INSTANCE,'email','EAuserProfileData'.trim($GLOBALS['egw_info']['user']['account_id']),$EAuserProfileData, $expiration=60*1);
 
 			$nameSpace = egw_cache::getSession('email','defaultimap_nameSpace');
 			if (isset($nameSpace[$_profileID]))
@@ -487,7 +478,7 @@ class emailadmin_imapbase
 				unset($nameSpace[$_profileID]);
 				egw_cache::setSession('email','defaultimap_nameSpace',$nameSpace);
 			}
-			self::unsetInstance($_profileID);
+			if (isset(self::$instances[$_profileID])) unset(self::$instances[$_profileID]);
 		}
 	}
 

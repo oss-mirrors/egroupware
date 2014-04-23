@@ -816,6 +816,7 @@ class emailadmin_wizard
 	 */
 	public function edit(array $content=null, $msg='', $msg_type='success')
 	{
+		if ($content['acc_id'] || (isset($_GET['acc_id']) && (int)$_GET['acc_id'] > 0) ) emailadmin_imapbase::unsetCachedObjects($content['acc_id']?$content['acc_id']:$_GET['acc_id']);
 		$tpl = new etemplate_new('emailadmin.account');
 
 		if (!is_array($content) || !empty($content['acc_id']) && $content['acc_id'] != $content['old_acc_id'])
@@ -1032,6 +1033,7 @@ class emailadmin_wizard
 						$button = 'apply';
 						$msg_type = 'error';
 					}
+					if ($content['acc_id']) emailadmin_imapbase::unsetCachedObjects($content['acc_id']);
 					egw_framework::refresh_opener($msg, 'emailadmin', $content['acc_id'], null, null, null, null, $msg_type);
 					if ($button == 'save') egw_framework::window_close();
 					break;
@@ -1044,6 +1046,7 @@ class emailadmin_wizard
 					}
 					elseif (emailadmin_account::delete($content['acc_id']) > 0)
 					{
+						if ($content['acc_id']) emailadmin_imapbase::unsetCachedObjects($content['acc_id']);
 						egw_framework::refresh_opener(lang('Account deleted.'), 'emailadmin', $content['acc_id']);
 						egw_framework::window_close();
 					}
