@@ -59,17 +59,34 @@ class emailadmin_imap_dovecot extends emailadmin_imap
 	 */
 	function adminConnection()
 	{
-		if (($pos = strpos($this->acc_imap_admin_username, '*')) !== false)	// remove evtl. set username
+		try
 		{
-			$this->params['acc_imap_admin_username'] = substr($this->acc_imap_admin_username, $pos+1);
+			if (($pos = strpos($this->acc_imap_admin_username, '*')) !== false)	// remove evtl. set username
+			{
+				$this->params['acc_imap_admin_username'] = substr($this->acc_imap_admin_username, $pos+1);
+			}
+			$this->params['acc_imap_admin_username'] = $this->acc_imap_username.'*'.$this->acc_imap_admin_username;
+			$success = true;
 		}
-		$this->params['acc_imap_admin_username'] = $this->acc_imap_username.'*'.$this->acc_imap_admin_username;
-
-		if (!$this->isAdminConnection)
+		catch (Exception $e)
+		{
+			$success=false;
+			if ($this->isAdminConnection)
+			{
+				throw new egw_exception_wrong_parameter("Tried to open adminConnection: failed!".$e->getMessage());
+			}
+		}
+		if ($success && !$this->isAdminConnection)
 		{
 			$this->logout();
-
-			$this->__construct($this->params, true);
+			try
+			{
+				$this->__construct($this->params, true);
+			}
+			catch (Exception $e)
+			{
+				throw new egw_exception_wrong_parameter("Tried to open adminConnection: failed!".$e->getMessage());
+			}
 		}
 	}
 
@@ -197,7 +214,15 @@ class emailadmin_imap_dovecot extends emailadmin_imap
 		$this->loginName = str_replace((is_array($nameSpaces)?$nameSpaces['others'][0]['name']:'user/'),'',$mailBoxName); // we need to strip the namespacepart
 
 		// now disconnect to be able to reestablish the connection with the targetUser while we go on
-		$this->adminConnection();
+		try
+		{
+			$this->adminConnection();
+		}
+		catch (Exception $e)
+		{
+			// error_log(__METHOD__.__LINE__." Could not establish admin Connection!".$e->getMessage());
+			return array();
+		}
 
 		$userData = array();
 		// we are authenticated with master but for current user
