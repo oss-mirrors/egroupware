@@ -1089,7 +1089,7 @@ class emailadmin_wizard
 			try {
 				$sel_options['acc_folder_sent'] = $sel_options['acc_folder_trash'] =
 					$sel_options['acc_folder_draft'] = $sel_options['acc_folder_template'] =
-					$sel_options['acc_folder_junk'] = $sel_options['notification_folders'] =
+					$sel_options['acc_folder_junk'] = $sel_options['notify_folders'] =
 						self::mailboxes(self::imap_client ($content));
 			}
 			// call wizard, if we have a connection error: Horde_Imap_Client_Exception
