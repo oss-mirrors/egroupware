@@ -853,6 +853,11 @@ class emailadmin_wizard
 					$content['identities'] = iterator_to_array($account->identities());
 					$content['std_ident_id'] = $content['ident_id'];
 					$content['identities'][$content['std_ident_id']] = lang('Standard identity');
+					// change self::SSL_NONE (=0) to "no" used in sel_options
+					foreach(array('imap','smtp','sieve') as $type)
+					{
+						if (!$content['acc_'.$type.'_ssl']) $content['acc_'.$type.'_ssl'] = 'no';
+					}
 				}
 				catch(egw_exception_not_found $e) {
 					if (self::$debug) _egw_log_exception($e);
