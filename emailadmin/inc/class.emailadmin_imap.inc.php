@@ -204,7 +204,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				// allow readonly access to all class attributes
 				if (isset($this->$name))
 				{
-					return $this->name;
+					return $this->$name;
 				}
 				if (array_key_exists($name,$this->params))
 				{
