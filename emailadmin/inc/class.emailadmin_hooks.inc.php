@@ -92,25 +92,26 @@ class emailadmin_hooks
 	{
 		$method = $data['location'] == 'addaccount' ? 'addAccount' : 'updateAccount';
 
-		foreach(emailadmin_account::search((int)$data['account_id'], false) as $account)
+		foreach(emailadmin_account::search((int)$data['account_id'], 'params') as $params)
 		{
-			if (!emailadmin_account::is_multiple($account)) continue;	// no need to waste time on personal accounts
+			if (!emailadmin_account::is_multiple($params)) continue;	// no need to waste time on personal accounts
 
 			try {
+				$account = new emailadmin_account($params);
 				if ($account->acc_imap_type != 'emailadmin_imap' && ($imap = $account->imapServer(true)) &&
 					is_a($imap, 'emailadmin_imap') && get_class($imap) != 'emailadmin_imap')
 				{
 					$imap->$method($data);
 				}
+				if ($account->acc_smtp_type != 'emailadmin_smtp' && ($smtp = $account->smtpServer(true)) &&
+					is_a($smtp, 'emailadmin_smtp') && get_class($smtp) != 'emailadmin_smtp')
+				{
+					$smtp->$method($data);
+				}
 			}
 			catch(Exception $e) {
 				_egw_log_exception($e);
 				// ignore exception, without stalling other hooks
-			}
-			if ($account->acc_smtp_type != 'emailadmin_smtp' && ($smtp = $account->smtpServer(true)) &&
-				is_a($smtp, 'emailadmin_smtp') && get_class($smtp) != 'emailadmin_smtp')
-			{
-				$smtp->$method($data);
 			}
 		}
 	}
