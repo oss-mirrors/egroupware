@@ -3,8 +3,8 @@
  * EGroupware - eTemplate serverside date widget
  *
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
- * @package etemplate
- * @subpackage api
+ * @package projectmanager
+ * @subpackage etemplate
  * @link http://www.egroupware.org
  * @author Nathan Gray
  * @copyright 2011 Nathan Gray
@@ -12,11 +12,9 @@
  */
 
 /**
- * eTemplate project manager widgets
- *
- * @todo Move to projectmanager app once etemplate_new recognises other app's widgets
+ * eTemplate2 project manager widgets
  */
-class etemplate_widget_projectmanager extends etemplate_widget_transformer
+class projectmanager_etemplate_widget extends etemplate_widget_transformer
 {
 	protected static $transformation = array(
 		'type' => array(
@@ -46,18 +44,18 @@ class etemplate_widget_projectmanager extends etemplate_widget_transformer
 		if ($this->type)
 		{
 			$pm_widget = new projectmanager_widget();
-					if($this->is_readonly($cname, $form_name))
-					{
-						// Go direct to get full erole list
-						$eroles = new projectmanager_eroles_bo();
-						foreach((array)$eroles->search(array(),false,'role_title ASC','','',false,'AND',false,array('pm_id'=>array(0,$eroles->pm_id))) as $erole)
-						{
-							self::$request->sel_options[$form_name][$erole['role_id']] = array(
-								'label' => $erole['role_description'],
-								'title' => lang('Element role title').': '.$erole['role_title'].$eroles->get_info($erole['role_id']),
-							);
-						}
-					}
+			if($this->is_readonly($cname, $form_name))
+			{
+				// Go direct to get full erole list
+				$eroles = new projectmanager_eroles_bo();
+				foreach((array)$eroles->search(array(),false,'role_title ASC','','',false,'AND',false,array('pm_id'=>array(0,$eroles->pm_id))) as $erole)
+				{
+					self::$request->sel_options[$form_name][$erole['role_id']] = array(
+						'label' => $erole['role_description'],
+						'title' => lang('Element role title').': '.$erole['role_title'].$eroles->get_info($erole['role_id']),
+					);
+				}
+			}
 			$cell = $this->attrs;
 			$cell['type']=$this->type;
 			$cell['readonly'] = false;
@@ -94,10 +92,10 @@ class etemplate_widget_projectmanager extends etemplate_widget_transformer
 	{
 		$form_name = self::form_name($cname, $this->id, $expand);
 
-                $ok = true;
-                if (!$this->is_readonly($cname, $form_name))
-                {
-                        $value = $value_in = self::get_array($content, $form_name);
+		$ok = true;
+		if (!$this->is_readonly($cname, $form_name))
+		{
+			$value = $value_in = self::get_array($content, $form_name);
 
 			switch($this->type)
 			{
@@ -110,7 +108,7 @@ class etemplate_widget_projectmanager extends etemplate_widget_transformer
 					break;
 			}
 			$valid =& self::get_array($validated, $form_name, true);
-                        $valid = $value;
+			$valid = $value;
 		}
 	}
 }
