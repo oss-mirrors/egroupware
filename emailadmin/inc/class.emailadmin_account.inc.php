@@ -1355,7 +1355,7 @@ class emailadmin_account implements ArrayAccess
 	 */
 	protected static function cache_invalidate($acc_id)
 	{
-		error_log(__METHOD__."($acc_id) invalidating cache");
+		//error_log(__METHOD__."($acc_id) invalidating cache");
 		unset(self::$cache[$acc_id]);
 		unset(self::$instances[$acc_id]);
 		self::$search_cache = array();
