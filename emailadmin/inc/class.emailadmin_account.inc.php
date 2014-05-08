@@ -240,7 +240,7 @@ class emailadmin_account implements ArrayAccess
 		try {
 			if ($this->acc_imap_type != 'emailadmin_imap' && $this->imapServer() &&
 				is_a($this->imapServer, 'emailadmin_imap') &&
-				($data = $this->imapServer->getUserData($this->user)))
+				($data = $this->imapServer->getUserData($GLOBALS['egw']->accounts->id2name($this->user))))
 			{
 				$this->params += $data;
 			}
@@ -248,6 +248,10 @@ class emailadmin_account implements ArrayAccess
 		catch(Horde_Imap_Client_Exception $e) {
 			unset($e);
 			// ignore eg. connection errors
+		}
+		catch(InvalidArgumentException $e) {
+			unset($e);
+			// ignore eg. missing admin user
 		}
 		if ($this->acc_smtp_type != 'emailadmin_smtp' && $this->smtpServer() &&
 			($data = $this->smtpServer->getUserData($this->user)))
@@ -1049,7 +1053,7 @@ class emailadmin_account implements ArrayAccess
 		{
 			$class = self::getIcClass($data['acc_imap_type']);
 			$imap = new $class($data, true);
-			$imap->setUserData($user, $data['quotaLimit']);
+			$imap->setUserData($GLOBALS['egw']->accounts->id2name($user), $data['quotaLimit']);
 		}
 
 		// store domain of an account for all user like before as "mail_suffix" config
