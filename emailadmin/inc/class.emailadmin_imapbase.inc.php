@@ -4099,6 +4099,11 @@ class emailadmin_imapbase
 		{
 			$_folder = $this->sessionData['mailbox'];
 		}
+		if (empty($this->sessionData['mailbox']) && !empty($_folder))
+		{
+			$this->sessionData['mailbox'] = $_folder;
+		}
+		
 		if (!isset($_structure))
 		{
 			$_structure = $this->getStructure($_uid, $_partID, $_folder, $_preserveSeen);
