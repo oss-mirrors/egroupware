@@ -840,7 +840,9 @@ class emailadmin_imapbase
 
 	/**
 	 * _getNameSpaces, fetch the namespace from icServer
-	 * @return array $nameSpace array(peronal=>array,others=>array, shared=>array)
+	 * 	Note: a IMAPServer may present several namespaces under each key;
+	 *			so we return an array of namespacearrays for our needs
+	 * @return array array(prefix_present=>mixed (bool/string) ,prefix=>string,delimiter=>string,type=>string (personal|others|shared))
 	 */
 	function _getNameSpaces()
 	{
@@ -851,24 +853,31 @@ class emailadmin_imapbase
 		if (is_null($nameSpace)) $nameSpace = $this->icServer->getNameSpaceArray();
 		//error_log(__METHOD__.' ('.__LINE__.') '.array2string($nameSpace));
 		if (is_array($nameSpace)) {
-			foreach($nameSpace as $type => $singleNameSpace) {
-				$prefix_present = false;
-				if($type == 'personal' && ($singleNameSpace['name'] == '#mh/' || count($nameSpace) == 1) && ($this->folderExists('Mail')||$this->folderExists('INBOX')))
+			foreach($nameSpace as $type => $singleNameSpaceArray)
+			{
+				foreach ($singleNameSpaceArray as $k => $singleNameSpace)
 				{
-					$foldersNameSpace[$type]['prefix_present'] = 'forced';
-					// uw-imap server with mailbox prefix or dovecot maybe
-					$foldersNameSpace[$type]['prefix'] = ($this->folderExists('Mail')?'Mail':(!empty($singleNameSpace['name'])?$singleNameSpace['name']:''));
+					$prefix_present = false;
+					$_foldersNameSpace = array();
+					if($type == 'personal' && $singleNameSpace['name'] == '#mh/' && ($this->folderExists('Mail')||$this->folderExists('INBOX')))
+					{
+						$_foldersNameSpace['prefix_present'] = 'forced';
+						// uw-imap server with mailbox prefix or dovecot maybe
+						$_foldersNameSpace['prefix'] = ($this->folderExists('Mail')?'Mail':(!empty($singleNameSpace['name'])?$singleNameSpace['name']:''));
+					}
+					elseif($type == 'personal' && ($singleNameSpace['name'] == '#mh/') && $this->folderExists('mail'))
+					{
+						$_foldersNameSpace['prefix_present'] = 'forced';
+						// uw-imap server with mailbox prefix or dovecot maybe
+						$_foldersNameSpace['prefix'] = 'mail';
+					} else {
+						$_foldersNameSpace['prefix_present'] = !empty($singleNameSpace['name']);
+						$_foldersNameSpace['prefix'] = $singleNameSpace['name'];
+					}
+					$_foldersNameSpace['delimiter'] = ($singleNameSpace['delimiter']?$singleNameSpace['delimiter']:$delimiter);
+					$_foldersNameSpace['type'] = $type;
+					$foldersNameSpace[] =$_foldersNameSpace;
 				}
-				elseif($type == 'personal' && ($singleNameSpace['name'] == '#mh/' || count($nameSpace) == 1) && $this->folderExists('mail'))
-				{
-					$foldersNameSpace[$type]['prefix_present'] = 'forced';
-					// uw-imap server with mailbox prefix or dovecot maybe
-					$foldersNameSpace[$type]['prefix'] = 'mail';
-				} else {
-					$foldersNameSpace[$type]['prefix_present'] = true;
-					$foldersNameSpace[$type]['prefix'] = $singleNameSpace['name'];
-				}
-				$foldersNameSpace[$type]['delimiter'] = $delimiter;
 				//echo "############## $type->".print_r($foldersNameSpace[$type],true)." ###################<br>";
 			}
 		}
@@ -884,7 +893,7 @@ class emailadmin_imapbase
 	 */
 	function getFolderPrefixFromNamespace($nameSpace, $folderName)
 	{
-		foreach($nameSpace as $type => $singleNameSpace)
+		foreach($nameSpace as $k => $singleNameSpace)
 		{
 			//if (substr($singleNameSpace['prefix'],0,strlen($folderName))==$folderName) return $singleNameSpace['prefix'];
 			if (substr($folderName,0,strlen($singleNameSpace['prefix']))==$singleNameSpace['prefix']) return $singleNameSpace['prefix'];
@@ -1145,7 +1154,15 @@ class emailadmin_imapbase
 		static $nameSpace;
 		static $prefix;
 		if (is_null($nameSpace) || empty($nameSpace[$this->profileID])) $nameSpace[$this->profileID] = $this->_getNameSpaces();
-		if (isset($nameSpace[$this->profileID]['personal'])) unset($nameSpace[$this->profileID]['personal']);
+		if (!empty($nameSpace[$this->profileID]))
+		{
+			$nsNoPersonal=array();
+			foreach($nameSpace[$this->profileID] as $k => $ns)
+			{
+				if ($ns['type']!='personal') $nsNoPersonal[]=$ns;
+			}
+			$nameSpace[$this->profileID]=$nsNoPersonal;
+		}
 		if (is_null($prefix) || empty($prefix[$this->profileID]) || empty($prefix[$this->profileID][$_folderName])) $prefix[$this->profileID][$_folderName] = $this->getFolderPrefixFromNamespace($nameSpace[$this->profileID], $_folderName);
 
 		//$subscribedFolders[$this->profileID] = $this->icServer->listSubscribedMailboxes('', $_folderName);
@@ -1993,6 +2010,7 @@ class emailadmin_imapbase
 			$HierarchyDelimiter = $this->getHierarchyDelimiter();
 			$newFolderName = $parent . $HierarchyDelimiter . $folderName;
 		}
+		if (empty($newFolderName)) return false;
 		if (self::$debug) error_log(__METHOD__.' ('.__LINE__.') '.'->'.$newFolderName);
 		if ($this->folderExists($newFolderName,true))
 		{
@@ -2194,18 +2212,16 @@ class emailadmin_imapbase
 
 		//$nameSpace = $this->icServer->getNameSpaces();
 		$nameSpace = $this->_getNameSpaces();
+		//error_log(__METHOD__.__LINE__.array2string($nameSpace));
 		//_debug_array($nameSpace);
 		//_debug_array($delimiter);
-		if(isset($nameSpace['#mh/'])) {
-			// removed the uwimap code
-			// but we need to reintroduce him later
-			// uw imap does not return the attribute of a folder, when requesting subscribed folders only
-			// dovecot has the same problem too
-		} else {
-			if (is_array($nameSpace)) {
-			  foreach($nameSpace as $type => $singleNameSpace) {
-				$prefix_present = $nameSpace[$type]['prefix_present'];
-				$foldersNameSpace[$type] = $nameSpace[$type];
+		if (is_array($nameSpace))
+		{
+			foreach($nameSpace as $k => $singleNameSpace) {
+				$type = $singleNameSpace['type'];
+				$prefix_present = $singleNameSpace['prefix_present'];
+				// the following line (assumption that for the same namespace the delimiter should be equal) may be wrong
+				$foldersNameSpace[$type]['delimiter']  = $singleNameSpace['delimiter'];
 
 				if(is_array($singleNameSpace)) {
 					// fetch and sort the subscribed folders
@@ -2215,7 +2231,7 @@ class emailadmin_imapbase
 					{
 						try
 						{
-							$subscribedMailboxes = $this->icServer->listSubscribedMailboxes($foldersNameSpace[$type]['prefix'],0,true);
+							$subscribedMailboxes = $this->icServer->listSubscribedMailboxes($singleNameSpace['prefix'],0,true);
 							if (empty($subscribedMailboxes) && $type == 'shared')
 							{
 								$subscribedMailboxes = $this->icServer->listSubscribedMailboxes('',0,true);
@@ -2226,25 +2242,37 @@ class emailadmin_imapbase
 							continue;
 						}
 						//echo "subscribedMailboxes";_debug_array($subscribedMailboxes);
-						$foldersNameSpace[$type]['subscribed'] = (!empty($subscribedMailboxes)?array_keys($subscribedMailboxes):array());
+						$subscribedFoldersPerNS = (!empty($subscribedMailboxes)?array_keys($subscribedMailboxes):array());
 						//if (is_array($foldersNameSpace[$type]['subscribed'])) sort($foldersNameSpace[$type]['subscribed']);
 						//_debug_array($foldersNameSpace);
-						if (!empty($foldersNameSpace[$type]['subscribed']))
+						//error_log(__METHOD__.__LINE__.array2string($singleNameSpace).':#:'.array2string($subscribedFoldersPerNS));
+						if (!empty($subscribedFoldersPerNS) && !empty($subscribedMailboxes))
 						{
 							//error_log(__METHOD__.' ('.__LINE__.') '." $type / subscribed:". array2string($subscribedMailboxes));
 							foreach ($subscribedMailboxes as $k => $finfo)
 							{
+								//error_log(__METHOD__.__LINE__.$k.':#:'.array2string($finfo));
 								$folderBasicInfo[$this->icServer->ImapServerId][$k]=array(
 									'MAILBOX'=>$finfo['MAILBOX'],
 									'ATTRIBUTES'=>$finfo['ATTRIBUTES'],
 									'delimiter'=>$finfo['delimiter'],//lowercase for some reason???
 									'SUBSCRIBED'=>true);
+								if (empty($foldersNameSpace[$type]['subscribed']) || !array_key_exists($k,$foldersNameSpace[$type]['subscribed']))
+								{
+									$foldersNameSpace[$type]['subscribed'][] = $k;
+								}
+								if (empty($foldersNameSpace[$type]['all']) || !array_key_exists($k,$foldersNameSpace[$type]['all']))
+								{
+									$foldersNameSpace[$type]['all'][] = $k;
+								}
 							}
 						}
-						if ($_subscribedOnly == true) {
-							$foldersNameSpace[$type]['all'] = (is_array($foldersNameSpace[$type]['subscribed']) ? $foldersNameSpace[$type]['subscribed'] :array());
+						//error_log(__METHOD__.' ('.__LINE__.') '.' '.$type.'->'.array2string($foldersNameSpace[$type]['subscribed']));
+						if (!is_array($foldersNameSpace[$type]['all'])) $foldersNameSpace[$type]['all'] = array();
+						if ($_subscribedOnly == true && !empty($foldersNameSpace[$type]['subscribed'])) {
 							continue;
 						}
+						
 					}
 					// skip the checks here completely; we rely on Hordes code/results as for now
 					// this improves speed tremendously for the !$_subscribedOnly - mode
@@ -2253,7 +2281,7 @@ class emailadmin_imapbase
 					if(!$_subscribedOnly) {
 						foreach ((array)$foldersNameSpace[$type]['subscribed'] as $folderName)
 						{
-							if ($foldersNameSpace[$type]['prefix'] == $folderName || $foldersNameSpace[$type]['prefix'] == $folderName.$foldersNameSpace[$type]['delimiter']) continue;
+							if ($singleNameSpace['prefix'] == $folderName || $singleNameSpace['prefix'] == $folderName.$singleNameSpace['delimiter']) continue;
 							//echo __METHOD__."Checking $folderName for existence<br>";
 							if (!$this->folderExists($folderName,true)) {
 								//echo("eMail Folder $folderName failed to exist; should be unsubscribed; Trying ...");
@@ -2270,15 +2298,15 @@ class emailadmin_imapbase
 					*/
 
 					// fetch and sort all folders
-					//echo $type.'->'.$foldersNameSpace[$type]['prefix'].'->'.($type=='shared'?0:2)."<br>";
+					//echo $type.'->'.$singleNameSpace['prefix'].'->'.($type=='shared'?0:2)."<br>";
 					try
 					{
 						// calling with 2 lists all mailboxes on that level with fetches all
 						// we switch to all, to avoid further calls for subsequent levels
 						// that may produce problems, when encountering recursions probably
 						// horde is handling that, so we do not; keep that in mind!
-						//$allMailboxesExt = $this->icServer->getMailboxes($foldersNameSpace[$type]['prefix'],2,true);
-						$allMailboxesExt = $this->icServer->getMailboxes($foldersNameSpace[$type]['prefix'],0,true);
+						//$allMailboxesExt = $this->icServer->getMailboxes($singleNameSpace['prefix'],2,true);
+						$allMailboxesExt = $this->icServer->getMailboxes($singleNameSpace['prefix'],0,true);
 					}
 					catch (Exception $e)
 					{
@@ -2319,7 +2347,7 @@ class emailadmin_imapbase
 */
 					if (!is_array($allMailboxesExt))
 					{
-						//error_log(__METHOD__.' ('.__LINE__.') '.' Expected Array but got:'.array2string($allMailboxesExt). 'Type:'.$type.' Prefix:'.$foldersNameSpace[$type]['prefix']);
+						//error_log(__METHOD__.' ('.__LINE__.') '.' Expected Array but got:'.array2string($allMailboxesExt). 'Type:'.$type.' Prefix:'.$singleNameSpace['prefix']);
 						continue;
 						//$allMailboxesExt=array();
 					}
@@ -2368,7 +2396,6 @@ class emailadmin_imapbase
 					$foldersNameSpace[$type]['all'] = $allMailboxes;
 					if (is_array($foldersNameSpace[$type]['all'])) sort($foldersNameSpace[$type]['all']);
 				}
-			  }
 			}
 /*
 			// check for autocreated folders
@@ -2478,18 +2505,20 @@ class emailadmin_imapbase
 		foreach( array('personal', 'others', 'shared') as $type) {
 			if(isset($foldersNameSpace[$type])) {
 				if($_subscribedOnly) {
-					if( !PEAR::isError($foldersNameSpace[$type]['subscribed']) ) $listOfFolders = $foldersNameSpace[$type]['subscribed'];
+					if( !empty($foldersNameSpace[$type]['subscribed']) ) $listOfFolders = $foldersNameSpace[$type]['subscribed'];
 				} else {
-					if( !PEAR::isError($foldersNameSpace[$type]['all'])) $listOfFolders = $foldersNameSpace[$type]['all'];
+					if( !empty($foldersNameSpace[$type]['all'])) $listOfFolders = $foldersNameSpace[$type]['all'];
 				}
 				foreach((array)$listOfFolders as $folderName) {
 					//echo "<br>FolderToCheck:$folderName<br>";
+					//error_log(__METHOD__.__LINE__.'#Delimiter:'.$delimiter.':#'.$folderName);
 					if($_subscribedOnly && !(in_array($folderName, $foldersNameSpace[$type]['all'])||in_array($folderName.$foldersNameSpace[$type]['delimiter'], $foldersNameSpace[$type]['all']))) {
 						#echo "$folderName failed to be here <br>";
 						continue;
 					}
 					if (isset($folders[$folderName])) continue;
 					if (isset($autoFolderObjects[$folderName])) continue;
+					if (empty($delimiter)||$delimiter != $foldersNameSpace[$type]['delimiter']) $delimiter = $foldersNameSpace[$type]['delimiter'];
 					$folderParts = explode($delimiter, $folderName);
 					$shortName = array_pop($folderParts);
 
@@ -2743,7 +2772,15 @@ class emailadmin_imapbase
 		{
 			$nameSpace = $this->_getNameSpaces();
 			$prefix='';
-			if (isset($nameSpace['personal'])) $prefix = $nameSpace['personal']['prefix'];
+			foreach ($nameSpace as $nSp)
+			{
+				if ($nSp['type']=='personal')
+				{
+					//error_log(__METHOD__.__LINE__.array2string($nSp));
+					$prefix = $nSp['prefix'];
+					break;
+				}
+			}
 			if ($this->folderExists($prefix.$types[$_type]['autoFolderName'],true))
 			{
 				$_folderName = $prefix.$types[$_type]['autoFolderName'];
@@ -2752,7 +2789,8 @@ class emailadmin_imapbase
 			{
 				try
 				{
-					$this->createFolder('', $_folderName, true);
+					$this->createFolder('', $prefix.$types[$_type]['autoFolderName'], true);
+					$_folderName = $prefix.$types[$_type]['autoFolderName'];
 				}
 				catch(Exception $e)
 				{

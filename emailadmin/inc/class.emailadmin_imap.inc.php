@@ -901,14 +901,14 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			$_username .= '@'. $this->domainName;
 		}
 
-		$mailboxString = $nameSpaces['others']['name'] . $_username . (!empty($_folderName) ? $nameSpaces['others']['delimiter'] . $_folderName : '');
+		$mailboxString = $nameSpaces['others'][0]['name'] . $_username . (!empty($_folderName) ? $nameSpaces['others'][0]['delimiter'] . $_folderName : '');
 
 		return $mailboxString;
 	}
 
 	/**
 	 * get list of namespaces
-	 *
+	 *	Note: a IMAPServer may present several namespaces under each key
 	 * @return array with keys 'personal', 'shared' and 'others' and value array with values for keys 'name' and 'delimiter'
 	 */
 	function getNameSpaceArray()
@@ -918,13 +918,14 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			Horde_Imap_Client::NS_OTHER    => 'others',
 			Horde_Imap_Client::NS_SHARED   => 'shared'
 		);
-
+		//error_log(__METHOD__.__LINE__.array2string($types));
 		foreach($this->getNamespaces() as $data)
 		{
 			//error_log(__METHOD__.__LINE__.array2string($data));
 			if (isset($types[$data['type']]))
 			{
-				$result[$types[$data['type']]] = array(
+				$result[$types[$data['type']]][] = array(
+					'type' => $types[$data['type']],
 					'name' => $data['name'],
 					'prefix' => $data['name'],
 					'prefix_present' => !empty($data['name']),
