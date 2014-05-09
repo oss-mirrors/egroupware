@@ -224,11 +224,11 @@ class emailadmin_imapbase
 					error_log(__METHOD__.' ('.__LINE__.') '.' # Instance='.$GLOBALS['egw_info']['user']['domain'].', User='.$GLOBALS['egw_info']['user']['account_lid']);
 				}
 				$_profileID = $profileID;
-				$GLOBALS['egw']->preferences->add('mail','ActiveProfileID',$_profileID,'user');
+				//$GLOBALS['egw']->preferences->add('mail','ActiveProfileID',$_profileID,'user');
 				// save prefs
-				$GLOBALS['egw']->preferences->save_repository(true);
+				//$GLOBALS['egw']->preferences->save_repository(true);
 			}
-			egw_cache::setSession('mail','activeProfileID',$_profileID);
+			//egw_cache::setSession('mail','activeProfileID',$_profileID);
 		}
 		//error_log(__METHOD__.' ('.__LINE__.') '.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID.' called from:'.function_backtrace());
 		if ($_profileID && (!isset(self::$instances[$_profileID]) || $_restoreSession===false))
@@ -267,12 +267,55 @@ class emailadmin_imapbase
 					throw new egw_exception(__METHOD__." Loading the Profile for ProfileID >".$_profileID.'< failed for icServer; '.$e->getMessage().' Trigger new instance for Default-Profile >'.$newprofileID.'< failed');
 				}
 			}
+			self::storeActiveProfileIDToPref(self::$instances[$_profileID]->icServer, $_profileID, $_validate );
 		}
 		self::$instances[$_profileID]->profileID = $_profileID;
 		if (!isset(self::$instances[$_profileID]->idna2)) self::$instances[$_profileID]->idna2 = new egw_idna;
 		//if ($_profileID==0); error_log(__METHOD__.' ('.__LINE__.') '.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID);
 		if (is_null(self::$mailConfig)) self::$mailConfig = config::read('mail');
 		return self::$instances[$_profileID];
+	}
+
+	/**
+	 * store given ProfileID to Session and pref
+	 *
+	 * @param int $_profileID=0
+	 * @param boolean $_testConnection=0
+	 * @return mixed $_profileID or false on failed ConnectionTest
+	 */
+	public static function storeActiveProfileIDToPref($_icServerObject, $_profileID=0, $_testConnection=true)
+	{
+		if (isset($GLOBALS['egw_info']['user']['preferences']['mail']['ActiveProfileID']) && !empty($GLOBALS['egw_info']['user']['preferences']['mail']['ActiveProfileID']))
+		{
+			$oldProfileID = (int)$GLOBALS['egw_info']['user']['preferences']['mail']['ActiveProfileID'];
+		}
+		else
+		{
+			$oldProfileID = emailadmin_bo::getUserDefaultAccID();
+		}
+		if ($_testConnection)
+		{
+			try
+			{
+				$mailbox = $_icServerObject->getCurrentMailbox();
+			}
+			catch (Exception $e)
+			{
+				if ($_profileID != emailadmin_bo::getUserDefaultAccID()) $_profileID = emailadmin_bo::getUserDefaultAccID();
+				error_log(__METHOD__.__LINE__.' '.$e->getMessage());
+				return false;
+			}
+		}
+		if ($oldProfileID != $_profileID)
+		{
+			if ($oldProfileID && $_profileID==0) $_profileID = $oldProfileID;
+			$GLOBALS['egw']->preferences->add('mail','ActiveProfileID',$_profileID,'user');
+			// save prefs
+			$GLOBALS['egw']->preferences->save_repository(true);
+			$GLOBALS['egw_info']['user']['preferences']['mail']['ActiveProfileID'] = $_profileID;
+			egw_cache::setSession('mail','activeProfileID',$_profileID);
+		}
+		return $_profileID;
 	}
 
 	/**
@@ -773,27 +816,35 @@ class emailadmin_imapbase
 		//error_log(__METHOD__.' ('.__LINE__.') '.' ->'.array2string($this->icServer));
 		if (self::$debugTimes) $starttime = microtime (true);
 		$mailbox=null;
-		if($this->folderExists($this->sessionData['mailbox'])) $mailbox = $this->sessionData['mailbox'];
-		if (empty($mailbox)) $mailbox = $this->icServer->getCurrentMailbox();
+		try
+		{
+			if($this->folderExists($this->sessionData['mailbox'])) $mailbox = $this->sessionData['mailbox'];
+			if (empty($mailbox)) $mailbox = $this->icServer->getCurrentMailbox();
 /*
-		if (isset(emailadmin_imap::$supports_keywords[$_icServerID]))
-		{
-			$this->icServer->openMailbox($mailbox);
-		}
-		else
-		{
-			$this->icServer->examineMailbox($mailbox);
-		}
+			if (isset(emailadmin_imap::$supports_keywords[$_icServerID]))
+			{
+				$this->icServer->openMailbox($mailbox);
+			}
+			else
+			{
+				$this->icServer->examineMailbox($mailbox);
+			}
 */
-		// the above should detect if there is a known information about supporting KEYWORDS
-		// but does not work as expected :-(
-		$this->icServer->examineMailbox($mailbox);
-		//error_log(__METHOD__." using existing Connection ProfileID:".$_icServerID.' Status:'.print_r($this->icServer->_connected,true));
-		//error_log(__METHOD__.' ('.__LINE__.') '."->open connection for Server with profileID:".$_icServerID.function_backtrace());
+			// the above should detect if there is a known information about supporting KEYWORDS
+			// but does not work as expected :-(
+			$this->icServer->examineMailbox($mailbox);
+			//error_log(__METHOD__." using existing Connection ProfileID:".$_icServerID.' Status:'.print_r($this->icServer->_connected,true));
+			//error_log(__METHOD__.' ('.__LINE__.') '."->open connection for Server with profileID:".$_icServerID.function_backtrace());
 
-		//make sure we are working with the correct hierarchyDelimiter on the current connection, calling getHierarchyDelimiter with false to reset the cache
-		$hD = $this->getHierarchyDelimiter(false);
-		self::$specialUseFolders = $this->getSpecialUseFolders();
+			//make sure we are working with the correct hierarchyDelimiter on the current connection, calling getHierarchyDelimiter with false to reset the cache
+			$hD = $this->getHierarchyDelimiter(false);
+			self::$specialUseFolders = $this->getSpecialUseFolders();
+		}
+		catch (Exception $e)
+		{
+			error_log(__METHOD__.' ('.__LINE__.') '."->open connection for Server with profileID:".$_icServerID." failed!".$e->getMessage());
+			throw new egw_exception(__METHOD__." failed to ".__METHOD__." on Profile to $_icServerID :".$e->getMessage());
+		}
 		if (self::$debugTimes) self::logRunTimes($starttime,null,'ProfileID:'.$_icServerID,__METHOD__.' ('.__LINE__.') ');
 	}
 
@@ -3028,6 +3079,7 @@ class emailadmin_imapbase
 		}
 		catch (Exception $e)
 		{
+			//error_log(__METHOD__.__LINE__.$e->getMessage());
 			$folderInfo[$this->profileID][$_folder] = false;
 		}
 		//error_log(__METHOD__.' ('.__LINE__.') '.' Folder Exists:'.$folderInfo[$this->profileID][$_folder].function_backtrace());
