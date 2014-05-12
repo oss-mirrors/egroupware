@@ -201,6 +201,16 @@ class emailadmin_account implements ArrayAccess
 	protected $user;
 
 	/**
+	 * Name of certain user-data fields which need to get queried by imap or smtp backends
+	 *
+	 * @var array
+	 */
+	static public $user_data = array(
+		'mailLocalAddress', 'mailAlternateAddress', 'mailForwardingAddress',
+		'accountStatus', 'deliveryMode', 'quotaLimit', 'quotaUsed',
+	);
+
+	/**
 	 * Constructor
 	 *
 	 * Should be protected, but php5.3 does NOT keep class context in closures.
@@ -235,7 +245,15 @@ class emailadmin_account implements ArrayAccess
 		unset($this->smtpServer);
 
 		$this->user = $called_for ? $called_for : $GLOBALS['egw_info']['user']['account_id'];
+	}
 
+	/**
+	 * Query quota, aliases, forwards, ... from imap and smtp backends and sets them as parameters on current object
+	 *
+	 * @return array with values for keys in self::$user_data
+	 */
+	public function getUserData()
+	{
 		// if we manage the mail-account, include that data too (imap has higher precedence)
 		try {
 			if ($this->acc_imap_type != 'emailadmin_imap' && $this->imapServer() &&
@@ -254,10 +272,13 @@ class emailadmin_account implements ArrayAccess
 			// ignore eg. missing admin user
 		}
 		if ($this->acc_smtp_type != 'emailadmin_smtp' && $this->smtpServer() &&
-			($data = $this->smtpServer->getUserData($this->user)))
+			($smtp_data = $this->smtpServer->getUserData($this->user)))
 		{
-			$this->params += $data;
+			$this->params += $smtp_data;
 		}
+		$this->params += array_fill_keys(self::$user_data, null);	// make sure all keys exist now
+
+		return (array)$data + (array)$smtp_data;
 	}
 
 	/**
@@ -690,6 +711,8 @@ class emailadmin_account implements ArrayAccess
 	/**
 	 * Give read access to protected parameters in $this->params
 	 *
+	 * To get $this->params you need to call getUserData before! It is never automatically loaded.
+	 *
 	 * @param type $name
 	 * @return mixed
 	 */
@@ -700,8 +723,13 @@ class emailadmin_account implements ArrayAccess
 			case 'acc_imap_administration':	// no longer stored in database
 				return !empty($this->params['acc_imap_admin_username']);
 
-			case 'params':
+			case 'params':	// does NOT return user-data, unless $this->getUserData was called before!
 				return $this->params;
+		}
+		// if user-data is requested, check if it is already loaded and load it if not
+		if (in_array($name, self::$user_data) && !array_key_exists($name, $this->params))
+		{
+			$this->getUserData();
 		}
 		return $this->params[$name];
 	}
@@ -721,6 +749,11 @@ class emailadmin_account implements ArrayAccess
 
 			case 'params':
 				return isset($this->params);
+		}
+		// if user-data is requested, check if it is already loaded and load it if not
+		if (in_array($name, self::$user_data) && !array_key_exists($name, $this->params))
+		{
+			$this->getUserData();
 		}
 		return isset($this->params[$name]);
 	}

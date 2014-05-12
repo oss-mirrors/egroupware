@@ -844,6 +844,7 @@ class emailadmin_wizard
 				try {
 					$account = emailadmin_account::read($content['acc_id'], $this->is_admin && $content['called_for'] ?
 						$content['called_for'] : $GLOBALS['egw_info']['user']['account_id']);
+					$account->getUserData();	// quota, aliases, forwards etc.
 					$content += $account->params;
 					$content['acc_sieve_enabled'] = (string)($content['acc_sieve_enabled']);
 					$content['notify_use_default'] = !$content['notify_account_id'];
