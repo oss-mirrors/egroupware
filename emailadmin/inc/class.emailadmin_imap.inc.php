@@ -919,6 +919,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			Horde_Imap_Client::NS_SHARED   => 'shared'
 		);
 		//error_log(__METHOD__.__LINE__.array2string($types));
+		$result = array();
 		foreach($this->getNamespaces() as $data)
 		{
 			//error_log(__METHOD__.__LINE__.array2string($data));
