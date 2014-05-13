@@ -1064,7 +1064,6 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				if (is_null($this->sieve))
 				{
 					$this->sieve = new emailadmin_sieve($this);
-					$this->scriptName =& $this->sieve->scriptName;
 					$this->error =& $this->sieve->error;
 				}
 				$ret = call_user_func_array(array($this->sieve,$name),$params);
