@@ -140,19 +140,9 @@ class emailadmin_sieve extends Net_Sieve
 			{
 				case emailadmin_account::SSL_SSL:
 					$sieveHost = 'ssl://'.$sieveHost;
-					$options = array(
-						'ssl' => array(
-							'verify_peer' => false,
-							'allow_self_signed' => true,
-					));
 					break;
 				case emailadmin_account::SSL_TLS:
 					$sieveHost = 'tls://'.$sieveHost;
-					$options = array(
-						'tls' => array(
-							'verify_peer' => false,
-							'allow_self_signed' => true,
-					));
 					break;
 				case emailadmin_account::SSL_STARTTLS:
 					$useTLS = true;
