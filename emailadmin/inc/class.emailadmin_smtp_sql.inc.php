@@ -88,7 +88,7 @@ class emailadmin_smtp_sql extends emailadmin_smtp
 				);
 			}
 		}
-		if ($this->debug) error_log(__METHOD__."('$_acountName') returning ".array2string($emailAddresses));
+		if ($this->debug) error_log(__METHOD__."('$_accountName') returning ".array2string($emailAddresses));
 
 		return $emailAddresses;
 	}
@@ -344,8 +344,6 @@ class emailadmin_smtp_sql extends emailadmin_smtp
 	 */
 	function getMailboxes($return_inactive)
 	{
-		global $ds, $search_base;
-
 		$join = 'JOIN '.accounts_sql::TABLE.' ON '.self::TABLE.'.account_id='.accounts_sql::TABLE.'.account_id';
 		if (!$return_inactive)
 		{
