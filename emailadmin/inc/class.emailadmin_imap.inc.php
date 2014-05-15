@@ -521,7 +521,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		foreach ((array)$mailboxes as $k =>$box)
 		{
 			//error_log(__METHOD__.__LINE__.' Box:'.$k.'->'.array2string($box));
-			$ret[$k]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter']);
+			$ret[$k]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter'],'SUBSCRIBED'=>true);
 		}
 		// for unknown reasons on ALL, UNSUBSCRIBED are not returned
 		if (!empty($mailbox) && !isset($ret[$mailbox]))
@@ -533,7 +533,14 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			foreach ((array)$mailboxes as $k =>$box)
 			{
 				//error_log(__METHOD__.__LINE__.' Box:'.$k.' already In?'.array_key_exists($k,$boxexists).'->'.array2string($box));
-				if(!array_key_exists($k,$ret)) $ret[$k]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter']);
+				if(!array_key_exists($k,$ret))
+				{
+					$ret[$k]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter'],'SUBSCRIBED'=>false);
+				}
+				else
+				{
+					$ret[$k]['SUBSCRIBED'] = false;
+				}
 			}
 		}
 		return $ret;
@@ -601,7 +608,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			}
 			else
 			{
-				$ret[$k]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter']);
+				$ret[$k]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter'],'SUBSCRIBED'=>true);
 			}
 		}
 		return $ret;

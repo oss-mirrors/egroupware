@@ -2307,12 +2307,13 @@ class emailadmin_imapbase
 									'MAILBOX'=>$finfo['MAILBOX'],
 									'ATTRIBUTES'=>$finfo['ATTRIBUTES'],
 									'delimiter'=>$finfo['delimiter'],//lowercase for some reason???
-									'SUBSCRIBED'=>true);
-								if (empty($foldersNameSpace[$type]['subscribed']) || !array_key_exists($k,$foldersNameSpace[$type]['subscribed']))
+									'SUBSCRIBED'=>$mbx['SUBSCRIBED'],//seeded by getMailboxes
+								);
+								if (empty($foldersNameSpace[$type]['subscribed']) || !in_array($k,$foldersNameSpace[$type]['subscribed']))
 								{
 									$foldersNameSpace[$type]['subscribed'][] = $k;
 								}
-								if (empty($foldersNameSpace[$type]['all']) || !array_key_exists($k,$foldersNameSpace[$type]['all']))
+								if (empty($foldersNameSpace[$type]['all']) || !in_array($k,$foldersNameSpace[$type]['all']))
 								{
 									$foldersNameSpace[$type]['all'][] = $k;
 								}
@@ -2411,7 +2412,12 @@ class emailadmin_imapbase
 								'MAILBOX'=>$mbx['MAILBOX'],
 								'ATTRIBUTES'=>$mbx['ATTRIBUTES'],
 								'delimiter'=>$mbx['delimiter'],//lowercase for some reason???
-								'SUBSCRIBED'=>false);
+								'SUBSCRIBED'=>$mbx['SUBSCRIBED'],//seeded by getMailboxes
+							);
+						}
+						if ($mbx['SUBSCRIBED'] && (empty($foldersNameSpace[$type]['subscribed']) || !in_array($mbx['MAILBOX'],$foldersNameSpace[$type]['subscribed'])))
+						{
+							$foldersNameSpace[$type]['subscribed'][] = $mbx['MAILBOX'];
 						}
 						//echo __METHOD__;_debug_array($mbx);
 						//error_log(__METHOD__.' ('.__LINE__.') '.array2string($mbx));
