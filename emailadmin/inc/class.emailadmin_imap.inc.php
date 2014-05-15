@@ -856,6 +856,16 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			case 'uidNumber':
 				$_username = 'u'.$accountID;
 				break;
+			default:
+				if (empty($this->loginType))
+				{
+					// try to figure out by params['acc_imap_username']
+					list($lusername,$domain) = explode('@',$this->params['acc_imap_username'],2);
+					if (strpos($_username,'@')===false && !empty($domain) && !empty($lusername))
+					{
+						$_username = $_username.'@'.$domain;
+					}
+				}
 		}
 		return strtolower($_username);
 	}
