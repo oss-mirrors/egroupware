@@ -1140,9 +1140,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			$this->error =& $this->sieve->error;
 		}
 		$ret = $this->setVacation($_scriptName, $_vacation);
-		// we need to logout, so further vacation's get processed
-		$this->_cmdLogout();
-
+		
 		return $ret;
 	}
 
