@@ -66,7 +66,7 @@ class emailadmin_imap_dovecot extends emailadmin_imap
 		{
 			$this->params['acc_imap_admin_username'] = substr($this->acc_imap_admin_username, $pos+1);
 		}
-		$this->params['acc_imap_admin_username'] = ($_username ? $_username : $this->acc_imap_username).
+		$this->params['acc_imap_admin_username'] = (is_string($_username) ? $_username : $this->acc_imap_username).
 			'*'.$this->acc_imap_admin_username;
 
 		parent::adminConnection($_username);
