@@ -72,8 +72,9 @@ class emailadmin_sieve extends Net_Sieve
 	 * Constructor
 	 *
 	 * @param emailadmin_imap $_icServer
+	 * @param string $euser='' effictive user, if given the Cyrus admin account is used to login on behalf of $euser
 	 */
-	function __construct(emailadmin_imap $_icServer=null)
+	function __construct(emailadmin_imap $_icServer=null, $_euser='')
 	{
 		parent::Net_Sieve();
 
@@ -89,7 +90,7 @@ class emailadmin_sieve extends Net_Sieve
 
 		$this->displayCharset	= translation::charset();
 
-		if (!is_null($_icServer) && $this->_connect($_icServer) === 'die') {
+		if (!is_null($_icServer) && $this->_connect($_icServer, $_euser) === 'die') {
 			die('Sieve not activated');
 		}
 	}
@@ -133,9 +134,9 @@ class emailadmin_sieve extends Net_Sieve
 			}
 			//error_log(__METHOD__.__LINE__.'->'.$sieveHost);
 			$sievePort		= $_icServer->acc_sieve_port;
-			
+
 			$useTLS = false;
-			
+
 			switch($_icServer->acc_sieve_ssl)
 			{
 				case emailadmin_account::SSL_SSL:
@@ -170,7 +171,7 @@ class emailadmin_sieve extends Net_Sieve
 		{
 			$this->_timeout = $timeout;
 		}
-		
+
 		if(PEAR::isError($this->error = $this->connect($sieveHost , $sievePort, $options=null, $useTLS) ) )
 		{
 			if ($this->debug)
@@ -252,7 +253,7 @@ class emailadmin_sieve extends Net_Sieve
 		if (PEAR::isError($res = $this->_sock->connect($host, $port, false, ($this->_timeout?$this->_timeout:10), $options))) {
             return $res;
         }
-	
+
         if ($this->_bypassAuth) {
             $this->_state = NET_SIEVE_STATE_TRANSACTION;
         } else {

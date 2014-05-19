@@ -1092,15 +1092,30 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 
 	public function setVacationUser($_euser, $_scriptName, $_vacation)
 	{
-		if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.' User:'.array2string($_euser).' Scriptname:'.array2string($_scriptName).' VacationMessage:'.array2string($_vacation));
+		if ($this->debug) error_log(__METHOD__.' User:'.array2string($_euser).' Scriptname:'.array2string($_scriptName).' VacationMessage:'.array2string($_vacation));
 		if (is_null($this->sieve))
 		{
-			$this->sieve = new emailadmin_sieve();
+			$this->sieve = new emailadmin_sieve($this, $_euser);
 			$this->scriptName =& $this->sieve->scriptName;
 			$this->error =& $this->sieve->error;
-			$this->sieve->icServer = $this;
 		}
-		return $this->sieve->setVacationUser($_euser, $_scriptName, $_vacation);
+		$ret = $this->setVacation($_scriptName, $_vacation);
+		// we need to logout, so further vacation's get processed
+		$this->_cmdLogout();
+
+		return $ret;
+	}
+
+	public function getVacationUser($_euser)
+	{
+		if ($this->debug) error_log(__METHOD__.' User:'.array2string($_euser));
+		if (is_null($this->sieve))
+		{
+			$this->sieve = new emailadmin_sieve($this, $_euser);
+			$this->scriptName =& $this->sieve->scriptName;
+			$this->error =& $this->sieve->error;
+		}
+		return $this->sieve->getVacation();
 	}
 
 	/**
