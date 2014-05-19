@@ -420,37 +420,6 @@ class emailadmin_sieve extends Net_Sieve
 		return false;
 	}
 
-	/**
-	 * Set vacation with admin right for an other user, used to async enable/disable vacation
-	 *
-	 * @param string $_euser
-	 * @param string $_scriptName
-	 * @param string $_vaction
-	 * @return boolean true on success false otherwise
-	 */
-	function setVacationUser($_euser, $_scriptName, $_vacation)
-	{
-		if ($this->debug)
-		{
-			error_log(__CLASS__.'::'.__METHOD__.' User:'.array2string($_euser).' Scriptname:'.array2string($_scriptName).' VacationMessage:'.array2string($_vacation));
-		}
-		if (!$_scriptName)
-		{
-			$_scriptName = $this->scriptName;
-		}
-		if ($this->_connect($this->icServer,$_euser) === true) {
-			$ret = $this->setVacation($_scriptName,$_vacation);
-			// we need to logout, so further vacation's get processed
-			$error = $this->_cmdLogout();
-			if ($this->debug)
-			{
-				error_log(__CLASS__ . '::' . __METHOD__ . ' logout ' . (PEAR::isError($error) ? 'failed: ' . $ret->getMessage() : 'successful'));
-			}
-			return $ret;
-		}
-		return false;
-	}
-
 	function setEmailNotification($_scriptName, $_emailNotification) {
 		if (!$_scriptName)
 		{
