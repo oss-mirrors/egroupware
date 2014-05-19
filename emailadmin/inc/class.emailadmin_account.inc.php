@@ -114,6 +114,12 @@ class emailadmin_account implements ArrayAccess
 	const DEFAULT_ORDER = 'egw_ea_valid.account_id ASC,ident_org ASC,ident_realname ASC,acc_name ASC';
 
 	/**
+	 * JOIN to join in admin user, eg. to check if we have admin credentials
+	 */
+	const ADMIN_JOIN = 'LEFT JOIN egw_ea_credentials ON egw_ea_credentials.acc_id=egw_ea_accounts.acc_id AND cred_type=8';
+	const ADMIN_COL = 'cred_username AS acc_imap_admin_username';
+
+	/**
 	 * No SSL
 	 */
 	const SSL_NONE = 0;
@@ -1190,6 +1196,11 @@ class emailadmin_account implements ArrayAccess
 				$cols[] = $valid_account_id_sql.' AS account_id';
 				$join .= ' '.self::ALL_VALID_JOIN;
 			}
+			if ($just_name == 'params')	// join in acc_imap_admin_username
+			{
+				$cols[] = self::ADMIN_COL;
+				$join .= ' '.self::ADMIN_JOIN;
+			}
 			$rs = self::$db->select(self::TABLE, $cols,	$where, __LINE__, __FILE__,
 				$offset, so_sql::fix_group_by_columns($group_by, $cols, self::TABLE, 'acc_id').' ORDER BY '.$order_by,
 				self::APP, $num_rows, $join);
@@ -1204,6 +1215,10 @@ class emailadmin_account implements ArrayAccess
 					//error_log(__METHOD__."(TRUE, $just_name) caching data for acc_id=$row[acc_id]");
 					self::$search_cache[$cache_key][$row['acc_id']] =& self::$cache[$row['acc_id']];
 					self::$cache[$row['acc_id']] = $row;
+				}
+				else
+				{
+					self::$search_cache[$cache_key][$row['acc_id']] = $row;
 				}
 				$ids[] = $row['acc_id'];
 			}
