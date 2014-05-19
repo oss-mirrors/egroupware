@@ -151,6 +151,9 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		// Horde use locale for translation of error messages
 		common::setlocale(LC_MESSAGES);
 
+		// some plugins need extra measures to switch to an admin connection (eg. Dovecot constructs a special admin user name)
+		if ($_adminConnection) $this->adminConnection();
+
 		parent::__construct(array(
 			'username' => $this->params[$_adminConnection ? 'acc_imap_admin_username' : 'acc_imap_username'],
 			'password' => $this->params[$_adminConnection ? 'acc_imap_admin_password' : 'acc_imap_password'],
@@ -169,13 +172,28 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	}
 
 	/**
+	 * Ensure we use an admin connection
+	 *
+	 * Plugins can overwrite it to eg. construct a special admin user name
+	 */
+	function adminConnection()
+	{
+		if (!$this->isAdminConnection)
+		{
+			$this->logout();
+
+			$this->__construct($this->params, true);
+		}
+	}
+
+	/**
 	 * Check admin credientials and connection (if supported)
 	 *
 	 * @throws Horde_IMAP_Client_Exception
 	 */
 	public function checkAdminConnection()
 	{
-		if ($this->acc_imap_administration && method_exists($this, 'adminConnection'))
+		if ($this->acc_imap_administration)
 		{
 			$this->adminConnection();
 			$this->login();

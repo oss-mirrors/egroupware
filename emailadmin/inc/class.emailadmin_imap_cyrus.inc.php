@@ -38,19 +38,6 @@ class emailadmin_imap_cyrus extends emailadmin_imap
 	var $mailboxPrefix = '';
 
 	/**
-	 * Ensure we use an admin connection
-	 */
-	function adminConnection()
-	{
-		if (!$this->isAdminConnection)
-		{
-			$this->logout();
-
-			$this->__construct($this->params, true);
-		}
-	}
-
-	/**
 	 * Updates an account
 	 *
 	 * @param array $_hookValues only value for key 'account_lid' and 'new_passwd' is used
