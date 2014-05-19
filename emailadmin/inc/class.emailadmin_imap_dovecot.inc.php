@@ -56,38 +56,20 @@ class emailadmin_imap_dovecot extends emailadmin_imap
 	 * Ensure we use an admin connection
 	 *
 	 * Prefixes adminUsername with real username (separated by an asterisk)
+	 *
+	 * @param string $_username=null create an admin connection for given user or $this->acc_imap_username
 	 */
-	function adminConnection()
+	function adminConnection($_username=null)
 	{
-		try
+		// generate admin user name of $username
+		if (($pos = strpos($this->acc_imap_admin_username, '*')) !== false)	// remove evtl. set username
 		{
-			if (($pos = strpos($this->acc_imap_admin_username, '*')) !== false)	// remove evtl. set username
-			{
-				$this->params['acc_imap_admin_username'] = substr($this->acc_imap_admin_username, $pos+1);
-			}
-			$this->params['acc_imap_admin_username'] = $this->acc_imap_username.'*'.$this->acc_imap_admin_username;
-			$success = true;
+			$this->params['acc_imap_admin_username'] = substr($this->acc_imap_admin_username, $pos+1);
 		}
-		catch (Exception $e)
-		{
-			$success=false;
-			if ($this->isAdminConnection)
-			{
-				throw new egw_exception_wrong_parameter("Tried to open adminConnection: failed!".$e->getMessage());
-			}
-		}
-		if ($success && !$this->isAdminConnection)
-		{
-			$this->logout();
-			try
-			{
-				$this->__construct($this->params, true);
-			}
-			catch (Exception $e)
-			{
-				throw new egw_exception_wrong_parameter("Tried to open adminConnection: failed!".$e->getMessage());
-			}
-		}
+		$this->params['acc_imap_admin_username'] = ($_username ? $_username : $this->acc_imap_username).
+			'*'.$this->acc_imap_admin_username;
+
+		parent::adminConnection($_username);
 	}
 
 	/**

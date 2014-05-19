@@ -284,13 +284,13 @@ class emailadmin_account implements ArrayAccess
 	/**
 	 * Get new Horde_Imap_Client imap server object
 	 *
-	 * @param $_adminConnection=false true: connect with admin credentials
+	 * @param bool|int|string $_adminConnection create admin connection if true or account_id or imap username
 	 * @param int $_timeout=null timeout in secs, if none given fmail pref or default of 20 is used
 	 * @return emailadmin_imap
 	 */
 	public function imapServer($_adminConnection=false, $_timeout=null)
 	{
-		if (!isset($this->imapServer) )
+		if (!isset($this->imapServer))
 		{
 			$class = self::getIcClass($this->params['acc_imap_type']);
 			$this->imapServer = new $class($this->params, $_adminConnection, $_timeout);

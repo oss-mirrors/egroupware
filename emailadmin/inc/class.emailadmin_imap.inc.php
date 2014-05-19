@@ -118,7 +118,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 * Construtor
 	 *
 	 * @param array
-	 * @param bool $_adminConnection create admin connection if true
+	 * @param bool|int|string $_adminConnection create admin connection if true or account_id or imap username
 	 * @param int $_timeout=null timeout in secs, if none given fmail pref or default of 20 is used
 	 * @return void
 	 */
@@ -152,7 +152,12 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		common::setlocale(LC_MESSAGES);
 
 		// some plugins need extra measures to switch to an admin connection (eg. Dovecot constructs a special admin user name)
-		if ($_adminConnection) $this->adminConnection();
+		$username = $_adminConnection;
+		if (!is_bool($username) && is_numeric($username))
+		{
+			$username = $this->getMailBoxUserName($username);
+		}
+		if ($_adminConnection) $this->adminConnection($username);
 
 		parent::__construct(array(
 			'username' => $this->params[$_adminConnection ? 'acc_imap_admin_username' : 'acc_imap_username'],
@@ -175,27 +180,30 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 * Ensure we use an admin connection
 	 *
 	 * Plugins can overwrite it to eg. construct a special admin user name
+	 *
+	 * @param string $_username=null create an admin connection for given user or $this->acc_imap_username
 	 */
-	function adminConnection()
+	function adminConnection($_username=true)
 	{
-		if (!$this->isAdminConnection)
+		if ($this->isAdminConnection !== $_username)
 		{
 			$this->logout();
 
-			$this->__construct($this->params, true);
+			$this->__construct($this->params, $_username);
 		}
 	}
 
 	/**
 	 * Check admin credientials and connection (if supported)
 	 *
+	 * @param string $username=null create an admin connection for given user or $this->acc_imap_username
 	 * @throws Horde_IMAP_Client_Exception
 	 */
-	public function checkAdminConnection()
+	public function checkAdminConnection($_username=true)
 	{
 		if ($this->acc_imap_administration)
 		{
-			$this->adminConnection();
+			$this->adminConnection($_username);
 			$this->login();
 		}
 	}
@@ -1108,11 +1116,25 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		throw new egw_exception_wrong_parameter("No method '$name' implemented!");
 	}
 
+	/**
+	 * Set vacation message for given user
+	 *
+	 * @param int|string $_euser nummeric account_id or imap username
+	 * @param string $_scriptName
+	 * @param string $_vacation
+	 * @return boolean
+	 */
 	public function setVacationUser($_euser, $_scriptName, $_vacation)
 	{
 		if ($this->debug) error_log(__METHOD__.' User:'.array2string($_euser).' Scriptname:'.array2string($_scriptName).' VacationMessage:'.array2string($_vacation));
-		if (is_null($this->sieve))
+
+		if (is_numeric($_euser))
 		{
+			$_euser = $this->getMailBoxUserName($_euser);
+		}
+		if (is_null($this->sieve) || $this->isAdminConnection !== $_euser)
+		{
+			$this->adminConnection($_euser);
 			$this->sieve = new emailadmin_sieve($this, $_euser);
 			$this->scriptName =& $this->sieve->scriptName;
 			$this->error =& $this->sieve->error;
@@ -1124,11 +1146,23 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		return $ret;
 	}
 
+	/**
+	 * Get vacation message for given user
+	 *
+	 * @param int|string $_euser nummeric account_id or imap username
+	 * @return array
+	 */
 	public function getVacationUser($_euser)
 	{
 		if ($this->debug) error_log(__METHOD__.' User:'.array2string($_euser));
-		if (is_null($this->sieve))
+
+		if (is_numeric($_euser))
 		{
+			$_euser = $this->getMailBoxUserName($_euser);
+		}
+		if (is_null($this->sieve) || $this->isAdminConnection !== $_euser)
+		{
+			$this->adminConnection($_euser);
 			$this->sieve = new emailadmin_sieve($this, $_euser);
 			$this->scriptName =& $this->sieve->scriptName;
 			$this->error =& $this->sieve->error;
