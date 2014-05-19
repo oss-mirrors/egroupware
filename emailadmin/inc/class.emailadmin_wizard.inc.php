@@ -830,6 +830,10 @@ class emailadmin_wizard
 				{
 					list($content['acc_id']) = each($content['accounts']);
 				}
+				if (!$content['accounts'])	// no email account, call wizard
+				{
+					return $this->add(array('account_id' => (int)$_GET['account_id']));
+				}
 				$content['accounts']['new'] = lang('Create new account');
 			}
 			if (isset($_GET['acc_id']) && (int)$_GET['acc_id'] > 0)
