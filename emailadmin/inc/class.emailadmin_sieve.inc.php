@@ -113,14 +113,13 @@ class emailadmin_sieve extends Net_Sieve
 		}
 		if ( isset($isConError[$_icServerID]) )
 		{
-			error_log(__METHOD__.__LINE__.' failed for Reason:'.$isConError[$_icServerID]);
-			//$this->errorMessage = $isConError[$_icServerID];
+			$this->error = new PEAR_Error($isConError[$_icServerID]);
 			return false;
 		}
 
 		if ($this->debug)
 		{
-			error_log(__CLASS__ . '::' . __METHOD__ . array2string($euser));
+			error_log(__METHOD__ . array2string($euser));
 		}
 		if($_icServer->acc_sieve_enabled)
 		{
@@ -176,9 +175,9 @@ class emailadmin_sieve extends Net_Sieve
 		{
 			if ($this->debug)
 			{
-				error_log(__CLASS__ . '::' . __METHOD__ . ": error in connect($sieveHost,$sievePort, " . array2string($options) . ", $useTLS): " . $this->error->getMessage());
+				error_log(__METHOD__ . ": error in connect($sieveHost,$sievePort, " . array2string($options) . ", $useTLS): " . $this->error->getMessage());
 			}
-			$isConError[$_icServerID] = "SIEVE: error in connect($sieveHost,$sievePort, ".array2string($options).", $useTLS): ".$this->error->getMessage();
+			$isConError[$_icServerID] = $this->error->getMessage();
 			egw_cache::setCache(egw_cache::INSTANCE,'email','icServerSIEVE_connectionError'.trim($GLOBALS['egw_info']['user']['account_id']),$isConError,$expiration=60*15);
 			return false;
 		}
@@ -196,13 +195,9 @@ class emailadmin_sieve extends Net_Sieve
 		{
 			if ($this->debug)
 			{
-				error_log(__CLASS__ . '::' . __METHOD__ . array2string($this->icServer));
+				error_log(__METHOD__ . ": error in login($username,$password,null,$euser): " . $this->error->getMessage());
 			}
-			if ($this->debug)
-			{
-				error_log(__CLASS__ . '::' . __METHOD__ . ": error in login($username,$password,null,$euser): " . $this->error->getMessage());
-			}
-			$isConError[$_icServerID] = "SIEVE: error in login($username,$password,null,$euser): ".$this->error->getMessage();
+			$isConError[$_icServerID] = $this->error->getMessage();
 			egw_cache::setCache(egw_cache::INSTANCE,'email','icServerSIEVE_connectionError'.trim($GLOBALS['egw_info']['user']['account_id']),$isConError,$expiration=60*15);
 			return false;
 		}
@@ -401,7 +396,7 @@ class emailadmin_sieve extends Net_Sieve
 		}
 		if ($this->debug)
 		{
-			error_log(__CLASS__ . '::' . __METHOD__ . "($_scriptName," . print_r($_vacation, true) . ')');
+			error_log(__METHOD__ . "($_scriptName," . print_r($_vacation, true) . ')');
 		}
 		$script = new emailadmin_script($_scriptName);
 		$script->debug = $this->debug;
@@ -414,7 +409,7 @@ class emailadmin_sieve extends Net_Sieve
 		}
 		if ($this->debug)
 		{
-			error_log(__CLASS__ . '::' . __METHOD__ . "($_scriptName," . print_r($_vacation, true) . ') could not retrieve rules!');
+			error_log(__METHOD__ . "($_scriptName," . print_r($_vacation, true) . ') could not retrieve rules!');
 		}
 
 		return false;

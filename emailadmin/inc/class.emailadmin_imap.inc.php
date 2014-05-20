@@ -1090,6 +1090,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 *
 	 * @param string $name
 	 * @param array $params
+	 * @throws Exception
 	 */
 	public function __call($name,array $params=null)
 	{
@@ -1108,6 +1109,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			case 'setVacation':
 				if (is_null($this->sieve))
 				{
+					PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
 					$this->sieve = new emailadmin_sieve($this);
 					$this->error =& $this->sieve->error;
 				}
@@ -1137,12 +1139,13 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		if (is_null($this->sieve) || $this->isAdminConnection !== $_euser)
 		{
 			$this->adminConnection($_euser);
+			PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
 			$this->sieve = new emailadmin_sieve($this, $_euser);
 			$this->scriptName =& $this->sieve->scriptName;
 			$this->error =& $this->sieve->error;
 		}
 		$ret = $this->setVacation($_scriptName, $_vacation);
-		
+
 		return $ret;
 	}
 
@@ -1150,6 +1153,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 * Get vacation message for given user
 	 *
 	 * @param int|string $_euser nummeric account_id or imap username
+	 * @throws Exception on connection error or authentication failure
 	 * @return array
 	 */
 	public function getVacationUser($_euser)
@@ -1163,11 +1167,13 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		if (is_null($this->sieve) || $this->isAdminConnection !== $_euser)
 		{
 			$this->adminConnection($_euser);
+			PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
 			$this->sieve = new emailadmin_sieve($this, $_euser);
-			$this->scriptName =& $this->sieve->scriptName;
 			$this->error =& $this->sieve->error;
+			$this->scriptName =& $this->sieve->scriptName;
 		}
-		return $this->sieve->getVacation();
+		return $this->sieve->retrieveRules($this->scriptName) ?
+			$this->sieve->getVacation() : array();
 	}
 
 	/**
