@@ -550,7 +550,9 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			$ret[$k]=array('MAILBOX'=>$k,'ATTRIBUTES'=>$box['attributes'],'delimiter'=>$box['delimiter'],'SUBSCRIBED'=>true);
 		}
 		// for unknown reasons on ALL, UNSUBSCRIBED are not returned
-		if (!empty($mailbox) && !isset($ret[$mailbox]))
+		//always fetch unsubscribed, think about only fetching it when $options['attributes'] is set
+		//but then allMailboxes are not all, ....
+		//if (!empty($mailbox) && !isset($ret[$mailbox]))
 		{
 			$mailboxes = $this->listMailboxes($searchstring,Horde_Imap_Client::MBOX_UNSUBSCRIBED, $options);
 			//$mboxes = new Horde_Imap_Client_Mailbox_List($mailboxes);
