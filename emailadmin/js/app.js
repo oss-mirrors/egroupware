@@ -87,7 +87,7 @@ app.classes.emailadmin = AppJS.extend(
 	 */
 	wizard_manual: function()
 	{
-		jQuery('tr.emailadmin_manual').fadeToggle();// not sure how to to this et2-isch
+		jQuery('.emailadmin_manual').fadeToggle();// not sure how to to this et2-isch
 	},
 
 	/**

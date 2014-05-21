@@ -41,6 +41,7 @@
 					<hbox span="all">
 						<button label="Continue" id="button[continue]" onclick="app.emailadmin.wizard_detect" image="continue" background_image="1"/>
 						<button label="Manual entry" id="button[manual]" onclick="app.emailadmin.wizard_manual" image="manual" background_image="1"/>
+						<button label="Skip IMAP" id="button[skip_imap]" class="@manual_class" novalidate="1"/>
 						<buttononly label="Cancel" id="button[cancel]" onclick="window.close();" image="cancel" background_image="1"/>
 					</hbox>
 				</row>

@@ -196,6 +196,13 @@ class emailadmin_wizard
 	 */
 	public function autoconfig(array $content)
 	{
+		// user pressed [Skip IMAP] --> jump to SMTP config
+		if ($content['button'] && key($content['button']) == 'skip_imap')
+		{
+			unset($content['button']);
+			$content['acc_smtp_host'] = '';	// do manual mode right away
+			return $this->smtp($content, lang('Skipping IMAP configuration!'));
+		}
 		$content['output'] = '';
 		$sel_options = $readonlys = array();
 

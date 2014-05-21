@@ -147,6 +147,8 @@ server settings	emailadmin	de	Server-Einstellungen
 sieve server hostname or ip address	emailadmin	de	Sieve-Server Hostname oder IP-Adresse
 sieve server port	emailadmin	de	Sieve-Server Port
 sieve settings	emailadmin	de	Sieve Einstellungen
+skip imap	emailadmin	de	IMAP auslassen
+skipping imap configuration!	emailadmin	de	IMAP Konfiguration ausgelassen!
 smtp authentication	emailadmin	de	SMTP Anmeldung
 smtp options	emailadmin	de	SMTP Optionen
 smtp server	emailadmin	de	SMTP Server
