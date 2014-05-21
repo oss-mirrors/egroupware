@@ -1124,11 +1124,11 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 * Set vacation message for given user
 	 *
 	 * @param int|string $_euser nummeric account_id or imap username
-	 * @param string $_scriptName
-	 * @param string $_vacation
+	 * @param array $_vacation
+	 * @param string $_scriptName=null
 	 * @return boolean
 	 */
-	public function setVacationUser($_euser, $_scriptName, $_vacation)
+	public function setVacationUser($_euser, array $_vacation, $_scriptName=null)
 	{
 		if ($this->debug) error_log(__METHOD__.' User:'.array2string($_euser).' Scriptname:'.array2string($_scriptName).' VacationMessage:'.array2string($_vacation));
 
@@ -1140,11 +1140,11 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		{
 			$this->adminConnection($_euser);
 			PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
-			$this->sieve = new emailadmin_sieve($this, $_euser);
+			$this->sieve = new emailadmin_sieve($this, $_euser, $_scriptName);
 			$this->scriptName =& $this->sieve->scriptName;
 			$this->error =& $this->sieve->error;
 		}
-		$ret = $this->setVacation($_scriptName, $_vacation);
+		$ret = $this->setVacation($_vacation, $_scriptName);
 
 		return $ret;
 	}
@@ -1153,10 +1153,11 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 * Get vacation message for given user
 	 *
 	 * @param int|string $_euser nummeric account_id or imap username
+	 * @param string $_scriptName=null
 	 * @throws Exception on connection error or authentication failure
 	 * @return array
 	 */
-	public function getVacationUser($_euser)
+	public function getVacationUser($_euser, $_scriptName=null)
 	{
 		if ($this->debug) error_log(__METHOD__.' User:'.array2string($_euser));
 
@@ -1168,12 +1169,11 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		{
 			$this->adminConnection($_euser);
 			PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
-			$this->sieve = new emailadmin_sieve($this, $_euser);
+			$this->sieve = new emailadmin_sieve($this, $_euser, $_scriptName);
 			$this->error =& $this->sieve->error;
 			$this->scriptName =& $this->sieve->scriptName;
 		}
-		return $this->sieve->retrieveRules($this->scriptName) ?
-			$this->sieve->getVacation() : array();
+		return $this->sieve->getVacation();
 	}
 
 	/**

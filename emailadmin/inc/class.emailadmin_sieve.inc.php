@@ -15,6 +15,17 @@ include_once('Net/Sieve.php');
 
 /**
  * Support for Sieve scripts
+ *
+ * Class can be switched to use exceptions by calling
+ *
+ * 	PEAR::setErrorHandling(PEAR_ERROR_EXCEPTION);
+ *
+ * In which case constructor and setters will throw exceptions for connection, login or other errors.
+ *
+ * retriveRules and getters will not throw an exception, if there's no script currently.
+ *
+ * Most methods incl. constructor accept a script-name, but by default current active script is used
+ * and if theres no script emailadmin_sieve::DEFAULT_SCRIPT_NAME.
  */
 class emailadmin_sieve extends Net_Sieve
 {
@@ -72,11 +83,14 @@ class emailadmin_sieve extends Net_Sieve
 	 * Constructor
 	 *
 	 * @param emailadmin_imap $_icServer
-	 * @param string $euser='' effictive user, if given the Cyrus admin account is used to login on behalf of $euser
+	 * @param string $_euser='' effictive user, if given the Cyrus admin account is used to login on behalf of $euser
+	 * @param string $_scriptName=null
 	 */
-	function __construct(emailadmin_imap $_icServer=null, $_euser='')
+	function __construct(emailadmin_imap $_icServer=null, $_euser='', $_scriptName=null)
 	{
 		parent::Net_Sieve();
+
+		if ($_scriptName) $this->scriptName = $_scriptName;
 
 		// TODO: since we seem to have major problems authenticating via DIGEST-MD5 and CRAM-MD5 in SIEVE, we skip MD5-METHODS for now
 		if (!is_null($_icServer))
@@ -361,87 +375,90 @@ class emailadmin_sieve extends Net_Sieve
 
 	function getRules()
 	{
+		if (!isset($this->rules)) $this->retrieveRules();
+
 		return $this->rules;
 	}
 
 	function getVacation()
 	{
+		if (!isset($this->rules)) $this->retrieveRules();
+
 		return $this->vacation;
 	}
 
 	function getEmailNotification()
 	{
+		if (!isset($this->rules)) $this->retrieveRules();
+
 		return $this->emailNotification;
 	}
 
-	function setRules($_scriptName, $_rules)
+	/**
+	 * Set email notifications
+	 *
+	 * @param array $_rules
+	 * @param string $_scriptName=null
+	 */
+	function setRules(array $_rules, $_scriptName=null)
 	{
-		if (!$_scriptName)
-		{
-			$_scriptName = $this->scriptName;
-		}
-		$script = new emailadmin_script($_scriptName);
+		$script = $this->retrieveRules($_scriptName);
 		$script->debug = $this->debug;
-
-		if($script->retrieveRules($this)) {
-			$script->rules = $_rules;
-			$ret = $script->updateScript($this);
-			$this->error = $script->errstr;
-			return $ret;
-		}
-
-		return false;
+		$script->rules = $_rules;
+		$ret = $script->updateScript($this);
+		$this->error = $script->errstr;
+		return $ret;
 	}
 
-	function setVacation($_scriptName, $_vacation)
+	/**
+	 * Set email notifications
+	 *
+	 * @param array $_vacation
+	 * @param string $_scriptName=null
+	 */
+	function setVacation(array $_vacation, $_scriptName=null)
 	{
-		if (!$_scriptName)
-		{
-			$_scriptName = $this->scriptName;
-		}
 		if ($this->debug)
 		{
 			error_log(__METHOD__ . "($_scriptName," . print_r($_vacation, true) . ')');
 		}
-		$script = new emailadmin_script($_scriptName);
+		$script = $this->retrieveRules($_scriptName);
 		$script->debug = $this->debug;
-
-		if($script->retrieveRules($this)) {
-			$script->vacation = $_vacation;
-			$ret = $script->updateScript($this);
-			$this->error = $script->errstr;
-			return $ret;
-		}
-		if ($this->debug)
-		{
-			error_log(__METHOD__ . "($_scriptName," . print_r($_vacation, true) . ') could not retrieve rules!');
-		}
-
-		return false;
+		$script->vacation = $_vacation;
+		$ret = $script->updateScript($this);
+		$this->error = $script->errstr;
+		return $ret;
 	}
 
-	function setEmailNotification($_scriptName, $_emailNotification) {
-		if (!$_scriptName)
-		{
-			$_scriptName = $this->scriptName;
-		}
+	/**
+	 * Set email notifications
+	 *
+	 * @param array $_emailNotificatons
+	 * @param string $_scriptName=null
+	 * @return emailadmin_script
+	 */
+	function setEmailNotification(array $_emailNotification, $_scriptName=null)
+	{
 		if ($_emailNotification['externalEmail'] == '' || !preg_match("/\@/",$_emailNotification['externalEmail'])) {
     		$_emailNotification['status'] = 'off';
     		$_emailNotification['externalEmail'] = '';
     	}
 
-    	$script = new emailadmin_script($_scriptName);
-    	if ($script->retrieveRules($this))
-		{
-    		$script->emailNotification = $_emailNotification;
-			$ret = $script->updateScript($this);
-			$this->error = $script->errstr;
-			return $ret;
-    	}
-    	return false;
+    	$script = $this->retrieveRules($_scriptName);
+   		$script->emailNotification = $_emailNotification;
+		$ret = $script->updateScript($this);
+		$this->error = $script->errstr;
+		return $ret;
 	}
 
-	function retrieveRules($_scriptName, $returnRules = false) {
+	/**
+	 * Retrive rules, vacation, notifications and return emailadmin_script object to update them
+	 *
+	 * @param string $_scriptName=null
+	 * @return emailadmin_script
+	 */
+	function retrieveRules($_scriptName=null)
+	{
 		if (!$_scriptName)
 		{
 			$_scriptName = $this->scriptName;
@@ -449,21 +466,15 @@ class emailadmin_sieve extends Net_Sieve
 		$script = new emailadmin_script($_scriptName);
 
 		try {
-			if($script->retrieveRules($this))
-			{
-				$this->rules = $script->rules;
-				$this->vacation = $script->vacation;
-				$this->emailNotification = $script->emailNotification; // Added email notifications
-				if ($returnRules)
-				{
-					return array('rules' => $this->rules, 'vacation' => $this->vacation, 'emailNotification' => $this->emailNotification);
-				}
-				return true;
-			}
+			$script->retrieveRules($this);
 		}
 		catch (Exception $e) {
 			unset($e);	// ignore not found script exception
 		}
-		return false;
+		$this->rules =& $script->rules;
+		$this->vacation =& $script->vacation;
+		$this->emailNotification =& $script->emailNotification; // Added email notifications
+
+		return $script;
 	}
 }

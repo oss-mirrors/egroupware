@@ -142,18 +142,19 @@ interface defaultimap
 	 * Set vacation message for given user
 	 *
 	 * @param int|string $_euser nummeric account_id or imap username
-	 * @param string $_scriptName
-	 * @param string $_vacation
+	 * @param array $_vacation
+	 * @param string $_scriptName=null
 	 * @return boolean
 	 */
-	public function setVacationUser($_euser, $_scriptName, $_vacation);
+	public function setVacationUser($_euser, array $_vacation, $_scriptName=null);
 
 	/**
 	 * Get vacation message for given user
 	 *
 	 * @param int|string $_euser nummeric account_id or imap username
+	 * @param string $_scriptName=null
 	 * @throws Exception on connection error or authentication failure
 	 * @return array
 	 */
-	public function getVacationUser($_euser);
+	public function getVacationUser($_euser, $_scriptName=null);
 }
