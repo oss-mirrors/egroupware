@@ -200,7 +200,7 @@ class emailadmin_wizard
 		if ($content['button'] && key($content['button']) == 'skip_imap')
 		{
 			unset($content['button']);
-			$content['acc_smtp_host'] = '';	// do manual mode right away
+			if (!isset($content['acc_smtp_host'])) $content['acc_smtp_host'] = '';	// do manual mode right away
 			return $this->smtp($content, lang('Skipping IMAP configuration!'));
 		}
 		$content['output'] = '';
