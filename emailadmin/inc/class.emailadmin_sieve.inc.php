@@ -205,7 +205,12 @@ class emailadmin_sieve extends Net_Sieve
 		// query active script from Sieve server
 		if (empty($this->scriptName))
 		{
-			$this->scriptName = $this->getActive();
+			try {
+				$this->scriptName = $this->getActive();
+			}
+			catch(Exception $e) {
+				unset($e);	// ignore NOTEXISTS exception
+			}
 			if (empty($this->scriptName))
 			{
 				$this->scriptName = self::DEFAULT_SCRIPT_NAME;
@@ -443,17 +448,22 @@ class emailadmin_sieve extends Net_Sieve
 		}
 		$script = new emailadmin_script($_scriptName);
 
-		if($script->retrieveRules($this)) {
-			$this->rules = $script->rules;
-			$this->vacation = $script->vacation;
-			$this->emailNotification = $script->emailNotification; // Added email notifications
-			if ($returnRules)
+		try {
+			if($script->retrieveRules($this))
 			{
-				return array('rules' => $this->rules, 'vacation' => $this->vacation, 'emailNotification' => $this->emailNotification);
+				$this->rules = $script->rules;
+				$this->vacation = $script->vacation;
+				$this->emailNotification = $script->emailNotification; // Added email notifications
+				if ($returnRules)
+				{
+					return array('rules' => $this->rules, 'vacation' => $this->vacation, 'emailNotification' => $this->emailNotification);
+				}
+				return true;
 			}
-			return true;
 		}
-
+		catch (Exception $e) {
+			unset($e);	// ignore not found script exception
+		}
 		return false;
 	}
 }
