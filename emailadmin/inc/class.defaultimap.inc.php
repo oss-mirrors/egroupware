@@ -139,17 +139,21 @@ interface defaultimap
 	function supportsCapability($_capability);
 
 	/**
+	 * Set vacation message for given user
 	 *
+	 * @param int|string $_euser nummeric account_id or imap username
+	 * @param string $_scriptName
+	 * @param string $_vacation
+	 * @return boolean
 	 */
 	public function setVacationUser($_euser, $_scriptName, $_vacation);
 
 	/**
-	 * set the asyncjob for a timed vacation
+	 * Get vacation message for given user
 	 *
-	 * @param array $_vacation the vacation to set/unset
-	 * @param string $_scriptName ; optional scriptName
-	 * @param boolean $_reschedule ; do nothing but reschedule the job by 3 minutes
-	 * @return  void
+	 * @param int|string $_euser nummeric account_id or imap username
+	 * @throws Exception on connection error or authentication failure
+	 * @return array
 	 */
-	function setAsyncJob ($_vacation, $_scriptName=null, $_reschedule=false);
+	public function getVacationUser($_euser);
 }

@@ -1177,37 +1177,6 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	}
 
 	/**
-	 * set the asyncjob for a timed vacation
-	 *
-	 * @param array $_vacation the vacation to set/unset
-	 * @param string $_scriptName ; optional scriptName
-	 * @param boolean $_reschedule ; do nothing but reschedule the job by 3 minutes
-	 * @return  void
-	 */
-	function setAsyncJob ($_vacation, $_scriptName=null, $_reschedule=false)
-	{
-		// setting up an async job to enable/disable the vacation message
-		$async = new asyncservice();
-		$user = (isset($_vacation['account_id'])&&!empty($_vacation['account_id'])?$_vacation['account_id']:$GLOBALS['egw_info']['user']['account_id']);
-		$async_id = (isset($_vacation['id'])&&!empty($_vacation['id'])?$_vacation['id']:"felamimail-vacation-$user");
-		$async->delete($async_id); // ="felamimail-vacation-$user");
-		$_scriptName = (!empty($_scriptName)?$_scriptName:(isset($_vacation['scriptName'])&&!empty($_vacation['scriptName'])?$_vacation['scriptName']:'felamimail'));
-		$end_date = $_vacation['end_date'] + 24*3600;   // end-date is inclusive, so we have to add 24h
-		if ($_vacation['status'] == 'by_date' && time() < $end_date && $_reschedule===false)
-		{
-			$time = time() < $_vacation['start_date'] ? $_vacation['start_date'] : $end_date;
-			$async->set_timer($time,$async_id,'felamimail.bosieve.async_vacation',$_vacation+array('scriptName'=>$_scriptName),$user);
-		}
-		if ($_reschedule===true)
-		{
-			$time = time() + 60*3;
-			unset($_vacation['next']);
-			unset($_vacation['times']);
-			if ($_reschedule) $async->set_timer($time,$async_id,'felamimail.bosieve.async_vacation',$_vacation+array('scriptName'=>$_scriptName),$user);
-		}
- 	}
-
-	/**
 	 * Return fields or tabs which should be readonly in UI for given imap implementation
 	 *
 	 * @return array fieldname => true pairs or 'tabs' => array(tabname => true)
