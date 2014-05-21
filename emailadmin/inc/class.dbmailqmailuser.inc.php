@@ -16,7 +16,7 @@
  *
  * @todo base this class on dbmaildbmailuser or the other way around
  */
-class dbmailqmailuser extends emailadmin_oldimap
+class dbmailqmailuser extends emailadmin_imap
 {
 	/**
 	 * Label shown in EMailAdmin

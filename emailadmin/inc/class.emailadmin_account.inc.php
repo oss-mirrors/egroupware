@@ -305,33 +305,6 @@ class emailadmin_account implements ArrayAccess
 	}
 
 	/**
-	 * Get old Net_IMAP imap server object
-	 *
-	 * @return emailadmin_oldimap
-	 */
-	public function oldImapServer()
-	{
-		if (!isset($this->oldImapServer))
-		{
-			$class = self::getIcClass($this->params['acc_imap_type'], true);
-			$this->oldImapServer = new $class();
-			$this->oldImapServer->ImapServerId = $this->params['acc_id'];
-			$this->oldImapServer->host = $this->params['acc_imap_host'];
-			$this->oldImapServer->sieveHost = $this->params['acc_sieve_host'];
-			$this->oldImapServer->encryption = $this->params['acc_imap_ssl'] & ~self::SSL_VERIFY;
-			$this->oldImapServer->port 	= $this->params['acc_imap_port'];
-			$this->oldImapServer->validatecert	= (boolean)($this->params['acc_imap_ssl'] & self::SSL_VERIFY);
-			$this->oldImapServer->username 	= $this->params['acc_imap_username'];
-			$this->oldImapServer->loginName 	= $this->params['acc_imap_username'];
-			$this->oldImapServer->password	= $this->params['acc_imap_password'];
-			$this->oldImapServer->enableSieve = (boolean)$this->params['acc_sieve_enabled'];
-			$this->oldImapServer->loginType = $this->params['acc_imap_logintype'];
-			$this->oldImapServer->domainName = $this->params['acc_domain'];
-		}
-		return $this->oldImapServer;
-	}
-
-	/**
 	 * Get name and evtl. autoload incomming server class
 	 *
 	 * @param string $imap_type
