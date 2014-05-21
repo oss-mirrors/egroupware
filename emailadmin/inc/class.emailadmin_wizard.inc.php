@@ -422,9 +422,10 @@ class emailadmin_wizard
 			{
 				foreach($mailboxes as $mailbox => $data)
 				{
-					$name_parts = explode($data['delimiter']?$data['delimiter']:'.', strtolower($mailbox));
+					$delimiter = !empty($data['delimiter']) ? $data['delimiter'] : '.';
+					$name_parts = explode($delimiter, strtolower($mailbox));
 					if (array_intersect($name_parts, $common_names) &&
-						(empty($content[$name]) || strlen($mailbox) < strlen($content[$name])))// && substr($mailbox, 0, 5) == 'INBOX'))
+						(empty($content[$name]) || strlen($mailbox) < strlen($content[$name]) && substr($content[$name], 0, 6) != 'INBOX'.$delimiter))
 					{
 						//error_log(__METHOD__."() $mailbox --> ".substr($name, 11).' folder');
 						$content[$name] = $mailbox;
