@@ -137,7 +137,7 @@ class emailadmin_sieve extends Net_Sieve
 		}
 		if($_icServer->acc_sieve_enabled)
 		{
-			if (!empty($_icServer->acc_sieve_host))
+			if ($_icServer->acc_sieve_host)
 			{
 				$sieveHost = $_icServer->acc_sieve_host;
 			}
