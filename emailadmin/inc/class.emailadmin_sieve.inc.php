@@ -83,8 +83,8 @@ class emailadmin_sieve extends Net_Sieve
 	 * Constructor
 	 *
 	 * @param emailadmin_imap $_icServer
-	 * @param string $_euser='' effictive user, if given the Cyrus admin account is used to login on behalf of $euser
-	 * @param string $_scriptName=null
+	 * @param string $_euser effictive user, if given the Cyrus admin account is used to login on behalf of $euser
+	 * @param string $_scriptName
 	 */
 	function __construct(emailadmin_imap $_icServer=null, $_euser='', $_scriptName=null)
 	{
@@ -113,7 +113,7 @@ class emailadmin_sieve extends Net_Sieve
 	 * Open connection to the sieve server
 	 *
 	 * @param emailadmin_imap $_icServer
-	 * @param string $euser='' effictive user, if given the Cyrus admin account is used to login on behalf of $euser
+	 * @param string $euser effictive user, if given the Cyrus admin account is used to login on behalf of $euser
 	 * @return mixed 'die' = sieve not enabled, false=connect or login failure, true=success
 	 */
 	function _connect(emailadmin_imap $_icServer, $euser='')
@@ -398,7 +398,7 @@ class emailadmin_sieve extends Net_Sieve
 	 * Set email notifications
 	 *
 	 * @param array $_rules
-	 * @param string $_scriptName=null
+	 * @param string $_scriptName
 	 */
 	function setRules(array $_rules, $_scriptName=null)
 	{
@@ -414,7 +414,7 @@ class emailadmin_sieve extends Net_Sieve
 	 * Set email notifications
 	 *
 	 * @param array $_vacation
-	 * @param string $_scriptName=null
+	 * @param string $_scriptName
 	 */
 	function setVacation(array $_vacation, $_scriptName=null)
 	{
@@ -433,8 +433,8 @@ class emailadmin_sieve extends Net_Sieve
 	/**
 	 * Set email notifications
 	 *
-	 * @param array $_emailNotificatons
-	 * @param string $_scriptName=null
+	 * @param array $_emailNotification
+	 * @param string $_scriptName
 	 * @return emailadmin_script
 	 */
 	function setEmailNotification(array $_emailNotification, $_scriptName=null)
@@ -454,7 +454,7 @@ class emailadmin_sieve extends Net_Sieve
 	/**
 	 * Retrive rules, vacation, notifications and return emailadmin_script object to update them
 	 *
-	 * @param string $_scriptName=null
+	 * @param string $_scriptName
 	 * @return emailadmin_script
 	 */
 	function retrieveRules($_scriptName=null)
