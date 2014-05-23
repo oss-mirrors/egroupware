@@ -1052,7 +1052,7 @@ class emailadmin_wizard
 						$msg_type = 'error';
 					}
 					if ($content['acc_id']) emailadmin_imapbase::unsetCachedObjects($content['acc_id']);
-					egw_framework::refresh_opener($msg, 'emailadmin', $content['acc_id'], null, null, null, null, $msg_type);
+					egw_framework::refresh_opener($msg, 'emailadmin', $content['acc_id'], $new_account ? 'add' : 'update', null, null, null, $msg_type);
 					if ($button == 'save') egw_framework::window_close();
 					break;
 
@@ -1065,7 +1065,7 @@ class emailadmin_wizard
 					elseif (emailadmin_account::delete($content['acc_id']) > 0)
 					{
 						if ($content['acc_id']) emailadmin_imapbase::unsetCachedObjects($content['acc_id']);
-						egw_framework::refresh_opener(lang('Account deleted.'), 'emailadmin', $content['acc_id']);
+						egw_framework::refresh_opener(lang('Account deleted.'), 'emailadmin', $content['acc_id'], 'delete');
 						egw_framework::window_close();
 					}
 					else
