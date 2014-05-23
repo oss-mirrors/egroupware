@@ -39,7 +39,7 @@
 					<url-email id="ident_email" options="80,128" span="all"/>
 				</row>
 				<row>
-					<htmlarea expand_toolbar="false" height="125px" mode="simple" id="ident_signature" span="all"/>
+					<htmlarea expand_toolbar="false" height="125px" id="ident_signature" span="all"/>
 				</row>
 			</rows>
 		</grid>
