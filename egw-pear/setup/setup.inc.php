@@ -41,9 +41,4 @@ $setup_info['egw-pear']['check_install'] = array(
 		'func' => 'pear_check',
 		'from' => 'FMail',
 	),
-	// Net_Socket is required from Net_IMAP & Net_Sieve
-	'Net_Socket' => array(
-		'func' => 'pear_check',
-		'from' => 'FMail',
-	),
 );
