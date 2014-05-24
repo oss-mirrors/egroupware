@@ -51,34 +51,14 @@ $setup_info['emailadmin']['depends'][] = array(
 	'appname'  => 'phpgwapi',
 	'versions' => Array('1.7','1.8','1.9')
 );
-$setup_info['emailadmin']['depends'][] = array(
-	'appname'  => 'egw-pear',
-	'versions' => Array('1.8','1.9')
-);
 // installation checks for felamimail
 $setup_info['emailadmin']['check_install'] = array(
 	'' => array(
 		'func' => 'pear_check',
 		'from' => 'EMailAdmin',
 	),
-	'Auth_SASL' => array(
-		'func' => 'pear_check',
-		'from' => 'EMailAdmin',
-	),
-	'Net_Socket' => array(
-		'func' => 'pear_check',
-		'from' => 'EMailAdmin',
-	),
 	'Net_Sieve' => array(
 		'func' => 'pear_check',
-		'from' => 'EMailAdmin',
-	),
-	'Net_IMAP' => array(
-		'func' => 'pear_check',
-		'from' => 'EMailAdmin',
-	),
-	'imap' => array(
-		'func' => 'extension_check',
 		'from' => 'EMailAdmin',
 	),
 	'pear.horde.org/Horde_Imap_Client' => array(
