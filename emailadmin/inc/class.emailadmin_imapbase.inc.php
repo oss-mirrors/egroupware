@@ -1884,10 +1884,19 @@ class emailadmin_imapbase
 					$imapFilter->flag($criteria, $set=true);
 					$queryValid = true;
 					break;
+				case 'READ':
+					$imapFilter->flag('SEEN', $set=true);
+					$queryValid = true;
+					break;
+				case 'LABEL1':
 				case 'KEYWORD1':
+				case 'LABEL2':
 				case 'KEYWORD2':
+				case 'LABEL3':
 				case 'KEYWORD3':
+				case 'LABEL4':
 				case 'KEYWORD4':
+				case 'LABEL5':
 				case 'KEYWORD5':
 					$imapFilter->flag(str_ireplace('KEYWORD','$LABEL',$criteria), $set=true);
 					$queryValid = true;
@@ -1916,8 +1925,22 @@ class emailadmin_imapbase
 					$imapFilter->flag('FLAGGED', $set=false);
 					$queryValid = true;
 					break;
+				case 'UNREAD':
 				case 'UNSEEN':
 					$imapFilter->flag('SEEN', $set=false);
+					$queryValid = true;
+					break;
+				case 'UNLABEL1':
+				case 'UNKEYWORD1':
+				case 'UNLABEL2':
+				case 'UNKEYWORD2':
+				case 'UNLABEL3':
+				case 'UNKEYWORD3':
+				case 'UNLABEL4':
+				case 'UNKEYWORD4':
+				case 'UNLABEL5':
+				case 'UNKEYWORD5':
+					$imapFilter->flag(str_ireplace('UNKEYWORD','$LABEL',$criteria), $set=false);
 					$queryValid = true;
 					break;
 			}
