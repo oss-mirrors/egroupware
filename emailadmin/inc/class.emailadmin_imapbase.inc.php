@@ -1940,7 +1940,7 @@ class emailadmin_imapbase
 				case 'UNKEYWORD4':
 				case 'UNLABEL5':
 				case 'UNKEYWORD5':
-					$imapFilter->flag(str_ireplace('UNKEYWORD','$LABEL',$criteria), $set=false);
+					$imapFilter->flag(str_ireplace(array('UNKEYWORD','UNLABEL'),'$LABEL',$criteria), $set=false);
 					$queryValid = true;
 					break;
 			}
