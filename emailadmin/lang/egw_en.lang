@@ -37,6 +37,7 @@ create new identity	emailadmin	en	Create new identity
 cyrus imap server	emailadmin	en	Cyrus IMAP server
 cyrus imap server administration	emailadmin	en	Cyrus IMAP server administration
 default	emailadmin	en	Default
+delete identity	emailadmin	en	Delete identity
 delete this account	emailadmin	en	Delete this account
 deliver extern	emailadmin	en	Deliver extern
 displaying html messages is disabled	emailadmin	en	displaying html messages is disabled
@@ -169,6 +170,7 @@ switch back to standard identity to save other account data.	emailadmin	en	Switc
 templates	emailadmin	en	Templates
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	en	The IMAP server does not appear to support the authentication method selected. Contact your system administrator.
 the mimeparser can not parse this message.	emailadmin	en	The mimeparser can not parse this message.
+this is not a personal mail account!\n\naccount will be deleted for all users!\n\nare you really sure you want to do that?	emailadmin	en	This is NOT a personal mail account!\n\nAccount will be deleted for ALL users!\n\nAre you really sure you want to do that?
 this php has no imap support compiled in!!	emailadmin	en	This PHP has no IMAP support compiled in!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	en	To use a TLS connection, you must be running a version of PHP 5.1.0 or higher.
 unexpected response from server to authenticate command.	emailadmin	en	Unexpected response from server to AUTHENTICATE command.

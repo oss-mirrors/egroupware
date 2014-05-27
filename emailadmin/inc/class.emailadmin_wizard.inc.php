@@ -1076,9 +1076,16 @@ class emailadmin_wizard
 			}
 		}
 
-		// disable delete button for new, not yet saved entries and if no delete rights
+		// disable delete button for new, not yet saved entries, if no delete rights or a non-standard identity selected
 		$readonlys['button[delete]'] = empty($content['acc_id']) ||
-			!emailadmin_account::check_access(EGW_ACL_DELETE, $content);
+			!emailadmin_account::check_access(EGW_ACL_DELETE, $content) ||
+			$content['ident_id'] != $content['std_ident_id'];
+
+		// if account is for multiple user, change delete confirmation to reflect that
+		if (emailadmin_account::is_multiple($content))
+		{
+			$tpl->setElementAttribute('button[delete]', 'onclick', "et2_dialog.confirm(widget,'This is NOT a personal mail account!\\n\\nAccount will be deleted for ALL users!\\n\\nAre you really sure you want to do that?','Delete this account')");
+		}
 
 		// if no edit access, make whole dialog readonly
 		if (!$edit_access)

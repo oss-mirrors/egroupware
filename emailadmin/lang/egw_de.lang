@@ -37,6 +37,7 @@ create new identity	emailadmin	de	Neue Identität erstellen
 cyrus imap server	emailadmin	de	Cyrus IMAP-Server
 cyrus imap server administration	emailadmin	de	Cyrus IMAP-Server Administration
 default	emailadmin	de	Vorgabe
+delete identity	emailadmin	de	Identität löschen
 delete this account	emailadmin	de	Diese Konto löschen
 deliver extern	emailadmin	de	extern ausliefern
 displaying html messages is disabled	emailadmin	de	Das Anzeigen von HTML Nachrichten ist deaktiviert
@@ -169,6 +170,7 @@ switch back to standard identity to save other account data.	emailadmin	de	Kehre
 templates	emailadmin	de	Templates
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	de	Der IMAP Server scheint die eingestellte Authentifizierungsmethode nicht zu unterstützen. Bitte fragen Sie Ihren Systemadministrator.
 the mimeparser can not parse this message.	emailadmin	de	Der Mimiparser versteht diese Nachricht nicht
+this is not a personal mail account!\n\naccount will be deleted for all users!\n\nare you really sure you want to do that?	emailadmin	de	Das ist KEIN persönliches Mailkonto!\n\nDas Konto wird für ALLE Benutzer gelöscht!\n\nSind Sie wirklich sicher, dass Sie das wollen?
 this php has no imap support compiled in!!	emailadmin	de	Dieses PHP hat keine IMAP Unterstützung!!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	de	Um eine TLS Verbindung zu verwenden, benötigen Sie PHP 5.1.0 oder aktueller.
 unexpected response from server to authenticate command.	emailadmin	de	Unerwartete Antwort des Servers auf das AUTHENTICATE Kommando.
