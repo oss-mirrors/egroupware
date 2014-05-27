@@ -13,10 +13,13 @@ function add_to_category($page, $catlist)
 	// Parse the category list for category names.
 	$parsed = parseText($catlist, array('parse_wikiname', 'parse_freelink'), '');
 	$pagenames = array();
-	preg_replace('/' . $FlgChr . '(\\d+)' . $FlgChr . '/e',
-							 '$pagenames[]=$Entity[\\1][1]', $parsed);
+	preg_replace_callback('/' . $FlgChr . '(\\d+)' . $FlgChr . '/', function($matches) use (&$pagenames)
+	{
+		global $Entity;
+		return $pagenames[] = $Entity[$matches[1]][1];
+	}, $parsed);
 	$page = get_name($page);
-	
+
 	if(validate_page($page) == 2)
 		{ $page = '((' . $page . '))'; }
 
@@ -43,7 +46,7 @@ function add_to_category($page, $catlist)
 
 			$pg->text = str_replace("\\", "\\\\", $pg->text);
 			$pg->text = str_replace("'", "\\'", $pg->text);
-		 
+
 			$pg->version++;
 			$pg->comment  = '';
 			$pg->hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);

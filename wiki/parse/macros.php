@@ -24,7 +24,11 @@ function view_macro_category($args)
 	{
 		$parsed = parseText($args, array('parse_wikiname', 'parse_freelink'), '');
 		$pagenames = array();
-		preg_replace('/' . $FlgChr . '(\\d+)' . $FlgChr . '/e', '$pagenames[]=$Entity[\\1][1]', $parsed);
+		preg_replace_callback('/' . $FlgChr . '(\\d+)' . $FlgChr . '/', function($matches) use(&$pagenames)
+		{
+			global $Entity;
+			$pagenames[] = $Entity[$matches[1]][1];
+		}, $parsed);
 		$list = $pagestore->givenpages($pagenames);
 	}
 
@@ -333,5 +337,3 @@ function view_macro_transclude($args)
   $HeadingOffset = $previousHeadingOffset; // Restore offset
   return $result;
 }
-
-?>

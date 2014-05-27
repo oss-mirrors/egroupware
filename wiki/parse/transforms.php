@@ -48,12 +48,16 @@ function pre_parser($text)
 // need to be parsed in this section as well
 
 	// Parse the code sections, to escape them from the line control
-	$text = preg_replace("/(?:^|\n)\s*<((?:php)?code)>\s*\n(.*\n)\s*<\\/\\1>\s*(?=\n|$)/Usei",
-					   "q1('\n').code_token('\\1',q1('\\2'))", $text);
+	$text = preg_replace_callback("/(?:^|\n)\s*<((?:php)?code)>\s*\n(.*\n)\s*<\\/\\1>\s*(?=\n|$)/Usi", function($matches)
+	{
+		return q1("\n").code_token($matches[1], q1($matches[2]));
+	}, $text);
 
 	// Insert page breaks to lines ending in a double \
-	$text = preg_replace("/\\\\\\\\\n\s*/se", "new_entity(array('newline'))",
-					   $text);
+	$text = preg_replace_callback("/\\\\\\\\\n\s*/s", function($matches)
+	{
+		return new_entity(array('newline'));
+	}, $text);
 
 	// Concatenate lines ending in a single \
 	$text = preg_replace("/\\\\\n[ \t]*/s", " ", $text);
@@ -120,7 +124,11 @@ function parse_elem_flag($text)
 	global $FlgChr;
 
 	// Hide element flags (0xFF) from view.
-	return preg_replace('/' . $FlgChr . '/e', "new_entity(array('raw', '$FlgChr'))", $text, -1);
+	return preg_replace_callback('/' . $FlgChr . '/', function()
+	{
+		global $FlgChr;
+		return new_entity(array('raw', $FlgChr));
+	}, $text, -1);
 }
 
 function new_entity($array)
@@ -134,19 +142,20 @@ function new_entity($array)
 function parse_wikiname($text, $validate = 0)
 {
 	global $LinkPtn, $EnableWikiLinks;
-	
+
 	$text = get_name($text);
 
 	if(!$EnableWikiLinks) { return $text; }
 
 	if($validate)
-		{ $ptn = "/(^|[\s.;:,>']+)($LinkPtn)($|[\s.!?;:,<']+)/e"; }
+		{ $ptn = "/(^|[\s.;:,>']+)($LinkPtn)($|[\s.!?;:,<']+)/"; }
 	else
-		{ $ptn = "/(^|[\s.;:,>']+)(!?$LinkPtn)((\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?)(\"\")?/e"; }
+		{ $ptn = "/(^|[\s.;:,>']+)(!?$LinkPtn)((\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?)(\"\")?/"; }
 
-	return preg_replace($ptn,
-											"q1('\\1').wikiname_token(q1('\\2'),'\\4')",
-											$text, -1);
+	return preg_replace_callback($ptn, function($matches)
+	{
+		return q1($matches[1]).wikiname_token(q1($matches[2]), $matches[4]);
+	}, $text, -1);
 }
 
 function wikiname_token($name, $anchor)
@@ -164,18 +173,19 @@ function parse_freelink($text, $validate = 0)
 
 	if($validate)
 	{
-//	$ptn = "/\\(\\(([-A-Za-z0-9 _+\\/.,;:!?'\"\\[\\]\\{\\}&\xc0-\xff]+)()()\\)\\)/e";
-	$ptn = "/\\(\\(([^\\|\\)]+)()()\\)\\)/e";
+//	$ptn = "/\\(\\(([-A-Za-z0-9 _+\\/.,;:!?'\"\\[\\]\\{\\}&\xc0-\xff]+)()()\\)\\)/";
+	$ptn = "/\\(\\(([^\\|\\)]+)()()\\)\\)/";
 	}
 	else
 	{
-//	$ptn = "/\\(\\(([-A-Za-z0-9 _+\\/.,;:!?'\"\\[\\]\\{\\}&\xc0-\xff]+)(\|[-A-Za-z0-9 _+\\/.,;:!?'\"\\[\\]\\{\\}&\xc0-\xff]+)?(\#[A-Za-z][-A-Za-z0-9_:.]*)?()\\)\\)/e";
-	$ptn = "/\\(\\(([^\\|\\)]+)(\|[^\\)#]+)?(\#[A-Za-z][-A-Za-z0-9_:.]*)?()\\)\\)/e";
+//	$ptn = "/\\(\\(([-A-Za-z0-9 _+\\/.,;:!?'\"\\[\\]\\{\\}&\xc0-\xff]+)(\|[-A-Za-z0-9 _+\\/.,;:!?'\"\\[\\]\\{\\}&\xc0-\xff]+)?(\#[A-Za-z][-A-Za-z0-9_:.]*)?()\\)\\)/";
+	$ptn = "/\\(\\(([^\\|\\)]+)(\|[^\\)#]+)?(\#[A-Za-z][-A-Za-z0-9_:.]*)?()\\)\\)/";
 	}
 
-	return preg_replace($ptn,
-											"freelink_token(q1('\\1'), q1('\\2'), '\\3', '')",
-											$text, -1);
+	return preg_replace_callback($ptn, function($matches)
+	{
+		return freelink_token(q1($matches[1]), q1($matches[2], $matches[3], ''));
+	}, $text, -1);
 }
 
 function freelink_token($link, $appearance, $anchor, $anchor_appearance)
@@ -192,9 +202,10 @@ function parse_interwiki($text)
 {
 	global $InterwikiPtn;
 
-	return preg_replace("/(^|[^A-Za-z])($InterwikiPtn)(\$|[^\\/=&~A-Za-z0-9])/e",
-											"q1('\\1').interwiki_token(q1('\\3'),q1('\\4')).q1('\\6')",
-											$text, -1);
+	return preg_replace_callback("/(^|[^A-Za-z])($InterwikiPtn)(\$|[^\\/=&~A-Za-z0-9])/", function($matches)
+	{
+		return q1($matches[1]).interwiki_token(q1($matches[3]), q1($matches[4])).q1($matches[6]);
+	}, $text, -1);
 }
 
 function interwiki_token($prefix, $ref)
@@ -213,24 +224,30 @@ function parse_hyperlink_ref($text)
 {
 	global $UrlPtn;
 
-	return preg_replace("/\\[($UrlPtn)]/Ue",
-											"url_token(q1('\\1'), '')", $text, -1);
+	return preg_replace_callback("/\\[($UrlPtn)]/U", function($matches)
+	{
+		return url_token(q1($matches[1]), '');
+	}, $text, -1);
 }
 
 function parse_hyperlink_description($text)
 {
 	global $UrlPtn;
 
-	return preg_replace("/\\[($UrlPtn) ([^]]+)]/e",
-											"url_token(q1('\\1'), q1('[\\4]'))", $text, -1);
+	return preg_replace_callback("/\\[($UrlPtn) ([^]]+)]/", function($matches)
+	{
+		return url_token(q1($matches[1]), q1($matches[4]));
+	}, $text, -1);
 }
 
 function parse_hyperlink($text)
 {
 	global $UrlPtn;
 
-	return preg_replace("/(^|[^A-Za-z\"])($UrlPtn)(\$|[^\\/?=&~A-Za-z0-9\"])/e",
-											"q1('\\1').url_token(q1('\\2'), q1('\\2')).q1('\\5')", $text, -1);
+	return preg_replace_callback("/(^|[^A-Za-z\"])($UrlPtn)(\$|[^\\/?=&~A-Za-z0-9\"])/", function($matches)
+	{
+		return q1($matches[1]).url_token(q1($matches[2]), q1($matches[2])).q1($matches[5]);
+	}, $text, -1);
 }
 
 function url_token($value, $display)
@@ -245,8 +262,10 @@ function url_token($value, $display)
 
 function parse_macros($text)
 {
-	return preg_replace('/\\[\\[([^] ]+( [^]]+)?)]]/e',
-											"macro_token(q1('\\1'), q1('\\3'))", $text, -1);
+	return preg_replace_callback('/\\[\\[([^] ]+( [^]]+)?)]]/', function($matches)
+	{
+		return macro_token(q1($matches[1]), q1($matches[3]));
+	}, $text, -1);
 }
 
 function macro_token($macro, $trail)
@@ -264,8 +283,10 @@ function macro_token($macro, $trail)
 
 function parse_transclude($text)
 {
-	$text2 = preg_replace('/%%([^%]+)%%/e',
-												"transclude_token(q1('\\1'))", $text, -1);
+	$text2 = preg_replace_callback('/%%([^%]+)%%/', function($matches)
+	{
+		return transclude_token(q1($matches[1]));
+	}, $text, -1);
 	if($text2 != $text)
 		{ $text2 = str_replace("\n", '', $text2); }
 	return $text2;
@@ -311,26 +332,39 @@ function parse_textenhance($text)
 	{
 		if (preg_match("/^(\*+)([^*].*)$/", $text, $match))
 		{
-		   // Special case, since *'s at start of line is markup for lists
-		   $return = $match[1] .
-					 preg_replace("/(\*\*)(.+)\\1/Ue",
-								  "pair_tokens('bold', q1('\\2'))", $match[2], -1);
+			// Special case, since *'s at start of line is markup for lists
+			$return = $match[1] . preg_replace_callback("/(\*\*)(.+)\\1/U", function($matches)
+			{
+				return pair_tokens('bold', q1($matches[2]));
+			}, $match[2], -1);
 		}
 		else
 		{
-		   $return = preg_replace("/(\*\*)(.+)\\1/Ue",
-								  "pair_tokens('bold', q1('\\2'))", $text, -1);
+			$return = preg_replace_callback("/(\*\*)(.+)\\1/U", function($matches)
+			{
+				return pair_tokens('bold', q1($matches[2]));
+			}, $text, -1);
 		}
-		$return = preg_replace( "/(\/\/)(.+)\\1/Ue",
-								 "pair_tokens('italic', q1('\\2'))", $return, -1);
-		$return = preg_replace( "/(--)(.+)\\1/Ue",
-								 "pair_tokens('del', q1('\\2'))", $return, -1);
-		$return = preg_replace( "/(\+\+)(.+)\\1/Ue",
-								 "pair_tokens('ins', q1('\\2'))", $return, -1);
-		$return = preg_replace( "/(\^\^)(.+)\\1/Ue",
-								 "pair_tokens('superscript', q1('\\2'))", $return, -1);
-		$return = preg_replace( "/(,,)(.+)\\1/Ue",
-								"pair_tokens('subscript', q1('\\2'))", $return, -1);
+		$return = preg_replace_callback( "/(\/\/)(.+)\\1/U", function($matches)
+		{
+			return pair_tokens('italic', q1($matches[2]));
+		}, $return, -1);
+		$return = preg_replace_callback( "/(--)(.+)\\1/U", function($matches)
+		{
+			return pair_tokens('del', q1($matches[2]));
+		}, $return, -1);
+		$return = preg_replace_callback( "/(\+\+)(.+)\\1/U", function($matches)
+		{
+			return pair_tokens('ins', q1($matches[2]));
+		}, $return, -1);
+		$return = preg_replace_callback( "/(\^\^)(.+)\\1/U", function($matches)
+		{
+			return pair_tokens('superscript', q1($matches[2]));
+		}, $return, -1);
+		$return = preg_replace_callback( "/(,,)(.+)\\1/U", function($matches)
+		{
+			return pair_tokens('subscript', q1($matches[2]));
+		}, $return, -1);
 		return $return;
 	} else {
 		return $text;
@@ -339,20 +373,26 @@ function parse_textenhance($text)
 
 function parse_bold($text)
 {
-	return preg_replace("/'''(()|[^'].*)'''/Ue", "pair_tokens('bold', q1('\\1'))",
-											$text, -1);
+	return preg_replace_callback("/'''(()|[^'].*)'''/U", function($matches)
+	{
+		return pair_tokens('bold', q1($matches[1]));
+	}, $text, -1);
 }
 
 function parse_italic($text)
 {
-	return preg_replace("/''(()|[^'].*)''/Ue", "pair_tokens('italic', q1('\\1'))",
-											$text, -1);
+	return preg_replace_callback("/''(()|[^'].*)''/U", function($matches)
+	{
+		return pair_tokens('italic', q1($matches[1]));
+	}, $text, -1);
 }
 
 function parse_teletype($text)
 {
-	return preg_replace("/{{({*?.*}*?)}}/Ue",
-											"pair_tokens('tt', q1('\\1'))", $text, -1);
+	return preg_replace_callback("/{{({*?.*}*?)}}/U", function($matches)
+	{
+		return pair_tokens('tt', q1($matches[1]));
+	}, $text, -1);
 }
 
 function pair_tokens($type, $text)
@@ -379,21 +419,26 @@ function parse_newline($text)
 	$last[0] = $last[1];
 	$last[1] = $text;
 
-	return preg_replace("/\\n(\\r)?/e", "new_entity(array('newline'))",
-											$text, -1);
+	return preg_replace_callback("/\\n(\\r)?/", function($matches)
+	{
+		return new_entity(array('newline'));
+	}, $text, -1);
 }
 
 function parse_horiz($text)
 {
-	return preg_replace("/-{4,}(\\n(\\r)?)?/e", "new_entity(array('hr'))",
-											$text, -1);
+	return preg_replace_callback("/-{4,}(\\n(\\r)?)?/", function($matches)
+	{
+		return new_entity(array('hr'));
+	}, $text, -1);
 }
 
 function parse_nowiki($text)
 {
-	return preg_replace("/```(.*)```/Ue",
-											"new_entity(array('nowiki', parse_elements(q1('\\1'))))",
-											$text, -1);
+	return preg_replace_callback("/```(.*)```/U", function($matches)
+	{
+		return new_entity(array('nowiki', parse_elements(q1($matches[1]))));
+	}, $text, -1);
 }
 
 function parse_code($text)
@@ -656,7 +701,10 @@ function parse_htmlisms_outside_html($text)
 function parse_elements($text)
 {
 	global $FlgChr;
-	return preg_replace("/$FlgChr(\\d+)$FlgChr/e", "generate_element(q1('\\1'))", $text, -1);
+	return preg_replace_callback("/$FlgChr(\\d+)$FlgChr/", function($matches)
+	{
+		return generate_element(q1($matches[1]));
+	}, $text, -1);
 }
 
 function generate_element($text)
@@ -723,12 +771,18 @@ function parse_diff_message($text)
 {
 	global $FlgChr;
 
-	$text = preg_replace('/(^(' . $FlgChr . '\\d+' . $FlgChr . ')?)\\d[0-9,]*c[0-9,]*$/e',
-											 "q1('\\1').new_entity(array('diff_change'))", $text, -1);
-	$text = preg_replace('/(^(' . $FlgChr . '\\d+' . $FlgChr . ')?)\\d[0-9,]*a[0-9,]*$/e',
-											 "q1('\\1').new_entity(array('diff_add'))", $text, -1);
-	$text = preg_replace('/(^(' . $FlgChr . '\\d+' . $FlgChr . ')?)\\d[0-9,]*d[0-9,]*$/e',
-											 "q1('\\1').new_entity(array('diff_delete'))", $text, -1);
+	$text = preg_replace_callback('/(^(' . $FlgChr . '\\d+' . $FlgChr . ')?)\\d[0-9,]*c[0-9,]*$/', function($matches)
+	{
+		return q1($matches[1]).new_entity(array('diff_change'));
+	}, $text, -1);
+	$text = preg_replace_callback('/(^(' . $FlgChr . '\\d+' . $FlgChr . ')?)\\d[0-9,]*a[0-9,]*$/', function($matches)
+	{
+		return q1($matches[1]).new_entity(array('diff_add'));
+	}, $text, -1);
+	$text = preg_replace_callback('/(^(' . $FlgChr . '\\d+' . $FlgChr . ')?)\\d[0-9,]*d[0-9,]*$/', function($matches)
+	{
+		return q1($matches[1]).new_entity(array('diff_delete'));
+	}, $text, -1);
 
 	return $text;
 }
@@ -746,17 +800,20 @@ function parse_table($text)
 		  $pre = html_table_start($args[3]);
 		  $in_table = 1;
 		}
-		$text = preg_replace('/\|\s+\|/e',
-							 "q1('|').new_entity(array('raw','&nbsp;')).q1('|')",
-							 $text);
-		$text = preg_replace('/^((\|\|+)(\{([^{}]+)\})?)(.*)\|\|\s*$/e',
-							 "new_entity(array('raw',html_table_row_start('\\4').
-													 html_table_cell_start(strlen('\\2')/2, '\\4'))).".
-							 "q1('\\5').new_entity(array('raw',html_table_cell_end().html_table_row_end()))",
-							 $text, -1);
-		$text = preg_replace('/((\|\|+)(\{([^{}]+)\})?)/e',
-							 "new_entity(array('raw',html_table_cell_end().html_table_cell_start(strlen('\\2')/2, '\\4')))",
-							 $text, -1);
+		$text = preg_replace_callback('/\|\s+\|/', function($matches)
+		{
+			return q1('|').new_entity(array('raw','&nbsp;')).q1('|');
+		}, $text);
+		$text = preg_replace_callback('/^((\|\|+)(\{([^{}]+)\})?)(.*)\|\|\s*$/', function($matches)
+		{
+			return new_entity(array('raw', html_table_row_start($matches[4]).
+				html_table_cell_start(strlen($matches[2])/2, $matches[4]))).
+				q1($matches[5]).new_entity(array('raw',html_table_cell_end().html_table_row_end()));
+		}, $text, -1);
+		$text = preg_replace_callback('/((\|\|+)(\{([^{}]+)\})?)/', function($matches)
+		{
+			return new_entity(array('raw',html_table_cell_end().html_table_cell_start(strlen($matches[2])/2, $matches[4])));
+		}, $text, -1);
 	}
 	else if($in_table)                    // Have exited table.
 	{
@@ -765,15 +822,13 @@ function parse_table($text)
 	}
 
 	if($pre != '')
-	{ 
-		$text = new_entity(array('raw', $pre)) . $text; 
+	{
+		$text = new_entity(array('raw', $pre)) . $text;
 	}
 	if($post != '')
-	{ 
-		$text = $text . new_entity(array('raw', $post)); 
+	{
+		$text = $text . new_entity(array('raw', $post));
 	}
 
 	return $text;
 }
-
-?>
