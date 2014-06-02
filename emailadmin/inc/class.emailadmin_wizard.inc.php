@@ -1199,9 +1199,12 @@ class emailadmin_wizard
 			$content['acc_smtp_type'] == 'emailadmin_smtp';
 
 		// allow imap classes to disable certain tabs or fields
-		if (($class = emailadmin_account::getIcClass($content['acc_imap_type'])) && class_exists($class))
+		if (($class = emailadmin_account::getIcClass($content['acc_imap_type'])) && class_exists($class) &&
+			($imap_ro = call_user_func(array($class, 'getUIreadonlys'))))
 		{
-			$readonlys = array_merge_recursive($readonlys, call_user_func(array($class, 'getUIreadonlys')));
+			$readonlys = array_merge($readonlys, $imap_ro, array(
+				'tabs' => array_merge((array)$readonlys['tabs'], (array)$imap_ro['tabs']),
+			));
 		}
 
 		egw_framework::message($msg ? $msg : (string)$_GET['msg'], $msg_type);
