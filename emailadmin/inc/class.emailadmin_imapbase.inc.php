@@ -1465,9 +1465,10 @@ class emailadmin_imapbase
 				//foreach ($_headerObject->getStructure()->getParts() as $p => $part)
 				$headerObject['ATTACHMENTS']=null;
 				$skipParts=array();
+				$messageMimeType='';
 				foreach ($mailStructureObject->contentTypeMap() as $mime_id => $mime_type)
 				{
-					if ($mime_id==0) $messageMimeType = $mime_type;
+					if ($mime_id==0 || $messageMimeType==='') $messageMimeType = $mime_type;
 					$part = $mailStructureObject->getPart($mime_id);
 					$partdisposition = $part->getDisposition();
 					$partPrimaryType = $part->getPrimaryType();
