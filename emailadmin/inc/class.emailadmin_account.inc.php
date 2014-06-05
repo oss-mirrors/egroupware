@@ -298,6 +298,11 @@ class emailadmin_account implements ArrayAccess
 	{
 		if (!isset($this->imapServer))
 		{
+			// make sure mbstring.func_overload=0
+			static $func_overload = null;
+			if (is_null($func_overload)) $func_overload = extension_loaded('mbstring') ? ini_get('mbstring.func_overload') : 0;
+			if ($func_overload) throw new egw_exception_assertion_failed('EGroupware requires mbstring.func_overload=0 set in your php.ini!');
+
 			$class = self::getIcClass($this->params['acc_imap_type']);
 			$this->imapServer = new $class($this->params, $_adminConnection, $_timeout);
 		}
@@ -1232,19 +1237,29 @@ class emailadmin_account implements ArrayAccess
 	}
 
 	/**
-	 * Get ID of default mail account
+	 * Get ID of default mail account for either IMAP or SMTP
 	 *
-	 *
-	 *
+	 * @param boolean $smtp=false false: usable for IMAP, true: usable for SMTP
 	 * @return int
 	 */
-	static function get_default_acc_id()
+	static function get_default_acc_id($smtp=false)
 	{
 		try
 		{
-			foreach(emailadmin_account::search() as $acc_id => $name)
+			foreach(emailadmin_account::search(true, 'params') as $acc_id => $params)
 			{
-				unset($name);
+				if ($smtp)
+				{
+					if (!$params['acc_smtp_host'] || !$params['acc_smtp_port']) continue;
+					// check requirement of session, which is not available in async service!
+					if (isset($GLOBALS['egw_info']['flags']['async-service']) && $params['acc_smtp_auth_session']) continue;
+				}
+				else
+				{
+					if (!$params['acc_imap_host'] || !$params['acc_imap_port']) continue;
+					$account = new emailadmin_account($params);
+					if (!$account->acc_imap_username || $account->acc_imap_password) continue;
+				}
 				return $acc_id;
 			}
 		}
