@@ -1258,7 +1258,9 @@ class emailadmin_account implements ArrayAccess
 				{
 					if (!$params['acc_imap_host'] || !$params['acc_imap_port']) continue;
 					$account = new emailadmin_account($params);
-					if (!$account->acc_imap_username || $account->acc_imap_password) continue;
+					//error_log(__METHOD__.__LINE__.' '.$acc_id.':'.array2string($account));
+					// continue if we have either no imap username or password
+					if (!$account->acc_imap_username || !$account->acc_imap_password) continue;
 				}
 				return $acc_id;
 			}
