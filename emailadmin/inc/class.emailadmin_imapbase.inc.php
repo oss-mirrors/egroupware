@@ -179,7 +179,7 @@ class emailadmin_imapbase
 	{
 		//$_restoreSession=false;
 		if (is_null($_reuseCache)) $_reuseCache = $_restoreSession;
-		//error_log(__METHOD__.' ('.__LINE__.') '.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID.' called from:'.function_backtrace());
+		//error_log(__METHOD__.' ('.__LINE__.') '.' RestoreSession:'.$_restoreSession.' ProfileId:'.$_profileID.'/'.emailadmin_bo::getUserDefaultAccID().' for user:'.$GLOBALS['egw_info']['user']['account_lid'].' called from:'.function_backtrace());
 		//error_log(__METHOD__.' ('.__LINE__.') '.array2string($_oldImapServerObject));
 		if ($_oldImapServerObject instanceof emailadmin_imap)
 		{
