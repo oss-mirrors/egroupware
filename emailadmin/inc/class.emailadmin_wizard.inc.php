@@ -824,6 +824,11 @@ class emailadmin_wizard
 	 */
 	public function edit(array $content=null, $msg='', $msg_type='success')
 	{
+		// app is trying to tell something, while redirecting to wizard
+		if (empty($content) && $_GET['acc_id'] && empty($msg) && !empty( $_GET['msg']))
+		{
+			if (stripos($_GET['msg'],'fatal error:')!==false) $msg_type = 'error';
+		}
 		if ($content['acc_id'] || (isset($_GET['acc_id']) && (int)$_GET['acc_id'] > 0) ) emailadmin_imapbase::unsetCachedObjects($content['acc_id']?$content['acc_id']:$_GET['acc_id']);
 		$tpl = new etemplate_new('emailadmin.account');
 
@@ -1052,6 +1057,7 @@ class emailadmin_wizard
 						$msg_type = 'error';
 					}
 					if ($content['acc_id']) emailadmin_imapbase::unsetCachedObjects($content['acc_id']);
+					if (stripos($msg,'fatal error:')!==false) $msg_type = 'error';
 					egw_framework::refresh_opener($msg, 'emailadmin', $content['acc_id'], $new_account ? 'add' : 'update', null, null, null, $msg_type);
 					if ($button == 'save') egw_framework::window_close();
 					break;
@@ -1206,7 +1212,6 @@ class emailadmin_wizard
 				'tabs' => array_merge((array)$readonlys['tabs'], (array)$imap_ro['tabs']),
 			));
 		}
-
 		egw_framework::message($msg ? $msg : (string)$_GET['msg'], $msg_type);
 
 		if (count($content['account_id']) > 1)

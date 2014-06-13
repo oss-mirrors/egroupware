@@ -301,7 +301,7 @@ class emailadmin_account implements ArrayAccess
 			// make sure mbstring.func_overload=0
 			static $func_overload = null;
 			if (is_null($func_overload)) $func_overload = extension_loaded('mbstring') ? ini_get('mbstring.func_overload') : 0;
-			if ($func_overload) throw new egw_exception_assertion_failed('EGroupware requires mbstring.func_overload=0 set in your php.ini!');
+			if ($func_overload) throw new egw_exception_assertion_failed('Fatal Error: EGroupware requires mbstring.func_overload=0 set in your php.ini!');
 
 			$class = self::getIcClass($this->params['acc_imap_type']);
 			$this->imapServer = new $class($this->params, $_adminConnection, $_timeout);
