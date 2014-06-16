@@ -443,6 +443,7 @@ class emailadmin_script {
 					$newscriptbody .= "\tkeep;\n}\n";
 				}
 				$vacation_active = true;
+				$newscriptbody .= "if header :contains ".'"X-Spam-Status" '.'"YES"'."{\n\tstop;\n}\n"; //stop vacation reply if it is spam
 				$newscriptbody .= "vacation :days " . $vacation['days'] . " :addresses [";
 				$first = 1;
 				foreach ($vacation['addresses'] as $vaddress) {
