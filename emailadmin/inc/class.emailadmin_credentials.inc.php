@@ -125,7 +125,10 @@ class emailadmin_credentials
 		}
 		else
 		{
-			ksort($rows);
+			ksort($rows);	// ORDER BY account_id ASC
+
+			// flatten account_id => cred_type => row array again, to have format like from database
+			$rows = call_user_func_array('array_merge', $rows);
 			//error_log(__METHOD__."($acc_id, $type, ".array2string($account_id).") read from cache ".array2string($rows));
 		}
 		$results = array();
