@@ -777,6 +777,13 @@ class emailadmin_wizard
 						}
 						if (self::$debug) _egw_log_exception($e);
 					}
+					catch(Horde_Smtp_Exception $e)
+					{
+						// prever $e->details over $e->getMessage() as it contains original message from SMTP server (eg. relay access denied)
+						$content['smtp_output'] .= "\n".(empty($e->details) ? $e->getMessage().' ('.$e->getCode().')' : $e->details)."\n";
+						//$content['smtp_output'] .= $e->getTraceAsString()."\n";
+						if (self::$debug) _egw_log_exception($e);
+					}
 					catch(Exception $e) {
 						$content['smtp_output'] .= "\n".get_class($e).': '.$e->getMessage().' ('.$e->getCode().')'."\n";
 						//$content['smtp_output'] .= $e->getTraceAsString()."\n";
