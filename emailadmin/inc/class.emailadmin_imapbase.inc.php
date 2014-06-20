@@ -5006,11 +5006,15 @@ class emailadmin_imapbase
 					$mailStructureObject = $_headerObject->getStructure();
 					$mailStructureObject->contentTypeMap();
 					$part = $mailStructureObject->getPart($_partID);
-					$partDisposition = $part->getDisposition();
+					$partDisposition = ($part?$part->getDisposition():'failed');
+					if ($partDisposition=='failed')
+					{
+						error_log(__METHOD__.'('.__LINE__.'):'.array2string($_uid).','.$_partID.' ID:'.$id.' HObject:'.array2string($_headerObject).' StructureObject:'.array2string($mailStructureObject->contentTypeMap()).'->'.function_backtrace());
+					}
 					// if $partDisposition is empty, we assume attachment, and hope that the function
 					// itself is only triggered to fetch attachments
 					if (empty($partDisposition)) $partDisposition='attachment';
-					if ($partDisposition=='attachment' || $partDisposition=='inline' || $part->getPrimaryType() == 'text' && $part->getSubType() == 'calendar')
+					if ($part && ($partDisposition=='attachment' || $partDisposition=='inline' || ($part->getPrimaryType() == 'text' && $part->getSubType() == 'calendar')))
 					{
 						$headerObject['ATTACHMENTS'][$mime_id]=$part->getAllDispositionParameters();
 
@@ -5024,7 +5028,7 @@ class emailadmin_imapbase
 				}
 			}
 		}
-		$ext = mime_magic::mime2ext($structure->type .'/'. $structure->subType);
+		$ext = mime_magic::mime2ext($structure_mime);
 		if ($ext && stripos($filename,'.')===false && stripos($filename,$ext)===false) $filename = trim($filename).'.'.$ext;
 		$attachmentData = array(
 			'type'		=> $structure_mime,
