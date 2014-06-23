@@ -1,10 +1,10 @@
 %1 entries deleted.	emailadmin	de	%1 Einträge gelöscht
 (imapclass must support this feature by querying the corresponding config value and pass it as defaultquota to the imapserver)	emailadmin	de	(Die IMAP Klasse muss dieses Verfahren unterstützen indem es den entsprechenden Konfigurationswert der Instanz ausliest und als Default Quota an den IMAP Server meldet.)
 (no subject)	emailadmin	de	(Kein Betreff)
-account '%1' not found !!!	emailadmin	de	Benutzerkonto '%1' nicht gefunden !
-account deleted.	emailadmin	de	Benutzerkonto gelöscht.
-account not found!	emailadmin	de	Benutzerkonto nicht gefunden.
-account saved.	emailadmin	de	Benutzerkonto gespeichert.
+account '%1' not found !!!	emailadmin	de	Mailkonto '%1' nicht gefunden !
+account deleted.	emailadmin	de	Mailkonto gelöscht.
+account not found!	common	de	Mailkonto nicht gefunden!
+account saved.	emailadmin	de	Mailkonto gespeichert.
 active templates	emailadmin	de	Aktive Vorlagen
 add new email address:	emailadmin	de	Neue E-Mailadresse hinzufügen
 add profile	emailadmin	de	Profil hinzufügen
@@ -32,7 +32,7 @@ could not append message:	emailadmin	de	Diese Mail lässt sich nicht anzeigen
 could not complete request. reason given: %s	emailadmin	de	Konnte Anfrage nicht beenden. Grund: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	de	Konnte keine sichere Verbindung zum IMAP Server aufbauen. %s: %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	de	CRAM-MD5 oder DIGEST-MD5 erfordert, das das Auth_SASL Packet installiert ist.
-create new account	emailadmin	de	Neues Benutzerkonto erstellen
+create new account	emailadmin	de	Neues Mailkonto erstellen
 create new identity	emailadmin	de	Neue Identität erstellen
 cyrus imap server	emailadmin	de	Cyrus IMAP-Server
 cyrus imap server administration	emailadmin	de	Cyrus IMAP-Server Administration
@@ -62,11 +62,11 @@ entry saved	emailadmin	de	Eintrag gespeichert
 error connecting to imap server. %s : %s.	emailadmin	de	Fehler beim Verbinden mit dem IMAP Server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	de	Fehler beim Verbinden mit dem IMAP Server. [%s] %s.
 error deleting entry!	emailadmin	de	Fehler beim Löschen des Eintrags
-error saving account!	emailadmin	de	Fehler beim Speichern des Benutzerkontos!
+error saving account!	emailadmin	de	Fehler beim Speichern des Mailkontos!
 error saving the entry!!!	emailadmin	de	Fehler beim Speichern !
 error, no username!	emailadmin	de	Fehler, kein Benutzername!
 event details follow	emailadmin	de	Hier die Details des Termins
-failed to delete account!	emailadmin	de	Fehler beim Löschen des Benutzerkontos!
+failed to delete account!	emailadmin	de	Fehler beim Löschen des Mailkontos!
 file rejected, no %2. is:%1	emailadmin	de	Datei wurde abgewiesen, kein %2. ist:%1
 filtered by account	emailadmin	de	Suche nach Benutzerprofilen
 filtered by group	emailadmin	de	Suche nach Gruppenprofilen
@@ -184,7 +184,7 @@ use predefined username and password defined below	emailadmin	de	Verwende den un
 use smtp auth	emailadmin	de	SMTP Authentifizierung benutzen
 use tls authentication	emailadmin	de	TLS Authentifizierung benutzen
 use tls encryption	emailadmin	de	TLS Verschlüsselung benutzen
-use users email-address (as seen in useraccount)	emailadmin	de	Benutzt E-Mail Adresse des Benutzers (Die unter seinem Benutzerkonto angezeigt wird)
+use users email-address (as seen in useraccount)	emailadmin	de	Benutzt E-Mail Adresse des Benutzers (Die unter seinem Mailkonto angezeigt wird)
 user can edit forwarding address	emailadmin	de	Anwender können ihre Weiterleitungsadresse bearbeiten
 userid@domain eg. u1234@domain	emailadmin	de	UserId@domain z.B. u1234@domain
 username (standard)	emailadmin	de	Benutzername (Standard)
