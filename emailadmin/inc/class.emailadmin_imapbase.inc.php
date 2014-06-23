@@ -252,19 +252,12 @@ class emailadmin_imapbase
 				error_log(__METHOD__.' ('.__LINE__.') '." Loading the Profile for ProfileID ".$_profileID.' failed for icServer; '.$e->getMessage().' Trigger new instance for Default-Profile '.$newprofileID.'. called from:'.function_backtrace());
 				if ($newprofileID)
 				{
-					try
-					{
-						self::$instances[$newprofileID] = new emailadmin_imapbase('utf-8',false,$newprofileID,false,$_reuseCache);
-					}
-					catch (Exception $e)
-					{
-						throw new egw_exception(__METHOD__." failed to instanciate emailadmin_imapbase for $newprofileID with error:".$e->getMessage());
-					}
+					self::$instances[$newprofileID] = new emailadmin_imapbase('utf-8',false,$newprofileID,false,$_reuseCache);
 					$_profileID = $newprofileID;
 				}
 				else
 				{
-					throw new egw_exception(__METHOD__." Loading the Profile for ProfileID >".$_profileID.'< failed for icServer; '.$e->getMessage().' Trigger new instance for Default-Profile >'.$newprofileID.'< failed');
+					throw $e;
 				}
 			}
 			self::storeActiveProfileIDToPref(self::$instances[$_profileID]->icServer, $_profileID, $_validate );
@@ -356,7 +349,7 @@ class emailadmin_imapbase
 			}
 		}
 		if (self::$debug) error_log(__METHOD__."($_acc_id) NO valid account found!");
-		return $_acc_id;
+		return 0;
 	}
 
 
