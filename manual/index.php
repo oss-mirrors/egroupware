@@ -47,6 +47,9 @@ $GLOBALS['egw_info'] = array(
 );
 include('../header.inc.php');
 
+// force idots template set, even if user has eg. jDots, which would redirect to create it's framework
+$GLOBALS['egw_info']['server']['template_set'] = 'idots';
+
 ExecMethod('manual.uimanual.view');
 
 $GLOBALS['egw']->common->egw_footer();
