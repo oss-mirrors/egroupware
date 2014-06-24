@@ -221,7 +221,7 @@ function html_url($url, $text)
 		$parts = explode('/',$url);
 		if (count($parts) == 2 && preg_match('/(.jpe?g|.png|.gif|.bmp)$/i', $url))
 		{
-			$url = $GLOBALS['egw']->common->image($parts[0],$parts[1]);
+			$url = common::image($parts[0],$parts[1]);
 			// this deals with angles icon-thems
 			if (empty($url) && $parts[0] == 'email')
 			{
@@ -241,6 +241,8 @@ function html_url($url, $text)
 		{
 			$url = $GLOBALS['egw_info']['server']['webserver_url'].'/'.$url;
 		}
+		// remove protocol and host, browser might block it as insecure
+		if ($url[0] != '/') $url = preg_replace('|^https://[^:/]+/|', '/', $url);
 	}
 	$is_image = preg_match('/(.jpe?g|.png|.gif|.bmp)$/i', $url);
 
@@ -252,6 +254,8 @@ function html_url($url, $text)
 			return $url;
 		}
 		$url = $GLOBALS['egw']->link(egw_vfs::download_url(substr($url,4)));
+		// remove protocol and host, browser might block it as insecure
+		if ($url[0] != '/') $url = preg_replace('|^https://[^:/]+/|', '/', $url);
 	}
 	if($is_image)
 	{
