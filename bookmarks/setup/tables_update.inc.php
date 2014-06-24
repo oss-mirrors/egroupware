@@ -122,3 +122,9 @@ function bookmarks_upgrade1_8()
 
 	return $GLOBALS['setup_info']['bookmarks']['currentver'] = '1.9.001';
 }
+
+
+function bookmarks_upgrade1_9_001()
+{
+	return $GLOBALS['setup_info']['bookmarks']['currentver'] = '14.1';
+}

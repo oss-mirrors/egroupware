@@ -39,5 +39,5 @@ $setup_info['phpsysinfo']['hooks'][]   = 'admin';
 /* Dependencies for this app to work */
 $setup_info['phpsysinfo']['depends'][] = array(
 	'appname' => 'phpgwapi',
-	'versions' => Array('1.7','1.8','1.9')
+	'versions' => Array('1.9','14.1')
 );

@@ -47,7 +47,7 @@ $setup_info['syncml']['hooks']['deleteaccount'] = 'syncml.devices.deleteAccount'
 /* Dependencies for this app to work */
 $setup_info['syncml']['depends'][] = array(
 	 'appname'  => 'phpgwapi',
-	 'versions' => Array('1.7','1.8','1.9')
+	 'versions' => Array('1.7','1.8','1.9','14.1')
 );
 // installation checks for SyncML
 $setup_info['syncml']['check_install'] = array(

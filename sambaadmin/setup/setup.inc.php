@@ -11,7 +11,7 @@
 
 $setup_info['sambaadmin']['name']	= 'sambaadmin';
 $setup_info['sambaadmin']['title']	= 'SambaAdmin';
-$setup_info['sambaadmin']['version']	= '1.8';
+$setup_info['sambaadmin']['version']	= '14.1';
 $setup_info['sambaadmin']['app_order']	= 99;
 
 $setup_info['sambaadmin']['author']	= 'Lars Kneschke';
@@ -42,5 +42,5 @@ $setup_info['sambaadmin']['hooks']['editgroup']		= 'sambaadmin.bosambaadmin.upda
 /* Dependacies for this app to work */
 $setup_info['sambaadmin']['depends'][]	= array(
 	'appname'  => 'phpgwapi',
-	'versions' => Array('1.7','1.8','1.9')
+	'versions' => Array('1.9','14.1')
 );

@@ -11,7 +11,7 @@
 
 $setup_info['egw-pear']['name']		= 'egw-pear';
 $setup_info['egw-pear']['title']	= 'egw-pear';
-$setup_info['egw-pear']['version']	= '1.8';
+$setup_info['egw-pear']['version']	= '14.1';
 $setup_info['egw-pear']['app_order']	= 99;
 $setup_info['egw-pear']['enable']	= 0;	// no need to show anywhere in EGroupware
 

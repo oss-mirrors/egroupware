@@ -323,3 +323,9 @@ function wiki_upgrade1_9_002()
 
 	return $GLOBALS['setup_info']['wiki']['currentver'] = '1.9.003';
 }
+
+
+function wiki_upgrade1_9_003()
+{
+	return $GLOBALS['setup_info']['wiki']['currentver'] = '14.1';
+}

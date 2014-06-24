@@ -12,7 +12,7 @@
 
 $setup_info['wiki']['name']      = 'wiki';
 $setup_info['wiki']['title']     = 'Wiki';
-$setup_info['wiki']['version']   = '1.9.003';
+$setup_info['wiki']['version']   = '14.1';
 $setup_info['wiki']['app_order'] = 11;
 $setup_info['wiki']['enable']    = 1;
 
@@ -49,10 +49,10 @@ $setup_info['wiki']['check_install'] = array(
 $setup_info['wiki']['depends'][] = array
 (
 	'appname'  => 'phpgwapi',
-	'versions' => Array('1.7','1.8','1.9')
+	'versions' => Array('1.9','14.1')
 );
 $setup_info['wiki']['depends'][] = array
 (
 	'appname'  => 'etemplate',
-	'versions' => Array('1.7','1.8','1.9')
+	'versions' => Array('1.9','14.1')
 );

@@ -5,18 +5,13 @@
  * Created by eTemplates DB-Tools written by ralfbecker@outdoor-training.de
  *
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
- * @package phpfreechat
+ * @package usage
  * @subpackage setup
  * @version $Id$
  */
 
-function phpfreechat_upgrade1_6_001()
-{
-	return $GLOBALS['setup_info']['phpfreechat']['currentver'] = '1.8';
-}
 
-
-function phpfreechat_upgrade1_8()
+function tracker_upgrade1_7_001()
 {
-	return $GLOBALS['setup_info']['phpfreechat']['currentver'] = '14.1';
+	return $GLOBALS['setup_info']['usage']['currentver'] = '14.1';
 }

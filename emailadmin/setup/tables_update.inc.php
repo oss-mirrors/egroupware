@@ -859,3 +859,9 @@ function emailadmin_upgrade1_9_018()
 
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.9.019';
 }
+
+
+function emailadmin_upgrade1_9_019()
+{
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '14.1';
+}
