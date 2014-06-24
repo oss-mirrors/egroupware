@@ -49,6 +49,7 @@ class uilangfile
 		$this->nextmatchs =& CreateObject('phpgwapi.nextmatchs');
 		translation::add_app('developer_tools');
 		translation::add_app('common');
+		egw_framework::csp_script_src_attrs('unsafe-inline');
 	}
 
 	function addphrase()
