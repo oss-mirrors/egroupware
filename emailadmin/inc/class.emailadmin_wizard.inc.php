@@ -1367,12 +1367,14 @@ class emailadmin_wizard
 		// try usuall names
 		$hosts[$type.'.'.$domain] = true;
 		$hosts['mail.'.$domain] = true;
+		if ($type == 'smtp') $hosts['send.'.$domain] = true;
 
 		if (($dns = dns_get_record($domain, DNS_MX)))
 		{
 			//error_log(__METHOD__."('$email') dns_get_record('$domain', DNS_MX) returned ".array2string($dns));
 			$hosts[preg_replace('/^[^.]+/', $type, $dns[0]['target'])] = true;
 			$hosts[preg_replace('/^[^.]+/', 'mail', $dns[0]['target'])] = true;
+			if ($type == 'smtp') $hosts[preg_replace('/^[^.]+/', 'send', $dns[0]['target'])] = true;
 			$hosts[$dns[0]['target']] = true;
 		}
 
