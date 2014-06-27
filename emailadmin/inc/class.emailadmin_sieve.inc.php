@@ -77,7 +77,7 @@ class emailadmin_sieve extends Net_Sieve
 	/**
 	 * Default script name used if no active script found on server
 	 */
-	const DEFAULT_SCRIPT_NAME = 'felamimail';
+	const DEFAULT_SCRIPT_NAME = 'mail';
 
 	/**
 	 * Constructor
