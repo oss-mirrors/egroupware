@@ -1114,7 +1114,7 @@ class emailadmin_wizard
 			$sel_options['acc_smtp_ssl'] = self::$ssl_types;
 
 		// admin access to account with no credentials available
-		if ($this->is_admin && (empty($content['acc_imap_username']) || empty($content['acc_imap_hostname'])))
+		if ($this->is_admin && (empty($content['acc_imap_username']) || empty($content['acc_imap_host'])))
 		{
 			// cant connection to imap --> allow free entries in taglists
 			foreach(array('acc_folder_sent', 'acc_folder_trash', 'acc_folder_draft', 'acc_folder_template', 'acc_folder_junk') as $folder)
