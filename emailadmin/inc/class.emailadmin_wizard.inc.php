@@ -997,7 +997,8 @@ class emailadmin_wizard
 									$content['called_for'] : $GLOBALS['egw_info']['user']['account_id'];
 							}
 							self::fix_account_id_0($content['account_id'], true);
-							$content = emailadmin_account::write($content, $content['called_for']);
+							$content = emailadmin_account::write($content, $content['called_for'] || !$this->is_admin ?
+								$content['called_for'] : $GLOBALS['egw_info']['user']['account_id']);
 							self::fix_account_id_0($content['account_id']);
 							$msg = lang('Account saved.');
 							// user wants default notifications
