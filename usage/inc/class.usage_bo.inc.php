@@ -79,7 +79,6 @@ class usage_bo extends so_sql
 		}
 		foreach(preg_split('/[\r\n]+/',$submitted['apps']) as $line)
 		{
-			$app = $percent = $records = null;
 			list($app,$percent,$records) = explode(':',$line);
 			if (empty($app)) continue;
 
@@ -93,9 +92,10 @@ class usage_bo extends so_sql
 				'usage_id' => $this->data['usage_id'],
 				'usage_app_name' => $app,
 			),__LINE__,__FILE__,self::APP_NAME);
+			unset($app, $percent, $records);
 		}
 		// update statistics data in cache
-		$stats = egw_cache::setInstance('usage','stats',$this->calc_statistic());
+		egw_cache::setInstance('usage','stats',$this->calc_statistic());
 
 		return $this->acknowledge();
 	}
@@ -198,6 +198,7 @@ class usage_bo extends so_sql
 		$content .= "\t\t<th>".lang('Answers')."</th>\n";
 		$content .= "\t</tr>\n</thead>\n";*/
 		$content .= "<tbody\n";
+		$country = null;
 		foreach(array(
 			'usage_country' => 'Country',
 			'usage_type' => 'Usage',
@@ -311,7 +312,7 @@ class usage_bo extends so_sql
 			}
 			elseif($col == 'usage_version')
 			{
-				$group_by = $col = "CASE WHEN RIGHT($col,3)='EPL' THEN CONCAT('EPL ',SUBSTR($col,LOCATE(' ',$col),4)) ELSE $col END";
+				$group_by = $col = "CASE WHEN RIGHT($col,3)='EPL' THEN CONCAT('EPL ',SUBSTR($col,1+LOCATE(' ',$col),4)) ELSE $col END";
 			}
 			foreach($this->db->select(self::MAIN_TABLE,$col.' AS value,COUNT(*) AS count',$stat_limit_sql,__LINE__,__FILE__,false,'GROUP BY '.$group_by.' ORDER BY COUNT(*) DESC',self::APP_NAME) as $row)
 			{

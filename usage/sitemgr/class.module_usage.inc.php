@@ -36,7 +36,7 @@ class module_usage extends Module
 	 * @param array $properties
 	 * @return string
 	 */
-	function get_content(array &$arguments,$properties)
+	function get_content(&$arguments,$properties)
 	{
 		try
 		{
