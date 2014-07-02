@@ -184,7 +184,7 @@ function parse_freelink($text, $validate = 0)
 
 	return preg_replace_callback($ptn, function($matches)
 	{
-		return freelink_token(q1($matches[1]), q1($matches[2], $matches[3], ''));
+		return freelink_token(q1($matches[1]), q1($matches[2]), $matches[3], '');
 	}, $text, -1);
 }
 
