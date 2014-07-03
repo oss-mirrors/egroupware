@@ -1260,12 +1260,12 @@ class emailadmin_imapbase
 	 *
 	 * this function is a wrapper function for getSortedList and populates the resultList thereof with headerdata
 	 *
-	 * @param string $_folderName,
-	 * @param int $_startMessage,
-	 * @param int $_numberOfMessages, number of messages to return
-	 * @param array $_sort, sort by criteria
-	 * @param boolean $_reverse, reverse sorting of the result array (may be switched, as it is passed to getSortedList by reference)
-	 * @param array $_filter, filter to apply to getSortedList
+	 * @param string $_folderName
+	 * @param int $_startMessage
+	 * @param int $_numberOfMessages number of messages to return
+	 * @param array $_sort sort by criteria
+	 * @param boolean $_reverse reverse sorting of the result array (may be switched, as it is passed to getSortedList by reference)
+	 * @param array $_filter filter to apply to getSortedList
 	 * @param mixed $_thisUIDOnly=null, if given fetch the headers of this uid only (either one, or array of uids)
 	 * @param boolean $_cacheResult=true try touse the cache of getSortedList
 	 * @return array result as array(header=>array,total=>int,first=>int,last=>int)
@@ -1417,22 +1417,22 @@ class emailadmin_imapbase
 				$headerObject['INTERNALDATE'] = $_headerObject->getImapDate();
 				// as we need the prio, we are not using the Envelope (which is not providing it)
 				// fetching both headers and envelope takes too much time
-				$headerForPrio = $_headerObject->getHeaderText(0,Horde_Imap_Client_Data_Fetch::HEADER_PARSE)->toArray();
+				$headerForPrio = array_change_key_case($_headerObject->getHeaderText(0,Horde_Imap_Client_Data_Fetch::HEADER_PARSE)->toArray(), CASE_UPPER);
 				//error_log(__METHOD__.' ('.__LINE__.') '.array2string($headerForPrio));
-				if ( isset($headerForPrio['Disposition-Notification-To']) ) {
-					$headerObject['DISPOSITION-NOTIFICATION-TO'] = self::decode_header(trim($headerForPrio['Disposition-Notification-To']));
-				} else if ( isset($headerForPrio['Return-Receipt-To']) ) {
-					$headerObject['DISPOSITION-NOTIFICATION-TO'] = self::decode_header(trim($headerForPrio['Return-Receipt-To']));
-				} else if ( isset($headerForPrio['X-Confirm-Reading-To']) ) {
-					$headerObject['DISPOSITION-NOTIFICATION-TO'] = self::decode_header(trim($headerForPrio['X-Confirm-Reading-To']));
+				if ( isset($headerForPrio['DISPOSITION-NOTIFICATION-TO']) ) {
+					$headerObject['DISPOSITION-NOTIFICATION-TO'] = self::decode_header(trim($headerForPrio['DISPOSITION-NOTIFICATION-TO']));
+				} else if ( isset($headerForPrio['RETURN-RECEIPT-TO']) ) {
+					$headerObject['DISPOSITION-NOTIFICATION-TO'] = self::decode_header(trim($headerForPrio['RETURN-RECEIPT-TO']));
+				} else if ( isset($headerForPrio['X-CONFIRM-READING-TO']) ) {
+					$headerObject['DISPOSITION-NOTIFICATION-TO'] = self::decode_header(trim($headerForPrio['X-CONFIRM-READING-TO']));
 				} /*else $sent_not = "";*/
 				//error_log(__METHOD__.' ('.__LINE__.') '.array2string($headerObject));
-				$headerObject['DATE'] = $headerForPrio['Date'];// $_headerObject->getEnvelope()->date;
-				$headerObject['SUBJECT'] = (is_array($headerForPrio['Subject'])?$headerForPrio['Subject'][0]:$headerForPrio['Subject']);// $_headerObject->getEnvelope()->subject;
-				$headerObject['FROM'] = (array)($headerForPrio['From']?$headerForPrio['From']:($headerForPrio['Reply-To']?$headerForPrio['Reply-To']:$headerForPrio['Return-Path']));// $_headerObject->getEnvelope()->from->addresses;
-				$headerObject['TO'] = (array)$headerForPrio['To'];// $_headerObject->getEnvelope()->to->addresses;
-				$headerObject['CC'] = (array)$headerForPrio['Cc'];// $_headerObject->getEnvelope()->cc->addresses;
-				$headerObject['PRIORITY'] = $headerForPrio['X-Priority'];
+				$headerObject['DATE'] = $headerForPrio['DATE'];
+				$headerObject['SUBJECT'] = (is_array($headerForPrio['SUBJECT'])?$headerForPrio['SUBJECT'][0]:$headerForPrio['SUBJECT']);
+				$headerObject['FROM'] = (array)($headerForPrio['FROM']?$headerForPrio['FROM']:($headerForPrio['REPLY-TO']?$headerForPrio['REPLY-TO']:$headerForPrio['RETURN-PATH']));
+				$headerObject['TO'] = (array)$headerForPrio['TO'];
+				$headerObject['CC'] = (array)$headerForPrio['CC'];
+				$headerObject['PRIORITY'] = $headerForPrio['X-PRIORITY'];
 				foreach (array('FROM','TO','CC') as $_k => $key)
 				{
 					$address = array();
