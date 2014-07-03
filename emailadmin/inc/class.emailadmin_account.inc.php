@@ -1160,7 +1160,16 @@ class emailadmin_account implements ArrayAccess
 		}
 		if (empty($order_by) || !preg_match('/^[a-z_]+ (ASC|DESC)$/i', $order_by))
 		{
-			$order_by = self::DEFAULT_ORDER;
+			// for current user prefer account with ident_email matching user email or domain
+			// (this also helps notifications to account allowing to send with from address of current user / account_email)
+			if ($only_current_user && $GLOBALS['egw_info']['user']['account_email'])
+			{
+				list(,$domain) = $account_email = $GLOBALS['egw_info']['user']['account_email'];
+				// empty ident_email will be replaced with account_email!
+				$order_by = "(ident_email='' OR ident_email=".self::$db->quote($account_email).
+					') DESC,ident_email LIKE '.self::$db->quote('%@'.$domain).' DESC,';
+			}
+			$order_by .= self::DEFAULT_ORDER;
 		}
 		$cache_key = json_encode($where).$order_by;
 
