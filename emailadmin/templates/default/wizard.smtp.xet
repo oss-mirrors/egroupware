@@ -8,10 +8,6 @@
 				<column/>
 			</columns>
 			<rows>
-				<row>
-					<description id="msg" span="all" class="message"/>
-					<description/>
-				</row>
 				<row class="dialogHeader">
 					<description value="Step 4: SMTP - outgoing mail" span="all" class="emailadmin_header"/>
 					<description/>

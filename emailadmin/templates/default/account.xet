@@ -140,9 +140,9 @@
 					<description for="acc_folder_template" value="Templates folder"/>
 					<taglist id="acc_folder_template" empty_label="Select one ..." maxSelection="1" autocomplete_url=""/>
 				</row>
-				<row height="100">
-					<description/>
-					<description/>
+				<row>
+					<description for="acc_folder_junk" value="Junk folder"/>
+					<taglist id="acc_folder_junk" empty_label="Select one ..." maxSelection="1" autocomplete_url=""/>
 				</row>
 				<row>
 					<description for="acc_folder_junk" value="Notify about new mail in this folders"/>
@@ -279,26 +279,19 @@
 				<column/>
 			</columns>
 			<rows>
-				<row>
-					<description id="msg" span="all" class="message"/>
-					<description/>
-					<description/>
-					<description/>
-					<description/>
-				</row>
-				<row disabled="!@accounts">
+				<row disabled="!@accounts" class="dialogHeader">
 					<description for="acc_id" value="Mail account"/>
 					<menulist>
 						<menupopup id="acc_id" onchange="app.emailadmin.change_account" class="et2_fullWidth"/>
 					</menulist>
 					<description/>
 				</row>
-				<row height="30"  class="dialogHeader">
+				<row class="dialogHeader">
 					<description for="acc_name" value="Name of account"/>
 					<textbox id="acc_name" needed="1" size="80" class="et2_fullWidth"/>
 					<description align="right" value="$cont[acc_id]" class="emailadmin_diagnostic"/>
 				</row>
-				<row class="emailadmin_no_user dialogHeader" height="30">
+				<row class="emailadmin_no_user dialogHeader2">
 					<description for="account_id" value="Valid for"/>
 					<hbox>
 						<menulist>
