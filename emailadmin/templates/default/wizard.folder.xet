@@ -8,6 +8,10 @@
 				<column/>
 			</columns>
 			<rows>
+				<row>
+					<description id="msg" span="all" class="message"/>
+					<description/>
+				</row>
 				<row class="dialogHeader">
 					<description value="Step 2: Folder" span="all" class="emailadmin_header"/>
 					<description/>
@@ -34,12 +38,6 @@
 					<description value="Templates folder" for="acc_folder_template"/>
 					<menulist>
 						<menupopup id="acc_folder_template" options="Select one ..."/>
-					</menulist>
-				</row>
-				<row>
-					<description value="Junk folder" for="acc_folder_junk"/>
-					<menulist>
-						<menupopup id="acc_folder_junk" options="Select one ..."/>
 					</menulist>
 				</row>
 				<row class="dialogFooterToolbar">
