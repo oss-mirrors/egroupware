@@ -1872,9 +1872,9 @@ class emailadmin_imapbase
 			}
 		}
 		if ($queryValid) $imapFilter->andSearch($imapSearchFilter);
-		$imapStatusFilter = new Horde_Imap_Client_Search_Query();
 		$statusQueryValid = false;
 		foreach((array)$_criterias['status'] as $k => $criteria) {
+			$imapStatusFilter = new Horde_Imap_Client_Search_Query();
 			$criteria = strtoupper($criteria);
 			switch ($criteria) {
 				case 'ANSWERED':
@@ -1945,6 +1945,8 @@ class emailadmin_imapbase
 					$imapStatusFilter->flag(str_ireplace(array('UNKEYWORD','UNLABEL'),'$LABEL',$criteria), $set=false);
 					$queryValid = $statusQueryValid =true;
 					break;
+				default:
+					$statusQueryValid = false;
 			}
 			if ($statusQueryValid) $imapFilter->andSearch($imapStatusFilter);
 			if ($statusQueryValid && !$queryValid) $queryValid=true;
