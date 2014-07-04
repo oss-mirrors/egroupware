@@ -1821,12 +1821,13 @@ class emailadmin_imapbase
 			return $imapFilter;
 		}
 		//error_log(__METHOD__.' ('.__LINE__.') '.print_r($_criterias, true));
+		$imapSearchFilter = new Horde_Imap_Client_Search_Query();
 		$queryValid = false;
 		if(!empty($_criterias['string'])) {
 			$criteria = strtoupper($_criterias['type']);
 			switch ($criteria) {
 				case 'QUICK':
-					$imapFilter->headerText('SUBJECT', $_criterias['string'], $not=false);
+					$imapSearchFilter->headerText('SUBJECT', $_criterias['string'], $not=false);
 					$imapFilter2 = new Horde_Imap_Client_Search_Query();
 					if($this->isSentFolder($_folder)) {
 						$imapFilter2->headerText('TO', $_criterias['string'], $not=false);
@@ -1835,11 +1836,11 @@ class emailadmin_imapbase
 					}
 					if ($_supportsOrInQuery)
 					{
-						$imapFilter->orSearch($imapFilter2);
+						$imapSearchFilter->orSearch($imapFilter2);
 					}
 					else
 					{
-						$imapFilter->andSearch($imapFilter2);
+						$imapSearchFilter->andSearch($imapFilter2);
 					}
 					$queryValid = true;
 					break;
@@ -1848,25 +1849,31 @@ class emailadmin_imapbase
 				case 'CC':
 				case 'BCC':
 				case 'SUBJECT':
-					$imapFilter->headerText($criteria, $_criterias['string'], $not=false);
+					$imapSearchFilter->headerText($criteria, $_criterias['string'], $not=false);
 					$queryValid = true;
 					break;
 				case 'BODY':
 				case 'TEXT':
-					$imapFilter->text($_criterias['string'],($criteria=='BODY'?true:false), $not=false);
+					$imapSearchFilter->text($_criterias['string'],($criteria=='BODY'?true:false), $not=false);
+					$queryValid = true;
 					break;
 				case 'SINCE':
-					$imapFilter->dateSearch(new DateTime($_criterias['string']), Horde_Imap_Client_Search_Query::DATE_SINCE, $header=true, $not=false);
+					$imapSearchFilter->dateSearch(new DateTime($_criterias['string']), Horde_Imap_Client_Search_Query::DATE_SINCE, $header=true, $not=false);
+					$queryValid = true;
 					break;
 				case 'BEFORE':
-					$imapFilter->dateSearch(new DateTime($_criterias['string']), Horde_Imap_Client_Search_Query::DATE_BEFORE, $header=true, $not=false);
+					$imapSearchFilter->dateSearch(new DateTime($_criterias['string']), Horde_Imap_Client_Search_Query::DATE_BEFORE, $header=true, $not=false);
+					$queryValid = true;
 					break;
 				case 'ON':
-					$imapFilter->dateSearch(new DateTime($_criterias['string']), Horde_Imap_Client_Search_Query::DATE_ON, $header=true, $not=false);
+					$imapSearchFilter->dateSearch(new DateTime($_criterias['string']), Horde_Imap_Client_Search_Query::DATE_ON, $header=true, $not=false);
+					$queryValid = true;
 					break;
 			}
 		}
-
+		if ($queryValid) $imapFilter->andSearch($imapSearchFilter);
+		$imapStatusFilter = new Horde_Imap_Client_Search_Query();
+		$statusQueryValid = false;
 		foreach((array)$_criterias['status'] as $k => $criteria) {
 			$criteria = strtoupper($criteria);
 			switch ($criteria) {
@@ -1875,12 +1882,12 @@ class emailadmin_imapbase
 				case 'FLAGGED':
 				case 'RECENT':
 				case 'SEEN':
-					$imapFilter->flag($criteria, $set=true);
-					$queryValid = true;
+					$imapStatusFilter->flag($criteria, $set=true);
+					$queryValid = $statusQueryValid =true;
 					break;
 				case 'READ':
-					$imapFilter->flag('SEEN', $set=true);
-					$queryValid = true;
+					$imapStatusFilter->flag('SEEN', $set=true);
+					$queryValid = $statusQueryValid =true;
 					break;
 				case 'LABEL1':
 				case 'KEYWORD1':
@@ -1892,37 +1899,38 @@ class emailadmin_imapbase
 				case 'KEYWORD4':
 				case 'LABEL5':
 				case 'KEYWORD5':
-					$imapFilter->flag(str_ireplace('KEYWORD','$LABEL',$criteria), $set=true);
-					$queryValid = true;
+					$imapStatusFilter->flag(str_ireplace('KEYWORD','$LABEL',$criteria), $set=true);
+					$queryValid = $statusQueryValid =true;
 					break;
 				case 'NEW':
-					$imapFilter->flag('RECENT', $set=true);
-					$imapFilter->flag('SEEN', $set=false);
-					$queryValid = true;
+					$imapStatusFilter->flag('RECENT', $set=true);
+					$imapStatusFilter->flag('SEEN', $set=false);
+					$queryValid = $statusQueryValid =true;
 					break;
 				case 'OLD':
-					$imapFilter->flag('RECENT', $set=false);
+					$imapStatusFilter->flag('RECENT', $set=false);
+					$queryValid = $statusQueryValid =true;
 					break;
 // operate only on system flags
 //        $systemflags = array(
 //            'ANSWERED', 'DELETED', 'DRAFT', 'FLAGGED', 'RECENT', 'SEEN'
 //        );
 				case 'UNANSWERED':
-					$imapFilter->flag('ANSWERED', $set=false);
-					$queryValid = true;
+					$imapStatusFilter->flag('ANSWERED', $set=false);
+					$queryValid = $statusQueryValid =true;
 					break;
 				case 'UNDELETED':
 					$imapFilter->flag('DELETED', $set=false);
 					$queryValid = true;
 					break;
 				case 'UNFLAGGED':
-					$imapFilter->flag('FLAGGED', $set=false);
-					$queryValid = true;
+					$imapStatusFilter->flag('FLAGGED', $set=false);
+					$queryValid = $statusQueryValid =true;
 					break;
 				case 'UNREAD':
 				case 'UNSEEN':
-					$imapFilter->flag('SEEN', $set=false);
-					$queryValid = true;
+					$imapStatusFilter->flag('SEEN', $set=false);
+					$queryValid = $statusQueryValid =true;
 					break;
 				case 'UNLABEL1':
 				case 'UNKEYWORD1':
@@ -1934,10 +1942,12 @@ class emailadmin_imapbase
 				case 'UNKEYWORD4':
 				case 'UNLABEL5':
 				case 'UNKEYWORD5':
-					$imapFilter->flag(str_ireplace(array('UNKEYWORD','UNLABEL'),'$LABEL',$criteria), $set=false);
-					$queryValid = true;
+					$imapStatusFilter->flag(str_ireplace(array('UNKEYWORD','UNLABEL'),'$LABEL',$criteria), $set=false);
+					$queryValid = $statusQueryValid =true;
 					break;
 			}
+			if ($statusQueryValid) $imapFilter->andSearch($imapStatusFilter);
+			if ($statusQueryValid && !$queryValid) $queryValid=true;
 		}
 		if (isset($_criterias['range']) && !empty($_criterias['range']))
 		{
