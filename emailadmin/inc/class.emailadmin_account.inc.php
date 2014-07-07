@@ -260,13 +260,20 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public function getUserData()
 	{
+		if ($this->acc_smtp_type != 'emailadmin_smtp' && $this->smtpServer() &&
+			($smtp_data = $this->smtpServer->getUserData($this->user)))
+		{
+			$this->params += $smtp_data;
+		}
 		// if we manage the mail-account, include that data too (imap has higher precedence)
 		try {
-			if ($this->acc_imap_type != 'emailadmin_imap' && $this->imapServer() &&
-				is_a($this->imapServer, 'emailadmin_imap') &&
+			if ($this->acc_imap_type != 'emailadmin_imap' &&
+				// do NOT query IMAP server, if we are in forward-only delivery-mode, imap will NOT answer, as switched off for that account!
+				$this->params['deliveryMode'] != emailadmin_smtp::FORWARD_ONLY &&
+				$this->imapServer() && is_a($this->imapServer, 'emailadmin_imap') &&
 				($data = $this->imapServer->getUserData($GLOBALS['egw']->accounts->id2name($this->user))))
 			{
-				$this->params += $data;
+				$this->params = array_merge($this->params, $data);
 			}
 		}
 		catch(Horde_Imap_Client_Exception $e) {
@@ -276,11 +283,6 @@ class emailadmin_account implements ArrayAccess
 		catch(InvalidArgumentException $e) {
 			unset($e);
 			// ignore eg. missing admin user
-		}
-		if ($this->acc_smtp_type != 'emailadmin_smtp' && $this->smtpServer() &&
-			($smtp_data = $this->smtpServer->getUserData($this->user)))
-		{
-			$this->params += $smtp_data;
 		}
 		$this->params += array_fill_keys(self::$user_data, null);	// make sure all keys exist now
 
