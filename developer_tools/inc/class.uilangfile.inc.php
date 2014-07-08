@@ -478,9 +478,7 @@ class uilangfile
 
 	function recode_id($id)
 	{
-		// PHP4 only quotes array-keys (NOT values) if magic_quotes_gpc is on, PHP5 does it always
-		// maybe anyone knows why ;-)
-		if (get_magic_quotes_gpc() || (int) PHP_VERSION >= 5)
+		if (get_magic_quotes_gpc())
 		{
 			$id = stripslashes($id);
 		}
