@@ -200,5 +200,6 @@ virtual mail manager	emailadmin	de	Virtual MAIL ManaGeR
 yes, use credentials below only for alarms and notifications, otherwise use credentials of current user	emailadmin	de	Ja, die Daten darunter nur für Alarme und Benachrichtigungen verwenden, ansonsten die Daten des aktiven Benutzers.
 yes, use credentials of current user or if given credentials below	emailadmin	de	Ja, benutze Daten des aktuellen Benutzers oder wenn angegeben die Daten darunter
 you have received a new message on the	emailadmin	de	Sie haben eine neue Nachricht erhalten.
+you need to specify a forwarding address, when checking "%1"!	emailadmin	de	Sie müssen eine Weiterleitungsadresse angeben, wenn "%1" abgehackt ist!
 your message to  %1 was displayed.	emailadmin	de	Ihre Nachricht %1 wurde angezeigt
 your name	emailadmin	de	Ihr Name

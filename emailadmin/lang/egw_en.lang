@@ -200,5 +200,6 @@ virtual mail manager	emailadmin	en	Virtual MAIL ManaGeR
 yes, use credentials below only for alarms and notifications, otherwise use credentials of current user	emailadmin	en	Yes, use credentials below only for alarms and notifications, otherwise use credentials of current user
 yes, use credentials of current user or if given credentials below	emailadmin	en	Yes, use credentials of current user or if given credentials below
 you have received a new message on the	emailadmin	en	You have received a new message on the
+you need to specify a forwarding address, when checking "%1"!	emailadmin	en	You need to specify a forwarding address, when checking "%1"!
 your message to  %1 was displayed.	emailadmin	en	Your message to  %1 was displayed.
 your name	emailadmin	en	Your name

@@ -986,6 +986,14 @@ class emailadmin_wizard
 						elseif ($edit_access)
 						{
 							$new_account = !($content['acc_id'] > 0);
+							// check for deliveryMode="forwardOnly", if a forwarding-address is given
+							if ($content['acc_smtp_type'] != 'emailadmin_smtp' &&
+								$content['deliveryMode'] == emailadmin_smtp::FORWARD_ONLY &&
+								empty($content['mailForwardingAddress']))
+							{
+								etemplate_new::set_validation_error('mailForwardingAddress', lang('Field must not be empty !!!'));
+								throw new egw_exception_wrong_userinput(lang('You need to specify a forwarding address, when checking "%1"!', lang('Forward only')));
+							}
 							// set notifications to store according to checkboxes
 							if ($content['notify_save_default'])
 							{
