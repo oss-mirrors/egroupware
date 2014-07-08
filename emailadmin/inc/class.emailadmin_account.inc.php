@@ -320,7 +320,7 @@ class emailadmin_account implements ArrayAccess
 	 */
 	public function is_imap()
 	{
-		return !empty($this->acc_imap_host) && !empty($this->acc_imap_username) &&
+		return !empty($this->acc_imap_host) && !empty($this->acc_imap_username) && !empty($this->acc_imap_password) &&
 			($this->acc_smtp_type == 'emailadmin_smtp' || $this->deliveryMode != emailadmin_smtp::FORWARD_ONLY);
 	}
 
@@ -1284,7 +1284,7 @@ class emailadmin_account implements ArrayAccess
 					$account = new emailadmin_account($params);
 					//error_log(__METHOD__.__LINE__.' '.$acc_id.':'.array2string($account));
 					// continue if we have either no imap username or password
-					if (!$account->acc_imap_username || !$account->acc_imap_password) continue;
+					if (!$account->is_imap()) continue;
 				}
 				return $acc_id;
 			}
