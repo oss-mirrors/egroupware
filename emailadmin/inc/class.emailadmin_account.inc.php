@@ -312,6 +312,19 @@ class emailadmin_account implements ArrayAccess
 	}
 
 	/**
+	 * Check if account is an imap account
+	 *
+	 * Checks if an imap host, username and NOT deliveryMode="forwardOnly" is set
+	 *
+	 * return boolean
+	 */
+	public function is_imap()
+	{
+		return !empty($this->acc_imap_host) && !empty($this->acc_imap_username) &&
+			($this->acc_smtp_type == 'emailadmin_smtp' || $this->deliveryMode != emailadmin_smtp::FORWARD_ONLY);
+	}
+
+	/**
 	 * Get name and evtl. autoload incomming server class
 	 *
 	 * @param string $imap_type

@@ -327,7 +327,7 @@ class emailadmin_imapbase
 		{
 			try {
 				$account = emailadmin_account::read($_acc_id);
-				if ($account->acc_imap_host && $account->acc_imap_username)
+				if ($account->is_imap())
 				{
 					return $_acc_id;
 				}
@@ -342,7 +342,7 @@ class emailadmin_imapbase
 		// --> search existing account for first valid one and return that
 		foreach(emailadmin_account::search($only_current_user=true, 'acc_imap_host') as $acc_id => $imap_host)
 		{
-			if (!empty($imap_host) && ($account = emailadmin_account::read($acc_id)) && $account->acc_imap_username)
+			if (!empty($imap_host) && ($account = emailadmin_account::read($acc_id)) && $account->is_imap())
 			{
 				if (self::$debug && $_acc_id) error_log(__METHOD__."($_acc_id) using $acc_id instead");
 				return $acc_id;
@@ -2355,7 +2355,7 @@ class emailadmin_imapbase
 						if ($_subscribedOnly == true && !empty($foldersNameSpace[$type]['subscribed'])) {
 							continue;
 						}
-						
+
 					}
 					// skip the checks here completely; we rely on Hordes code/results as for now
 					// this improves speed tremendously for the !$_subscribedOnly - mode
@@ -4200,7 +4200,7 @@ class emailadmin_imapbase
 		{
 			$this->sessionData['mailbox'] = $_folder;
 		}
-		
+
 		if (!isset($_structure))
 		{
 			$_structure = $this->getStructure($_uid, $_partID, $_folder, $_preserveSeen);
