@@ -1,1 +1,9 @@
+%1 is reconnecting to channel %2	phpfreechat	pt	% 1 está reconectando para canalizar% 2
+egroupware chat	phpfreechat	pt	EGroupware chat
+frozen nick	admin	pt	Congelado nick
 global categories	phpfreechat	pt	Categorias gerais
+nick length	admin	pt	comprimento nick
+phpfreechat	common	pt	Conversar
+phpfreechat configuration	admin	pt	Configuração chat
+phpfreechat integration into egroupware	phpfreechat	pt	Converse integração EGroupware
+the chat opens in a new window.	phpfreechat	pt	Chat é aberto em uma nova janela.
