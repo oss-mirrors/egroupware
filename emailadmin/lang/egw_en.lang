@@ -73,6 +73,7 @@ filtered by group	emailadmin	en	Filtered by group
 forward also to	emailadmin	en	Forward also to
 forward email's to	emailadmin	en	Forward email's to
 forward only	emailadmin	en	Forward only
+forward only disables imap mailbox / storing of mails and just forwards them to given address.	emailadmin	en	Forward only disables IMAP mailbox / storing of mails and just forwards them to given address.
 global options	emailadmin	en	Global options
 hostname or ip	emailadmin	en	Hostname or IP
 identity deleted	emailadmin	en	Identity deleted

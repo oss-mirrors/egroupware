@@ -73,6 +73,7 @@ filtered by group	emailadmin	de	Suche nach Gruppenprofilen
 forward also to	emailadmin	de	zusätzlich weiterleiten
 forward email's to	emailadmin	de	E-Mails weiterleiten an
 forward only	emailadmin	de	nur weiterleiten
+forward only disables imap mailbox / storing of mails and just forwards them to given address.	emailadmin	de	Nur weiterleiten schaltet die IMAP Mailbox / das Speichern der Mails aus und leitet diese an die angegebene Adresse weiter.
 global options	emailadmin	de	Globale Optionen
 hostname or ip	emailadmin	de	Hostname oder IP
 identity deleted	emailadmin	de	Identität gelöscht.
