@@ -258,7 +258,7 @@
 				<row>
 					<description for="mailForwardingAddress" value="Forward email's to"/>
 					<taglist id="mailForwardingAddress" autocomplete_url=""/>
-					<checkbox label="Forward only" id="deliveryMode" selected_value="forwardOnly" onchange="if (this.value) et2_dialog.alert('Forward only disables IMAP mailbox / storing of mails and just forwards them to given address.','Forward only');"/>
+					<checkbox label="Forward only" id="deliveryMode" selected_value="forwardOnly" onchange="if (widget.getValue()) et2_dialog.alert('Forward only disables IMAP mailbox / storing of mails and just forwards them to given address.','Forward only');"/>
 				</row>
 				<row>
 					<description for="quotaLimit" value="Quota (MB)"/>
