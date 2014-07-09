@@ -76,6 +76,7 @@ forward only	emailadmin	de	nur weiterleiten
 forward only disables imap mailbox / storing of mails and just forwards them to given address.	emailadmin	de	Nur weiterleiten schaltet die IMAP Mailbox / das Speichern der Mails aus und leitet diese an die angegebene Adresse weiter.
 global options	emailadmin	de	Globale Optionen
 hostname or ip	emailadmin	de	Hostname oder IP
+how username get constructed	emailadmin	de	Wie wird der Benutzername gebildet
 identity deleted	emailadmin	de	Identität gelöscht.
 identity saved.	emailadmin	de	Identität gespeichert.
 if different from email address	emailadmin	de	falls unterschiedlich zu E-Mail-Adresse
@@ -189,6 +190,7 @@ use users email-address (as seen in useraccount)	emailadmin	de	Benutzt E-Mail Ad
 user can edit forwarding address	emailadmin	de	Anwender können ihre Weiterleitungsadresse bearbeiten
 userid@domain eg. u1234@domain	emailadmin	de	UserId@domain z.B. u1234@domain
 username (standard)	emailadmin	de	Benutzername (Standard)
+username specified below for all	emailadmin	de	Unter angegebener Benutzername für alle
 username/password defined by admin	emailadmin	de	Benutzername / Passwort vordefiniert
 username@domainname (virtual mail manager)	emailadmin	de	Benutzername@Domänenname (Virtual MAIL ManaGeR)
 users can define their own emailaccounts	emailadmin	de	Anwender können ihre eigenen Konten definieren

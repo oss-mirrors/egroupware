@@ -192,7 +192,7 @@ app.classes.emailadmin = AppJS.extend(
 		var ids = account_id && account_id.get_value ? account_id.get_value() : [];
 		if (typeof ids == 'string') ids = ids.split(',');
 
-		var multiple = ids.length >= 2 || ids[0] === '';
+		var multiple = ids.length >= 2 || ids[0] === '' || ids[0] < 0;
 		//alert('multiple='+(multiple?'true':'false')+': '+ids.join(','));
 
 		// initial call

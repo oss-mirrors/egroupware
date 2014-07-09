@@ -119,7 +119,7 @@ class emailadmin_credentials
 				'account_id' => $account_id,
 				'(cred_type & '.(int)$type.') > 0',	// postgreSQL require > 0, or gives error as it expects boolean
 			), __LINE__, __FILE__, false,
-				// account_id ASC ensures (current) user always overwrites all (0) or groups (<0)
+				// account_id DESC ensures 0=all allways overwrite (old user-specific credentials)
 				'ORDER BY account_id ASC', self::APP);
 			//error_log(__METHOD__."($acc_id, $type, ".array2string($account_id).") nothing in cache");
 		}

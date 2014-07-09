@@ -114,10 +114,10 @@ class emailadmin_wizard
 	 * @var array
 	 */
 	public static $login_types = array(
-		'' => 'Username specified below',
+		'' => 'Username specified below for all',
 		'standard'	=> 'username from account',
 		'vmailmgr'	=> 'username@domainname',
-		'admin'		=> 'Username/Password defined by admin',
+		//'admin'		=> 'Username/Password defined by admin',
 		'uidNumber' => 'UserId@domain eg. u1234@domain',
 		'email'	    => 'EMail-address from account',
 	);

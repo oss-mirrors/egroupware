@@ -1027,36 +1027,18 @@ class emailadmin_account implements ArrayAccess
 				), false, __LINE__, __FILE__, self::APP);
 			}
 		}
-		// check if we have an account_id for which to store credentials
-		foreach(array('acc_imap_account_id', 'acc_smtp_account_id') as $name)
-		{
-			if (!isset($data[$name]))
-			{
-				// credentials are either stored for specific user or all users (account_id=0), not group-specific
-				$data[$name] = count($data['account_id']) == 1 && $data['account_id'][0] > 0 ? $data['account_id'][0] : 0;
-			}
-			// account of credentials is not direct in accounts valid for mail account
-			elseif (!in_array($data[$name], $data['account_id']))
-			{
-				// check further with memberships and 0=all
-				// if still not in, update with new account_id
-				if (!array_intersect(self::memberships(), $data['account_id']))
-				{
-					$data[$name] = count($data['account_id']) == 1 ? $data['account_id'][0] : 0;
-				}
-			}
-		}
+		// check for whom we have to store credentials
+		$valid_for = self::credentials_valid_for($data);
 		// add imap credentials
 		$cred_type = $data['acc_imap_username'] == $data['acc_smtp_username'] &&
-			$data['acc_imap_password'] == $data['acc_smtp_password'] &&
-			$data['acc_imap_account_id'] == $data['acc_smtp_account_id'] ? 3 : 1;
+			$data['acc_imap_password'] == $data['acc_smtp_password'] ? 3 : 1;
 		emailadmin_credentials::write($data['acc_id'], $data['acc_imap_username'], $data['acc_imap_password'],
-			$cred_type, $data['acc_imap_account_id'], $data['acc_imap_cred_id']);
+			$cred_type, $valid_for, $data['acc_imap_cred_id']);
 		// add smtp credentials if necessary and different from imap
 		if ($data['acc_smtp_username'] && $cred_type != 3)
 		{
 			emailadmin_credentials::write($data['acc_id'], $data['acc_smtp_username'], $data['acc_smtp_password'],
-				2, $data['acc_smtp_account_id'], $data['acc_smtp_cred_id'] != $data['acc_imap_cred_id'] ?
+				2, $valid_for, $data['acc_smtp_cred_id'] != $data['acc_imap_cred_id'] ?
 					$data['acc_smtp_cred_id'] : null);
 		}
 		// store or delete admin credentials
@@ -1097,6 +1079,32 @@ class emailadmin_account implements ArrayAccess
 		self::cache_invalidate($data['acc_id']);
 		//error_log(__METHOD__."() returning ".array2string($data));
 		return $data;
+	}
+
+	/**
+	 * Check for whom given credentials are to be stored
+	 *
+	 * @param array|emailadmin_account $account
+	 * @param int $account_id=null
+	 * @return boolean
+	 */
+	protected static function credentials_valid_for($account, $account_id=null)
+	{
+		if (!isset($account_id)) $account_id = $GLOBALS['egw_info']['user']['account_id'];
+
+		// if account valid for multiple users
+		if (self::is_multiple($account))
+		{
+			// if imap login-name get constructed --> store credentials only for current user
+			if ($account['acc_imap_logintype'])
+			{
+				return $account_id;
+			}
+			// store credentials for all users
+			return 0;
+		}
+		// account is valid for a single user
+		return is_array($account['account_id']) ? $account['account_id'][0] : $account['account_id'];
 	}
 
 	/**
