@@ -1375,6 +1375,10 @@ class emailadmin_account implements ArrayAccess
 			{
 				$name .= ' <'.$account['ident_email'].'>';
 			}
+			if (stripos($name, $account['acc_name']) === false)
+			{
+				$name .= ' '.$account['acc_name'];
+			}
 		}
 		//error_log(__METHOD__."(".array2string($account).", $replace_placeholders) returning ".array2string($name));
 		return $name;
