@@ -314,14 +314,15 @@ class emailadmin_account implements ArrayAccess
 	/**
 	 * Check if account is an imap account
 	 *
-	 * Checks if an imap host, username and NOT deliveryMode="forwardOnly" is set
+	 * Checks if an imap host, username and for managaged mail-servers accountStatus="active" and NOT deliveryMode="forwardOnly" is set
 	 *
 	 * return boolean
 	 */
 	public function is_imap()
 	{
 		return !empty($this->acc_imap_host) && !empty($this->acc_imap_username) && !empty($this->acc_imap_password) &&
-			($this->acc_smtp_type == 'emailadmin_smtp' || $this->deliveryMode != emailadmin_smtp::FORWARD_ONLY);
+			($this->acc_smtp_type == 'emailadmin_smtp' ||
+				$this->deliveryMode != emailadmin_smtp::FORWARD_ONLY && $this->accountStatus == emailadmin_smtp::MAIL_ENABLED);
 	}
 
 	/**
