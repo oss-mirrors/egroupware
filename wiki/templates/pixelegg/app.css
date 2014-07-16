@@ -15,6 +15,8 @@
 .wikipage {
   /* WikkiTikkiTavi default style sheet. */
   /* $Id: app.css 36838 2011-10-06 14:05:23Z leithoff $ */
+  background-color: #ffffff;
+  padding: 1em 0 0 1em;
 }
 #wikipage div,
 .wikipage div,
