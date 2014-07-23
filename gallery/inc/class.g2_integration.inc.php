@@ -78,7 +78,7 @@ class g2_integration
 		require(EGW_INCLUDE_ROOT.'/gallery/gallery2' . '/modules/core/classes/GalleryEmbed.class');
 
 		if (($ret = GalleryEmbed::init(array(
-	    	'embedUri' => $url ? $url : $GLOBALS['egw']->link('/gallery/index.php'),
+	    	'embedUri' => $url ? $url : egw::link('/gallery/index.php'),
 	    	'g2Uri'    => $GLOBALS['egw_info']['server']['webserver_url'].'/gallery/gallery2/',
 	    	'loginRedirect' => $GLOBALS['egw_info']['server']['webserver_url'].'/login.php',
 //				'embedSessionString' => 'sessionid=',	// gets added by egw::link() to embedUri if necessary
