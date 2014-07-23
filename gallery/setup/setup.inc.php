@@ -6,7 +6,7 @@
  * @link http://gallery.sourceforge.net/
  * @package gallery
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @copyright 2006-8 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @copyright 2006-14 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */
@@ -40,5 +40,5 @@ $setup_info['gallery']['hooks']['admin']			= 'gallery.g2_integration.menus';
 /* Dependencies for this app to work */
 $setup_info['gallery']['depends'][] = array(
 	'appname' => 'phpgwapi',
-	'versions' => Array('1.7','1.8','1.9')
+	'versions' => Array('1.8','1.9','14.1')
 );
