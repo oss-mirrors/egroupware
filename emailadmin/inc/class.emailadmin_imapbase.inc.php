@@ -465,10 +465,7 @@ class emailadmin_imapbase
 	 *
 	 * 1) icServerIMAP_connectionError
 	 * 2) icServerSIEVE_connectionError
-	 * 3) defaultimap_nameSpace
-	 * 4) StructureCache (emailStructure Objects)
-	 * 5) SummaryCache (emailSummary Objects)
-	 * 6) INSTANCE OF MAIL_BO
+	 * 3) INSTANCE OF MAIL_BO
 	 *
 	 * @param int $_profileID=null default profile of user as returned by getUserDefaultProfileID
 	 * @return void
@@ -480,18 +477,6 @@ class emailadmin_imapbase
 		if (!is_array($_profileID) && (is_numeric($_profileID) || !(stripos($_profileID,'tracker_')===false)))
 		{
 			self::resetConnectionErrorCache($_profileID);
-			$structure = egw_cache::getCache(egw_cache::INSTANCE,'email','structureCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
-			if (isset($structure[$_profileID]))
-			{
-				unset($structure[$_profileID]);
-				egw_cache::setCache(egw_cache::INSTANCE,'email','structureCache'.trim($GLOBALS['egw_info']['user']['account_id']),$structure, $expiration=60*60*1);
-			}
-			$summary = egw_cache::getCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
-			if (isset($summary[$_profileID]))
-			{
-				unset($summary[$_profileID]);
-				egw_cache::setCache(egw_cache::INSTANCE,'email','summaryCache'.trim($GLOBALS['egw_info']['user']['account_id']),$summary, $expiration=60*60*1);
-			}
 			$rawHeadersCache = egw_cache::getCache(egw_cache::INSTANCE,'email','rawHeadersCache'.trim($GLOBALS['egw_info']['user']['account_id']),$callback=null,$callback_params=array(),$expiration=60*60*1);
 			if (isset($rawHeadersCache[$_profileID]))
 			{
@@ -508,12 +493,6 @@ class emailadmin_imapbase
 				egw_cache::setCache(egw_cache::INSTANCE,'email','eMailListContainsDeletedMessages'.trim($GLOBALS['egw_info']['user']['account_id']),$eMailListContainsDeletedMessages, $expiration=60*60*1);
 			}
 
-			$nameSpace = egw_cache::getSession('email','defaultimap_nameSpace');
-			if (isset($nameSpace[$_profileID]))
-			{
-				unset($nameSpace[$_profileID]);
-				egw_cache::setSession('email','defaultimap_nameSpace',$nameSpace);
-			}
 			if (isset(self::$instances[$_profileID])) unset(self::$instances[$_profileID]);
 		}
 	}
