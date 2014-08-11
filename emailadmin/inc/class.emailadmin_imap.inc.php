@@ -771,7 +771,29 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function getCapabilities()
 	{
-		$cap = $this->capability();
+		try
+		{
+			$cap = $this->capability->toArray();
+		}
+		catch (Exception $e)
+		{
+			if ($this->debug) error_log(__METHOD__.__LINE__.' error querying for capability:'.$capability.' ->'.$e->getMessage());
+			try
+			{
+				$cap = $this->capability();
+				$retriedSuccess = true;
+			}
+			catch (Exception $ef)
+			{
+				$retriedSuccess = false;
+			}
+			if (!$retriedSuccess) return false;
+		}
+		if (!is_array($cap))
+		{
+			error_log(__METHOD__.__LINE__.' error querying for capability:'.$capability.' Expected array but got->'.array2string($cap));
+			return false;
+		}
 		foreach ($cap as $c => $v)
 		{
 			if (is_array($v))
@@ -802,12 +824,21 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		}
 		try
 		{
-			$cap = $this->capability();
+			$cap = $this->capability->toArray();
 		}
 		catch (Exception $e)
 		{
 			if ($this->debug) error_log(__METHOD__.__LINE__.' error querying for capability:'.$capability.' ->'.$e->getMessage());
-			return false;
+			try
+			{
+				$cap = $this->capability();
+				$retriedSuccess = true;
+			}
+			catch (Exception $ef)
+			{
+				$retriedSuccess = false;
+			}
+			if (!$retriedSuccess) return false;
 		}
 		if (!is_array($cap))
 		{
