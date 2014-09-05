@@ -2007,7 +2007,6 @@ class emailadmin_imapbase
 
 			if ($_tryIDNConversion===true && stripos($_string,'@')!==false)
 			{
-				//$rfcAddr = imap_rfc822_parse_adrlist(str_replace(',','\,',$_string),'');
 				$rfcAddr = imap_rfc822_parse_adrlist($_string,'');
 				if (!isset(self::$idna2)) self::$idna2 = new egw_idna;
 				if (isset(self::$idna2))
@@ -5454,7 +5453,7 @@ class emailadmin_imapbase
 				$returnAddr .= (strlen($returnAddr)>0?',':'');
 				//error_log(__METHOD__.' ('.__LINE__.') '.$p.' <'.$mb.'@'.$h.'>');
 				$buff = imap_rfc822_write_address($addressObject->mailbox, self::$idna2->decode($addressObject->host), $addressObject->personal);
-				$buff = str_replace(array('<','>'),array('[',']'),$buff);
+				$buff = str_replace(array('<','>','"\'','\'"'),array('[',']','"','"'),$buff);
 				if ($createHTML) $buff = emailadmin_imapbase::htmlspecialchars($buff);
 				//error_log(__METHOD__.' ('.__LINE__.') '.' Address: '.$returnAddr);
 				$returnAddr .= $buff;
@@ -5464,7 +5463,7 @@ class emailadmin_imapbase
 		{
 			// do not mess with strings, return them untouched /* ToDo: validate string as Address */
 			$rfcAddressArray = self::decode_header($rfcAddressArray,true);
-			$rfcAddressArray = str_replace(array('<','>'),array('[',']'),$rfcAddressArray);
+			$rfcAddressArray = str_replace(array('<','>','"\'','\'"'),array('[',']','"','"'),$rfcAddressArray);
 			if (is_string($rfcAddressArray)) return ($createHTML ? emailadmin_imapbase::htmlspecialchars($rfcAddressArray) : $rfcAddressArray);
 		}
 		return $returnAddr;
