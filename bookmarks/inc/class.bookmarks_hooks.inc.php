@@ -155,7 +155,8 @@ class bookmarks_hooks
 	public static function acl_rights($params)
 	{
 		return array(
-			acl::READ    => 'read',
+			// ACL works differently in bookmarks, we change the label to ease confusion
+			acl::READ    => 'private',
 			acl::EDIT    => 'edit',
 			acl::DELETE  => 'delete',
 		);
