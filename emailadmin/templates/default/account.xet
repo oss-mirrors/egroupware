@@ -270,7 +270,7 @@
 				</row>
 				<row disabled="!@admin_actions">
 					<description value="Administration"/>
-					<toolbar id="admin_actions" colspan="2"/>
+					<toolbar id="admin_actions" colspan="2" default_execute="app.emailadmin.account_edit_action"/>
 				</row>
 			</rows>
 		</grid>
