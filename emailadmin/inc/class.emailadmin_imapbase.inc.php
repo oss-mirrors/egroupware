@@ -2309,7 +2309,7 @@ class emailadmin_imapbase
 					// fetch and sort the subscribed folders
 					// we alway fetch the subscribed, as this provides the only way to tell
 					// if a folder is subscribed or not
-					if ($_subscribedOnly == true);
+					if ($_subscribedOnly == true)
 					{
 						try
 						{
@@ -2339,7 +2339,7 @@ class emailadmin_imapbase
 									'MAILBOX'=>$finfo['MAILBOX'],
 									'ATTRIBUTES'=>$finfo['ATTRIBUTES'],
 									'delimiter'=>$finfo['delimiter'],//lowercase for some reason???
-									'SUBSCRIBED'=>$mbx['SUBSCRIBED'],//seeded by getMailboxes
+									'SUBSCRIBED'=>$finfo['SUBSCRIBED'],//seeded by getMailboxes
 								);
 								if (empty($foldersNameSpace[$type]['subscribed']) || !in_array($k,$foldersNameSpace[$type]['subscribed']))
 								{
@@ -5021,7 +5021,7 @@ class emailadmin_imapbase
 		}
 		return $attachments;
 	}
-	
+
 	/**
 	 * Decode TNEF type attachment into Multipart/mixed attachment
 	 *
@@ -5032,10 +5032,10 @@ class emailadmin_imapbase
 	 */
 	public function tnef_decoder($_uid, $data )
 	{
-		
+
 		$parts_obj = $this->getStructure($_uid);
 		$parts_obj->setType('multipart/mixed');
-		
+
 		$tnef_object = Horde_Compress::factory('tnef');
 		try
 		{
@@ -5048,11 +5048,11 @@ class emailadmin_imapbase
 			foreach ($tnef_data as &$data)
 			{
 				$tmp_part = $this->getStructure($_uid);
-				
+
 				$tmp_part->setName($data['name']);
 				$tmp_part->setContents($data['stream']);
 				$tmp_part->setDescription($data['name']);
-				
+
 				$type = $data['type'] . '/' . $data['subtype'];
 				if (in_array($type, array('application/octet-stream', 'application/base64')))
 				{
@@ -5065,7 +5065,7 @@ class emailadmin_imapbase
 		}
 		return false;
 	}
-	
+
 	/**
 	 * retrieve a attachment
 	 *
