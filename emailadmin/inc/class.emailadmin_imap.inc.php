@@ -862,7 +862,112 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			return false;
 		}
 	}
+	
+	/**
+	 * getFolderPrefixFromNamespace, wrapper to extract the folder prefix from folder compared to given namespace array
+	 *
+	 * @var array $_nameSpace
+	 * @var string $_folderName
+	 * @return string the prefix (may be an empty string)
+	 */
+	function getFolderPrefixFromNamespace($_nameSpace, $_folderName)
+	{
+		foreach($_nameSpace as &$singleNameSpace)
+		{
+			if (substr($_folderName,0,strlen($singleNameSpace['prefix'])) == $singleNameSpace['prefix']) return $singleNameSpace['prefix'];
+		}
+		return "";
+	}
+	
+	/**
+	 * getMailBoxesRecursive
+	 *
+	 * function to retrieve mailboxes recursively from given mailbox
+	 * @param string $_mailbox
+	 * @param string $delimiter
+	 * @param string $prefix
+	 * @param string $reclevel = 0, counter to keep track of the current recursionlevel
+	 * @return array of mailboxes
+	 */
+	function getMailBoxesRecursive($_mailbox, $delimiter, $prefix, $reclevel=0)
+	{
+		if ($reclevel > 25) {
+			error_log( __METHOD__." Recursion Level Exeeded ($reclevel) while looking up $_mailbox$delimiter ");
+			return array();
+		}
+		$reclevel++;
+		// clean up double delimiters
+		$_mailbox = preg_replace('~'.($delimiter == '.' ? "\\".$delimiter:$delimiter).'+~s',$delimiter,$_mailbox);
+		//get that mailbox in question
+		$mbx = $this->getMailboxes($_mailbox,1,true);
+		$mbxkeys = array_keys($mbx);
 
+		// Example: Array([INBOX/GaGa] => Array([MAILBOX] => INBOX/GaGa[ATTRIBUTES] => Array([0] => \\unmarked)[delimiter] => /))
+		if (is_array($mbx[$mbxkeys[0]]["ATTRIBUTES"]) && (in_array('\HasChildren',$mbx[$mbxkeys[0]]["ATTRIBUTES"]) || in_array('\Haschildren',$mbx[$mbxkeys[0]]["ATTRIBUTES"]) || in_array('\haschildren',$mbx[$mbxkeys[0]]["ATTRIBUTES"])))
+		{
+			$buff = $this->getMailboxes($mbx[$mbxkeys[0]]['MAILBOX'].($mbx[$mbxkeys[0]]['MAILBOX'] == $prefix ? '':$delimiter),2,false);
+			$allMailboxes = array();
+			foreach ($buff as $mbxname) {
+				$mbxname = preg_replace('~'.($delimiter == '.' ? "\\".$delimiter:$delimiter).'+~s',$delimiter,$mbxname['MAILBOX']);
+				#echo "About to recur in level $reclevel:".$mbxname."<br>";
+				if ( $mbxname != $mbx[$mbxkeys[0]]['MAILBOX'] && $mbxname != $prefix  && $mbxname != $mbx[$mbxkeys[0]]['MAILBOX'].$delimiter)
+				{
+					$allMailboxes = array_merge($allMailboxes, self::getMailBoxesRecursive($mbxname, $delimiter, $prefix, $reclevel));
+				}
+			}
+			if (!(in_array('\NoSelect',$mbx[$mbxkeys[0]]["ATTRIBUTES"]) || in_array('\Noselect',$mbx[$mbxkeys[0]]["ATTRIBUTES"]) || in_array('\noselect',$mbx[$mbxkeys[0]]["ATTRIBUTES"]))) $allMailboxes[] = $mbx[$mbxkeys[0]]['MAILBOX'];
+			return $allMailboxes;
+		}
+		else
+		{
+			return array($_mailbox);
+		}
+	}
+
+	/**
+	 * getNameSpace, fetch the namespace from icServer
+	 *
+	 * 	Note: a IMAPServer may present several namespaces under each key;
+	 *			so we return an array of namespacearrays for our needs
+	 *
+	 * @return array array(prefix_present=>mixed (bool/string) ,prefix=>string,delimiter=>string,type=>string (personal|others|shared))
+	 */
+	function getNameSpace()
+	{
+		static $nameSpace;
+		$foldersNameSpace = array();
+		$delimiter = $this->getDelimiter();
+		if (is_null($nameSpace)) $nameSpace = $this->getNameSpaceArray();
+		if (is_array($nameSpace)) {
+			foreach($nameSpace as $type => $singleNameSpaceArray)
+			{
+				foreach ($singleNameSpaceArray as $k => $singleNameSpace)
+				{
+					$_foldersNameSpace = array();
+					if($type == 'personal' && $singleNameSpace['name'] == '#mh/' && ($this->folderExists('Mail')||$this->folderExists('INBOX')))
+					{
+						$_foldersNameSpace['prefix_present'] = 'forced';
+						// uw-imap server with mailbox prefix or dovecot maybe
+						$_foldersNameSpace['prefix'] = ($this->folderExists('Mail')?'Mail':(!empty($singleNameSpace['name'])?$singleNameSpace['name']:''));
+					}
+					elseif($type == 'personal' && ($singleNameSpace['name'] == '#mh/') && $this->folderExists('mail'))
+					{
+						$_foldersNameSpace['prefix_present'] = 'forced';
+						// uw-imap server with mailbox prefix or dovecot maybe
+						$_foldersNameSpace['prefix'] = 'mail';
+					} else {
+						$_foldersNameSpace['prefix_present'] = !empty($singleNameSpace['name']);
+						$_foldersNameSpace['prefix'] = $singleNameSpace['name'];
+					}
+					$_foldersNameSpace['delimiter'] = ($singleNameSpace['delimiter']?$singleNameSpace['delimiter']:$delimiter);
+					$_foldersNameSpace['type'] = $type;
+					$foldersNameSpace[] =$_foldersNameSpace;
+				}
+			}
+		}
+		return $foldersNameSpace;
+	}
+	
 	/**
 	 * return the delimiter used by the current imap server
 	 * @param mixed _type (1=personal, 2=user/other, 3=shared)
