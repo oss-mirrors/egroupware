@@ -2437,6 +2437,7 @@ class emailadmin_imapbase
 				foreach((array)$listOfFolders as $folderName) {
 					//echo "<br>FolderToCheck:$folderName<br>";
 					//error_log(__METHOD__.__LINE__.'#Delimiter:'.$delimiter.':#'.$folderName);
+					if ($_subscribedOnly && empty($foldersNameSpace[$type]['all'])) continue;//when subscribedonly, we fetch all folders in one go.
 					if($_subscribedOnly && !(in_array($folderName, $foldersNameSpace[$type]['all'])||in_array($folderName.$foldersNameSpace[$type]['delimiter'], $foldersNameSpace[$type]['all']))) {
 						#echo "$folderName failed to be here <br>";
 						continue;
