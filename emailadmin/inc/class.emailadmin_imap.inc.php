@@ -132,7 +132,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 *
 	 * @param array
 	 * @param bool|int|string $_adminConnection create admin connection if true or account_id or imap username
-	 * @param int $_timeout=null timeout in secs, if none given fmail pref or default of 20 is used
+	 * @param int $_timeout =null timeout in secs, if none given fmail pref or default of 20 is used
 	 * @return void
 	 */
 	function __construct(array $params, $_adminConnection=false, $_timeout=null)
@@ -197,7 +197,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 *
 	 * Plugins can overwrite it to eg. construct a special admin user name
 	 *
-	 * @param string $_username=null create an admin connection for given user or $this->acc_imap_username
+	 * @param string $_username =null create an admin connection for given user or $this->acc_imap_username
 	 */
 	function adminConnection($_username=true)
 	{
@@ -206,13 +206,14 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			$this->logout();
 
 			$this->__construct($this->params, $_username);
+			$this->acc_imap_username = $_username;
 		}
 	}
 
 	/**
 	 * Check admin credientials and connection (if supported)
 	 *
-	 * @param string $username=null create an admin connection for given user or $this->acc_imap_username
+	 * @param string $_username =null create an admin connection for given user or $this->acc_imap_username
 	 * @throws Horde_IMAP_Client_Exception
 	 */
 	public function checkAdminConnection($_username=true)
@@ -267,7 +268,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 * opens a connection to a imap server
 	 *
 	 * @param bool $_adminConnection create admin connection if true
-	 * @param int $_timeout=null timeout in secs, if none given fmail pref or default of 20 is used
+	 * @param int $_timeout =null timeout in secs, if none given fmail pref or default of 20 is used
 	 * @deprecated allready called by constructor automatic, parameters must be passed to constructor!
 	 * @return boolean|PEAR_Error true on success, PEAR_Error of false on failure
 	 */
@@ -752,7 +753,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 * examineMailbox
 	 *
 	 * @param string $mailbox
-	 * @param int $flags=null default Horde_Imap_Client::STATUS_ALL | Horde_Imap_Client::STATUS_FLAGS | Horde_Imap_Client::STATUS_PERMFLAGS
+	 * @param int $flags =null default Horde_Imap_Client::STATUS_ALL | Horde_Imap_Client::STATUS_FLAGS | Horde_Imap_Client::STATUS_PERMFLAGS
 	 * @return array of counters for mailbox
 	 */
 	function examineMailbox($mailbox, $flags=null)
@@ -862,7 +863,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			return false;
 		}
 	}
-	
+
 	/**
 	 * getFolderPrefixFromNamespace, wrapper to extract the folder prefix from folder compared to given namespace array
 	 *
@@ -878,7 +879,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		}
 		return "";
 	}
-	
+
 	/**
 	 * getMailBoxesRecursive
 	 *
@@ -897,9 +898,9 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		}
 		$reclevel++;
 		// clean up double delimiters
-		$_mailbox = preg_replace('~'.($delimiter == '.' ? "\\".$delimiter:$delimiter).'+~s',$delimiter,$_mailbox);
+		$mailbox = preg_replace('~'.($delimiter == '.' ? "\\".$delimiter:$delimiter).'+~s',$delimiter,$_mailbox);
 		//get that mailbox in question
-		$mbx = $this->getMailboxes($_mailbox,1,true);
+		$mbx = $this->getMailboxes($mailbox,1,true);
 		$mbxkeys = array_keys($mbx);
 
 		// Example: Array([INBOX/GaGa] => Array([MAILBOX] => INBOX/GaGa[ATTRIBUTES] => Array([0] => \\unmarked)[delimiter] => /))
@@ -920,7 +921,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		}
 		else
 		{
-			return array($_mailbox);
+			return array($mailbox);
 		}
 	}
 
@@ -934,14 +935,14 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 */
 	function getNameSpace()
 	{
-		static $nameSpace;
+		static $nameSpace=null;
 		$foldersNameSpace = array();
 		$delimiter = $this->getDelimiter();
 		if (is_null($nameSpace)) $nameSpace = $this->getNameSpaceArray();
 		if (is_array($nameSpace)) {
 			foreach($nameSpace as $type => $singleNameSpaceArray)
 			{
-				foreach ($singleNameSpaceArray as $k => $singleNameSpace)
+				foreach ($singleNameSpaceArray as $singleNameSpace)
 				{
 					$_foldersNameSpace = array();
 					if($type == 'personal' && $singleNameSpace['name'] == '#mh/' && ($this->folderExists('Mail')||$this->folderExists('INBOX')))
@@ -967,7 +968,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 		}
 		return $foldersNameSpace;
 	}
-	
+
 	/**
 	 * return the delimiter used by the current imap server
 	 * @param mixed _type (1=personal, 2=user/other, 3=shared)
@@ -1108,12 +1109,12 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 			return false;
 		}
 
-		$_username = $this->getMailBoxUserName($_username);
+		$username = $this->getMailBoxUserName($_username);
 		if($this->loginType == 'vmailmgr' || $this->loginType == 'email' || $this->loginType == 'uidNumber') {
-			$_username .= '@'. $this->domainName;
+			$username .= '@'. $this->domainName;
 		}
 
-		$mailboxString = $nameSpaces['others'][0]['name'] . $_username . (!empty($_folderName) ? $nameSpaces['others'][0]['delimiter'] . $_folderName : '');
+		$mailboxString = $nameSpaces['others'][0]['name'] . $username . (!empty($_folderName) ? $nameSpaces['others'][0]['delimiter'] . $_folderName : '');
 
 		return $mailboxString;
 	}
@@ -1146,7 +1147,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 				);
 			}
 		}
-		//error_log(__METHOD__.__LINE__.array2string($result));
+		//error_log(__METHOD__."() returning ".array2string($result));
 		return $result;
 	}
 
@@ -1297,7 +1298,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 *
 	 * @param int|string $_euser nummeric account_id or imap username
 	 * @param array $_vacation
-	 * @param string $_scriptName=null
+	 * @param string $_scriptName =null
 	 * @return boolean
 	 */
 	public function setVacationUser($_euser, array $_vacation, $_scriptName=null)
@@ -1325,7 +1326,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 * Get vacation message for given user
 	 *
 	 * @param int|string $_euser nummeric account_id or imap username
-	 * @param string $_scriptName=null
+	 * @param string $_scriptName =null
 	 * @throws Exception on connection error or authentication failure
 	 * @return array
 	 */
