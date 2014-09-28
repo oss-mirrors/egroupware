@@ -871,7 +871,7 @@ class emailadmin_imap extends Horde_Imap_Client_Socket implements defaultimap
 	 * @var string $_folderName
 	 * @return string the prefix (may be an empty string)
 	 */
-	function getFolderPrefixFromNamespace($_nameSpace, $_folderName)
+	static function getFolderPrefixFromNamespace($_nameSpace, $_folderName)
 	{
 		foreach($_nameSpace as &$singleNameSpace)
 		{
