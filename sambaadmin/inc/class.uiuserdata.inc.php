@@ -25,12 +25,8 @@
 		{
 			$this->t		=& CreateObject('phpgwapi.Template',$GLOBALS['egw']->common->get_tpl_dir('sambaadmin'));
 			$this->bosambaadmin	=& CreateObject('sambaadmin.bosambaadmin');
-			
-			$this->rowColor[0] = $GLOBLAS['phpgw_info']["theme"]["bg01"];
-			$this->rowColor[1] = $GLOBLAS['phpgw_info']["theme"]["bg02"];
-											 
 		}
-	
+
 		function display_app_header()
 		{
 			$GLOBALS['egw']->common->egw_header();
@@ -39,7 +35,7 @@
 
 		function editUserData($_useCache='0')
 		{
-			$accountID = $_GET['account_id'];			
+			$accountID = $_GET['account_id'];
 
 			$this->display_app_header();
 
@@ -51,20 +47,20 @@
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("tr_color1",$GLOBALS['egw_info']["theme"]["row_on"]);
 			$this->t->set_var("tr_color2",$GLOBALS['egw_info']["theme"]["row_off"]);
-			
+
 			$this->t->set_var("lang_button",lang("save"));
 			$this->t->set_var("lang_ready",lang("Done"));
 			$this->t->set_var("link_back",$GLOBALS['egw']->link('/admin/accounts.php'));
-			
+
 			$linkData = array
 			(
 				'menuaction'	=> 'sambaadmin.uiuserdata.saveUserData',
 				'account_id'	=> $accountID
 			);
 			$this->t->set_var("form_action", $GLOBALS['egw']->link('/index.php',$linkData));
-			
+
 			// only when we show a existing user
-			if($userData = $this->bosambaadmin->getUserData($accountID, $_useCache))
+			if(($userData = $this->bosambaadmin->getUserData($accountID, $_useCache)))
 			{
 				$charset = $GLOBALS['egw']->translation->charset();
 				$this->t->set_var('displayname',htmlspecialchars($userData["displayname"],ENT_QUOTES,$charset));
@@ -72,21 +68,21 @@
 				$this->t->set_var('sambahomedrive',htmlspecialchars($userData['sambahomedrive'],ENT_QUOTES,$charset));
 				$this->t->set_var('sambalogonscript',htmlspecialchars($userData['sambalogonscript'],ENT_QUOTES,$charset));
 				$this->t->set_var('sambaprofilepath',htmlspecialchars($userData['sambaprofilepath'],ENT_QUOTES,$charset));
-				
-				$this->t->set_var("uid",rawurlencode($_accountData["dn"]));
+
+				$this->t->set_var("uid",rawurlencode($userData["dn"]));
 			}
 			else
 			{
 			}
-		
-			// create the menu on the left, if needed		
-			$menuClass =& CreateObject('admin.uimenuclass');
+
+			// create the menu on the left, if needed
+			$menuClass =& CreateObject('sambaadmin.uimenuclass');
 			$this->t->set_var('rows',$menuClass->createHTMLCode('edit_user'));
 
 			$this->t->pfp("out","form");
 
 		}
-		
+
 		function saveUserData()
 		{
 			$formData = array
@@ -103,7 +99,7 @@
 			// read data fresh from ldap storage
 			$this->editUserData();
 		}
-		
+
 		function translate()
 		{
 			$this->t->set_var('lang_displayname',lang('displayname'));
@@ -114,4 +110,3 @@
 			$this->t->set_var('lang_samba_config',lang('samba config'));
 		}
 	}
-?>
