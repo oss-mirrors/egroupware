@@ -1486,6 +1486,36 @@ class emailadmin_imapbase
 						$headerObject['ATTACHMENTS'][$mime_id]['cid'] = $cid;
 						$headerObject['ATTACHMENTS'][$mime_id]['partID']=$mime_id;
 						if (!isset($headerObject['ATTACHMENTS'][$mime_id]['name']))$headerObject['ATTACHMENTS'][$mime_id]['name']=$part->getName();
+						if ($headerObject['ATTACHMENTS'][$mime_id]['name']=='winmail.dat' &&
+							($headerObject['ATTACHMENTS'][$mime_id]['mimeType']=='application/octet-stream' ||
+							$headerObject['ATTACHMENTS'][$mime_id]['mimeType']=='application/ms-tnef'))
+						{
+							$tnefResolved=false;
+							$tnef_data = $this->getAttachment($headerObject['ATTACHMENTS'][$mime_id]['uid'],$headerObject['ATTACHMENTS'][$mime_id]['partID'],0,false);
+							$myTnef = $this->tnef_decoder($tnef_data['attachment']);
+							//error_log(__METHOD__.__LINE__.array2string($myTnef->getParts()));
+							// Note: MimeId starts with 0, almost always, we cannot use that as winmail_id
+							// we need to build Something that meets the needs
+							if ($myTnef)
+							{
+								foreach($myTnef->getParts() as $vmime_id => $part)
+								{
+									$tnefResolved=true;
+									$attachment = $part->getAllDispositionParameters();
+
+									$attachment['mimeType'] = $part->getType();
+									$attachment['uid'] = $headerObject['ATTACHMENTS'][$mime_id]['uid'];
+									$attachment['partID'] = $headerObject['ATTACHMENTS'][$mime_id]['partID'];
+									$attachment['is_winmail'] = $headerObject['ATTACHMENTS'][$mime_id]['uid'].'@'.$headerObject['ATTACHMENTS'][$mime_id]['partID'].'@'.$vmime_id;
+									if (!isset($attachment['name'])||empty($attachment['name'])) $attachment['name'] = $part->getName();
+									$attachment['size'] = $part->getBytes();
+									if (($cid = $part->getContentId())) $attachment['cid'] = $cid;
+									if (empty($attachment['name'])) $attachment['name'] = (isset($attachment['cid'])&&!empty($attachment['cid'])?$attachment['cid']:lang("unknown").'_Uid'.$_uid.'_Part'.$mime_id).'.'.mime_magic::mime2ext($attachment['mimeType']);
+									$headerObject['ATTACHMENTS'][$mime_id.'.'.$vmime_id] = $attachment;
+								}
+								if ($tnefResolved) unset($headerObject['ATTACHMENTS'][$mime_id]);
+							}
+						}
 						//error_log(__METHOD__.' ('.__LINE__.') '.' PartDisposition:'.$mime_id.'->'.array2string($part->getName()));
 						//error_log(__METHOD__.' ('.__LINE__.') '.' PartDisposition:'.$mime_id.'->'.array2string($part->getAllDispositionParameters()));
 						//error_log(__METHOD__.' ('.__LINE__.') '.' Attachment:'.$mime_id.'->'.array2string($headerObject['ATTACHMENTS'][$mime_id]));
@@ -4851,25 +4881,31 @@ class emailadmin_imapbase
 			//error_log(__METHOD__.__LINE__.array2string($tnefParts));
 			foreach ($tnefParts as $k => $tnp)
 			{
+				$tnefResolved=false;
 				$tnef_data = $this->getAttachment($tnp['uid'],$tnp['partID'],$k,false);
 				$myTnef = $this->tnef_decoder($tnef_data['attachment']);
 				//error_log(__METHOD__.__LINE__.array2string($myTnef->getParts()));
 				// Note: MimeId starts with 0, almost always, we cannot use that as winmail_id
 				// we need to build Something that meets the needs
-				foreach($myTnef->getParts() as $mime_id => $part)
+				if ($myTnef)
 				{
-					$attachment = $part->getAllDispositionParameters();
+					foreach($myTnef->getParts() as $mime_id => $part)
+					{
+						$tnefResolved=true;
+						$attachment = $part->getAllDispositionParameters();
 
-					$attachment['mimeType'] = $part->getType();
-					$attachment['uid'] = $tnp['uid'];
-					$attachment['partID'] = $tnp['partID'];
-					$attachment['is_winmail'] = $tnp['uid'].'@'.$tnp['partID'].'@'.$mime_id;
-					if (!isset($attachment['name'])||empty($attachment['name'])) $attachment['name'] = $part->getName();
-					$attachment['size'] = $part->getBytes();
-					if (($cid = $part->getContentId())) $attachment['cid'] = $cid;
-					if (empty($attachment['name'])) $attachment['name'] = (isset($attachment['cid'])&&!empty($attachment['cid'])?$attachment['cid']:lang("unknown").'_Uid'.$_uid.'_Part'.$mime_id).'.'.mime_magic::mime2ext($attachment['mimeType']);
-					$attachments[] = $attachment;
+						$attachment['mimeType'] = $part->getType();
+						$attachment['uid'] = $tnp['uid'];
+						$attachment['partID'] = $tnp['partID'];
+						$attachment['is_winmail'] = $tnp['uid'].'@'.$tnp['partID'].'@'.$mime_id;
+						if (!isset($attachment['name'])||empty($attachment['name'])) $attachment['name'] = $part->getName();
+						$attachment['size'] = $part->getBytes();
+						if (($cid = $part->getContentId())) $attachment['cid'] = $cid;
+						if (empty($attachment['name'])) $attachment['name'] = (isset($attachment['cid'])&&!empty($attachment['cid'])?$attachment['cid']:lang("unknown").'_Uid'.$_uid.'_Part'.$mime_id).'.'.mime_magic::mime2ext($attachment['mimeType']);
+						$attachments[] = $attachment;
+					}
 				}
+				if ($tnefResolved===false) $attachments[]=$tnp;
 			}
 		}
 		//error_log(__METHOD__.__LINE__.array2string($attachments));
@@ -4886,6 +4922,7 @@ class emailadmin_imapbase
 	 */
 	public function tnef_decoder( $data )
 	{
+		if (class_exists('Horde_Compress',true)==false) return false;
 
 		$parts_obj = new Horde_Mime_part;
 		$parts_obj->setType('multipart/mixed');
@@ -4993,35 +5030,43 @@ class emailadmin_imapbase
 		if ( $filename == 'winmail.dat' && $_winmail_nr)
 		{
 			//by now _uid is of type array
+			$tnefResolved=false;
 			$wantedPart=$_uid[0].'@'.$_partID;
 			$myTnef = $this->tnef_decoder($attachmentData['attachment']);
 			//error_log(__METHOD__.__LINE__.array2string($myTnef->getParts()));
 			// Note: MimeId starts with 0, almost always, we cannot use that as winmail_id
 			// we need to build Something that meets the needs
-			foreach($myTnef->getParts() as $mime_id => $part)
+			if ($myTnef)
 			{
-				$attachment = $part->getAllDispositionParameters();
-				$attachment['mimeType'] = $part->getType();
-				//error_log(__METHOD__.__LINE__.'#'.$mime_id.'#'.$filename.'#'.array2string($attachment));
-				//error_log(__METHOD__.__LINE__." $_winmail_nr == $wantedPart@$mime_id");
-				if ($_winmail_nr == $wantedPart.'@'.$mime_id)
+				foreach($myTnef->getParts() as $mime_id => $part)
 				{
-					//error_log(__METHOD__.__LINE__.'#'.$structure_mime.'#'.$filename.'#'.array2string($attachment));
-					if (!isset($attachment['filename'])||empty($attachment['filename'])) $attachment['filename'] = $part->getName();
-					if (($cid = $part->getContentId())) $attachment['cid'] = $cid;
-					if (empty($attachment['filename'])) $attachment['filename'] = (isset($attachment['cid'])&&!empty($attachment['cid'])?$attachment['cid']:lang("unknown").'_Uid'.$_uid.'_Part'.$mime_id).'.'.mime_magic::mime2ext($attachment['mimeType']);
-					$wmattach = $attachment;
-					$wmattach['attachment'] = $part->getContents(array('stream'=>$_stream));
+					$tnefResolved=true;
+					$attachment = $part->getAllDispositionParameters();
+					$attachment['mimeType'] = $part->getType();
+					//error_log(__METHOD__.__LINE__.'#'.$mime_id.'#'.$filename.'#'.array2string($attachment));
+					//error_log(__METHOD__.__LINE__." $_winmail_nr == $wantedPart@$mime_id");
+					if ($_winmail_nr == $wantedPart.'@'.$mime_id)
+					{
+						//error_log(__METHOD__.__LINE__.'#'.$structure_mime.'#'.$filename.'#'.array2string($attachment));
+						if (!isset($attachment['filename'])||empty($attachment['filename'])) $attachment['filename'] = $part->getName();
+						if (($cid = $part->getContentId())) $attachment['cid'] = $cid;
+						if (empty($attachment['filename'])) $attachment['filename'] = (isset($attachment['cid'])&&!empty($attachment['cid'])?$attachment['cid']:lang("unknown").'_Uid'.$_uid.'_Part'.$mime_id).'.'.mime_magic::mime2ext($attachment['mimeType']);
+						$wmattach = $attachment;
+						$wmattach['attachment'] = $part->getContents(array('stream'=>$_stream));
 					
+					}
 				}
 			}
-			$ext = mime_magic::mime2ext($wmattach['mimeType']);
-			if ($ext && stripos($wmattach['filename'],'.')===false && stripos($wmattach['filename'],$ext)===false) $wmattach['filename'] = trim($wmattach['filename']).'.'.$ext;
-			$attachmentData = array(
-				'type'       => $wmattach['mimeType'],
-				'filename'   => $wmattach['filename'],
-				'attachment' => $wmattach['attachment'],
-			);
+			if ($tnefResolved)
+			{
+				$ext = mime_magic::mime2ext($wmattach['mimeType']);
+				if ($ext && stripos($wmattach['filename'],'.')===false && stripos($wmattach['filename'],$ext)===false) $wmattach['filename'] = trim($wmattach['filename']).'.'.$ext;
+				$attachmentData = array(
+					'type'       => $wmattach['mimeType'],
+					'filename'   => $wmattach['filename'],
+					'attachment' => $wmattach['attachment'],
+				);
+			}
 		}
 		return $attachmentData;
 	}
