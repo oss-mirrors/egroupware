@@ -12,7 +12,7 @@
 	\***************************************************************************/
 	/* $Id$ */
 
-{ 
+{
 	global $menuData;
 
 	if ($GLOBALS['egw_info']['server']['ldap_host'])
@@ -21,7 +21,8 @@
 		(
 			'description'	=> 'samba settings',
 			'url'		=> '/index.php',
-			'extradata'	=> 'menuaction=sambaadmin.uiuserdata.editUserData'
+			'extradata'	=> 'menuaction=sambaadmin.uiuserdata.editUserData',
+			'popup'     => '640x200',
 		);
 	}
 }
