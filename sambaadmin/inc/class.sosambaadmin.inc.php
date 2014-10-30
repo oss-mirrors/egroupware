@@ -22,6 +22,7 @@
 			$this->sid		= $config['sambasid'];
 			$this->computerou	= $config['samba_computerou'];
 			$this->computergroup	= $config['samba_computergroup'];
+			$this->lmpassword = (bool)$config['samba_lmpassword'];
 			$this->charSet	= translation::charset();
 
 			unset($config);
@@ -42,7 +43,11 @@
 
 				if($_newPassword)
 				{
-					$newData['sambaLMPassword'] = $smbHash->lmhash($_newPassword);
+					// only generate less secure LMPassword (Lanmanager), if explicitly configured or use has already one
+					if ($this->lmpassword || $allValues['sambalmpassword'])
+					{
+						$newData['sambaLMPassword'] = $smbHash->lmhash($_newPassword);
+					}
 					$newData['sambaNTPassword'] = $smbHash->nthash($_newPassword);
 					$newData['sambaPwdLastSet'] = $newData['sambaPwdCanChange'] = time();
 					$newData['sambaPwdMustChange'] = '2147483647';
@@ -525,9 +530,9 @@
 
 			if(@ldap_mod_replace ($ldap, $accountDN, $newData))
 			{
-				if(isset($_accountData['account_password']))
+				if(isset($_accountData['account_passwd']))
 				{
-					return $this->changePassword($_accountID,$_accountData['account_password']);
+					return $this->changePassword($_accountID,$_accountData['account_passwd']);
 				}
 				return true;
 			}
@@ -668,4 +673,3 @@
 			return false;
 		}
 	}
-?>

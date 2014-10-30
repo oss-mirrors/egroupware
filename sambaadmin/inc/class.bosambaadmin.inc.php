@@ -140,5 +140,30 @@
 		{
 			return true;
 		}
+
+		function admin()
+		{
+			$appname = 'sambaadmin';
+			$file = array(
+				'Site Configuration'	=> egw::link('/index.php','menuaction=admin.uiconfig.index&appname='.$appname),
+				//'check ldap setup (experimental!!!)'	=> egw::link('/index.php','menuaction=sambaadmin.uisambaadmin.checkLDAPSetup'),
+			);
+			if ($GLOBALS['egw_info']['server']['ldap_host']) display_section($appname,$appname,$file);
+		}
+
+		function edit_user()
+		{
+			global $menuData;
+
+			if ($GLOBALS['egw_info']['server']['ldap_host'])
+			{
+				$menuData[] = Array
+				(
+					'description'	=> 'samba settings',
+					'url'		=> '/index.php',
+					'extradata'	=> 'menuaction=sambaadmin.uiuserdata.editUserData',
+					'popup'     => '640x200',
+				);
+			}
+		}
 	}
-?>

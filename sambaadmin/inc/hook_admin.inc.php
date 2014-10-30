@@ -1,11 +1,7 @@
 <?php
+/**
+ * @deprecated can be removed with next release, as setup.inc.php registers now sambaadmin.bosambaadmin.changePassword direct
+ */
+$boSambaAdmin = CreateObject('sambaadmin.bosambaadmin');
 
-	{
-		$file = Array
-		(
-			'Site Configuration'	=> $GLOBALS['egw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
-			'check ldap setup (experimental!!!)'	=> $GLOBALS['egw']->link('/index.php','menuaction=sambaadmin.uisambaadmin.checkLDAPSetup'),
-		);
-		display_section($appname,$appname,$file);
-	}
-?>
+$boSambaAdmin->admin($GLOBALS['hook_values']);

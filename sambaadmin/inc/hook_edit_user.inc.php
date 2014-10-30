@@ -1,28 +1,7 @@
 <?php
-	/***************************************************************************\
-	* eGroupWare - SambaAdmin                                                   *
-	* http://www.egroupware.org                                                 *
-	* http://www.linux-at-work.de                                               *
-	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
-	* -------------------------------------------------                         *
-	* This program is free software; you can redistribute it and/or modify it   *
-	* under the terms of the GNU General Public License as published by the     *
-	* Free Software Foundation; either version 2 of the License, or (at your    *
-	* option) any later version.                                                *
-	\***************************************************************************/
-	/* $Id$ */
+/**
+ * @deprecated can be removed with next release, as setup.inc.php registers now sambaadmin.bosambaadmin.changePassword direct
+ */
+$boSambaAdmin = CreateObject('sambaadmin.bosambaadmin');
 
-{
-	global $menuData;
-
-	if ($GLOBALS['egw_info']['server']['ldap_host'])
-	{
-		$menuData[] = Array
-		(
-			'description'	=> 'samba settings',
-			'url'		=> '/index.php',
-			'extradata'	=> 'menuaction=sambaadmin.uiuserdata.editUserData',
-			'popup'     => '640x200',
-		);
-	}
-}
+$boSambaAdmin->edit_user($GLOBALS['hook_values']);

@@ -29,15 +29,13 @@ $setup_info['sambaadmin']['enable']    = 1;
 $setup_info['sambaadmin']['index']     = 'sambaadmin.uisambaadmin.listWorkstations';
 
 /* The hooks this app includes, needed for hooks registration */
-#$setup_info['sambaadmin']['hooks'][]	= 'preferences';
-$setup_info['sambaadmin']['hooks'][]	= 'edit_user';
-$setup_info['sambaadmin']['hooks'][]	= 'admin';
-
 $setup_info['sambaadmin']['hooks']['changepassword']= 'sambaadmin.bosambaadmin.changePassword';
 $setup_info['sambaadmin']['hooks']['addaccount']	= 'sambaadmin.bosambaadmin.updateAccount';
 $setup_info['sambaadmin']['hooks']['editaccount']	= 'sambaadmin.bosambaadmin.updateAccount';
 $setup_info['sambaadmin']['hooks']['addgroup']		= 'sambaadmin.bosambaadmin.updateGroup';
 $setup_info['sambaadmin']['hooks']['editgroup']		= 'sambaadmin.bosambaadmin.updateGroup';
+$setup_info['sambaadmin']['hooks']['admin']		    = 'sambaadmin.bosambaadmin.admin';
+$setup_info['sambaadmin']['hooks']['edit_user']		= 'sambaadmin.bosambaadmin.edit_user';
 
 /* Dependacies for this app to work */
 $setup_info['sambaadmin']['depends'][]	= array(
