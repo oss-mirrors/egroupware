@@ -49,6 +49,11 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 	const MAIL_ENABLE_ATTR = false;
 
 	/**
+	 * Value for MAIL_ENABLED to use local mail address
+	 */
+	const MAIL_ENABLED_USE_MAIL = '@mail';
+
+	/**
 	 * Attribute for aliases OR false to use mail
 	 */
 	const ALIAS_ATTR = false;
@@ -224,7 +229,8 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 		// does schema support enabling/disabling mail via attribute
 		if (static::MAIL_ENABLE_ATTR)
 		{
-			$newData[static::MAIL_ENABLE_ATTR] = static::MAIL_ENABLED;
+			$newData[static::MAIL_ENABLE_ATTR] = static::MAIL_ENABLED == self::MAIL_ENABLED_USE_MAIL ?
+				$mailLocalAddress : static::MAIL_ENABLE_ATTR;
 		}
 		// does schema support an explicit mailbox name --> set it
 		if (static::MAILBOX_ATTR)
@@ -567,7 +573,8 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 		// does schema support enabling/disabling mail via attribute
 		if (static::MAIL_ENABLE_ATTR)
 		{
-			$newData[static::MAIL_ENABLE_ATTR]	= $_accountStatus ? static::MAIL_ENABLED : array();
+			$newData[static::MAIL_ENABLE_ATTR]	= $_accountStatus ?
+				(static::MAIL_ENABLED == self::MAIL_ENABLED_USE_MAIL ? $_mailLocalAddress : static::MAIL_ENABLED) : array();
 		}
 		// if we have no mail-enabled attribute, but require primary mail in aliases-attr
 		// we do NOT write aliases, if mail is not enabled
