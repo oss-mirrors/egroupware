@@ -383,7 +383,8 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 					if (static::MAIL_ENABLE_ATTR)
 					{
 						$accountStatus = isset($values[static::MAIL_ENABLE_ATTR]) &&
-							(static::MAIL_ENABLED && !strcasecmp($values[static::MAIL_ENABLE_ATTR][0], static::MAIL_ENABLED) ||
+							(static::MAIL_ENABLED === self::MAIL_ENABLED_USE_MAIL && !empty($values[static::MAIL_ENABLE_ATTR][0]) ||
+							static::MAIL_ENABLED && !strcasecmp($values[static::MAIL_ENABLE_ATTR][0], static::MAIL_ENABLED) ||
 							!static::MAIL_ENABLED && $values[static::ALIAS_ATTR ? static::ALIAS_ATTR : 'mail']['count'] > 0) ?
 								emailadmin_smtp::MAIL_ENABLED : '';
 					}

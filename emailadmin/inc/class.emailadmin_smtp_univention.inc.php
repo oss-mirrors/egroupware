@@ -37,7 +37,7 @@ class emailadmin_smtp_univention extends emailadmin_smtp_ldap
 	/**
 	 * Attribute for aliases OR false to use mail
 	 */
-	const ALIAS_ATTR = 'mailalternateaddress';
+	const ALIAS_ATTR = 'mailalternativeaddress';
 
 	/**
 	 * Primary mail address required as an alias too: true or false
@@ -67,6 +67,11 @@ class emailadmin_smtp_univention extends emailadmin_smtp_ldap
 	 * Attribute for quota limit of user in MB
 	 */
 	const QUOTA_ATTR = 'univentionmailuserquota';
+
+	/**
+	 * Internal quota in MB is multiplicated with this factor before stored in LDAP
+	 */
+	const QUOTA_FACTOR = 1;
 
 	/**
 	 * Log all LDAP writes / actions to error_log
