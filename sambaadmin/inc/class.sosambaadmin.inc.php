@@ -528,6 +528,16 @@
 				}
 			}
 
+			// set sambaPrimaryGroupSID
+			if ($_accountData['account_primary_group'] &&
+				($pg_sri = ldap_search($ldap, $c=$GLOBALS['egw_info']['server']['ldap_group_context'] ?
+					$GLOBALS['egw_info']['server']['ldap_group_context'] : $GLOBALS['egw_info']['server']['ldap_context'],
+					$f="(&(objectclass=posixgroup)(gidnumber=".abs($_accountData['account_primary_group'])."))", array('sambaSID'))) &&
+				($pg = ldap_get_entries($ldap, $pg_sri)) && $pg[0]['sambasid'])
+			{
+				$newData['sambaPrimaryGroupSID'] = $pg[0]['sambasid'][0];
+			}
+
 			if(@ldap_mod_replace ($ldap, $accountDN, $newData))
 			{
 				if(isset($_accountData['account_passwd']))
