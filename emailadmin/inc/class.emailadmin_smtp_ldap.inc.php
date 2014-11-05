@@ -238,6 +238,9 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 			$newData[static::MAILBOX_ATTR] = self::mailbox_addr($_hookValues);
 		}
 
+		// allow extending classes to add extra data
+		$this->addAccountExtra($_hookValues, $allValues[0], $newData);
+
 		if (!($ret = ldap_mod_replace($ds, $accountDN, $newData)) || $this->debug)
 		{
 			error_log(__METHOD__.'('.array2string(func_get_args()).") --> ldap_mod_replace(,'$accountDN',".
@@ -245,6 +248,18 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 				(!$ret?' ('.ldap_error($ds).')':''));
 		}
 		return $ret;
+	}
+
+	/**
+	 * Add additional values to addAccount and setUserData ($_hookValues['location'])
+	 *
+	 * @param array $_hookValues
+	 * @param array $allValues existing data of account as returned by ldap query
+	 * @param array $newData data to update
+	 */
+	function addAccountExtra(array $_hookValues, array $allValues, array &$newData)
+	{
+		unset($_hookValues, $allValues, $newData);	// not used, but required by function signature
 	}
 
 	/**
@@ -588,6 +603,9 @@ class emailadmin_smtp_ldap extends emailadmin_smtp
 		{
 			$newData[static::MAILBOX_ATTR] = $_setMailbox;
 		}
+
+		$this->addAccountExtra(array('location' => 'setUserData'), $allValues[0], $newData);
+
 		if ($this->debug) error_log(__METHOD__.'('.array2string(func_get_args()).") --> ldap_mod_replace(,'$accountDN',".array2string($newData).')');
 
 		return ldap_mod_replace($ldap, $accountDN, $newData);

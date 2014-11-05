@@ -77,4 +77,26 @@ class emailadmin_smtp_univention extends emailadmin_smtp_ldap
 	 * Log all LDAP writes / actions to error_log
 	 */
 	var $debug = false;
+
+	/**
+	 * Add additional values to addAccount
+	 *
+	 * @param array $_hookValues
+	 * @param array $allValues
+	 * @param array $newData
+	 */
+	function addAccountExtra(array $_hookValues, array $allValues, array &$newData)
+	{
+		unset($_hookValues);	// not used, but required by function signature
+
+		if (empty($allValues['univentionmailhomeserver'][0]) && $newData[self::MAIL_ENABLE_ATTR])
+		{
+			$newData['univentionMailHomeServer'] = $this->host;
+
+			if (strpos($newData['univentionMailHomeServer'], '://'))
+			{
+				$newData['univentionMailHomeServer'] = parse_url($newData['univentionMailHomeServer'], PHP_URL_HOST);
+			}
+		}
+	}
 }
