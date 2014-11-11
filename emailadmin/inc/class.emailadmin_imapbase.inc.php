@@ -690,7 +690,6 @@ class emailadmin_imapbase
 	 * @param int|emailadmin_account $account account-object or acc_id
 	 * @return array - array(email=>realname)
 	 */
-
 	function getAccountIdentities($account) {
 		if (!$account instanceof emailadmin_account)
 		{
