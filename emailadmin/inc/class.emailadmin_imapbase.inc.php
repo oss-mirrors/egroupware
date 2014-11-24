@@ -5248,21 +5248,24 @@ class emailadmin_imapbase
 	 * @todo set flags again
 	 *
 	 * @param string _folderName the foldername
-	 * @param string _header the header of the message
-	 * @param string _body the body of the message
-	 * @param string _flags the imap flags to set for the saved message
+	 * @param string|resource _header header part of message or resource with hole message
+	 * @param string _body body part of message, only used if _header is NO resource
+	 * @param string _flags = '\\Recent'the imap flags to set for the saved message
 	 *
 	 * @return the id of the message appended or exception
 	 */
-	function appendMessage($_folderName, $_header, $_body, $_flags)
+	function appendMessage($_folderName, $_header, $_body, $_flags='\\Recent')
 	{
-		if (stripos($_header,'message-id:')===false)
+		if (!is_resource($_header))
 		{
-			$_header = 'Message-ID: <'.self::getRandomString().'@localhost>'."\n".$_header;
+			if (stripos($_header,'message-id:')===false)
+			{
+				$_header = 'Message-ID: <'.self::getRandomString().'@localhost>'."\n".$_header;
+			}
+			//error_log(__METHOD__.' ('.__LINE__.') '."$_folderName, $_header, $_body, $_flags");
+			$_header = ltrim(str_replace("\n","\r\n",$_header));
+			$_header .= str_replace("\n","\r\n",$_body);
 		}
-		//error_log(__METHOD__.' ('.__LINE__.') '."$_folderName, $_header, $_body, $_flags");
-		$header = ltrim(str_replace("\n","\r\n",$_header));
-		$body   = str_replace("\n","\r\n",$_body);
 		// the recent flag is the default enforced here ; as we assume the _flags is always set,
 		// we default it to hordes default (Recent) (, other wise we should not pass the parameter
 		// for flags at all)
@@ -5278,13 +5281,13 @@ class emailadmin_imapbase
 			// expects data to be a string. this string is parsed for message-id, and the mailbox
 			// searched for the message-id then returning the uid found
 			//$dataNflags[] = array('data'=>array(array('t'=>'text','v'=>"$header"."$body")), 'flags'=>array($_flags));
-			$dataNflags[] = array('data'=>"$header"."$body", 'flags'=>array($_flags));
+			$dataNflags[] = array('data' => $_header, 'flags'=>array($_flags));
 			$messageid = $this->icServer->append($_folderName,$dataNflags);
 		}
 		catch (Exception $e)
 		{
-			if (self::$debug) error_log("Could not append Message:".$e->getMessage());
-			throw new egw_exception_wrong_userinput(lang("Could not append Message:".$e->getMessage));
+			if (self::$debug) error_log("Could not append Message: ".$e->getMessage());
+			throw new egw_exception_wrong_userinput(lang("Could not append Message:").' '.$e->getMessage().': '.$e->details);
 			//return false;
 		}
 		//error_log(__METHOD__.' ('.__LINE__.') '.' appended UID:'.$messageid);
