@@ -724,7 +724,9 @@ class emailadmin_account implements ArrayAccess
 					if (empty($data['ident_email']))
 					{
 						$data['ident_email'] = $account->ident_email ? $account->ident_email :
-							($account->acc_imap_username ? $account->acc_imap_username : $account->acc_smtp_username);
+							(strpos($account->acc_imap_username, '@') !== false ?
+								$account->acc_imap_username : $account->acc_smtp_username);
+
 						if (empty($data['ident_email']) && $is_current_user)
 						{
 							$data['ident_email'] = $GLOBALS['egw_info']['user']['account_email'];
