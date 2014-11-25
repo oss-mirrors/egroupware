@@ -6144,14 +6144,14 @@ class emailadmin_imapbase
 	/**
 	 * Parses a message/rfc mail from file to the mailobject and returns the header and body via reference
 	 *
-	 * @param PHPMailer $mailObject instance of the SMTP Mailer Object
+	 * @param egw_mailer $mailObject instance of the SMTP Mailer Object
 	 * @param string|Horde_Mime_Part $message string containing the RawMessage / object Mail_mimeDecoded message (part))
 	 * @param string &$Header  reference used to return the imported Mailheader
 	 * @param string &$Body reference to return the imported Body
 	 * @throws egw_exception_assertion_failed when the required Horde_Mail_Part not found
 	 * @return void Mailheader and body is returned via Reference in $Header $Body
 	 */
-	function parseRawMessageIntoMailObject(PHPMailer $mailObject, $message, &$Header, &$Body)
+	function parseRawMessageIntoMailObject(egw_mailer $mailObject, $message, &$Header, &$Body)
 	{
 		/**
 		 * pear/Mail_mimeDecode requires package "pear/Mail_Mime" (version >= 1.4.0, excluded versions: 1.4.0)
