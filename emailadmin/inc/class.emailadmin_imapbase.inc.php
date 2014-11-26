@@ -5800,11 +5800,10 @@ class emailadmin_imapbase
 				if (!(substr($url,0,strlen('data:'))=='data:')) {
 					//error_log(__METHOD__.' ('.__LINE__.') '.' -> '.$i.': '.array2string($images[$i]));
 					$filename = basename($url);
-					$directory = dirname($url);
-					($directory == '.')?$directory='':'';
+					if (($directory = dirname($url)) == '.') $directory = '';
 					$cid = 'cid:' . md5($filename);
 					$ext = pathinfo($filename, PATHINFO_EXTENSION);
-					$mimeType  = $_mailObject->_mime_types($ext);
+					$mimeType  = mime_magic::ext2mime($ext);
 					if ( strlen($directory) > 1 && substr($directory,-1) != '/') { $directory .= '/'; }
 					$myUrl = $directory.$filename;
 					if ($myUrl[0]=='/') // local path -> we only allow path's that are available via http/https (or vfs)
@@ -5814,11 +5813,10 @@ class emailadmin_imapbase
 					// use vfs instead of url containing webdav.php
 					// ToDo: we should test if the webdav url is of our own scope, as we cannot handle foreign
 					// webdav.php urls as vfs
-					if (strpos($myUrl,'webdav.php') !== false) // we have a webdav link, so we build a vfs/sqlfs link of it.
+					if (strpos($myUrl,'/webdav.php') !== false) // we have a webdav link, so we build a vfs/sqlfs link of it.
 					{
 						egw_vfs::load_wrapper('vfs');
-						list($garbage,$vfspart) = explode('webdav.php',$myUrl,2);
-						$myUrl = $vfspart;
+						list(,$myUrl) = explode('/webdav.php',$myUrl,2);
 						$basedir = 'vfs://default';
 						$needTempFile = false;
 					}
