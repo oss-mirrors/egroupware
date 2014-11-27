@@ -4588,14 +4588,14 @@ class emailadmin_imapbase
 	}
 
 	/**
-	 * getMessageHeader
-	 * get parsed headers from message
+	 * Get parsed headers from message
+	 *
 	 * @param string/int $_uid the messageuid,
-	 * @param string/int $_partID='' , the partID, may be omitted
-	 * @param boolean $decode flag to do the decoding on the fly
+	 * @param string/int $_partID ='' , the partID, may be omitted
+	 * @param boolean|string $decode flag to do the decoding on the fly or "object"
 	 * @param boolean $preserveUnSeen flag to preserve the seen flag where applicable
 	 * @param string $_folder folder to work on
-	 * @return array the message header
+	 * @return array|Horde_Mime_Headers message header as array or object
 	 */
 	function getMessageHeader($_uid, $_partID = '',$decode=false, $preserveUnSeen=false, $_folder='')
 	{
@@ -4619,22 +4619,29 @@ class emailadmin_imapbase
 			'ids' => $uidsToFetch,
 		));
 		if (is_object($headersNew)) {
-			foreach($headersNew as $id=>$_headerObject) {
-				$retValue = $_headerObject->getHeaderText(0,Horde_Imap_Client_Data_Fetch::HEADER_PARSE)->toArray();
+			foreach($headersNew as $_fetchObject)
+			{
+				$headers = $_fetchObject->getHeaderText(0,Horde_Imap_Client_Data_Fetch::HEADER_PARSE);
 				if ($_partID != '')
 				{
-					$mailStructureObject = $_headerObject->getStructure();
+					$mailStructureObject = $_fetchObject->getStructure();
 					foreach ($mailStructureObject->contentTypeMap() as $mime_id => $mime_type)
 					{
 						if ($mime_id==$_partID)
 						{
 							//error_log(__METHOD__.' ('.__LINE__.') '."$mime_id == $_partID".array2string($_headerObject->getHeaderText($mime_id,Horde_Imap_Client_Data_Fetch::HEADER_PARSE)->toArray()));
-							$retValue = $_headerObject->getHeaderText($mime_id,Horde_Imap_Client_Data_Fetch::HEADER_PARSE)->toArray();
+							$headers = $_fetchObject->getHeaderText($mime_id,Horde_Imap_Client_Data_Fetch::HEADER_PARSE);
 							break;
 						}
 					}
 				}
 			}
+			if ($decode === 'object')
+			{
+				$headers->setUserAgent('EGroupware API '.$GLOBALS['egw_info']['server']['versions']['phpgwapi']);
+				return $headers;
+			}
+			$retValue = $headers->toArray();
 		}
 		$retValue = array_change_key_case($retValue,CASE_UPPER);
 		//error_log(__METHOD__.' ('.__LINE__.') '.array2string($retValue));
@@ -6374,66 +6381,21 @@ class emailadmin_imapbase
 	 * @param string $uid
 	 * @param string $_folder
 	 * @return boolean
-	 * @ToDo get this working with new egw_mailer using Horde_Mime to constructing the message body
 	 */
 	function sendMDN($uid,$_folder)
 	{
-		try
-		{
-			$acc = emailadmin_account::read($this->profileID);
-			//error_log(__METHOD__.__LINE__.array2string($acc));
-			$identity = emailadmin_account::read_identity($acc['ident_id'], true, null, $acc);
-		}
-		catch (Exception $e)
-		{
-			$identity=array();
-		}
-		$headers = $this->getMessageHeader($uid,'',true,true,$_folder);
-		$send = new egw_mailer($acc);
+		$acc = emailadmin_account::read($this->profileID);
+		$identity = emailadmin_account::read_identity($acc['ident_id'], true, null, $acc);
 
-		$send->setFrom($identity['ident_email'], self::generateIdentityString($identity,false));
+		$headers = $this->getMessageHeader($uid, '', 'object', true, $_folder);
 
-		if (isset($headers['DISPOSITION-NOTIFICATION-TO'])) {
-			$toAddr = $headers['DISPOSITION-NOTIFICATION-TO'];
-		} else if ( isset($headers['RETURN-RECEIPT-TO']) ) {
-			$toAddr = $headers['RETURN-RECEIPT-TO'];
-		} else if ( isset($headers['X-CONFIRM-READING-TO']) ) {
-			$toAddr = $headers['X-CONFIRM-READING-TO'];
-		} else return false;
-		$send->addAddress($toAddr);
-		$send->addHeader('References', $headers['MESSAGE-ID']);
-		$send->addHeader('Subject', lang('Read').": ".$headers['SUBJECT']);
+		$mdn = new Horde_Mime_Mdn($headers);
+		$mdn->generate(true, true, 'displayed', php_uname('n'), $acc->smtpTransport(), array(
+			'charset' => 'utf-8',
+			'from_addr' => self::generateIdentityString($identity),
+		));
 
-		$sep = "-----------mdn".$uniq_id = md5(uniqid(time()));
-
-		$body = "--".$sep."\r\n".
-			"Content-Type: text/plain; charset=ISO-8859-1\r\n".
-			"Content-Transfer-Encoding: 7bit\r\n\r\n".
-			$send->EncodeString(lang("Your message to  %1 was displayed." ,$identity['ident_email']),"7bit").
-			"\r\n";
-
-		$body .= "--".$sep."\r\n".
-			"Content-Type: message/disposition-notification; name=\"MDNPart2.txt\"\r\n" .
-			"Content-Disposition: inline\r\n".
-			"Content-Transfer-Encoding: 7bit\r\n\r\n";
-		$body.= $send->EncodeString("Reporting-UA: eGroupWare\r\n" .
-					   "Final-Recipient: rfc822;".$identity['ident_email']."\r\n" .
-					   "Original-Message-ID: ".$headers['MESSAGE-ID']."\r\n".
-					   "Disposition: manual-action/MDN-sent-manually; displayed",'7bit')."\r\n";
-
-		$body .= "--".$sep."\r\n".
-			"Content-Type: text/rfc822-headers; name=\"MDNPart3.txt\"\r\n" .
-			"Content-Transfer-Encoding: 7bit\r\n" .
-			"Content-Disposition: inline\r\n\r\n";
-		$body .= $send->EncodeString($this->getMessageRawHeader($uid,'',$_folder),'7bit')."\r\n";
-		$body .= "--".$sep."--";
-
-		$header = rtrim($send->CreateHeader())."\r\n"."Content-Type: multipart/report; report-type=disposition-notification;\r\n".
-			"\tboundary=\"".$sep."\"\r\n\r\n";
-		//error_log(__METHOD__.array2string($send));
-		$rv = $send->SmtpSend($header,$body);
-		//error_log(__METHOD__.'#'.array2string($rv).'#');
-		return $rv;
+		return true;
 	}
 
 	/**
