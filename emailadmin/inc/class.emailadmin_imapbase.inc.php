@@ -5956,27 +5956,13 @@ class emailadmin_imapbase
 						$activeMailProfile = self::getStandardIdentityForProfile($activeMailProfiles,$this->profileID);
 						//error_log(__METHOD__.' ('.__LINE__.') '.array2string($activeMailProfile));
 						$mailObject->setFrom($activeMailProfile['ident_email'],
-							$mailObject->EncodeHeader(self::generateIdentityString($activeMailProfile,false)));
+							self::generateIdentityString($activeMailProfile,false));
 
-						$mailObject->setHeader('Message-ID', null);
-						$mailObject->ClearAllRecipients();
-						$mailObject->ClearCustomHeaders();
-						$mailObject->AddAddress(self::$idna2->encode($email),$mailObject->EncodeHeader($nfn));
-						$mailObject->setHeader('Subject', $bo_merge->merge_string($Subject, $val, $e, 'text/plain', array(), self::$displayCharset));
-						/*
-						if (!empty($AltBody))
-						{
-							$mailObject->IsHTML(true);
-						}
-						elseif (empty($AltBody) && $mailObject->BodyContentType=='text/html')
-						{
-							$mailObject->IsHTML(true);
-							$AltBody = translation::convertHTMLToText($Body,self::$displayCharset,false,$stripalltags=true);
-						}
-						else
-						{
-							$mailObject->IsHTML(false);
-						}*/
+						$mailObject->removeHeader('Message-ID');
+						$mailObject->clearAllRecipients();
+						$mailObject->clearCustomHeaders();
+						$mailObject->addAddress(self::$idna2->encode($email),$mailObject->EncodeHeader($nfn));
+						$mailObject->addHeader('Subject', $bo_merge->merge_string($Subject, $val, $e, 'text/plain', array(), self::$displayCharset));
 						//error_log(__METHOD__.' ('.__LINE__.') '.' ContentType:'.$mailObject->BodyContentType);
 						if (!empty($Body)) $text_body->setContents($bo_merge->merge_string($Body, $val, $e, 'text/plain', array(), self::$displayCharset));
 						//error_log(__METHOD__.' ('.__LINE__.') '.' Result:'.$mailObject->Body.' error:'.array2string($e));
@@ -5998,7 +5984,7 @@ class emailadmin_imapbase
 					elseif (!$k)	// 1. entry, further entries will fail for apps other then addressbook
 					{
 						$openAsDraft = true;
-						$mailObject->setHeader('Message-ID', null);
+						$mailObject->removeHeader('Message-ID');
 						$mailObject->clearAllRecipients();
 						$mailObject->clearCustomHeaders();
 						if (/*$GLOBALS['egw_info']['flags']['currentapp'] == 'addressbook' &&*/
@@ -6010,24 +5996,10 @@ class emailadmin_imapbase
 							$nfn = ($contact['n_fn'] ? $contact['n_fn'] : $contact['n_given'].' '.$contact['n_family']);
 							if($email)
 							{
-								$mailObject->AddAddress(self::$idna2->encode($email),$mailObject->EncodeHeader($nfn));
+								$mailObject->addAddress(self::$idna2->encode($email),$mailObject->EncodeHeader($nfn));
 							}
 						}
 						$mailObject->addHeader('Subject', $bo_merge->merge_string($Subject, $val, $e, 'text/plain', array(), self::$displayCharset));
-						/*
-						if (!empty($AltBody))
-						{
-							$mailObject->IsHTML(true);
-						}
-						elseif (empty($AltBody) && $mailObject->BodyContentType=='text/html')
-						{
-							$mailObject->IsHTML(true);
-							$AltBody = translation::convertHTMLToText($Body,self::$displayCharset,false,$stripalltags=true);
-						}
-						else
-						{
-							$mailObject->IsHTML(false);
-						}*/
 						//error_log(__METHOD__.' ('.__LINE__.') '.' ContentType:'.$mailObject->BodyContentType);
 						if (!empty($Body)) $text_body->setContents($bo_merge->merge_string($Body, $val, $e, 'text/plain', array(), self::$displayCharset));
 						//error_log(__METHOD__.' ('.__LINE__.') '.' Result:'.$mailObject->Body.' error:'.array2string($e));
@@ -6393,30 +6365,30 @@ class emailadmin_imapbase
 		}
 	}
 
+	/**
+	 * Send a read notification
+	 *
+	 * @param string $uid
+	 * @param string $_folder
+	 * @return boolean
+	 * @ToDo get this working with new egw_mailer using Horde_Mime to constructing the message body
+	 */
 	function sendMDN($uid,$_folder)
 	{
 		try
 		{
 			$acc = emailadmin_account::read($this->profileID);
 			//error_log(__METHOD__.__LINE__.array2string($acc));
-			$identity = emailadmin_account::read_identity($acc['ident_id'],true);
-
-			//$identity = emailadmin_account::read_identity($this->sessionData['mailaccount'],true);
+			$identity = emailadmin_account::read_identity($acc['ident_id'], true, null, $acc);
 		}
 		catch (Exception $e)
 		{
 			$identity=array();
 		}
 		$headers = $this->getMessageHeader($uid,'',true,true,$_folder);
-		$send = CreateObject('phpgwapi.send');
-		$send->ClearAddresses();
-		$send->ClearAttachments();
-		$send->IsHTML(False);
-		$send->IsSMTP();
+		$send = new egw_mailer($acc);
 
-		$array_to = explode(",",$headers['TO']);
-		$send->From = $identity['ident_email'];
-		$send->FromName = self::generateIdentityString($identity,false);
+		$send->setFrom($identity['ident_email'], self::generateIdentityString($identity,false));
 
 		if (isset($headers['DISPOSITION-NOTIFICATION-TO'])) {
 			$toAddr = $headers['DISPOSITION-NOTIFICATION-TO'];
@@ -6425,18 +6397,16 @@ class emailadmin_imapbase
 		} else if ( isset($headers['X-CONFIRM-READING-TO']) ) {
 			$toAddr = $headers['X-CONFIRM-READING-TO'];
 		} else return false;
-		$singleAddress = self::parseAddressList($toAddr);
-		if (self::$debug) error_log(__METHOD__.__LINE__.' To Address:'.$singleAddress[0]->mailbox."@".$singleAddress[0]->host.", ".$singleAddress[0]->personal);
-		$send->AddAddress($singleAddress[0]->mailbox."@".$singleAddress[0]->host, $singleAddress[0]->personal);
-		$send->AddCustomHeader('References: '.$headers['MESSAGE-ID']);
-		$send->Subject = $send->encode_subject( lang('Read')." : ".$headers['SUBJECT'] );
+		$send->addAddress($toAddr);
+		$send->addHeader('References', $headers['MESSAGE-ID']);
+		$send->addHeader('Subject', lang('Read').": ".$headers['SUBJECT']);
 
 		$sep = "-----------mdn".$uniq_id = md5(uniqid(time()));
 
 		$body = "--".$sep."\r\n".
 			"Content-Type: text/plain; charset=ISO-8859-1\r\n".
 			"Content-Transfer-Encoding: 7bit\r\n\r\n".
-			$send->EncodeString(lang("Your message to  %1 was displayed." ,$send->From),"7bit").
+			$send->EncodeString(lang("Your message to  %1 was displayed." ,$identity['ident_email']),"7bit").
 			"\r\n";
 
 		$body .= "--".$sep."\r\n".
@@ -6444,7 +6414,7 @@ class emailadmin_imapbase
 			"Content-Disposition: inline\r\n".
 			"Content-Transfer-Encoding: 7bit\r\n\r\n";
 		$body.= $send->EncodeString("Reporting-UA: eGroupWare\r\n" .
-					   "Final-Recipient: rfc822;".$send->From."\r\n" .
+					   "Final-Recipient: rfc822;".$identity['ident_email']."\r\n" .
 					   "Original-Message-ID: ".$headers['MESSAGE-ID']."\r\n".
 					   "Disposition: manual-action/MDN-sent-manually; displayed",'7bit')."\r\n";
 
@@ -6454,7 +6424,6 @@ class emailadmin_imapbase
 			"Content-Disposition: inline\r\n\r\n";
 		$body .= $send->EncodeString($this->getMessageRawHeader($uid,'',$_folder),'7bit')."\r\n";
 		$body .= "--".$sep."--";
-
 
 		$header = rtrim($send->CreateHeader())."\r\n"."Content-Type: multipart/report; report-type=disposition-notification;\r\n".
 			"\tboundary=\"".$sep."\"\r\n\r\n";
