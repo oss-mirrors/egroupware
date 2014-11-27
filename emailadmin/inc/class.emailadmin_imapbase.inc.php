@@ -5776,32 +5776,32 @@ class emailadmin_imapbase
 	}
 
 	/**
-	 * processURL2InlineImages - parses a html text for images, and adds them as inline attachment
-	 * we do not use the functionality of the phpmailer here, as phpmailers functionality requires
-	 * files to be present within the filesystem, which we do not require as we make this happen
-	 * (we load the file, and store it temporarily for the use of attaching it to the file send
-	 * @param object $_mailObject instance of the egw_mailer/phpmailer Object to be used
+	 * Parses a html text for images, and adds them as inline attachment
+	 *
+	 * Images can be data-urls, own VFS webdav.php urls or absolute path.
+	 *
+	 * @param egw_mailer $_mailObject instance of the egw_mailer/phpmailer Object to be used
 	 * @param string $_html2parse the html to parse and to be altered, if conditions meet
 	 * @return void
 	 */
-	static function processURL2InlineImages(&$_mailObject, &$_html2parse)
+	static function processURL2InlineImages($_mailObject, &$_html2parse)
 	{
+		error_log(__METHOD__."()");
 		$imageC = 0;
-		preg_match_all("/(src|background)=\"(.*)\"/Ui", $_html2parse, $images);
-		if(isset($images[2])) {
-			foreach($images[2] as $i => $url) {
+		$images = null;
+		if (preg_match_all("/(src|background)=\"(.*)\"/Ui", $_html2parse, $images) && isset($images[2]))
+		{
+			foreach($images[2] as $i => $url)
+			{
 				//$isData = false;
-				$basedir = '';
+				$basedir = $data = '';
 				$needTempFile = true;
-				//error_log(__METHOD__.' ('.__LINE__.') '.$url);
-				//error_log(__METHOD__.' ('.__LINE__.') '.$GLOBALS['egw_info']['server']['webserver_url']);
-				//error_log(__METHOD__.' ('.__LINE__.') '.array2string($GLOBALS['egw_info']['user']));
+
 				// do not change urls for absolute images (thanks to corvuscorax)
-				if (!(substr($url,0,strlen('data:'))=='data:')) {
-					//error_log(__METHOD__.' ('.__LINE__.') '.' -> '.$i.': '.array2string($images[$i]));
+				if (substr($url, 0, 5) !== 'data:')
+				{
 					$filename = basename($url);
 					if (($directory = dirname($url)) == '.') $directory = '';
-					$cid = 'cid:' . md5($filename);
 					$ext = pathinfo($filename, PATHINFO_EXTENSION);
 					$mimeType  = mime_magic::ext2mime($ext);
 					if ( strlen($directory) > 1 && substr($directory,-1) != '/') { $directory .= '/'; }
@@ -5821,7 +5821,6 @@ class emailadmin_imapbase
 						$needTempFile = false;
 					}
 					if ( strlen($basedir) > 1 && substr($basedir,-1) != '/' && $myUrl[0]!='/') { $basedir .= '/'; }
-					//error_log(__METHOD__.' ('.__LINE__.') '.$basedir.$myUrl);
 					if ($needTempFile) $data = file_get_contents($basedir.urldecode($myUrl));
 				}
 				if (substr($url,0,strlen('data:'))=='data:')
@@ -5829,13 +5828,16 @@ class emailadmin_imapbase
 					//error_log(__METHOD__.' ('.__LINE__.') '.' -> '.$i.': '.array2string($images[$i]));
 					// we only support base64 encoded data
 					$tmp = substr($url,strlen('data:'));
-					list($mimeType,$data) = explode(';base64,',$tmp);
+					list($mimeType,$data_base64) = explode(';base64,',$tmp);
+					$data = base64_decode($data_base64);
+					// FF currently does NOT add any mime-type
+					if (strtolower(substr($mimeType, 0, 6)) != 'image/')
+					{
+						$mimeType = mime_magic::analyze_data($data);
+					}
 					list($what,$exactly) = explode('/',$mimeType);
 					$needTempFile = true;
 					$filename = ($what?$what:'data').$imageC++.'.'.$exactly;
-					$cid = 'cid:' . md5($filename);
-					$data = base64_decode($data);
-					//$isData = true;
 				}
 				if ($data || $needTempFile === false)
 				{
@@ -5850,12 +5852,11 @@ class emailadmin_imapbase
 					{
 						$attachment_file = $basedir.urldecode($myUrl);
 					}
-					//error_log(__METHOD__.' ('.__LINE__.') '.' '.$url.' -> '.$basedir.$myUrl. ' TmpFile:'.$tmpfile);
-					//error_log(__METHOD__.' ('.__LINE__.') '.' '.$url.' -> '.$mimeType. ' TmpFile:'.$attachment_file);
-					if ( $_mailObject->AddEmbeddedImage($attachment_file, md5($filename), $filename, 'base64',$mimeType) )
+					$cid = 'cid:' . md5($filename);
+					if ($_mailObject->AddEmbeddedImage($attachment_file, substr($cid, 4), $filename, $mimeType) !== null)
 					{
 						//$_html2parse = preg_replace("/".$images[1][$i]."=\"".preg_quote($url, '/')."\"/Ui", $images[1][$i]."=\"".$cid."\"", $_html2parse);
-						$_html2parse = str_replace($images[1][$i]."=\"".$url."\"", $images[1][$i]."=\"".$cid."\"", $_html2parse);
+						$_html2parse = str_replace($images[0][$i], $images[1][$i].'="'.$cid.'"', $_html2parse);
 					}
 				}
 			}
