@@ -5959,6 +5959,7 @@ class emailadmin_imapbase
 							self::generateIdentityString($activeMailProfile,false));
 
 						$mailObject->removeHeader('Message-ID');
+						$mailObject->removeHeader('Date');
 						$mailObject->clearAllRecipients();
 						$mailObject->clearCustomHeaders();
 						$mailObject->addAddress(self::$idna2->encode($email),$mailObject->EncodeHeader($nfn));
@@ -5985,6 +5986,7 @@ class emailadmin_imapbase
 					{
 						$openAsDraft = true;
 						$mailObject->removeHeader('Message-ID');
+						$mailObject->removeHeader('Date');
 						$mailObject->clearAllRecipients();
 						$mailObject->clearCustomHeaders();
 						if (/*$GLOBALS['egw_info']['flags']['currentapp'] == 'addressbook' &&*/
