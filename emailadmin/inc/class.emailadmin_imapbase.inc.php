@@ -4638,10 +4638,10 @@ class emailadmin_imapbase
 			}
 			if ($decode === 'object')
 			{
-				$headers->setUserAgent('EGroupware API '.$GLOBALS['egw_info']['server']['versions']['phpgwapi']);
+				if (is_object($headers)) $headers->setUserAgent('EGroupware API '.$GLOBALS['egw_info']['server']['versions']['phpgwapi']);
 				return $headers;
 			}
-			$retValue = $headers->toArray();
+			$retValue = is_object($headers) ? $headers->toArray():array();
 		}
 		$retValue = array_change_key_case($retValue,CASE_UPPER);
 		//error_log(__METHOD__.' ('.__LINE__.') '.array2string($retValue));
@@ -6114,7 +6114,6 @@ class emailadmin_imapbase
 	 *
 	 * @param egw_mailer $mailer instance of SMTP Mailer object
 	 * @param string|ressource|Horde_Mime_Part $message string or resource containing the RawMessage / object Mail_mimeDecoded message (part))
-	 * @param boolean $stream =true true: return a stream, false: return a string
 	 * @throws egw_exception_assertion_failed when the required Horde_Mail_Part not found
 	 */
 	function parseRawMessageIntoMailObject(egw_mailer $mailer, $message)
@@ -6151,7 +6150,7 @@ class emailadmin_imapbase
 		else
 		{
 			if (($type = gettype($message)) == 'object') $type = get_class ($message);
-			throw egw_exception_wrong_parameter('Wrong parameter type for message: '.$type);
+			throw new egw_exception_wrong_parameter('Wrong parameter type for message: '.$type);
 		}
 	}
 
@@ -6172,208 +6171,6 @@ class emailadmin_imapbase
 		return $ret;
 	}
 
-	/**
-	 * createBodyFromStructure - fetches/creates the bodypart of the email as textual representation
-	 *   is called recursively to be able to fetch the stuctureparts of the mail parsed from Mail/mimeDecode
-	 * @param object $mailObject instance of the SMTP Mailer Object
-	 * @param array $structure array that represents structure and content of a mail parsed from Mail/mimeDecode
-	 * @param string $parenttype type of the parent node
-	 * @return void Parsed Information is passed to the mailObject to be processed there
-	 */
-	function createBodyFromStructure($mailObject, $structure, $parenttype=null, $decode=false)
-	{
-		static $attachmentnumber;
-		static $isHTML;
-		static $alternatebodyneeded;
-		if (is_null($isHTML)) $isHTML = strtolower($structure->ctype_secondary)=='html'?true:false;
-		if (is_null($attachmentnumber)) $attachmentnumber = 0;
-		if ($structure->parts && strtolower($structure->ctype_primary)=='multipart')
-		{
-			if (is_null($alternatebodyneeded)) $alternatebodyneeded = false;
-			foreach($structure->parts as $part)
-			{
-				//error_log(__METHOD__.' ('.__LINE__.') '.' Structure Content Type:'.$structure->ctype_primary.'/'.$structure->ctype_secondary.' Decoding:'.($decode?'on':'off'));
-				//error_log(__METHOD__.' ('.__LINE__.') '.' '.$structure->ctype_primary.'/'.$structure->ctype_secondary.' => '.$part->ctype_primary.'/'.$part->ctype_secondary);
-				//error_log(__METHOD__.' ('.__LINE__.') '.' Part:'.array2string($part));
-				$partFetched = false;
-				//echo __METHOD__.' ('.__LINE__.') '.$structure->ctype_primary.'/'.$structure->ctype_secondary.'<br>';
-				if ($part->headers['content-transfer-encoding']) $mailObject->Encoding = $part->headers['content-transfer-encoding'];
-				//$mailObject->IsHTML($part->ctype_secondary=='html'?true:false); // we do not set this here, as the default is text/plain
-				if (isset($part->ctype_parameters['charset'])) $mailObject->CharSet = trim($part->ctype_parameters['charset']);
-				if ((strtolower($structure->ctype_secondary)=='alternative'||
-					 strtolower($structure->ctype_secondary)=='mixed' ||
-					// strtolower($structure->ctype_secondary)=='related' || // may hold text/plain directly ?? I doubt it ??
-					 strtolower($structure->ctype_secondary)=='signed') && strtolower($part->ctype_primary)=='text' && strtolower($part->ctype_secondary)=='plain' && $part->body)
-				{
-					//echo __METHOD__.' ('.__LINE__.') '.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
-					//error_log(__METHOD__.' ('.__LINE__.') '.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML.' Body:'.$part->body);
-					$bodyPart = $part->body;
-					if ($decode) $bodyPart = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'WeDontKnowTheEncoding'));
-/*
-					if (strtolower($part->ctype_primary) == 'text' && strtolower($part->ctype_secondary) == 'plain' &&
-						is_array($part->ctype_parameters) && isset($part->ctype_parameters['format']) &&
-						trim(strtolower($part->ctype_parameters['format']))=='flowed'
-					)
-					{
-						if (self::$debug) error_log(__METHOD__.' ('.__LINE__.') '." detected TEXT/PLAIN Format:flowed -> removing leading blank ('\r\n ') per line");
-						$bodyPart = str_replace("\r\n ","\r\n", $bodyPart);
-					}
-*/
-					$mailObject->Body = ($isHTML==false?$mailObject->Body:'').$bodyPart;
-					$mailObject->AltBody .= $bodyPart;
-					$partFetched = true;
-				}
-				if ((strtolower($structure->ctype_secondary)=='alternative'||
-					 strtolower($structure->ctype_secondary)=='mixed' ||
-					 strtolower($structure->ctype_secondary)=='related' || // may hold text/html directly
-					 strtolower($structure->ctype_secondary)=='signed' ) &&
-					strtolower($part->ctype_primary)=='text' && strtolower($part->ctype_secondary)=='html' && $part->body)
-				{
-					//echo __METHOD__.' ('.__LINE__.') '.$part->ctype_primary.'/'.$part->ctype_secondary.'<br>';
-					//error_log(__METHOD__.' ('.__LINE__.') '.$part->ctype_primary.'/'.$part->ctype_secondary.' already fetched Content is HTML='.$isHTML.' Body:'.$part->body);
-					$bodyPart = $part->body;
-					if ($decode) $bodyPart = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'WeDontKnowTheEncoding'));
-					$mailObject->IsHTML(true); // we need/want that here, because looping through all message parts may mess up the message body mimetype
-					$mailObject->Body = ($isHTML?$mailObject->Body:'').$bodyPart;
-					$alternatebodyneeded = true;
-					$isHTML=true;
-					$partFetched = true;
-				}
-				if ((strtolower($structure->ctype_secondary)=='alternative'||
-					 strtolower($structure->ctype_secondary)=='mixed' ||
-					 strtolower($structure->ctype_secondary)=='signed' ) &&
-					strtolower($part->ctype_primary)=='text' && strtolower($part->ctype_secondary)=='calendar' && $part->body)
-				{
-					//error_log(__METHOD__.' ('.__LINE__.') '.$part->ctype_primary.'/'.$part->ctype_secondary.' BodyPart:'.array2string($part));
-					$bodyPart = $part->body;
-					if ($decode) $bodyPart = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'WeDontKnowTheEncoding'));
-					$mailObject->AltExtended = $bodyPart;
-					// "text/calendar; charset=utf-8; name=meeting.ics; method=REQUEST"
-					// [ctype_parameters] => Array([charset] => utf-8[name] => meeting.ics[method] => REQUEST)
-					$mailObject->AltExtendedContentType = $part->ctype_primary.'/'.$part->ctype_secondary.';'.
-						($part->ctype_parameters['name']?' name='.$part->ctype_parameters['name'].';':'').
-						($part->ctype_parameters['method']?' method='.$part->ctype_parameters['method'].'':'');
-					$partFetched = true;
-				}
-				if ((strtolower($structure->ctype_secondary)=='mixed' ||
-					 strtolower($structure->ctype_secondary)=='related' ||
-					 strtolower($structure->ctype_secondary)=='alternative' ||
-					 strtolower($structure->ctype_secondary)=='signed') && strtolower($part->ctype_primary)=='multipart')
-				{
-					//error_log( __METHOD__.' ('.__LINE__.') '." Recursion to fetch subparts:".$part->ctype_primary.'/'.$part->ctype_secondary);
-					$this->createBodyFromStructure($mailObject, $part, $parenttype=null, $decode);
-				}
-				//error_log(__METHOD__.' ('.__LINE__.') '.$structure->ctype_primary.'/'.$structure->ctype_secondary.' => '.$part->ctype_primary.'/'.$part->ctype_secondary.' Part:'.array2string($part->body));
-				if (($part->body||strtolower($part->ctype_primary.'/'.$part->ctype_secondary)=="message/rfc822") && ((strtolower($structure->ctype_secondary)=='mixed' && strtolower($part->ctype_primary)!='multipart') ||
-					trim(strtolower($part->disposition)) == 'attachment' ||
-					trim(strtolower($part->disposition)) == 'inline' ||
-					isset($part->headers['content-id'])))
-				{
-					//error_log(__METHOD__.' ('.__LINE__.') '.$structure->ctype_secondary.'=>'.$part->ctype_primary.'/'.$part->ctype_secondary.'->'.array2string($part));
-					$attachmentnumber++;
-					$filename = trim(($part->ctype_parameters['name']?$part->ctype_parameters['name']:$part->d_parameters['filename']));
-					if (strlen($filename)==0)
-					{
-						//error_log(__METHOD__.' ('.__LINE__.') '.$structure->ctype_secondary.'=>'.$part->ctype_primary.'/'.$part->ctype_secondary.'->'.array2string($part));
-						foreach(array('content-type','content-disposition') as $k => $v)
-						{
-							foreach(array('filename','name') as $sk => $n)
-							{
-								if (stripos($part->headers[$v],$n)!== false)
-								{
-									$buff = explode($n,$part->headers[$v]);
-									//error_log(__METHOD__.' ('.__LINE__.') '.array2string($buff));
-									$namepart = array_pop($buff);
-									//$disposition = array_pop($buff);
-									//error_log(__METHOD__.' ('.__LINE__.') '.$namepart);
-									$fp = strpos($namepart,'"');
-									//error_log(__METHOD__.' ('.__LINE__.') '.' Start:'.$fp);
-									if ($fp !== false)
-									{
-										$np = strpos($namepart,'"', $fp+1);
-										//error_log(__METHOD__.' ('.__LINE__.') '.' End:'.$np);
-										if ($np !== false)
-										{
-											$filename = trim(substr($namepart,$fp+1,$np-$fp-1));
-											$filename = $mailObject->EncodeHeader($filename);
-											if (!empty($filename))
-											{
-												if (strpos($part->disposition,';')!==false)
-												{
-													//chance is, disposition is broken too
-													$dbuff = explode(';',$part->disposition);
-													$part->disposition = trim($dbuff[0]);
-												}
-												break 2;
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-					if (strlen($filename)==0) $filename = 'noname_'.$attachmentnumber;
-					//error_log(__METHOD__.' ('.__LINE__.') '.' '.$filename);
-					//echo $part->headers['content-transfer-encoding'].'#<br>';
-					if ($decode) $part->body = $this->decodeMimePart($part->body,($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'WeDontKnowTheEncoding'));
-					if ((trim(strtolower($part->disposition))=='attachment' || trim(strtolower($part->disposition)) == 'inline' || isset($part->headers['content-id'])) && $partFetched==false)
-					{
-						if (trim(strtolower($part->disposition)) == 'inline' || $part->headers['content-id'])
-						{
-							$part->headers['content-id'] = str_replace(array('<','>'),'',$part->headers['content-id']);
-							$dirname = $this->accountid.'_'.$this->profileID.'_'.$this->sessionData['mailbox'].$part->headers['content-id'];
-							if (self::$debug) error_log(__METHOD__.' ('.__LINE__.') '.' Dirname:'.$dirname);
-							$dirname = md5($dirname);
-							$dir = $GLOBALS['egw_info']['server']['temp_dir']."/fmail_import/$dirname";
-							if (self::$debug) error_log(__METHOD__.' ('.__LINE__.') '.' Dir to save attachment to:'.$dir);
-							if ( !file_exists( "$dir") )
-							{
-								@mkdir( $dir, 0700, true );
-							}
-							$rp = emailadmin_imapbase::getRandomString();
-							file_put_contents( "$dir/$rp$filename", $part->body);
-
-							$path = "$dir/$rp$filename";
-							$mailObject->AddEmbeddedImage($path, $part->headers['content-id'], $filename, ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'), $part->ctype_primary.'/'.$part->ctype_secondary);
-						}
-						else
-						{
-							//error_log(__METHOD__.' ('.__LINE__.') '.' Add String '.($part->disposition=='attachment'?'Attachment':'Part').' of type:'.$part->ctype_primary.'/'.$part->ctype_secondary.array2string($part->parts));
-							if (strtolower($part->ctype_primary.'/'.$part->ctype_secondary)=="message/rfc822")
-							{
-								$localMailObject = new egw_mailer();
-								$this->parseRawMessageIntoMailObject($localMailObject, $part->parts[0]);
-								$mailObject->AddAttachment(
-									$localMailObject->getRaw(),
-									$filename,
-									$part->headers['content-transfer-encoding'] ? $part->headers['content-transfer-encoding'] : 'base64',
-									$part->ctype_primary.'/'.$part->ctype_secondary
-								);
-							}
-							else
-							{
-								$mailObject->AddStringAttachment($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
-													 $filename,
-													 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'),
-													 $part->ctype_primary.'/'.$part->ctype_secondary
-													);
-							}
-						}
-					}
-					if (!(trim(strtolower($part->disposition))=='attachment' || trim(strtolower($part->disposition)) == 'inline' || isset($part->headers['content-id'])) && $partFetched==false)
-					{
-						//error_log(__METHOD__.' ('.__LINE__.') '.' Add String '.($part->disposition=='attachment'?'Attachment':'Part').' of type:'.$part->ctype_primary.'/'.$part->ctype_secondary.' Body:'.$part->body);
-						$mailObject->AddStringPart($part->body, //($part->headers['content-transfer-encoding']?base64_decode($part->body):$part->body),
-													 $filename,
-													 ($part->headers['content-transfer-encoding']?$part->headers['content-transfer-encoding']:'base64'),
-													 $part->ctype_primary.'/'.$part->ctype_secondary
-													);
-					}
-				}
-			}
-			if ($alternatebodyneeded == false) $mailObject->AltBody = '';
-		}
-	}
 
 	/**
 	 * Send a read notification
