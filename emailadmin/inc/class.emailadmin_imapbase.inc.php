@@ -5674,9 +5674,14 @@ class emailadmin_imapbase
 	{
 		//error_log(__METHOD__.__FILE__.array2string($_formData).' Id:'.$IDtoAddToFileName.' ReqMimeType:'.$reqMimeType);
 		$importfailed = $tmpFileName = false;
-		if ($_formData['size'] != 0 && (is_uploaded_file($_formData['file']) ||
-			realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir']) ||
-			parse_url($_formData['file'],PHP_URL_SCHEME) == 'vfs'))
+		// ignore empty files, but allow to share vfs directories (which can have 0 size)
+		if ($_formData['size'] == 0 && parse_url($_formData['file'], PHP_URL_SCHEME) != 'vfs' && is_dir($_formData['file']))
+		{
+			$importfailed = true;
+			$alert_msg .= lang("Empty file %1 ignored.", $_formData['name']);
+		}
+		elseif (parse_url($_formData['file'],PHP_URL_SCHEME) == 'vfs' || is_uploaded_file($_formData['file']) ||
+			realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir']))
 		{
 			// ensure existance of eGW temp dir
 			// note: this is different from apache temp dir,
@@ -5690,7 +5695,7 @@ class emailadmin_imapbase
 			if (!file_exists($GLOBALS['egw_info']['server']['temp_dir']))
 			{
 				$alert_msg .= 'Error:'.'<br>'
-					.'Server is unable to access phpgw tmp directory'.'<br>'
+					.'Server is unable to access EGroupware tmp directory'.'<br>'
 					.$GLOBALS['egw_info']['server']['temp_dir'].'<br>'
 					.'Please check your configuration'.'<br>'
 					.'<br>';
