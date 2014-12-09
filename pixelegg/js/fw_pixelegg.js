@@ -18,8 +18,20 @@
 	 * jdots framework object defenition
 	 * here we can add framework methods and also override fw_desktop methods if it is neccessary
 	 */
-	var fw_jdots = fw_desktop.extend({
+	var fw_pixelegg = fw_desktop.extend(
+	{
+		/**
+		 * Callback to calculate height of browser iframe or div
+		 *
+		 * @param {object} _iframe dom node of iframe or null for div
+		 * @returns number in pixel
+		 */
+		getIFrameHeight: function(_iframe)
+		{
+			var height = this._super.apply(this, arguments);
 
+			return height - 28;
+		}
 	});
 
 	/**
@@ -33,7 +45,7 @@
 		}
 
 		$j(document).ready(function() {
-			window.framework = new fw_jdots("egw_fw_sidemenu", "egw_fw_tabs",
+			window.framework = new fw_pixelegg("egw_fw_sidemenu", "egw_fw_tabs",
 					window.egw_webserverUrl, egw_setSideboxSize,"egw_fw_splitter", 255, 215);	// should be identical to jdots_framework::(DEFAULT|MIN)_SIDEBAR_WIDTH
 			window.callManual = window.framework.callManual;
 			jQuery('#egw_fw_print').click(function(){window.framework.print();});
