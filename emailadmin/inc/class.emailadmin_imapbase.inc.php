@@ -5838,7 +5838,7 @@ class emailadmin_imapbase
 	 */
 	static function processURL2InlineImages($_mailObject, &$_html2parse)
 	{
-		error_log(__METHOD__."()");
+		//error_log(__METHOD__."()");
 		$imageC = 0;
 		$images = null;
 		if (preg_match_all("/(src|background)=\"(.*)\"/Ui", $_html2parse, $images) && isset($images[2]))
