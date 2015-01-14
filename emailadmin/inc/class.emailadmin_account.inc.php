@@ -483,7 +483,7 @@ class emailadmin_account implements ArrayAccess
 		if (!isset($this->smtpTransport))
 		{
 			$secure = false;
-			switch($this->acc_imap_ssl & ~self::SSL_VERIFY)
+			switch($this->acc_smtp_ssl & ~self::SSL_VERIFY)
 			{
 				case self::SSL_STARTTLS:
 					$secure = 'tls';	// Horde uses 'tls' for STARTTLS, not ssl connection with tls version >= 1 and no sslv2/3
