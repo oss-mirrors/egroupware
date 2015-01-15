@@ -1,3 +1,4 @@
+(no subject)	emailadmin	pl	(bez tematu)
 account '%1' not found !!!	emailadmin	pl	Konto '%1' nie zostało znalezione!
 active templates	emailadmin	pl	Aktywne szablony
 add new email address:	emailadmin	pl	Dodaj nowy adres poczty elektronicznej:
@@ -27,6 +28,7 @@ cyrus imap server	emailadmin	pl	Serwer IMAP Cyrus
 cyrus imap server administration	emailadmin	pl	Administracja serwerem IMAP Cyrus
 default	emailadmin	pl	domyślny
 deliver extern	emailadmin	pl	dostarczanie na zewnątrz
+displaying html messages is disabled	emailadmin	pl	Wyświetlanie wiadomości w HTML jest wyłączone
 do not validate certificate	emailadmin	pl	nie sprawdzaj poprawności certyfikatu
 do you really want to delete this profile	emailadmin	pl	Czy na pewno chcesz usunąć ten profil?
 do you really want to reset the filter for the profile listing	emailadmin	pl	Czy na pewno chcesz zresetować filtr w liście profilu?
@@ -46,7 +48,10 @@ enter your default mail domain (from: user@domain)	emailadmin	pl	Wprowadź domy�
 entry saved	emailadmin	pl	Wpis zachowany
 error connecting to imap server. %s : %s.	emailadmin	pl	Błąd połączenia do serwera IMAP. %s : %s
 error connecting to imap server: [%s] %s.	emailadmin	pl	Błąd połączenia do serwera IMAP. [%s]  %s
+error saving account!	emailadmin	pl	Błąd przy zapisie konta!
 error saving the entry!!!	emailadmin	pl	Błąd przy zachowywaniu wpisu !!!
+event details follow	emailadmin	pl	Detale Wydarzenia Następują
+file rejected, no %2. is:%1	emailadmin	pl	Plik odrzucony. Jest %1 nie %2.
 filtered by account	emailadmin	pl	Filtrowane przez konto
 filtered by group	emailadmin	pl	Filtrowane przez grupe
 forward also to	emailadmin	pl	Prześlij również do
@@ -65,6 +70,7 @@ imap server logintyp	emailadmin	pl	Sposób logowania do serwera IMAP
 imap server name	emailadmin	pl	Nazwa serwera IMAP
 imap server port	emailadmin	pl	Port serwera IMAP
 imap/pop3 server name	emailadmin	pl	Nazwa serwera IMAP/POP3
+importance	emailadmin	pl	ważność
 in mbyte	emailadmin	pl	w megabajtach
 inactive	emailadmin	pl	nieaktywny
 ldap basedn	emailadmin	pl	Bazowy DN w LDAP
@@ -82,6 +88,7 @@ no alternate email address	emailadmin	pl	brak zapasowego adresu e-mail
 no encryption	emailadmin	pl	brak szyfrowania
 no forwarding email address	emailadmin	pl	brak adresu poczty przesyłanej
 no message returned.	emailadmin	pl	Nie otrzymano wiadomości.
+no plain text part found	emailadmin	pl	brak części 'czystym' tekstem
 no supported imap authentication method could be found.	emailadmin	pl	Nie znaleziono obsługiwanej metody autentykacji dla IMAP
 order	emailadmin	pl	Porządek
 organisation	emailadmin	pl	Organizacja
@@ -94,6 +101,7 @@ pop3 server hostname or ip address	emailadmin	pl	Nazwa hosta lub IP serwera POP3
 pop3 server port	emailadmin	pl	Port serwera POP3
 port	emailadmin	pl	port
 postfix with ldap	emailadmin	pl	Postfix z LDAP
+processing of file %1 failed. failed to meet basic restrictions.	emailadmin	pl	Przetwarzanie pliku %1 nie powiodło się. Nie dotrzymano podstawowych restrykcji.
 profile access rights	emailadmin	pl	prawa dostępu do profilu
 profile is active	emailadmin	pl	Profil jest aktywny
 profile list	emailadmin	pl	Lista profili
@@ -122,7 +130,9 @@ standard imap server	emailadmin	pl	Standardowy serwer IMAP
 standard pop3 server	emailadmin	pl	Standardowy serwer POP3
 standard smtp-server	emailadmin	pl	Standardowy serwer SMTP
 stationery	emailadmin	pl	Stacjonarny
+templates	emailadmin	pl	Szablony
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	pl	Serwer IMAP nie obsługuje wskazanej metody autentykacji. Proszę skontaktować się z administratorem.
+the mimeparser can not parse this message.	emailadmin	pl	Nie udało się przetworzyć zawartości MIME tej wiadomości
 this php has no imap support compiled in!!	emailadmin	pl	Interpreter PHP nie posiada obsługi IMAP!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	pl	Aby skorzystać z połączenia TLS, musisz posiadać wersję PHP 5.1.0 lub wyższą.
 unexpected response from server to authenticate command.	emailadmin	pl	Niespodziewana odpowiedź serwera na polecenie AUTHENTICATE.
@@ -131,6 +141,7 @@ unexpected response from server to login command.	emailadmin	pl	Niespodziewana o
 unknown imap response from the server. server responded: %s	emailadmin	pl	Nieznana odpowiedź z serwera IMAP. Serwer przesłał: %s
 unsupported action '%1' !!!	emailadmin	pl	Operacja nieobsługiwana '%1'!
 update current email address:	emailadmin	pl	Uaktualnij bieżący adres pocztowy
+use default	emailadmin	pl	Domyślne
 use ldap defaults	emailadmin	pl	Skorzystaj z domyślnych wartości LDAP
 use predefined username and password defined below	emailadmin	pl	Skorzystaj z predefiniowanych nazw użytkownika i hasła podanego poniżej
 use smtp auth	emailadmin	pl	Skorzystaj z autentykacji SMTP

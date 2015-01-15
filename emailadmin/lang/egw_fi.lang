@@ -1,4 +1,5 @@
 %1 entries deleted.	emailadmin	fi	%1 tapahtumaa poistettu
+(no subject)	emailadmin	fi	Ei aihetta
 account '%1' not found !!!	emailadmin	fi	Tiliä '%1' ei löytynyt!
 active templates	emailadmin	fi	Aktiiviset mallipohjat
 add new email address:	emailadmin	fi	Lisää uusi sähköpostiosoite
@@ -28,6 +29,7 @@ cyrus imap server	emailadmin	fi	Cyrus IMAP -palvelin
 cyrus imap server administration	emailadmin	fi	Cyrus IMAP -palvelimen hallinta
 default	emailadmin	fi	Oletus
 deliver extern	emailadmin	fi	Deliver extern
+displaying html messages is disabled	emailadmin	fi	HTML viestien näyttäminen on estetty
 do not validate certificate	emailadmin	fi	Älä tarkista sertifikaattia
 do you really want to delete this profile	emailadmin	fi	Haluatko varmasti poistaa tämän profiilin?
 do you really want to reset the filter for the profile listing	emailadmin	fi	Haluatko varmasti uudelleenasettaa suotimen profiililuetteloon?
@@ -48,7 +50,9 @@ entry saved	emailadmin	fi	Tallennettu
 error connecting to imap server. %s : %s.	emailadmin	fi	Virhe yhdistettäessä IMAP palvelimeen. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	fi	Virhe yhdistettäessä IMAP palvelimeen. [%s] %s.
 error deleting entry!	emailadmin	fi	Virhe poistettaessa!
+error saving account!	emailadmin	fi	Virhe tallennettaessa käyttäjätiliä!
 error saving the entry!!!	emailadmin	fi	Virhe tallennettaessa!
+event details follow	emailadmin	fi	Tapahtuman yksityiskohdat alla
 filtered by account	emailadmin	fi	Käyttäjätilien mukaan
 filtered by group	emailadmin	fi	Ryhmän mukaan
 forward also to	emailadmin	fi	Välitä osoitteeseen
@@ -67,6 +71,7 @@ imap server logintyp	emailadmin	fi	IMAP -palvelimen käyttäjätunnistus
 imap server name	emailadmin	fi	IMAP -palvelimen nimi
 imap server port	emailadmin	fi	IMAP -palvelimen portti
 imap/pop3 server name	emailadmin	fi	IMAP / POP3 -palvelimen nimi
+importance	emailadmin	fi	Tärkeys
 in mbyte	emailadmin	fi	Megatavua
 inactive	emailadmin	fi	Ei käytössä
 ldap basedn	emailadmin	fi	LDAP basedn
@@ -85,6 +90,7 @@ no alternate email address	emailadmin	fi	Ei vaihtoehtoista osoitetta
 no encryption	emailadmin	fi	Ei suojausta
 no forwarding email address	emailadmin	fi	Välityksen sähköpostiosoitetta ei löytynyt
 no message returned.	emailadmin	fi	Viestiä ei palautettu
+no plain text part found	emailadmin	fi	Pelkkää tekstiä ei löytynyt
 no supported imap authentication method could be found.	emailadmin	fi	Tuettua IMAP tunnistustapaa ei löydetty.
 order	emailadmin	fi	Järjestys
 organisation	emailadmin	fi	Organisaatio
@@ -106,6 +112,7 @@ quota settings	emailadmin	fi	Tallennuskiintiön asetukset
 quota size in mbyte	emailadmin	fi	Rajoituksen koko Mb:nä
 remove	emailadmin	fi	Poista
 reset filter	emailadmin	fi	Poista suodatin
+save of message %1 failed. could not save message to folder %2 due to: %3	emailadmin	fi	Viestin %1 tallennus epäonnistui. Viestiä ei voitu tallentaa kansioon %2. Syy: %3
 select type of imap server	emailadmin	fi	Valitse IMAP -palvelimen tyyppi
 select type of imap/pop3 server	emailadmin	fi	Valitse IMAP / POP3 -palvelimen tyyppi
 select type of smtp server	emailadmin	fi	Valitse SMTP -palvelimen tyyppi
@@ -126,7 +133,9 @@ standard pop3 server	emailadmin	fi	Vakio POP3 -palvelin
 standard smtp-server	emailadmin	fi	Vakio SMTP -palvelin
 starts with	emailadmin	fi	Alkaa:
 stationery	emailadmin	fi	Sähköpostin taustakuvamallipohjat
+templates	emailadmin	fi	Mallipohjat
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	fi	IMAP palvelimelta ei löydy tukea valitulle tunnistusmuodolle, ota yhteyttä järjestelmän pääkäyttäjään.
+the mimeparser can not parse this message.	emailadmin	fi	Mimeparseri ei voi jäsentää tätä viestiä
 this php has no imap support compiled in!!	emailadmin	fi	Tämä PHP ei sisällä IMAP tukea!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	fi	Käyttääksesi TLS yhteyttä, sinulla pitää olla käytössä PHP 5.1.0 tai uudempi versio.
 unexpected response from server to authenticate command.	emailadmin	fi	Odottamaton vastaus palvelimen AUTHENTICATE komennolta.
@@ -135,6 +144,7 @@ unexpected response from server to login command.	emailadmin	fi	Odottamaton vast
 unknown imap response from the server. server responded: %s	emailadmin	fi	Tuntematon IMAP vastaus palvelimelta. Palvelin vastasi: %s
 unsupported action '%1' !!!	emailadmin	fi	Toiminto, jota ei tueta '%1' !!!
 update current email address:	emailadmin	fi	Päivitä nykyinen sähköpostiosoite:
+use default	emailadmin	fi	Käytä oletusta
 use ldap defaults	emailadmin	fi	Käytä LDAP -oletuksia
 use predefined username and password defined below	emailadmin	fi	Käytä esimääriteltyä käyttäjänimeä ja salasanaa
 use smtp auth	emailadmin	fi	Käytä SMTP -käyttäjätunnistusta

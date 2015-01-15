@@ -1,3 +1,4 @@
+(no subject)	emailadmin	iw	(ללא נושא)
 add profile	emailadmin	iw	הוסף פרופיל
 admin dn	emailadmin	iw	של המנהל dn
 admin password	emailadmin	iw	סיסמת מנהל
@@ -18,6 +19,7 @@ enable cyrus imap server administration	emailadmin	iw	Cyrus IMAP איפשור נ
 enable sieve	emailadmin	iw	Sieve אישפור
 enter your default mail domain (from: user@domain)	emailadmin	iw	(user@domain :ציין את דומיין דואר המחדלי שלך (לדוגמא
 entry saved	emailadmin	iw	הרשומה נשמרה
+event details follow	emailadmin	iw	פרטי האירוע בהמשך
 forward also to	emailadmin	iw	להעביר גם אל
 forward email's to	emailadmin	iw	להעביר דואר אלקטרוני אל
 forward only	emailadmin	iw	העבר בלבד
@@ -65,6 +67,7 @@ standard	emailadmin	iw	תקני
 standard imap server	emailadmin	iw	תקני IMAP שרת
 standard pop3 server	emailadmin	iw	תקני POP3 שרת
 standard smtp-server	emailadmin	iw	תקני SMTP שרת
+use default	emailadmin	iw	השתמש בברירת המחדל
 use ldap defaults	emailadmin	iw	LDAP השתמש בברירות מחדל של
 use smtp auth	emailadmin	iw	LDAP השתמש באימות משתמשים של
 use tls authentication	emailadmin	iw	TLS השתמש באימות

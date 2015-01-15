@@ -36,6 +36,7 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 existing links	bookmarks	pt-br	Links existentes
 export	bookmarks	pt-br	exportar
 export bookmarks	common	pt-br	Exportar Favoritos
+export definition to use for nextmatch export	bookmarks	pt-br	Definição Exportar para usar para exportação NextMatch
 fewer	bookmarks	pt-br	Menos
 filter by	bookmarks	pt-br	Filtrar por
 found a link you might like	bookmarks	pt-br	Encontrei um endereço que você deverá gostar
@@ -63,6 +64,7 @@ netscape bookmark file	bookmarks	pt-br	Arquivo de Favoritos do Netscape
 netscape bookmark filename is required!	bookmarks	pt-br	Arquivo de Favoritos do Netscape é requerido!
 new	bookmarks	pt-br	Novo
 new bookmark	bookmarks	pt-br	Novo favorito
+old fixed definition	bookmarks	pt-br	Definição fixa Velho
 or	bookmarks	pt-br	ou
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	pt-br	Favor preencher <B> Destinatário da mensagem</B>, <B>Assunto</B>, e <B>Mensagem</B>!
 please select the categories to export	bookmarks	pt-br	Por Favor selecione as categorias a serem exportadas

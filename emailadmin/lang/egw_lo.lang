@@ -6,6 +6,8 @@ deliver extern	emailadmin	lo	ສົ່ງ extern
 edit email settings	emailadmin	lo	ແກ້ໄຂການຕັ້ງຄ່າ email
 email account active	emailadmin	lo	email ບັນຊີທີ່ໃຊ້ຢູ່
 email address	emailadmin	lo	ທີ່ຢູ່ email
+error saving account!	emailadmin	lo	ການບັນທຶກບັນຊີພົບຂໍ້ຜິດພາດ!
+event details follow	emailadmin	lo	ຕິດຕາມລາຍລະອຽດກິດຈະກໍາ
 forward also to	emailadmin	lo	ສົ່ງຕໍ່ໄປຫາ
 forward only	emailadmin	lo	ສົ່ງຕໍ່ເທົ່ານັ້ນ
 in mbyte	emailadmin	lo	ໃນ Mbyte
@@ -22,3 +24,4 @@ standard	emailadmin	lo	ມາດຕະຖານ
 standard imap server	emailadmin	lo	ມາດຕະຖານ IMAP ເຊີເວີ້
 standard pop3 server	emailadmin	lo	ມາດຕະຖານ POP3 ເຊີເວີ້
 standard smtp-server	emailadmin	lo	ມາດຕະຖານ SMTP-ເຊີເວີ້
+use default	emailadmin	lo	ໃຊ້ຄ່າເລີ່ມຕົ້ນ

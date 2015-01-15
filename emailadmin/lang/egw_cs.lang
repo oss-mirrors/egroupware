@@ -1,3 +1,4 @@
+(no subject)	emailadmin	cs	(žádný předmět)
 account '%1' not found !!!	emailadmin	cs	Účet '%1' nebyl nalezen !!!
 active templates	emailadmin	cs	Aktivní šablony
 add new email address:	emailadmin	cs	Přidat novou e-mailovou adresu:
@@ -27,6 +28,7 @@ cyrus imap server	emailadmin	cs	Cyrus IMAP Server
 cyrus imap server administration	emailadmin	cs	Administrace Cyrus IMAP serveru
 default	emailadmin	cs	výchozí
 deliver extern	emailadmin	cs	doručit externě
+displaying html messages is disabled	emailadmin	cs	zobrazování HTML zpráv je zakázáno
 do not validate certificate	emailadmin	cs	Neověřovat certifikát
 do you really want to delete this profile	emailadmin	cs	Opravdu chcete smazat tento profil
 do you really want to reset the filter for the profile listing	emailadmin	cs	Opravdu chcete vyresetovat filtr pro seznam profilů
@@ -46,7 +48,9 @@ enter your default mail domain (from: user@domain)	emailadmin	cs	Zadejte Vaši v
 entry saved	emailadmin	cs	Záznam uložen
 error connecting to imap server. %s : %s.	emailadmin	cs	Chyba spojení na IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	cs	Chyba spojení na IMAP server: [%s] %s.
+error saving account!	emailadmin	cs	Chyba při ukládání účtu!
 error saving the entry!!!	emailadmin	cs	Chyba při ukládání záznamu!!!
+event details follow	emailadmin	cs	Následují detaily události
 filtered by account	emailadmin	cs	filtrováno podle účtu
 filtered by group	emailadmin	cs	filtrováno podle skupiny
 forward also to	emailadmin	cs	Přeposlat také na
@@ -65,6 +69,7 @@ imap server logintyp	emailadmin	cs	Typ přihlášení na IMAP server
 imap server name	emailadmin	cs	Název IMAP serveru
 imap server port	emailadmin	cs	Port IMAP serveru
 imap/pop3 server name	emailadmin	cs	Název IMAP/POP3 serveru
+importance	emailadmin	cs	Důležitost
 in mbyte	emailadmin	cs	v MBytech
 inactive	emailadmin	cs	neaktivní
 ldap basedn	emailadmin	cs	LDAP basedn
@@ -82,6 +87,7 @@ no alternate email address	emailadmin	cs	bez alternativní e-mailové adresy
 no encryption	emailadmin	cs	bez šifrování
 no forwarding email address	emailadmin	cs	bez e-mailové adresy pro přeposílání
 no message returned.	emailadmin	cs	Žádná zpráva se nevrátila.
+no plain text part found	emailadmin	cs	nebyla nalezena část ve formě prostého textu
 no supported imap authentication method could be found.	emailadmin	cs	Nebyla nalezena žádná podporovaná metoda IMAP autentikace.
 order	emailadmin	cs	Pořadí
 organisation	emailadmin	cs	Organizace
@@ -122,7 +128,9 @@ standard imap server	emailadmin	cs	Standardní IMAP server
 standard pop3 server	emailadmin	cs	Standardní POP3 server
 standard smtp-server	emailadmin	cs	Standardní SMTP server
 stationery	emailadmin	cs	Šablony
+templates	emailadmin	cs	Šablony
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	cs	Vypadá to, že IMAP server nepodporuje vybranou autentikační metodu. Zkontaktujte prosím Vašeho systémového administrátora.
+the mimeparser can not parse this message.	emailadmin	cs	Mimeparser nemůže zpracovat tuto zprávu.
 this php has no imap support compiled in!!	emailadmin	cs	Toto PHP nemá zkompilovanou podporu IMAPu.
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	cs	Pro použití TLS připojení musíte provozovat verzi PHP 5.1.0 nebo vyšší.
 unexpected response from server to authenticate command.	emailadmin	cs	Neočekávaná odpověď serveru na příkaz AUTHENTICATE.
@@ -131,6 +139,7 @@ unexpected response from server to login command.	emailadmin	cs	Neočekávaná o
 unknown imap response from the server. server responded: %s	emailadmin	cs	Neznámá IMAP odpověď server. Odpověděl: %s
 unsupported action '%1' !!!	emailadmin	cs	Nepodporovaná akce '%1' !!!
 update current email address:	emailadmin	cs	Aktualizovat současnou e-mailovou adresu:
+use default	emailadmin	cs	Použít výchozí
 use ldap defaults	emailadmin	cs	Použít výchozí hodnoty LDAP
 use predefined username and password defined below	emailadmin	cs	Použít předdefinované uživatelské jméno a heslo uvedené níže
 use smtp auth	emailadmin	cs	Použít SMTP autentikaci

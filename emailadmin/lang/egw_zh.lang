@@ -1,3 +1,4 @@
+(no subject)	emailadmin	zh	(无主题)
 account '%1' not found !!!	emailadmin	zh	帐户 '%1' 未发现！
 add new email address:	emailadmin	zh	添加新邮箱地址：
 add profile	emailadmin	zh	添加 profile
@@ -22,6 +23,7 @@ cyrus imap server	emailadmin	zh	Cyrus IMAP 服务器
 cyrus imap server administration	emailadmin	zh	Cyrus IMAP 服务器管理
 default	emailadmin	zh	默认
 deliver extern	emailadmin	zh	传送外部
+displaying html messages is disabled	emailadmin	zh	显示HTML邮件被禁用
 do not validate certificate	emailadmin	zh	不确认证书
 do you really want to delete this profile	emailadmin	zh	您确定要删除这个 profile 文件
 domainname	emailadmin	zh	域名
@@ -38,7 +40,9 @@ enter your default mail domain (from: user@domain)	emailadmin	zh	输入您的默
 entry saved	emailadmin	zh	条目已储存
 error connecting to imap server. %s : %s.	emailadmin	zh	连接到 IMAP 服务器错误。%s : %s。
 error connecting to imap server: [%s] %s.	emailadmin	zh	连接到 IMAP 服务器错误：[%s] %s。
+error saving account!	emailadmin	zh	保存帐户错误！
 error saving the entry!!!	emailadmin	zh	保存条目时发生错误！
+event details follow	emailadmin	zh	事件细节
 forward also to	emailadmin	zh	同时转发到
 forward email's to	emailadmin	zh	转发邮件到
 forward only	emailadmin	zh	转发
@@ -70,6 +74,7 @@ no alternate email address	emailadmin	zh	无备用邮箱地址
 no encryption	emailadmin	zh	未加密
 no forwarding email address	emailadmin	zh	没有转发邮件地址
 no message returned.	emailadmin	zh	无返回消息。
+no plain text part found	emailadmin	zh	未找到纯文本部分
 no supported imap authentication method could be found.	emailadmin	zh	无支持 IMAP 认证的方法可以找到。
 order	emailadmin	zh	排序
 organisation	emailadmin	zh	组织
@@ -107,6 +112,7 @@ standard imap server	emailadmin	zh	标准 IMAP 服务器
 standard pop3 server	emailadmin	zh	标准 POP3 服务器
 standard smtp-server	emailadmin	zh	标准 SMTP 服务器
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	zh	IMAP 服务器似乎不支持所选择的认证方法。请联系系统管理员。
+the mimeparser can not parse this message.	emailadmin	zh	mime 解析器不能解析这个邮件。
 this php has no imap support compiled in!!	emailadmin	zh	PHP 没有 IMAP 支持的编译！
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	zh	未使用一个 TLS 连接，您必须运行 PHP 5.1.0 或更高版本。
 unexpected response from server to authenticate command.	emailadmin	zh	服务器为 AUTHENTICATE 指令返回不当以外回应。
@@ -115,6 +121,7 @@ unexpected response from server to login command.	emailadmin	zh	服务器为 LOG
 unknown imap response from the server. server responded: %s	emailadmin	zh	INAP 服务器返回未知回应。服务器回应：%s
 unsupported action '%1' !!!	emailadmin	zh	不支持 '%1'  的操作！
 update current email address:	emailadmin	zh	更新当前邮件地址：
+use default	emailadmin	zh	使用默认值
 use ldap defaults	emailadmin	zh	使用 LDAP 默认值
 use smtp auth	emailadmin	zh	使用 SMTP 认证
 use tls authentication	emailadmin	zh	使用TLS 认证

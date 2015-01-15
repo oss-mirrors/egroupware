@@ -1,3 +1,4 @@
+(no subject)	emailadmin	pt	(sem assunto)
 add profile	emailadmin	pt	Adicionar perfil
 admin dn	emailadmin	pt	DN do administrador
 admin password	emailadmin	pt	Senha do administrador
@@ -9,10 +10,14 @@ any group	emailadmin	pt	Qualquer grupo
 can be used by application	emailadmin	pt	Pode ser utilizado pela aplicação
 can be used by group	emailadmin	pt	Pode ser utilizado pelo grupo
 continue	emailadmin	pt	Continuar
+could not append message:	emailadmin	pt	Não foi possível anexar Mensagem:
+create new account	emailadmin	pt	criar nova conta
 cyrus imap server	emailadmin	pt	Servidor IMAP Cyrus
 cyrus imap server administration	emailadmin	pt	Administração do servidor IMAP Cyrus
 default	emailadmin	pt	Por omissão
 deliver extern	emailadmin	pt	Entrega externa
+displaying html messages is disabled	emailadmin	pt	exibir mensagens em HTML é desativada
+displaying plain messages is disabled	emailadmin	pt	exibição de mensagens simples é desativado
 do you really want to delete this profile	emailadmin	pt	Deseja relamente eliminar este perfil
 domainname	emailadmin	pt	Nome de domínio
 edit email settings	emailadmin	pt	Editar configurações do correio electrónico
@@ -24,10 +29,14 @@ encryption settings	emailadmin	pt	Definições de cifragem
 enter your default mail domain (from: user@domain)	emailadmin	pt	Insira o seu domínio de correio electrónico por omissão (de: utilizador@domínio)
 entry saved	emailadmin	pt	Registo guardado
 error saving the entry!!!	emailadmin	pt	Erro ao guardar o registo!!!
+event details follow	emailadmin	pt	Seguem detalhes do evento
+file rejected, no %2. is:%1	emailadmin	pt	Arquivo rejeitado, sem% 2. É: 1%
 forward also to	emailadmin	pt	Reencaminhar também para
 forward email's to	emailadmin	pt	Reencaminhar mensagens para
 forward only	emailadmin	pt	Reencaminhar apenas
 global options	emailadmin	pt	Opções gerais
+hostname or ip	emailadmin	pt	Nome do host ou IP
+if different from email address	emailadmin	pt	se for diferente do endereço de email
 imap admin password	admin	pt	Senha do administrador IMAP
 imap admin user	admin	pt	Utilizador do administrador IMAP
 imap c-client version < 2001	emailadmin	pt	Versão C-Client IMAP < 2001
@@ -36,6 +45,7 @@ imap server hostname or ip address	emailadmin	pt	Nome do servidor ou endereço I
 imap server logintyp	emailadmin	pt	Tipo de acesso do servidor IMAP
 imap server port	emailadmin	pt	Porto do servidor IMAP
 imap/pop3 server name	emailadmin	pt	Nome do servidor IMAP/POP3
+importance	emailadmin	pt	Importância
 in mbyte	emailadmin	pt	em MBytes
 ldap basedn	emailadmin	pt	Base DN LDAP
 ldap server	emailadmin	pt	Servidor LDAP
@@ -49,6 +59,7 @@ mail settings	admin	pt	Configurações do correio electrónico
 name of organisation	emailadmin	pt	Nome da empresa
 no alternate email address	emailadmin	pt	Sem endereço de correio electrónico alternativo
 no forwarding email address	emailadmin	pt	Sem endereço de correio electrónico para reencaminhamento
+no plain text part found	emailadmin	pt	nenhuma parte de texto simples encontrado
 order	emailadmin	pt	Ordem
 organisation	emailadmin	pt	Empresa
 pop3 server hostname or ip address	emailadmin	pt	Nome do servidor ou endereço IP do servidor POP3
@@ -61,6 +72,7 @@ qmaildotmode	emailadmin	pt	Quota do correio electrónico no modo Idot
 quota settings	emailadmin	pt	Configurações da quota
 quota size in mbyte	emailadmin	pt	tamanho da quota em MBytes
 remove	emailadmin	pt	Remover
+required pear class mail/mimedecode.php not found.	emailadmin	pt	Classe PEAR requeridos Correio / mimeDecode.php não encontrado.
 select type of imap/pop3 server	emailadmin	pt	Seleccionar tipo de servidor IMAP/POP3
 select type of smtp server	emailadmin	pt	Seleccionar tipo de servidor SMTP
 server settings	emailadmin	pt	Definições do servidor
@@ -77,7 +89,10 @@ standard	emailadmin	pt	Por omissão
 standard imap server	emailadmin	pt	Servidor IMAP por omissão
 standard pop3 server	emailadmin	pt	Servidor POP3 por omissão
 standard smtp-server	emailadmin	pt	Servidor SMTP por omissão
+templates	emailadmin	pt	Templates
+the mimeparser can not parse this message.	emailadmin	pt	O mimeparser não pode analisar estas mensagem.
 this php has no imap support compiled in!!	emailadmin	pt	O PHP não tem suporte de IMAP compilado!!
+use default	emailadmin	pt	Utilizar definições por omissão
 use ldap defaults	emailadmin	pt	Utilizar definições por omissão do LDAP
 use smtp auth	emailadmin	pt	Utilizar autenticação SMTP
 use tls authentication	emailadmin	pt	Utilizar autenticação TLS

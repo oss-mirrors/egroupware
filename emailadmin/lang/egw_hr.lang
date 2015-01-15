@@ -1,3 +1,4 @@
+(no subject)	emailadmin	hr	(nema teme)
 add profile	emailadmin	hr	Add Profile
 admin dn	emailadmin	hr	admin dn
 admin password	emailadmin	hr	admin password
@@ -18,6 +19,7 @@ enable cyrus imap server administration	emailadmin	hr	enable Cyrus IMAP server a
 enable sieve	emailadmin	hr	enable Sieve
 enter your default mail domain (from: user@domain)	emailadmin	hr	Enter your default mail domain (from: user@domain)
 entry saved	emailadmin	hr	Entry saved
+event details follow	emailadmin	hr	Slijede detalji obveze
 forward also to	emailadmin	hr	forward also to
 forward email's to	emailadmin	hr	forward email's to
 forward only	emailadmin	hr	forward only
@@ -65,6 +67,7 @@ standard imap server	emailadmin	hr	Standard IMAP server
 standard pop3 server	emailadmin	hr	Standard POP3 server
 standard smtp-server	emailadmin	hr	Standard SMTP server
 this php has no imap support compiled in!!	emailadmin	hr	Ovaj PHP nema ugrađenu podršku za IMAP!!
+use default	emailadmin	hr	Use default
 use ldap defaults	emailadmin	hr	use LDAP defaults
 use smtp auth	emailadmin	hr	Use SMTP auth
 use tls authentication	emailadmin	hr	Use TLS authentication

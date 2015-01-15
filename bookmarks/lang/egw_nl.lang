@@ -36,6 +36,8 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 existing links	bookmarks	nl	Bestaande links
 export	bookmarks	nl	exporteren
 export bookmarks	common	nl	Exporteer favorieten
+export definition to use for nextmatch export	bookmarks	nl	Export definitie om te gebruiken bij nextmatch export
+export definitition to use for nextmatch export	bookmarks	nl	Export definitie om te gebruiken bij nextmatch export
 fewer	bookmarks	nl	Minder
 filter by	bookmarks	nl	Filteren op
 found a link you might like	bookmarks	nl	Link gevonden die u wellicht interesseert
@@ -46,12 +48,15 @@ global categories	bookmarks	nl	Globale categoriën
 highest	bookmarks	nl	Hoogste
 history	bookmarks	nl	Historie
 i thought you would be interested in the following link(s):	bookmarks	nl	I dacht dat u geïntereseerd zou zijn in de volgende link(s):
+if you specify an export definition, it will be used when you export	bookmarks	nl	Als u een export definitie kiest, zal deze worden gebruikt bij de export
+if you specify an export definition, it will be used when you export*	bookmarks	nl	Als u een export definitie kiest, zal deze worden gebruikt bij de export*
 import bookmarks	common	nl	Importeer favorieten
 last modified	bookmarks	nl	laatste wijziging
 like	bookmarks	nl	zoals
 links	bookmarks	nl	Links
 list view	bookmarks	nl	lijst weergave
 lowest	bookmarks	nl	Laagste
+mail	bookmarks	nl	Berichten
 mail this bookmark	bookmarks	nl	Email deze favoriet
 mail-this-link message sent to %1.	bookmarks	nl	favoriet-emailbericht gestuurd naar %1.
 mass update:	bookmarks	nl	Update meerder tegelijk:

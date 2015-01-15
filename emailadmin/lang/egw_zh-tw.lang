@@ -1,3 +1,4 @@
+(no subject)	emailadmin	zh-tw	(沒有標題)
 account '%1' not found !!!	emailadmin	zh-tw	找不到帳號 '%1'！
 add new email address:	emailadmin	zh-tw	新增信箱：
 add profile	emailadmin	zh-tw	新增資料
@@ -22,6 +23,7 @@ cyrus imap server	emailadmin	zh-tw	Cyrus IMAP伺服器
 cyrus imap server administration	emailadmin	zh-tw	Cyrus IMAP伺服器管理
 default	emailadmin	zh-tw	預設
 deliver extern	emailadmin	zh-tw	傳送到外部
+displaying html messages is disabled	emailadmin	zh-tw	顯示 html 信件的功能停用中
 do not validate certificate	emailadmin	zh-tw	沒有可用的執照
 do you really want to delete this profile	emailadmin	zh-tw	您確定要刪除這個資料
 domainname	emailadmin	zh-tw	網域名稱
@@ -39,6 +41,7 @@ entry saved	emailadmin	zh-tw	資料儲存了
 error connecting to imap server. %s : %s.	emailadmin	zh-tw	連線到 IMAP 伺服器時發生錯誤。 %s : %s
 error connecting to imap server: [%s] %s.	emailadmin	zh-tw	連線到 IMAP 伺服器時發生錯誤。 [%s] %s
 error saving the entry!!!	emailadmin	zh-tw	儲存資料時發生錯誤！
+event details follow	emailadmin	zh-tw	事件細節
 forward also to	emailadmin	zh-tw	同時轉寄到
 forward email's to	emailadmin	zh-tw	轉寄信件到
 forward only	emailadmin	zh-tw	轉寄
@@ -70,6 +73,7 @@ no alternate email address	emailadmin	zh-tw	沒有可替換的郵件位址
 no encryption	emailadmin	zh-tw	沒有加密
 no forwarding email address	emailadmin	zh-tw	沒有轉寄郵件位址
 no message returned.	emailadmin	zh-tw	沒有訊息回應。
+no plain text part found	emailadmin	zh-tw	找不到純文字部份
 no supported imap authentication method could be found.	emailadmin	zh-tw	找不到可以支援的 IMAP 認證方式。
 order	emailadmin	zh-tw	順序
 organisation	emailadmin	zh-tw	組織
@@ -107,6 +111,7 @@ standard imap server	emailadmin	zh-tw	標準IMAP伺服器
 standard pop3 server	emailadmin	zh-tw	標準POP3伺服器
 standard smtp-server	emailadmin	zh-tw	標準SMTP伺服器
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	zh-tw	IMAP 伺服器不支援指定的認證方式，請聯絡您的系統管理員。
+the mimeparser can not parse this message.	emailadmin	zh-tw	mime 解析程式無法處理這封郵件
 this php has no imap support compiled in!!	emailadmin	zh-tw	您的PHP並未編譯為支援IMAP的狀態
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	zh-tw	要使用 TLS 連線，您必須執行在 PHP 5.1.0 或是更新版本。
 unexpected response from server to authenticate command.	emailadmin	zh-tw	AUTHENTICATE 指令讓伺服器傳回不如預期的回應。
@@ -115,6 +120,7 @@ unexpected response from server to login command.	emailadmin	zh-tw	伺服器傳�
 unknown imap response from the server. server responded: %s	emailadmin	zh-tw	不知名的 IMAP 伺服器回應，回應內容： %s
 unsupported action '%1' !!!	emailadmin	zh-tw	不支援 '%1' 這個操作！
 update current email address:	emailadmin	zh-tw	更新目前信箱：
+use default	emailadmin	zh-tw	預設值
 use ldap defaults	emailadmin	zh-tw	使用LDAP預設值
 use smtp auth	emailadmin	zh-tw	使用SMTP認證
 use tls authentication	emailadmin	zh-tw	使用TLS認證

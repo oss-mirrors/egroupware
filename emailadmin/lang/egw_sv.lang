@@ -1,3 +1,4 @@
+(no subject)	emailadmin	sv	(ingen rubrik)
 add profile	emailadmin	sv	Skapa profil
 admin dn	emailadmin	sv	Admin dn
 admin password	emailadmin	sv	Admin lösenord
@@ -16,6 +17,7 @@ cyrus imap server	emailadmin	sv	Cyrus IMAP Server
 cyrus imap server administration	emailadmin	sv	Cyrus IMAP server administration
 default	emailadmin	sv	Standard
 deliver extern	emailadmin	sv	Leverera extern
+displaying html messages is disabled	emailadmin	sv	Cisa HTML meddelanden är inaktiverat
 do not validate certificate	emailadmin	sv	Validera inte certifikat
 do you really want to delete this profile	emailadmin	sv	Vill du verkligen radera profilen?
 domainname	emailadmin	sv	Domän namn
@@ -30,6 +32,7 @@ entry saved	emailadmin	sv	Post sparad
 error connecting to imap server. %s : %s.	emailadmin	sv	Kunde inte ansluta till IMAP server %s : %s
 error connecting to imap server: [%s] %s.	emailadmin	sv	Kunde inte ansluta till IMAP server [%s] %s
 error saving the entry!!!	emailadmin	sv	Fel uppstod vid sparandet av posten!
+event details follow	emailadmin	sv	Händelse detaljer följer
 forward also to	emailadmin	sv	Vidarebefodra även till
 forward email's to	emailadmin	sv	Vidarebefodra e-post till
 forward only	emailadmin	sv	Vidarebefodra endast
@@ -59,6 +62,7 @@ no alternate email address	emailadmin	sv	Ingen alternerande e-post adress
 no encryption	emailadmin	sv	Ingen kryptering
 no forwarding email address	emailadmin	sv	Ingen e-post vidarebefodrings adress
 no message returned.	emailadmin	sv	Inget svar meddelandes
+no plain text part found	emailadmin	sv	Hittade inget textfält
 no supported imap authentication method could be found.	emailadmin	sv	Kunde inte hitta supporterad IMAP autentiserings metod
 order	emailadmin	sv	Sortering
 organisation	emailadmin	sv	Organisation
@@ -86,12 +90,14 @@ standard imap server	emailadmin	sv	Standard IMAP server
 standard pop3 server	emailadmin	sv	Standard POP3 server
 standard smtp-server	emailadmin	sv	Standard SMTP server
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	sv	IMAP servern verkar inte stödja den autentiserings metod du valt. Var god och kontakta administratör.
+the mimeparser can not parse this message.	emailadmin	sv	MIME-tolken kunde inte tolka meddelandet
 this php has no imap support compiled in!!	emailadmin	sv	Denna installation har inte IMAP stöd kompilerat i PHP.
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	sv	För att använda TLS anslutning måste du ha PHP version 5.1.0 eller högre
 unexpected response from server to authenticate command.	emailadmin	sv	Oväntat svar från servern på AUTENTISERINGS kommandot
 unexpected response from server to digest-md5 response.	emailadmin	sv	Oväntat svar från servern på Digest-MD5
 unexpected response from server to login command.	emailadmin	sv	Oväntat svar från servern på INLOGGINGS kommandot
 unknown imap response from the server. server responded: %s	emailadmin	sv	Okänt IMAP svar från server. Svarade: %s
+use default	emailadmin	sv	Använd standard
 use ldap defaults	emailadmin	sv	använd LDAP standarder
 use smtp auth	emailadmin	sv	Använd SMTP autentisering
 use tls authentication	emailadmin	sv	Använd TLS autentisering

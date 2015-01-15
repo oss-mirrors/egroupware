@@ -1,3 +1,4 @@
+(no subject)	emailadmin	el	(κανένα θέμα)
 advanced options	emailadmin	el	επιλογές για προχωρημένους
 alternate email address	emailadmin	el	εναλλακτική διεύθυνση email
 bad login name or password.	emailadmin	el	Λάθος όνομα ή κωδικός πρόσβασης
@@ -8,6 +9,7 @@ could not open secure connection to the imap server. %s : %s.	emailadmin	el	Δε
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	el	CRAM-MD5 ή DIGEST-MD5 απαιτεί το Auth_SASL πακέτο να εγκατασταθεί.
 default	emailadmin	el	προκαθορισμένο
 deliver extern	emailadmin	el	παράδοση εξωτερ
+displaying html messages is disabled	emailadmin	el	η προβολή των html μηνυμάτων είναι απενεργοποιημένη
 do not validate certificate	emailadmin	el	μην επικυρώνετε το πιστοποιητικό
 edit email settings	emailadmin	el	επεξεργασία ρυθμίσεων email
 email account active	emailadmin	el	ενεργός κατάλογος email
@@ -15,6 +17,7 @@ email address	emailadmin	el	διεύθυνση email
 encrypted connection	emailadmin	el	αποκρυπτογραφημένη σύνδεση
 error connecting to imap server. %s : %s.	emailadmin	el	Σφάλμα κατά τη σύνδεση με τον IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	el	Σφάλμα κατά τη σύνδεση με τον IMAP server. [%s] : %s.
+event details follow	emailadmin	el	Ακολουθούν λεπτομέρειες γεγονότων
 forward also to	emailadmin	el	προώθηση επίσης στο
 forward only	emailadmin	el	μόνο προώθηση
 if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	el	Αν χρησιμοποιείται SSL ή TLS, πρέπει να έχετε την PHP openssl επέκταση φορτωμένη.
@@ -27,6 +30,7 @@ mail settings	admin	el	Ρυθμίσεις μηνυμάτων
 no alternate email address	emailadmin	el	δεν υπάρχει εναλλακτική διεύθυνση email
 no encryption	emailadmin	el	Καμία κρυπτογράφηση
 no message returned.	emailadmin	el	Δεν επεστράφη κάποιο μήνυμα.
+no plain text part found	emailadmin	el	δεν βρέθηκε μέρος αποκρυπτογραφημένου κειμένου
 no supported imap authentication method could be found.	emailadmin	el	Δεν βρέθηκε καμία υποστηριζόμενη IMAP επικυρωμένη μέθοδος.
 order	emailadmin	el	Ταξινόμηση
 organisation	emailadmin	el	οργανισμός

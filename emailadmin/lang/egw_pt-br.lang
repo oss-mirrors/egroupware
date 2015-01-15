@@ -1,4 +1,5 @@
 %1 entries deleted.	emailadmin	pt-br	% 1 cadastros excluídos.
+(no subject)	emailadmin	pt-br	(sem assunto)
 account '%1' not found !!!	emailadmin	pt-br	Conta '%1' não encontrada !!!
 account deleted.	emailadmin	pt-br	% 1 cadastros excluídos.
 account not found!	common	pt-br	Conta não encontrado!
@@ -169,6 +170,7 @@ unexpected response from server to login command.	emailadmin	pt-br	Resposta ines
 unknown imap response from the server. server responded: %s	emailadmin	pt-br	Resposta desconhecida do servidor IMAP. Resposta do servidor: %s
 unsupported action '%1' !!!	emailadmin	pt-br	Ação não suportada: '%1' !!!
 update current email address:	emailadmin	pt-br	Atualizar e-mail atual:
+use default	emailadmin	pt-br	Usar o padrão
 use ldap defaults	emailadmin	pt-br	usar padrões LDAP
 use predefined username and password defined below	emailadmin	pt-br	Usar usuário e senha pré-definidos abaixo
 use smtp auth	emailadmin	pt-br	usar SMTP Autenticado

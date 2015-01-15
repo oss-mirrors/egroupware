@@ -1,5 +1,6 @@
 %1 entries deleted.	emailadmin	ru	%1 записи удалены.
 (imapclass must support this feature by querying the corresponding config value and pass it as defaultquota to the imapserver)	emailadmin	ru	(класс IMAP должен поддерживать возможность запроса соответствующего параметра конфигурации и передачи серверу IMAP как квоту по умолчанию)
+(no subject)	emailadmin	ru	(без темы)
 account '%1' not found !!!	emailadmin	ru	Учетная запись '%1' не найдена !!!
 active templates	emailadmin	ru	Активные шаблоны
 add new email address:	emailadmin	ru	Добавить новый адрес эл. почты:
@@ -22,6 +23,7 @@ can be used by group	emailadmin	ru	Может быть использовано 
 can be used by user	emailadmin	ru	может быть использовано пользователем
 connection dropped by imap server.	emailadmin	ru	Соединение разорвано сервером IMAP
 continue	emailadmin	ru	Продолжить
+could not append message:	emailadmin	ru	Не могу добавить сообщение
 could not complete request. reason given: %s	emailadmin	ru	Не могу завершить запрос. Возможная Причина: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	ru	Не могу установить защищенное соединение с сервером IMAP. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	ru	CRAM-MD5 и DIGEST-MD5 требуют установленного пакета Auth_SASL.
@@ -29,6 +31,8 @@ cyrus imap server	emailadmin	ru	IMAP сервер Cyrus
 cyrus imap server administration	emailadmin	ru	администрирование IMAP сервера Cyrus
 default	emailadmin	ru	по умолчанию
 deliver extern	emailadmin	ru	доставить внешний
+displaying html messages is disabled	emailadmin	ru	Показ сообщений как HTML отключен
+displaying plain messages is disabled	emailadmin	ru	Показ сообщений как текст отключен.
 do not validate certificate	emailadmin	ru	не проверять сертификат
 do you really want to delete this profile	emailadmin	ru	Вы уверены, что хотите удалить этот Профиль
 do you really want to reset the filter for the profile listing	emailadmin	ru	Вы уверены что хотите очистить фильтр для создания списка Профилей
@@ -49,7 +53,10 @@ entry saved	emailadmin	ru	Запись сохранена.
 error connecting to imap server. %s : %s.	emailadmin	ru	Ошибка соединения с сервером IMAP. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	ru	Ошибка соединения с сервером IMAP: [%s] %s.
 error deleting entry!	emailadmin	ru	Ошибка при удалении записи!
+error saving account!	emailadmin	ru	Ошибка сохранения учётной записи!
 error saving the entry!!!	emailadmin	ru	Ошибка при сохранении записи!
+event details follow	emailadmin	ru	Детали события следуют
+file rejected, no %2. is:%1	emailadmin	ru	Файл отвергнут, no %2. Is:%1
 filtered by account	emailadmin	ru	отфильтровано по Учетной записи
 filtered by group	emailadmin	ru	отфильтровано по группе
 forward also to	emailadmin	ru	Переслать также в
@@ -68,6 +75,7 @@ imap server logintyp	emailadmin	ru	Тип входа сервера IMAP
 imap server name	emailadmin	ru	Имя сервера imap
 imap server port	emailadmin	ru	Порт сервера IMAP
 imap/pop3 server name	emailadmin	ru	Имя сервера IMAP/POP3
+importance	emailadmin	ru	Значение
 in mbyte	emailadmin	ru	В мегабайтах
 inactive	emailadmin	ru	Неактивно
 ldap basedn	emailadmin	ru	Начальный DN LDAP
@@ -86,6 +94,7 @@ no alternate email address	emailadmin	ru	Нет дополнительного �
 no encryption	emailadmin	ru	Без шифрования
 no forwarding email address	emailadmin	ru	Нет адреса перенаправления
 no message returned.	emailadmin	ru	Нет ответа
+no plain text part found	emailadmin	ru	Не найдена текстовая часть
 no supported imap authentication method could be found.	emailadmin	ru	Поддерживаемый метод авторизации IMAP не найден
 order	emailadmin	ru	Упорядочить
 organisation	emailadmin	ru	Организация
@@ -98,6 +107,7 @@ pop3 server hostname or ip address	emailadmin	ru	Имя компьютера и�
 pop3 server port	emailadmin	ru	Порт сервера POP3
 port	emailadmin	ru	Порт
 postfix with ldap	emailadmin	ru	Postfix с LDAP
+processing of file %1 failed. failed to meet basic restrictions.	emailadmin	ru	Обработка файла %1 прервана. Не удалось удовлетворить основные ограничения.
 profile access rights	emailadmin	ru	права доступа к профилю
 profile is active	emailadmin	ru	профиль активен
 profile list	emailadmin	ru	Список профиля
@@ -106,7 +116,10 @@ qmaildotmode	emailadmin	ru	режим qmaildot
 quota settings	emailadmin	ru	Настройки квотирования
 quota size in mbyte	emailadmin	ru	Размер квоты в МБ
 remove	emailadmin	ru	Удалить
+required pear class mail/mimedecode.php not found.	emailadmin	ru	Необходимый PEAR class Mail / mimeDecode.php не найден.
 reset filter	emailadmin	ru	Очистить фильтр
+save of message %1 failed. could not save message to folder %2 due to: %3	emailadmin	ru	Невозможно сохранить сообщение %1 . Не могу сохранить сообщение в папку %2 по причине: %3
+saving of message %1 failed. destination folder %2 does not exist.	emailadmin	ru	Сохранение сообщения %1 не удалось. Папка назначения %2 не существует.
 select type of imap server	emailadmin	ru	Выбор типа сервера IMAP
 select type of imap/pop3 server	emailadmin	ru	Выбор типа сервера IMAP/POP3
 select type of smtp server	emailadmin	ru	Выбор типа сервера SMTP
@@ -127,7 +140,9 @@ standard pop3 server	emailadmin	ru	Стандартный POP3 сервер
 standard smtp-server	emailadmin	ru	Стандартный SMTP сервер
 starts with	emailadmin	ru	Начинается с
 stationery	emailadmin	ru	Бланк
+templates	emailadmin	ru	Шаблоны
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	ru	Сервер IMAP не сообщил о поддержке выбранного метода авторизации. Пожалуйста свяжитесь со своим системным администратором.
+the mimeparser can not parse this message.	emailadmin	ru	Обработчик MIME не может обработать это сообщение.
 this php has no imap support compiled in!!	emailadmin	ru	Эта версия PHP собрана без поддержки IMAP!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	ru	Для использования соединения TLS, у вас должен быть запущен PHP 5.1.0 или выше.
 unexpected response from server to authenticate command.	emailadmin	ru	Непредусмотренный ответ сервера на команду AUTHENTICATE.
@@ -136,6 +151,7 @@ unexpected response from server to login command.	emailadmin	ru	Непредус
 unknown imap response from the server. server responded: %s	emailadmin	ru	Неизвестный IMAP-ответ от сервера. Сервер сообщил: %s
 unsupported action '%1' !!!	emailadmin	ru	Неподдерживаемое действие '%1' !!!
 update current email address:	emailadmin	ru	Обновить текущий адрес эл.почты:
+use default	emailadmin	ru	Используйте значение по умолчанию
 use ldap defaults	emailadmin	ru	Использовать настройки LDAP по умолчанию
 use predefined username and password defined below	emailadmin	ru	Использовать предопределенное имя пользователя и пароль указанный ниже
 use smtp auth	emailadmin	ru	Использовать авторизацию SMTP

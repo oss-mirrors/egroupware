@@ -1,3 +1,4 @@
+(no subject)	emailadmin	es-es	(Sin asunto)
 account '%1' not found !!!	emailadmin	es-es	¡No se encontró la cuenta '%1'!
 active templates	emailadmin	es-es	Plantillas activas
 add new email address:	emailadmin	es-es	Añadir nueva dirección de correo
@@ -27,6 +28,7 @@ cyrus imap server	emailadmin	es-es	Servidor IMAP Cyrus
 cyrus imap server administration	emailadmin	es-es	Administración del servidor IMAP Cyrus
 default	emailadmin	es-es	predeterminada
 deliver extern	emailadmin	es-es	entrega externa
+displaying html messages is disabled	emailadmin	es-es	Mostrar los mensajes en HTML está desactivado
 do not validate certificate	emailadmin	es-es	No validar el certificado
 do you really want to delete this profile	emailadmin	es-es	¿Realmente desea borrar este perfil?
 do you really want to reset the filter for the profile listing	emailadmin	es-es	Realmente desea restablecer el filtro para la lista de perfiles
@@ -46,7 +48,9 @@ enter your default mail domain (from: user@domain)	emailadmin	es-es	introduzca e
 entry saved	emailadmin	es-es	La entrada ha sido guardada
 error connecting to imap server. %s : %s.	emailadmin	es-es	Error al conectar con el servidor IMAP. %s: %s.
 error connecting to imap server: [%s] %s.	emailadmin	es-es	Error al conectar con el servidor IMAP: [%s] %s.
+error saving account!	emailadmin	es-es	¡Error al guardar la cuenta!
 error saving the entry!!!	emailadmin	es-es	Error guardando el elemento!!!
+event details follow	emailadmin	es-es	A continuación, los detalles del evento
 filtered by account	emailadmin	es-es	filtrado por cuenta
 filtered by group	emailadmin	es-es	filtrado por grupo
 forward also to	emailadmin	es-es	reenviar también a
@@ -65,6 +69,7 @@ imap server logintyp	emailadmin	es-es	Tipo de sesión del servidor IMAP
 imap server name	emailadmin	es-es	Nombre del servidor IMAP
 imap server port	emailadmin	es-es	Puerto del servidor IMAP
 imap/pop3 server name	emailadmin	es-es	Nombre del servidor POP/IMAP
+importance	emailadmin	es-es	Importancia
 in mbyte	emailadmin	es-es	en MBytes
 inactive	emailadmin	es-es	inactivo
 ldap basedn	emailadmin	es-es	basedn para LDAP
@@ -82,6 +87,7 @@ no alternate email address	emailadmin	es-es	Sin dirección de correo alternativa
 no encryption	emailadmin	es-es	Sin cifrar
 no forwarding email address	emailadmin	es-es	Sin dirección de correo para reenviar
 no message returned.	emailadmin	es-es	No se devolvió ningún mensaje.
+no plain text part found	emailadmin	es-es	No se encontró ninguna parte con texto sencillo
 no supported imap authentication method could be found.	emailadmin	es-es	No se pudo encontrar ningún método soportado de identificación IMAP.
 order	emailadmin	es-es	orden
 organisation	emailadmin	es-es	organización
@@ -122,7 +128,9 @@ standard imap server	emailadmin	es-es	Servidor IMAP estándar
 standard pop3 server	emailadmin	es-es	Servidor POP3 estándar
 standard smtp-server	emailadmin	es-es	Servidor SMTP estándar
 stationery	emailadmin	es-es	material preimpreso
+templates	emailadmin	es-es	Plantillas
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	es-es	El servidor IMAP no parece soportar el método de identificación seleccionado. Por favor, póngase en contacto el administrador de su sistema.
+the mimeparser can not parse this message.	emailadmin	es-es	El intérprete mime no puede interpretar este mensaje
 this php has no imap support compiled in!!	emailadmin	es-es	¡¡Esta instalación de PHP no tiene soporte IMAP!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	es-es	Para usar una conexión TLS, debe ejecutar una versión de PHP 5.1.0 o superior.
 unexpected response from server to authenticate command.	emailadmin	es-es	Respuesta inesperada del servidor al comando AUTHENTICATE.
@@ -131,6 +139,7 @@ unexpected response from server to login command.	emailadmin	es-es	Respuesta ine
 unknown imap response from the server. server responded: %s	emailadmin	es-es	Respuesta IMAP desconocida del servidor. El servidor respondió: %s
 unsupported action '%1' !!!	emailadmin	es-es	¡La acción '%1' no está soportada!
 update current email address:	emailadmin	es-es	Actualizar la dirección de correo actual:
+use default	emailadmin	es-es	Usar predeterminado
 use ldap defaults	emailadmin	es-es	usar las opciones predeterminadas para LDAP
 use predefined username and password defined below	emailadmin	es-es	Usar el usuario predefinido y las contraseñas definidas debajo
 use smtp auth	emailadmin	es-es	Usar identificación SMTP

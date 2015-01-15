@@ -1,4 +1,6 @@
 accepted	syncml	pt-br	Aceito
+all incl. rejected	syncml	pt-br	Todos incl. rejeitado
 documentation	common	pt-br	Documentação
 jobs	syncml	pt-br	Trabalhos
+not rejected	syncml	pt-br	Não rejeitado
 primary group	syncml	pt-br	Grupo primário

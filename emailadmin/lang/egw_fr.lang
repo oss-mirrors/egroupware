@@ -1,4 +1,5 @@
 %1 entries deleted.	emailadmin	fr	%1 éléments supprimés.
+(no subject)	emailadmin	fr	Pas de sujet
 account '%1' not found !!!	emailadmin	fr	Le compte %1 n'a pas été trouvé!!!
 active templates	emailadmin	fr	Modèles actifs
 add new email address:	emailadmin	fr	Ajouter une nouvelle adresse email:
@@ -24,10 +25,13 @@ continue	emailadmin	fr	Continuer
 could not complete request. reason given: %s	emailadmin	fr	Impossible d'effectuer la requête. Raison invoquée: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	fr	Impossible d'ouvrir la connexion sécurisée avec le serveur IMAP. %s: %s
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	fr	CRAM-MD5 ou DIGEST-MD5 requiert l'installation du progiciel Auth_SASL
+create new account	emailadmin	fr	Créer un nouveau compte
 cyrus imap server	emailadmin	fr	Serveur Cyrus IMAP
 cyrus imap server administration	emailadmin	fr	Administration du serveur Cyrus IMAP
 default	emailadmin	fr	défaut
 deliver extern	emailadmin	fr	Relais de messagerie
+displaying html messages is disabled	emailadmin	fr	L'affichage des messages html est désactivé.
+displaying plain messages is disabled	emailadmin	fr	L'affichage des texte brut est désactivé.
 do not validate certificate	emailadmin	fr	ne pas valider le certificat
 do you really want to delete this profile	emailadmin	fr	Voulez-vous vraiment supprimer ce profil ?
 do you really want to reset the filter for the profile listing	emailadmin	fr	Voulez-vous vraiment réinitialiser le filtre pour le listage des profils ?
@@ -48,13 +52,17 @@ entry saved	emailadmin	fr	Entrée enregistrée
 error connecting to imap server. %s : %s.	emailadmin	fr	Erreur de connexion avec le serveur IMAP. %s: %s.
 error connecting to imap server: [%s] %s.	emailadmin	fr	Erreur de connexion avec le serveur IMAP. [%s] %s.
 error deleting entry!	emailadmin	fr	Erreur à la suppression de l'entrée !
+error saving account!	emailadmin	fr	Erreur lors de l'enregistrement du compte !
 error saving the entry!!!	emailadmin	fr	Erreur à l'enregistrement de l'entrée !
+event details follow	emailadmin	fr	Les détails de l'événement suivent
 filtered by account	emailadmin	fr	Filtrage par compte
 filtered by group	emailadmin	fr	Filtrage par groupe
 forward also to	emailadmin	fr	Transférer aussi à
 forward email's to	emailadmin	fr	Transférer les emails à
 forward only	emailadmin	fr	Seulement transférer
 global options	emailadmin	fr	Options globales
+hostname or ip	emailadmin	fr	Serveur hôte ou IP
+if different from email address	emailadmin	fr	Si différent de l'adresse mail
 if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	fr	Si vous utilisez SSl ou TLS, vous devez avoir chargé l'extension PHP openssl
 if you specify port 5190 as sieve server port, you enforce ssl for sieve (server must support that)	emailadmin	fr	Si vous spécifiez le port 5190 comme port du serveur SIEVE, vous forcer le SSL pour SIEVE (et le serveur doit le supporter...)
 imap admin password	admin	fr	Mot de passe de l'administrateur IMAP
@@ -68,6 +76,7 @@ imap server logintyp	emailadmin	fr	Type d'authentification IMAP
 imap server name	emailadmin	fr	Nom du serveur IMAP
 imap server port	emailadmin	fr	Port IMAP
 imap/pop3 server name	emailadmin	fr	Nom du serveur IMAP/POP3
+importance	emailadmin	fr	Importance
 in mbyte	emailadmin	fr	en Mo
 inactive	emailadmin	fr	Inactif
 ldap basedn	emailadmin	fr	LDAP DN de base
@@ -85,6 +94,7 @@ no alternate email address	emailadmin	fr	Pas d'adresse email alternative
 no encryption	emailadmin	fr	Pas de chiffrement
 no forwarding email address	emailadmin	fr	Pas d'adresse email de transfert
 no message returned.	emailadmin	fr	Aucun message n'est retourné.
+no plain text part found	emailadmin	fr	aucune section texte plein trouvée
 no supported imap authentication method could be found.	emailadmin	fr	Il n'a été trouvé aucune méthode d'authentification IMAP supportée
 order	emailadmin	fr	Ordre
 organisation	emailadmin	fr	Organisation
@@ -126,7 +136,9 @@ standard pop3 server	emailadmin	fr	Serveur POP3 standard
 standard smtp-server	emailadmin	fr	Serveur SMTP standard
 starts with	emailadmin	fr	commence par
 stationery	emailadmin	fr	Entrepôt
+templates	emailadmin	fr	Templates
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	fr	Le serveur IMAP ne supporterait pas la méthode d'authentication sélectionnée. Veuillez contacter votre administrateur système.
+the mimeparser can not parse this message.	emailadmin	fr	L'analyseur mime ne peut pas décoder ce message.
 this php has no imap support compiled in!!	emailadmin	fr	Ce PHP n'est pas compilé avec le support de l'IMAP !!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	fr	Pour utiliser une connexion TLS, vous devez utiliser une version PHP 5.1.0 ou supérieure.
 unexpected response from server to authenticate command.	emailadmin	fr	Réponse inattendue du serveur à la commande AUTHENTICATE.
@@ -135,6 +147,7 @@ unexpected response from server to login command.	emailadmin	fr	Réponse inatten
 unknown imap response from the server. server responded: %s	emailadmin	fr	Réponse IMAP inconnue du serveur. Le serveur a répondu: %s
 unsupported action '%1' !!!	emailadmin	fr	Action '%1' non supportée !
 update current email address:	emailadmin	fr	Mettre à jour l'adresse email actuelle :
+use default	emailadmin	fr	Utiliser le défaut
 use ldap defaults	emailadmin	fr	Utiliser les paramètres LDAP par défaut
 use predefined username and password defined below	emailadmin	fr	Utiliser les login/mots de passe pré-définis ci-dessous
 use smtp auth	emailadmin	fr	Utiliser l'authentification SMTP

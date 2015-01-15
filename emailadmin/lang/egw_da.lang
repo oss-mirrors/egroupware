@@ -1,3 +1,4 @@
+(no subject)	emailadmin	da	(ingen emne)
 add profile	emailadmin	da	Tilføj Profil
 admin dn	emailadmin	da	admin dn
 admin password	emailadmin	da	admin adgangskode
@@ -16,6 +17,7 @@ email address	emailadmin	da	e-mail adresse
 enable cyrus imap server administration	emailadmin	da	aktivere Cyrus IMAP server administration
 enable sieve	emailadmin	da	aktiver Sieve
 enter your default mail domain (from: user@domain)	emailadmin	da	Indtast dit standart post domæne (fra: bruger@domæne)
+event details follow	emailadmin	da	Hændelses detajler følger
 forward also to	emailadmin	da	videresend også til
 forward email's to	emailadmin	da	videresend e-mails til
 forward only	emailadmin	da	videresend kun
@@ -64,6 +66,7 @@ standard imap server	emailadmin	da	Standart IMAP server
 standard pop3 server	emailadmin	da	Standart POP3 server
 standard smtp-server	emailadmin	da	Standart SMTP server
 this php has no imap support compiled in!!	emailadmin	da	Der er ikke understøttelse for IMAP i din PHP kode.
+use default	emailadmin	da	Brug standard
 use ldap defaults	emailadmin	da	brug LDAP standarter
 use smtp auth	emailadmin	da	Brug SMTP autorisation
 use tls authentication	emailadmin	da	Brug TLS autorisation

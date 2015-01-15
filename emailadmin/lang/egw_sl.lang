@@ -1,3 +1,4 @@
+(no subject)	emailadmin	sl	(brez zadeve)
 account '%1' not found !!!	emailadmin	sl	Račun '%1' ni bil najden!
 add new email address:	emailadmin	sl	Dodaj nov e-naslov:
 add profile	emailadmin	sl	Dodaj profil
@@ -26,6 +27,7 @@ cyrus imap server	emailadmin	sl	Cyrus IMAP strežnik
 cyrus imap server administration	emailadmin	sl	Upravljanje Cyrus IMAP strežnika
 default	emailadmin	sl	Privzeto
 deliver extern	emailadmin	sl	Zunanja dostava
+displaying html messages is disabled	emailadmin	sl	Prikazovanje sporočil HTML je onemogočeno
 do not validate certificate	emailadmin	sl	Ne preverjaj certifikata
 do you really want to delete this profile	emailadmin	sl	Ali res želite izbrisati ta profil?
 do you really want to reset the filter for the profile listing	emailadmin	sl	Res želite ponastaviti filter za listanje profilov?
@@ -46,6 +48,7 @@ entry saved	emailadmin	sl	Vnos shranjen
 error connecting to imap server. %s : %s.	emailadmin	sl	Napaka pri povezavi s strežnikom IMAP. %s: %s.
 error connecting to imap server: [%s] %s.	emailadmin	sl	Napaka pri povezavi s strežnikom IMAP: [%s] %s.
 error saving the entry!!!	emailadmin	sl	Napaka pri shranjevanju vnosa!
+event details follow	emailadmin	sl	Sledijo podrobnosti dogodka
 filtered by account	emailadmin	sl	Filtrirano s strani računa
 filtered by group	emailadmin	sl	Filtrirano s strani skupine
 forward also to	emailadmin	sl	Posreduj tudi
@@ -80,6 +83,7 @@ no alternate email address	emailadmin	sl	Ni alternativnega E-naslova
 no encryption	emailadmin	sl	Brez šifriranja
 no forwarding email address	emailadmin	sl	Ni E-naslova za posredovanje
 no message returned.	emailadmin	sl	Ni vrnjenega sporočila.
+no plain text part found	emailadmin	sl	Ni najdenega čistega besedila
 no supported imap authentication method could be found.	emailadmin	sl	Ni najdena metoda avtentikacije IMAP.
 order	emailadmin	sl	Vrstni red
 organisation	emailadmin	sl	Organizacija
@@ -119,7 +123,9 @@ standard imap server	emailadmin	sl	Standardni IMAP strežnik
 standard pop3 server	emailadmin	sl	Standardni POP3 strežnik
 standard smtp-server	emailadmin	sl	Standardni SMTP strežnik
 stationery	emailadmin	sl	Stacionarno
+templates	emailadmin	sl	Predloge
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	sl	Strežnik IMAP ne podpira izbrane metode avtentikacije. Kontaktirajte sistemskega upravitelja.
+the mimeparser can not parse this message.	emailadmin	sl	Mimeparser ne more prebrati tega sporočila.
 this php has no imap support compiled in!!	emailadmin	sl	Ta PHP ne vsebuje podpore za IMAP!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	sl	Če želite uporabljati povezavo TLS, morate imeti nameščeno različico PHP 5.1.0 ali višjo.
 unexpected response from server to authenticate command.	emailadmin	sl	Nepričakovan odgovor strežnika na ukaz AUTHENTICATE.
@@ -128,6 +134,7 @@ unexpected response from server to login command.	emailadmin	sl	Nepričakovan od
 unknown imap response from the server. server responded: %s	emailadmin	sl	Neznan odgovor IMAP s strani strežnika. Odgovor strežnika: %s
 unsupported action '%1' !!!	emailadmin	sl	Nepodprto dejanje '%1'!
 update current email address:	emailadmin	sl	Posodobi trenutni e-naslov:
+use default	emailadmin	sl	Uporabi privzeto
 use ldap defaults	emailadmin	sl	Uporabi privzeto za LDAP
 use predefined username and password defined below	emailadmin	sl	Uporabi spodnje, vnaprej določeno uporabniško ime in geslo
 use smtp auth	emailadmin	sl	Uporabi SMTP avtentikacijo

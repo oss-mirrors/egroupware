@@ -1,3 +1,4 @@
+(no subject)	emailadmin	hu	(nincs tárgy)
 account '%1' not found !!!	emailadmin	hu	'%1' felhasználói azonosító nem található!
 active templates	emailadmin	hu	Aktív vázlatok
 add new email address:	emailadmin	hu	Új email cím hozzáadása:
@@ -27,6 +28,7 @@ cyrus imap server	emailadmin	hu	Cyrus IMAP-kiszolgáló
 cyrus imap server administration	emailadmin	hu	Cyrus IMAP-kiszolgáló adminisztrációja
 default	emailadmin	hu	Alapértelmezett
 deliver extern	emailadmin	hu	külső kézbesítés
+displaying html messages is disabled	emailadmin	hu	HTML levelek megjelenítése tiltva
 do not validate certificate	emailadmin	hu	ne ellenőrizze a tanúsítványt
 do you really want to delete this profile	emailadmin	hu	Valóban törölni kívánja ezt a profilt
 do you really want to reset the filter for the profile listing	emailadmin	hu	Valóban törölni szeretnéd a profillista szűrőt?
@@ -46,7 +48,9 @@ enter your default mail domain (from: user@domain)	emailadmin	hu	Adja meg az ala
 entry saved	emailadmin	hu	Bejegyzés elmentve
 error connecting to imap server. %s : %s.	emailadmin	hu	Hiba történt az IMAP szerverhez csatlakozás közben. %s : %s
 error connecting to imap server: [%s] %s.	emailadmin	hu	Hiba történt az IMAP szerverhez csatlakozás közben. [%s ]: %s
+error saving account!	emailadmin	hu	Felhasználói hozzáférés mentése sikertelen!
 error saving the entry!!!	emailadmin	hu	Bejegyzés mentése közben hiba történt!!!
+event details follow	emailadmin	hu	Esemény jellemzőinek követése
 filtered by account	emailadmin	hu	Fiók szerint szűrve
 filtered by group	emailadmin	hu	Csoport szerint szűrve
 forward also to	emailadmin	hu	továbbítsd ide is
@@ -65,6 +69,7 @@ imap server logintyp	emailadmin	hu	IMAP szerver bejelentkezési típusa
 imap server name	emailadmin	hu	IMAP szerver neve
 imap server port	emailadmin	hu	IMAP szerver portja
 imap/pop3 server name	emailadmin	hu	IMAP/POP3 szerver neve
+importance	emailadmin	hu	Fontosság
 in mbyte	emailadmin	hu	MBájtban
 inactive	emailadmin	hu	inaktív
 ldap basedn	emailadmin	hu	LDAP basedn
@@ -82,6 +87,7 @@ no alternate email address	emailadmin	hu	nincs alternatív email cím
 no encryption	emailadmin	hu	titkosítás  nélkül
 no forwarding email address	emailadmin	hu	nincs továbbküldési email cím
 no message returned.	emailadmin	hu	Nincs visszaadott üzenet.
+no plain text part found	emailadmin	hu	nem található egyszerű szöveges tartalom
 no supported imap authentication method could be found.	emailadmin	hu	Nem található támogatott IMAP hitelesítés.
 order	emailadmin	hu	Rendezés
 organisation	emailadmin	hu	Szervezet
@@ -122,7 +128,9 @@ standard imap server	emailadmin	hu	Szabványos IMAP-kiszolgáló
 standard pop3 server	emailadmin	hu	Szabványos POP3-kiszolgáló
 standard smtp-server	emailadmin	hu	Szabványos SMTP-kiszolgáló
 stationery	emailadmin	hu	Irodaszer
+templates	emailadmin	hu	Sablonok
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	hu	Az IMAP szerver úgy tűnik nem támogatja a kiválasztott hitelesítést. Lépjen kapcsolatba az adminisztrátorral.
+the mimeparser can not parse this message.	emailadmin	hu	A MIME feldolgozó nem tudta feldolgozni ezt az üzenetet.
 this php has no imap support compiled in!!	emailadmin	hu	A használt PHP verzió nem tartalmaz IMAP támogatást! (telepíteni kell)
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	hu	TLS kapcsolat használatához legalább PHP 5.1.0-val kell rendelkeznie.
 unexpected response from server to authenticate command.	emailadmin	hu	Váratlan válasz a szervertől az AUTHENTICATE parancsra.
@@ -131,6 +139,7 @@ unexpected response from server to login command.	emailadmin	hu	Váratlan válas
 unknown imap response from the server. server responded: %s	emailadmin	hu	Váratlan válasz a szervertől: %s
 unsupported action '%1' !!!	emailadmin	hu	Nem támogatott művelet '%1' !!!
 update current email address:	emailadmin	hu	Jelenlegi email cím frissítése:
+use default	emailadmin	hu	Használja az alapértelmezettet
 use ldap defaults	emailadmin	hu	használja az LDAP alapbeállításokat
 use predefined username and password defined below	emailadmin	hu	Használd a lent megadott felhasználónevet és jelszót
 use smtp auth	emailadmin	hu	SMTP hitelesítés használata

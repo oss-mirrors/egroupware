@@ -34,6 +34,7 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 existing links	bookmarks	it	Collegamenti esistenti
 export	bookmarks	it	esporta
 export bookmarks	common	it	Esporta Segnalibri
+export definition to use for nextmatch export	bookmarks	it	Definizione di esportazione da utilizzare per l'esportazione "nextmatch" (corrispondenza successiva)
 export definitition to use for nextmatch export	bookmarks	it	Esporta la definizione da utilizzare per la esportazione
 fewer	bookmarks	it	Di meno
 filter by	bookmarks	it	Filtra per
@@ -46,11 +47,13 @@ highest	bookmarks	it	Più alto
 history	bookmarks	it	Storico
 i thought you would be interested in the following link(s):	bookmarks	it	Ho pensato che saresti stato interessato ai seguenti link:
 if you specify an export definition, it will be used when you export	bookmarks	it	Se specifichi una definizione di esportazione, allora verrà usata durante la relativa operazione
+if you specify an export definition, it will be used when you export*	bookmarks	it	Verrà usata quando esporti, se specifichi qui una definizione di esportazione
 import bookmarks	common	it	Importa segnalibri
 like	bookmarks	it	come
 links	bookmarks	it	Collegamenti
 list view	bookmarks	it	elenco
 lowest	bookmarks	it	Più basso
+mail	bookmarks	it	mail
 mail this bookmark	bookmarks	it	Invia questo segnalibro
 mail-this-link message sent to %1.	bookmarks	it	messaggio invia-questo-link inviato a %1.
 mass update:	bookmarks	it	Aggiornamento cumulativo:
@@ -62,6 +65,7 @@ netscape bookmark file	bookmarks	it	File Segnalibri Netscape
 netscape bookmark filename is required!	bookmarks	it	NomeFile dei Segnalibri di Netscape è richiesto !
 new	bookmarks	it	Nuovo
 new bookmark	bookmarks	it	nuovo segnalibro
+old fixed definition	bookmarks	it	Vecchia definizione fissa
 or	bookmarks	it	o
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	it	Prego riempi <B>A Indirizzo E-Mail</B>,<B>Oggetto</B>, e <B>Messaggio</B>!
 please select the categories to export	bookmarks	it	Prego seleziona le categorie da esportare

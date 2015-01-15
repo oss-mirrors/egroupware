@@ -1,4 +1,5 @@
 %1 entries deleted.	emailadmin	id	%1 entri dihapus.
+(no subject)	emailadmin	id	(tanpa subyek)
 account '%1' not found !!!	emailadmin	id	Akoun '%1' tidak ditemukan !!!
 active templates	emailadmin	id	Templat yang aktif
 add new email address:	emailadmin	id	Tambah alamat email baru:
@@ -34,7 +35,9 @@ encrypted connection	emailadmin	id	koneksi ter-enkripsi
 encryption settings	emailadmin	id	Pengaturan Enkripsi
 enter your default mail domain (from: user@domain)	emailadmin	id	Berikan nama domain email anda (dari: pengguna@domain)
 entry saved	emailadmin	id	Entri disimpan
+error saving account!	emailadmin	id	Error menyimpan akoun!
 error saving the entry!!!	emailadmin	id	Error saving the entry!!!
+event details follow	emailadmin	id	Berikut adalah detil Kegiatan
 filtered by account	emailadmin	id	saringan menurut Akoun
 filtered by group	emailadmin	id	saringan menurut Kelompok
 forward only	emailadmin	id	Hanya Forward
@@ -43,6 +46,7 @@ imap admin password	admin	id	password admin IMAP
 imap admin user	admin	id	admin IMAP
 imap c-client version < 2001	emailadmin	id	IMAP C-Client Version < 2001
 imap server	emailadmin	id	IMAP Server
+importance	emailadmin	id	Importance
 in mbyte	emailadmin	id	dalam MByte
 inactive	emailadmin	id	tidak aktif
 ldap basedn	emailadmin	id	LDAP basedn
@@ -84,8 +88,10 @@ standard pop3 server	emailadmin	id	Server POP3 Standar
 standard smtp-server	emailadmin	id	Server SMTP Standar
 starts with	emailadmin	id	diawali dengan
 stationery	emailadmin	id	Stationery
+templates	emailadmin	id	Templat
 unexpected response from server to login command.	emailadmin	id	Unexpected response from server to LOGIN command.
 update current email address:	emailadmin	id	Memperbarui alamat email saat ini:
+use default	emailadmin	id	Gunakan bawaan
 username (standard)	emailadmin	id	namapengguna (standar)
 username/password defined by admin	emailadmin	id	Namapengguna/Password dibuat oleh admin
 username@domainname (virtual mail manager)	emailadmin	id	username@domainname (Virtual MAIL ManaGeR)

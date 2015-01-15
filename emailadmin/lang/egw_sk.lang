@@ -1,4 +1,5 @@
 %1 entries deleted.	emailadmin	sk	%1 položiek odstránených.
+(no subject)	emailadmin	sk	(bez predmetu)
 account '%1' not found !!!	emailadmin	sk	Účet '%1' sa nenašiel !!!
 active templates	emailadmin	sk	Aktívne šablóny
 add new email address:	emailadmin	sk	Pridať novú E-mailovú adresu:
@@ -21,6 +22,7 @@ can be used by group	emailadmin	sk	môže byť použité skupinou
 can be used by user	emailadmin	sk	môže byť použité používateľom
 connection dropped by imap server.	emailadmin	sk	Spojenie prerušené IMAP serverom.
 continue	emailadmin	sk	Pokračovať
+could not append message:	emailadmin	sk	Nepodarilo sa pripojiť správu:
 could not complete request. reason given: %s	emailadmin	sk	Nemožno dokončiť požiadavku. Dôvod: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	sk	Nepodarilo sa nadviazať zabezpečené pripojenie k IMAP serveru. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	sk	CRAM-MD5 alebo DIGEST-MD5 vyžaduje, aby bol nainštalovaný balík Auth_SASL.
@@ -28,6 +30,8 @@ cyrus imap server	emailadmin	sk	Cyrus IMAP Server
 cyrus imap server administration	emailadmin	sk	Správa servera Cyrus IMAP
 default	emailadmin	sk	predvolené
 deliver extern	emailadmin	sk	doručiť extern
+displaying html messages is disabled	emailadmin	sk	Zobrazovanie HTML správ je vypnuté
+displaying plain messages is disabled	emailadmin	sk	Zobrazovanie správ ako čistého textu je vypnuté.
 do not validate certificate	emailadmin	sk	neoveriť certifikát
 do you really want to delete this profile	emailadmin	sk	Naozaj chcete odstrániť tento Profil
 do you really want to reset the filter for the profile listing	emailadmin	sk	Naozaj chcete vynulovať filter pre výpis profilu?
@@ -48,7 +52,10 @@ entry saved	emailadmin	sk	Položka bola uložená
 error connecting to imap server. %s : %s.	emailadmin	sk	Chyba počas pripájania k IMAP serveru. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	sk	Chyba počas pripájania k IMAP serveru: [%s] %s.
 error deleting entry!	emailadmin	sk	Chyba pri odstraňovaní položky!
+error saving account!	emailadmin	sk	Chyba pri ukladaní účtu!
 error saving the entry!!!	emailadmin	sk	Chyba pri ukladaní položky!!!
+event details follow	emailadmin	sk	Podrobnosti o udalosti:
+file rejected, no %2. is:%1	emailadmin	sk	Súbor odmietnutý, žiadny %2. Je:%1
 filtered by account	emailadmin	sk	filtrované podľa Účtu
 filtered by group	emailadmin	sk	filtrované podľa Skupiny
 forward also to	emailadmin	sk	preposlať taktiež (komu)
@@ -67,6 +74,7 @@ imap server logintyp	emailadmin	sk	typ prihlásenia IMAP servera
 imap server name	emailadmin	sk	Názov IMAP servera
 imap server port	emailadmin	sk	port IMAP servera
 imap/pop3 server name	emailadmin	sk	názov IMAP/POP3 servera
+importance	emailadmin	sk	Dôležitosť
 in mbyte	emailadmin	sk	v Megabajtoch
 inactive	emailadmin	sk	neaktívne
 ldap basedn	emailadmin	sk	LDAP basedn
@@ -83,6 +91,7 @@ no alternate email address	emailadmin	sk	žiadna alternatívna E-mailová adresa
 no encryption	emailadmin	sk	bez šifrovania
 no forwarding email address	emailadmin	sk	žiadna emailová adresa pre preposielanie
 no message returned.	emailadmin	sk	Žiadne správy sa nevrátili.
+no plain text part found	emailadmin	sk	Nebola nájdená žiadna čisto textová časť
 no supported imap authentication method could be found.	emailadmin	sk	Nenašiel som žiadnu podporovanú overovaciu metódu IMAP.
 order	emailadmin	sk	Poradie
 organisation	emailadmin	sk	Organizácia
@@ -95,6 +104,7 @@ pop3 server hostname or ip address	emailadmin	sk	názov (hostname) alebo IP adre
 pop3 server port	emailadmin	sk	port POP3 servera
 port	emailadmin	sk	Port
 postfix with ldap	emailadmin	sk	Postfix + LDAP
+processing of file %1 failed. failed to meet basic restrictions.	emailadmin	sk	Spracovanie súboru %1 zlyhalo. Nesplnil základné obmedzenia.
 profile access rights	emailadmin	sk	prístupové práva profilu
 profile is active	emailadmin	sk	profil je aktívny
 profile list	emailadmin	sk	Zoznam profilov
@@ -103,7 +113,10 @@ qmaildotmode	emailadmin	sk	qmail bodkový režim
 quota settings	emailadmin	sk	Nastavenia kvóty
 quota size in mbyte	emailadmin	sk	veľkosť kvóty v Megabajtoch
 remove	emailadmin	sk	Odstrániť
+required pear class mail/mimedecode.php not found.	emailadmin	sk	Nenašla sa požadovaná trieda PEAR Mail / mimeDecode.php
 reset filter	emailadmin	sk	vynulovať filter
+save of message %1 failed. could not save message to folder %2 due to: %3	emailadmin	sk	Uloženie správy %1 zlyhalo. Nepodarilo sa uložiť správu do priečinka %2 z dôvodu: %3
+saving of message %1 failed. destination folder %2 does not exist.	emailadmin	sk	Ukladanie správy %1 zlyhalo. Cieľový priečinok %2 neexistuje.
 select type of imap server	emailadmin	sk	Vyberte typ IMAP servera
 select type of imap/pop3 server	emailadmin	sk	Vyberte typ IMAP/POP3 servera
 select type of smtp server	emailadmin	sk	Vyberte typ SMTP servera
@@ -123,7 +136,9 @@ standard imap server	emailadmin	sk	Štandardný IMAP server
 standard pop3 server	emailadmin	sk	Štandardný POP3 server
 standard smtp-server	emailadmin	sk	Štandardný SMTP server
 starts with	emailadmin	sk	začať s
+templates	emailadmin	sk	Šablóny
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	sk	Tento IMAP server, zdá sa, nepodporuje zvolenú overovaciu metódu. Prosím kontaktujte správcu systému.
+the mimeparser can not parse this message.	emailadmin	sk	Analyzátor MIME nedokázal spracovať túto správu.
 this php has no imap support compiled in!!	emailadmin	sk	Toto PHP nemá zakompilovanú podporu pre IMAP !!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	sk	Ak chcete používať pripojenie TLS, musíte fungovať na verzii PHP 5.1.0 alebo vyššej.
 unexpected response from server to authenticate command.	emailadmin	sk	Neočakávaná odpoveď od servera na príkaz AUTENTICATE.
@@ -132,6 +147,7 @@ unexpected response from server to login command.	emailadmin	sk	Neočakávaná o
 unknown imap response from the server. server responded: %s	emailadmin	sk	Neznáma IMAP odpoveď od servera. Server odpovedal: %s
 unsupported action '%1' !!!	emailadmin	sk	Nepodporovaná akcia '%1' !!!
 update current email address:	emailadmin	sk	Aktualizovať súčasnú E-mailovú adresu:
+use default	emailadmin	sk	Použiť predvolené
 use ldap defaults	emailadmin	sk	Použiť predvolené hodnoty LDAP
 use predefined username and password defined below	emailadmin	sk	Použiť preddefinované používateľské meno a heslo, definované nižšie
 use smtp auth	emailadmin	sk	Použiť SMTP overovanie

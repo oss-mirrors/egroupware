@@ -46,7 +46,6 @@ do not validate certificate	emailadmin	it	Non convalidare il certificato
 do you really want to delete this profile	emailadmin	it	Vuoi davvero cancellare questo profilo?
 do you really want to reset the filter for the profile listing	emailadmin	it	Vuoi davvero reimpostare il filtro per l'elenco dei profili?
 domainname	emailadmin	it	nome dominio
-drafts	emailadmin	it	Bozze
 edit email settings	emailadmin	it	modifica impostazioni email
 email account active	emailadmin	it	account email attivo
 email address	emailadmin	it	indirizzo email
@@ -68,7 +67,6 @@ error saving the entry!!!	emailadmin	it	Errore durante il salvataggio dell'inser
 error, no username!	emailadmin	it	Errore, nessun nome utente!
 event details follow	emailadmin	it	Errore, manca il nome utente
 failed to delete account!	emailadmin	it	Errore nella cancellazione dell'account
-field must not be empty !!!	emailadmin	it	Il campo non può essere vuoto!!!
 file rejected, no %2. is:%1	emailadmin	it	File rifiutato, non %2. è: %1
 filtered by account	emailadmin	it	Filtrati per account
 filtered by group	emailadmin	it	Filtrati per gruppo
@@ -76,7 +74,6 @@ forward also to	emailadmin	it	Inoltra anche a
 forward email's to	emailadmin	it	Inoltra email a
 forward only	emailadmin	it	Inoltra solo
 forward only disables imap mailbox / storing of mails and just forwards them to given address.	emailadmin	it	L'inoltro esclusivo disabilita l'archiviazione delle email degli account IMAP e si limita ad inoltrarle all'indirizzo specificato.
-from	emailadmin	it	mittente
 global options	emailadmin	it	Opzioni globali
 hostname or ip	emailadmin	it	Nome del computer o indirizzo IP
 how username get constructed	emailadmin	it	Come viene costruito il nome utente
@@ -96,12 +93,9 @@ imap server logintyp	emailadmin	it	Tipo login server IMAP
 imap server name	emailadmin	it	Nome del server IMAP
 imap server port	emailadmin	it	Porta server IMAP
 imap/pop3 server name	emailadmin	it	Nome server IMAP/POP3
-import of message %1 failed. no contacts to merge and send to specified.	emailadmin	it	Importazione del messaggio %1 fallita. nessun contatto da unificare ed inviare a quello specificato.
 importance	emailadmin	it	importanza
 in mbyte	emailadmin	it	in MByte
 inactive	emailadmin	it	Inattivo
-inbox	emailadmin	it	posta in ingresso
-junk	emailadmin	it	spazzatura
 ldap basedn	emailadmin	it	LDAP basedn
 ldap server	emailadmin	it	server LDAP
 ldap server accounts dn	emailadmin	it	DN account server LDAP
@@ -122,11 +116,8 @@ no message returned.	emailadmin	it	nessun messaggio ricevuto
 no plain text part found	emailadmin	it	non è stata trovata una parte in testo semplice
 no sieve support detected, either fix configuration manually or leave it switched off.	emailadmin	it	Non è stato rilevato il supporto per sieve, verificare la configurazione manualmente o disabilitarlo.
 no supported imap authentication method could be found.	emailadmin	it	Non è stato trovato alcun metodo di autenticazione supportato da IMAP
-notification folders updated.	emailadmin	it	cartelle di notifica aggiornate.
 order	emailadmin	it	ordine
 organisation	emailadmin	it	organizzazione
-organization	emailadmin	it	organizzazione
-outbox	emailadmin	it	Posta in Uscita
 plesk can't rename users --> request ignored	emailadmin	it	Plesk non può rinominare gli utenti --> richiesta ignorata
 plesk imap server (courier)	emailadmin	it	IMAP server Plesk (Courier)
 plesk mail script '%1' not found !!!	emailadmin	it	Script Plesk '%1' non trovato
@@ -155,8 +146,6 @@ select type of imap server	emailadmin	it	Seleziona il tipo di server IMAP
 select type of imap/pop3 server	emailadmin	it	Seleziona il tipo si server IMAP/POP3
 select type of smtp server	emailadmin	it	Seleziona il tipo di server SMTP
 send using this email-address	emailadmin	it	Invia utilizzando questo indirizzo email
-sender	emailadmin	it	mittente
-sent	emailadmin	it	Inviato
 server settings	emailadmin	it	impostazioni server
 sieve server hostname or ip address	emailadmin	it	Nome host o IP server Sieve
 sieve server port	emailadmin	it	porta server Sieve
@@ -186,13 +175,13 @@ the mimeparser can not parse this message.	emailadmin	it	Il parser MIME non ries
 this is not a personal mail account!\n\naccount will be deleted for all users!\n\nare you really sure you want to do that?	emailadmin	it	Questo non è un account personale di email!\n\nL'account verrà cancellato per TUTTI gli utenti!\n\nConfermi?
 this php has no imap support compiled in!!	emailadmin	it	PHP non è stato compilato con supporto IMAP!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	it	Per utilizzare una connessione TLS devi utilizzare una versione PHP 5.1.0 o superiore
-trash	emailadmin	it	Cestino
 unexpected response from server to authenticate command.	emailadmin	it	Risposta inaspettata dal server al comando AUTHENTICATE
 unexpected response from server to digest-md5 response.	emailadmin	it	Risposta inaspettata dal server alla risposta Digest-MD5
 unexpected response from server to login command.	emailadmin	it	Risposta inaspettata dal server al comando LOGIN
 unknown imap response from the server. server responded: %s	emailadmin	it	Riposta non riconosciuta dal server IMAP %s
 unsupported action '%1' !!!	emailadmin	it	Azione non supportata '%1' !!!
 update current email address:	emailadmin	it	Aggiorna l'indirizzo email attuale:
+use default	emailadmin	it	Usa il predefinito
 use ldap defaults	emailadmin	it	usa predefiniti LDAP
 use predefined username and password defined below	emailadmin	it	Utilizza il nome utente e la password definiti qui sotto
 use smtp auth	emailadmin	it	usa autenticazione SMTP

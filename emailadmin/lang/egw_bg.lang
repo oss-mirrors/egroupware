@@ -1,3 +1,4 @@
+(no subject)	emailadmin	bg	(без тема)
 admin password	emailadmin	bg	Парола на администратора
 admin username	emailadmin	bg	Потребителско име на администратора
 bad login name or password.	emailadmin	bg	Невалидно име или парола.
@@ -9,6 +10,7 @@ could not complete request. reason given: %s	emailadmin	bg	Неуспешно и
 could not open secure connection to the imap server. %s : %s.	emailadmin	bg	Неуспешно изграждане на криптирана връзка с IMAP сървъра. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	bg	CRAM-MD5 или DIGEST-MD5 изискват инсталиране на пакета Auth_SASL.
 default	emailadmin	bg	по подразбиране
+displaying html messages is disabled	emailadmin	bg	Показването на HTML съобщения е забранено!
 do not validate certificate	emailadmin	bg	не проверявай сертификати
 email address	emailadmin	bg	E-Mail адрес
 encrypted connection	emailadmin	bg	криптирана връзка
@@ -16,6 +18,7 @@ entry saved	emailadmin	bg	Записът е запазен
 error connecting to imap server. %s : %s.	emailadmin	bg	Грешка при връзка с IMAP сървъра. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	bg	Грешка при връзка с IMAP сървъра: [%s] %s.
 error saving the entry!!!	emailadmin	bg	Грешка при запис!!!
+event details follow	emailadmin	bg	Следват подробности за събитието
 if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	bg	Ако използвате SSL или TLS, трябва да заредите OpenSSL разширението на PHP.
 imap server	emailadmin	bg	IMAP сървър
 imap server closed the connection.	emailadmin	bg	IMAP сървъра прекрати връзката.
@@ -23,6 +26,7 @@ imap server closed the connection. server responded: %s	emailadmin	bg	IMAP съ�
 mail settings	admin	bg	Настройки на пощата
 no encryption	emailadmin	bg	без криптиране
 no message returned.	emailadmin	bg	Не са открити съобщения
+no plain text part found	emailadmin	bg	липсва текстова част
 no supported imap authentication method could be found.	emailadmin	bg	Не се поддържа зададеният метод за IMAP оторизация.
 order	emailadmin	bg	Ред
 organisation	emailadmin	bg	организация
@@ -30,6 +34,7 @@ port	emailadmin	bg	порт
 remove	emailadmin	bg	премахване
 sieve settings	emailadmin	bg	Настройки на Sieve
 smtp settings	emailadmin	bg	SMTP настройки
+templates	emailadmin	bg	Шаблони
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	bg	IMAP сървъра вероятно не поддържа избрания метод на оторизация. Моля, свържете се с Вашия системен Администратор!
 this php has no imap support compiled in!!	emailadmin	bg	PHP няма включена поддръжка за IMAP!!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	bg	За да използвате TLS е необходима версия на PHP 5.1.0 или по-висока.
@@ -37,6 +42,7 @@ unexpected response from server to authenticate command.	emailadmin	bg	Неоч�
 unexpected response from server to digest-md5 response.	emailadmin	bg	Неочакван отговор от сървъра на Digest-MD5.
 unexpected response from server to login command.	emailadmin	bg	Неочакван отговор от сървъра на команда LOGIN.
 unknown imap response from the server. server responded: %s	emailadmin	bg	Неизвестен отговор от IMAP сървъра: %s
+use default	emailadmin	bg	Използване на стойност по подразбиране
 use smtp auth	emailadmin	bg	използвай SMTP оторизация
 users can define their own emailaccounts	emailadmin	bg	Потребителите могат да дефинират собствени E-Mail акаунти
 you have received a new message on the	emailadmin	bg	Получено е ново съобщение на

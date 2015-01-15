@@ -1,3 +1,4 @@
+(no subject)	emailadmin	lv	(nav temata)
 add profile	emailadmin	lv	Pievienot profilu
 admin dn	emailadmin	lv	administratora dn
 admin password	emailadmin	lv	administratora parole
@@ -59,6 +60,7 @@ standard imap server	emailadmin	lv	Standarta IMAP serveris
 standard pop3 server	emailadmin	lv	Standarta POP3 serveris
 standard smtp-server	emailadmin	lv	Standarta SMTP serveris
 this php has no imap support compiled in!!	emailadmin	lv	Šim PHP nav IMAP nokompilēts atbalsts
+use default	emailadmin	lv	Lietot noklusējumu
 use ldap defaults	emailadmin	lv	lieto LDAP noklusējumus
 use smtp auth	emailadmin	lv	Lieto SMTP autentifikāciju
 use tls authentication	emailadmin	lv	Lieto TLS autentifikāciju
