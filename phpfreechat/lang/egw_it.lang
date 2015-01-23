@@ -1,1 +1,14 @@
-global categories	phpfreechat	it	Categorie Globali
+%1 is leaving channel %2 by closing his chat window	phpfreechat	it	%1 sta lasciando il canale %2 chiudendo la finestra della chat
+%1 is reconnecting to channel %2	phpfreechat	it	%1 si sta riconnettendo al canale %2
+are users allowed to change their nicknames in phpfreechat and are allowed to connect multiple times	admin	it	E' permesso agli utenti di cambiare nickname nella Chat e di connettersi più volte?
+egroupware chat	phpfreechat	it	EGroupware Chat
+frozen nick	admin	it	Nick "congelato"
+global categories	phpfreechat	it	Categorie globali
+maximum nickname length (if not set the length of 64 is used. as it is the maximum lenght of usernames within egroupware)	admin	it	Lunghezza massima del nickname (predefinito se non impostato 64) essendo anche il limite massimo per i nomi account in EPL
+nick length	admin	it	Lunghezza nickname
+phpfreechat	common	it	Chat
+phpfreechat configuration	admin	it	Configurazione della chat
+phpfreechat integration into egroupware	phpfreechat	it	Integrazione Chat in EGroupware
+the chat opens in a new window.	phpfreechat	it	La Chat si apre in una nuova finestra
+to complete the phpfreechat installation you have to give the webserver write access to:	phpfreechat	it	Per completare l'installazione della Chat, bisogna dare permessi di scrittura a:
+you should remove the write access, once you see the chat!	phpfreechat	it	Per favore rimuovere i permessi di scrittura una volta che la chat è visibile e funzionante!
