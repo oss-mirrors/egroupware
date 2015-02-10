@@ -104,7 +104,7 @@
 				//if(egw_vfs::is_dir(egw_link::vfs_path('bookmarks',$row['id'])) && egw_vfs::stat($favicon))
 				if(@egw_vfs::stat($favicon))
 				{
-					$row['favicon'] = 'vfs://'.$favicon;
+					$row['favicon'] = 'vfs:'.$favicon;
 				}
 
 				$readonlys["edit[{$row['id']}]"] = !$this->check_perms2($row['owner'], $row['access'], EGW_ACL_READ) &&
