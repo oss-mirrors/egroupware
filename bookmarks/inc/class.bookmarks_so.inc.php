@@ -127,10 +127,6 @@
 				$query['col_filter']['category'] = (array)$GLOBALS['egw']->categories->return_array( 'all', 0 , false, '', '', '', true, null, -1, 'id' );
 			}
 
-			// Permissions
-			$query['col_filter'][] = '(bm_access = \'public\' OR (bm_owner = ' . (int)$GLOBALS['egw_info']['user']['account_id'] .
-				' OR bm_owner IN (' . implode(',', $query['grants']) . ')))';
-
 			// Split out timestamps into sortable seperate columns mysql needs different treatment than postgres, if neither do it with php later on
 			if ($this->db->Type == 'mysql')
 			{
@@ -188,5 +184,47 @@
 
 			return $this->total;
 		}
+
+		/**
+		 * Searches db for rows matching searchcriteria
+		 *
+		 * Reimplemented to take permissions into account
+		 *
+		 * @param array|string $criteria array of key and data cols, OR string with search pattern (incl. * or ? as wildcards)
+		 * @param boolean|string/array $only_keys =true True returns only keys, False returns all cols. or
+		 *	comma seperated list or array of columns to return
+		 * @param string $order_by ='' fieldnames + {ASC|DESC} separated by colons ',', can also contain a GROUP BY (if it contains ORDER BY)
+		 * @param string|array $extra_cols ='' string or array of strings to be added to the SELECT, eg. "count(*) as num"
+		 * @param string $wildcard ='' appended befor and after each criteria
+		 * @param boolean $empty =false False=empty criteria are ignored in query, True=empty have to be empty in row
+		 * @param string $op ='AND' defaults to 'AND', can be set to 'OR' too, then criteria's are OR'ed together
+		 * @param mixed $start =false if != false, return only maxmatch rows begining with start, or array($start,$num), or 'UNION' for a part of a union query
+		 * @param array $filter =null if set (!=null) col-data pairs, to be and-ed (!) into the query without wildcards
+		 * @param string $join ='' sql to do a join, added as is after the table-name, eg. "JOIN table2 ON x=y" or
+		 *	"LEFT JOIN table2 ON (x=y AND z=o)", Note: there's no quoting done on $join, you are responsible for it!!!
+		 * @param boolean $need_full_no_count =false If true an unlimited query is run to determine the total number of rows, default false
+		 * @return array|NULL array of matching rows (the row is an array of the cols) or NULL
+		 */
+		function &search($criteria,$only_keys=True,$order_by='',$extra_cols='',$wildcard='',$empty=False,$op='AND',$start=false,$filter=null,$join='',$need_full_no_count=false)
+		{
+			//error_log(__METHOD__.'('.array2string(array_combine(array_slice(array('criteria','only_keys','order_by','extra_cols','wildcard','empty','op','start','filter','join','need_full_no_count'), 0, count(func_get_args())), func_get_args())).')');
+
+			if (!is_array($filter)) $filter = $filter ? array($filter) : array();
+
+			// Grant list for permission filtering
+			$grants = array();
+			foreach($GLOBALS['egw']->acl->get_grants('bookmarks') as $id => $perms)
+			{
+				if ($perms & EGW_ACL_READ)
+				{
+					$grants[] = $id;
+				}
+			}
+
+			// Permissions
+			$filter[] = "(bm_access = 'public' OR bm_owner = " . (int)$GLOBALS['egw_info']['user']['account_id'] .
+				($grants ? ' OR bm_owner IN (' . implode(',', $grants) . ')' : '') . ')';
+
+			return parent::search($criteria,$only_keys,$order_by,$extra_cols,$wildcard,$empty,$op,$start,$filter,$join,$need_full_no_count);
+		}
 	}
-?>

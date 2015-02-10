@@ -94,14 +94,6 @@
 
 		public function get_rows(&$query, &$rows, &$readonlys = array())
 		{
-			// Pass grant list for permission filtering
-			$query['grants'] = array();
-			foreach($this->grants as $id => $perms) {
-				if($perms & EGW_ACL_READ) {
-					$query['grants'][] = $id;
-				}
-			}
-
 			if(!$query['order']) $query['order'] = 'bm_name';
 			$count = $this->so->get_rows($query, $rows, $readonlys);
 
