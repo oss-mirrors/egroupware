@@ -6,7 +6,8 @@
 	*                     http://www.renaghan.com/bookmarker                   *
 	* Ported to phpgroupware by Joseph Engo                                    *
 	* Ported to three-layered design by Michael Totschnig                      *
-	* Ported to eTemplate & additional eGW features added by Nathan Gray       *
+	* Ported to eTemplate & additional eGW features added by Nathan Gray
+	* Ported to eTemplate2 by Hadi Nategh								       *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -48,7 +49,7 @@
 
 		function __construct()
 		{
-			$this->templ = new etemplate();
+			$this->templ = new etemplate_new();
 			$this->bo = new bookmarks_bo();
 			$this->expandedcats = array();
 			$this->location_info = $this->bo->read_session_data();
@@ -114,8 +115,7 @@
 					$this->location_info['bm_id'] = $bm_id;
 					unset($this->location_info['returnto2']);
 					$this->bo->save_session_data($this->location_info);
-					// Close popoup
-					echo "<html><body><script>opener.location.reload(); window.close();</script></body></html>\n";
+					egw_framework::refresh_opener('Bookmark successfully saved', 'bookmarks',$bm_id, 'add');
 					common::egw_exit();
 				}
 				else
@@ -141,7 +141,7 @@
 				unset($this->location_info['returnto2']);
 				$this->bo->save_session_data($this->location_info);
 				// Close popoup
-				echo "<html><body><script>window.close();</script></body></html>\n";
+				egw_framework::window_close();
 				common::egw_exit();
 			}
 			//store the view, we came from originally(list,tree), and the view we are in
@@ -182,15 +182,15 @@
 			if ($content['cancel'] || !isset($bm_id))
 			{
 				unset($this->location_info['returnto2']);
-				echo "<html><body><script>window.close();</script></body></html>\n";
 				$this->init();
+				egw_framework::close();
 				common::egw_exit();
 			}
 			//delete bookmark and close popup
 			if($content['delete']) {
 				$this->bo->delete($bm_id);
 				unset($this->location_info['returnto2']);
-				echo "<html><body><script>opener.location.reload(); window.close();</script></body></html>\n";
+				egw_framework::refresh_opener('Bookmark deleted', 'bookmarks',$bm_id,'delete');
 				$this->init();
 				common::egw_exit();
 			}
@@ -208,7 +208,7 @@
 				{
 					if($content['save']) {
 						unset($this->location_info['returnto2']);
-						echo "<html><body><script>opener.location.reload(); window.close();</script></body></html>\n";
+						egw_framework::refresh_opener('Bookmark successfully saved', 'bookmarks',$bm_id,'update');
 						$this->init();
 						return;
 					}
@@ -753,7 +753,7 @@
 		}
 
 		/**
-		* Used when a user clicks a bookmark to record the visit
+		* Used when an user clicks a bookmark to record the visit
 		*/
 		function redirect()
 		{

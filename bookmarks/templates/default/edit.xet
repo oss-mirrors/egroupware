@@ -2,42 +2,42 @@
 <!-- $Id$ -->
 <overlay>
 	<template id="bookmarks.edit.general" template="" lang="" group="0" version="1.9.001">
-		<grid width="100%" height="215" overflow="auto">
+		<grid width="100%">
 			<columns>
 				<column width="200px"/>
 				<column/>
 				<column/>
 			</columns>
 			<rows>
-				<row disabled="@edit">
+				<row disabled="@edit" class="dialogHeader">
 					<hbox options="0,0">
 						<description value="URL"/>
-						<image align="right" src="@favicon"/>
+						<image align="right" src="@favicon" class="favicon"/>
 					</hbox>
 					<description id="url" href="bookmarks.bookmarks_ui.redirect&amp;bm_id={$cont[id]}" extra_link_target="_blank"/>
 					<description/>
 				</row>
-				<row disabled="!@edit">
+				<row disabled="!@edit" class="dialogHeader">
 					<hbox options="0,0">
 						<description value="URL"/>
-						<image align="right" src="@favicon"/>
+						<image align="right" src="@favicon" class="favicon"/>
 					</hbox>
-					<textbox id="url" needed="1" maxlength="255" span="all" class="text"/>
+					<textbox id="url" needed="1" maxlength="255" span="all" class="et2_fullWidth"/>
 					<description/>
 				</row>
 				<row>
 					<description value="Name"/>
-					<textbox id="name" needed="1" maxlength="255" span="all" class="text"/>
+					<textbox id="name" needed="1" maxlength="255" span="all" class="et2_fullWidth"/>
 					<description/>
 				</row>
 				<row valign="top">
 					<description value="Description"/>
-					<textbox multiline="true" id="desc" span="all" class="text"/>
+					<textbox multiline="true" id="desc" span="all" class="et2_fullWidth"/>
 					<description/>
 				</row>
 				<row>
 					<description value="Keywords"/>
-					<textbox id="keywords" maxlength="255" span="all" class="text"/>
+					<textbox id="keywords" maxlength="255" span="all" class="et2_fullWidth"/>
 					<description/>
 				</row>
 				<row valign="top">
@@ -73,23 +73,9 @@
 				</row>
 			</rows>
 		</grid>
-		<styles>
-			input[type=&quot;text&quot;], .text input {
-  width: 40em;
-}
-
-textarea {
-  width: 44em;
-  height: 5em;
-}
-
-.no_wrap {
-  white-space: nowrap;
-}
-		</styles>
 	</template>
 	<template id="bookmarks.edit.details" template="" lang="" group="0" version="">
-		<grid height="215" border="0" overflow="auto">
+		<grid border="0">
 			<columns>
 				<column width="200px"/>
 				<column/>
@@ -121,7 +107,7 @@ textarea {
 		</grid>
 	</template>
 	<template id="bookmarks.edit.links" template="" lang="" group="0" version="">
-		<grid width="100%" height="215" overflow="auto">
+		<grid width="100%">
 			<columns>
 				<column width="100"/>
 				<column/>
@@ -146,7 +132,7 @@ textarea {
 		</grid>
 	</template>
 	<template id="bookmarks.edit.custom" template="" lang="" group="0" version="">
-		<grid height="215" overflow="auto">
+		<grid>
 			<columns>
 				<column/>
 			</columns>
@@ -158,7 +144,7 @@ textarea {
 		</grid>
 	</template>
 	<template id="bookmarks.edit.history" template="" lang="" group="0" version="">
-		<grid width="100%" height="215" overflow="auto">
+		<grid width="100%">
 			<columns>
 				<column/>
 			</columns>
@@ -176,12 +162,8 @@ textarea {
 				<column/>
 			</columns>
 			<rows>
-				<row disabled="!@msg">
-					<html id="msg" span="all" class="message"/>
-					<description/>
-				</row>
-				<row valign="top" height="250">
-					<tabbox id="general|details|links|custom|history" span="all">
+				<row valign="top">
+					<tabbox id="general|details|links|custom|history" span="all" tab_height="250">
 						<tabs>
 							<tab id="general" label="General"/>
 							<tab id="details" label="Details"/>
@@ -198,7 +180,7 @@ textarea {
 						</tabpanels>
 					</tabbox>
 				</row>
-				<row>
+				<row class="dialogFooterToolbar">
 					<hbox>
 						<button label="Edit" id="edit"/>
 						<button label="Save" id="save"/>

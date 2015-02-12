@@ -15,9 +15,10 @@
 /* Basic information about this app */
 $setup_info['bookmarks']['name']      = 'bookmarks';
 $setup_info['bookmarks']['title']     = 'Bookmarks';
-$setup_info['bookmarks']['version']   = '14.1';
+$setup_info['bookmarks']['version']   = '14.2';
 $setup_info['bookmarks']['app_order'] = '12';
 $setup_info['bookmarks']['enable']    = 1;
+$setup_info['bookmarks']['index']     = 'bookmarks.bookmarks_ui._list&ajax=true';
 
 $setup_info['bookmarks']['author'] = 'Joseph Engo';
 $setup_info['bookmarks']['license']  = 'GPL';

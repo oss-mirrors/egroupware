@@ -1,4 +1,4 @@
-.favicon img {
-  max-width: 5em;
-  max-height: 5em;
+.favicon, .favicon img {
+  max-width: 24px;
+  max-height: 24px;
 }

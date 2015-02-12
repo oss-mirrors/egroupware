@@ -4,14 +4,13 @@
 	<template id="bookmarks.list.row" template="" lang="" group="0" version="1.9.001">
 		<grid width="100%">
 			<columns>
-				<column/>
-				<column width="*"/>
+				<column width="50"/>
+				<column width="45%"/>
 				<column width="1px"/>
-				<column width="50em"/>
-				<column disabled="@no_customfields"/>
-				<column width="10%"/>
-				<column width="10%"/>
-				<column width="1%"/>
+				<column/>
+				<column width="15%" disabled="@no_customfields"/>
+				<column/>
+				<column/>
 			</columns>
 			<rows>
 				<row class="th" valign="bottom">
@@ -34,10 +33,6 @@
 						<nextmatch-sortheader label="Created" id="added"/>
 						<nextmatch-sortheader label="Last modified" id="updated"/>
 					</vbox>
-					<hbox align="center" class="noPrint">
-						<nextmatch-header align="center" label="Actions" id="legacy_actions"/>
-						<button align="right" statustext="Check all" label="Check all" id="check_all" needed="1" onclick="egw_globalObjectManager.getObjectById('bookmarks.list.row').toggleAllSelected(); return false;" image="check"/>
-					</hbox>
 				</row>
 				<row class="row">
 					<image align="center" label="$row_cont[name]" src="${row}[favicon]" href="$row_cont[url]" class="favicon"/>
@@ -66,12 +61,6 @@
 						<date-time id="${row}[added]" readonly="true" class="noWrap"/>
 						<date-time id="${row}[updated]" readonly="true" class="noBreak"/>
 					</vbox>
-					<hbox options="0" class="noPrint">
-						<button label="Edit" id="edit[${row_cont[id]}]" onclick="window.open(egw::link('/index.php','menuaction=bookmarks.bookmarks_ui.edit&amp;bm_id=$row_cont[id]'),'_blank','dependent=yes,width=600,height=300,scrollbars=yes,status=yes'); return false;" image="edit"/>
-						<button id="delete[{$row_cont[id]}]" onclick="var str = egw::lang('Delete');  if( confirm(str + ' {$row_cont[stripped_name]}?')) { return submitit(eTemplate, this.id);} return false;" image="delete"/>
-						<image src="mail" href="bookmarks.bookmarks_ui.mail&amp;bm_id=${row_cont[id]}"/>
-						<checkbox id="checked[]" options="$row_cont[id]"/>
-					</hbox>
 				</row>
 			</rows>
 		</grid>

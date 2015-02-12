@@ -1,0 +1,18 @@
+/**
+ * EGroupware: CSS with less preprocessor
+ *
+ * Please do NOT change app.css directly, instead change app.less and compile it!
+ *
+ * BOOKMARKS
+ *
+ * @link http://www.egroupware.org
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @author Hadi Nategh <hn@stylite.de>
+ * @package bookmarks
+ * @version $Id: app.less 51564 2015-02-04 08:35:40Z ralfbecker $
+ */
+.favicon,
+.favicon img {
+  max-width: 24px;
+  max-height: 24px;
+}
