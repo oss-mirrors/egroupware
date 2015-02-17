@@ -2,7 +2,7 @@
 allow anonymous access to the manual, only necessary to act as remote manual	admin	sk	Povoliť anonymným používateľom prístup k manuálu. Potrebné len ak sa používa ako vzdialený manuál
 anonymous password	admin	sk	Heslo anonymného používateľa
 anonymous username	admin	sk	Používateľské meno anonymného používateľa
-download	manual	sk	stiahnuť
+download	manual	sk	Stiahnuť
 index	manual	sk	Index
 install or update the manual-pages	admin	sk	inštalovať alebo aktualizovať stránky manuálu
 manual	common	sk	Manuál / Pomocník

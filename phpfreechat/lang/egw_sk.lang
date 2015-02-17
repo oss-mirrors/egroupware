@@ -1,7 +1,11 @@
+%1 is leaving channel %2 by closing his chat window	phpfreechat	sk	%1 opúšťa kanál %2 pretože zavrel svoje okno Besedy
+%1 is reconnecting to channel %2	phpfreechat	sk	%1 sa znovu pripája na kanál %2
 are users allowed to change their nicknames in phpfreechat and are allowed to connect multiple times	admin	sk	Smú si používatelia meniť prezývky v Besede A pripojiť sa viackrát
 egroupware chat	phpfreechat	sk	EGroupware Beseda
 frozen nick	admin	sk	Zmrazená prezývka
 global categories	phpfreechat	sk	Globálne kategórie
+maximum nickname length (if not set the length of 64 is used. as it is the maximum lenght of usernames within egroupware)	admin	sk	maximálna dĺžka prezývky (ak nie je určené ináč, používa sa hodnota 64 keďže to je maximálna dĺžka používateľského mena v EGroupware)
+nick length	admin	sk	Dĺžka prezývky
 phpfreechat	common	sk	Beseda
 phpfreechat configuration	admin	sk	Nastavenia Besedy
 phpfreechat integration into egroupware	phpfreechat	sk	Integrácia Besedy do EGroupware
