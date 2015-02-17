@@ -53,7 +53,7 @@ class bookmarks_hooks
 		if ($location == 'sidebox_menu')
 		{
 			$file = Array(
-				'Tree view'        => $GLOBALS['egw']->link('/index.php','menuaction=bookmarks.bookmarks_ui.tree'),
+				'Tree view'        => $GLOBALS['egw']->link('/index.php','menuaction=bookmarks.bookmarks_ui.tree&ajax=true'),
 				'List view'        => $GLOBALS['egw']->link('/index.php','menuaction=bookmarks.bookmarks_ui._list&ajax=true'),
 				'New bookmark'     => "javascript:egw_openWindowCentered2('".egw::link('/index.php',array(
 						'menuaction' => 'bookmarks.bookmarks_ui.create'
