@@ -8,11 +8,8 @@
 				<column/>
 			</columns>
 			<rows>
-				<row disabled="!@msg">
-					<html id="msg" span="all" class="message"/>
-				</row>
 				<row>
-					<tree id="tree"/>
+					<tree id="tree" autoloading="bookmarks_ui::ajax_tree_autoloading" onclick="app.bookmarks.onTree"/>
 				</row>
 			</rows>
 		</grid>

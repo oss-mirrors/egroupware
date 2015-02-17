@@ -56,10 +56,17 @@ app.bookmarks = AppJS.extend(
 	et2_ready: function(et2)
 	{
 		// call parent
-
 		this._super.apply(this, arguments);
 
-
 	},
+
+	/**
+	 *
+	 * @param {type} _select
+	 */
+	onTree: function (_select)
+	{
+		console.log();
+	}
 
 });

@@ -16,7 +16,7 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-
+use \etemplate_widget_tree as tree;
 	class bookmarks_ui
 	{
 		/**
@@ -467,10 +467,6 @@
 				while ( $parent != 0) {
 					$categories[$key]['tree'] = $parent. '/'. $categories[$key]['tree'];
 
-					// Don't know what this does, but it can cause tree issues (like when cat name = bookmark name)
-//					if($this->bo->categories->read($parent) && $this->bo->categories->check_perms(EGW_ACL_READ, $parent)) {
-//						$categories[$key]['tree'] = $parent. '/'. $categories[$key]['tree'];
-//					}
 					// Select a nonexisting key, in case the referenced cat doesn't exist.
 					$parcatkey = count($categories) + 1;
 					foreach ( $categories as $ikey => $icat ) {
@@ -482,7 +478,7 @@
 					$parent = $categories[$parcatkey]['parent'];
 				}
 			}
-
+			
 			// buld bm tree
 			foreach ( $categories as $cat ) {
 				$bookmarks = array();
@@ -530,12 +526,68 @@
 				}
 			}
 
-			$sel_options['tree'] = $bm_tree;
-			$values['msg'] = $this->app_messages();
+			$sel_options['tree'] = $this->get_tree();
+ 			$values['msg'] = $this->app_messages();
 
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Bookmarks - Tree');
 			$this->templ->read('bookmarks.tree');
 			$this->templ->exec('bookmarks.bookmarks_ui.tree', $values, $sel_options, $readonlys, $persist);
+		}
+
+		/**
+		 *
+		 */
+		static function ajax_tree_autoloading()
+		{
+			$bookmarks = new bookmarks_ui();
+			tree::send_quote_json($bookmarks->get_tree($_GET['id']));
+		}
+
+
+		/**
+		 * @param int  $_parent id of a category
+		 *
+		 * return array of first level tree of given cat_id
+		 */
+		function get_tree ($_parent=null)
+		{
+			$parent = $_parent? $_parent: 0;
+
+			// Tree Node
+			$bm_tree = array(tree::ID=> $parent,tree::CHILDREN => array(), tree::AUTOLOAD_CHILDREN => 1);
+			
+			$sub_cats = array();
+
+			
+			// Construct the bookmarks tree basic options
+			if ($parent)
+			{
+				
+				$sub_cats = (array)$this->bo->categories->return_array( 'all' , 0, false, '', 'ASC', 'cat_name', true, $parent );
+			}
+			else
+			{
+				$sub_cats = (array)$this->bo->categories->return_array( 'mains' , 0, false, '', 'ASC', 'cat_name', true );
+				
+			}
+
+			// Build the sub cats tree leaves
+			foreach ($sub_cats as $key => $data)
+			{
+				$bookmarks = array();
+				$bm_leaves = array();
+				$query = array(
+					'cat_id'	=>	$data['id']
+				);
+				$this->bo->get_rows($query, $bookmarks);
+				foreach ($bookmarks as &$bm)
+				{
+					$bm_leaves[] = array(tree::ID=>$bm['id'], tree::LABEL => $bm['name'], tree::IMAGE_LEAF => $bm['favicon']);
+				}
+
+				$bm_tree[tree::CHILDREN][$key] = array(tree::ID=>$data['id'],tree::AUTOLOAD_CHILDREN => 1, tree::CHILDREN =>$bm_leaves, tree::LABEL => $data['id']);
+			}
+			return $bm_tree;
 		}
 
 		/**
