@@ -27,7 +27,6 @@ use \etemplate_widget_tree as tree;
 		 * @var bookmarks_bo::
 		 */
 		var $bo;
-		var $expandedcats;
 
 		public static $tabs = 'general|details|links|custom|history';
 
@@ -51,7 +50,6 @@ use \etemplate_widget_tree as tree;
 		{
 			$this->templ = new etemplate_new();
 			$this->bo = new bookmarks_bo();
-			$this->expandedcats = array();
 			$this->location_info = $this->bo->read_session_data();
 		}
 
@@ -390,9 +388,11 @@ use \etemplate_widget_tree as tree;
 		/**
 		* Get actions for nextmatch context menu
 		*
+		* @param type ='user' $type can get two type of actions such as tree or user
+		*
 		* @return array see nextmatch_widget::egw_actions()
 		*/
-		protected function get_actions()
+		protected function get_actions($type='user')
 		{
 			$actions = array(
 				'visit' => array(
@@ -433,6 +433,16 @@ use \etemplate_widget_tree as tree;
 					'disableClass' => 'rowNoDelete',
 				),
 			);
+
+			// Create actions with tree's options
+			if ($type == 'tree')
+			{
+				foreach($actions as $action => $val)
+				{
+					$actions[$action]['onExecute'] = 'app.bookmarks.'+$action;
+					unset($actions[$action]['nm_action']);
+				}
+			}
 			return $actions;
 		}
 
@@ -443,90 +453,14 @@ use \etemplate_widget_tree as tree;
 		*/
 		function tree($content = array())
 		{
-
 			$this->location_info['returnto'] = 'tree';
 			unset($this->location_info['returnto2']);
 			$this->bo->save_session_data($this->location_info);
 
-			if ($_COOKIE['menutree'])
-			{
-				$this->expandedcats = array_keys($_COOKIE['menutree']);
-			}
-			else
-			{
-				$this->expandedcats = Array();
-			}
-
-			$categories = (array)$this->bo->categories->return_array( 'all', 0 , false, '', '', '', true );
-			$categories = (array)$this->bo->categories->return_sorted_array( 0 , false, '', 'ASC', 'cat_name', true );
-
-			//build cat tree
-			foreach ( $categories as $key => $cat ) {
-				$categories[$key]['tree'] = $cat['id'];
-				$parent = $cat['parent'];
-				while ( $parent != 0) {
-					$categories[$key]['tree'] = $parent. '/'. $categories[$key]['tree'];
-
-					// Select a nonexisting key, in case the referenced cat doesn't exist.
-					$parcatkey = count($categories) + 1;
-					foreach ( $categories as $ikey => $icat ) {
-						if ( $icat['id'] == $parent ) {
-							$parcatkey = $ikey;
-							break;
-						}
-					}
-					$parent = $categories[$parcatkey]['parent'];
-				}
-			}
-			
-			// buld bm tree
-			foreach ( $categories as $cat ) {
-				$bookmarks = array();
-				$query = array(
-					'cat_id'	=>	$cat['id']
-				);
-				$this->bo->get_rows($query, $bookmarks);
-				$bm_tree[$cat['tree']] = $cat['name'];
-
-				foreach ( (array)$bookmarks as $bm ) {
-					$id = $bm['id'];
-
-					// begin entry
-					$bm_tree[$cat['tree']. '/'. $id] = array();
-					$entry = &$bm_tree[$cat['tree']. '/'. $id]['label'];
-
-					// Set leaf icon
-					// Doesn't work because tree requires images to be in a certain directory
-					//$bm_tree[$cat['tree']. '/'. $id]['image'] = $GLOBALS['egw']->common->image('bookmarks','mail');
-
-					// mail
-					$entry .= '<a class="action" href ="'.
-						$GLOBALS['egw']->link( '/index.php', 'menuaction=bookmarks.bookmarks_ui.mail&bm_id='. $id ). '">'.
-						html::image( 'bookmarks', 'mail', lang( 'Mail this bookmark' ) ).
-						'</a>';
-
-					// edit
-					if ($this->bo->check_perms2( $bm['owner'], $bm['access'], EGW_ACL_EDIT) ) {
-						$entry .= '<a class="action" href ="'.
-							$GLOBALS['egw']->link( '/index.php', 'menuaction=bookmarks.bookmarks_ui.edit&bm_id='. $id ). '">'.
-							html::image( 'bookmarks', 'edit', lang( 'Edit this bookmark' ) ).
-							'</a>';
-					}
-
-					//view
-					$entry .= '<a class="action" href ="'.
-						$GLOBALS['egw']->link( '/index.php', 'menuaction=bookmarks.bookmarks_ui.view&bm_id='. $id ). '">'.
-						html::image( 'bookmarks', 'view', lang( 'View this bookmark' ) ).
-						'</a>';
-
-					//redirect
-					$entry .= '<a target="_new" href ="'.
-						$GLOBALS['egw']->link( '/index.php', 'menuaction=bookmarks.bookmarks_ui.redirect&bm_id='. $id ). '">'.
-						$bm['name']. '</a>';
-				}
-			}
-
 			$sel_options['tree'] = $this->get_tree();
+			// Add actions to tree context menu
+			$this->templ->setElementAttribute('tree', 'actions', $this->get_actions('tree'));
+			
  			$values['msg'] = $this->app_messages();
 
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Bookmarks - Tree');
@@ -535,7 +469,8 @@ use \etemplate_widget_tree as tree;
 		}
 
 		/**
-		 *
+		 * autoloading function to get tree structure from server
+		 * and send it back to client-side
 		 */
 		static function ajax_tree_autoloading()
 		{
@@ -543,51 +478,66 @@ use \etemplate_widget_tree as tree;
 			tree::send_quote_json($bookmarks->get_tree($_GET['id']));
 		}
 
-
 		/**
-		 * @param int  $_parent id of a category
+		 * @param int  $_parent =null tree node id
 		 *
-		 * return array of first level tree of given cat_id
+		 * return array of first level tree of given cat_id including its bookmarks
 		 */
 		function get_tree ($_parent=null)
 		{
-			$parent = $_parent? $_parent: 0;
-
-			// Tree Node
-			$bm_tree = array(tree::ID=> $parent,tree::CHILDREN => array(), tree::AUTOLOAD_CHILDREN => 1);
-			
+			// Init sub categories array
 			$sub_cats = array();
 
-			
-			// Construct the bookmarks tree basic options
-			if ($parent)
-			{
-				
-				$sub_cats = (array)$this->bo->categories->return_array( 'all' , 0, false, '', 'ASC', 'cat_name', true, $parent );
-			}
-			else
-			{
-				$sub_cats = (array)$this->bo->categories->return_array( 'mains' , 0, false, '', 'ASC', 'cat_name', true );
-				
-			}
+			//Init bookmark tree
+			$tree = array(tree::ID=> $_parent?$_parent:0,tree::CHILDREN => array(), tree::AUTOLOAD_CHILDREN => 1);
 
-			// Build the sub cats tree leaves
-			foreach ($sub_cats as $key => $data)
+			// Construct the bookmarks tree basic options
+			if ($_parent)
 			{
-				$bookmarks = array();
-				$bm_leaves = array();
+				// Calculate the parent cat id
+				$_ids = explode("/",$_parent);
+				$cat_id = array_pop($_ids);
+
+				// Get sub categories of given parent
+				$sub_cats = (array)$this->bo->categories->return_array( 'all' , 0, false, '', 'ASC', 'cat_name', true, $cat_id );
+
 				$query = array(
-					'cat_id'	=>	$data['id']
+					'cat_id' =>	$cat_id
 				);
+				$bookmarks = array();
+				// query the database to get the parent's bookmarks
 				$this->bo->get_rows($query, $bookmarks);
+
 				foreach ($bookmarks as &$bm)
 				{
-					$bm_leaves[] = array(tree::ID=>$bm['id'], tree::LABEL => $bm['name'], tree::IMAGE_LEAF => $bm['favicon']);
+					//Arrbitary data send to client-side tree widget
+					$bm_userData = array (
+						'url' => $bm['url']
+					);
+					$tree[tree::CHILDREN][] = array(tree::ID=>$_parent.'/'.$bm['id'], tree::LABEL => $bm['name'], 'userdata' => $bm_userData);
 				}
-
-				$bm_tree[tree::CHILDREN][$key] = array(tree::ID=>$data['id'],tree::AUTOLOAD_CHILDREN => 1, tree::CHILDREN =>$bm_leaves, tree::LABEL => $data['id']);
+				
+				// Check if there's sub cats to bind
+				if($sub_cats[0])
+				{
+					// Build the sub cats tree leaves
+					foreach ($sub_cats as $key => $data)
+					{
+						$tree[tree::CHILDREN][] = array(tree::ID=>$_parent.'/'.$data['id'],tree::AUTOLOAD_CHILDREN => 1, tree::CHILDREN =>array(), tree::LABEL => $data['id']);
+					}
+				}
 			}
-			return $bm_tree;
+			else // First level nodes
+			{
+				$sub_cats = (array)$this->bo->categories->return_array( 'mains' , 0, false, '', 'ASC', 'cat_name', true );
+				// Build the sub cats tree leaves
+				foreach ($sub_cats as $key => $data)
+				{
+					$tree[tree::CHILDREN][$key] = array(tree::ID=>'/'.$data['id'],tree::AUTOLOAD_CHILDREN => 1, tree::CHILDREN =>array(), tree::LABEL => $data['id']);
+				}
+			}
+			// return bookmarks tree structure
+			return $tree;
 		}
 
 		/**

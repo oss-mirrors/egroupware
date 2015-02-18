@@ -61,12 +61,19 @@ app.bookmarks = AppJS.extend(
 	},
 
 	/**
-	 *
-	 * @param {type} _select
+	 * Redirect the selected bookmark's leaf
+	 * 
+	 * @param {type} _id
+	 * @param {type} _widget
 	 */
-	onTree: function (_select)
+	tree_onclick: function (_id, _widget)
 	{
-		console.log();
+		// Get the bookmark id
+		var id = _id.split('/');
+		if (id) id = id[id.length-1];
+		
+		var url = _widget.getUserData(_id,'url');
+		if (url) this.egw.open_link(this.egw.link('/index','menuaction=bookmarks.bookmarks_ui.redirect&bm_id='+id),'_blank');
 	}
 
 });

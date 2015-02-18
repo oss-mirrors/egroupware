@@ -9,7 +9,7 @@
 			</columns>
 			<rows>
 				<row>
-					<tree id="tree" autoloading="bookmarks_ui::ajax_tree_autoloading" onclick="app.bookmarks.onTree"/>
+					<tree id="tree" autoloading="bookmarks_ui::ajax_tree_autoloading" onclick="app.bookmarks.tree_onclick"/>
 				</row>
 			</rows>
 		</grid>
