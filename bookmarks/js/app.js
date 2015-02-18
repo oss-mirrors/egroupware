@@ -14,7 +14,7 @@
  *
  * @augments AppJS
  */
-app.bookmarks = AppJS.extend(
+app.classes.bookmarks = AppJS.extend(
 {
 	appname: 'bookmarks',
 	/**
@@ -73,7 +73,39 @@ app.bookmarks = AppJS.extend(
 		if (id) id = id[id.length-1];
 		
 		var url = _widget.getUserData(_id,'url');
-		if (url) this.egw.open_link(this.egw.link('/index','menuaction=bookmarks.bookmarks_ui.redirect&bm_id='+id),'_blank');
-	}
+
+		if (url) this.egw.open_link(this.egw.link('/index.php','menuaction=bookmarks.bookmarks_ui.redirect&bm_id='+id),'_blank');
+	},
+
+	/**
+	 *
+	 * @param {type} _action
+	 * @param {type} _selected
+	 */
+	tree_action: function (_action, _selected)
+	{
+		// Get the bookmark id
+		var id = _selected[0].id.split('/');
+		if (id) id = id[id.length-1];
+
+		switch (_action.id)
+		{
+			case 'visit':
+				this.egw.open_link(this.egw.link('/index.php','menuaction=bookmarks.bookmarks_ui.redirect&bm_id='+id),'_blank');
+				break;
+			case 'edit':
+				this.egw.open_link(this.egw.link('/index.php','menuaction=bookmarks.bookmarks_ui.edit&bm_id='+id),'',egw().link_get_registry('bookmarks','add_popup'), 'bookmarks');
+				break;
+			case 'add':
+				this.egw.openPopup(this.egw.link('/index.php','menuaction=bookmarks.bookmarks_ui.create'),'750','300','_blank');
+				break;
+			case 'mailto':
+				//TODO
+				break;
+			case 'delete':
+				//TODO
+
+		}
+	},
 
 });

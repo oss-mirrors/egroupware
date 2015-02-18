@@ -50,7 +50,7 @@
 				<row class="dialogFooterToolbar">
 					<hbox span="all">
 						<button label="Save" id="save"/>
-						<buttononly label="Cancel" id="cancel" onclick="this.form[form::name('name')].value = ' '; this.form.submit_button.value=this.name; this.form.submit();"/>
+						<buttononly label="Cancel" id="cancel" onclick="window.close()"/>
 					</hbox>
 				</row>
 			</rows>

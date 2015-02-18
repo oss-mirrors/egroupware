@@ -439,7 +439,7 @@ use \etemplate_widget_tree as tree;
 			{
 				foreach($actions as $action => $val)
 				{
-					$actions[$action]['onExecute'] = 'app.bookmarks.'+$action;
+					$actions[$action]['onExecute'] = 'javaScript:app.bookmarks.tree_action';
 					unset($actions[$action]['nm_action']);
 				}
 			}
@@ -510,7 +510,7 @@ use \etemplate_widget_tree as tree;
 
 				foreach ($bookmarks as &$bm)
 				{
-					//Arrbitary data send to client-side tree widget
+					//Arbitrary data send to client-side tree widget
 					$bm_userData = array (
 						'url' => $bm['url']
 					);
