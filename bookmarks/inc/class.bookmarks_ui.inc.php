@@ -55,20 +55,7 @@ use \etemplate_widget_tree as tree;
 
 		function init()
 		{
-			// we maintain two levels of state:
-			// returnto the main interface (tree or list)
-			// returnto2 temporaray interface (create, edit, view, mail)
-			$returnto2 = $this->location_info['returnto2'];
-			$returnto = $this->location_info['returnto'];
-			if ($returnto2)
-			{
-				$this->$returnto2();
-			}
-			elseif ($returnto)
-			{
-				$this->$returnto();
-			}
-			elseif ($GLOBALS['egw_info']['user']['preferences']['bookmarks']['defaultview'] == 'tree')
+			if ($GLOBALS['egw_info']['user']['preferences']['bookmarks']['defaultview'] == 'tree')
 			{
 				$this->tree();
 			}
@@ -97,12 +84,6 @@ use \etemplate_widget_tree as tree;
 		*/
 		function create($content = array())
 		{
-			//if we redirect to edit categories, we remember form values and try to come back to create
-			if ($content['edit_category'])
-			{
-				$this->bo->grab_form_values($this->location_info['returnto'],'create',$bookmark);
-				$GLOBALS['egw']->redirect($GLOBALS['egw']->link('/index.php','menuaction=preferences.preferences_categories_ui.index&cats_app=bookmarks&cats_level=True&global_cats=True'));
-			}
 			//save bookmark
 			if ($content['save'])
 			{
@@ -111,7 +92,6 @@ use \etemplate_widget_tree as tree;
 				if ($bm_id)
 				{
 					$this->location_info['bm_id'] = $bm_id;
-					unset($this->location_info['returnto2']);
 					$this->bo->save_session_data($this->location_info);
 					egw_framework::refresh_opener('Bookmark successfully saved', 'bookmarks',$bm_id, 'add');
 					common::egw_exit();
@@ -122,29 +102,16 @@ use \etemplate_widget_tree as tree;
 					$bookmark = $content;
 				}
 			}
-			//if we come back from editing categories we restore form values
-			elseif ($this->location_info['returnto2'] == 'create')
-			{
-				$bookmark['name']        = $this->location_info['bookmark']['name'];
-				$bookmark['url']         = $this->location_info['bookmark']['url'];
-				$bookmark['desc']        = $this->location_info['bookmark']['desc'];
-				$bookmark['keywords']    = $this->location_info['bookmark']['keywords'];
-				$bookmark['category']    = $this->location_info['bookmark']['category'];
-				$bookmark['rating']      = $this->location_info['bookmark']['rating'];
-				$bookmark['access']      = $this->location_info['bookmark']['access'];
-			}
+			
 			//if the user cancelled we go back to the view we came from
 			if ($content['cancel'])
 			{
-				unset($this->location_info['returnto2']);
-				$this->bo->save_session_data($this->location_info);
 				// Close popoup
 				egw_framework::window_close();
 				common::egw_exit();
 			}
 			//store the view, we came from originally(list,tree), and the view we are in
 			$this->location_info['bookmark'] = False;
-			$this->location_info['returnto2'] = 'create';
 			$this->bo->save_session_data($this->location_info);
 
 			if(!$bookmark['url']) $bookmark['url'] = 'http://';
@@ -179,7 +146,6 @@ use \etemplate_widget_tree as tree;
 			//if the user cancelled we close popup
 			if ($content['cancel'] || !isset($bm_id))
 			{
-				unset($this->location_info['returnto2']);
 				$this->init();
 				egw_framework::close();
 				common::egw_exit();
@@ -187,17 +153,9 @@ use \etemplate_widget_tree as tree;
 			//delete bookmark and close popup
 			if($content['delete']) {
 				$this->bo->delete($bm_id);
-				unset($this->location_info['returnto2']);
 				egw_framework::refresh_opener('Bookmark deleted', 'bookmarks',$bm_id,'delete');
 				$this->init();
 				common::egw_exit();
-			}
-			//if we redirect to edit categories, we remember form values and try to come back to edit
-			if ($content['edit_category'])
-			{
-				unset($content['edit_category']);
-				$this->bo->grab_form_values($this->location_info['returnto'],'edit',$content);
-				$GLOBALS['egw']->redirect($GLOBALS['egw']->link('/index.php','menuaction=preferences.preferences_categories_ui.index&cats_app=bookmarks&cats_level=True&global_cats=True'));
 			}
 			//save bookmark and go to list interface
 			if ($content['save'] || $content['apply'])
@@ -205,7 +163,6 @@ use \etemplate_widget_tree as tree;
 				if ($this->bo->save($bm_id,$content))
 				{
 					if($content['save']) {
-						unset($this->location_info['returnto2']);
 						egw_framework::refresh_opener('Bookmark successfully saved', 'bookmarks',$bm_id,'update');
 						$this->init();
 						return;
@@ -219,20 +176,6 @@ use \etemplate_widget_tree as tree;
 				return $this->view($content);
 			}
 
-			//if we come back from editing categories we restore form values
-			if ($this->location_info['bookmark'])
-			{
-				$bookmark['name']     = $this->location_info['bookmark']['name'];
-				$bookmark['url']      = $this->location_info['bookmark']['url'];
-				$bookmark['desc']     = $this->location_info['bookmark']['desc'];
-				$bookmark['keywords'] = $this->location_info['bookmark']['keywords'];
-				$bookmark['category'] = $this->location_info['bookmark']['category'];
-				$bookmark['rating']   = $this->location_info['bookmark']['rating'];
-			}
-
-			//store the view we are in
-			$this->location_info['bookmark'] = False;
-			$this->location_info['returnto2'] = 'edit';
 			$this->location_info['bm_id'] = $bm_id;
 			$this->bo->save_session_data($this->location_info);
 
@@ -282,8 +225,6 @@ use \etemplate_widget_tree as tree;
 			}
 			$this->location_info['start'] = $start;
 			$this->location_info['bm_cat'] = $bm_cat;
-			$this->location_info['returnto'] = '_list';
-			unset($this->location_info['returnto2']);
 			$this->bo->save_session_data($this->location_info);
 
 			if($content['add']) {
@@ -330,6 +271,7 @@ use \etemplate_widget_tree as tree;
 					'no_filter2'	=>	True,
 					'row_id'	=>	'bm_id',
 					'default_cols'	=>	'!legacy_actions',  // switch legacy actions column and row off by default
+					'favorites'       => true
 				);
 			}
 			$values['nm']['actions'] = $this->get_actions();
@@ -453,10 +395,6 @@ use \etemplate_widget_tree as tree;
 		*/
 		function tree($content = array())
 		{
-			$this->location_info['returnto'] = 'tree';
-			unset($this->location_info['returnto2']);
-			$this->bo->save_session_data($this->location_info);
-
 			$sel_options['tree'] = $this->get_tree();
 			// Add actions to tree context menu
 			$this->templ->setElementAttribute('tree', 'actions', $this->get_actions('tree'));
@@ -558,16 +496,12 @@ use \etemplate_widget_tree as tree;
 			//if the user cancelled we go back to the view we came from
 			if ($content['cancel'])
 			{
-				unset($this->location_info['returnto2']);
-				$this->init();
 				return;
 			}
 			//delete bookmark and go back to view we came from
 			if ($content['delete'])
 			{
 				$this->bo->delete($bm_id);
-				unset($this->location_info['returnto2']);
-				$this->init();
 				return;
 			}
 			if ($content['edit'])
@@ -588,15 +522,8 @@ use \etemplate_widget_tree as tree;
 			if (!$bookmark[EGW_ACL_READ])
 			{
 				$this->bo->error_msg = lang('Bookmark not readable');
-				unset($this->location_info['returnto2']);
-				$this->init();
 				return;
 			}
-
-			//store the view we are in
-			$this->location_info['returnto2'] = 'view';
-			$this->location_info['bm_id'] = $bm_id;
-			$this->bo->save_session_data($this->location_info);
 
 			// Set up eGW link widget
 			$bookmark['link_to'] = array(
@@ -639,8 +566,6 @@ use \etemplate_widget_tree as tree;
 			//if the user cancelled we go back to the view we came from
 			if ($content['cancel'])
 			{
-				unset($this->location_info['returnto2']);
-				$this->init();
 				return;
 			}
 			elseif ($content['send'])	// Send button clicked
@@ -737,8 +662,6 @@ use \etemplate_widget_tree as tree;
 				$action = "egw_openWindowCentered2('$link','_blank',$w,$h,'yes','$app');";
 				egw_framework::set_onload($action);
 
-				unset($this->location_info['returnto2']);
-				$this->init();
 				return;
 			}
 
@@ -776,8 +699,6 @@ use \etemplate_widget_tree as tree;
 			//if the user cancelled we go back to the view we came from
 			if ($content['cancel'])
 			{
-				unset($this->location_info['returnto2']);
-				$this->init();
 				return;
 			} elseif ($content['export'])
 			{
@@ -826,8 +747,6 @@ use \etemplate_widget_tree as tree;
 			//if the user cancelled we go back to the view we came from
 			if ($content['cancel'])
 			{
-				unset($this->location_info['returnto2']);
-				$this->init();
 				return;
 			} elseif ($content['import'])
 			{

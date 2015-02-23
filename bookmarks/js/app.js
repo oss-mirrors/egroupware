@@ -57,7 +57,14 @@ app.classes.bookmarks = AppJS.extend(
 	{
 		// call parent
 		this._super.apply(this, arguments);
-
+		switch (et2.name)
+		{
+			case 'bookmarks.list':
+				this.setState
+				break;
+			case 'bookmarks.tree':
+				break;
+		}
 	},
 
 	/**
@@ -107,5 +114,31 @@ app.classes.bookmarks = AppJS.extend(
 
 		}
 	},
+
+	/**
+	 * Set a state previously returned by getState
+	 *
+	 * Called by favorites to set a state saved as favorite.
+	 *
+	 * @param {object} state containing "name" attribute to be used as "favorite" GET parameter to a nextmatch
+	 */
+	setState: function(state)
+	{
+		//TODO
+	},
+
+	/**
+	 * Return state object defining current view
+	 *
+	 * Called by favorites to query current state.
+	 *
+	 * @return {object} description
+	 */
+	getState: function()
+	{
+		var state = this.state;
+		//TODO
+		return state;
+	}
 
 });
