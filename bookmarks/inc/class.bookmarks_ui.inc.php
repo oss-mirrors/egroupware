@@ -84,6 +84,9 @@ use \etemplate_widget_tree as tree;
 		*/
 		function create($content = array())
 		{
+			// Set the selected category from tree selected by user
+			if ($_GET['cat_id']) $bookmark['category'] = $_GET['cat_id'];
+			
 			//save bookmark
 			if ($content['save'])
 			{

@@ -68,6 +68,39 @@ app.classes.bookmarks = AppJS.extend(
 	},
 
 	/**
+	 * Observer method receives update notifications from all applications
+	 *
+	 * App is responsible for only reacting to "messages" it is interested in!
+	 *
+	 * @param {string} _msg message (already translated) to show, eg. 'Entry deleted'
+	 * @param {string} _app application name
+	 * @param {(string|number)} _id id of entry to refresh or null
+	 * @param {string} _type either 'update', 'edit', 'delete', 'add' or null
+	 * - update: request just modified data from given rows.  Sorting is not considered,
+	 *		so if the sort field is changed, the row will not be moved.
+	 * - edit: rows changed, but sorting may be affected.  Requires full reload.
+	 * - delete: just delete the given rows clientside (no server interaction neccessary)
+	 * - add: requires full reload for proper sorting
+	 * @param {string} _msg_type 'error', 'warning' or 'success' (default)
+	 * @param {object|null} _links app => array of ids of linked entries
+	 * or null, if not triggered on server-side, which adds that info
+	 * @return {false|*} false to stop regular refresh, thought all observers are run
+	 */
+	observer: function(_msg, _app, _id, _type, _msg_type, _links)
+	{
+		var tree = this.et2.getWidgetById('tree');
+		if (tree)
+		{
+			var itemId = _id != 'undefined'?_app+"::"+_id:0;
+			switch (_type)
+			{
+				case 'update':
+				case 'edit':
+					tree.refreshItem(tree.input.getParentId(itemId)||0);
+			}
+		}
+	},
+	/**
 	 * Redirect the selected bookmark's leaf
 	 * 
 	 * @param {type} _id
@@ -104,7 +137,7 @@ app.classes.bookmarks = AppJS.extend(
 				this.egw.open_link(this.egw.link('/index.php','menuaction=bookmarks.bookmarks_ui.edit&bm_id='+id),'',egw().link_get_registry('bookmarks','add_popup'), 'bookmarks');
 				break;
 			case 'add':
-				this.egw.openPopup(this.egw.link('/index.php','menuaction=bookmarks.bookmarks_ui.create'),'750','300','_blank');
+				this.egw.openPopup(this.egw.link('/index.php','menuaction=bookmarks.bookmarks_ui.create&cat_id='+id),'750','300','_blank');
 				break;
 			case 'mailto':
 				//TODO
@@ -122,11 +155,12 @@ app.classes.bookmarks = AppJS.extend(
 	 *
 	 * @param {object} state containing "name" attribute to be used as "favorite" GET parameter to a nextmatch
 	 */
-	setState: function(state)
+	setState: function(_state)
 	{
+		this._super.apply(this,arguments);
 		//TODO
 	},
-
+	
 	/**
 	 * Return state object defining current view
 	 *
