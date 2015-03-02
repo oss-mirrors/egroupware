@@ -699,6 +699,7 @@ use \etemplate_widget_tree as tree;
 		*/
 		function export($content = array())
 		{
+			$values=array();
 			//if the user cancelled we go back to the view we came from
 			if ($content['cancel'])
 			{
@@ -733,10 +734,10 @@ use \etemplate_widget_tree as tree;
 					'xbel'	=>	lang('XBEL')
 				);
 
-				$values['msg'] = $this->app_messages();
+				
 				$GLOBALS['egw_info']['flags']['app_header'] = lang('Bookmarks - Export');
 				$this->templ->read('bookmarks.export');
-				$this->templ->exec('bookmarks.bookmarks_ui.export', $values, $sel_options);
+				$this->templ->exec('bookmarks.bookmarks_ui.export', $values, $sel_options,array(), array(),2);
 			}
 		}
 
@@ -759,7 +760,7 @@ use \etemplate_widget_tree as tree;
 			$values['msg'] = $this->app_messages();
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Bookmarks - Import');
 			$this->templ->read('bookmarks.import');
-			$this->templ->exec('bookmarks.bookmarks_ui.import', $values);
+			$this->templ->exec('bookmarks.bookmarks_ui.import', $values, array(), array(),array(),2);
 		}
 
 		/**

@@ -9,18 +9,14 @@
 				<column/>
 			</columns>
 			<rows>
-				<row disabled="!@msg">
-					<html id="msg" span="all" class="message"/>
-					<description/>
-				</row>
 				<row disabled="!@bm_count">
 					<description value="%s bookmarks selected for export" id="bm_count" span="all"/>
 				</row>
-				<row valign="top" disabled="@bm_count">
-					<vbox options="0,0">
-						<description value="Categories to export"/>
-						<description value="(Selecting a category includes all sub-categories)"/>
-					</vbox>
+				<row valign="top" disabled="@bm_count" class="dialogHeader">
+					<description value="Categories to export"/>
+				</row>
+				<row >
+					<description value="(Selecting a category includes all sub-categories)"/>
 					<tree-cat id="category" options="1"/>
 				</row>
 				<row>
@@ -29,10 +25,10 @@
 						<menupopup id="format"/>
 					</menulist>
 				</row>
-				<row>
+				<row class="dialogFooterToolbar">
 					<hbox span="all">
 						<button label="Export" id="export"/>
-						<button label="Cancel" id="cancel"/>
+						<button label="Cancel" id="cancel" onclick="window.close();"/>
 					</hbox>
 				</row>
 			</rows>

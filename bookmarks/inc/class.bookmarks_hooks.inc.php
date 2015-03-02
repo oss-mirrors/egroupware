@@ -61,8 +61,12 @@ class bookmarks_hooks
 				'New bookmark'     => "javascript:egw_openWindowCentered2('".egw::link('/index.php',array(
 						'menuaction' => 'bookmarks.bookmarks_ui.create'
 					),false)."','_blank',750,300,'yes');",
-				'Import Bookmarks' => $GLOBALS['egw']->link('/index.php','menuaction=bookmarks.bookmarks_ui.import'),
-				'Export Bookmarks' => $GLOBALS['egw']->link('/index.php','menuaction=bookmarks.bookmarks_ui.export')
+				'Import Bookmarks' => "javascript:egw.openPopup('".egw::link('/index.php',array(
+						'menuaction'=>'bookmarks.bookmarks_ui.import'
+					),false)."',500,150,'_blank',false,false,'yes');",
+				'Export Bookmarks' => "javascript:egw.openPopup('".egw::link('/index.php',array(
+						'menuaction'=>'bookmarks.bookmarks_ui.export'
+					),false)."',500,150,'_blank',false,false,'yes');"
 			);
 			display_sidebox($appname,$GLOBALS['egw_info']['apps']['bookmarks']['title'].' '.lang('Menu'),$file);
 		}
