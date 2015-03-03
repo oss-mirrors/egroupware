@@ -124,8 +124,16 @@ app.classes.bookmarks = AppJS.extend(
 	 */
 	tree_action: function (_action, _selected)
 	{
-		// Get the bookmark id
-		var id = _selected[0].id.split('/bookmarks-');
+		var id = '';
+		if (_selected[0].id.match(/\bookmarks-/ig))
+		{
+			// Get the bookmark id
+			id = _selected[0].id.split('/bookmarks-');
+		}
+		else
+		{
+			id = _selected[0].id.split('/');
+		}
 		if (id) id = id[id.length-1];
 
 		switch (_action.id)
