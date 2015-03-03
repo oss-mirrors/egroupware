@@ -349,6 +349,7 @@ use \etemplate_widget_tree as tree;
 					'url' => 'menuaction=bookmarks.bookmarks_ui.redirect&bm_id=$id',
 					'target' => '_blank',
 					'group' => $group=1,
+					'enableId' => '\/bookmarks-'
 				),
 				'edit' => array(
 					'caption' => 'Open',
@@ -356,7 +357,8 @@ use \etemplate_widget_tree as tree;
 					'url' => 'menuaction=bookmarks.bookmarks_ui.edit&bm_id=$id',
 					'popup' => egw_link::get_registry('bookmarks', 'add_popup'),
 					'group' => $group,
-					'disableClass' => 'rowNoEdit',
+					
+					'enableId' => '\/bookmarks-'
 				),
 				'add' => array(
 					'caption' => 'Add',
@@ -369,13 +371,15 @@ use \etemplate_widget_tree as tree;
 					'allowOnMultiple' => true,
 					'icon'	=> 'mail',
 					'group' => $group,
+					'enableId' => '\/bookmarks-'
 				),
 				'delete' => array(
 					'caption' => 'Delete',
 					'confirm' => 'Delete this entry',
 					'confirm_multiple' => 'Delete these entries',
 					'group' => ++$group,
-					'disableClass' => 'rowNoDelete',
+					
+					'enableId' => '\/bookmarks-'
 				),
 			);
 
@@ -455,7 +459,7 @@ use \etemplate_widget_tree as tree;
 					$bm_userData = array (
 						'url' => $bm['url']
 					);
-					$tree[tree::CHILDREN][] = array(tree::ID=>$_parent.'/'.$bm['id'], tree::LABEL => $bm['name'], 'userdata' => $bm_userData);
+					$tree[tree::CHILDREN][] = array(tree::ID=>$_parent.'/bookmarks-'.$bm['id'], tree::LABEL => $bm['name'], 'userdata' => $bm_userData);
 				}
 				
 				// Check if there's sub cats to bind

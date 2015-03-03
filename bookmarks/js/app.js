@@ -109,7 +109,7 @@ app.classes.bookmarks = AppJS.extend(
 	tree_onclick: function (_id, _widget)
 	{
 		// Get the bookmark id
-		var id = _id.split('/');
+		var id = _id.split('/bookmarks-');
 		if (id) id = id[id.length-1];
 		
 		var url = _widget.getUserData(_id,'url');
@@ -125,7 +125,7 @@ app.classes.bookmarks = AppJS.extend(
 	tree_action: function (_action, _selected)
 	{
 		// Get the bookmark id
-		var id = _selected[0].id.split('/');
+		var id = _selected[0].id.split('/bookmarks-');
 		if (id) id = id[id.length-1];
 
 		switch (_action.id)
