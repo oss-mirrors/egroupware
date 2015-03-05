@@ -1,4 +1,4 @@
-add	developer_tools	sk	pridať
+add	developer_tools	sk	Pridať
 add change	developer_tools	sk	Pridať zmenu
 add more	developer_tools	sk	Pridať viacero
 add new phrase	developer_tools	sk	Pridať novú frázu
@@ -16,7 +16,7 @@ create sgml file	developer_tools	sk	Vytvoriť SGML súbor
 developer tools - preferences	developer_tools	sk	Vývojové Nástroje -predvoľby
 developer_tools	common	sk	Prekladateľské Nástroje
 diary	developer_tools	sk	Diár
-done	developer_tools	sk	hotovo
+done	developer_tools	sk	Hotovo
 download	developer_tools	sk	Stiahnuť
 download the lang-file to be saved in the apps setup-dir	developer_tools	sk	Stiahnuť jazykový súbor, uložiť do setup adresára aplikácie
 edit	developer_tools	sk	Upraviť
@@ -29,8 +29,8 @@ loading target langfile	developer_tools	sk	Načítavam cieľový jazykový súbo
 loads the selected lang-files, to be modified in the next steps	developer_tools	sk	Načítajú sa vybrané jazykové súbory, ktoré majú byť zmenené v nasledujúcich krokoch
 message	developer_tools	sk	Správa
 message_id in english	developer_tools	sk	ID správy v angličtine
-no file	developer_tools	sk	žiadny súbor
-ok	developer_tools	sk	ok
+no file	developer_tools	sk	Žiadny súbor
+ok	developer_tools	sk	OK
 original	developer_tools	sk	Originál
 phrase in english (or empty if identical)	developer_tools	sk	Fráza v angličtine (alebo prázdne, ak sú totožné)
 preferences	developer_tools	sk	Predvoľby
