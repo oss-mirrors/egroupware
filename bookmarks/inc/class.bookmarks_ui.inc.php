@@ -349,7 +349,6 @@ use \etemplate_widget_tree as tree;
 					'url' => 'menuaction=bookmarks.bookmarks_ui.redirect&bm_id=$id',
 					'target' => '_blank',
 					'group' => $group=1,
-					'enableId' => '\/bookmarks-'
 				),
 				'edit' => array(
 					'caption' => 'Open',
@@ -357,8 +356,7 @@ use \etemplate_widget_tree as tree;
 					'url' => 'menuaction=bookmarks.bookmarks_ui.edit&bm_id=$id',
 					'popup' => egw_link::get_registry('bookmarks', 'add_popup'),
 					'group' => $group,
-					
-					'enableId' => '\/bookmarks-'
+					'disableClass' => 'rowNoEdit',
 				),
 				'add' => array(
 					'caption' => 'Add',
@@ -371,15 +369,13 @@ use \etemplate_widget_tree as tree;
 					'allowOnMultiple' => true,
 					'icon'	=> 'mail',
 					'group' => $group,
-					'enableId' => '\/bookmarks-'
 				),
 				'delete' => array(
 					'caption' => 'Delete',
 					'confirm' => 'Delete this entry',
 					'confirm_multiple' => 'Delete these entries',
 					'group' => ++$group,
-					
-					'enableId' => '\/bookmarks-'
+					'disableClass' => 'rowNoDelete',
 				),
 			);
 
@@ -390,6 +386,11 @@ use \etemplate_widget_tree as tree;
 				{
 					$actions[$action]['onExecute'] = 'javaScript:app.bookmarks.tree_action';
 					unset($actions[$action]['nm_action']);
+					if (in_array($action, array('visit','edit','delete','mailto')))
+					{
+						$actions[$action]['enableId'] = '\/bookmarks-';
+						unset($actions[$action]['disableClass']);
+					}
 				}
 			}
 			return $actions;
