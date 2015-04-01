@@ -7,10 +7,10 @@
 {right}
   </tr>
  </table>
- <table border="0" width="45%" align="center">
+ <table border="0" width="45%" align="center" class="egwGridView_grid">
   <tr class="th">
-   <td> {sort_title} </td>
-   <td>{lang_edit}</td>
+   <th> {sort_title} </td>
+   <th>{lang_edit}</td>
   </tr>
 
   {rows}

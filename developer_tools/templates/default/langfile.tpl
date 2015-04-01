@@ -1,4 +1,11 @@
 <!-- BEGIN header -->
+<style>
+textarea {
+	background-color: white;
+	width: 100%;
+	min-height: 3em;
+}
+</style>
 <form method="post" action="{action_url}">
  <table width="90%" align="center">
   <tr>
@@ -35,15 +42,15 @@
 
 <!-- BEGIN postheader -->
 <form method="post" action="{action_url}">
- <table width="90%" align="center">
+ <table width="90%" align="center" class="egwGridView_grid">
   <tr class="th">
-   <td colspan="5" align="center">{lang_application}:&nbsp;{app_title}</td>
+   <th colspan="5" align="center">{lang_application}:&nbsp;{app_title}</td>
   </tr>
   <tr class="th">
-   <td align="left">{lang_remove}</td>
-   <td align="left">{lang_appname}</td>
-   <td align="left">{lang_original}</td>
-   <td align="left">{lang_translation}</td>
+   <th align="left">{lang_remove}</td>
+   <th align="left">{lang_appname}</td>
+   <th align="left">{lang_original}</td>
+   <th align="left">{lang_translation}</td>
   </tr>
 <!-- END postheader -->
 
