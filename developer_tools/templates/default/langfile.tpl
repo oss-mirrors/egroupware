@@ -4,6 +4,7 @@ textarea {
 	background-color: white;
 	width: 100%;
 	min-height: 3em;
+	border: 1px solid #e6e6e6;
 }
 </style>
 <form method="post" action="{action_url}">
