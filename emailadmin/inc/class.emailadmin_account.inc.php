@@ -1398,13 +1398,14 @@ class emailadmin_account implements ArrayAccess
 	 *
 	 * @param boolean $smtp =false false: usable for IMAP, true: usable for SMTP
 	 * @param boolean $return_id =false true: return acc_id, false return account object
+	 * @param boolean|int $only_current_user =true return only accounts for current user or integer account_id of a user
 	 * @return emailadmin_account|null
 	 */
-	static function get_default($smtp=false, $return_id=false)
+	static function get_default($smtp=false, $return_id=false, $only_current_user=true)
 	{
 		try
 		{
-			foreach(emailadmin_account::search(true, 'params') as $acc_id => $params)
+			foreach(emailadmin_account::search($only_current_user, 'params') as $acc_id => $params)
 			{
 				if ($smtp)
 				{
