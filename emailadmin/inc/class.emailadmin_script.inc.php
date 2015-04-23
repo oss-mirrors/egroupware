@@ -91,14 +91,14 @@ class emailadmin_script {
 			if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": no sieve session open");
 			return false;
 		}
-		
+
 		// If the called script name is not exist then create it
 		// otherwise we might get error due to non existance script
 		if (!in_array($this->name, $connection->listScripts()))
 		{
 			$this->updateScript($connection);
 		}
-		
+
 		if(self::isError($script = $connection->getScript($this->name))) {
 			if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": error retrieving script: ".$script->getMessage());
 			return $script;
@@ -430,7 +430,7 @@ class emailadmin_script {
 				$defaultaddr = $sieve->user . '@' . $sieve->maildomain;
 				array_push($vacation['addresses'],$defaultaddr);
 			}
-			if ($vacation['status'] == 'on' || $vacation['status'] == 'by_date' &&
+			if (($vacation['status'] == 'on' && strlen(trim($vacation['text']))>0)|| $vacation['status'] == 'by_date' &&
 				$vacation['start_date'] <= time() && time() < $vacation['end_date']+24*3600)	// +24*3600 to include the end_date day
 			{
 				if (trim($vacation['forwards'])) {
@@ -445,17 +445,20 @@ class emailadmin_script {
 					$newscriptbody .= "\tkeep;\n}\n";
 				}
 				$vacation_active = true;
-				if ($regexsupported)
+				if ($vacation['text'])
 				{
-					$newscriptbody .= "if header :regex ".'"X-Spam-Status" '.'"\\\\bYES\\\\b"'."{\n\tstop;\n}\n"; //stop vacation reply if it is spam
-					$regexused = 1;
-				}
-				else
-				{
-					// if there are no regex'es supported use a different Anti-Spam Rule: if X-Spam-Status holds
-					// additional spamscore information (e.g. BAYES) this rule may prevent Vacation notification
-					// TODO: refine rule without using regex
-					$newscriptbody .= "if header :contains ".'"X-Spam-Status" '.'"YES"'."{\n\tstop;\n}\n"; //stop vacation reply if it is spam
+					if ($regexsupported)
+					{
+						$newscriptbody .= "if header :regex ".'"X-Spam-Status" '.'"\\\\bYES\\\\b"'."{\n\tstop;\n}\n"; //stop vacation reply if it is spam
+						$regexused = 1;
+					}
+					else
+					{
+						// if there are no regex'es supported use a different Anti-Spam Rule: if X-Spam-Status holds
+						// additional spamscore information (e.g. BAYES) this rule may prevent Vacation notification
+						// TODO: refine rule without using regex
+						$newscriptbody .= "if header :contains ".'"X-Spam-Status" '.'"YES"'."{\n\tstop;\n}\n"; //stop vacation reply if it is spam
+					}
 				}
 				$newscriptbody .= "vacation :days " . $vacation['days'] . " :addresses [";
 				$first = 1;
@@ -543,9 +546,25 @@ class emailadmin_script {
 			$newscripthead .= "];\n\n";
 		} else {
 			// no active rules, but might still have an active vacation rule
+			$closeRequired = false;
 			if ($this->vacation && $vacation_active)
-				$newscripthead .= "require [\"vacation\"];\n\n";
-			if ($this->emailNotification && $this->emailNotification['status'] == 'on') $newscripthead .= "require [\"".($enotify?'e':'')."notify\"".($variables?',"variables"':'')."];\n\n"; // Added email notifications
+			{
+				$newscripthead .= "require [\"vacation\"";
+				if ($regexsupported && $regexused) $newscripthead .= ",\"regex\"";
+				$closeRequired=true;
+			}
+			if ($this->emailNotification && $this->emailNotification['status'] == 'on')
+			{
+				if ($this->vacation && $vacation_active)
+				{
+					$newscripthead .= ",\"".($enotify?'e':'')."notify\"".($variables?',"variables"':'')."];\n\n"; // Added email notifications
+				}
+				else
+				{
+					$newscripthead .= "require [\"".($enotify?'e':'')."notify\"".($variables?',"variables"':'')."];\n\n"; // Added email notifications
+				}
+			}
+			if ($closeRequired) $newscripthead .= "];\n\n";
 		}
 
 		// generate the encoded script foot
