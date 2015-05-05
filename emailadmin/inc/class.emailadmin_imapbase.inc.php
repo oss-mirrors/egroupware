@@ -725,7 +725,7 @@ class emailadmin_imapbase
 	 */
 	function getDefaultIdentity() {
 		// retrieve the signature accociated with the identity
-		$id = $this->getIdentitiesWithAccounts($_accountData);
+		$id = $this->getIdentitiesWithAccounts($_accountData=array());
 		$acc = emailadmin_account::read($this->profileID);
 		$accountDataIT = ($_accountData[$this->profileID]?$acc->identities($this->profileID,false,'ident_id'):$acc->identities($_accountData[$id],false,'ident_id'));
 		foreach($accountDataIT as $it => $accountData)
@@ -1247,7 +1247,7 @@ class emailadmin_imapbase
 				// we filter for the combined status of unseen and undeleted, as this is what we show in list
 				try
 				{
-					$sortResult = $this->getSortedList($_folderName, $_sort=0, 1, array('status'=>array('UNSEEN','UNDELETED')),true,false);
+					$sortResult = $this->getSortedList($_folderName, $_sort=0, $_reverse=1, array('status'=>array('UNSEEN','UNDELETED')),true,false);
 					$retValue['unseen'] = $sortResult['count'];
 				}
 				catch (Exception $ee)
