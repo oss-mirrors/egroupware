@@ -1374,7 +1374,7 @@ class emailadmin_imapbase
 			$sortResult = (is_array($_thisUIDOnly) ? $_thisUIDOnly:(array)$_thisUIDOnly);
 		}
 
-		
+
 		// fetch the data for the selected messages
 		if (self::$debug||self::$debugTimes) $starttime = microtime(true);
 		try
@@ -2756,7 +2756,7 @@ class emailadmin_imapbase
 		if (is_array($mbx[$mbxkeys[0]]["ATTRIBUTES"]) && (in_array('\HasChildren',$mbx[$mbxkeys[0]]["ATTRIBUTES"]) || in_array('\Haschildren',$mbx[$mbxkeys[0]]["ATTRIBUTES"]) || in_array('\haschildren',$mbx[$mbxkeys[0]]["ATTRIBUTES"]))) {
 			// if there are children fetch them
 			//echo $mbx[$mbxkeys[0]]['MAILBOX']."<br>";
-			
+
 			$buff = $this->icServer->getMailboxes($mbx[$mbxkeys[0]]['MAILBOX'].($mbx[$mbxkeys[0]]['MAILBOX'] == $prefix ? '':$delimiter),2,false);
 			//$buff = $this->icServer->getMailboxes($mbx[$mbxkeys[0]]['MAILBOX'],2,false);
 			//_debug_array($buff);
@@ -3762,7 +3762,7 @@ class emailadmin_imapbase
 			case 'BASE64':
 				// use imap_base64 to decode, not any longer, as it is strict, and fails if it encounters invalid chars
 				return base64_decode($_mimeMessage);
-				
+
 			case 'QUOTED-PRINTABLE':
 				// use imap_qprint to decode
 				return quoted_printable_decode($_mimeMessage);
@@ -5006,6 +5006,17 @@ class emailadmin_imapbase
 		$tnefParts = array();
 		foreach($_structure->contentTypeMap() as $mime_id => $mime_type)
 		{
+			// skip multipart/encrypted incl. its two sub-parts, as we show 2. sub-part as body to be decrypted client-side
+			if ($mime_type == 'multipart/encrypted')
+			{
+				$skip = 2;
+				continue;
+			}
+			elseif($skip)
+			{
+				$skip--;
+				continue;
+			}
 			$part = $_structure->getPart($mime_id);
 			//error_log(__METHOD__.' ('.__LINE__.') '.':'.' Uid:'.$uid.' Part:'.$_partID.'->'.array2string($part->getMimeId()));
 			//error_log(__METHOD__.' ('.__LINE__.') '.':'.' Uid:'.$uid.' Part:'.$_partID.'->'.$part->getPrimaryType().'/'.$part->getSubType().'->'.$part->getDisposition());
@@ -5956,7 +5967,7 @@ class emailadmin_imapbase
 						$basedir = 'vfs://default';
 						$needTempFile = false;
 					}
-					
+
 					// If it is an inline image url, we need to fetch the actuall attachment
 					// content and later on to be able to store its content as temp file
 					if (strpos($myUrl, '/index.php?menuaction=mail.mail_ui.displayImage') !== false)
@@ -5964,7 +5975,7 @@ class emailadmin_imapbase
 						$URI_params = array();
 						// Strips the url and store it into a temp for further procss
 						$tmp_url = html_entity_decode($myUrl);
-						
+
 						parse_str(parse_url($tmp_url, PHP_URL_QUERY),$URI_params);
 						if ($URI_params['mailbox'] && $URI_params['uid'] && $URI_params['cid'])
 						{
@@ -5979,7 +5990,7 @@ class emailadmin_imapbase
 							}
 						}
 					}
-					
+
 					if ( strlen($basedir) > 1 && substr($basedir,-1) != '/' && $myUrl[0]!='/') { $basedir .= '/'; }
 					if ($needTempFile && !$attachment) $data = file_get_contents($basedir.urldecode($myUrl));
 				}
@@ -6089,7 +6100,7 @@ class emailadmin_imapbase
 				$AltBody = ($html_body = $mailObject->findBody('html')) ? $html_body->getContents() : null;
 				//error_log(__METHOD__.' ('.__LINE__.') '.' AltBody:'.$AltBody);
 				//error_log(__METHOD__.' ('.__LINE__.') '.array2string($mailObject->GetReplyTo()));
-				
+
 				// Fetch ReplyTo - Address if existing to check if we are to replace it
 				$replyTo = $mailObject->getReplyTo();
 				if (isset($replyTo['replace@import.action']))
@@ -6412,7 +6423,7 @@ class emailadmin_imapbase
 	function addAccount($_hookValues)
 	{
 		error_log(__METHOD__.' ('.__LINE__.') '.' NOT DONE YET!' . ' hookValue = '. $_hookValues);
-		
+
 	}
 
 	/**
@@ -6426,7 +6437,7 @@ class emailadmin_imapbase
 	function deleteAccount($_hookValues)
 	{
 		error_log(__METHOD__.' ('.__LINE__.') '.' NOT DONE YET!' . ' hookValue = '. $_hookValues);
-		
+
 	}
 
 	/**
@@ -6440,6 +6451,6 @@ class emailadmin_imapbase
 	function updateAccount($_hookValues)
 	{
 		error_log(__METHOD__.' ('.__LINE__.') '.' NOT DONE YET!' . ' hookValue = '. $_hookValues);
-		
+
 	}
 }
