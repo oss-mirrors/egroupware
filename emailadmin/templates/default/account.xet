@@ -308,7 +308,7 @@
 					<description/>
 				</row>
 				<row>
-					<tabbox id="tabs" span="all" tab_height="300">
+					<tabbox id="tabs" span="all" tab_height="320">
 						<tabs>
 							<tab id="emailadmin.account.identity" label="Identity+Signature" statustext="Identity&amp;Signature"/>
 							<tab id="emailadmin.account.imap" label="IMAP" statustext="incoming mail"/>
