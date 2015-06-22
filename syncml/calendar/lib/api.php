@@ -14,6 +14,8 @@
  * @version $Id$
  */
 
+include_once EGW_INCLUDE_ROOT.'/syncml/inc/class.calendar_sif.inc.php';
+
 $_services['list'] = array(
     'args' => array('filter'),
     'type' => 'stringArray'
@@ -69,7 +71,7 @@ function _egwcalendarsync_list($filter='')
 
 	$vcal = new Horde_iCalendar;
 	$boCalendar = new calendar_bo();
-	
+
 	$syncCriteria = $GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_filter'];
 	if (empty($syncCriteria)) $syncCriteria = 'all';
 
@@ -248,7 +250,7 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 	#Horde::logMessage('SymcML: egwcalendarsync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allClientItems = $state->getClientItems($type);
 	#Horde::logMessage('SymcML: egwcalendarsync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	switch ($action) {
 		case 'delete' :
 			// filters may have changed, so we need to calculate which

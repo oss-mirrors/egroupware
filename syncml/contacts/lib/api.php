@@ -14,6 +14,8 @@
  * @version $Id$
  */
 
+include_once EGW_INCLUDE_ROOT.'/syncml/inc/class.addressbook_sif.inc.php';
+
 $_services['list'] = array(
     'args' => array('filter'),
     'type' => 'stringArray'
@@ -169,7 +171,7 @@ function &_egwcontactssync_listBy($action, $timestamp, $type, $filter='') {
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allClientItems = (array)$state->getClientItems($type);
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	switch ($action) {
 		case 'delete' :
 			// filters may have changed, so we need to calculate which
@@ -1007,11 +1009,11 @@ function setSupportedFields($content)
 				case 'outlook sync client v.':
 					$supportedFields = $defaultFields[14];
 					break;
-					
+
 	     		case 'windows sync client v.':
 	     			$supportedFields = $defaultFields[17];
 					break;
-					
+
 				default:
 					error_log('Funambol product "' . $deviceInfo['model'] . '", assuming same as Thunderbird');
 				$supportedFields = $defaultFields[6];
@@ -1072,7 +1074,7 @@ function setSupportedFields($content)
 						$supportedFields = $defaultFields[4];
 					}
 					error_log('Unknown Nokia phone "' . $deviceInfo['model'] . '", assuming same as "'. $model . '"');
-					
+
 				break;
 			}
 			break;
@@ -1088,7 +1090,7 @@ function setSupportedFields($content)
 				break;
 			}
 			break;
-			
+
 		case 'samsung':
 			switch ($productName)
 			{

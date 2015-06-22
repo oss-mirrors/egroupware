@@ -14,6 +14,8 @@
  * @version $Id$
  */
 
+include_once EGW_INCLUDE_ROOT.'/syncml/inc/class.infolog_sif.inc.php';
+
 $_services['list'] = array(
     'args' => array('filter'),
     'type' => 'stringArray'
@@ -118,7 +120,7 @@ function &_egwnotessync_listBy($action, $timestamp, $type, $filter)
 	#Horde::logMessage('SymcML: egwnotessync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allClientItems = (array)$state->getClientItems($type);
 	#Horde::logMessage('SymcML: egwnotessync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	switch ($action) {
 		case 'delete' :
 			// filters may have changed, so we need to calculate which
@@ -158,11 +160,11 @@ function &_egwnotessync_listBy($action, $timestamp, $type, $filter)
  */
 function _egwnotessync_import($content, $contentType, $guid = null)
 {
-	
+
 	if (is_array($contentType)) {
 		$contentType = $contentType['ContentType'];
 	}
-	
+
 	Horde::logMessage("SymcML: egwnotessync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$boInfolog = new infolog_bo();
@@ -335,7 +337,7 @@ function _egwnotessync_export($guid, $contentType)
 	} else {
 		$clientProperties = array();
 	}
-	
+
 	Horde::logMessage("SymcML: egwnotessync export guid: $guid contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state =& $_SESSION['SyncML.state'];
@@ -347,7 +349,7 @@ function _egwnotessync_export($guid, $contentType)
 	} else {
 		$charset = 'UTF-8';
 	}
-	
+
 
 	$noteId = $state->get_egwId($guid);
 
@@ -421,7 +423,7 @@ function _egwnotessync_replace($guid, $content, $contentType, $type, $merge=fals
 	if (is_array($contentType)) {
 		$contentType = $contentType['ContentType'];
 	}
-	
+
 	Horde::logMessage("SymcML: egwtaskssync replace content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state =& $_SESSION['SyncML.state'];

@@ -14,6 +14,8 @@
  * @version $Id$
  */
 
+include_once EGW_INCLUDE_ROOT.'/syncml/inc/class.infolog_sif.inc.php';
+
 $_services['list'] = array(
     'args' => array('filter'),
     'type' => 'stringArray'
@@ -114,7 +116,7 @@ function &_egwtaskssync_listBy($action, $timestamp, $type, $filter='')
 	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state	=& $_SESSION['SyncML.state'];
 
-	
+
 	#Horde::logMessage('SymcML: egwtaskssync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allReadAbleItems = (array)_egwtaskssync_list($filter);
 	#Horde::logMessage('SymcML: egwtaskssync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
