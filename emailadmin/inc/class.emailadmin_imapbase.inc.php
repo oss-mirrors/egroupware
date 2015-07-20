@@ -835,11 +835,10 @@ class emailadmin_imapbase
 	 * openConnection
 	 *
 	 * @param int $_icServerID = 0
-	 * @param boolean $_adminConnection = false
 	 * @throws Horde_Imap_Client_Exception on connection error or authentication failure
 	 * @throws InvalidArgumentException on missing credentials
 	 */
-	function openConnection($_icServerID=0, $_adminConnection=false)
+	function openConnection($_icServerID=0)
 	{
 		//error_log( "-------------------------->open connection ".function_backtrace());
 		//error_log(__METHOD__.' ('.__LINE__.') '.' ->'.array2string($this->icServer));
@@ -2622,7 +2621,46 @@ class emailadmin_imapbase
 		if (self::$debugTimes) self::logRunTimes($starttime,null,function_backtrace(),__METHOD__.' ('.__LINE__.') ');
 		return $folders2return[$this->icServer->ImapServerId];
 	}
-
+	
+	/**
+	 * Get IMAP folder for a mailbox
+	 *
+	 * @param $_nodePath = null folder name to fetch from IMAP,
+	 *			null means all folders
+	 * @param $_onlyTopLevel if set to true only top level objects
+	 *			will be return and nodePath would be ignored
+	 *
+	 * @return array an array of folder
+	 */
+	function getFolderArray ($_nodePath = null, $_onlyTopLevel = false)
+	{
+		// Name spaces
+		$nameSpaces = $this->_getNameSpaces();
+		// delimiter
+		$delimiter = $this->getHierarchyDelimiter();
+		
+		$folders = array();
+		
+		if (is_array($nameSpaces) && $_onlyTopLevel) // top level leaves
+		{
+			foreach ($nameSpaces as &$nameSpace)
+			{
+				$pattern = "/\\".$delimiter."/";
+				$reference = preg_replace($pattern, '', $nameSpace['prefix']);
+				$mainFolder = $this->icServer->getMailboxes($reference, 1, true);
+				$subFolders = $this->icServer->getMailboxes($nameSpace['prefix'], 2, true);
+				$folders = array_merge($folders,(array)$mainFolder, (array)$subFolders);
+			}
+		}
+		else // single node
+		{
+			$path = $_nodePath.''.$delimiter;
+			return $this->icServer->getMailboxes($path, 2, true);
+		}
+		return $folders;
+	}
+	
+	
 	/**
 	 * Check if all automatic folders exist and create them if not
 	 *
