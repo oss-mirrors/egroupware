@@ -2634,28 +2634,31 @@ class emailadmin_imapbase
 	 */
 	function getFolderArray ($_nodePath = null, $_onlyTopLevel = false)
 	{
-		// Name spaces
-		$nameSpaces = $this->_getNameSpaces();
 		// delimiter
 		$delimiter = $this->getHierarchyDelimiter();
 		
 		$folders = array();
+		// Get top mailboxes of icServer
+		$topFolders = $this->icServer->getMailboxes("", 2, true);
 		
-		if (is_array($nameSpaces) && $_onlyTopLevel) // top level leaves
+		if (is_array($topFolders) && $_onlyTopLevel) // top level leaves
 		{
-			foreach ($nameSpaces as &$nameSpace)
+			foreach ($topFolders as &$node)
 			{
 				$pattern = "/\\".$delimiter."/";
-				$reference = preg_replace($pattern, '', $nameSpace['prefix']);
+				$reference = preg_replace($pattern, '', $node['MAILBOX']);
 				$mainFolder = $this->icServer->getMailboxes($reference, 1, true);
-				$subFolders = $this->icServer->getMailboxes($nameSpace['prefix'], 2, true);
-				$folders = array_merge($folders,(array)$mainFolder, (array)$subFolders);
+				$subFolders = $this->icServer->getMailboxes($node['MAILBOX'].$node['delimiter'], 2, true);
+				$folders[$node['MAILBOX']] = array_merge((array)$mainFolder, (array)$subFolders);
+				ksort($folders[$node['MAILBOX']]);
 			}
 		}
 		else // single node
 		{
 			$path = $_nodePath.''.$delimiter;
-			return $this->icServer->getMailboxes($path, 2, true);
+			$folders = $this->icServer->getMailboxes($path, 2, true);
+			ksort($folders);
+			return $folders;
 		}
 		return $folders;
 	}
