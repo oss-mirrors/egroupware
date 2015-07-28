@@ -2629,20 +2629,24 @@ class emailadmin_imapbase
 	 *			null means all folders
 	 * @param $_onlyTopLevel if set to true only top level objects
 	 *			will be return and nodePath would be ignored
-	 *
+	 * @param int $_search = 2 search restriction in given mailbox
+	 *	0:All folders recursively from the $_nodePath
+	 *  1:Only folder of specified $_nodePath
+	 *	2:All folders of $_nodePath in the same heirachy level
 	 * @return array an array of folder
 	 */
-	function getFolderArray ($_nodePath = null, $_onlyTopLevel = false)
+	function getFolderArray ($_nodePath = null, $_onlyTopLevel = false, $_search= 2)
 	{
 		// delimiter
 		$delimiter = $this->getHierarchyDelimiter();
 		
 		$folders = array();
-		// Get top mailboxes of icServer
-		$topFolders = $this->icServer->getMailboxes("", 2, true);
 		
-		if (is_array($topFolders) && $_onlyTopLevel) // top level leaves
+		if ($_onlyTopLevel) // top level leaves
 		{
+			// Get top mailboxes of icServer
+			$topFolders = $this->icServer->getMailboxes("", 2, true);
+			
 			foreach ($topFolders as &$node)
 			{
 				$pattern = "/\\".$delimiter."/";
@@ -2653,12 +2657,28 @@ class emailadmin_imapbase
 				ksort($folders[$node['MAILBOX']]);
 			}
 		}
-		else // single node
+		elseif ($_nodePath) // single node
 		{
-			$path = $_nodePath.''.$delimiter;
-			$folders = $this->icServer->getMailboxes($path, 2, true);
+			switch ($_search)
+			{
+				// Including children
+				case 0:
+				case 2:
+					$path = $_nodePath.''.$delimiter;
+					break;
+				// Node itself
+				// shouldn't contain next level delimiter
+				case 1:
+					$path = $_nodePath;
+					break;
+			}
+			$folders = $this->icServer->getMailboxes($path, $_search, true);
 			ksort($folders);
 			return $folders;
+		}
+		elseif(!$_nodePath)
+		{
+			$folders = $this->icServer->getMailboxes('', 0, true);
 		}
 		return $folders;
 	}
