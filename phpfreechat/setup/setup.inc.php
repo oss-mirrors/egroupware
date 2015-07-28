@@ -21,10 +21,10 @@ $setup_info['phpfreechat']['app_order'] = 4;
 $setup_info['phpfreechat']['enable']    = 4;	// 4 = popup
 
 $setup_info['phpfreechat']['author'] = 'pgpFreeChat project';
-$setup_info['phpfreechat']['author_url'] = 'http://phpfreechat.sourceforge.net';
+$setup_info['phpfreechat']['author_url'] = 'http://www.phpfreechat.net';
 
 $setup_info['phpfreechat']['license']  = 'LGPL';
-$setup_info['phpfreechat']['description'] = lang('phpFreeChat integration into eGroupWare');
+$setup_info['phpfreechat']['description'] = lang('phpFreeChat integration into EGroupware');
 $setup_info['phpfreechat']['note'] = '';
 
 $setup_info['phpfreechat']['tables']  = array('egw_phpfreechat');	// handled by pfc itself atm.
