@@ -2627,7 +2627,7 @@ class emailadmin_imapbase
 	}
 	
 	/**
-	 * Get IMAP folder for a mailbox
+	 * Get IMAP folders for a mailbox
 	 *
 	 * @param string $_nodePath = null folder name to fetch from IMAP,
 	 *			null means all folders
@@ -2641,9 +2641,9 @@ class emailadmin_imapbase
 	 * @param boolean $_subscribedOnly = false Command to fetch only the subscribed folders
 	 * @param boolean $_getCounter = false Command to fetch mailbox counter
 	 *
-	 * @return array an array of folder
+	 * @return array arrays of folders
 	 */
-	function getFolderArray ($_nodePath = null, $_onlyTopLevel = false, $_search= 2, $_subscribedOnly = false, $_getCounter = false)
+	function getFolderArrays ($_nodePath = null, $_onlyTopLevel = false, $_search= 2, $_subscribedOnly = false, $_getCounter = false)
 	{
 		// delimiter
 		$delimiter = $this->getHierarchyDelimiter();
@@ -2698,9 +2698,8 @@ class emailadmin_imapbase
 			}
 			
 			ksort($folders);
-			return $folders;
 		}
-		elseif(!$_nodePath)
+		elseif(!$_nodePath) // all
 		{
 			if ($_subscribedOnly)
 			{
@@ -2712,13 +2711,28 @@ class emailadmin_imapbase
 			}
 		}
 		
+		// Get counter information and add them to each fetched folders array
 		if ($_getCounter)
 		{
-			foreach ($folders as &$folder)
+			if (is_array($topFolders) && $_onlyTopLevel) // topLevel structured folders
 			{
-				$folder['counter'] = $this->icServer->getMailboxCounters($folder);
+				foreach ($topFolders as &$node)
+				{	
+					foreach ($folders[$node['MAILBOX']] as &$folder)
+					{
+						$folder['counter'] = $this->icServer->getMailboxCounters($folder['MAILBOX']);
+					}
+				}
+			}
+			else // signle node / All
+			{
+				foreach ($folders as &$folder)
+				{	
+					$folder['counter'] = $this->icServer->getMailboxCounters($folder['MAILBOX']);
+				}
 			}
 		}
+		
 		return $folders;
 	}
 	
