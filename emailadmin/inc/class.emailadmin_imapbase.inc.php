@@ -1071,6 +1071,8 @@ class emailadmin_imapbase
 	 * @param ignoreStatusCache bool ignore the cache used for counters
 	 *
 	 * @return array
+	 *
+	 * @throws egw_exception
 	 */
 	function _getStatus($folderName,$ignoreStatusCache=false)
 	{
@@ -2254,6 +2256,7 @@ class emailadmin_imapbase
 	 * @param string _folderName the new foldername
 	 *
 	 * @return mixed name of the newly created folder or false on error
+	 * @throws egw_exception
 	 */
 	function renameFolder($_oldFolderName, $_parent, $_folderName)
 	{
@@ -2289,6 +2292,7 @@ class emailadmin_imapbase
 	 * @param string _folderName the name of the folder to be deleted
 	 *
 	 * @return bool true on success, PEAR Error on failure
+	 * @throws egw_exception
 	 */
 	function deleteFolder($_folderName)
 	{
@@ -2625,17 +2629,21 @@ class emailadmin_imapbase
 	/**
 	 * Get IMAP folder for a mailbox
 	 *
-	 * @param $_nodePath = null folder name to fetch from IMAP,
+	 * @param string $_nodePath = null folder name to fetch from IMAP,
 	 *			null means all folders
-	 * @param $_onlyTopLevel if set to true only top level objects
+	 * @param boolean $_onlyTopLevel if set to true only top level objects
 	 *			will be return and nodePath would be ignored
 	 * @param int $_search = 2 search restriction in given mailbox
 	 *	0:All folders recursively from the $_nodePath
 	 *  1:Only folder of specified $_nodePath
 	 *	2:All folders of $_nodePath in the same heirachy level
+	 *
+	 * @param boolean $_subscribedOnly = false Command to fetch only the subscribed folders
+	 * @param boolean $_getCounter = false Command to fetch mailbox counter
+	 *
 	 * @return array an array of folder
 	 */
-	function getFolderArray ($_nodePath = null, $_onlyTopLevel = false, $_search= 2)
+	function getFolderArray ($_nodePath = null, $_onlyTopLevel = false, $_search= 2, $_subscribedOnly = false, $_getCounter = false)
 	{
 		// delimiter
 		$delimiter = $this->getHierarchyDelimiter();
@@ -2651,8 +2659,16 @@ class emailadmin_imapbase
 			{
 				$pattern = "/\\".$delimiter."/";
 				$reference = preg_replace($pattern, '', $node['MAILBOX']);
-				$mainFolder = $this->icServer->getMailboxes($reference, 1, true);
-				$subFolders = $this->icServer->getMailboxes($node['MAILBOX'].$node['delimiter'], 2, true);
+				if ($_subscribedOnly)
+				{
+					$mainFolder = $this->icServer->listSubscribedMailboxes($reference, 1, true);
+					$subFolders = $this->icServer->listSubscribedMailboxes($node['MAILBOX'].$node['delimiter'], 2, true);
+				}
+				else
+				{
+					$mainFolder = $this->icServer->getMailboxes($reference, 1, true);
+					$subFolders = $this->icServer->getMailboxes($node['MAILBOX'].$node['delimiter'], 2, true);
+				}
 				$folders[$node['MAILBOX']] = array_merge((array)$mainFolder, (array)$subFolders);
 				ksort($folders[$node['MAILBOX']]);
 			}
@@ -2672,13 +2688,36 @@ class emailadmin_imapbase
 					$path = $_nodePath;
 					break;
 			}
-			$folders = $this->icServer->getMailboxes($path, $_search, true);
+			if ($_subscribedOnly)
+			{
+				$folders = $this->icServer->listSubscribedMailboxes($path, $_search, true);
+			}
+			else
+			{
+				$folders = $this->icServer->getMailboxes($path, $_search, true);
+			}
+			
 			ksort($folders);
 			return $folders;
 		}
 		elseif(!$_nodePath)
 		{
-			$folders = $this->icServer->getMailboxes('', 0, true);
+			if ($_subscribedOnly)
+			{
+				$folders = $this->icServer->listSubscribedMailboxes('', 0, true);
+			}
+			else
+			{
+				$folders = $this->icServer->getMailboxes('', 0, true);
+			}
+		}
+		
+		if ($_getCounter)
+		{
+			foreach ($folders as &$folder)
+			{
+				$folder['counter'] = $this->icServer->getMailboxCounters($folder);
+			}
 		}
 		return $folders;
 	}
@@ -3206,6 +3245,7 @@ class emailadmin_imapbase
 	 * @param string _forceDeleteMethod - "no", or deleteMethod like 'move_to_trash',"mark_as_deleted","remove_immediately"
 	 *
 	 * @return bool true, as we do not handle return values yet
+	 * @throws egw_exception
 	 */
 	function deleteMessages($_messageUID, $_folder=NULL, $_forceDeleteMethod='no')
 	{
@@ -3529,6 +3569,7 @@ class emailadmin_imapbase
 	 * @param int $_targetProfileID - target profile ID, should only be handed over when target server is different from source
 	 *
 	 * @return mixed/bool true,false or new uid
+	 * @throws egw_exception
 	 */
 	function moveMessages($_foldername, $_messageUID, $deleteAfterMove=true, $currentFolder = Null, $returnUIDs = false, $_sourceProfileID = Null, $_targetProfileID = Null)
 	{
@@ -5397,6 +5438,7 @@ class emailadmin_imapbase
 	 * @param string _flags = '\\Recent'the imap flags to set for the saved message
 	 *
 	 * @return the id of the message appended or exception
+	 * @throws egw_exception_wrong_userinput
 	 */
 	function appendMessage($_folderName, $_header, $_body, $_flags='\\Recent')
 	{
@@ -5785,6 +5827,8 @@ class emailadmin_imapbase
 	 * @param string $IDtoAddToFileName id to enrich the returned tmpfilename
 	 * @param string $reqMimeType /(default message/rfc822, if set to false, mimetype check will not be performed
 	 * @return mixed $fullPathtoFile or exception
+	 *
+	 * @throws egw_exception_wrong_userinput
 	 */
 	static function checkFileBasics(&$_formData, $IDtoAddToFileName='', $reqMimeType='message/rfc822')
 	{
@@ -6300,7 +6344,7 @@ class emailadmin_imapbase
 	 *
 	 * @param egw_mailer $mailer instance of SMTP Mailer object
 	 * @param string|ressource|Horde_Mime_Part $message string or resource containing the RawMessage / object Mail_mimeDecoded message (part))
-	 * @throws egw_exception_assertion_failed when the required Horde_Mail_Part not found
+	 * @throws egw_exception_wrong_parameter when the required Horde_Mail_Part not found
 	 */
 	function parseRawMessageIntoMailObject(egw_mailer $mailer, $message)
 	{
