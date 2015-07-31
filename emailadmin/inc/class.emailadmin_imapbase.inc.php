@@ -2642,6 +2642,8 @@ class emailadmin_imapbase
 	 * @param boolean $_getCounter = false Command to fetch mailbox counter
 	 *
 	 * @return array arrays of folders
+	 *
+	 * @todo Sorting autofolders and no autofolders
 	 */
 	function getFolderArrays ($_nodePath = null, $_onlyTopLevel = false, $_search= 2, $_subscribedOnly = false, $_getCounter = false)
 	{
@@ -2659,18 +2661,19 @@ class emailadmin_imapbase
 			{
 				$pattern = "/\\".$delimiter."/";
 				$reference = preg_replace($pattern, '', $node['MAILBOX']);
+				$mainFolder = $subFolders = array();
 				if ($_subscribedOnly)
 				{
 					$mainFolder = $this->icServer->listSubscribedMailboxes($reference, 1, true);
-					$subFolders = $this->icServer->listSubscribedMailboxes($node['MAILBOX'].$node['delimiter'], 2, true);
+					$subFolders = $this->icServer->listSubscribedMailboxes($node['MAILBOX'].$node['delimiter'], $_search, true);
 				}
 				else
 				{
 					$mainFolder = $this->icServer->getMailboxes($reference, 1, true);
-					$subFolders = $this->icServer->getMailboxes($node['MAILBOX'].$node['delimiter'], 2, true);
+					$subFolders = $this->icServer->getMailboxes($node['MAILBOX'].$node['delimiter'], $_search, true);
 				}
-				$folders[$node['MAILBOX']] = array_merge((array)$mainFolder, (array)$subFolders);
-				ksort($folders[$node['MAILBOX']]);
+				ksort($subFolders);
+				$folders = array_merge($folders,(array)$mainFolder, (array)$subFolders);
 			}
 		}
 		elseif ($_nodePath) // single node
@@ -2732,7 +2735,26 @@ class emailadmin_imapbase
 				}
 			}
 		}
+		// Array container of auto folders
+		$aFolders = array();
 		
+		// Array container of non auto folders
+		$nFolders = array();
+		
+		foreach ($folders as $path => $folder)
+		{
+			$folderInfo = mail_tree::pathToFolderData($folder['MAILBOX'], $folder['delimiter']);
+			if (array_search($folderInfo['name'], self::$autoFolders, true))
+			{
+				$aFolders [$path] = $folder;
+			}
+			else
+			{
+				$nFolders [$path] = $folder;
+			}
+		}
+		if (is_array($aFolders)) uasort ($aFolders, array($this,'sortByAutofolder'));
+		if (is_array($nFolders)) uasort ($nFolders, array($this, 'sortByName'));
 		return $folders;
 	}
 	
@@ -2775,7 +2797,42 @@ class emailadmin_imapbase
 		}
 		return $rv;
 	}
-
+	
+	/**
+	 * sortByName
+	 *
+	 * Helper function to sort folders array by name
+	 * @param array $a
+	 * @param array $b array of folders
+	 * @return int expect values (0, 1 or -1)
+	 */
+	function sortByName($a,$b)
+	{
+		$a = mail_tree::pathToFolderData($a['MAILBOX'], $a['delimiter']);
+		$b = mail_tree::pathToFolderData($b['MAILBOX'], $b['delimiter']);
+		// 0, 1 und -1
+		return strcasecmp($a->displayName,$b->displayName);
+	}
+	
+	/**
+	 * sortByAutoFolderPos
+	 *
+	 * Helper function to sort folder-objects by auto Folder Position
+	 * @param array $a
+	 * @param array $b
+	 * @return int expect values (0, 1 or -1)
+	 */
+	function sortByAutoFolder($a,$b)
+	{
+		// 0, 1 und -1
+		$a = mail_tree::pathToFolderData($a['MAILBOX'], $a['delimiter']);
+		$b = mail_tree::pathToFolderData($b['MAILBOX'], $b['delimiter']);
+		$pos1 = array_search(trim($a['name']),self::$autoFolders);
+		$pos2 = array_search(trim($b['name']),self::$autoFolders);
+		if ($pos1 == $pos2) return 0;
+		return ($pos1 < $pos2) ? -1 : 1;
+	}
+	
 	/**
 	 * sortByDisplayName
 	 *
