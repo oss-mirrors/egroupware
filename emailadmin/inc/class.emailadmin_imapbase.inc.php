@@ -2672,7 +2672,34 @@ class emailadmin_imapbase
 					$mainFolder = $this->icServer->getMailboxes($reference, 1, true);
 					$subFolders = $this->icServer->getMailboxes($node['MAILBOX'].$node['delimiter'], $_search, true);
 				}
-				ksort($subFolders);
+				if (is_array($mainFolder['INBOX']))
+				{
+					// Array container of auto folders
+					$aFolders = array();
+
+					// Array container of non auto folders
+					$nFolders = array();
+
+					foreach ($subFolders as $path => $folder)
+					{
+						$folderInfo = mail_tree::pathToFolderData($folder['MAILBOX'], $folder['delimiter']);
+						if (in_array($folderInfo['name'], self::$autoFolders))
+						{
+							$aFolders [$path] = $folder;
+						}
+						else
+						{
+							$nFolders [$path] = $folder;
+						}
+					}
+					if (is_array($aFolders)) uasort ($aFolders, array($this,'sortByAutofolder'));
+					if (is_array($nFolders)) uasort ($aFolders, array($this,'sortByName'));
+					$subFolders = array_merge($aFolders,$nFolders);
+				}
+				else
+				{
+					if (is_array($subFolders)) ksort($subFolders);
+				}
 				$folders = array_merge($folders,(array)$mainFolder, (array)$subFolders);
 			}
 		}
@@ -2735,26 +2762,6 @@ class emailadmin_imapbase
 				}
 			}
 		}
-		// Array container of auto folders
-		$aFolders = array();
-		
-		// Array container of non auto folders
-		$nFolders = array();
-		
-		foreach ($folders as $path => $folder)
-		{
-			$folderInfo = mail_tree::pathToFolderData($folder['MAILBOX'], $folder['delimiter']);
-			if (array_search($folderInfo['name'], self::$autoFolders, true))
-			{
-				$aFolders [$path] = $folder;
-			}
-			else
-			{
-				$nFolders [$path] = $folder;
-			}
-		}
-		if (is_array($aFolders)) uasort ($aFolders, array($this,'sortByAutofolder'));
-		if (is_array($nFolders)) uasort ($nFolders, array($this, 'sortByName'));
 		return $folders;
 	}
 	
@@ -2811,7 +2818,7 @@ class emailadmin_imapbase
 		$a = mail_tree::pathToFolderData($a['MAILBOX'], $a['delimiter']);
 		$b = mail_tree::pathToFolderData($b['MAILBOX'], $b['delimiter']);
 		// 0, 1 und -1
-		return strcasecmp($a->displayName,$b->displayName);
+		return strcasecmp($a['name'],$b['name']);
 	}
 	
 	/**
