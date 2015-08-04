@@ -2662,6 +2662,14 @@ class emailadmin_imapbase
 				$pattern = "/\\".$delimiter."/";
 				$reference = preg_replace($pattern, '', $node['MAILBOX']);
 				$mainFolder = $subFolders = array();
+				
+				// Get special use folders
+				if (!isset(self::$specialUseFolders)) $this->getSpecialUseFolders (); // Set self::$sepecialUseFolders
+				// Create autofolders if they all not created yet
+				if (count(self::$autoFolders) > count(self::$specialUseFolders)) $this->check_create_autofolders(self::$specialUseFolders);
+				// Merge of all auto folders and specialusefolders
+				$autoFoldersTmp = array_unique((array_merge(self::$autoFolders, array_values(self::$specialUseFolders))));
+				
 				if ($_subscribedOnly)
 				{
 					$mainFolder = $this->icServer->listSubscribedMailboxes($reference, 1, true);
@@ -2683,7 +2691,7 @@ class emailadmin_imapbase
 					foreach ($subFolders as $path => $folder)
 					{
 						$folderInfo = mail_tree::pathToFolderData($folder['MAILBOX'], $folder['delimiter']);
-						if (in_array($folderInfo['name'], self::$autoFolders))
+						if (in_array(trim($folderInfo['name']), $autoFoldersTmp))
 						{
 							$aFolders [$path] = $folder;
 						}
@@ -2693,7 +2701,7 @@ class emailadmin_imapbase
 						}
 					}
 					if (is_array($aFolders)) uasort ($aFolders, array($this,'sortByAutofolder'));
-					if (is_array($nFolders)) uasort ($aFolders, array($this,'sortByName'));
+					ksort($aFolders);
 					$subFolders = array_merge($aFolders,$nFolders);
 				}
 				else
