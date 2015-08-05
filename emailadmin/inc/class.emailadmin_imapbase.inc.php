@@ -1135,7 +1135,7 @@ class emailadmin_imapbase
 		// does the folder exist???
 		if (is_null($folderInfoCache) || !isset($folderInfoCache[$_folderName]))
 		{
-			$ret = $this->icServer->getMailboxes('', $_folderName, true);
+			$ret = $this->icServer->getMailboxes($_folderName, 1, true);
 			//error_log(__METHOD__.' ('.__LINE__.') '.$_folderName.' '.array2string($ret));
 			if (is_array($ret))
 			{
