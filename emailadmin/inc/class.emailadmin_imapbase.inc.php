@@ -2752,22 +2752,9 @@ class emailadmin_imapbase
 		// Get counter information and add them to each fetched folders array
 		if ($_getCounter)
 		{
-			if (is_array($topFolders) && $_onlyTopLevel) // topLevel structured folders
+			foreach ($folders as &$folder)
 			{
-				foreach ($topFolders as &$node)
-				{	
-					foreach ($folders[$node['MAILBOX']] as &$folder)
-					{
-						$folder['counter'] = $this->icServer->getMailboxCounters($folder['MAILBOX']);
-					}
-				}
-			}
-			else // signle node / All
-			{
-				foreach ($folders as &$folder)
-				{	
-					$folder['counter'] = $this->icServer->getMailboxCounters($folder['MAILBOX']);
-				}
+				$folder['counter'] = $this->icServer->getMailboxCounters($folder['MAILBOX']);
 			}
 		}
 		return $folders;
