@@ -6125,7 +6125,7 @@ class emailadmin_imapbase
 						$attachment_file = $basedir.urldecode($myUrl);
 					}
 					$cid = 'cid:' . md5($filename);
-					if ($_mailObject->AddEmbeddedImage($attachment_file, substr($cid, 4), $filename, $mimeType) !== null)
+					if ($_mailObject->AddEmbeddedImage($attachment_file, substr($cid, 4), urldecode($filename), $mimeType) !== null)
 					{
 						//$_html2parse = preg_replace("/".$images[1][$i]."=\"".preg_quote($url, '/')."\"/Ui", $images[1][$i]."=\"".$cid."\"", $_html2parse);
 						$_html2parse = str_replace($images[0][$i], $images[1][$i].'="'.$cid.'"', $_html2parse);
