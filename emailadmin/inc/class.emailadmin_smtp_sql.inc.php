@@ -5,7 +5,7 @@
  * @link http://www.stylite.de
  * @package emailadmin
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @copyright (c) 2012-13 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @copyright (c) 2012-15 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */
@@ -55,7 +55,7 @@ class emailadmin_smtp_sql extends emailadmin_smtp
 	/**
 	 * Constructor
 	 *
-	 * @param string $defaultDomain=null
+	 * @param string $defaultDomain =null
 	 */
 	function __construct($defaultDomain=null)
 	{
@@ -101,7 +101,7 @@ class emailadmin_smtp_sql extends emailadmin_smtp
 	 * from all accounts!
 	 *
 	 * @param int|string $user numerical account-id, account-name or email address
-	 * @param boolean $match_uid_at_domain=true true: uid@domain matches, false only an email or alias address matches
+	 * @param boolean $match_uid_at_domain =true true: uid@domain matches, false only an email or alias address matches
 	 * @return array with values for keys 'mailLocalAddress', 'mailAlternateAddress' (array), 'mailForwardingAddress' (array),
 	 * 	'accountStatus' ("active"), 'quotaLimit' and 'deliveryMode' ("forwardOnly")
 	 */
@@ -227,8 +227,8 @@ class emailadmin_smtp_sql extends emailadmin_smtp
 	 * @param string $_accountStatus
 	 * @param string $_mailLocalAddress
 	 * @param int $_quota in MB
-	 * @param boolean $_forwarding_only=false true: store only forwarding info, used internally by saveSMTPForwarding
-	 * @param string $_setMailbox=null used only for account migration
+	 * @param boolean $_forwarding_only =false true: store only forwarding info, used internally by saveSMTPForwarding
+	 * @param string $_setMailbox =null used only for account migration
 	 * @return boolean true on success, false on error writing to ldap
 	 */
 	function setUserData($_uidnumber, array $_mailAlternateAddress, array $_mailForwardingAddress, $_deliveryMode,
