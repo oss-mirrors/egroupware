@@ -74,9 +74,9 @@ class bookmarks_hooks
 		if ($GLOBALS['egw_info']['user']['apps']['admin'] && $location != 'preferences')
 		{
 			$file = Array(
-				'Site Configuration' => egw::link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname, 'admin'),
-				'Global Categories' => egw::link('/index.php','menuaction=admin.admin_categories.index&appname=' . $appname, 'admin'),
-				'Custom fields' => egw::link('/index.php','menuaction=admin.customfields.edit&appname=' . $appname, 'admin'),
+				'Site Configuration' => egw::link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
+				'Global Categories' => egw::link('/index.php','menuaction=admin.admin_categories.index&appname=' . $appname),
+				'Custom fields' => egw::link('/index.php','menuaction=admin.customfields.edit&appname=' . $appname),
 			);
 			if ($location == 'admin')
 			{
