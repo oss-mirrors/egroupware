@@ -181,6 +181,39 @@ app.classes.bookmarks = AppJS.extend(
 		var state = this.state;
 		//TODO
 		return state;
-	}
+	},
 
+	/**
+	 * Action handler to mail bookmarks
+	 * 
+	 * Mail compose window is opened with the bookmarks & such.  Since we're
+	 * coming from the nextmatch, all needed information should already be in
+	 * the data store so we avoid a trip to the server.
+	 * 
+	 * @param {egwAction} action
+	 * @param {egwActionObject[]} selected
+	 */
+	mail: function(action, selected)
+	{
+		var settings = {
+			"preset[subject]": this.egw.lang('Found a link you might like'),
+			"preset[body]": this.egw.lang('I thought you would be interested in the following link(s):')+"<br />\n"
+		};
+		
+		// Get bookmark information from data store
+		for(var i = 0; i < selected.length; i++)
+		{
+			var data = egw.dataGetUIDdata(selected[i].id);
+			if(data && data.data)
+			{
+				settings["preset[body]"] += data.data.name + ' - ' + data.data.url + "<br />\n";
+				if(data.data.desc && data.data.desc.trim() !== '')
+				{
+					settings["preset[body]"] += data.data.desc + "<br />\n<br />\n";
+				}
+			}
+		}
+
+		egw.open('','mail','add',settings);
+	}
 });

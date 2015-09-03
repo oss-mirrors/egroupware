@@ -259,9 +259,6 @@ use \etemplate_widget_tree as tree;
 						}
 						$this->bo->msg = lang('%1 bookmarks have been deleted',$i);
 						break;
-					case 'mailto':
-						$this->mail(array('bm_id' => $content['nm']['selected']));
-						break;
 				}
 			}
 
@@ -369,6 +366,7 @@ use \etemplate_widget_tree as tree;
 					'allowOnMultiple' => true,
 					'icon'	=> 'mail',
 					'group' => $group,
+					'onExecute' => 'javaScript:app.bookmarks.mail'
 				),
 				'delete' => array(
 					'caption' => 'Delete',
@@ -562,127 +560,6 @@ use \etemplate_widget_tree as tree;
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Bookmark - %1', $bookmark['stripped_name']);
 			$this->templ->read('bookmarks.edit');
 			$this->templ->exec('bookmarks.bookmarks_ui.view', $bookmark, $sel_options, $readonlys, $persist, 2);
-		}
-
-		/**
-		* Send one or more links via email
-		*
-		* @param content Array of information returned from eTemplate
-		*/
-		function mail($content = array())
-		{
-			//if the user cancelled we go back to the view we came from
-			if ($content['cancel'])
-			{
-				return;
-			}
-			elseif ($content['send'])	// Send button clicked
-			{
-				$validate = CreateObject('bookmarks.validator');
-				// Strip space and tab from anywhere in the To field
-				$to = $validate->strip_space($content['to']);
-
-				// Trim the subject
-				$subject = $GLOBALS['egw']->strip_html(trim($content['subject']));
-
-				$message = $GLOBALS['egw']->strip_html($content['message']);
-
-				// Do we have all necessary data?
-				if (empty($to) || empty($subject) || empty($message))
-				{
-					$this->bo->error_msg .= '<br>'.lang('Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!');
-				}
-				else
-				{
-					// the To field may contain one or more email addresses
-					// separated by commas. Check each one for proper format.
-					$to_array = explode(",", $to);
-
-					while (list($key, $val) = each($to_array))
-					{
-						// Is email address in the proper format?
-						if (!$validate->is_email($val))
-						{
-							$this->bo->error_msg .= '<br>' .
-								lang('To address %1 invalid. Format must be <strong>user@domain</strong> and domain must exist!',$val).
-								'<br><small>'.$validate->ERROR.'</small>';
-							break;
-						}
-					}
-				}
-				if (!isset ($this->bo->error_msg))
-				{
-					$send     =& CreateObject('phpgwapi.send');
-
-					$from = $GLOBALS['egw_info']['user']['account_fullname'] . ' <'.$GLOBALS['egw_info']['user']['account_email'].'>';
-
-					// send the message
-					$send->msg('email',$to,$subject,$message ."\n". $this->bo->config['mail_footer'],'','','',$from);
-					$this->bo->msg .= '<br>'.lang('mail-this-link message sent to %1.',$to);
-				}
-			}
-
-			if (empty($subject))
-			{
-				$subject = lang('Found a link you might like');
-			}
-
-			if (empty($message))
-			{
-				if (is_array($content['bm_id']))
-				{
-					foreach($content['bm_id'] as $id)
-					{
-						$bookmark = $this->bo->read($id);
-						$links[] = array(
-							'name' => $bookmark['name'],
-							'url'  => $bookmark['url']
-						);
-					}
-				}
-				else
-				{
-					$bookmark = $this->bo->read($_GET['bm_id']);
-					$links[] = array(
-						'name' => $bookmark['name'],
-						'url'  => $bookmark['url']
-					);
-				}
-				$message = lang('I thought you would be interested in the following link(s):')."<br />\n";
-				while (list(,$link) = @each($links))
-				{
-					$message .= sprintf("%s - %s<br />\n",$link['name'],$link['url']);
-				}
-			}
-
-			if($GLOBALS['egw_info']['user']['apps']['felamimail']) {
-				$link = egw::link('/index.php',egw_link::add('felamimail',
-					$GLOBALS['egw_info']['flags']['currentapp'],
-					$GLOBALS['egw_info']['flags']['currentid'])+
-					array(
-						'preset[to]' => $to,
-						'preset[subject]' => $subject,
-						'preset[body]' => $message
-					)
-				);
-				$popup = egw_link::is_popup('felamimail','add');
-				list($w,$h) = explode('x',$popup);
-				$action = "egw_openWindowCentered2('$link','_blank',$w,$h,'yes','$app');";
-				egw_framework::set_onload($action);
-
-				return;
-			}
-
-			$data = $content + array(
-				'to' => $to,
-				'subject' => $subject,
-				'message' => $message
-			);
-			$data['msg'] = $this->app_messages();
-
-			$GLOBALS['egw_info']['flags']['app_header'] = lang('Bookmarks - Mail');
-			$this->templ->read('bookmarks.mail');
-			$this->templ->exec('bookmarks.bookmarks_ui.mail', $data);
 		}
 
 		/**
