@@ -5147,7 +5147,7 @@ class emailadmin_imapbase
 				// we attempt to fetch "ourselves"
 				if ($_partID==$part->getMimeId() && $part->getPrimaryType()=='message') continue;
 				$attachment = $part->getAllDispositionParameters();
-
+				$attachment['disposition'] = $part->getDisposition();
 				$attachment['mimeType'] = $mime_type;
 				$attachment['uid'] = $_uid;
 				$attachment['partID'] = $mime_id;
@@ -5192,7 +5192,7 @@ class emailadmin_imapbase
 					{
 						$tnefResolved=true;
 						$attachment = $part->getAllDispositionParameters();
-
+						$attachment['disposition'] = $part->getDisposition();
 						$attachment['mimeType'] = $part->getType();
 						$attachment['uid'] = $tnp['uid'];
 						$attachment['partID'] = $tnp['partID'];
