@@ -7,11 +7,11 @@
 			<columns>
 				<column width="50"/>
 				<column width="45%"/>
-				<column width="1px"/>
-				<column/>
+				<column width="120"/>
+				<column width="20%"/>
 				<column width="15%" disabled="@no_customfields"/>
-				<column/>
-				<column/>
+				<column width="120"/>
+				<column width="120"/>
 			</columns>
 			<rows>
 				<row class="th" valign="bottom">
