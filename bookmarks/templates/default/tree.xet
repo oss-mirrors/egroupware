@@ -3,11 +3,14 @@
 <!-- $Id$ -->
 <overlay>
 	<template id="bookmarks.tree" template="" lang="" group="0" version="1.7.001">
-		<grid>
+		<grid width="100%">
 			<columns>
 				<column/>
 			</columns>
 			<rows>
+				<row>
+					<buttononly label="Add" id="add" onclick="egw.open('bookmarks');"/>
+				</row>
 				<row>
 					<tree id="tree" autoloading="bookmarks_ui::ajax_tree_autoloading" onclick="app.bookmarks.tree_onclick"/>
 				</row>

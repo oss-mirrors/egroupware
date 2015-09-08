@@ -179,7 +179,7 @@
 						<button label="Apply" id="apply"/>
 						<button label="Cancel" id="cancel" onclick="window.close();"/>
 					</hbox>
-					<button align="right" label="Delete" id="delete"/>
+					<button align="right" label="Delete" id="delete" onclick="et2_dialog.confirm(widget,'Delete this entry','Delete')"/>
 				</row>
 			</rows>
 		</grid>

@@ -14,4 +14,32 @@
 
 
 @import (reference) "../../../pixelegg/less/definitions.less";
-@import (less) "../default/app.css";
+@import (reference) "../default/app.css";
+
+#bookmarks-list {
+	div#bookmarks-list_favorite_wrapper {
+		top: -3px;
+	}
+	// Add button
+	#bookmarks-list_bookmarks-list-add {
+
+		button#bookmarks-list_add{
+			.Complete_Button_add_only_plus;
+			.dimension_height_m;
+
+
+			&:hover {.Complete_Button_add_only_plus_hover;}
+			&:active {background-color: @color_positive_action_active !important;}
+
+		}
+	}
+	button[id*="bookmarks-list_favorite"] {
+		img {
+			height: 16px;
+			width: 16px;
+		}
+	}
+	span.header_count {
+		margin: 3px 4px 0 6px;
+	}
+}
