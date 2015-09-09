@@ -87,7 +87,7 @@
   background: transparent;
   color: #383838;
 }
-#wikipage table,
-.wikipage table {
+#wikipage table.wiki,
+.wikipage table.wiki {
   border: 2px solid #505050;
 }

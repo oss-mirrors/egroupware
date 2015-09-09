@@ -100,7 +100,6 @@ function html_table_start($args)
       }
     }
     if ($class=='') {$class = ' class="wiki"';}
-	if ($styleStr=='') {$styleStr = ' border:'.$borderval.'px  solid black; border-collapse: collapse;';}
     if ((stristr($styleStr, 'border') === FALSE) && $styleStr!='' && ($borderval==0)) {
 		$border= ' ';
 		$styleStr .= ' border:'.$borderval.'px  solid black; border-collapse: collapse;';
@@ -108,7 +107,7 @@ function html_table_start($args)
 	if ($styleStr!='') {$style=' style="'. $styleStr .'"';}
     return "<table$border$class$style>";
   } else {
-    return '<table class="wiki" style=" border:1px solid black; border-collapse: collapse;">';
+    return '<table class="wiki">';
   }
 }
 function html_table_end()

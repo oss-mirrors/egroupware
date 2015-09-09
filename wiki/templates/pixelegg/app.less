@@ -12,35 +12,16 @@
  * @version $Id$
  */
 
-
 @import (reference) "../../../pixelegg/less/layout_definitions.less";
 @import (reference) "../../../pixelegg/less/definitions.less";
 
+#wikipage, .wikipage {
+	@import (less) "../default/app.css";
 
+	background-color: @gray_0;
+	padding: 1em 0 0 1em;
 
-#wikipage,
-.wikipage{
-@import (less) "../default/app.css";
-
- background-color: @gray_0;
- padding: 1em 0 0 1em;
-
-
-
-table{
-
-    border: 2px solid @gray_70;
-
-    tr{
-
-        td{}
-    }
-
-}
-
-
-
-
+	table.wiki {
+		border: 2px solid @gray_70;
+	}
 } // Ende Wikipage
-
-
