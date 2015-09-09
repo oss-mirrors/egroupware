@@ -144,7 +144,13 @@ $$Content$$'
 			'Site Configuration' => egw::link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
 		//	'Lock / Unlock Pages' => $GLOBALS['egw']->link('/wiki/index.php','action=admin&locking=1'),
 			'Block / Unblock hosts' => egw::link('/wiki/index.php','action=admin&blocking=1'),
-			'Rebuild Links' => egw::link('/wiki/index.php','menuaction=wiki.wiki_hooks.rebuildlinks'),
+			array(
+				'id' => 'apps/wiki/rebuild_links',
+				'text' => lang('Rebuild Links'),
+				'no_lang' => true,
+				'link' => "javascript:egw.message('".lang('Rebuild Links') . "<br />" .lang('Please wait...')."','info'); " .
+					"egw.json('wiki.wiki_hooks.ajax_rebuildlinks').sendRequest(true);"
+			)
 		);
 		//Do not modify below this line
 		display_section($appname,$title,$file);
@@ -193,11 +199,18 @@ $$Content$$'
 		);
 	}
 
+	static function ajax_rebuildlinks() {
+		$wiki = new wiki_hooks();
+		$message = $wiki->_rebuildlinks();
+
+		egw_json_response::get()->apply('egw.message', array(lang('Done') . "<br />".$message,'success'));
+	}
+
 	/**
 	 * rebuildlinks
 	 *
 	 */
-	function rebuildlinks()
+	private function _rebuildlinks()
 	{
 		@set_time_limit(0);
 
@@ -255,9 +268,8 @@ $$Content$$'
 
 			//if ($i >100) break;
 		}
-		error_log(__METHOD__.__LINE__.' '.$i." Pages processed. $l Links inserted (or count updated).");
-		error_log(__METHOD__.__LINE__. ' Redirect back to Admin Page ');
-		$GLOBALS['egw']->redirect_link('/admin/index.php');
+		$message = "$i Pages processed. $l Links inserted (or count updated).";
+		return $message;
 	}
 
 	/**
