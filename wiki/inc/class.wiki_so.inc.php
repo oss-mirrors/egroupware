@@ -495,24 +495,24 @@ class wiki_so	// DB-Layer
 	 * Find $text in the database, searches title and body.
 	 *
 	 * @param string $text pattern to search
-	 * @param string/boolean $search_in comma-separated string with columns to search (name,title,body) or false to search all three for "%text%" (!)
+	 * @param string|boolean $_search_in comma-separated string with columns to search (name,title,body,comment) or false to search all for "%text%" (!)
 	 * @return array of wiki-pages (array with column-name / value pairs)
 	 */
-	function find($text,$search_in=False)
+	function find($text, $_search_in=False)
 	{
 		$sowikipage = new soWikiPage($this->db,$this->PgTbl);
-		$sql="SELECT t1.wiki_name,t1.wiki_lang,t1.wiki_version,MAX(t2.wiki_version) as wiki_max,t1.wiki_title,t1.wiki_body".
+		$sql="SELECT t1.wiki_name,t1.wiki_lang,t1.wiki_version,MAX(t2.wiki_version) as wiki_max,t1.wiki_title,t1.wiki_body,t1.wiki_comment".
 			" FROM $this->PgTbl AS t1, (select wiki_id,wiki_lang,wiki_name, max(wiki_version) as wiki_version  from $this->PgTbl GROUP BY wiki_id, wiki_lang, wiki_name) AS t2".
 			" WHERE t1.wiki_name=t2.wiki_name AND t1.wiki_lang=t2.wiki_lang AND t1.wiki_id=$this->wiki_id AND t2.wiki_id=$this->wiki_id".
 			"  AND ".$sowikipage->acl_filter(true,false,'t1').	// only include pages we are allowed to read!
 			" GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_title,t1.wiki_body".
 			" HAVING t1.wiki_version=MAX(t2.wiki_version) AND (";
 
-		$search_in = $search_in ? explode(',',$search_in) : array('t1.wiki_name','t1.wiki_title','t1.wiki_body');
+		$search_in = $search_in ? explode(',',$_search_in) : array('t1.wiki_name','t1.wiki_title','t1.wiki_body','t1.wiki_comment');
 
 		if (!$this->db->capabilities['like_on_text'])
 		{
-			$search_in = array_intersect($search_in,array('t1.wiki_name','t1.wiki_title'));
+			$search_in = array_intersect($search_in,array('t1.wiki_name','t1.wiki_title','t1.wiki_comment'));
 		}
 
 		// Use so_sql's search builder for consistancy & extra features, like AND / OR
