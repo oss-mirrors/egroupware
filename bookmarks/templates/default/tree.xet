@@ -9,7 +9,7 @@
 			</columns>
 			<rows>
 				<row>
-					<buttononly label="Add" id="add" onclick="egw.open('bookmarks');"/>
+					<buttononly label="Add" id="add" onclick="egw.open('','bookmarks','add');"/>
 				</row>
 				<row>
 					<tree id="tree" autoloading="bookmarks_ui::ajax_tree_autoloading" onclick="app.bookmarks.tree_onclick"/>

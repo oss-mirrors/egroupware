@@ -40,7 +40,6 @@ use \etemplate_widget_tree as tree;
 			'_list' => True,
 			'tree' => True,
 			'view' => True,
-			'mail' => True,
 			'redirect' => True,
 			'export' => True,
 			'import' => True
@@ -88,16 +87,25 @@ use \etemplate_widget_tree as tree;
 			if ($_GET['cat_id']) $bookmark['category'] = $_GET['cat_id'];
 			
 			//save bookmark
-			if ($content['save'])
+			if ($content['save'] || $content['apply'])
 			{
+				$button = $content['save'] ? 'save' : 'apply';
 				unset($content['save']);
+				unset($content['apply']);
 				$bm_id = $this->bo->add($content);
 				if ($bm_id)
 				{
 					$this->location_info['bm_id'] = $bm_id;
 					$this->bo->save_session_data($this->location_info);
 					egw_framework::refresh_opener('Bookmark successfully saved', 'bookmarks',$bm_id, 'add');
-					common::egw_exit();
+					if($button == 'apply')
+					{
+						return $this->edit(array('bm_id' => $bm_id));
+					}
+					else
+					{
+						egw_framework::window_close();
+					}
 				}
 				else
 				{
@@ -121,10 +129,23 @@ use \etemplate_widget_tree as tree;
 			if(!$bookmark['access']) $bookmark['access'] = 'public';
 
 			$bookmark['msg'] = $this->app_messages();
+			// Hide the URL link, show the editable text field
+			$bookmark['edit'] = True;
+
+			$readonly = array(
+				'tabs' => array(
+					'details' => true,
+					'links' => true,
+					'custom' => true,
+					'history' => true
+				),
+				'edit' => true,
+				'delete' => true
+			);
 
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('New Bookmark');
-			$this->templ->read('bookmarks.add');
-			$this->templ->exec('bookmarks.bookmarks_ui.create', $bookmark, array(), array(), array(), 2);
+			$this->templ->read('bookmarks.edit');
+			$this->templ->exec('bookmarks.bookmarks_ui.create', $bookmark, array(), $readonly, array(), 2);
 		}
 
 		/**
@@ -445,9 +466,10 @@ use \etemplate_widget_tree as tree;
 				{
 					//Arbitrary data send to client-side tree widget
 					$bm_userData = array (
-						'url' => $bm['url']
+						'name' =>'url',
+						'content' => $bm['url']
 					);
-					$tree[tree::CHILDREN][] = array(tree::ID=>$_parent.'/bookmarks-'.$bm['id'], tree::LABEL => $bm['name'], 'userdata' => $bm_userData);
+					$tree[tree::CHILDREN][] = array(tree::ID=>$_parent.'/bookmarks-'.$bm['id'], tree::LABEL => $bm['name'], 'userdata' => array($bm_userData));
 				}
 				
 				// Check if there's sub cats to bind

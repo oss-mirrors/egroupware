@@ -4,6 +4,7 @@
 (comma separate multiple addresses)	bookmarks	de	(mehrere Adressen mit Komma getrennt)
 (selecting a category includes all sub-categories)	bookmarks	de	(Wenn Sie eine Kategorie auswählen, werden auch alle dazugehörigen Unterkategorien mit ausgewählt)
 actions	bookmarks	de	Befehle
+add bookmark	bookmarks	de	Lesezeichen hinzufügen
 added	bookmarks	de	Hinzugefügt
 all bookmarks	bookmarks	de	Alle Lesezeichen
 and	bookmarks	de	Und
@@ -85,7 +86,6 @@ netscape bookmark file	bookmarks	de	Netscape-Lesezeichendatei
 netscape bookmark filename is required!	bookmarks	de	Dateinamen der Netscape-Lesezeichen ist erforderlich!
 netscape/mozilla	bookmarks	de	Netscape / Mozilla
 new	bookmarks	de	Neu
-new bookmark	bookmarks	de	Neues Lesezeichen
 note: you can use bookmark files exported as html	bookmarks	de	Achtung: Sie können Lesezeichen nutzen, die als HTML-Datei exportiert wurden.
 old fixed definition	bookmarks	de	Ältere Definition, deren Werte nicht angepasst werden können.
 or	bookmarks	de	oder

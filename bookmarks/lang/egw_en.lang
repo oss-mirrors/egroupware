@@ -4,6 +4,7 @@
 (comma separate multiple addresses)	bookmarks	en	Comma separate multiple addresses
 (selecting a category includes all sub-categories)	bookmarks	en	Selecting a category includes all sub categories
 actions	bookmarks	en	Actions
+add bookmark	bookmarks	de	Add boomkark
 added	bookmarks	en	Added
 all bookmarks	bookmarks	en	All bookmarks
 and	bookmarks	en	And
@@ -85,7 +86,6 @@ netscape bookmark file	bookmarks	en	Netscape bookmark file
 netscape bookmark filename is required!	bookmarks	en	Netscape bookmark filen ame is required!
 netscape/mozilla	bookmarks	en	Netscape / Mozilla
 new	bookmarks	en	New
-new bookmark	bookmarks	en	New bookmark
 note: you can use bookmark files exported as html	bookmarks	en	Note: You can use bookmark files exported as HTML.
 old fixed definition	bookmarks	en	Old fixed definition
 or	bookmarks	en	or

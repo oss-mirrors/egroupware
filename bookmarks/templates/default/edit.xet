@@ -7,7 +7,6 @@
 			<columns>
 				<column width="200px"/>
 				<column/>
-				<column/>
 			</columns>
 			<rows>
 				<row disabled="@edit" class="dialogHeader">
@@ -16,7 +15,6 @@
 						<image align="right" src="@favicon" class="favicon"/>
 					</hbox>
 					<description id="url" href="bookmarks.bookmarks_ui.redirect&amp;bm_id={$cont[id]}" extra_link_target="_blank"/>
-					<description/>
 				</row>
 				<row disabled="!@edit" class="dialogHeader">
 					<hbox options="0,0">
@@ -24,22 +22,18 @@
 						<image align="right" src="@favicon" class="favicon"/>
 					</hbox>
 					<textbox id="url" needed="1" maxlength="255" span="all" class="et2_fullWidth"/>
-					<description/>
 				</row>
 				<row>
 					<description value="Name"/>
 					<textbox id="name" needed="1" maxlength="255" span="all" class="et2_fullWidth"/>
-					<description/>
 				</row>
 				<row valign="top">
 					<description value="Description"/>
 					<textbox multiline="true" id="desc" span="all" class="et2_fullWidth"/>
-					<description/>
 				</row>
 				<row>
 					<description value="Keywords"/>
 					<textbox id="keywords" maxlength="255" span="all" class="et2_fullWidth"/>
-					<description/>
 				</row>
 				<row valign="top">
 					<hbox cols="2" rows="3" options="0,0" span="all">
@@ -155,7 +149,7 @@
 			</columns>
 			<rows>
 				<row valign="top">
-					<tabbox id="general|details|links|custom|history" span="all" tab_height="250">
+					<tabbox id="tabs" span="all" tab_height="250">
 						<tabs>
 							<tab id="general" label="General"/>
 							<tab id="details" label="Details"/>
