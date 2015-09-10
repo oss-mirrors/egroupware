@@ -96,6 +96,7 @@ app.classes.bookmarks = AppJS.extend(
 			{
 				case 'update':
 				case 'edit':
+				default:
 					tree.refreshItem(tree.input.getParentId(itemId)||0);
 			}
 		}
